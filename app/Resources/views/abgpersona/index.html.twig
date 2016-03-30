@@ -1,0 +1,113 @@
+{% extends ':Layout:layout2.html.twig' %}
+
+{% block descripcion_y_acciones %}
+
+
+    <div class="row">
+        {% block descripcion %}
+            <div class="col-md-8">
+                <p class="robo" style="font-weight: 300; margin-bottom: 0px; font-size: 30px;">Nuevo Empleado</p>
+                <p class="robo" style="font-weight: 300; font-size: 14px; height: 40px;"> </p>
+            </div>
+        {% endblock%}
+        {% block acciones %}
+            <div class="col-md-4" style="margin-top: 50px;">
+                <!-- Boton Delete -->
+                <div class="btn-group pull-right">
+                    <button class="btn btn-danger btn-sm" style="margin-left: 5px;" type="submit">Delete</button>
+                </div>
+
+                <!-- Boton Ingreso -->
+                <div class="btn-group pull-right">
+                    <a class="btn btn-primary btn-sm insertar" style="margin-left: 5px;" onClick="enviarf()">Guardar</a>
+                </div>
+                <!-- Small button -->
+            </div>
+
+        {% endblock %}
+
+    </div>
+
+{% endblock %}
+{% block js_extend %}
+
+  
+           
+      
+  {% endblock %} 
+
+{% block navegacion_Y_body %}
+    <div class="row">
+        {% block navegacion %}
+            <hr style="margin-top: 0px !important;">
+            <div class="col-md-2" style="border-right: 1px solid #f3f3f3;">
+                <!-- Left Navigation -->
+                <ul style="list-style: none; padding: 0;">
+                    <a href="{{ path('ctlpais_index') }}" class="leftnava"><li class="leftnav left active">Menu<span class="pull-right right"></span></li></a>
+                            {# <a href="{{ path('ctlpais_configuracion') }}" class="leftnava"><li class="leftnav left">Configuraci&oacute;n</li></a>#}
+                    <a href="#" class="leftnava"><li class="leftnav left">Reportes</li></a>
+                </ul>
+            </div>
+        {% endblock %}
+        {% block cuerpo %}
+    <h1>AbgPersona list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombres</th>
+                <th>Apellido</th>
+                <th>Genero</th>
+                <th>Fechaingreso</th>
+                <th>Dui</th>
+                <th>Nit</th>
+                <th>Correoelectronico</th>
+                <th>Direccion</th>
+                <th>Telefonofijo</th>
+                <th>Telefonomovil</th>
+                <th>Descripcion</th>
+                <th>Estado</th>
+                <th>Abgpersonacol</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for abgPersona in abgPersonas %}
+            <tr>
+                <td><a href="{{ path('abgpersona_show', { 'id': abgPersona.id }) }}">{{ abgPersona.id }}</a></td>
+                <td>{{ abgPersona.nombres }}</td>
+                <td>{{ abgPersona.apellido }}</td>
+                <td>{{ abgPersona.genero }}</td>
+                <td>{% if abgPersona.fechaIngreso %}{{ abgPersona.fechaIngreso|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ abgPersona.dui }}</td>
+                <td>{{ abgPersona.nit }}</td>
+                <td>{{ abgPersona.correoelectronico }}</td>
+                <td>{{ abgPersona.direccion }}</td>
+                <td>{{ abgPersona.telefonoFijo }}</td>
+                <td>{{ abgPersona.telefonoMovil }}</td>
+                <td>{{ abgPersona.descripcion }}</td>
+                <td>{% if abgPersona.estado %}Yes{% else %}No{% endif %}</td>
+                <td>{{ abgPersona.abgPersonacol }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('abgpersona_show', { 'id': abgPersona.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('abgpersona_edit', { 'id': abgPersona.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('abgpersona_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AbgExperienciaLaboral" table="abg_experiencia_laboral">
+    <indexes>
+      <index name="fk_experiencia_laboral_persona1_idx" columns="abg_persona_id"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="compania" type="string" column="compania" length="45" nullable="false"/>
+    <field name="puesto" type="string" column="puesto" length="45" nullable="false"/>
+    <field name="fachaInicio" type="date" column="facha_inicio" nullable="false"/>
+    <field name="fechaFin" type="date" column="fecha_fin" nullable="true"/>
+    <field name="telefono" type="string" column="telefono_" length="45" nullable="true"/>
+    <field name="orden" type="integer" column="orden" nullable="true"/>
+    <many-to-one field="abgPersona" target-entity="AbgPersona">
+      <join-columns>
+        <join-column name="abg_persona_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

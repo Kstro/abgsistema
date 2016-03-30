@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AbgUsuarioReportado" table="abg_usuario_reportado">
+    <indexes>
+      <index name="fk_abg_usuario_reportado_ctl_tipo_reporte1_idx" columns="ctl_tipo_reporte_id"/>
+      <index name="fk_abg_usuario_reportado_ctl_usuario1_idx" columns="usuario_reportado"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="descripcion" type="string" column="descripcion" length="200" nullable="false"/>
+    <field name="fecha" type="date" column="fecha" nullable="false"/>
+    <field name="usuarioReporte" type="integer" column="usuario_reporte" nullable="false"/>
+    <many-to-one field="usuarioReportado" target-entity="CtlUsuario">
+      <join-columns>
+        <join-column name="usuario_reportado" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="ctlTipoReporte" target-entity="CtlTipoReporte">
+      <join-columns>
+        <join-column name="ctl_tipo_reporte_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

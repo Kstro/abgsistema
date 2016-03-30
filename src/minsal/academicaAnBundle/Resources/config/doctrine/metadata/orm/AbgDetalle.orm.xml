@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AbgDetalle" table="abg_detalle">
+    <indexes>
+      <index name="fk_abg_detalle_abg_persona1_idx" columns="abg_persona_id"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="sello" type="string" column="sello" length="45" nullable="false"/>
+    <field name="tarjeta" type="string" column="tarjeta" length="45" nullable="false"/>
+    <field name="firma" type="string" column="firma" length="45" nullable="false"/>
+    <field name="badge" type="boolean" column="badge" nullable="false"/>
+    <many-to-one field="abgPersona" target-entity="AbgPersona">
+      <join-columns>
+        <join-column name="abg_persona_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

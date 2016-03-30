@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>AbgPersona</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ abgPersona.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombres</th>
+                <td>{{ abgPersona.nombres }}</td>
+            </tr>
+            <tr>
+                <th>Apellido</th>
+                <td>{{ abgPersona.apellido }}</td>
+            </tr>
+            <tr>
+                <th>Genero</th>
+                <td>{{ abgPersona.genero }}</td>
+            </tr>
+            <tr>
+                <th>Fechaingreso</th>
+                <td>{% if abgPersona.fechaIngreso %}{{ abgPersona.fechaIngreso|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Dui</th>
+                <td>{{ abgPersona.dui }}</td>
+            </tr>
+            <tr>
+                <th>Nit</th>
+                <td>{{ abgPersona.nit }}</td>
+            </tr>
+            <tr>
+                <th>Correoelectronico</th>
+                <td>{{ abgPersona.correoelectronico }}</td>
+            </tr>
+            <tr>
+                <th>Direccion</th>
+                <td>{{ abgPersona.direccion }}</td>
+            </tr>
+            <tr>
+                <th>Telefonofijo</th>
+                <td>{{ abgPersona.telefonoFijo }}</td>
+            </tr>
+            <tr>
+                <th>Telefonomovil</th>
+                <td>{{ abgPersona.telefonoMovil }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ abgPersona.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>{% if abgPersona.estado %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Abgpersonacol</th>
+                <td>{{ abgPersona.abgPersonacol }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('abgpersona_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('abgpersona_edit', { 'id': abgPersona.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

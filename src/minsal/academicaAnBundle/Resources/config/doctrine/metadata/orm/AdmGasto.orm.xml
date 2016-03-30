@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AdmGasto" table="adm_gasto">
+    <indexes>
+      <index name="fk_adm_gasto_ctl_tipo_gasto1_idx" columns="ctl_tipo_gasto_id"/>
+      <index name="fk_adm_gasto_ctl_usuario1_idx" columns="ctl_usuario_id"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="fechaRegistro" type="date" column="fecha_registro" nullable="false"/>
+    <field name="fechaGasto" type="date" column="fecha_gasto" nullable="false"/>
+    <field name="monto" type="float" column="monto" precision="10" scale="0" nullable="false"/>
+    <many-to-one field="ctlUsuario" target-entity="CtlUsuario">
+      <join-columns>
+        <join-column name="ctl_usuario_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="ctlTipoGasto" target-entity="CtlTipoGasto">
+      <join-columns>
+        <join-column name="ctl_tipo_gasto_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

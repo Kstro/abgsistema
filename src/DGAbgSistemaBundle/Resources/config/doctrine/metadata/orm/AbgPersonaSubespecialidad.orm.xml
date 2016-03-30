@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AbgPersonaSubespecialidad" table="abg_persona_subespecialidad">
+    <indexes>
+      <index name="fk_abg_persona_has_abg_subespecialidad_abg_subespecialidad1_idx" columns="abg_subespecialidad_id"/>
+      <index name="fk_abg_persona_has_abg_subespecialidad_abg_persona1_idx" columns="abg_persona_id"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="fecha" type="string" column="fecha" length="45" nullable="false"/>
+    <field name="institucion" type="string" column="institucion" length="60" nullable="false"/>
+    <many-to-one field="abgSubespecialidad" target-entity="CtlSubespecialidad">
+      <join-columns>
+        <join-column name="abg_subespecialidad_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="abgPersona" target-entity="AbgPersona">
+      <join-columns>
+        <join-column name="abg_persona_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AbgEntrada" table="abg_entrada">
+    <indexes>
+      <index name="fk_abg_entrada_ctl_usuario1_idx" columns="ctl_usuario_id"/>
+      <index name="fk_abg_entrada_abg_subespecialidad1_idx" columns="abg_subespecialidad_id"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="tituloEntrada" type="string" column="titulo_entrada" length="200" nullable="false"/>
+    <field name="fecha" type="string" column="fecha" length="45" nullable="false"/>
+    <field name="contenido" type="text" column="contenido" length="65535" nullable="false"/>
+    <field name="abgCategoriaEntradaId" type="integer" column="abg_categoria_entrada_id" nullable="false"/>
+    <many-to-one field="abgSubespecialidad" target-entity="CtlSubespecialidad">
+      <join-columns>
+        <join-column name="abg_subespecialidad_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="ctlUsuario" target-entity="CtlUsuario">
+      <join-columns>
+        <join-column name="ctl_usuario_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

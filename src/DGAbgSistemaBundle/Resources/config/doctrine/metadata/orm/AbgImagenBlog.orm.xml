@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AbgImagenBlog" table="abg_imagen_blog">
+    <indexes>
+      <index name="fk_ctl_imagen_blog_abg_entrada1_idx" columns="abg_entrada_id"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="src" type="string" column="src" length="60" nullable="false"/>
+    <many-to-one field="abgEntrada" target-entity="AbgEntrada">
+      <join-columns>
+        <join-column name="abg_entrada_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

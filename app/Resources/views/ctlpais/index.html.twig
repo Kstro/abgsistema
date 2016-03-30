@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>CtlPais list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombrepais</th>
+                <th>Codigopostal</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ctlPai in ctlPais %}
+            <tr>
+                <td><a href="{{ path('ctlpais_show', { 'id': ctlPai.id }) }}">{{ ctlPai.id }}</a></td>
+                <td>{{ ctlPai.nombrePais }}</td>
+                <td>{{ ctlPai.codigoPostal }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('ctlpais_show', { 'id': ctlPai.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('ctlpais_edit', { 'id': ctlPai.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('ctlpais_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

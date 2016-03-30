@@ -1,0 +1,78 @@
+/*Font: font-family: 'Roboto', sans-serif;*/
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300);
+
+.robo {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 300;
+}
+
+.leftnav {
+	padding: 7px;
+	border-radius: 6px;
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+
+a {
+	color: #666666;
+	text-decoration: none;
+}
+
+a:hover{
+	color: #000;
+	text-decoration: none;
+}
+
+.leftnav:hover{
+	background-color: #f3f3f3;
+}
+
+.left {
+	padding-left: 12px;
+}
+
+.right {
+	padding-right: 5px;
+}
+
+.active {
+	background-color: #f3f3f3;
+	color: #262626;
+}
+
+.module {
+	height: 70px;
+	border-left: 1px solid #d1d8dd;
+	border-right: 1px solid #d1d8dd;
+	border-bottom: 1px solid #d1d8dd;
+}
+
+.module p {
+	margin-left: 25px;
+}
+
+.module:hover {
+	background-color: #f3f3f3;
+}
+
+.first {
+	border-top: 1px solid #d1d8dd;
+}
+
+
+
+/*========================== BOTONES =============================*/
+
+.rojo {
+	background-color:  #ff3333;
+	border-color:  #ff3333;
+}
+/*========================  border div tab===================*/
+
+.border_tab {
+    /*
+  border-top-style: dashed;
+  border-right-style: double;
+  border-bottom-style: dotted;
+  border-left-style: solid;*/
+}

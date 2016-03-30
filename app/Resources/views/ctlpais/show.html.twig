@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>CtlPais</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ctlPai.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombrepais</th>
+                <td>{{ ctlPai.nombrePais }}</td>
+            </tr>
+            <tr>
+                <th>Codigopostal</th>
+                <td>{{ ctlPai.codigoPostal }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('ctlpais_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('ctlpais_edit', { 'id': ctlPai.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}
