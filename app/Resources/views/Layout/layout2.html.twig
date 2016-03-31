@@ -80,13 +80,20 @@
                     <script src = "{{ asset('Resources/js/persona.js') }}"  type = "text/javascript" ></script>            
                     
                     <!-- icheck-->
+                    
+                      <!-- Js de TipoEmpresa-->
+                       <script src = "{{ asset('Resources/js/tipoempresa/tipoempresa.js') }}"  type = "text/javascript" ></script>    
+                    
+                    
                      <script src = "{{ asset('Resources/iCheck/icheck.js') }}"  type = "text/javascript" ></script>  
+
                       <script src = "{{ asset('Resources/iCheck/icheck.min.js') }}"  type = "text/javascript" ></script>  
                         <link rel="stylesheet" href="{{ asset('Resources/iCheck/all.css') }}">
                     <!-- X-editable-->    
                    
                     <script src="{{ asset('Resources/bootstrap3-editable/js/bootstrap-editable.js')}}"></script>
                     <script src="{{ asset('Resources/bootstrap/js/bootstrap.min.js')}}"></script>
+
             {% endblock %}
     
     </head>
@@ -161,7 +168,7 @@
                 {% endblock %}
                 
   
-            {% endblock %}
+{% endblock %}
  
 
     </body>

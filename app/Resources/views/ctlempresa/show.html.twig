@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>CtlEmpresa</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ctlEmpresa.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombreempresa</th>
+                <td>{{ ctlEmpresa.nombreEmpresa }}</td>
+            </tr>
+            <tr>
+                <th>Nit</th>
+                <td>{{ ctlEmpresa.nit }}</td>
+            </tr>
+            <tr>
+                <th>Servicios</th>
+                <td>{{ ctlEmpresa.servicios }}</td>
+            </tr>
+            <tr>
+                <th>Fechafundacion</th>
+                <td>{% if ctlEmpresa.fechaFundacion %}{{ ctlEmpresa.fechaFundacion|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Fotoperfil</th>
+                <td>{{ ctlEmpresa.fotoPerfil }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ ctlEmpresa.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Direccion</th>
+                <td>{{ ctlEmpresa.direccion }}</td>
+            </tr>
+            <tr>
+                <th>Sitioweb</th>
+                <td>{{ ctlEmpresa.sitioWeb }}</td>
+            </tr>
+            <tr>
+                <th>Correoelectronico</th>
+                <td>{{ ctlEmpresa.correoelectronico }}</td>
+            </tr>
+            <tr>
+                <th>Telefono</th>
+                <td>{{ ctlEmpresa.telefono }}</td>
+            </tr>
+            <tr>
+                <th>Movil</th>
+                <td>{{ ctlEmpresa.movil }}</td>
+            </tr>
+            <tr>
+                <th>Fax</th>
+                <td>{{ ctlEmpresa.fax }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_ctlempresa_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('admin_ctlempresa_edit', { 'id': ctlEmpresa.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,271 @@
+{% extends ':Layout:layout2.html.twig' %}
+
+{% block descripcion_y_acciones %}
+
+
+    <div class="row">
+        {% block descripcion %}
+            <div class="col-md-8">
+                <p class="robo" style="font-weight: 300; margin-bottom: 0px; font-size: 30px;">Gestion tipo empresa</p>
+                <p class="robo" style="font-weight: 300; font-size: 14px; height: 40px;"> </p>
+            </div>
+        {% endblock%}
+        {% block acciones %}
+            <div class="col-md-4" style="margin-top: 50px;">
+                <!-- Boton Delete -->
+                <div class="btn-group pull-right">
+                    <button class="btn btn-danger btn-sm eliminar" style="margin-left: 5px;" type="submit">Delete</button>
+                </div>
+
+                <!-- Boton Ingreso -->
+                <div class="btn-group pull-right">
+                    <a class="btn btn-primary btn-sm guardar" style="margin-left: 5px;" onClick="enviarf()">Guardar</a>
+                </div>
+                <div class="btn-group pull-right">
+                                    <button class="btn btn-default btn-sm cancelar" style="margin-left: 5px;" id="cancelar">Cancelar</button>
+		</div>
+                <!-- Small button -->
+                
+                
+                
+                
+                
+                 <!-- Boton de nuevo -->
+                <div class="btn-group pull-right">
+                    <a class="btn btn-primary btn-sm insertar" style="margin-left: 5px;" >Nuevo</a>
+                </div>
+                <!-- Small button -->
+                
+                
+                <!-- Boton Delete -->
+				<div class="btn-group pull-right">
+                                    <button class="btn btn-danger btn-sm delete" style="margin-left: 5px;" type="submit" >Delete</button>
+				</div>
+                  <!-- Boton Delete -->
+                  
+                  
+                
+               <!-- Boton Modificacion -->
+				<div class="btn-group pull-right">
+					<button class="btn btn-primary btn-sm modificar" style="margin-left: 5px;" type="submit">Editar</button>
+				</div>
+                                <div class="btn-group pull-right">
+                                    <button class="btn btn-primary  btn-sm " style="margin-left: 5px;" id="guardarModificacion">Guardar</button>
+				</div>
+                                
+				<div class="btn-group pull-right">
+                                    <button class="btn btn-default btn-sm" style="margin-left: 5px;" id="cancelarModificacion">Cancelar</button>
+				</div>
+                                
+                  
+                  
+                  
+                  
+                  
+                
+                
+                
+            </div>
+
+        {% endblock %}
+
+    </div>
+
+{% endblock %}
+{% block navegacion_Y_body %}
+    <div class="row">
+        {% block navegacion %}
+            <hr style="margin-top: 0px !important;">
+            <div class="col-md-2" style="border-right: 1px solid #f3f3f3;">
+                <!-- Left Navigation -->
+                <ul style="list-style: none; padding: 0;">
+                    <a href="{{ path('ctlpais_index') }}" class="leftnava"><li class="leftnav left active">Menu<span class="pull-right right"></span></li></a>
+                            {# <a href="{{ path('ctlpais_configuracion') }}" class="leftnava"><li class="leftnav left">Configuraci&oacute;n</li></a>#}
+                    <a href="#" class="leftnava"><li class="leftnav left">Reportes</li></a>
+                </ul>
+            </div>
+   {% endblock %}
+{% block cuerpo %}
+            
+            
+        <div class="col-md-10"  >
+        <div id="formularioInsercionTipoEmpresa" style="margin-bottom: 40px;" >
+             {% include 'DGAbgSistemaBundle:tipoempresa:new.html.twig' %}
+            
+        </div>
+        
+        <div id="formularioEdicion" style="margin-bottom: 40px;" >
+              
+            
+        </div>
+      
+              
+              
+              <div >
+      
+           <table id="lista_tipoEmpresa" class="table table-bordered table-hover display dt-responsive dataTable no-footer" style="width: 99%;">
+        <thead>
+            <tr>
+                
+                <th><input type="checkbox" name="select_all" id="select_all"></th>
+                <th>Tipo Empresa</th>
+             
+                
+                
+               
+                
+            </tr>
+        </thead>
+        
+        
+    </table>
+    </div>
+   </div>
+    
+            
+{% endblock %}
+{% endblock %}
+{% block js_extend %}
+
+ <script  type="text/javascript">
+    $(document).ready(function(){
+     
+     $('#lista_tipoEmpresa').DataTable({
+                    "pageLength": 20,
+                    "lengthMenu": [20],
+                    "dom": "<'row'<'col-md-6 pull-left'p><'col-md-6 pull-right'f>>" +
+                            "<'row'<'col-md-12'tr>>" +
+                            "<'row'<'col-md-5'i><'col-md-7'>>",
+                    "processing": true,
+                    "serverSide": true,
+                    "ajax": {
+                        "url": '{{path('tipo_empresa_data')}}',
+                        "type": 'GET'
+                    },
+                    "columns": [
+                         { "data": "link" },
+                        { "data": "tipoEmpresa" }
+              
+                    ],
+                    "columnDefs": [
+                           { "orderable": false, "targets": 0 }
+                           {# { "orderable": false, "targets": 2 },
+                           { "orderable": false, "targets": 3 },
+                           { "orderable": false, "targets": 4 }#}
+                           {#{ "orderable": false, "targets": 5 },
+                           { "orderable": false, "targets": 6 }#}
+                           
+                           
+                           //{ "orderData": [ 2, 3, 4 ], "targets": 2 }
+                    ],
+                    "language": {
+                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                    "infoEmpty": "",
+                    "emptyTable": "No se encontraron registros",
+                    "paginate": {
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    },
+                    "processing": "<h4>Procesando petición...</h4>",
+                    "search": "<b>Buscar registros:</b>",
+                    "lengthMenu": "Mostrar _MENU_ registros"
+                }
+              
+                    
+        });   
+        
+        
+        
+   var table = $('#lista_tipoEmpresa').DataTable();
+
+            table.on( 'search.dt', function () {
+              $(".delete").hide();
+              $(".modificar").hide();
+              
+                } );    
+     
+     
+       // Handle click on "Select all" control
+            $('#select_all').on('click', function(){
+               
+                    if( $(this).is(':checked') ) {
+                        $(".delete").show();
+                        var table = $('#lista_tipoEmpresa').DataTable();
+                        var rows = table.rows({ 'search': 'applied' }).nodes();
+                        $('input[type="checkbox"]', rows).prop('checked', this.checked);
+                        
+                          
+                   }else{
+                       $(".delete").hide();
+                       var table = $('#lista_tipoEmpresa').DataTable();
+                        var rows = table.rows({ 'search': 'applied' }).nodes();
+                        $('input[type="checkbox"]', rows).prop('checked', this.checked);
+                       
+                   }
+                   
+   });       
+   
+    //Eliminar desde la seleccion de los checkboxs
+           //Funcion que prepara el array con todos los id que quiero inabilitar o eliminar
+           $(".delete").on("click",function (){
+               
+                $("#formularioEdicion").hide();   
+                $("#guardarModificacion").hide();
+                $("#cancelarModificacion").hide();
+                $(".insertar").show();  
+             
+               var valor = new Array();
+               $(".idtipoempresa").each(function (index,value){
+                   
+                   if($(this).prop("checked")){
+                      num = $(this).attr("id");
+                            
+                          valor.push(num);
+                        }
+                        
+                   
+                   
+               });
+               console.log(valor);
+                    
+                    
+                    $.post( "{{path('delete_tipoempresa')}}", { idtipoempresa: valor }, function( data ) {
+                        var par = new Array();
+                        par = data.query;
+
+                        if(data.flag === 0) {
+                            
+                            var table = $('#lista_tipoEmpresa').DataTable();
+ 
+                            table.ajax.reload( function ( json ) {
+                               
+                            } );
+                            
+                            
+                        }
+                        else{
+                            $('#totalOrden').html(totalAnterior);
+                            $(link).html(mas);
+                        }
+                       
+                    }, "json"); 
+               
+               
+               
+               
+               
+           }); 
+   
+   
+   
+    
+     
+
+ });
+        
+     
+    </script>
+  
+           
+      
+{% endblock %} 

@@ -66,15 +66,15 @@ class AbgPersonaController extends Controller {
      */
     public function showAction(AbgPersona $abgPersona) {
         $deleteForm = $this->createDeleteForm($abgPersona);
-        $abgPersona->getId();
- $em = $this->getDoctrine()->getManager();
-        $dql_motivo = "SELECT  p.nombres AS nombre, p.apellido AS apellido "
-                    . " FROM DGAbgSistemaBundle:AbgPersona p";
-        $result_motivo = $em->createQuery($dql_motivo)->getArrayResult();
+      
+        $em = $this->getDoctrine()->getManager();
+        $dql_persona = "SELECT  p.nombres AS nombre, p.apellido AS apellido "
+                    . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=".$abgPersona->getId();
+        $result_persona = $em->createQuery($dql_persona)->getArrayResult();
         
         return $this->render('abgpersona/perfil.html.twig', array(
-                    'abgPersona' => $abgPersona,
-                    'delete_form' => $deleteForm->createView(),
+                    'abgPersona' => $result_persona,
+                   
         ));
     }
 

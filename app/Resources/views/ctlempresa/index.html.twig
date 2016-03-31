@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>CtlEmpresa list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombreempresa</th>
+                <th>Nit</th>
+                <th>Servicios</th>
+                <th>Fechafundacion</th>
+                <th>Fotoperfil</th>
+                <th>Descripcion</th>
+                <th>Direccion</th>
+                <th>Sitioweb</th>
+                <th>Correoelectronico</th>
+                <th>Telefono</th>
+                <th>Movil</th>
+                <th>Fax</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ctlEmpresa in ctlEmpresas %}
+            <tr>
+                <td><a href="{{ path('admin_ctlempresa_show', { 'id': ctlEmpresa.id }) }}">{{ ctlEmpresa.id }}</a></td>
+                <td>{{ ctlEmpresa.nombreEmpresa }}</td>
+                <td>{{ ctlEmpresa.nit }}</td>
+                <td>{{ ctlEmpresa.servicios }}</td>
+                <td>{% if ctlEmpresa.fechaFundacion %}{{ ctlEmpresa.fechaFundacion|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ ctlEmpresa.fotoPerfil }}</td>
+                <td>{{ ctlEmpresa.descripcion }}</td>
+                <td>{{ ctlEmpresa.direccion }}</td>
+                <td>{{ ctlEmpresa.sitioWeb }}</td>
+                <td>{{ ctlEmpresa.correoelectronico }}</td>
+                <td>{{ ctlEmpresa.telefono }}</td>
+                <td>{{ ctlEmpresa.movil }}</td>
+                <td>{{ ctlEmpresa.fax }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_ctlempresa_show', { 'id': ctlEmpresa.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_ctlempresa_edit', { 'id': ctlEmpresa.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_ctlempresa_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}
