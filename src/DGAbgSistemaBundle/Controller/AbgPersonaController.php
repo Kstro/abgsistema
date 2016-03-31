@@ -172,7 +172,7 @@ class AbgPersonaController extends Controller {
             $em->getConnection()->commit();
             $em->close();
             $data['msj'] = "Registrado";
-            $data['idP'] = $abgPersona->getId();
+            $data['username'] = $ctlUsuario->getUsername();
             return new Response(json_encode($data));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";

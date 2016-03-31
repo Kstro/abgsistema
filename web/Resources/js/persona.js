@@ -34,7 +34,7 @@
                 data:{dato:$("#fdatos").serialize()},
                 success: function(data) 
                 { 
-                var url=Routing.generate('abgpersona_show',{id:data.idP});
+                var url=Routing.generate('abgpersona_show',{id:data.username});
                  window.open(url,"_self");                   
                 },
                   error : function(errors) 
