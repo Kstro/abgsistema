@@ -1,0 +1,334 @@
+{# empty Twig template #}
+	{% extends ':Layout:layout2.html.twig' %}
+
+{% block descripcion_y_acciones %}
+
+
+
+        {% block descripcion %}
+           
+        {% endblock%}
+        {% block acciones %}
+            
+
+        {% endblock %}
+
+
+
+{% endblock %}
+{% block js_extend %}
+
+  
+           
+      
+  {% endblock %} 
+
+{% block navegacion_Y_body %}
+  
+        {% block navegacion %}
+           
+        {% endblock %}
+   {% block cuerpo %}
+<!-- body style="background-color: #f6f6f6;" -->
+  
+
+	<div class="clearfix"></div>
+
+	<div class="container">
+		<div class="row">
+
+			<!-- LEFT SIDE -->
+			<div class="col-md-9">
+
+				<!-- PRIMERA BLOQUE CON FOTO DE PERFIL -->
+				<div class="bloque">
+					<div class="row">
+						<div class="col-sm-3">
+                                                   
+                                                    
+                                                  
+			        <img src=" {{asset('Resources/src/img/profile.png')}}" style="margin-top: 10px; margin-left: 10px; width: 200px; height: 200px; margin-bottom: 10px;" />
+				    </div>
+				    <div class="col-sm-9">
+				    	<p style="margin-top: 10px; font-size: 23px; margin-left: 10px; margin-bottom: 0px;" class="sans">
+                                            <strong>Marvin Jose Vigil</strong>
+                                            <img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
+				    	<p style="color: #777777; margin-left: 11px; margin-top: -3px; margin-bottom: 0px;" class="sansli">Director Ejecutivo en Digitality Garage</p>
+				    	<p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">San Salvador | El Salvador</p>
+				    	<!-- ESPECIALIDAD(ES) -->
+				    	<div class="row">
+				    		<div class="col-xs-2" style="padding-right: 0;">
+				    			<span style="color: #4444444; font-size: 11px; margin-left: 10px;">Especialidades</span>
+				    		</div>
+				    		<div class="col-xs-8" style="padding-left: 0;">
+				    			<span style="font-size:13px;">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span>
+				    		</div>
+				    	</div>
+				    	<!-- TRABAJO(S) ACTUAL -->
+				    	<div class="row">
+				    		<div class="col-xs-2" style="padding-right: 0;">
+				    			<span style="color: #4444444; font-size: 11px; margin-left: 10px;">Actual</span>
+				    		</div>
+				    		<div class="col-xs-8" style="padding-left: 0;">
+				    			<span style="font-size:13px;">Firma de Abogados Arias & Muñoz</span>
+				    		</div>
+				    	</div>
+				    	<!-- EDUCACION MAS RECIENTE -->
+				    	<div class="row">
+				    		<div class="col-xs-2" style="padding-right: 0;">
+				    			<span style="color: #4444444; font-size: 11px; margin-left: 10px;">Educacion</span>
+				    		</div>
+				    		<div class="col-xs-8" style="padding-left: 0;">
+				    			<span style="font-size:13px;">California State University Fullerton</span>
+				    		</div>
+				    	</div>
+				    	<!-- EDUCACION MAS RECIENTE -->
+				    	<div class="row">
+				    		<div class="col-xs-2" style="padding-right: 0;">
+				    			<span style="color: #4444444; font-size: 11px; margin-left: 10px;">Sitio Web</span>
+				    		</div>
+				    		<div class="col-xs-8" style="padding-left: 0;">
+				    			<span style="font-size:13px;"><a href="http://www.ariaslaw.com" target="_blank">www.ariaslaw.com</a></span>
+				    		</div>
+				    	</div>
+				    </div>
+				  </div>
+				</div>
+
+				<!-- INFORMACION DE CONTACTO -->
+				<div class="bloque-main">
+					<div class="row">
+						<p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>DATOS DE CONTACTO</strong></p>
+						<p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
+					</div>
+					<!-- Contenido Aqui -->
+					<div class="row">
+						<div class="col-sm-3 col-xs-12">
+							<p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono(s)</strong></p>
+							<p style="font-size: 11px; margin-bottom: 0px;">+503 77971933 </br> +503 22520362</p>
+						</div>
+						<div class="col-sm-3 col-xs-12">
+							<p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email(s)</strong></p>
+							<p style="font-size: 11px; margin-bottom: 0px;">marvinvigil@gmail.com</p>
+						</div>
+						<div class="col-sm-3 col-xs-12">
+							<p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Direccion</strong></p>
+							<p style="font-size: 11px; margin-bottom: 0px;">Ave. Alberto Masferrer #23, Colonia Escalon, El Salvador</p>
+						</div>
+						<div class="col-sm-3 col-xs-12">
+							<p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
+							<p style="font-size: 11px; margin-bottom: 0px;"><a href="http://www.ariaslaw.com" target="_blank">www.ariaslaw.com</a></p>
+						</div>
+					</div>
+					<!-- Fin -->
+				</div> <!-- INFORMACION DE CONTACTO -->
+
+				<!-- EXTRACTO -->
+				<div class="bloque-main">
+					<div class="row">
+						<p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>un poco sobre mi</strong></p>
+						<p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
+					</div>
+					<div style="padding-left: 3px; padding-right: 30px;">
+					<p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+					<p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+					</div>
+				</div>
+
+				<!-- ESPECIALIDADES -->
+				<div class="bloque-main">
+					<div class="row">
+						<p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>ESPECIALIDADES LEGALES</strong></p>
+						<p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
+					</div>
+					<!-- Contenido Aqui -->
+					<div class="row text-center">
+						<div class="col-xs-3" style="margin-top: .5em; margin-bottom: .5em;">
+							<ul class="prob">
+								<li><strong>FAMILIAR</strong></li>
+								<a href="#" class="prob"><li>Divorcios</li></a>
+								<li>Casamientos</li>
+								<li>Custodias</li>
+							</ul>
+						</div>
+						<div class="col-xs-3" style="margin-top: .5em; margin-bottom: .5em;">
+							<ul class="prob">
+								<li><strong>IMPUESTOS</strong></li>
+								<li>Divorcios</li>
+								<li>Casamientos</li>
+								<li>Custodias</li>
+							</ul>
+						</div>
+						<div class="col-xs-3" style="margin-top: .5em; margin-bottom: .5em;">
+							<ul class="prob">
+								<li><strong>CRIMINAL</strong></li>
+								<li>Divorcios</li>
+								<li>Casamientos</li>
+								<li>Custodias</li>
+							</ul>
+						</div>
+						<div class="col-xs-3" style="margin-top: .5em; margin-bottom: .5em;">
+							<ul class="prob">
+								<li><strong>COMERCIAL</strong></li>
+								<li>Divorcios</li>
+								<li>Casamientos</li>
+								<li>Custodias</li>
+							</ul>
+						</div>
+					</div>
+					<!-- Fin -->
+				</div>
+
+				<!-- EXPERIENCIA -->
+				<div class="bloque-main">
+					<div class="row" style="margin-bottom: 10px;">
+						<p class="sans text-uppercase pull-left subtitulo"><strong>EXPERIENCIA</strong></p>
+						<p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
+					</div>
+					<!-- Contenido Aqui -->
+					<div class="experiencia">
+						<div class="row">
+							<div class="col-xs-1">
+								<img src="http://placehold.it/50x50">
+							</div>
+							<div class="col-xs-11">
+								<span style="font-size: 15px;">Digitality Garage SA de CV</span> <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i> </br>
+								<span style="font-size: 13px;">Director Ejecutivo y Head de Marketing </br> Enero 2001 - Presente (14 años 9 meses) | El Salvador </span>
+								<p style="width: 90%; margin-top: 5px;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+								tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+								quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p>
+							</div>
+						</div>
+					</div>
+					<!-- Fin -->
+				</div>
+
+				<!-- EDUCACION -->
+				<div class="bloque-main">
+					<div class="row">
+						<p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>EDUCACION</strong></p>
+						<p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
+					</div>
+					<!-- Contenido Aqui -->
+
+					<!-- Fin -->
+				</div>
+
+				<!-- LENGUAJES -->
+				<div class="bloque-main">
+					<div class="row">
+						<p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>IDIOMAS</strong></p>
+						<p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
+					</div>
+					<!-- Contenido Aqui -->
+					<p class="sans">INGLES</p>
+					<!-- Fin -->
+				</div>
+
+				<!-- ORGANIZACIONES -->
+				<div class="bloque-main">
+					<div class="row">
+						<p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>ORGANIZACIONES</strong></p>
+						<p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
+					</div>
+					<!-- Contenido Aqui -->
+
+					<!-- Fin -->
+				</div>
+
+				<!-- ORGANIZACIONES -->
+				<div class="bloque-main">
+					<div class="row">
+						<p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>RESPUESTAS EN LA PLATAFORMA</strong></p>
+						<p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
+					</div>
+					<!-- Contenido Aqui -->
+
+					<!-- Fin -->
+				</div>
+
+				<!-- ORGANIZACIONES -->
+				<div class="bloque-main">
+					<div class="row">
+						<p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>certificaciones</strong></p>
+						<p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
+					</div>
+					<!-- Contenido Aqui -->
+
+					<!-- Fin -->
+				</div>
+
+				<!-- ORGANIZACIONES -->
+				<div class="bloque-main">
+					<div class="row">
+						<p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>CURSOS Y SEMINARIOS</strong></p>
+						<p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
+					</div>
+					<!-- Contenido Aqui -->
+
+					<!-- Fin -->
+				</div>
+
+				<!-- ORGANIZACIONES -->
+				<div class="bloque-main">
+					<div class="row">
+						<p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>ENTRADAS DE BLOG</strong></p>
+						<p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
+					</div>
+					<!-- Contenido Aqui -->
+
+					<!-- Fin -->
+				</div>
+
+
+			</div> <!-- Fin de Col-md-9 -->
+
+			<div class="col-md-3">
+				<div class="bloque-main">
+				<p class="text-center">Esconda su perfil <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="Esconda su perfil mientras lo actualize. Mida el nivel de completacion con el icono de abajo."></i></p>
+				<div class="onoffswitch" style="margin-left: auto; margin-right: auto;">
+				    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+				    <label class="onoffswitch-label" for="myonoffswitch">
+				        <span class="onoffswitch-inner"></span>
+				        <span class="onoffswitch-switch"></span>
+				    </label>
+				</div>
+				</div>
+				<div class="bloque-nexo">
+				<p class="text-center" style="padding-top: 15px;">Porcentaje Completo: <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="Llega al 100% para tener un perfil competitivo."></i> </p>
+				<p class="text-center"><img src="{{asset('Resources/src/img/pro.png')}}" style="width: 100px;"></p>
+				<p class="text-center">52% - Rookie</p>
+				</div>
+				<div class="bloque-nexo">
+					<p class="text-center">Otros Servicios</p>
+				</div>
+				<div class="bloque-nexo">
+					 {% embed ':Layout:publicida.html.twig' %}{% endembed %}
+				</div>
+			</div>
+			<div class="clearfix"></div>
+
+		</div>
+	</div>
+	<div style="height: 10px;"></div>
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="src/js/bootstrap.js"></script>
+	<script type="text/javascript">
+		$(function () {
+		  $('[data-toggle="tooltip"]').tooltip()
+		})
+	</script>
+  {% endblock %}
+    {% endblock %}

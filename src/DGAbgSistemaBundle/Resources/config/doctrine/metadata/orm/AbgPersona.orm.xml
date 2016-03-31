@@ -13,7 +13,7 @@
     <field name="fechaIngreso" type="date" column="fecha_ingreso" nullable="false"/>
     <field name="dui" type="string" column="dui" length="11" nullable="false"/>
     <field name="nit" type="string" column="nit" length="17" nullable="false"/>
-    <field name="correoelectronico" type="string" column="correoelectronico" length="45" nullable="false"/>
+   
     <field name="direccion" type="string" column="direccion" length="45" nullable="false"/>
     <field name="telefonoFijo" type="string" column="telefono_fijo" length="10" nullable="true"/>
     <field name="telefonoMovil" type="string" column="telefono_movil" length="10" nullable="false"/>

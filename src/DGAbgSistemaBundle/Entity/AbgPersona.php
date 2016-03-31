@@ -63,12 +63,7 @@ class AbgPersona
      */
     private $nit;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="correoelectronico", type="string", length=45, nullable=false)
-     */
-    private $correoelectronico;
+  
 
     /**
      * @var string

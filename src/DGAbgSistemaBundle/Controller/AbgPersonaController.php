@@ -7,6 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use DGAbgSistemaBundle\Entity\AbgPersona;
+use DGAbgSistemaBundle\Entity\CtlUsuario;
+use Symfony\Component\HttpFoundation\Response;
 use DGAbgSistemaBundle\Form\AbgPersonaType;
 
 /**
@@ -14,22 +16,20 @@ use DGAbgSistemaBundle\Form\AbgPersonaType;
  *
  * @Route("/abgpersona")
  */
-class AbgPersonaController extends Controller
-{
+class AbgPersonaController extends Controller {
+
     /**
      * Lists all AbgPersona entities.
      *
      * @Route("/", name="abgpersona_index")
      * @Method("GET")
      */
-    public function indexAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $abgPersonas = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->findAll();
+    public function indexAction() {
+        //$em = $this->getDoctrine()->getManager();
+        //  $abgPersonas = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->findAll();
 
         return $this->render('abgpersona/index.html.twig', array(
-            'abgPersonas' => $abgPersonas,
+                        //   'abgPersonas' => $abgPersonas,
         ));
     }
 
@@ -39,8 +39,7 @@ class AbgPersonaController extends Controller
      * @Route("/new", name="abgpersona_new")
      * @Method({"GET", "POST"})
      */
-    public function newAction(Request $request)
-    {
+    public function newAction(Request $request) {
         $abgPersona = new AbgPersona();
         $form = $this->createForm('DGAbgSistemaBundle\Form\AbgPersonaType', $abgPersona);
         $form->handleRequest($request);
@@ -54,24 +53,28 @@ class AbgPersonaController extends Controller
         }
 
         return $this->render('abgpersona/new.html.twig', array(
-            'abgPersona' => $abgPersona,
-            'form' => $form->createView(),
+                    'abgPersona' => $abgPersona,
+                    'form' => $form->createView(),
         ));
     }
 
     /**
      * Finds and displays a AbgPersona entity.
      *
-     * @Route("/{id}", name="abgpersona_show")
+     * @Route("/perfil/{id}", name="abgpersona_show", options={"expose" =true})
      * @Method("GET")
      */
-    public function showAction(AbgPersona $abgPersona)
-    {
+    public function showAction(AbgPersona $abgPersona) {
         $deleteForm = $this->createDeleteForm($abgPersona);
-
-        return $this->render('abgpersona/show.html.twig', array(
-            'abgPersona' => $abgPersona,
-            'delete_form' => $deleteForm->createView(),
+        $abgPersona->getId();
+ $em = $this->getDoctrine()->getManager();
+        $dql_motivo = "SELECT  p.nombres AS nombre, p.apellido AS apellido "
+                    . " FROM DGAbgSistemaBundle:AbgPersona p";
+        $result_motivo = $em->createQuery($dql_motivo)->getArrayResult();
+        
+        return $this->render('abgpersona/perfil.html.twig', array(
+                    'abgPersona' => $abgPersona,
+                    'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -81,8 +84,7 @@ class AbgPersonaController extends Controller
      * @Route("/{id}/edit", name="abgpersona_edit")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, AbgPersona $abgPersona)
-    {
+    public function editAction(Request $request, AbgPersona $abgPersona) {
         $deleteForm = $this->createDeleteForm($abgPersona);
         $editForm = $this->createForm('DGAbgSistemaBundle\Form\AbgPersonaType', $abgPersona);
         $editForm->handleRequest($request);
@@ -96,9 +98,9 @@ class AbgPersonaController extends Controller
         }
 
         return $this->render('abgpersona/edit.html.twig', array(
-            'abgPersona' => $abgPersona,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+                    'abgPersona' => $abgPersona,
+                    'edit_form' => $editForm->createView(),
+                    'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -108,8 +110,7 @@ class AbgPersonaController extends Controller
      * @Route("/{id}", name="abgpersona_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, AbgPersona $abgPersona)
-    {
+    public function deleteAction(Request $request, AbgPersona $abgPersona) {
         $form = $this->createDeleteForm($abgPersona);
         $form->handleRequest($request);
 
@@ -129,12 +130,65 @@ class AbgPersonaController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm(AbgPersona $abgPersona)
-    {
+    private function createDeleteForm(AbgPersona $abgPersona) {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('abgpersona_delete', array('id' => $abgPersona->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
+                        ->setAction($this->generateUrl('abgpersona_delete', array('id' => $abgPersona->getId())))
+                        ->setMethod('DELETE')
+                        ->getForm()
         ;
     }
+
+    /**
+     * @Route("/usuario/get", name="usuario", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function UsuarioAction() {
+        $em = $this->getDoctrine()->getManager();
+        $em->getConnection()->beginTransaction();
+        $request = $this->getRequest();
+        try {
+
+            parse_str($request->get('dato'), $datos);
+
+            $abgPersona = new AbgPersona();
+            $ctlUsuario = new CtlUsuario();
+            $abgPersona->setNombres($datos['txtnombre']);
+            $abgPersona->setApellido($datos['txtapellido']);
+            $abgPersona->setFechaIngreso(new \DateTime("now"));
+            $abgPersona->setEstado('1');
+            $em->persist($abgPersona);
+            $em->flush();
+            $idPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgPersona')->find($abgPersona->getId());
+
+            $ctlUsuario->setUsername($datos['txtEmail']);
+            $ctlUsuario->setPassword($datos['txtPassword']);
+
+            $ctlUsuario->setEstado('1');
+            $ctlUsuario->setRhPersona($idPersona);
+
+            $this->setSecurePassword($ctlUsuario, $datos['txtPassword']);
+            $em->persist($ctlUsuario);
+            $em->flush();
+            $em->getConnection()->commit();
+            $em->close();
+            $data['msj'] = "Registrado";
+            $data['idP'] = $abgPersona->getId();
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+            $em->getConnection()->rollback();
+            $em->close();
+
+            // echo $e->getMessage();   
+        }
+    }
+
+    private function setSecurePassword(&$entity, $contrasenia) {
+        $entity->setSalt(md5(time()));
+        $encoder = new \Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder('sha512', true, 10);
+        $password = $encoder->encodePassword($contrasenia, $entity->getSalt());
+        $entity->setPassword($password);
+    }
+
 }
