@@ -51,7 +51,7 @@
 				    </div>
 				    <div class="col-sm-9">
 				    	<p style="margin-top: 10px; font-size: 23px; margin-left: 10px; margin-bottom: 0px;" class="sans">
-                                            <strong>Marvin Jose Vigil</strong>
+                                            <strong>  {% for datos in abgPersona %}{{datos.nombre~' '~datos.apellido}}{%endfor%}</strong>
                                             <img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
 				    	<p style="color: #777777; margin-left: 11px; margin-top: -3px; margin-bottom: 0px;" class="sansli">Director Ejecutivo en Digitality Garage</p>
 				    	<p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">San Salvador | El Salvador</p>
