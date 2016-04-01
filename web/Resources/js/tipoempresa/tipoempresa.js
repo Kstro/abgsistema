@@ -135,7 +135,7 @@ function enviarf()
   
        $.ajax({
                 type: "GET",
-                url:Routing.generate('registrar_tipoempresa'),              
+                url:Routing.generate('ingresar_tipoempresa'),              
                 data:{dato:$("#tipoempresa").serialize()},
                 success: function(data) 
                 {
