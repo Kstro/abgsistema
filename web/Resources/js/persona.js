@@ -8,23 +8,23 @@
    var ingresos=[];
    var deduccion=[];
    var datosDeduccion=[];
-    jQuery.noConflict();
-    jQuery(function($){
+ //   jQuery.noConflict();
+ /*   jQuery(function($){
     $("#txtdui").mask("99999999-9");
    $("#txtnit").mask("9999-999999-999-9");
    $("#txtfijo").mask("9999-9999");
    $("#txtmovil").mask("9999-9999");
      
-});
-   
+});*/
+
  
  $(document).on('ready',function(){
      
      
-              
+       /*       
           $('#sEstado').select2();
              $('#sCiudad').select2();
-             
+             */
              $( "#enfiarf" ).click(function() {
           $.ajax({
                 type: "GET",
@@ -34,8 +34,8 @@
                 data:{dato:$("#fdatos").serialize()},
                 success: function(data) 
                 { 
-                var url=Routing.generate('abgpersona_show',{id:data.username});
-                 window.open(url,"_self");                   
+                  var url=Routing.generate('perfil',{username:data.username});
+                  window.open(url,"_self");                   
                 },
                   error : function(errors) 
                   {
@@ -51,7 +51,7 @@
                 },
             });
          });
-             
+
              /*
                  var estado;
                  var tipoEmpleo;

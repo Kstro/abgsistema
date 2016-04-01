@@ -64,7 +64,13 @@ class AbgPersona
     private $nit;
 
   
-
+/**
+     * @var string
+     *
+     * @ORM\Column(name="correoelectronico", type="string", length=45, nullable=false)
+     */
+    private $correoelectronico;
+    
     /**
      * @var string
      *
@@ -100,12 +106,7 @@ class AbgPersona
      */
     private $estado;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="abg_personacol", type="string", length=45, nullable=true)
-     */
-    private $abgPersonacol;
+   
 
     /**
      * @var \CtlCiudad
@@ -443,28 +444,7 @@ class AbgPersona
         return $this->estado;
     }
 
-    /**
-     * Set abgPersonacol
-     *
-     * @param string $abgPersonacol
-     * @return AbgPersona
-     */
-    public function setAbgPersonacol($abgPersonacol)
-    {
-        $this->abgPersonacol = $abgPersonacol;
-
-        return $this;
-    }
-
-    /**
-     * Get abgPersonacol
-     *
-     * @return string 
-     */
-    public function getAbgPersonacol()
-    {
-        return $this->abgPersonacol;
-    }
+ 
 
     /**
      * Set ctlCiudad
