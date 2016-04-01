@@ -14,12 +14,13 @@
     <field name="dui" type="string" column="dui" length="11" nullable="false"/>
     <field name="nit" type="string" column="nit" length="17" nullable="false"/>
    
+    <field name="correoelectronico" type="string" column="correoelectronico" length="45" nullable="false"/>
     <field name="direccion" type="string" column="direccion" length="45" nullable="false"/>
     <field name="telefonoFijo" type="string" column="telefono_fijo" length="10" nullable="true"/>
     <field name="telefonoMovil" type="string" column="telefono_movil" length="10" nullable="false"/>
     <field name="descripcion" type="string" column="descripcion" length="255" nullable="true"/>
     <field name="estado" type="boolean" column="estado" nullable="false"/>
-    <field name="abgPersonacol" type="string" column="abg_personacol" length="45" nullable="true"/>
+   
     <many-to-one field="ctlCiudad" target-entity="CtlCiudad">
       <join-columns>
         <join-column name="ctl_ciudad_id" referenced-column-name="id"/>
