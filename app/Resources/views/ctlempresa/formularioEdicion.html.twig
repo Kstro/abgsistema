@@ -1,0 +1,159 @@
+{% extends ':Layout:layout2.html.twig' %}
+
+{% block descripcion_y_acciones %}
+
+
+    
+        {% block descripcion %}
+            
+        {% endblock%}
+        {% block acciones %}
+            
+        {% endblock %}
+
+
+{% endblock %}
+{% block js_extend %}
+
+  
+           
+      
+  {% endblock %} 
+
+{% block navegacion_Y_body %}
+  
+        {% block navegacion %}
+            
+        {% endblock %}
+        {% block cuerpo %}
+<div class="row">
+    <h1>Registrar De empresa</h1>
+    
+    <form id="frmEmpresaCompleto" role="form" enctype="multipart/form-data" method="POST">
+    
+        <div class="col-md-12">
+            <div class="box-header with-border">
+              <h3 class="box-title text-success">Datos Generales de la empresa</h3>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    <div class="col-md-4">
+          <!-- general form elements -->
+            <div class="box box-primary">
+            
+            <!-- /.box-header -->
+            <!-- form start -->
+        
+               
+              
+            
+                <div class="form-group">
+                     <label for="correoEmpresa">Nombre de usuario:</label>
+                     <input type="text" class="form-control" id="ussername" name="ussername" >
+                </div>
+                <div class="form-group">
+                     <label for="correoEmpresa">Contraseña:</label>
+                     <input type="password" class="form-control" id="contrasenha" name="contrasenha">
+                </div>
+                <div class="form-group">
+                 <button class="btn btn-primary" >Registrarme</button>
+                </div>
+            
+             
+              
+            
+              
+              
+              <div class="form-group">
+                  <label for="fechafundacion">Fecha de fundacion</label>
+                  <input type="date" class="form-control" id="fechafundacion" name="fechafundacion" placeholder="Año de fundacion">
+              </div>
+              
+              
+              <div class="form-group">
+                  <label for="tipoempresa">Tipo de empresa</label>
+                  
+                  <select class="form-control" id="tipoempresa" name="tipoempresa" placeholder="Seleccione un tipo de empresa">
+                      {% for ctlTipoEmpresa in ctlTipoEmpresas %}
+                          <option value="{{ ctlTipoEmpresa.id  }}">{{ctlTipoEmpresa.tipoEmpresa }}</option>  
+                      {% endfor %}          
+                  </select>    
+              </div>
+               <div class="form-group">
+                  <label for="nombreEmpresa">Descripcion General de la empresa:</label>
+                  <textarea class="form-control" id="idnombre" name="descripcionEmpresa" placeholder="Descripcion general de la empresa">
+                  </textarea>
+                </div>
+              
+		
+		
+		
+           
+          </div>
+          
+   </div>
+    <div class="col-md-4">
+          <!-- general form elements -->
+      
+            <!-- /.box-header -->
+            <!-- form start -->
+               
+                  
+              <div class="form-group">
+                  <label for="direccionEmpresa">Oficina central :</label>
+                  <input type="text" class="form-control" id="direccionEmpresa" name="direccionEmpresa" placeholder="Direccion">
+              </div>   
+              
+              <div class="form-group">
+                  <label for="sitioWebEmpresa">Pagina web :</label>
+                  <input type="text" class="form-control" id="sitioWebEmpresa" name="sitioWebEmpresa" placeholder="www.ejemplo.com.sv">
+              </div>
+                  
+              <div class="form-group">
+                  <label for="correoEmpresa">Correo electronico :</label>
+                  <input type="text" class="form-control" id="correoEmpresa" name="correoEmpresa" placeholder="ejemplo@ejemplo.com">
+              </div>
+                  
+              <div class="form-group">
+                  <label for="telefono">Telefono:</label>
+                  <input type="text" class="form-control" id="telefono" name="telefono" placeholder="0000-0000">
+              </div>
+                  
+               <div class="form-group">
+                  <label for="movil">Movil:</label>
+                  <input type="text" class="form-control" id="movil" name="movil" placeholder="0000-0000">
+              </div>
+                
+            
+            
+            
+               <img id="img_destino" src="http://placehold.it/900x300" style="max-width: 100%; width: 100%; margin-top: 30px;">
+               <div class="form-group">
+                  <label for="imgen">Foto de perfil de la empresa</label>
+                  <input required type="file" name="file" id="imagen">
+                </div>   
+               
+               
+             {# <div class="form-group">
+                  <label for="fax">Fax:</label>
+                  <input type="text" class="form-control" id="fax" name="fax" placeholder="0000-0000">
+              </div>#}
+
+           
+          </div>
+           </form> 
+
+   </div>
+             
+                        
+                        
+                        
+             
+       
+   
+{% endblock %}
+{% endblock %}
+
+
+
+
