@@ -170,13 +170,13 @@ class AbgPersonaController extends Controller {
             $this->setSecurePassword($ctlUsuario, $datos['txtPassword']);
             $em->persist($ctlUsuario);
             $em->flush();
-           
+
             $em->getConnection()->commit();
             $em->close();
-            
+
             $data['msj'] = "Registrado";
             $data['username'] = $ctlUsuario->getUsername();
-           
+
             return new Response(json_encode($data));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
@@ -196,7 +196,39 @@ class AbgPersonaController extends Controller {
     }
 
     /**
-     * @Route("/perfil/{username}", name="perfil", options={"expose"=true})
+     * @Route("/admin/{username}", name="admin_abg", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function AdminAbgAction($username) {
+        $em = $this->getDoctrine()->getManager();
+        $em->getConnection()->beginTransaction();
+        $request = $this->getRequest();
+        try {
+
+            $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
+            $idPersona = $RepositorioPersona[0]->getRhPersona()->getId();
+
+            $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo "
+                    . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
+            $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+
+
+            return $this->render('abgpersona/panelAdministrativoAbg.html.twig', array(
+                        'abgPersona' => $result_persona,
+                        'usuario' => $username,
+            ));
+        } catch (\Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+            $em->getConnection()->rollback();
+            $em->close();
+
+            // echo $e->getMessage();   
+        }
+    }
+
+    /**
+     * @Route("/admin/perfil/{username}", name="perfil", options={"expose"=true})
      * @Method("GET")
      */
     public function PerfilAction($username) {
@@ -204,15 +236,15 @@ class AbgPersonaController extends Controller {
         $em->getConnection()->beginTransaction();
         $request = $this->getRequest();
         try {
-         
-            $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username);//->getRhPersona();
-            $idPersona=$RepositorioPersona[0]->getRhPersona()->getId();
-      
+
+            $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
+            $idPersona = $RepositorioPersona[0]->getRhPersona()->getId();
+
             $dql_persona = "SELECT  p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo "
-                         . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" .$idPersona;
+                    . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
 
-          
+
             return $this->render('abgpersona/perfil.html.twig', array(
                         'abgPersona' => $result_persona,
             ));
@@ -225,27 +257,77 @@ class AbgPersonaController extends Controller {
             // echo $e->getMessage();   
         }
     }
-/**
-     * @Route("/movil/{a}", name="movil", options={"expose"=true})
-     * @Method("GET")
+
+    /**
+     * @Route("/movil", name="movil", options={"expose"=true})
+     * @Method("POST")
      */
-    public function MovilAction($a) {
+    public function MovilAction() {
         $em = $this->getDoctrine()->getManager();
-       
+        $request = $this->getRequest();
         try {
-         
-            $abgPersona = new AbgPersona();
-          $abgPersona->setTelefonoMovil();
-            $em->persist($abgPersona);
+
+            $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
+
+            $em->merge($Persona);
             $em->flush();
-            $data[msj]="Guardado";
-          return new Response(json_encode($data));
+            $data['tel'] = $Persona->getTelefonoMovil();
+            return new Response(json_encode($data));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
-         
-
-            // echo $e->getMessage();   
         }
     }
+
+    /**
+     * @Route("/EditPersona", name="edit_persona", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function EditPersonaAction() {
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+
+        try {
+            $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
+            switch ($request->get('n')) {
+                case 0:
+                    $Persona->setNombres($request->get('oficina'));
+                    break;
+                case 1:
+                    $Persona->setApellido($request->get('oficina'));
+                    break;
+                case 2:
+                    $Persona->setGenero($request->get('oficina'));
+                    break;
+                case 3:
+                    $Persona->setDui($request->get('oficina'));
+                    break;
+                case 4:
+                    $Persona->setNit($request->get('oficina'));
+                    break;
+                case 5:
+                    $Persona->setCorreoelectronico($request->get('oficina'));
+                    break;
+                case 7:
+                    $Persona->setDireccion($request->get('direccion'));
+                    break;
+                case 8:
+                    $Persona->setTelefonoFijo($request->get('oficina'));
+                    break;
+                case 8:
+                    $Persona->setTelefonoMovil($request->get('movil'));
+                    break;
+            }
+
+
+            $em->merge($Persona);
+            $em->flush();
+            $data['tel'] = $Persona->getTelefonoMovil();
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
+    }
+
 }
