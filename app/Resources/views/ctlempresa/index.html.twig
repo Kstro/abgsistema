@@ -1,61 +1,98 @@
-{% extends 'base.html.twig' %}
+{% extends ':Layout:layout2.html.twig' %}
 
-{% block body %}
-    <h1>CtlEmpresa list</h1>
+{% block descripcion_y_acciones %}
 
-    <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nombreempresa</th>
-                <th>Nit</th>
-                <th>Servicios</th>
-                <th>Fechafundacion</th>
-                <th>Fotoperfil</th>
-                <th>Descripcion</th>
-                <th>Direccion</th>
-                <th>Sitioweb</th>
-                <th>Correoelectronico</th>
-                <th>Telefono</th>
-                <th>Movil</th>
-                <th>Fax</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for ctlEmpresa in ctlEmpresas %}
-            <tr>
-                <td><a href="{{ path('admin_ctlempresa_show', { 'id': ctlEmpresa.id }) }}">{{ ctlEmpresa.id }}</a></td>
-                <td>{{ ctlEmpresa.nombreEmpresa }}</td>
-                <td>{{ ctlEmpresa.nit }}</td>
-                <td>{{ ctlEmpresa.servicios }}</td>
-                <td>{% if ctlEmpresa.fechaFundacion %}{{ ctlEmpresa.fechaFundacion|date('Y-m-d') }}{% endif %}</td>
-                <td>{{ ctlEmpresa.fotoPerfil }}</td>
-                <td>{{ ctlEmpresa.descripcion }}</td>
-                <td>{{ ctlEmpresa.direccion }}</td>
-                <td>{{ ctlEmpresa.sitioWeb }}</td>
-                <td>{{ ctlEmpresa.correoelectronico }}</td>
-                <td>{{ ctlEmpresa.telefono }}</td>
-                <td>{{ ctlEmpresa.movil }}</td>
-                <td>{{ ctlEmpresa.fax }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('admin_ctlempresa_show', { 'id': ctlEmpresa.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('admin_ctlempresa_edit', { 'id': ctlEmpresa.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('admin_ctlempresa_new') }}">Create a new entry</a>
-        </li>
-    </ul>
+    
+        {% block descripcion %}
+            
+        {% endblock%}
+        {% block acciones %}
+            
+        {% endblock %}
+
+
 {% endblock %}
+{% block js_extend %}
+
+  
+           
+      
+  {% endblock %} 
+
+{% block navegacion_Y_body %}
+  
+        {% block navegacion %}
+            
+        {% endblock %}
+        {% block cuerpo %}
+<div class="row">
+    <h1>Registrar De empresa</h1>
+    
+    <form id="frmEmpresa" role="form" enctype="multipart/form-data" method="POST">
+    
+        <div class="col-md-12">
+            <div class="box-header with-border">
+              <h3 class="box-title text-success">Datos Generales de la empresa</h3>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    <div class="col-md-4">
+          <!-- general form elements -->
+            <div class="box box-primary">
+            
+        
+
+            
+                <div class="form-group">
+                  <label for="nombreEmpresa">Nombre:</label>
+                  <input type="text" class="form-control" id="idnombre" name="txtnombreEmpresa" placeholder="Nombre empresa">
+                </div>
+                <div class="form-group">
+                     <label for="correoEmpresa">Correo electronico :</label>
+                     <input type="email" class="form-control" id="correoEmpresa" name="correoEmpresa" placeholder="ejemplo@ejemplo.com">
+                </div>
+            
+                <div class="form-group">
+                     <label for="correoEmpresa">Nombre de usuario:</label>
+                     <input type="text" class="form-control" id="ussername" name="ussername" >
+                </div>
+                <div class="form-group">
+                     <label for="correoEmpresa">Contraseña:</label>
+                     <input type="password" class="form-control" id="contrasenha" name="contrasenha">
+                </div>
+                <div class="form-group">
+                 <button class="btn btn-primary" >Registrarme</button>
+                </div>
+                
+                {#<div class="form-group">
+                 <a href="{{ path('ctlempresa_dashbord') }}">
+                        <button class="btn btn-primary" >Ir a empresa</button>
+                 </a>
+                </div>#}
+            
+             
+ 
+           
+          </div>
+          
+   </div>
+        
+    </form> 
+</div>
+             
+                        
+                        
+                        
+                        
+                        
+                     
+       
+                        
+                        
+   
+{% endblock %}
+{% endblock %}
+
+
+
