@@ -1,5 +1,5 @@
 {# empty Twig template #}
-{% extends ':Layout:layout2.html.twig' %}
+
 
 {% block descripcion_y_acciones %}
 
@@ -24,24 +24,20 @@
 
     {% block cuerpo %}
         <!-- body style="background-color: #f6f6f6;" -->
-        <div class="clearfix"></div>
-
-        <div class="container">
-            <div class="row">
+        
 
                 <!-- LEFT SIDE -->
-                <div class="col-md-9">
+               
 
                     <!-- PRIMERA BLOQUE CON FOTO DE PERFIL -->
                     <div class="bloque">
                         <div class="row">
                             <div class="col-sm-3">
-
-
+ <input type="hidden" id="hPersona"  value="{{datos.id}}">
 
                                 <img src=" {{asset('Resources/src/img/profile.png')}}" style="margin-top: 10px; margin-left: 10px; width: 200px; height: 200px; margin-bottom: 10px;" />
                             </div>
-                            {% for datos in abgPersona %}
+                          
                                 <div class="col-sm-9">
 
                                     <p style="margin-top: 10px; font-size: 23px; margin-left: 10px; margin-bottom: 0px;" class="sans">
@@ -103,7 +99,7 @@
                                     <p style="font-size: 11px; margin-bottom: 0px;">
                                         +503  
                                         <a href="#" id="txtMovil" data-type="text" data-placement="right" data-title="Telefono movil">Movil</a>
-                                        </br><a href="#" id="txtOficina" data-type="select2" data-placement="right" data-title="Telefono movil">Oficina</a></p>
+                                        </br>+503 <a href="#" id="txtOficina" data-type="text" data-placement="right" data-title="Telefono de Oficina">Oficina</a></p>
                                 </div>
                                 <div class="col-sm-3 col-xs-12">
                                     <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email(s)</strong></p>
@@ -120,7 +116,7 @@
                             </div>
                             <!-- Fin -->
                         </div> <!-- INFORMACION DE CONTACTO -->
-                    {%endfor%}
+                  
                     <!-- EXTRACTO -->
                     <div class="bloque-main">
                         <div class="row">
@@ -250,8 +246,7 @@
                             <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>RESPUESTAS EN LA PLATAFORMA</strong></p>
                             <p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
                         </div>
-                        <!-- Contenido Aqui -->
-
+                       
                         <!-- Fin -->
                     </div>
 
@@ -272,9 +267,7 @@
                             <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>CURSOS Y SEMINARIOS</strong></p>
                             <p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
                         </div>
-                        <!-- Contenido Aqui -->
-
-                        <!-- Fin -->
+                      
                     </div>
 
                     <!-- ORGANIZACIONES -->
@@ -283,41 +276,8 @@
                             <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>ENTRADAS DE BLOG</strong></p>
                             <p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
                         </div>
-                        <!-- Contenido Aqui -->
-
-                        <!-- Fin -->
+                  
                     </div>
-
-
-                </div> <!-- Fin de Col-md-9 -->
-
-                <div class="col-md-3">
-                    <div class="bloque-main">
-                        <p class="text-center">Esconda su perfil <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="Esconda su perfil mientras lo actualize. Mida el nivel de completacion con el icono de abajo."></i></p>
-                        <div class="onoffswitch" style="margin-left: auto; margin-right: auto;">
-                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
-                            <label class="onoffswitch-label" for="myonoffswitch">
-                                <span class="onoffswitch-inner"></span>
-                                <span class="onoffswitch-switch"></span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="bloque-nexo">
-                        <p class="text-center" style="padding-top: 15px;">Porcentaje Completo: <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="Llega al 100% para tener un perfil competitivo."></i> </p>
-                        <p class="text-center"><img src="{{asset('Resources/src/img/pro.png')}}" style="width: 100px;"></p>
-                        <p class="text-center">52% - Rookie</p>
-                    </div>
-                    <div class="bloque-nexo">
-                        <p class="text-center">Otros Servicios</p>
-                    </div>
-                    <div class="bloque-nexo">
-                    {% embed ':Layout:publicida.html.twig' %}{% endembed %}
-                </div>
-            </div>
-            <div class="clearfix"></div>
-
-        </div>
-    </div>
     <div style="height: 10px;"></div>
 
     <script type="text/javascript">

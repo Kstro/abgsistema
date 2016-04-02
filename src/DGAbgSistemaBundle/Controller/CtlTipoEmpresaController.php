@@ -140,7 +140,7 @@ class CtlTipoEmpresaController extends Controller
         ;
     }
     
-        /**
+    /**
      * @Route("/registar_persona/get", name="registrar_tipoempresa", options={"expose"=true})
      * @Method("GET")
      */
@@ -151,6 +151,7 @@ class CtlTipoEmpresaController extends Controller
             $request = $this->getRequest();
 
             parse_str($request->get('dato'), $datos);
+          
             
             $tipoEmpresa = new CtlTipoEmpresa();
             $tipoEmpresa->setTipoEmpresa($datos['txtnombreempresa']);

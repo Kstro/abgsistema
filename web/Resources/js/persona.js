@@ -34,7 +34,7 @@
                 data:{dato:$("#fdatos").serialize()},
                 success: function(data) 
                 { 
-                  var url=Routing.generate('perfil',{username:data.username});
+                  var url=Routing.generate('admin_abg',{username:data.username});
                   window.open(url,"_self");                   
                 },
                   error : function(errors) 
