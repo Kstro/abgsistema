@@ -18,7 +18,7 @@ $(document).ready(function () {
         value:$('#txtMovil').html(),
         type: "GET",
    //     data:{},
-        url: Routing.generate('movil',{a:this.value()}),
+        //url: Routing.generate('movil',{a:this.value()}),
         async: false,
         dataType: 'json',
     });
