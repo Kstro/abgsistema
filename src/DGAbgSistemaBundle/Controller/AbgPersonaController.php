@@ -332,6 +332,7 @@ class AbgPersonaController extends Controller {
                 case 9:
                      $idCiudad= $em->getRepository("DGAbgSistemaBundle:CtlCiudad")->find($request->get('ciudad'));
                     $Persona->setCtlCiudad($idCiudad);
+                     $data['ciu'] = $Persona->getCtlCiudad()->getNombreCiudad();
                     break;
                 case 10:
                     $Persona->setDescripcion($request->get('descripcion'));
@@ -340,7 +341,7 @@ class AbgPersonaController extends Controller {
 
             $em->merge($Persona);
             $em->flush();
-            $data['tel'] = $Persona->getTelefonoMovil();
+           
             return new Response(json_encode($data));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
@@ -378,6 +379,24 @@ class AbgPersonaController extends Controller {
                               . " FROM DGAbgSistemaBundle:CtlCiudad c WHERE c.ctlEstado=".$request->get('estado');
             $data['ciudad'] = $em->createQuery($dql_departamento)->getArrayResult();
 
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));  
+        }
+    }
+     /**
+     * @Route("/especialida", name="especialida", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function EspecialidaAction() {
+        try {
+            
+            $em = $this->getDoctrine()->getManager();
+            $dql_departamento = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre"
+                              . " FROM DGAbgSistemaBundle:CtlEspecialidad e";
+            $data['esp'] = $em->createQuery($dql_departamento)->getArrayResult();
+           
             return new Response(json_encode($data));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
