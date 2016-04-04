@@ -318,3 +318,19 @@ a.prob:focus {
         right: 0px; 
     }
 /*    ON OFF SWITCH*/
+
+/*NAVIGATION ADMIN PANEL*/
+
+a.admin-menu-navi{
+  text-decoration: none;
+  color: inherit;
+}
+
+a li.active {
+  background-color: #f6f6f6;
+  border-right: 3px solid #09F;
+}
+
+.admin-menu-navi-li:hover{
+  background-color: #f6f6f6;
+}

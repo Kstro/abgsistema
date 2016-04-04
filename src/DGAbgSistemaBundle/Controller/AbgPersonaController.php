@@ -170,13 +170,13 @@ class AbgPersonaController extends Controller {
             $this->setSecurePassword($ctlUsuario, $datos['txtPassword']);
             $em->persist($ctlUsuario);
             $em->flush();
-           
+
             $em->getConnection()->commit();
             $em->close();
-            
+
             $data['msj'] = "Registrado";
             $data['username'] = $ctlUsuario->getUsername();
-           
+
             return new Response(json_encode($data));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
@@ -198,25 +198,26 @@ class AbgPersonaController extends Controller {
     
    
     /**
-     * @Route("/perfil/{username}", name="perfil", options={"expose"=true})
+     * @Route("/admin/{username}", name="admin_abg", options={"expose"=true})
      * @Method("GET")
      */
-    public function PerfilAction($username) {
+    public function AdminAbgAction($username) {
         $em = $this->getDoctrine()->getManager();
         $em->getConnection()->beginTransaction();
         $request = $this->getRequest();
         try {
-         
-            $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username);//->getRhPersona();
-            $idPersona=$RepositorioPersona[0]->getRhPersona()->getId();
-      
-            $dql_persona = "SELECT  p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo "
-                         . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" .$idPersona;
+
+            $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
+            $idPersona = $RepositorioPersona[0]->getRhPersona()->getId();
+
+            $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo "
+                    . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
 
-          
-            return $this->render('abgpersona/perfil.html.twig', array(
+
+            return $this->render('abgpersona/panelAdministrativoAbg.html.twig', array(
                         'abgPersona' => $result_persona,
+                        'usuario' => $username,
             ));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
@@ -227,27 +228,160 @@ class AbgPersonaController extends Controller {
             // echo $e->getMessage();   
         }
     }
-/**
-     * @Route("/movil/{a}", name="movil", options={"expose"=true})
+
+    /**
+     * @Route("/admin/perfil/{username}", name="perfil", options={"expose"=true})
      * @Method("GET")
      */
-    public function MovilAction($a) {
+    public function PerfilAction($username) {
         $em = $this->getDoctrine()->getManager();
-       
+        $em->getConnection()->beginTransaction();
+        $request = $this->getRequest();
         try {
-         
-            $abgPersona = new AbgPersona();
-          $abgPersona->setTelefonoMovil();
-            $em->persist($abgPersona);
-            $em->flush();
-            $data[msj]="Guardado";
-          return new Response(json_encode($data));
+
+            $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
+            $idPersona = $RepositorioPersona[0]->getRhPersona()->getId();
+
+            $dql_persona = "SELECT  p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo "
+                    . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
+            $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+
+
+            return $this->render('abgpersona/perfil.html.twig', array(
+                        'abgPersona' => $result_persona,
+                  'usuario' => $username,
+            ));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
-         
+            $em->getConnection()->rollback();
+            $em->close();
 
             // echo $e->getMessage();   
+        }
+    }
+     /**
+     * @Route("/admin/ajustes/{username}", name="ajustes", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function AjustesAction($username) {
+        $em = $this->getDoctrine()->getManager();
+        $em->getConnection()->beginTransaction();
+               try {
+
+            $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
+            $idPersona = $RepositorioPersona[0]->getRhPersona()->getId();
+
+            $dql_persona = "SELECT  p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo "
+                    . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
+            $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+
+
+            return $this->render('abgpersona/panelAjustes.html.twig', array(
+                        'abgPersona' => $result_persona,
+                  'usuario' => $username,
+            ));
+        } catch (\Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+            $em->getConnection()->rollback();
+            $em->close();
+
+            // echo $e->getMessage();   
+        }
+    }
+
+    /**
+     * @Route("/edit/persona", name="edit_persona", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function EditPersonaAction() {
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+
+        try {
+            $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
+            switch ($request->get('n')) {
+                case 0:
+                    $Persona->setNombres($request->get('oficina'));
+                    break;
+                case 1:
+                    $Persona->setApellido($request->get('oficina'));
+                    break;
+                case 2:
+                    $Persona->setGenero($request->get('oficina'));
+                    break;
+                case 3:
+                    $Persona->setDui($request->get('oficina'));
+                    break;
+                case 4:
+                    $Persona->setNit($request->get('oficina'));
+                    break;
+                case 5:
+                    $Persona->setCorreoelectronico($request->get('oficina'));
+                    break;
+                case 6:
+                    $Persona->setDireccion($request->get('direccion'));
+                    break;
+                case 7:
+                    $Persona->setTelefonoFijo($request->get('oficina'));
+                    break;
+                case 8:
+                    $Persona->setTelefonoMovil($request->get('movil'));
+                    break;
+                case 9:
+                     $idCiudad= $em->getRepository("DGAbgSistemaBundle:CtlCiudad")->find($request->get('ciudad'));
+                    $Persona->setCtlCiudad($idCiudad);
+                    break;
+                case 10:
+                    $Persona->setDescripcion($request->get('descripcion'));
+                    break;
+            }
+
+            $em->merge($Persona);
+            $em->flush();
+            $data['tel'] = $Persona->getTelefonoMovil();
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
+    }
+
+    /**
+     * @Route("/departamento", name="departamento", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function DepartamentoAction() {
+        try {
+            
+            $em = $this->getDoctrine()->getManager();
+            $dql_departamento = "SELECT  d.id AS id, d.nombreEstado AS nombre"
+                              . " FROM DGAbgSistemaBundle:CtlEstado d";
+            $data['depto'] = $em->createQuery($dql_departamento)->getArrayResult();
+
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));  
+        }
+    }
+    /**
+     * @Route("/ciudad", name="ciudad", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function CiudadAction() {
+        try {
+            $request = $this->getRequest();
+            $em = $this->getDoctrine()->getManager();
+            $dql_departamento = "SELECT  c.id AS id, c.nombreCiudad AS nombre"
+                              . " FROM DGAbgSistemaBundle:CtlCiudad c WHERE c.ctlEstado=".$request->get('estado');
+            $data['ciudad'] = $em->createQuery($dql_departamento)->getArrayResult();
+
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));  
         }
     }
 }

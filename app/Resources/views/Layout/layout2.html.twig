@@ -1,11 +1,15 @@
 <html>
     <head>
         {% block head %}
-            <meta charset="utf-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
+            {% block meta %}
+                <meta charset="utf-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <meta name="robots" content="noindex">
+            {% endblock%}
+
             <title>Directorio de Abogados de El Salvador | Primero y unico directorio de abogados de El Salvador | Abogados.com.sv</title>
-            <meta name="robots" content="noindex">
+
             {% block css %}
                 <style type="text/css">
                     .main {
@@ -33,54 +37,34 @@
                     }
                 </style>
             {% endblock css%}
+        
             <!-- fosjsrouting -->
-                    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-                        <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+            <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+            <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
             <!-- Stylesheet de Bootstrap -->
-                       
-            <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+
+           
             <link href="{{asset('Resources/src/css/bootstrap.css')}}" rel="stylesheet">
             <!-- Stylesheet Personales -->
             <link href="{{asset('Resources/src/css/style.css')}}" rel="stylesheet">
-                
+
             <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
             <!-- bootstrap -->
-           
+
             <script src="{{ asset('Resources/src/js/jquery-2.0.3.min.js')}}"></script>
             <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>  
 
-            <!-- x-editable (bootstrap version) -->
-            <link href="{{ asset('Resources/src/css/bootstrap-editable.css')}}" rel="stylesheet"/>
-            <script src="{{asset('Resources/src/js/bootstrap-editable.min.js')}}"></script>
-
+           
             <!-- Favicon (Icono Pequeño) -->
             <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
             <link rel="icon" href="favicon.png" type="image/x-icon">
-            
-              <!-- Los script que he importado el dia de ahora -->
-            <script src = "{{ asset('Resources/js/tipoempresa/tipoempresa.js') }}"  type = "text/javascript" ></script>
-            <script src = "{{ asset('Resources/js/empresa/script.js') }}"  type = "text/javascript" ></script>
-            <script src = "{{ asset('Resources/js/empresa/function.js') }}"  type = "text/javascript" ></script>    
-            <script src = "{{ asset('Resources/Empresa/globalfunction.js') }}"  type = "text/javascript" ></script> 
-            <script src = "{{ asset('Resources/vContra/strength.js') }}"  type = "text/javascript" ></script>
-            <script src = "{{ asset('Resources/vContra/js.js') }}"  type = "text/javascript" ></script> 
-                       
-            
-            
-               <script src="{{ asset('Resources/js/persona.js')}}"></script>
-               <script src="{{ asset('Resources/src/js/main.js')}}"></script>
-               <!-- Mascara-->
-                  
-                    <script src = "{{ asset('Resources/jquery/jquery.maskedinput.js') }}"  type = "text/javascript" ></script>  
+                
         {% endblock %}
 
     </head>
     <body style="background-color: #f6f6f6;">
         {% block body %}
         {% embed ':Layout:head.html.twig' %}{% endembed %}
-
-
-
 
         <!-- Template -->
         <div class="container">
@@ -92,35 +76,20 @@
 
                 {% endblock acciones %}
 
-
-
             {% endblock %}	
             {% block navegacion_Y_body %}
 
                 {% block navegacion %}
-
-
-
                 {% endblock %}
 
                 {% block cuerpo %}
 
                 {% endblock cuerpo %}
-
-
-
             {% endblock %}	
-
-
-
-
         </div>
 
     {% endblock %}
     {%block js_template %}
-
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src=""></script>
 
         {% block js_extend %}
 
@@ -128,7 +97,7 @@
         {% endblock %}
 
 
-   {% endblock %}
+    {% endblock %}
 
 
 </body>
