@@ -194,7 +194,9 @@ class AbgPersonaController extends Controller {
         $password = $encoder->encodePassword($contrasenia, $entity->getSalt());
         $entity->setPassword($password);
     }
-
+    
+    
+   
     /**
      * @Route("/perfil/{username}", name="perfil", options={"expose"=true})
      * @Method("GET")

@@ -1,3 +1,4 @@
+
 {% extends ':Layout:layout2.html.twig' %}
 
 {% block descripcion_y_acciones %}
@@ -20,15 +21,15 @@
       
   {% endblock %} 
 
-{% block navegacion_Y_body %}
+        {% block navegacion_Y_body %}
   
         {% block navegacion %}
             
         {% endblock %}
         {% block cuerpo %}
-<div class="row">
-    <h1>Registrar De empresa</h1>
-    
+    <div class="row">
+        <h1 style="color: black;">Registrar Empresa</h1>
+             
     <form id="frmEmpresa" role="form" enctype="multipart/form-data" method="POST">
     
         <div class="col-md-12">
@@ -37,62 +38,58 @@
             </div>
         </div>
         <div class="clearfix"></div>
-    <div class="col-md-4">
+    <div class="col-md-5">
           <!-- general form elements -->
             <div class="box box-primary">
             
         
 
             
-                <div class="form-group">
-                  <label for="nombreEmpresa">Nombre:</label>
-                  <input type="text" class="form-control" id="idnombre" name="txtnombreEmpresa" placeholder="Nombre empresa">
-                </div>
+                                        <div class="form-group">
+                                             <label for="nombreEmpleado">Nombre</label>
+                                             <input type="text"  class="form-control" id="txtnombre" name="txtnombre"
+                                                    placeholder="Nombre del empleado">
+                                         </div>
+                                         <div class="form-group">
+                                             <label for="ejemplo_password_1">Apellido</label>
+                                             <input type="text"  class="form-control"  id="txtapellido" name="txtapellido" 
+                                                    placeholder="Apellido empleado">
+                                         </div>
+
                 <div class="form-group">
                      <label for="correoEmpresa">Correo electronico :</label>
                      <input type="email" class="form-control" id="correoEmpresa" name="correoEmpresa" placeholder="ejemplo@ejemplo.com">
-                </div>
-            
-                <div class="form-group">
-                     <label for="correoEmpresa">Nombre de usuario:</label>
-                     <input type="text" class="form-control" id="ussername" name="ussername" >
                 </div>
                 <div class="form-group">
                      <label for="correoEmpresa">Contraseña:</label>
                      <input type="password" class="form-control" id="contrasenha" name="contrasenha">
                 </div>
+                
+                
                 <div class="form-group">
                  <button class="btn btn-primary" >Registrarme</button>
                 </div>
                 
-                {#<div class="form-group">
-                 <a href="{{ path('ctlempresa_dashbord') }}">
-                        <button class="btn btn-primary" >Ir a empresa</button>
-                 </a>
-                </div>#}
-            
-             
- 
+
            
           </div>
           
-   </div>
+    </div>
         
-    </form> 
-</div>
-             
-                        
-                        
-                        
-                        
-                        
-                     
+   </form>  
+            
+
+    </div> 
+{% endblock %}
+{% endblock %}
+
+ {%block js_template %}
+        
+         
+         
+
        
-                        
-                        
-   
-{% endblock %}
-{% endblock %}
 
 
+   {% endblock %}
 
