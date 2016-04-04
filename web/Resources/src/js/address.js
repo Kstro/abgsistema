@@ -99,7 +99,7 @@
          @param {mixed} value
          **/
         value2input: function (value) {
-           
+
             if (!value) {
                 return;
             }
@@ -137,7 +137,7 @@
                         {
                             $("#divD").empty();
                             estado = '<label for="ejemplo_archivo_1">Estado: </label>\
-             <select class="form-control input-sm editable-address"  name="sEstado" id="sEstado" onChange=ciudad()>';
+                                      <select class="form-control input-sm editable-address"  name="sEstado" id="sEstado" onChange=ciudad()>';
                             estado += '<option value="0">Seleccione estado</option>';
 
                             $.each(data.depto, function (indice, val) {
@@ -153,7 +153,7 @@
                     })
                     );
 
-            
+
             //  this.$input.filter('[name="building"]').val(value.building);
         },
         /**
@@ -161,7 +161,7 @@
          
          @method input2value() 
          **/
-        input2value: function () {
+       input2value: function () {
 
             return {
                 sEstado: this.$input.filter('[name="sEstado"]').val(),
@@ -203,26 +203,15 @@
                     $(this).closest('form').submit();
                 }
             });
-        }
-    });
-
-    Address.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
-        tpl: '<div class="editable-address"><div id="divD">'
-                + '<select class="form-control input-sm" name="SDepartamento" id="SDepartamento" onChange="puestoDept()">' +
-                '<option></option><select></div>' +
-                '<div class="editable-address"><div id="divC"><label for="ejemplo_archivo_1">Ciudad: </label>\
-                            <select class="form-control input-sm editable-address" name="sEstado" id="sEstado">'
-                + '<option value="0">Seleccione ciudad</option><select></div>',
-        // '<div class="editable-address"><label><span>Street: </span><input type="text" name="sEstado" class="input-small"></label></div>' +
-        inputclass: ''
-    });
-
-    $.fn.editabletypes.address = Address;
-
-}(window.jQuery));
-
-function ciudad()
-{
+        },
+        
+        // function ciudad()
+       /**
+         Attaches handler to submit form in case of 'showbuttons=false' mode
+         
+         @method ciudad() 
+         **/
+        ciudad:function(){
     var ciudad;
 
     $.ajax({
@@ -243,11 +232,29 @@ function ciudad()
             });
             ciudad += ' </select></div></div> ';
             $("#divC").append(ciudad);
-           
+
         },
         error: function (errors)
         {
 
         }
-    })
+    });
 }
+
+    });
+
+    Address.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
+        tpl: '<div class="editable-address"><div id="divD">'
+                + '<select class="form-control input-sm" name="SDepartamento" id="SDepartamento" onChange="puestoDept()">' +
+                '<option></option><select></div>' +
+                '<div class="editable-address"><div id="divC"><label for="ejemplo_archivo_1">Ciudad: </label>\
+                            <select class="form-control input-sm editable-address" name="sEstado" id="sEstado">'
+                + '<option value="0">Seleccione ciudad</option><select></div>',
+        // '<div class="editable-address"><label><span>Street: </span><input type="text" name="sEstado" class="input-small"></label></div>' +
+        inputclass: ''
+    });
+
+    $.fn.editabletypes.address = Address;
+
+}(window.jQuery));
+
