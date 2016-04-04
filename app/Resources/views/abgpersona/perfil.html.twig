@@ -44,7 +44,10 @@
                                         <strong>  {{datos.nombre~' '~datos.apellido}}</strong>
                                         <img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
                                     <p style="color: #777777; margin-left: 11px; margin-top: -3px; margin-bottom: 0px;" class="sansli">Director Ejecutivo en Digitality Garage</p>
-                                    <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">San Salvador | El Salvador</p>
+                                    <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">
+                                        <a href="#" id="txtMunicipio" data-type="address" data-pk="1" data-title="Departamento, municipio" data-placement="right" class="editable editable-click" ><b>Departamento</b> | Municipiio
+                                        <div id="ga"></>
+                                        </a></p>
                                     <!-- ESPECIALIDAD(ES) -->
                                     <div class="row">
                                         <div class="col-xs-2" style="padding-right: 0;">
@@ -106,8 +109,10 @@
                                     <p style="font-size: 11px; margin-bottom: 0px;">{{datos.correo}}</p>
                                 </div>
                                 <div class="col-sm-3 col-xs-12">
-                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Direccion</strong></p>
-                                    <p style="font-size: 11px; margin-bottom: 0px;">Direeccion</p>
+                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Dirección</strong></p>
+                                    <p style="font-size: 11px; margin-bottom: 0px;">
+                                         <a href="#" id="txtDireccion" data-type="text" data-placement="right" data-title="Dirección">Dirección</a>
+                                    </p>
                                 </div>
                                 <div class="col-sm-3 col-xs-12">
                                     <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
@@ -124,18 +129,8 @@
                             <p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
                         </div>
                         <div style="padding-left: 3px; padding-right: 30px;">
-                            <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                            <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            <p class="text-justify"><a href="#" id="txtUnpoco" data-type="textarea" data-placement="right" data-title="Un poco sobre mi">Un poco sobre mi</a></p>
+                            <p class="text-justify"></p>
                         </div>
                     </div>
 

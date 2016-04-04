@@ -46,11 +46,12 @@
 				<div style="margin-top: 15px;"></div>
 				<!-- PANEL DE NAVEGACION -->
 				<ul style="list-style: none; padding: 0;">
-					<a href="{{ path('perfil', { 'username':usuario}) }}" class="admin-menu-navi"><li style="height: 40px; line-height: 40px; border-top: 1px solid #e0e0e0;" class="sans admin-menu-navi-li active">
+					<a href="{{ path('perfil', { 'username':usuario}) }}" class="admin-menu-navi">
+                                            <li style="height: 40px; line-height: 40px; border-top: 1px solid #e0e0e0;" class="sans admin-menu-navi-li ">
 						<span style="margin-left: 20px; margin-right: 13px;"><i class="fa fa-user" style="color: #7e7e7e;"></i></span> Mi perfil
 					</li></a>
-                                        <a href="{{ path('ajustes', { 'username':usuario}) }}" class="admin-menu-navi">
-					<li style="height: 40px; line-height: 40px; border-top: 1px solid #e0e0e0;" class="sans admin-menu-navi-li">
+                                            <a href="{{ path('ajustes', { 'username':usuario}) }}" class="admin-menu-navi">
+					<li style="height: 40px; line-height: 40px; border-top: 1px solid #e0e0e0;" class="sans admin-menu-navi-li active">
 						<span style="margin-left: 20px; margin-right: 13px;"><i class="fa fa-wrench" style="color: #7e7e7e;"></i></span> Ajustes Generales
 					</li></a>
 					<li style="height: 40px; line-height: 40px; border-top: 1px solid #e0e0e0;" class="sans admin-menu-navi-li">
@@ -82,7 +83,7 @@
 			</div>
                                     
 			<div class="col-md-9" style="background-color: #fff; border-top-right-radius: 3px; 	border-bottom-right-radius: 3px;">
-				   {% embed ':abgpersona:perfil.html.twig' %}{% endembed %}
+				   {% embed ':abgpersona:ajustes.html.twig' %}{% endembed %}
 			</div>
                          {%endfor%}
 		</div>

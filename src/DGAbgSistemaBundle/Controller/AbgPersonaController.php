@@ -247,6 +247,37 @@ class AbgPersonaController extends Controller {
 
             return $this->render('abgpersona/perfil.html.twig', array(
                         'abgPersona' => $result_persona,
+                  'usuario' => $username,
+            ));
+        } catch (\Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+            $em->getConnection()->rollback();
+            $em->close();
+
+            // echo $e->getMessage();   
+        }
+    }
+     /**
+     * @Route("/admin/ajustes/{username}", name="ajustes", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function AjustesAction($username) {
+        $em = $this->getDoctrine()->getManager();
+        $em->getConnection()->beginTransaction();
+               try {
+
+            $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
+            $idPersona = $RepositorioPersona[0]->getRhPersona()->getId();
+
+            $dql_persona = "SELECT  p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo "
+                    . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
+            $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+
+
+            return $this->render('abgpersona/panelAjustes.html.twig', array(
+                        'abgPersona' => $result_persona,
+                  'usuario' => $username,
             ));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
@@ -259,28 +290,7 @@ class AbgPersonaController extends Controller {
     }
 
     /**
-     * @Route("/movil", name="movil", options={"expose"=true})
-     * @Method("POST")
-     */
-    public function MovilAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
-        try {
-
-            $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
-
-            $em->merge($Persona);
-            $em->flush();
-            $data['tel'] = $Persona->getTelefonoMovil();
-            return new Response(json_encode($data));
-        } catch (\Exception $e) {
-            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
-            return new Response(json_encode($data));
-        }
-    }
-
-    /**
-     * @Route("/EditPersona", name="edit_persona", options={"expose"=true})
+     * @Route("/edit/persona", name="edit_persona", options={"expose"=true})
      * @Method("POST")
      */
     public function EditPersonaAction() {
@@ -308,17 +318,23 @@ class AbgPersonaController extends Controller {
                 case 5:
                     $Persona->setCorreoelectronico($request->get('oficina'));
                     break;
-                case 7:
+                case 6:
                     $Persona->setDireccion($request->get('direccion'));
                     break;
-                case 8:
+                case 7:
                     $Persona->setTelefonoFijo($request->get('oficina'));
                     break;
                 case 8:
                     $Persona->setTelefonoMovil($request->get('movil'));
                     break;
+                case 9:
+                     $idCiudad= $em->getRepository("DGAbgSistemaBundle:CtlCiudad")->find($request->get('ciudad'));
+                    $Persona->setCtlCiudad($idCiudad);
+                    break;
+                case 10:
+                    $Persona->setDescripcion($request->get('descripcion'));
+                    break;
             }
-
 
             $em->merge($Persona);
             $em->flush();
@@ -330,4 +346,40 @@ class AbgPersonaController extends Controller {
         }
     }
 
+    /**
+     * @Route("/departamento", name="departamento", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function DepartamentoAction() {
+        try {
+            
+            $em = $this->getDoctrine()->getManager();
+            $dql_departamento = "SELECT  d.id AS id, d.nombreEstado AS nombre"
+                              . " FROM DGAbgSistemaBundle:CtlEstado d";
+            $data['depto'] = $em->createQuery($dql_departamento)->getArrayResult();
+
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));  
+        }
+    }
+    /**
+     * @Route("/ciudad", name="ciudad", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function CiudadAction() {
+        try {
+            $request = $this->getRequest();
+            $em = $this->getDoctrine()->getManager();
+            $dql_departamento = "SELECT  c.id AS id, c.nombreCiudad AS nombre"
+                              . " FROM DGAbgSistemaBundle:CtlCiudad c WHERE c.ctlEstado=".$request->get('estado');
+            $data['ciudad'] = $em->createQuery($dql_departamento)->getArrayResult();
+
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));  
+        }
+    }
 }
