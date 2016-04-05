@@ -139,12 +139,70 @@ class DirectorioController extends Controller
 //                                        '</div></div></div></div></div>') "
 //                . "as datos FROM DGAbgSistemaBundle:AbgPersona per";
         
-        $dql = "SELECT per.id, per.nombres, per.apellido, (SELECT esp.nombreEspecialidad FROM DGAbgSistemaBundle:AbgPersonaSubespecialidad peresp JOIN peresp.abgSubespecialidad subesp JOIN subesp.abgEspecialidad esp) as especialidades FROM DGAbgSistemaBundle:AbgPersona per";
+        $dql = "SELECT per.id,per.nombres, per.apellido, per.correoelectronico, per.telefonoFijo, per.telefonoMovil FROM DGAbgSistemaBundle:AbgPersona per";
         $em = $this->getDoctrine()->getManager();
         $reg['data'] = $em->createQuery($dql)
 //                   ->setParameter('numero','%'.$numeroExp.'%')
                    ->getResult();
-//        var_dump($reg['data']);
+        
+        $esp = array();
+        
+        $i=0;
+        foreach($reg['data'] as $i =>$row){
+            $reg['data'][$i]['especialidades']=array();
+            //var_dump($reg['data']);
+            $dql = "SELECT esp.nombreEspecialidad FROM DGAbgSistemaBundle:AbgPersonaSubespecialidad subper "
+                . "JOIN subper.abgSubespecialidad sub "
+                . "JOIN sub.abgEspecialidad esp "
+                . "JOIN subper.abgPersona per WHERE per.id=:idPersona";
+            $em = $this->getDoctrine()->getManager();
+            $especialidades = $em->createQuery($dql)
+                   ->setParameter('idPersona',$row['id'])
+                   ->getResult();
+            //var_dump($especialidades);
+            
+            
+            
+            
+            foreach($especialidades as $row2){
+                array_push($esp,$row2);
+            }
+            
+            //var_dump($esp);
+            //die();
+
+            
+            if(count($especialidades)==0){
+                array_push($row['especidalidades'], 'N/A');
+            }
+            else{
+                //array_push($reg['data'][$i]['especialidades'], $esp);
+                $reg['data'][$i]['especialidades']=$esp;
+            }
+            
+            
+            
+            $dql = "SELECT foto.src FROM DGAbgSistemaBundle:AbgFoto foto "
+                    . "JOIN foto.abgPersona per "
+                    . "WHERE per.id=:idPersona AND foto.tipoFoto=1";
+            $em = $this->getDoctrine()->getManager();
+            $especialidades = $em->createQuery($dql)
+                   ->setParameter('idPersona',$row['id'])
+                   ->getResult();
+            
+            
+            
+            $i++;
+        }
+        //var_dump($reg['data'][0]['especialidades'][0]['nombreEspecialidad']);
+        //var_dump($reg['data'][0]['especialidades'][1]['nombreEspecialidad']);
+        //die();
+        
+        
+        
+        
+        //var_dump($reg['data']);
+        //die();
         $response->setData($reg);    
         return $response; 
         //return new Response(json_encode($reg));

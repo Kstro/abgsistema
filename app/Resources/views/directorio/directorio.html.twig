@@ -38,60 +38,461 @@
 				<!-- item 1 -->
 								
                                 <div id="registros">
-{#                                    <table id="datatables1" style="width:100%;">#}
-                                        {#<thead>
-                                        <tr>#}
-                            {#                <th>N°</th>  #}
-{#                                            <th></th>#}
+                                    <table id="datatables1" style="width:100%;">
+                                        <thead>
+                                        <tr>
+{#                                            <th>N°</th>  #}
+                                            <th></th>
                                             {#<th>Referido por</th>#}
 
                                             {#<th>Acciones</th>#}
-                                        {#</tr>
-                                        </thead>#}
-                                        {#{% for i in 0..11 %}
-                                        <tr>
-                                            <td style="width: 100%">
-                                                <div class="item-directorio-nexo" style="width: 100%">
-                                                    <div class="clearfix"></div>
-                                                    <div class="row">
-                                                        <div class="col-xs-2 col-sm-3 col-md-3 col-lg-2">
-                                                            <img src="{{asset('Resources/src/img/profile.png')}}" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
-                                                        </div>
-                                                        <div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10">
-                                                            <p style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>Marvin Jose Vigil</strong></p>
-                                                            <p style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">Director Ejecutivo en Digitality Garage</p>
-                                                            <div class="row" style="margin-top: 2px; margin-bottom: 15px;">
-                                                                <div class="col-sm-4 col-xs-12">
-                                                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono</strong></p>
-                                                                    <p style="font-size: 11px; margin-bottom: 0px;">+503 77971933</p>
-                                                                </div>
-                                                                <div class="col-sm-4 col-xs-12">
-                                                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p>
-                                                                    <p style="font-size: 11px; margin-bottom: 0px;">marvinvigil@gmail.com</p>
-                                                                </div>
-                                                                <div class="col-sm-4 col-xs-12">
-                                                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
-                                                                    <p style="font-size: 11px; margin-bottom: 0px;"><a href="http://www.ariaslaw.com" target="_blank">www.ariaslaw.com</a></p>
-                                                                </div>
-                                                                <div class="col-sm-12">
-                                                                    <span style="color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;"><strong>Especialidades:</strong> </span>
-                                                                    <span style="font-size: 11px;">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span>
-                                                                </div>
-                                                                <div class="col-sm-12" style="margin-top: -0px;">
-                                                                    <span style='font-size: 11px;'><a href="#">Ver perfil</a></span>
-                                                                    <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
-                                                                    <span style='font-size: 11px;'><a href="#">Contactar</a></span>
-                                                                    <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
-                                                                    <span style='font-size: 11px;'><a href="#">Recomendar</a></span>							
-                                                                </div>
+                                        </tr>
+                                        </thead>
+{#                                        {% for i in 0..11 %}#}
+                                    <tr>
+                                        <td style="width: 100%">
+                                            <div class="item-directorio-nexo" style="width: 100%">
+                                                <div class="clearfix"></div>
+                                                <div class="row">
+                                                    <div class="col-xs-2 col-sm-3 col-md-3 col-lg-2">
+                                                        <img id="busquedaImagen1" src="{{asset('Resources/src/img/profile.png')}}" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
+                                                    </div>
+                                                    <div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10">
+                                                        <p id="busquedaNombre1" style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>Marvin Jose Vigil</strong></p>
+                                                        <p id="busquedaCargo1" style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">Director Ejecutivo en Digitality Garage</p>
+                                                        <div class="row" style="margin-top: 2px; margin-bottom: 15px;">
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono</strong></p>
+                                                                <p id="busquedaTelefono1" style="font-size: 11px; margin-bottom: 0px;">+503 77971933</p>
+                                                            </div>
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p>
+                                                                <p id="busquedaCorreo1" style="font-size: 11px; margin-bottom: 0px;">marvinvigil@gmail.com</p>
+                                                            </div>
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
+                                                                <p id="busquedaSitioWeb1" style="font-size: 11px; margin-bottom: 0px;"><a href="http://www.ariaslaw.com" target="_blank">www.ariaslaw.com</a></p>
+                                                            </div>
+                                                            <div class="col-sm-12">
+                                                                <span style="color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;"><strong>Especialidades:</strong> </span>
+                                                                <span id="busquedaEspecialidades1" style="font-size: 11px;">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span>
+                                                            </div>
+                                                            <div class="col-sm-12" style="margin-top: -0px;">
+                                                                <span style='font-size: 11px;'><a href="#">Ver perfil</a></span>
+                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+                                                                <span style='font-size: 11px;'><a href="#">Contactar</a></span>
+                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+                                                                <span style='font-size: 11px;'><a href="#">Recomendar</a></span>							
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </td>
-                                        </tr>
-                                        {% endfor %}#}
-{#                                    </table>#}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                        
+                                        
+                                    
+                                    {#<tr>
+                                        <td style="width: 100%">
+                                            <div class="item-directorio-nexo" style="width: 100%">
+                                                <div class="clearfix"></div>
+                                                <div class="row">
+                                                    <div class="col-xs-2 col-sm-3 col-md-3 col-lg-2">
+                                                        <img id="busquedaImagen2" src="{{asset('Resources/src/img/profile.png')}}" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
+                                                    </div>
+                                                    <div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10">
+                                                        <p id="busquedaNombre2" style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>Marvin Jose Vigil</strong></p>
+                                                        <p id="busquedaCargo2" style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">Director Ejecutivo en Digitality Garage</p>
+                                                        <div class="row" style="margin-top: 2px; margin-bottom: 15px;">
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono</strong></p>
+                                                                <p id="busquedaTelefono2" style="font-size: 11px; margin-bottom: 0px;">+503 77971933</p>
+                                                            </div>
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p>
+                                                                <p id="busquedaCorreo2" style="font-size: 11px; margin-bottom: 0px;">marvinvigil@gmail.com</p>
+                                                            </div>
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
+                                                                <p id="busquedaSitioWeb2" style="font-size: 11px; margin-bottom: 0px;"><a href="http://www.ariaslaw.com" target="_blank">www.ariaslaw.com</a></p>
+                                                            </div>
+                                                            <div class="col-sm-12">
+                                                                <span style="color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;"><strong>Especialidades:</strong> </span>
+                                                                <span id="busquedaEspecialidades2" style="font-size: 11px;">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span>
+                                                            </div>
+                                                            <div class="col-sm-12" style="margin-top: -0px;">
+                                                                <span style='font-size: 11px;'><a href="#">Ver perfil</a></span>
+                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+                                                                <span style='font-size: 11px;'><a href="#">Contactar</a></span>
+                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+                                                                <span style='font-size: 11px;'><a href="#">Recomendar</a></span>							
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                    
+                                    
+                                    <tr>
+                                        <td style="width: 100%">
+                                            <div class="item-directorio-nexo" style="width: 100%">
+                                                <div class="clearfix"></div>
+                                                <div class="row">
+                                                    <div class="col-xs-2 col-sm-3 col-md-3 col-lg-2">
+                                                        <img id="busquedaImagen3" src="{{asset('Resources/src/img/profile.png')}}" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
+                                                    </div>
+                                                    <div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10">
+                                                        <p id="busquedaNombre3" style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>Marvin Jose Vigil</strong></p>
+                                                        <p id="busquedaCargo3" style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">Director Ejecutivo en Digitality Garage</p>
+                                                        <div class="row" style="margin-top: 2px; margin-bottom: 15px;">
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono</strong></p>
+                                                                <p id="busquedaTelefono3" style="font-size: 11px; margin-bottom: 0px;">+503 77971933</p>
+                                                            </div>
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p>
+                                                                <p id="busquedaCorreo3" style="font-size: 11px; margin-bottom: 0px;">marvinvigil@gmail.com</p>
+                                                            </div>
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
+                                                                <p id="busquedaSitioWeb3" style="font-size: 11px; margin-bottom: 0px;"><a href="http://www.ariaslaw.com" target="_blank">www.ariaslaw.com</a></p>
+                                                            </div>
+                                                            <div class="col-sm-12">
+                                                                <span style="color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;"><strong>Especialidades:</strong> </span>
+                                                                <span id="busquedaEspecialidades3" style="font-size: 11px;">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span>
+                                                            </div>
+                                                            <div class="col-sm-12" style="margin-top: -0px;">
+                                                                <span style='font-size: 11px;'><a href="#">Ver perfil</a></span>
+                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+                                                                <span style='font-size: 11px;'><a href="#">Contactar</a></span>
+                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+                                                                <span style='font-size: 11px;'><a href="#">Recomendar</a></span>							
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                        
+                                    
+                                    
+                                    
+                                    <tr>
+                                        <td style="width: 100%">
+                                            <div class="item-directorio-nexo" style="width: 100%">
+                                                <div class="clearfix"></div>
+                                                <div class="row">
+                                                    <div class="col-xs-2 col-sm-3 col-md-3 col-lg-2">
+                                                        <img id="busquedaImagen4" src="{{asset('Resources/src/img/profile.png')}}" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
+                                                    </div>
+                                                    <div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10">
+                                                        <p id="busquedaNombre4" style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>Marvin Jose Vigil</strong></p>
+                                                        <p id="busquedaCargo4" style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">Director Ejecutivo en Digitality Garage</p>
+                                                        <div class="row" style="margin-top: 2px; margin-bottom: 15px;">
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono</strong></p>
+                                                                <p id="busquedaTelefono4" style="font-size: 11px; margin-bottom: 0px;">+503 77971933</p>
+                                                            </div>
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p>
+                                                                <p id="busquedaCorreo4" style="font-size: 11px; margin-bottom: 0px;">marvinvigil@gmail.com</p>
+                                                            </div>
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
+                                                                <p id="busquedaSitioWeb4" style="font-size: 11px; margin-bottom: 0px;"><a href="http://www.ariaslaw.com" target="_blank">www.ariaslaw.com</a></p>
+                                                            </div>
+                                                            <div class="col-sm-12">
+                                                                <span style="color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;"><strong>Especialidades:</strong> </span>
+                                                                <span id="busquedaEspecialidades4" style="font-size: 11px;">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span>
+                                                            </div>
+                                                            <div class="col-sm-12" style="margin-top: -0px;">
+                                                                <span style='font-size: 11px;'><a href="#">Ver perfil</a></span>
+                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+                                                                <span style='font-size: 11px;'><a href="#">Contactar</a></span>
+                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+                                                                <span style='font-size: 11px;'><a href="#">Recomendar</a></span>							
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                    
+                                    
+                                    
+                                    <tr>
+                                        <td style="width: 100%">
+                                            <div class="item-directorio-nexo" style="width: 100%">
+                                                <div class="clearfix"></div>
+                                                <div class="row">
+                                                    <div class="col-xs-2 col-sm-3 col-md-3 col-lg-2">
+                                                        <img id="busquedaImagen5" src="{{asset('Resources/src/img/profile.png')}}" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
+                                                    </div>
+                                                    <div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10">
+                                                        <p id="busquedaNombre5" style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>Marvin Jose Vigil</strong></p>
+                                                        <p id="busquedaCargo5" style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">Director Ejecutivo en Digitality Garage</p>
+                                                        <div class="row" style="margin-top: 2px; margin-bottom: 15px;">
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono</strong></p>
+                                                                <p id="busquedaTelefono5" style="font-size: 11px; margin-bottom: 0px;">+503 77971933</p>
+                                                            </div>
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p>
+                                                                <p id="busquedaCorreo5" style="font-size: 11px; margin-bottom: 0px;">marvinvigil@gmail.com</p>
+                                                            </div>
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
+                                                                <p id="busquedaSitioWeb5" style="font-size: 11px; margin-bottom: 0px;"><a href="http://www.ariaslaw.com" target="_blank">www.ariaslaw.com</a></p>
+                                                            </div>
+                                                            <div class="col-sm-12">
+                                                                <span style="color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;"><strong>Especialidades:</strong> </span>
+                                                                <span id="busquedaEspecialidades5" style="font-size: 11px;">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span>
+                                                            </div>
+                                                            <div class="col-sm-12" style="margin-top: -0px;">
+                                                                <span style='font-size: 11px;'><a href="#">Ver perfil</a></span>
+                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+                                                                <span style='font-size: 11px;'><a href="#">Contactar</a></span>
+                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+                                                                <span style='font-size: 11px;'><a href="#">Recomendar</a></span>							
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <tr>
+                                        <td style="width: 100%">
+                                            <div class="item-directorio-nexo" style="width: 100%">
+                                                <div class="clearfix"></div>
+                                                <div class="row">
+                                                    <div class="col-xs-2 col-sm-3 col-md-3 col-lg-2">
+                                                        <img id="busquedaImagen6" src="{{asset('Resources/src/img/profile.png')}}" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
+                                                    </div>
+                                                    <div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10">
+                                                        <p id="busquedaNombre6" style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>Marvin Jose Vigil</strong></p>
+                                                        <p id="busquedaCargo6" style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">Director Ejecutivo en Digitality Garage</p>
+                                                        <div class="row" style="margin-top: 2px; margin-bottom: 15px;">
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono</strong></p>
+                                                                <p id="busquedaTelefono6" style="font-size: 11px; margin-bottom: 0px;">+503 77971933</p>
+                                                            </div>
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p>
+                                                                <p id="busquedaCorreo6" style="font-size: 11px; margin-bottom: 0px;">marvinvigil@gmail.com</p>
+                                                            </div>
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
+                                                                <p id="busquedaSitioWeb6" style="font-size: 11px; margin-bottom: 0px;"><a href="http://www.ariaslaw.com" target="_blank">www.ariaslaw.com</a></p>
+                                                            </div>
+                                                            <div class="col-sm-12">
+                                                                <span style="color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;"><strong>Especialidades:</strong> </span>
+                                                                <span id="busquedaEspecialidades6" style="font-size: 11px;">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span>
+                                                            </div>
+                                                            <div class="col-sm-12" style="margin-top: -0px;">
+                                                                <span style='font-size: 11px;'><a href="#">Ver perfil</a></span>
+                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+                                                                <span style='font-size: 11px;'><a href="#">Contactar</a></span>
+                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+                                                                <span style='font-size: 11px;'><a href="#">Recomendar</a></span>							
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                        
+                                    
+                                    
+                                    <tr>
+                                        <td style="width: 100%">
+                                            <div class="item-directorio-nexo" style="width: 100%">
+                                                <div class="clearfix"></div>
+                                                <div class="row">
+                                                    <div class="col-xs-2 col-sm-3 col-md-3 col-lg-2">
+                                                        <img id="busquedaImagen7" src="{{asset('Resources/src/img/profile.png')}}" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
+                                                    </div>
+                                                    <div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10">
+                                                        <p id="busquedaNombre7" style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>Marvin Jose Vigil</strong></p>
+                                                        <p id="busquedaCargo7" style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">Director Ejecutivo en Digitality Garage</p>
+                                                        <div class="row" style="margin-top: 2px; margin-bottom: 15px;">
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono</strong></p>
+                                                                <p id="busquedaTelefono7" style="font-size: 11px; margin-bottom: 0px;">+503 77971933</p>
+                                                            </div>
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p>
+                                                                <p id="busquedaCorreo7" style="font-size: 11px; margin-bottom: 0px;">marvinvigil@gmail.com</p>
+                                                            </div>
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
+                                                                <p id="busquedaSitioWeb7" style="font-size: 11px; margin-bottom: 0px;"><a href="http://www.ariaslaw.com" target="_blank">www.ariaslaw.com</a></p>
+                                                            </div>
+                                                            <div class="col-sm-12">
+                                                                <span style="color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;"><strong>Especialidades:</strong> </span>
+                                                                <span id="busquedaEspecialidades7" style="font-size: 11px;">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span>
+                                                            </div>
+                                                            <div class="col-sm-12" style="margin-top: -0px;">
+                                                                <span style='font-size: 11px;'><a href="#">Ver perfil</a></span>
+                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+                                                                <span style='font-size: 11px;'><a href="#">Contactar</a></span>
+                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+                                                                <span style='font-size: 11px;'><a href="#">Recomendar</a></span>							
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                    
+                                    
+                                    <tr>
+                                        <td style="width: 100%">
+                                            <div class="item-directorio-nexo" style="width: 100%">
+                                                <div class="clearfix"></div>
+                                                <div class="row">
+                                                    <div class="col-xs-2 col-sm-3 col-md-3 col-lg-2">
+                                                        <img id="busquedaImagen8" src="{{asset('Resources/src/img/profile.png')}}" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
+                                                    </div>
+                                                    <div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10">
+                                                        <p id="busquedaNombre8" style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>Marvin Jose Vigil</strong></p>
+                                                        <p id="busquedaCargo8" style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">Director Ejecutivo en Digitality Garage</p>
+                                                        <div class="row" style="margin-top: 2px; margin-bottom: 15px;">
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono</strong></p>
+                                                                <p id="busquedaTelefono8" style="font-size: 11px; margin-bottom: 0px;">+503 77971933</p>
+                                                            </div>
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p>
+                                                                <p id="busquedaCorreo8" style="font-size: 11px; margin-bottom: 0px;">marvinvigil@gmail.com</p>
+                                                            </div>
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
+                                                                <p id="busquedaSitioWeb8" style="font-size: 11px; margin-bottom: 0px;"><a href="http://www.ariaslaw.com" target="_blank">www.ariaslaw.com</a></p>
+                                                            </div>
+                                                            <div class="col-sm-12">
+                                                                <span style="color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;"><strong>Especialidades:</strong> </span>
+                                                                <span id="busquedaEspecialidades8" style="font-size: 11px;">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span>
+                                                            </div>
+                                                            <div class="col-sm-12" style="margin-top: -0px;">
+                                                                <span style='font-size: 11px;'><a href="#">Ver perfil</a></span>
+                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+                                                                <span style='font-size: 11px;'><a href="#">Contactar</a></span>
+                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+                                                                <span style='font-size: 11px;'><a href="#">Recomendar</a></span>							
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                    
+                                    
+                                    
+                                    <tr>
+                                        <td style="width: 100%">
+                                            <div class="item-directorio-nexo" style="width: 100%">
+                                                <div class="clearfix"></div>
+                                                <div class="row">
+                                                    <div class="col-xs-2 col-sm-3 col-md-3 col-lg-2">
+                                                        <img id="busquedaImagen9" src="{{asset('Resources/src/img/profile.png')}}" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
+                                                    </div>
+                                                    <div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10">
+                                                        <p id="busquedaNombre9" style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>Marvin Jose Vigil</strong></p>
+                                                        <p id="busquedaCargo9" style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">Director Ejecutivo en Digitality Garage</p>
+                                                        <div class="row" style="margin-top: 2px; margin-bottom: 15px;">
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono</strong></p>
+                                                                <p id="busquedaTelefono9" style="font-size: 11px; margin-bottom: 0px;">+503 77971933</p>
+                                                            </div>
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p>
+                                                                <p id="busquedaCorreo9" style="font-size: 11px; margin-bottom: 0px;">marvinvigil@gmail.com</p>
+                                                            </div>
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
+                                                                <p id="busquedaSitioWeb9" style="font-size: 11px; margin-bottom: 0px;"><a href="http://www.ariaslaw.com" target="_blank">www.ariaslaw.com</a></p>
+                                                            </div>
+                                                            <div class="col-sm-12">
+                                                                <span style="color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;"><strong>Especialidades:</strong> </span>
+                                                                <span id="busquedaEspecialidades9" style="font-size: 11px;">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span>
+                                                            </div>
+                                                            <div class="col-sm-12" style="margin-top: -0px;">
+                                                                <span style='font-size: 11px;'><a href="#">Ver perfil</a></span>
+                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+                                                                <span style='font-size: 11px;'><a href="#">Contactar</a></span>
+                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+                                                                <span style='font-size: 11px;'><a href="#">Recomendar</a></span>							
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                    
+                                    <tr>
+                                        <td style="width: 100%">
+                                            <div class="item-directorio-nexo" style="width: 100%">
+                                                <div class="clearfix"></div>
+                                                <div class="row">
+                                                    <div class="col-xs-2 col-sm-3 col-md-3 col-lg-2">
+                                                        <img id="busquedaImagen10" src="{{asset('Resources/src/img/profile.png')}}" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
+                                                    </div>
+                                                    <div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10">
+                                                        <p id="busquedaNombre10" style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>Marvin Jose Vigil</strong></p>
+                                                        <p id="busquedaCargo10" style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">Director Ejecutivo en Digitality Garage</p>
+                                                        <div class="row" style="margin-top: 2px; margin-bottom: 15px;">
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono</strong></p>
+                                                                <p id="busquedaTelefono10" style="font-size: 11px; margin-bottom: 0px;">+503 77971933</p>
+                                                            </div>
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p>
+                                                                <p id="busquedaCorreo10" style="font-size: 11px; margin-bottom: 0px;">marvinvigil@gmail.com</p>
+                                                            </div>
+                                                            <div class="col-sm-4 col-xs-12">
+                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
+                                                                <p id="busquedaSitioWeb10" style="font-size: 11px; margin-bottom: 0px;"><a href="http://www.ariaslaw.com" target="_blank">www.ariaslaw.com</a></p>
+                                                            </div>
+                                                            <div class="col-sm-12">
+                                                                <span style="color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;"><strong>Especialidades:</strong> </span>
+                                                                <span id="busquedaEspecialidades10" style="font-size: 11px;">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span>
+                                                            </div>
+                                                            <div class="col-sm-12" style="margin-top: -0px;">
+                                                                <span style='font-size: 11px;'><a href="#">Ver perfil</a></span>
+                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+                                                                <span style='font-size: 11px;'><a href="#">Contactar</a></span>
+                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+                                                                <span style='font-size: 11px;'><a href="#">Recomendar</a></span>							
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>#}
+                                        {#{% endfor %}#}
+                                    </table>
                                 </div>
 				<!-- Fin de Items -->
 				<!-- PAGINACION -->
@@ -173,7 +574,7 @@ else{ // Maximum length not reached so update the value of my_text counter
                 var longitud = 10; //numero de registros que se van a mostrar
                 var paginaActual = 10; //numero de registros que se van a mostrar
                 var contenidoOriginal = $('#registros').html();
-                $('#registros').html('');
+                //$('#registros').html('');
                 //var url = Routing.generate('busqueda_data');
                 $.ajax({
                     data:{inicio:inicio,longitud: longitud, paginaActual:paginaActual,busqueda:busqueda},
@@ -181,11 +582,68 @@ else{ // Maximum length not reached so update the value of my_text counter
                     type: "post",
                     success: function (data) {
                             //inicio = data.inicio++;
+                            //console.log(data);
                             $('#inicioInput').val((parseInt($('#inicioInput').val())+1));
                             console.log(data.inicio);
                             console.log(data.data.length);
                             for(i=0;i<data.data.length;i++){
-                                $('#registros').append('prueba');
+                                
+                                
+                                
+                                
+                                
+                                var busquedaNombre = "#busquedaNombre"+(i+1);
+                                var busquedaCargo = "#busquedaCargo"+(i+1);
+                                var busquedaTelefono = "#busquedaTelefono"+(i+1);
+                                var busquedaCorreo = "#busquedaCorreo"+(i+1);
+                                var busquedaSitioWeb = "#busquedaSitioWeb"+(i+1);
+                                var busquedaEspecialidades = "#busquedaEspecialidades"+(i+1);
+                                
+                                
+                                $(busquedaNombre).children().html(data.data[i].nombres +' ' + data.data[i].apellido);
+                                //$(busquedaCargo).children().html(data.data[i].nombres +' ' + data.data[i].cargo);
+                                var telefonos = "";
+                                if(data.data[i].telefonoFijo === null ){
+                                    //data.data[i].telefonoFijo="";
+                                    telefonos = "";
+                                }
+                                if(data.data[i].telefonoMovil === null ){
+                                    //data.data[i].telefonoMovil="";
+                                    telefonos = "";
+                                }
+                                else{
+                                    if(data.data[i].telefonoFijo === null){
+                                        telefonos = data.data[i].telefonoMovil;
+                                    }
+                                    else{
+                                        telefonos = ", "+data.data[i].telefonoMovil;
+                                    }
+                                }
+                                
+                                
+                                $(busquedaTelefono).html(telefonos);
+                                $(busquedaCorreo).html(data.data[i].correoelectronico);
+                                //$(busquedaSitioWeb).children().html(data.data[i].nombres +' ' + data.data[i].apellido);
+                                
+                                console.log(data.data[i].especialidades.length);
+                                var especialidades = "";
+                                for(j=0;j<data.data[i].especialidades.length;j++){
+                                    
+                                    if(j==0){
+                                        especialidades += data.data[i].especialidades[j].nombreEspecialidad;
+                                    }
+                                    else{
+                                        especialidades +=", "+data.data[i].especialidades[j].nombreEspecialidad;
+                                    }
+                                    
+                                }
+                                
+                                $(busquedaEspecialidades).html(especialidades);
+                                $(busquedaSitioWeb).children().html(data.data[i].sitioweb);
+                                
+                                
+                                
+                                //$('#registros').html('prueba');
                             }
                             
                         },
