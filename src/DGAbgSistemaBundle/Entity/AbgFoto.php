@@ -54,7 +54,7 @@ class AbgFoto
     /**
      * @var integer
      *
-     * @ORM\Column(name="foto_tipo", type="integer", length=11, nullable=false)
+     * @ORM\Column(name="tipo_foto", type="integer", length=11, nullable=false)
      */
     private $tipoFoto;
     

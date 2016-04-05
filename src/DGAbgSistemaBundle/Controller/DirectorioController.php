@@ -65,8 +65,11 @@ class DirectorioController extends Controller
         $reg['inicio']=$inicio++;  
         $reg['longitud'] = $longitud;
         $reg['paginaActual']= $paginaActual;
+        $reg['numRegistros']= count($expedientesTotal);
+        $reg['pages']=floor(($reg['numRegistros']/10))+1;
         $reg['data']= array();
-        
+        //var_dump($reg);
+        //die();
         //var_dump($data);
         
         
@@ -139,10 +142,11 @@ class DirectorioController extends Controller
 //                                        '</div></div></div></div></div>') "
 //                . "as datos FROM DGAbgSistemaBundle:AbgPersona per";
         
-        $dql = "SELECT per.id,per.nombres, per.apellido, per.correoelectronico, per.telefonoFijo, per.telefonoMovil FROM DGAbgSistemaBundle:AbgPersona per";
+        $dql = "SELECT per.id,per.nombres, per.apellido, per.correoelectronico, per.telefonoFijo, per.telefonoMovil FROM DGAbgSistemaBundle:AbgPersona per "
+                . "WHERE CONCAT(per.nombres,per.apellido) LIKE :busqueda ";
         $em = $this->getDoctrine()->getManager();
         $reg['data'] = $em->createQuery($dql)
-//                   ->setParameter('numero','%'.$numeroExp.'%')
+                   ->setParameter('busqueda','%'.$busqueda.'%')
                    ->getResult();
         
         $esp = array();
@@ -186,11 +190,14 @@ class DirectorioController extends Controller
                     . "JOIN foto.abgPersona per "
                     . "WHERE per.id=:idPersona AND foto.tipoFoto=1";
             $em = $this->getDoctrine()->getManager();
-            $especialidades = $em->createQuery($dql)
+            $foto = $em->createQuery($dql)
                    ->setParameter('idPersona',$row['id'])
                    ->getResult();
-            
-            
+           //var_dump($foto);
+           //die();
+            $reg['data'][$i]['fotoPerfil']=$foto[0]['src'];
+           //var_dump($reg['data']);
+           //die();
             
             $i++;
         }

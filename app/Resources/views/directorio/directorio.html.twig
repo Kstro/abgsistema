@@ -14,7 +14,7 @@
 	<div class="clearfix"></div>
 
 	<div class="container">
-		<div class="row">
+		<div class="row" id="registrosBusqueda">
 			<!-- LADO IZQUIERDO -->
 			<div class="col-md-9">
 				<div class="bloque-main" style="padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px; margin-top: 20px;">
@@ -38,19 +38,7 @@
 				<!-- item 1 -->
 								
                                 <div id="registros">
-                                    <table id="datatables1" style="width:100%;">
-                                        <thead>
-                                        <tr>
-{#                                            <th>N°</th>  #}
-                                            <th></th>
-                                            {#<th>Referido por</th>#}
-
-                                            {#<th>Acciones</th>#}
-                                        </tr>
-                                        </thead>
-{#                                        {% for i in 0..11 %}#}
-                                    <tr>
-                                        <td style="width: 100%">
+                                    
                                             <div class="item-directorio-nexo" style="width: 100%">
                                                 <div class="clearfix"></div>
                                                 <div class="row">
@@ -88,8 +76,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </td>
-                                    </tr>
                                         
                                         
                                     
@@ -492,7 +478,10 @@
                                         </td>
                                     </tr>#}
                                         {#{% endfor %}#}
-                                    </table>
+                                    
+                                </div>
+                                <div id="busquedaVacia" style="display:none;border-bottom-color: #000">
+                                    No se encontraron registros...
                                 </div>
 				<!-- Fin de Items -->
 				<!-- PAGINACION -->
@@ -574,87 +563,111 @@ else{ // Maximum length not reached so update the value of my_text counter
                 var longitud = 10; //numero de registros que se van a mostrar
                 var paginaActual = 10; //numero de registros que se van a mostrar
                 var contenidoOriginal = $('#registros').html();
+                
+                
                 //$('#registros').html('');
                 //var url = Routing.generate('busqueda_data');
-                $.ajax({
-                    data:{inicio:inicio,longitud: longitud, paginaActual:paginaActual,busqueda:busqueda},
-                    url:"{{path('busqueda_data')}}",
-                    type: "post",
-                    success: function (data) {
-                            //inicio = data.inicio++;
-                            //console.log(data);
-                            $('#inicioInput').val((parseInt($('#inicioInput').val())+1));
-                            console.log(data.inicio);
-                            console.log(data.data.length);
-                            for(i=0;i<data.data.length;i++){
-                                
-                                
-                                
-                                
-                                
-                                var busquedaNombre = "#busquedaNombre"+(i+1);
-                                var busquedaCargo = "#busquedaCargo"+(i+1);
-                                var busquedaTelefono = "#busquedaTelefono"+(i+1);
-                                var busquedaCorreo = "#busquedaCorreo"+(i+1);
-                                var busquedaSitioWeb = "#busquedaSitioWeb"+(i+1);
-                                var busquedaEspecialidades = "#busquedaEspecialidades"+(i+1);
-                                
-                                
-                                $(busquedaNombre).children().html(data.data[i].nombres +' ' + data.data[i].apellido);
-                                //$(busquedaCargo).children().html(data.data[i].nombres +' ' + data.data[i].cargo);
-                                var telefonos = "";
-                                if(data.data[i].telefonoFijo === null ){
-                                    //data.data[i].telefonoFijo="";
-                                    telefonos = "";
-                                }
-                                if(data.data[i].telefonoMovil === null ){
-                                    //data.data[i].telefonoMovil="";
-                                    telefonos = "";
-                                }
+                if(busqueda!=""){
+                    $.ajax({
+                        data:{inicio:inicio,longitud: longitud, paginaActual:paginaActual,busqueda:busqueda},
+                        url:"{{path('busqueda_data')}}",
+                        type: "post",
+                        success: function (data) {
+                                //inicio = data.inicio++;
+                                console.log(data.data.length);
+
+                                if(data.data.length!=0){
+                                    $('#inicioInput').val((parseInt($('#inicioInput').val())+1));
+                                    //console.log(data.inicio);
+                                    //console.log(data.data.length);
+                                    for(i=0;i<data.data.length;i++){
+
+
+
+
+                                        var busquedaImagen = "#busquedaImagen"+(i+1);
+                                        var busquedaNombre = "#busquedaNombre"+(i+1);
+                                        var busquedaCargo = "#busquedaCargo"+(i+1);
+                                        var busquedaTelefono = "#busquedaTelefono"+(i+1);
+                                        var busquedaCorreo = "#busquedaCorreo"+(i+1);
+                                        var busquedaSitioWeb = "#busquedaSitioWeb"+(i+1);
+                                        var busquedaEspecialidades = "#busquedaEspecialidades"+(i+1);
+
+
+                                        $(busquedaNombre).children().html(data.data[i].nombres +' ' + data.data[i].apellido);
+                                        //$(busquedaCargo).children().html(data.data[i].nombres +' ' + data.data[i].cargo);
+                                        var telefonos = "";
+                                        if(data.data[i].telefonoFijo === null ){
+                                            //data.data[i].telefonoFijo="";
+                                            telefonos = "";
+                                        }
+                                        if(data.data[i].telefonoMovil === null ){
+                                            //data.data[i].telefonoMovil="";
+                                            telefonos = "";
+                                        }
+                                        else{
+                                            if(data.data[i].telefonoFijo === null){
+                                                telefonos = data.data[i].telefonoMovil;
+                                            }
+                                            else{
+                                                telefonos = ", "+data.data[i].telefonoMovil;
+                                            }
+                                        }
+
+
+                                        $(busquedaTelefono).html(telefonos);
+                                        $(busquedaCorreo).html(data.data[i].correoelectronico);
+                                        //$(busquedaSitioWeb).children().html(data.data[i].nombres +' ' + data.data[i].apellido);
+
+                                        //console.log(data.data[i].especialidades.length);
+                                        var especialidades = "";
+                                        for(j=0;j<data.data[i].especialidades.length;j++){
+
+                                            if(j==0){
+                                                especialidades += data.data[i].especialidades[j].nombreEspecialidad;
+                                            }
+                                            else{
+                                                especialidades +=", "+data.data[i].especialidades[j].nombreEspecialidad;
+                                            }
+
+                                        }
+
+
+
+
+                                        $(busquedaImagen).attr('src', "{{asset('Resources/src/img/')}}"+data.data[i].fotoPerfil);
+                                        $(busquedaImagen).load();
+                                        $(busquedaEspecialidades).html(especialidades);
+                                        $(busquedaSitioWeb).children().html(data.data[i].sitioweb);
+
+
+                                        $('#registros').show();
+                                        $('#busquedaVacia').hide();
+                                        //$('#registros').html('prueba');
+                                    }//fin for
+                                }//fin if
                                 else{
-                                    if(data.data[i].telefonoFijo === null){
-                                        telefonos = data.data[i].telefonoMovil;
-                                    }
-                                    else{
-                                        telefonos = ", "+data.data[i].telefonoMovil;
-                                    }
+                                    //console.log('datosvacios');
+                                    $('#registros').hide();
+                                    $('#busquedaVacia').show();
+
                                 }
-                                
-                                
-                                $(busquedaTelefono).html(telefonos);
-                                $(busquedaCorreo).html(data.data[i].correoelectronico);
-                                //$(busquedaSitioWeb).children().html(data.data[i].nombres +' ' + data.data[i].apellido);
-                                
-                                console.log(data.data[i].especialidades.length);
-                                var especialidades = "";
-                                for(j=0;j<data.data[i].especialidades.length;j++){
-                                    
-                                    if(j==0){
-                                        especialidades += data.data[i].especialidades[j].nombreEspecialidad;
-                                    }
-                                    else{
-                                        especialidades +=", "+data.data[i].especialidades[j].nombreEspecialidad;
-                                    }
-                                    
-                                }
-                                
-                                $(busquedaEspecialidades).html(especialidades);
-                                $(busquedaSitioWeb).children().html(data.data[i].sitioweb);
-                                
-                                
-                                
-                                //$('#registros').html('prueba');
-                            }
-                            
-                        },
-                    error: function (data) {
-                        Lobibox.notify("error", {
-                            size: 'mini',
-                            msg: 'Los datos no fueron ingresados, intente más tarde. Si el error persiste pongase en contacto con el administrador del sistema.'
-                        });
-                        $('#registros').append(contenidoOriginal);
+                            },
+                        error: function (data) {
+                            Lobibox.notify("error", {
+                                size: 'mini',
+                                msg: 'Los datos no fueron ingresados, intente más tarde. Si el error persiste pongase en contacto con el administrador del sistema.'
+                            });
+                            $('#registros').append(contenidoOriginal);
+                        }
+                    });
                     }
-                });
+                    else{
+                        $('#registros').hide();
+                        $('#busquedaVacia').show();
+                    
+                    }
+                    
                 return false;
             });
         
