@@ -50,8 +50,36 @@ class AbgFoto
      */
     private $ctlEmpresa;
 
-
-
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="foto_tipo", type="integer", length=11, nullable=false)
+     */
+    private $tipoFoto;
+    
+     /**
+     * @var integer
+     *
+     * @ORM\Column(name="estado", type="integer", length=11, nullable=false)
+     */
+    private $estado;
+    
+     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_registro", type="date", nullable=false)
+     */
+    private $fechaRegistro;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_expiracion", type="date", nullable=false)
+     */
+    private $fechaExpiracion;
+    
+ 
     /**
      * Get idargFoto
      *
@@ -157,9 +185,128 @@ class AbgFoto
 
     
     
+ 
+
+    /**
+     * Set tipoFoto
+     *
+     * @param integer $tipoFoto
+     * @return AbgFoto
+     */
+    public function setTipoFoto($tipoFoto)
+    {
+        $this->tipoFoto = $tipoFoto;
+
+        return $this;
+    }
+    
+    
+    
+    /**
+     * Get tipoFoto
+     *
+     * @return integer 
+     */
+    public function getTipoFoto()
+    {
+        return $this->tipoFoto;
+    }
+    
+    
+    /**
+     * Set estado
+     *
+     * @param integer $estado
+     * @return AbgFoto
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+    
+    
+    
+    /**
+     * Get estado
+     *
+     * @return integer 
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
     
     
     
     
+    /**
+     * Set fechaRegistro
+     *
+     * @param \DateTime $fechaRegistro
+     * @return AbgBitacora
+     */
+    public function setFechaRegistro($fechaRegistro)
+    {
+        $this->fechaRegistro = $fechaRegistro;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaRegistro
+     *
+     * @return \DateTime 
+     */
+    public function getFechaRegistro()
+    {
+        return $this->fechaRegistro;
+    }
+    
+    
+    
+    
+    /**
+     * Set fechaExpiracion
+     *
+     * @param \DateTime $fechaExpiracion
+     * @return AbgBitacora
+     */
+    
+   
+    public function setFechaExpiracion($fechaExpiracion)
+    {
+        $this->fechaExpiracion = $fechaExpiracion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaExpiracion
+     *
+     * @return \DateTime 
+     */
+    public function getFechaExpiracion()
+    {
+        return $this->fechaExpiracion;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+       
     
 }

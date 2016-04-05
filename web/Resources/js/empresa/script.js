@@ -19,88 +19,122 @@ $(document).ready(function() {
         //obtenemos el tipo de archivo image/png ejemplo
         var fileType = file.type;
         
-        
-        var isimage = isImage(fileExtension);
-
-        if (isimage === false) {
-        	flag = false;
-             var mensaje = "Formato de imagen seleccionado no es admitido. Seleccione otro archivo";
-             
+        console.log(fileType);
+        if (fileExtension == 'png' || fileExtension == 'jpg' && fileType =='imagen')
+        {
+            flag = true;
         }else{
-        	flag = true;
+            flag = false;
         }
+        
+        if (flag==false){
+            alert("Archivo invalido, seleccione una imagen  ");
+            $("#imagen").val("");
+            
+        }
+        else{
+            
+            $("#imagen").change(function () {
+                  mostrarImagen(this);
+             });
+         
+            
+        }
+
+        
+        
+        
         
     });
 
+   
+         function mostrarImagen(input) {
+            if (input.files && input.files[0]) {
+                 var reader = new FileReader();
+                    reader.onload = function (e) {
+                          $('#img_destino').attr('src', e.target.result);
+                     }
+                    reader.readAsDataURL(input.files[0]);
+                  }
+              }   
+            
+            
         
+             
+             
+   
 
-
-
-
-
-
- 
-
-
-
-
-function mostrarImagen(input) {
-      if (input.files && input.files[0]) {
-           var reader = new FileReader();
-              reader.onload = function (e) {
-                    $('#img_destino').attr('src', e.target.result);
-               }
-              reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        $("#imagen").change(function () {
-            mostrarImagen(this);
-        });
-
-
- 
- 
- 
-$(document).on("submit","#frmEmpresa",function(e) {
-       
+$(document).on("submit","#frmEmpresaUsuarioPersona",function(e) {
+        
+        var estadoCorreo;
 	e.preventDefault();
 	frm = serializeToJson($(this).serializeArray());
-        console.log(frm);
-        
-        $.ajax({ 
-            data:{
-		frm: JSON.stringify(frm)
+    //Ajax que valida  el correo
+    $.ajax({ 
+           data:{
+                    frm: JSON.stringify(frm)
 		},
-            url:Routing.generate('ingresar_usuarioEmpresa'),
-            type: 'POST',
+           url:Routing.generate('validar_correo'),
+           type: 'POST',
  
 
-//            success: function(data){
-//                console.log(data);
-//                data = jQuery.parseJSON(data);//convirtiendo datos
-//                //console.log(data);
-//                 var mensaje = "Alumno Guardado Correctamento. Espere un momento...";
-//                if (data.estado == true) {
-//                    GetAlert("Éxito",mensaje,"../recursos/imagenes/Ok-icon.png",3000);
-//                    setTimeout(function() {
-//                        location.reload();
-//                    }, 1800);
-//                }else{
-//                    alertify.error(data.mensaje);
-//                }
-//            }
+           success: function(data){
+           data = jQuery.parseJSON(data);
+           console.log(data);
+          
+
+            if (data) {
+                      //Ajax de insersion de datos               
+                         $.ajax({ 
+                                 data:{
+                                       frm: JSON.stringify(frm)
+                                       },
+                                   url:Routing.generate('ingresar_usuarioEmpresa'),
+                                  type: 'POST',
+
+
+                                 success: function(data){
+                                      data = jQuery.parseJSON(data);//convirtiendo datos
+                       //                 var mensaje = "Alumno Guardado Correctamento. Espere un momento...";
+                                if (data.estado == true) {
+                                    alert(data.valor);
+                                       }else{
+                                           alert(data.valor);
+                                     }
+                                   }
+                           });
+
+                   
+                   
+                    
+               }else{
+                  
+                  
+                    alert("El Correo ya existe, intenta con otro");
+                  
+                  
+                  
+                    
+               }
+              
+            }
         });
        
+
+       
         
+ });
+      
 
+ 
+ 
+    
+    
 
-
-
-
-$(document).on("submit","#frmEmpresaCompleto",function(e) {
+$(document).on("submit","#frmEmpresaConFoto",function(e) {
 	e.preventDefault();
     	//información del formulario
+        
         var frm = new FormData($(this)[0]);
         console.log(frm);
         if (flag != false) {
@@ -121,7 +155,6 @@ $(document).on("submit","#frmEmpresaCompleto",function(e) {
             success: function(data){
                 console.log(data);
 //               data = jQuery.parseJSON(data);//convirtiendo datos
-                //console.log(data);
 //                 var mensaje = "Alumno Guardado Correctamento. Espere un momento...";
 //                if (data.estado == true) {
 //                    GetAlert("Éxito",mensaje,"../recursos/imagenes/Ok-icon.png",3000);
@@ -141,31 +174,45 @@ $(document).on("submit","#frmEmpresaCompleto",function(e) {
 });
        
 
+ 
     
+$("#contrasenha").strength();  
     
-    
-    
-    
-        
-        
-	
-	
+//  $('#contrasenha').strength({
+//        strengthClass: 'strength',
+//        strengthMeterClass: 'strength_meter',
+//        strengthButtonClass: 'button_strength',
+//        strengthButtonText: 'Show password',
+//        strengthButtonTextToggle: 'Hide Password'
+//    });       
+
+
+
+
+ $('#colorSelector  ').ColorPicker({
+	color: '#0000ff',
+	onShow: function (colpkr) {
+		$(colpkr).fadeIn(500);
+		return false;
+	},
+	onHide: function (colpkr) {
+		$(colpkr).fadeOut(500);
+		return false;
+	},
+	onChange: function (hsb, hex, rgb) {
+		$('#colorSelector div').css('backgroundColor', '#' + hex);
+	}
+}); 
+
+
+
+
+
+
+
+
+
+
+
 });
 
-
-    
-
-
-
-
-
-
-
-
-
-
-
-    
-
-
-});

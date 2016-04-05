@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use DGAbgSistemaBundle\Entity\CtlEmpresa;
 use DGAbgSistemaBundle\Entity\AbgFoto;
+use DGAbgSistemaBundle\Entity\AbgPersona;
+use DGAbgSistemaBundle\Entity\CtlUsuario;
 use DGAbgSistemaBundle\Form\CtlEmpresaType;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -44,28 +46,28 @@ class CtlEmpresaController extends Controller
     
     
     
-//    /**
-//     * Lists all CtlEmpresa entities.
-//     *
-//     * @Route("/empresa/dash", name="ctlempresa_dashbord")
-//     * @Method({"GET", "POST"})
-//     */
-//    
-//    public function dashbordAction()
-//    {
-//        $em = $this->getDoctrine()->getManager();
-//
-//        $ctlEmpresas    = $em->getRepository('DGAbgSistemaBundle:CtlEmpresa')->findAll();
-//        $ctlTipoEmpresa = $em->getRepository('DGAbgSistemaBundle:CtlTipoEmpresa')->findAll();
-//        $ctlCuidad = $em->getRepository('DGAbgSistemaBundle:CtlCiudad')->findAll();
-//        
-//
-//        return $this->render('ctlempresa/formularioEdicion.html.twig', array(
-//            'ctlEmpresas' => $ctlEmpresas,
-//            'ctlTipoEmpresas' => $ctlTipoEmpresa ,
-//            'ctlCuidades' => $ctlCuidad,
-//        ));
-//    }
+    /**
+     * Lists all CtlEmpresa entities.
+     *
+     * @Route("/empresa/dash", name="ctlempresa_dashbord")
+     * @Method({"GET", "POST"})
+     */
+    
+    public function dashbordAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $ctlEmpresas    = $em->getRepository('DGAbgSistemaBundle:CtlEmpresa')->findAll();
+        $ctlTipoEmpresa = $em->getRepository('DGAbgSistemaBundle:CtlTipoEmpresa')->findAll();
+        $ctlCuidad = $em->getRepository('DGAbgSistemaBundle:CtlCiudad')->findAll();
+        
+
+        return $this->render('ctlempresa/edicion.html.twig', array(
+            'ctlEmpresas' => $ctlEmpresas,
+            'ctlTipoEmpresas' => $ctlTipoEmpresa ,
+            'ctlCuidades' => $ctlCuidad,
+        ));
+    }
     
     
     
@@ -189,31 +191,170 @@ class CtlEmpresaController extends Controller
      */
     
     
-    public function RegistrarEmpresaUsuarioAction(Request $request) {
+  
+    public function RegistrarUsuarioAction(Request $request) {
         
         $isAjax = $this->get('Request')->isXMLhttpRequest();
          if($isAjax){
-
-            $response = new JsonResponse();
-     
+             
+           $em = $this->getDoctrine()->getManager();  
             $datos = $this->get('request')->request->get('frm');       
-            $numero = json_decode($datos);
+            $frm = json_decode($datos);
+             
+            $ctlEmpresa = new CtlEmpresa();
+            $abgPersona = new AbgPersona();
+            $ctlUsuario = new CtlUsuario();
             
             
-            var_dump($numero->txtnombreEmpresa);
-            die();
+            $nombreAbogado = $frm->txtnombre;
+            $apellidoAbogado = $frm->txtapellido;
+            $correoUsuario = $frm->correoEmpresa;
+            $contrasenha = $frm->contrasenha;
+            
+            //Ingreso de una persona
+            
+            $abgPersona->setNombres($nombreAbogado);
+            $abgPersona->setApellido($apellidoAbogado);
+            $abgPersona->setCorreoelectronico($correoUsuario);
+            $abgPersona->setFechaIngreso(new \DateTime("now"));
+            $abgPersona->setEstado('1');
+            $em->persist($abgPersona);
+            $em->flush();
+            $idPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgPersona')->find($abgPersona->getId());
+             
+            //Ingreso null de una empresa
+            
+            $ctlEmpresa->setNombreEmpresa(null);
+            $ctlEmpresa->setCtlCiudad(null);
+            $ctlEmpresa->setCtlTipoEmpresa(null);
+            $ctlEmpresa->setMovil(null);
+            $ctlEmpresa->setTelefono(null);
+            $ctlEmpresa->setSitioWeb(null);
+            $ctlEmpresa->setServicios(null);
+            $ctlEmpresa->setNit(null);
+            $ctlEmpresa->setFotoPerfil(null);
+            $ctlEmpresa->setFechaFundacion(null);
+            $ctlEmpresa->setFax(null);
+            $ctlEmpresa->setDireccion(null);
+            $ctlEmpresa->setDescripcion(null);
+            $ctlEmpresa->setCorreoelectronico(null);
             
             
-            $response->setData(array(
-                            'flag' => 0,
-                            
-                    ));    
-            return $response; 
+            $em->persist($ctlEmpresa);
+            $em->flush();
+            $idEmpresa = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlEmpresa')->find($ctlEmpresa->getId());
+            
+            
+            
+            
+            //Ingreso de un usuario
+            $ctlUsuario->setUsername($correoUsuario);
+            $ctlUsuario->setPassword($contrasenha);
+            $ctlUsuario->setEstado('1');
+            $ctlUsuario->setRhPersona($idPersona);
+            $ctlUsuario->setCtlEmpresa($idEmpresa);
+            
+            
+            
+            $this->setSecurePassword($ctlUsuario, $contrasenha);
+            $em->persist($ctlUsuario);
+            $em->flush();
+//            $em->getConnection()->commit();
+//            $em->close();
+            
+            $data = new \stdClass();
+            $data->estado = true;
+            $data->valor = "Las tres entidades fueron insertadas con exito";
+             
+        
+            return new Response(json_encode($data)); 
+         }else{
+             
+            $data = new \stdClass();
+            $data->estado = false;
+            $data->valor = "Error al insertar los datos";
+             return new Response(json_encode($data)); 
          }
         
         
         
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /**
+     * @Route("/validar_correo/", name="validar_correo", options={"expose"=true})
+     * @Method("POST")
+     */
+    
+    
+      public function ValidarCorreoAction(Request $request) {
+        
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+         if($isAjax){
+             
+            $em = $this->getDoctrine()->getManager();
+            $response = new JsonResponse();
+            $datos = $this->get('request')->request->get('frm');       
+            $frm = json_decode($datos);
+            $correo = $frm->correoEmpresa;
+     
+            $dqlEmp = "SELECT COUNT(emp.id) AS res FROM DGAbgSistemaBundle:CtlEmpresa emp WHERE"
+                   . " emp.correoelectronico = :correo ";
+            
+            $dqlPer = "SELECT COUNT(per.id) AS resp FROM DGAbgSistemaBundle:AbgPersona per WHERE"
+                   . " per.correoelectronico = :correo ";
+            
+            
+            $resultadoEmpresa = $em->createQuery($dqlEmp)
+                        ->setParameters(array('correo'=>$correo))
+                        ->getResult();
+            
+            
+            $resultadoPersona = $em->createQuery($dqlPer)
+                        ->setParameters(array('correo'=>$correo))
+                        ->getResult();
+            
+            
+            
+            $rp=$resultadoPersona[0]['resp'];
+            $re=$resultadoEmpresa[0]['res'];
+                
+            $num = $rp+$re;
+            
+            if ($num==0){
+                
+                $data = true;
+            }else{
+                
+                $data =false;
+                
+                
+            }
+                
+             return new Response(json_encode($data)); 
+            
+            
+         }
+        
+        
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -231,38 +372,24 @@ class CtlEmpresaController extends Controller
             $tipo = $_FILES['file']['type'];
             $extension= explode('/',$tipo);
             $nombreimagen2.=".".$extension[1];
-            
-
-            
-            
-            $nombreEmpresa = $_POST["txtnombreEmpresa"];
-            $fechaFundacion = $_POST["fechafundacion"];
-            $tipoEmpresa = $_POST["tipoempresa"];
-            $descripcionEmpresa = $_POST["descripcionEmpresa"];
-            $direccionEmpresa= $_POST["direccionEmpresa"];
-            $sitioWebEmpresa = $_POST["sitioWebEmpresa"];
-            $correoEmpresa = $_POST["correoEmpresa"];
-            $telefono=$_POST["telefono"];
-            $movil = $_POST["movil"];
-            
- 
+         
          if ($nombreimagen != null){
               
                 $path = $this->container->getParameter('photo.perfil');
                 $fecha = date('Y-m-d His');
                 $nombreArchivo = $nombreimagen. "-" . $fecha.$nombreimagen2;
                 $resultado = move_uploaded_file($_FILES["file"]["tmp_name"], $path.$nombreArchivo);
-
+                
             }
            
-        $em = $this->getDoctrine()->getManager();
+            $em = $this->getDoctrine()->getManager();
         try {
            
             
-            $request = $this->getRequest();
-
-           
+           $request = $this->getRequest();
            return new Response(json_encode($data));
+           
+           
         } catch (\Exception $e) {
            
             $data['msj'] = $e->getMessage();
@@ -274,7 +401,12 @@ class CtlEmpresaController extends Controller
      
     
     
-    
+   private function setSecurePassword(&$entity, $contrasenia) {
+        $entity->setSalt(md5(time()));
+        $encoder = new \Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder('sha512', true, 10);
+        $password = $encoder->encodePassword($contrasenia, $entity->getSalt());
+        $entity->setPassword($password);
+    }  
     
     
     

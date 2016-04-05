@@ -29,7 +29,7 @@
 <div class="row">
     <h1>Registrar De empresa</h1>
     
-    <form id="frmEmpresaCompleto" role="form" enctype="multipart/form-data" method="POST">
+    <form id="frmEmpresaConFoto" role="form" enctype="multipart/form-data" method="POST">
     
         <div class="col-md-12">
             <div class="box-header with-border">
@@ -37,39 +37,49 @@
             </div>
         </div>
         <div class="clearfix"></div>
-    <div class="col-md-4">
+    <div class="col-md-5">
           <!-- general form elements -->
             <div class="box box-primary">
             
             <!-- /.box-header -->
             <!-- form start -->
         
-               
-              
+            <img id="img_destino" src="http://placehold.it/900x300" style="max-width: 100%; width: 100%; margin-top: 30px;">
+               <div class="form-group">
+                  <label for="imgen">Foto de perfil de la empresa</label>
+                  <input required type="file" name="file" id="imagen">
+             </div>
+             <label for="colorSelector">Seleccione un color </label>
+            <div class="form-group" id="colorSelector" style="background-image: url({{ asset('Resources/colorpicker/images/select.png') }});
+                 
+                
+                 width: 30px;
+                 height: 30px;
+                 background-repeat: repeat;
+                background-attachment: scroll;
+                background-position: center center;
+                background-clip: border-box;
+                background-origin: padding-box;
+                background-size: auto auto;
+                 
+                 ">
+                <div style="background-color: #0000ff"></div>
+                
+            </div>
             
-                <div class="form-group">
-                     <label for="correoEmpresa">Nombre de usuario:</label>
-                     <input type="text" class="form-control" id="ussername" name="ussername" >
-                </div>
-                <div class="form-group">
-                     <label for="correoEmpresa">Contraseña:</label>
-                     <input type="password" class="form-control" id="contrasenha" name="contrasenha">
-                </div>
-                <div class="form-group">
-                 <button class="btn btn-primary" >Registrarme</button>
-                </div>
             
-             
-              
             
-              
-              
+             <div class="form-group">
+                  <label for="nombreEmpresa">Nombre de la empresa</label>
+                  <input type="text" class="form-control" id="nombreEmpresa" name="nombreEmpresa">
+              </div>
+            
+            
               <div class="form-group">
                   <label for="fechafundacion">Fecha de fundacion</label>
                   <input type="date" class="form-control" id="fechafundacion" name="fechafundacion" placeholder="Año de fundacion">
               </div>
-              
-              
+
               <div class="form-group">
                   <label for="tipoempresa">Tipo de empresa</label>
                   
@@ -84,22 +94,8 @@
                   <textarea class="form-control" id="idnombre" name="descripcionEmpresa" placeholder="Descripcion general de la empresa">
                   </textarea>
                 </div>
-              
-		
-		
-		
-           
-          </div>
-          
-   </div>
-    <div class="col-md-4">
-          <!-- general form elements -->
-      
-            <!-- /.box-header -->
-            <!-- form start -->
-               
                   
-              <div class="form-group">
+                  <div class="form-group">
                   <label for="direccionEmpresa">Oficina central :</label>
                   <input type="text" class="form-control" id="direccionEmpresa" name="direccionEmpresa" placeholder="Direccion">
               </div>   
@@ -127,20 +123,16 @@
             
             
             
-               <img id="img_destino" src="http://placehold.it/900x300" style="max-width: 100%; width: 100%; margin-top: 30px;">
-               <div class="form-group">
-                  <label for="imgen">Foto de perfil de la empresa</label>
-                  <input required type="file" name="file" id="imagen">
-                </div>   
                
-               
-             {# <div class="form-group">
-                  <label for="fax">Fax:</label>
-                  <input type="text" class="form-control" id="fax" name="fax" placeholder="0000-0000">
-              </div>#}
-
+              
+		
+		
+		
            
           </div>
+          
+   </div>
+   
            </form> 
 
    </div>
