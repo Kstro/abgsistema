@@ -51,161 +51,97 @@ class DirectorioController extends Controller
         $longitud = $request->get('longitud');
         $paginaActual = $request->get('paginaActual');
         $busqueda = $request->get('busqueda');
+        $inicioRegistro = ($paginaActual*10)-10;
         
         $response = new JsonResponse();
 //        $start = $request->query->get('start');
 //        $draw = $request->query->get('draw');
 //        $longitud = $request->query->get('length');
 //        $busqueda = $request->query->get('search');
-        
+        //var_dump($inicioRegistro);
+        //var_dump($longitud);
         
         $em = $this->getDoctrine()->getEntityManager();
-        $expedientesTotal = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->findAll();
+        $expedientesTotal = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->findBy(array('estado'=>1));
         
-        $reg['inicio']=$inicio++;  
-        $reg['longitud'] = $longitud;
-        $reg['paginaActual']= $paginaActual;
-        $reg['numRegistros']= count($expedientesTotal);
-        $reg['pages']=floor(($reg['numRegistros']/10))+1;
-        $reg['data']= array();
         //var_dump($reg);
         //die();
         //var_dump($data);
+        $reg['inicio']=$inicio++;  
+        $reg['longitud'] = $longitud;
+        $reg['paginaActual']= $paginaActual;
+        $reg['data']= array();
         
+        if($busqueda!=''){        
+            $reg['numRegistros']= count($expedientesTotal);
+            $reg['pages']=floor(($reg['numRegistros']/10))+1;
         
-//        '<div class=\"item-directorio-nexo\" style=\"width: 100%\">
-//                                                    <div class=\"clearfix\"></div>
-//                                                    <div class=\"row\">
-//                                                        <div class=\"col-xs-2 col-sm-3 col-md-3 col-lg-2\">
-//                                                            <img src=\"{{asset(\"Resources/src/img/profile.png\")}}\" style=\"max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;\">
-//                                                        </div>
-//                                                        <div class=\" col-xs-10 col-sm-9 col-md-9 col-lg-10\">
-//                                                            <p style=\"margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;\" class=\"sans\"><strong>Marvin Jose Vigil</strong></p>
-//                                                            <p style=\"color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;\" class=\"sans\">Director Ejecutivo en Digitality Garage</p>
-//                                                            <div class=\"row\" style=\"margin-top: 2px; margin-bottom: 15px;\">
-//                                                                <div class=\"col-sm-4 col-xs-12\">
-//                                                                    <p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Telefono</strong></p>
-//                                                                    <p style=\"font-size: 11px; margin-bottom: 0px;\">+503 77971933</p>
-//                                                                </div>
-//                                                                <div class=\"col-sm-4 col-xs-12\">
-//                                                                    <p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Email</strong></p>
-//                                                                    <p style=\"font-size: 11px; margin-bottom: 0px;\">marvinvigil@gmail.com</p>
-//                                                                </div>
-//                                                                <div class=\"col-sm-4 col-xs-12\">
-//                                                                    <p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Sitio Web</strong></p>
-//                                                                    <p style=\"font-size: 11px; margin-bottom: 0px;\"><a href=\"http://www.ariaslaw.com\" target=\"_blank\">www.ariaslaw.com</a></p>
-//                                                                </div>
-//                                                                <div class=\"col-sm-12\">
-//                                                                    <span style=\"color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;\"><strong>Especialidades:</strong> </span>
-//                                                                    <span style=\"font-size: 11px;\">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span>
-//                                                                </div>
-//                                                                <div class=\"col-sm-12\" style=\"margin-top: -0px;\">
-//                                                                    <span style=\"font-size: 11px;\"><a href=\"#\">Ver perfil</a></span>
-//                                                                    <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span>
-//                                                                    <span style=\"font-size: 11px;\"><a href=\"#\">Contactar</a></span>
-//                                                                    <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span>
-//                                                                    <span style=\"font-size: 11px;\"><a href=\"#\">Recomendar</a></span>							
-//                                                                </div>
-//                                                            </div>
-//                                                        </div>
-//                                                    </div>
-//                                                </div>'
-                
-//        $dql = "SELECT "
-//                . "CONCAT('<div class=\"item-directorio-nexo\" style=\"width: 100%\">
-//                                <div class=\"clearfix\"></div>
-//                                <div class=\"row\">
-//                                    <div class=\"col-xs-2 col-sm-3 col-md-3 col-lg-2\">'
-//                                    ,'<img src=\"\" style=\"max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;\"></div>',
-//                                    '<div class=\" col-xs-10 col-sm-9 col-md-9 col-lg-10\">',
-//                                        '<p style=\"margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;\" class=\"sans\"><strong>',per.nombres,'</strong></p>',
-//                                        '<p style=\"color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;\" class=\"sans\">Director Ejecutivo en Digitality Garage</p>',
-//                                        '<div class=\"row\" style=\"margin-top: 2px; margin-bottom: 15px;\">',
-//                                        '<div class=\"col-sm-4 col-xs-12\">',
-//                                        '<p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Telefono</strong></p>',
-//                                        '<p style=\"font-size: 11px; margin-bottom: 0px;\">',IFNULL(per.telefonoFijo,' '),IFNULL(per.telefonoMovil,''),'</p>',
-//                                        '</div>',
-//                                        '<div class=\"col-sm-4 col-xs-12\">',
-//                                        '<p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Email</strong></p>',
-//                                        '<p style=\"font-size: 11px; margin-bottom: 0px;\">',IFNULL(per.correoelectronico,''),'</p>',
-//                                        '</div>',
-//                                        '<div class=\"col-sm-4 col-xs-12\">',
-//                                        '<p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Sitio Web</strong></p>',
-//                                        '<p style=\"font-size: 11px; margin-bottom: 0px;\"><a href=\"http://www.ariaslaw.com\" target=\"_blank\">www.ariaslaw.com</a></p></div>',
-//                                        '<div class=\"col-sm-12\">',
-//                                        '<span style=\"color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;\"><strong>Especialidades:</strong> </span>',
-//                                        '<span style=\"font-size: 11px;\">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span></div>',
-//                                        '<div class=\"col-sm-12\" style=\"margin-top: -0px;\">',
-//                                        '<span style=\"font-size: 11px;\"><a href=\"#\">Ver perfil</a></span>',
-//                                        '<span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"#\">Contactar</a></span>',
-//                                        '<span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"#\">Recomendar</a></span>',
-//                                        '</div></div></div></div></div>') "
-//                . "as datos FROM DGAbgSistemaBundle:AbgPersona per";
-        
-        $dql = "SELECT per.id,per.nombres, per.apellido, per.correoelectronico, per.telefonoFijo, per.telefonoMovil FROM DGAbgSistemaBundle:AbgPersona per "
-                . "WHERE CONCAT(per.nombres,per.apellido) LIKE :busqueda ";
-        $em = $this->getDoctrine()->getManager();
-        $reg['data'] = $em->createQuery($dql)
-                   ->setParameter('busqueda','%'.$busqueda.'%')
-                   ->getResult();
-        
-        $esp = array();
-        
-        $i=0;
-        foreach($reg['data'] as $i =>$row){
-            $reg['data'][$i]['especialidades']=array();
-            //var_dump($reg['data']);
-            $dql = "SELECT esp.nombreEspecialidad FROM DGAbgSistemaBundle:AbgPersonaSubespecialidad subper "
-                . "JOIN subper.abgSubespecialidad sub "
-                . "JOIN sub.abgEspecialidad esp "
-                . "JOIN subper.abgPersona per WHERE per.id=:idPersona";
+            $dql = "SELECT per.id,per.nombres, per.apellido, per.correoelectronico, per.telefonoFijo, per.telefonoMovil FROM DGAbgSistemaBundle:AbgPersona per "
+                    . "WHERE CONCAT(upper(per.nombres),' ',upper(per.apellido)) LIKE upper(:busqueda) ORDER BY per.nombres, per.apellido";
             $em = $this->getDoctrine()->getManager();
-            $especialidades = $em->createQuery($dql)
-                   ->setParameter('idPersona',$row['id'])
-                   ->getResult();
-            //var_dump($especialidades);
-            
-            
-            
-            
-            foreach($especialidades as $row2){
-                array_push($esp,$row2);
+            $reg['data'] = $em->createQuery($dql)
+                        ->setParameter('busqueda','%'.$busqueda.'%')
+                        ->setFirstResult($inicioRegistro)
+                        ->setMaxResults($longitud)
+                        ->getResult();
+
+            $reg['filtroRegistros']= count($reg['data']);
+            $esp = array();
+
+            $i=0;
+            foreach($reg['data'] as $i =>$row){
+                $reg['data'][$i]['especialidades']=array();
+                //var_dump($reg['data']);
+                $dql = "SELECT esp.nombreEspecialidad FROM DGAbgSistemaBundle:AbgPersonaSubespecialidad subper "
+                    . "JOIN subper.abgSubespecialidad sub "
+                    . "JOIN sub.abgEspecialidad esp "
+                    . "JOIN subper.abgPersona per WHERE per.id=:idPersona";
+                $em = $this->getDoctrine()->getManager();
+                $especialidades = $em->createQuery($dql)
+                       ->setParameter('idPersona',$row['id'])
+                       ->getResult();
+                
+                foreach($especialidades as $row2){
+                    array_push($esp,$row2);
+                }
+                if(count($especialidades)==0){
+                    //array_push($row['especidalidades'], 'N/A');
+                    $reg['data'][$i]['especialidades'] = 'N/A';
+                }
+                else{
+                    //array_push($reg['data'][$i]['especialidades'], $esp);
+                    $reg['data'][$i]['especialidades']=$esp;
+                }
+
+                $dql = "SELECT foto.src FROM DGAbgSistemaBundle:AbgFoto foto "
+                        . "JOIN foto.abgPersona per "
+                        . "WHERE per.id=:idPersona AND foto.tipoFoto=1";
+                $em = $this->getDoctrine()->getManager();
+                $foto = $em->createQuery($dql)
+                       ->setParameter('idPersona',$row['id'])
+                       ->getResult();
+               //var_dump($foto);
+               //die();
+                if(count($foto)!=0){
+                    $reg['data'][$i]['fotoPerfil']=$foto[0]['src'];
+                }
+               //var_dump($reg['data']);
+               //die();
+
+                $i++;
             }
-            
-            //var_dump($esp);
+            //var_dump($reg['data'][0]['especialidades'][0]['nombreEspecialidad']);
+            //var_dump($reg['data'][0]['especialidades'][1]['nombreEspecialidad']);
             //die();
 
-            
-            if(count($especialidades)==0){
-                array_push($row['especidalidades'], 'N/A');
-            }
-            else{
-                //array_push($reg['data'][$i]['especialidades'], $esp);
-                $reg['data'][$i]['especialidades']=$esp;
-            }
-            
-            
-            
-            $dql = "SELECT foto.src FROM DGAbgSistemaBundle:AbgFoto foto "
-                    . "JOIN foto.abgPersona per "
-                    . "WHERE per.id=:idPersona AND foto.tipoFoto=1";
-            $em = $this->getDoctrine()->getManager();
-            $foto = $em->createQuery($dql)
-                   ->setParameter('idPersona',$row['id'])
-                   ->getResult();
-           //var_dump($foto);
-           //die();
-            $reg['data'][$i]['fotoPerfil']=$foto[0]['src'];
-           //var_dump($reg['data']);
-           //die();
-            
-            $i++;
         }
-        //var_dump($reg['data'][0]['especialidades'][0]['nombreEspecialidad']);
-        //var_dump($reg['data'][0]['especialidades'][1]['nombreEspecialidad']);
-        //die();
-        
-        
+        else{
+            $reg['numRegistros']= 0;
+            $reg['pages']=0;
+            $reg['filtroRegistros']= 0;
+            $reg['data']=array();
+            $reg['pages']=0;
+        }
         
         
         //var_dump($reg['data']);
