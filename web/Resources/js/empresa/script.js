@@ -3,8 +3,6 @@ $(document).ready(function() {
     $("#prev").show();
    
   
- 
- 
     //queremos que esta variable sea global
     var fileExtension = "";
     var flag = true;
