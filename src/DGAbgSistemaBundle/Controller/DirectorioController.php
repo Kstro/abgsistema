@@ -74,8 +74,8 @@ class DirectorioController extends Controller
         $reg['data']= array();
         
         if($busqueda!=''){        
-            $reg['numRegistros']= count($abogadosTotal)+count($empresaTotal);
-            
+            $reg['numRegistros']= 0;
+            $reg['pages']=floor(($reg['numRegistros']/10))+1;
         
             //El tipo perfil es para saber si es empresa o abogado
             $dql = "SELECT per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, per.telefonoFijo as telefonoFijo, per.telefonoMovil as telefonoMovil, "
@@ -101,20 +101,55 @@ class DirectorioController extends Controller
                         ->setMaxResults($longitud)
                         ->getResult();
             
+            /*******************************/
+            /* Esto es para encontrar todos los registros */
+             
+             
+             $dql = "SELECT per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, per.telefonoFijo as telefonoFijo, per.telefonoMovil as telefonoMovil, "
+                    . " '' as sitioWeb, per.id, '1' as tipoPerfil "
+                    . "FROM DGAbgSistemaBundle:AbgPersona per "
+                    . "WHERE CONCAT(upper(per.nombres),' ',upper(per.apellido)) LIKE upper(:busqueda) ORDER BY per.nombres, per.apellido";
+            $em = $this->getDoctrine()->getManager();
+            $reg3['data'] = $em->createQuery($dql)
+                        ->setParameter('busqueda','%'.$busqueda.'%')
+                        ->getResult();
+            
+            
+            $dql = "SELECT emp.nombreEmpresa as nombres, '' as apellido, emp.correoelectronico as correoelectronico, emp.telefono as telefonoFijo, emp.movil as telefonoMovil, "
+                    . "emp.sitioWeb as sitioWeb, emp.id, '2' as tipoPerfil "
+                    . "FROM DGAbgSistemaBundle:Ctlempresa emp "
+                    . "WHERE upper(emp.nombreEmpresa) LIKE upper(:busqueda) ORDER BY emp.nombreEmpresa";
+            $em = $this->getDoctrine()->getManager();
+            $reg4['data'] = $em->createQuery($dql)
+                        ->setParameter('busqueda','%'.$busqueda.'%')
+                        ->getResult(); 
+             
+             
+             /*******************************/
+            
             foreach($reg2['data'] as $i =>$row){
             
                 array_push($reg['data'],$reg2['data'][$i]);
                 
             }
+            
+            foreach($reg4['data'] as $i =>$row){
+            
+                array_push($reg3['data'],$reg4['data'][$i]);
+                
+            }
+            
+            $reg['numRegistros']= count($reg3['data']);
 //            var_dump($reg['data']);
 //            die();
             sort($reg['data']);
+            //$reg['numRegistros']= count($reg['data']);
 //            var_dump($reg2['data']);
-            
+            //$reg['numRegistros']= count($reg['data']);
             //var_dump(count($reg['data']));
             //die();
-            $reg['filtroRegistros']= count($reg['data']);
-            $reg['pages']=floor(($reg['filtroRegistros']/10))+1;
+            
+            $reg['filtroRegistros'] = 10;/*count($reg['data']);*/
             $esp = array();
             
             $i=0;
@@ -164,6 +199,7 @@ class DirectorioController extends Controller
                     $i++;
                 }
             }
+            
             //var_dump($reg['data']);
             //die();  
             //var_dump($reg['data'][0]['especialidades'][0]['nombreEspecialidad']);

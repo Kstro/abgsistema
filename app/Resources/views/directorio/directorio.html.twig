@@ -438,7 +438,7 @@ else{ // Maximum length not reached so update the value of my_text counter
         });#}
                 
             $(document).on('click','.paginas', function(){
-                console.log($(this.attr('id')));
+                console.log($(this).attr('id'));
                 buscar(busqueda,inicio,longitud,paginaActual);
             });
             
@@ -476,9 +476,9 @@ else{ // Maximum length not reached so update the value of my_text counter
                                 $('#filtro').children().html();
                                 
                                 
-                                console.log(data);
-                                console.log(data.numRegistros);
-                                console.log(data.filtroRegistros);
+                                //console.log(data);
+                                console.log("num registros: "+data.numRegistros);
+                                console.log("filtro registros: "+data.filtroRegistros);
                                 $('.totalRegistros').html(data.numRegistros);
                                 $('.filtroRegistros').html(data.filtroRegistros);
                                 
@@ -552,8 +552,8 @@ else{ // Maximum length not reached so update the value of my_text counter
                                         else{
                                             especialidades = "N/A";
                                         }
-                                        console.log(data.data[i].especialidades);
-                                        console.log(especialidades);
+                                        //console.log(data.data[i].especialidades);
+                                        //console.log(especialidades);
 
 
 
@@ -562,7 +562,7 @@ else{ // Maximum length not reached so update the value of my_text counter
                                         
                                         {#$(busquedaEspecialidades).html(especialidades);
                                         $(busquedaSitioWeb).children().html(data.data[i].sitioweb);#}
-                                        console.log(data.data[i].fotoPerfil);
+                                        //console.log(data.data[i].fotoPerfil);
                                         cadena = '<div class=\"item-directorio-nexo\" style=\"width: 100%;\"> <div class=\"clearfix\"></div><div class=\"row\">\n\
                                         <div class=\"col-xs-2 col-sm-3 col-md-3 col-lg-2\"><img id=\"busquedaImagen'+(i+1)+'\" src=\"{{asset('Resources/src/img/')}}'+data.data[i].fotoPerfil+'\" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">\n\
                                         </div><div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10"><p id=\"busquedaNombre'+(i+1)+'\" style=\"margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;\" class=\"sans\"><strong>'+busquedaNombre+'</strong></p>\n\
@@ -582,7 +582,7 @@ else{ // Maximum length not reached so update the value of my_text counter
                                         
                                         $('#busquedaVacia').hide();
                                         
-                                        console.log(data.pages);
+                                        //console.log(data.pages);
                                         numPages=data.pages;
                                         var cadenaPaginas = '<li class="anterior" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-left\"></i></li>';
                                         for(k=1;k<=data.pages;k++){
