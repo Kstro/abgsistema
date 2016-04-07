@@ -59,7 +59,7 @@
    <div class="row">
 			<!-- LADO IZQUIERDO -->
                 {% for datos in ctlEmpresa %}
-                        <input type="hidden" id="empresaId"  value="6">
+                   
 			<div class="col-md-9">
 				<div class="bloque-main" style="padding: 5px; margin-top: 20px;">
 					<div class="main">
@@ -69,13 +69,13 @@
 					    	
 					    </div>
                                         <form id="frmEmpresaConFoto" role="form" enctype="multipart/form-data" method="POST">
-                                            
+                                             <input type="hidden" id="empresaId"  value="{{ctlEmpresaId }}" name="empresaId">
                                                 {% if abgFoto %}    
                                                     <div class="profile" style="background-color: blanchedalmond;" >
 
                                                             <div class="image-upload" >
                                                                 <label for="file-input" >
-                                                                    <img src="{{ asset('Resources/icons/photo.png') }}" style="width: 25px; height: 25px; margin-left: 5px; margin-top: 5px; " >
+                                                                    <img src="{{ asset('Resources/icons/photo.png') }}" style="width: 25px; height: 25px; margin-left: 5px; padding-top: 5px; position: absolute; " >
                                                                 </label>
                                                                 <input id="file-input"  required type="file" name="file">
 
@@ -86,7 +86,7 @@
                                                             <div>
 
                                                                         <center>
-                                                                            <img id="prev" src="{{ asset('') }}/{{ abgFoto[0].src}}" style="height:150px; width:150px;  "/>
+                                                                            <img id="prev" src="{{ asset('') }}{{ abgFoto[0].src}}" style="height:300px; width:300px;  "/>
                                                                         </center>
 
                                                             </div> 
@@ -105,15 +105,7 @@
 
                                                             </div>
 
-
-                                                            <div>
-
-                                                                        <center>
-                                                                            <img id="prev" src="" style="height:150px; width:150px;  "/>
-                                                                        </center>
-
-                                                            </div> 
-
+                                                           
 
                                                     </div>    
                                                        

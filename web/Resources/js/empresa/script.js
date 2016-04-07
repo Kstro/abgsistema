@@ -1,9 +1,8 @@
 $(document).ready(function() {
   
     $("#prev").show();
-    
-    
- $.fn.editable.defaults.mode = 'popup';
+   
+  
  
  
     //queremos que esta variable sea global
@@ -13,6 +12,8 @@ $(document).ready(function() {
     
     $(document).on("change","#file-input",function(){
         $("#prev").show();
+      
+        
         $("#saveImagen").hide();
         
         
@@ -32,7 +33,7 @@ $(document).ready(function() {
         console.log(fileExtension);
         
         
-        if (fileExtension == 'PNG' || fileExtension == 'png' ||fileExtension == 'JPG'|| fileExtension == 'jpg' && fileType =='imagen' || fileType =='image' )
+        if (fileExtension == 'PNG' || fileExtension == 'png' ||fileExtension == 'JPG'|| fileExtension == 'jpg' && fileType =='imagen' || fileType =='image' || fileType =='image/jpeg' )
         {
             flag = true;
         }else{
@@ -40,10 +41,11 @@ $(document).ready(function() {
         }
         
                 if (flag==false){
-                    alert("Archivo invalido, seleccione una imagen  ");
+                    alert("Archivo invalido, seleccione una imagen ");
                     $("#file-input").val("");
                     $("#prev").hide();
-                     $("#saveImagen").hide();
+                    $("#saveImagen").hide();
+                     
 
                 }else{  
                     
@@ -59,16 +61,17 @@ $(document).ready(function() {
                                        data:frm,
                                        url:Routing.generate('ingresar_foto'),
                                        type: 'POST',
-                                      //necesario para subir archivos via ajax
+                                       dataType: 'json',
+                                      
                                        cache: false,
                                        contentType: false,
                                        processData: false,
 
-                                       //una vez finalizado correctamente
-
+                                      
                                        success: function(data){
-                                           console.log(data);
                                            
+                                        $("#prev").attr('src', "/abgsistema/web/"+data.direccion);
+                                      
                                             
                                              
                                        }
@@ -93,19 +96,19 @@ $(document).ready(function() {
     
     
     
-    function mostrarImagen(input) {
-            if (input.files && input.files[0]) {
-                 var reader = new FileReader();
-                    reader.onload = function (e) {
-                          $('#prev').attr('src', e.target.result);
-                     }
-                    reader.readAsDataURL(input.files[0]);
-                  }
-              } 
-                             $("#file-input").change(function () {
-                                                    mostrarImagen(this);
-
-                                               });
+//    function mostrarImagen(input) {
+//            if (input.files && input.files[0]) {
+//                 var reader = new FileReader();
+//                    reader.onload = function (e) {
+//                          $('#prev').attr('src', e.target.result);
+//                     }
+//                    reader.readAsDataURL(input.files[0]);
+//                  }
+//              } 
+//                             $("#file-input").change(function () {
+//                                                    mostrarImagen(this);
+//
+//                                               });
        
             
          
