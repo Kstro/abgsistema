@@ -62,7 +62,8 @@ class DirectorioController extends Controller
         //var_dump($longitud);
         
         $em = $this->getDoctrine()->getEntityManager();
-        $expedientesTotal = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->findBy(array('estado'=>1));
+        $abogadosTotal = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->findBy(array('estado'=>1));
+        $empresaTotal = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->findBy(array('estado'=>1));
         
         //var_dump($reg);
         //die();
@@ -73,10 +74,13 @@ class DirectorioController extends Controller
         $reg['data']= array();
         
         if($busqueda!=''){        
-            $reg['numRegistros']= count($expedientesTotal);
-            $reg['pages']=floor(($reg['numRegistros']/10))+1;
+            $reg['numRegistros']= count($abogadosTotal)+count($empresaTotal);
+            
         
-            $dql = "SELECT per.id,per.nombres, per.apellido, per.correoelectronico, per.telefonoFijo, per.telefonoMovil FROM DGAbgSistemaBundle:AbgPersona per "
+            //El tipo perfil es para saber si es empresa o abogado
+            $dql = "SELECT per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, per.telefonoFijo as telefonoFijo, per.telefonoMovil as telefonoMovil, "
+                    . " '' as sitioWeb, per.id, '1' as tipoPerfil "
+                    . "FROM DGAbgSistemaBundle:AbgPersona per "
                     . "WHERE CONCAT(upper(per.nombres),' ',upper(per.apellido)) LIKE upper(:busqueda) ORDER BY per.nombres, per.apellido";
             $em = $this->getDoctrine()->getManager();
             $reg['data'] = $em->createQuery($dql)
@@ -85,51 +89,80 @@ class DirectorioController extends Controller
                         ->setMaxResults($longitud)
                         ->getResult();
             
-            $reg['filtroRegistros']= count($reg['data']);
-            $esp = array();
-
-            $i=0;
-            $reg['data'][$i]['especialidades']=array();
-            foreach($reg['data'] as $i =>$row){
-                $reg['data'][$i]['especialidades']=array();
-                //var_dump($reg['data']);
-                $dql = "SELECT esp.nombreEspecialidad FROM DGAbgSistemaBundle:AbgPersonaSubespecialidad subper "
-                    . "JOIN subper.abgSubespecialidad sub "
-                    . "JOIN sub.abgEspecialidad esp "
-                    . "JOIN subper.abgPersona per WHERE per.id=:idPersona";
-                $em = $this->getDoctrine()->getManager();
-                $especialidades = $em->createQuery($dql)
-                       ->setParameter('idPersona',$row['id'])
-                       ->getResult();
+            
+            $dql = "SELECT emp.nombreEmpresa as nombres, '' as apellido, emp.correoelectronico as correoelectronico, emp.telefono as telefonoFijo, emp.movil as telefonoMovil, "
+                    . "emp.sitioWeb as sitioWeb, emp.id, '2' as tipoPerfil "
+                    . "FROM DGAbgSistemaBundle:Ctlempresa emp "
+                    . "WHERE upper(emp.nombreEmpresa) LIKE upper(:busqueda) ORDER BY emp.nombreEmpresa";
+            $em = $this->getDoctrine()->getManager();
+            $reg2['data'] = $em->createQuery($dql)
+                        ->setParameter('busqueda','%'.$busqueda.'%')
+                        ->setFirstResult($inicioRegistro)
+                        ->setMaxResults($longitud)
+                        ->getResult();
+            
+            foreach($reg2['data'] as $i =>$row){
+            
+                array_push($reg['data'],$reg2['data'][$i]);
                 
-                foreach($especialidades as $row2){
-                    array_push($esp,$row2);
-                }
-                if(count($especialidades)==0){
-                    //array_push($row['especidalidades'], 'N/A');
-                    $reg['data'][$i]['especialidades']['nombreEspecialidad'] = "N/A";
-                }
-                else{
-                    //array_push($reg['data'][$i]['especialidades'], $esp);
-                    $reg['data'][$i]['especialidades']=$esp;
-                }
+            }
+//            var_dump($reg['data']);
+//            die();
+            sort($reg['data']);
+//            var_dump($reg2['data']);
+            
+            //var_dump(count($reg['data']));
+            //die();
+            $reg['filtroRegistros']= count($reg['data']);
+            $reg['pages']=floor(($reg['filtroRegistros']/10))+1;
+            $esp = array();
+            
+            $i=0;
+            
+            if(count($reg['data'])!=0){
+                $reg['data'][$i]['especialidades']=array();
+                foreach($reg['data'] as $i =>$row){
+                    //var_dump($row);
+                    $reg['data'][$i]['especialidades']=array();
+                    //var_dump($reg['data']);
+                    $dql = "SELECT esp.nombreEspecialidad FROM DGAbgSistemaBundle:AbgPersonaSubespecialidad subper "
+                        . "JOIN subper.abgSubespecialidad sub "
+                        . "JOIN sub.abgEspecialidad esp "
+                        . "JOIN subper.abgPersona per WHERE per.id=:idPersona";
+                    $em = $this->getDoctrine()->getManager();
+                    $especialidades = $em->createQuery($dql)
+                           ->setParameter('idPersona',$row['id'])
+                           ->getResult();
 
-                $dql = "SELECT foto.src FROM DGAbgSistemaBundle:AbgFoto foto "
-                        . "JOIN foto.abgPersona per "
-                        . "WHERE per.id=:idPersona AND foto.tipoFoto=1";
-                $em = $this->getDoctrine()->getManager();
-                $foto = $em->createQuery($dql)
-                       ->setParameter('idPersona',$row['id'])
-                       ->getResult();
-               //var_dump($foto);
-               //die();
-                if(count($foto)!=0){
-                    $reg['data'][$i]['fotoPerfil']=$foto[0]['src'];
-                }
-               //var_dump($reg['data']);
-               //die();
+                    foreach($especialidades as $row2){
+                        array_push($esp,$row2);
+                    }
+                    if(count($especialidades)==0){
+                        //array_push($row['especidalidades'], 'N/A');
+                        $reg['data'][$i]['especialidades']['nombreEspecialidad'] = "N/A";
+                    }
+                    else{
+                        //array_push($reg['data'][$i]['especialidades'], $esp);
+                        $reg['data'][$i]['especialidades']=$esp;
+                    }
 
-                $i++;
+                    $dql = "SELECT foto.src FROM DGAbgSistemaBundle:AbgFoto foto "
+                            . "JOIN foto.abgPersona per "
+                            . "WHERE per.id=:idPersona AND foto.tipoFoto=1";
+                    $em = $this->getDoctrine()->getManager();
+                    $foto = $em->createQuery($dql)
+                           ->setParameter('idPersona',$row['id'])
+                           ->getResult();
+                   //var_dump($foto);
+                   //die();
+                    if(count($foto)!=0){
+                        $reg['data'][$i]['fotoPerfil']=$foto[0]['src'];
+                    }
+                   //var_dump($reg['data']);
+                   //die();
+
+                    $i++;
+                }
             }
             //var_dump($reg['data']);
             //die();  

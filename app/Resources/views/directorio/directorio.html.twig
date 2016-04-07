@@ -7,6 +7,10 @@
         td{
             width:100%;
         }
+        
+        .paginas,.anterior,.siguiente{
+            cursor: pointer;
+        }
     </style>
 {#        <link rel="stylesheet" href="{{ asset('Resources/datatable/css/datatable.css') }}">#}
 {% endblock css %}
@@ -380,6 +384,7 @@ else{ // Maximum length not reached so update the value of my_text counter
             var busqueda=$('#searchBox').val();
             var longitud = 10; //numero de registros que se van a mostrar
             var paginaActual = 1; //numero de registros que se van a mostrar
+            var numPages = 0;
             //var contenidoOriginal = $('#registros').html();
             buscar(busqueda,inicio,longitud,paginaActual);
             $(document).on('click','#searchButton', function(){
@@ -434,21 +439,24 @@ else{ // Maximum length not reached so update the value of my_text counter
                 
             $(document).on('click','.paginas', function(){
                 console.log($(this.attr('id')));
-                buscar(busqueda,inicio,longitud,paginaActual)
+                buscar(busqueda,inicio,longitud,paginaActual);
             });
             
             $(document).on('click','.siguiente', function(){
-                paginaActual++;
-                console.log(paginaActual);
-                buscar(busqueda,inicio,longitud,paginaActual)
+                if(paginaActual==numPages){
+                    paginaActual++;
+                    console.log(paginaActual);
+                    buscar(busqueda,inicio,longitud,paginaActual);
+                }
             });
             
             $(document).on('click','.anterior', function(){
+                //console.log(paginaActual);
                 if(paginaActual!=1){
                     paginaActual--;
+                    console.log(paginaActual);
+                    buscar(busqueda,inicio,longitud,paginaActual);
                 }
-                console.log(paginaActual);
-                buscar(busqueda,inicio,longitud,paginaActual)
             });
                 
         });
@@ -496,7 +504,9 @@ else{ // Maximum length not reached so update the value of my_text counter
                                         var busquedaTelefono = "#busquedaTelefono"+(i+1);
                                         var telefonos = "";
                                         var busquedaCorreo = data.data[i].correoelectronico;
-                                        var busquedaSitioWeb = "#busquedaSitioWeb"+(i+1);
+                                        //var sitioWeb = data.data[i].sitioWeb;
+                                        //var busquedaSitioWeb = "#busquedaSitioWeb"+(i+1);
+                                        var busquedaSitioWeb = data.data[i].sitioWeb;;
                                         var busquedaEspecialidades = "#busquedaEspecialidades"+(i+1);
                                         
                                         
@@ -560,7 +570,7 @@ else{ // Maximum length not reached so update the value of my_text counter
                                         <div class=\"row\" style=\"margin-top: 2px; margin-bottom: 15px;\"><div class=\"col-sm-4 col-xs-12\"><p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Telefono</strong></p><p id=\"busquedaTelefono1\" style=\"font-size: 11px; margin-bottom: 0px;\">+503 '+telefonos+' </p>\n\
                                         </div><div class=\"col-sm-4 col-xs-12\"><p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p><p id="busquedaCorreo'+(i+1)+'" style="font-size: 11px; margin-bottom: 0px;">'+busquedaCorreo+'</p></div>\n\
                                         <div class=\"col-sm-4 col-xs-12\"><p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Sitio Web</strong></p>\n\
-                                        <p id=\"busquedaSitioWeb'+(i+1)+'\" style=\"font-size: 11px; margin-bottom: 0px;\"><a href=\"http://www.ariaslaw.com\" target=\"_blank\">'+busquedaSitioWeb+'</a></p></div>\n\
+                                        <p id=\"busquedaSitioWeb'+(i+1)+'\" style=\"font-size: 11px; margin-bottom: 0px;\"><a href=\"'+busquedaSitioWeb+'\" target=\"_blank\">'+busquedaSitioWeb+'</a></p></div>\n\
                                         <div class=\"col-sm-12\"><span style=\"color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;\"><strong>Especialidades:</strong> </span>\n\
                                         <span id=\"busquedaEspecialidades'+(i+1)+'\" style=\"font-size: 11px;\">'+especialidades+'</span>\n\
                                         </div><div class=\"col-sm-12\" style=\"margin-top: -0px;\"><span style=\"font-size: 11px;\"><a href=\"#\">Ver perfil</a></span>\n\
@@ -573,6 +583,7 @@ else{ // Maximum length not reached so update the value of my_text counter
                                         $('#busquedaVacia').hide();
                                         
                                         console.log(data.pages);
+                                        numPages=data.pages;
                                         var cadenaPaginas = '<li class="anterior" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-left\"></i></li>';
                                         for(k=1;k<=data.pages;k++){
                                             cadenaPaginas+='<li class="paginas" id="'+k+'" style=\"display: inline; padding: 7px;\"><strong>'+k+'</strong></li>';
@@ -589,7 +600,6 @@ else{ // Maximum length not reached so update the value of my_text counter
                                     console.log(data.numRegistros);
                                     console.log(data.filtroRegistros);
                                     $('.totalRegistros').html(data.numRegistros);
-
                                     $('.filtroRegistros').html(data.filtroRegistros);
                                     $('#registros').hide();
                                     $('#busquedaVacia').show();
@@ -597,18 +607,17 @@ else{ // Maximum length not reached so update the value of my_text counter
                                 }
                             },
                         error: function (data) {
-                            Lobibox.notify("error", {
-                                size: 'mini',
-                                msg: 'Los datos no fueron ingresados, intente más tarde. Si el error persiste pongase en contacto con el administrador del sistema.'
-                            });
-                            $('#registros').append(contenidoOriginal);
-                        }
-                    });
+                                Lobibox.notify("error", {
+                                    size: 'mini',
+                                    msg: 'Los datos no fueron ingresados, intente más tarde. Si el error persiste pongase en contacto con el administrador del sistema.'
+                                });
+                                $('#registros').append(contenidoOriginal);
+                            }
+                        });
                     }
                     else{
                         $('#registros').hide();
                         $('#busquedaVacia').show();
-                    
                     }
         }
     </script>
