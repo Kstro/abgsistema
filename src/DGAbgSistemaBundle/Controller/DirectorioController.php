@@ -84,11 +84,12 @@ class DirectorioController extends Controller
                         ->setFirstResult($inicioRegistro)
                         ->setMaxResults($longitud)
                         ->getResult();
-
+            
             $reg['filtroRegistros']= count($reg['data']);
             $esp = array();
 
             $i=0;
+            $reg['data'][$i]['especialidades']=array();
             foreach($reg['data'] as $i =>$row){
                 $reg['data'][$i]['especialidades']=array();
                 //var_dump($reg['data']);
@@ -106,7 +107,7 @@ class DirectorioController extends Controller
                 }
                 if(count($especialidades)==0){
                     //array_push($row['especidalidades'], 'N/A');
-                    $reg['data'][$i]['especialidades'] = 'N/A';
+                    $reg['data'][$i]['especialidades']['nombreEspecialidad'] = "N/A";
                 }
                 else{
                     //array_push($reg['data'][$i]['especialidades'], $esp);
@@ -130,6 +131,8 @@ class DirectorioController extends Controller
 
                 $i++;
             }
+            //var_dump($reg['data']);
+            //die();  
             //var_dump($reg['data'][0]['especialidades'][0]['nombreEspecialidad']);
             //var_dump($reg['data'][0]['especialidades'][1]['nombreEspecialidad']);
             //die();

@@ -529,15 +529,21 @@ else{ // Maximum length not reached so update the value of my_text counter
 
                                         //console.log(data.data[i].especialidades.length);
                                         var especialidades = "";
-                                        for(j=0;j<data.data[i].especialidades.length;j++){
-                                            if(j==0){
-                                                especialidades += data.data[i].especialidades[j].nombreEspecialidad;
-                                            }
-                                            else{
-                                                especialidades +=", "+data.data[i].especialidades[j].nombreEspecialidad;
+                                        if(data.data[i].especialidades!=='undefined'){
+                                            for(j=0;j<data.data[i].especialidades.length;j++){
+                                                if(j==0){
+                                                    especialidades += data.data[i].especialidades[j].nombreEspecialidad;
+                                                }
+                                                else{
+                                                    especialidades +=", "+data.data[i].especialidades[j].nombreEspecialidad;
+                                                }
                                             }
                                         }
-
+                                        else{
+                                            especialidades = "N/A";
+                                        }
+                                        console.log(data.data[i].especialidades);
+                                        console.log(especialidades);
 
 
 
