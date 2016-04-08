@@ -79,6 +79,39 @@ class CtlEmpresaController extends Controller
         $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
        
         
+        
+        
+        
+        $dql = "SELECT per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, per.telefonoFijo as telefonoFijo, per.telefonoMovil as telefonoMovil, "
+                    . " '' as sitioWeb, per.id, '1' as tipoPerfil "
+                    . "FROM DGAbgSistemaBundle:AbgPersona per "
+                    . "WHERE CONCAT(upper(per.nombres),' ',upper(per.apellido)) LIKE upper(:busqueda) ORDER BY per.nombres ASC, per.apellido ASC, per.correoelectronico ASC";
+            
+        
+        
+        
+         $dql = "SELECT cp.id , cp.nombre as nombreCp,cp.emailId,emp.nombre,emp.nombre as nombreE,date_format(cp.siguienteFechaContacto, '%d-%m-%Y') as siguienteFechaContacto,cp.telefono,cp.movil,cp.sector_mercado ,concat(concat('<input type=\"checkbox\" class=\"checkbox idclientepotencial\" id=\"',cp.id), '\">' as link FROM ERPAdminBundle:CrmClientePotencial cp  "
+                        . "JOIN cp.crmEmpresaCliente emp "
+                        . "WHERE upper(cp.nombre)  LIKE upper(:busqueda) OR upper(emp.nombre)  LIKE upper(:busqueda)"
+                        . "ORDER BY cp.nombre DESC ";
+         
+         
+            $registro_empleados = $em->createQuery($dql)->getArrayResult();
+            
+            
+//                        ->setParameter('busqueda','%'.$busqueda.'%')
+//                        ->setFirstResult($inicioRegistro)
+//                        ->setMaxResults($longitud)
+//                        ->getResult();
+        
+        
+        
+        
+        
+        
+        
+        
+        
         return $this->render('ctlempresa/perfilEmpresa.html.twig', array(
              'ctlEmpresa' => $result_empresa,
             'abgFoto' =>$result_foto,
