@@ -19,6 +19,7 @@
             <script src="{{asset('Resources/src/js/address.js')}}"></script>
                        
             <script src="{{ asset('Resources/src/js/main_perfil.js')}}"></script>
+             
 {% endblock %} 
 
 {% block navegacion_Y_body %}
@@ -45,43 +46,12 @@
 				<!-- SEPARADOR -->
 				<div style="margin-top: 15px;"></div>
 				<!-- PANEL DE NAVEGACION -->
-				<ul style="list-style: none; padding: 0;">
-					<a href="{{ path('perfil', { 'username':usuario}) }}" class="admin-menu-navi"><li style="height: 40px; line-height: 40px; border-top: 1px solid #e0e0e0;" class="sans admin-menu-navi-li active">
-						<span style="margin-left: 20px; margin-right: 13px;"><i class="fa fa-user" style="color: #7e7e7e;"></i></span> Mi perfil
-					</li></a>
-                                        <a href="{{ path('ajustes', { 'username':usuario}) }}" class="admin-menu-navi">
-					<li style="height: 40px; line-height: 40px; border-top: 1px solid #e0e0e0;" class="sans admin-menu-navi-li">
-						<span style="margin-left: 20px; margin-right: 13px;"><i class="fa fa-wrench" style="color: #7e7e7e;"></i></span> Ajustes Generales
-					</li></a>
-					<li style="height: 40px; line-height: 40px; border-top: 1px solid #e0e0e0;" class="sans admin-menu-navi-li">
-						<span style="margin-left: 20px; margin-right: 13px;"><i class="fa fa-credit-card" style="color: #7e7e7e;"></i></span> Subscripcion
-					</li>
-					<li style="height: 40px; line-height: 40px; border-top: 1px solid #e0e0e0;" class="sans admin-menu-navi-li">
-						<span style="margin-left: 20px; margin-right: 13px;"><i class="fa fa-certificate" style="color: #7e7e7e;"></i></span> Verificarme como abogado
-					</li>
-					<li style="height: 40px; line-height: 40px; border-top: 1px solid #e0e0e0;" class="sans admin-menu-navi-li">
-						<span style="margin-left: 20px; margin-right: 13px;"><i class="fa fa-university" style="color: #7e7e7e;"></i></span> Pagina de Empresa
-					</li>
-					<li style="height: 40px; line-height: 40px; border-top: 1px solid #e0e0e0;" class="sans admin-menu-navi-li">
-						<span style="margin-left: 20px; margin-right: 13px;"><i class="fa fa-rss" style="color: #7e7e7e;"></i></span> Blog Communitario
-					</li>
-					<li style="height: 40px; line-height: 40px; border-top: 1px solid #e0e0e0;" class="sans admin-menu-navi-li">
-						<span style="margin-left: 20px; margin-right: 13px;"><i class="fa fa-tasks" style="color: #7e7e7e;"></i></span> Centro de Preguntas
-						<span class="badge pull-right" style="margin-right: 10px; margin-top: 10px;" data-toggle="tooltip" data-placement="bottom" title="Cantidad de preguntas sin responder">4</span>
-					</li>
-					<li style="height: 40px; line-height: 40px; border-top: 1px solid #e0e0e0;" class="sans admin-menu-navi-li">
-						<span style="margin-left: 20px; margin-right: 13px;"><i class="fa fa-newspaper-o" style="color: #7e7e7e;"></i></span> Publicidad
-					</li>
-					<li style="height: 40px; line-height: 40px; border-top: 1px solid #e0e0e0;" class="sans admin-menu-navi-li">
-						<span style="margin-left: 20px; margin-right: 13px;"><i class="fa fa-cloud" style="color: #7e7e7e;"></i></span> Otros servicios
-					</li>
-					<li style="height: 40px; line-height: 40px; border-top: 1px solid #e0e0e0; border-bottom: 1px solid #e0e0e0;" class="sans admin-menu-navi-li">
-						<span style="margin-left: 20px; margin-right: 13px;"><i class="fa fa-question-circle" style="color: #7e7e7e;"></i></span> Ayuda
-					</li>
-				</ul>
+				
+                                  {% embed ':Layout:panelNavegacion.html.twig' %}{% endembed %}
+                                  <!-- Fin PANEL DE NAVEGACION -->
 			</div>
                                     
-			<div class="col-md-9" style="background-color: #fff; border-top-right-radius: 3px; 	border-bottom-right-radius: 3px;">
+			<div class="col-md-9" style="background-color: #fff; border-top-right-radius: 3px; 	border-bottom-right-radius: 3px;" >
 				   {% embed ':abgpersona:perfil.html.twig' %}{% endembed %}
 			</div>
                          {%endfor%}

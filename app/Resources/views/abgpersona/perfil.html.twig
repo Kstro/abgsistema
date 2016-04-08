@@ -23,264 +23,299 @@
     {% endblock %}
 
     {% block cuerpo %}
+
         <!-- body style="background-color: #f6f6f6;" -->
-        
 
-                <!-- LEFT SIDE -->
-               
 
-                    <!-- PRIMERA BLOQUE CON FOTO DE PERFIL -->
-                    <div class="bloque">
-                        <div class="row">
-                            <div class="col-sm-3">
- <input type="hidden" id="hPersona"  value="{{datos.id}}">
+        <!-- LEFT SIDE -->
 
-                                <img src=" {{asset('Resources/src/img/profile.png')}}" style="margin-top: 10px; margin-left: 10px; width: 200px; height: 200px; margin-bottom: 10px;" />
-                            </div>
-                          
-                                <div class="col-sm-9">
 
-                                    <p style="margin-top: 10px; font-size: 23px; margin-left: 10px; margin-bottom: 0px;" class="sans">
-                                        <strong>  {{datos.nombre~' '~datos.apellido}}</strong>
-                                        <img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
-                                    <p style="color: #777777; margin-left: 11px; margin-top: -3px; margin-bottom: 0px;" class="sansli">Director Ejecutivo en Digitality Garage</p>
-                                    <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">
-                                        <a href="#" id="txtMunicipio" data-type="address" data-pk="1" data-title="Departamento, municipio" data-placement="right" class="editable editable-click" ><b>Departamento</b> | Municipiio
-                                        <div id="ga"></>
-                                        </a></p>
-                                    <!-- ESPECIALIDAD(ES) -->
-                                    <div class="row">
-                                        <div class="col-xs-2" style="padding-right: 0;">
-                                            <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Especialidades</span>
-                                        </div>
-                                        <div class="col-xs-8" style="padding-left: 0;">
-                                            <span style="font-size:13px;">
-                                                <a href="#" id="checkEspecialida" data-type="checklist" data-placement="right" data-pk="1"  data-title="Especialida"></a>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <!-- TRABAJO(S) ACTUAL -->
-                                    <div class="row">
-                                        <div class="col-xs-2" style="padding-right: 0;">
-                                            <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Actual</span>
-                                        </div>
-                                        <div class="col-xs-8" style="padding-left: 0;">
-                                            <span style="font-size:13px;">Firma de Abogados Arias & Muñoz</span>
-                                        </div>
-                                    </div>
-                                    <!-- EDUCACION MAS RECIENTE -->
-                                    <div class="row">
-                                        <div class="col-xs-2" style="padding-right: 0;">
-                                            <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Educacion</span>
-                                        </div>
-                                        <div class="col-xs-8" style="padding-left: 0;">
-                                            <span style="font-size:13px;">California State University Fullerton</span>
-                                        </div>
-                                    </div>
-                                    <!-- EDUCACION MAS RECIENTE -->
-                                    <div class="row">
-                                        <div class="col-xs-2" style="padding-right: 0;">
-                                            <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Sitio Web</span>
-                                        </div>
-                                        <div class="col-xs-8" style="padding-left: 0;">
-                                            <span style="font-size:13px;"><a href="http://www.ariaslaw.com" target="_blank">www.ariaslaw.com</a></span>
-                                        </div>
-                                    </div>
+        <!-- PRIMERA BLOQUE CON FOTO DE PERFIL -->
 
-                                </div>
-                            </div>
+        <div class="row" >
+            <div class="col-sm-3">
+                <input type="hidden" id="hPersona"  value="{{datos.id}}">
+
+                <img src=" {{asset('Resources/src/img/profile.png')}}" style="margin-top: 10px; margin-left: 10px; width: 200px; height: 200px; margin-bottom: 10px;" />
+            </div>
+
+            <div class="col-sm-9" >
+
+                <p style="margin-top: 10px; font-size: 23px; margin-left: 10px; margin-bottom: 0px;" class="sans">
+                    <strong>  {{datos.nombre~' '~datos.apellido}}</strong>
+                    <img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
+                <p style="color: #777777; margin-left: 11px; margin-top: -3px; margin-bottom: 0px;" class="sansli">Director Ejecutivo en Digitality Garage</p>
+                <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">
+                    <a href="#" id="txtMunicipio" data-type="address" data-pk="1" data-title="Departamento, municipio" data-placement="right" class="editable editable-click" ><b>Departamento</b> | Municipiio
+                        <div id="ga"></>
+                    </a></p>
+                <!-- ESPECIALIDAD(ES) -->
+                <div class="row" >
+                    <div class="col-xs-2" style="padding-right: 0;">
+                        <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Especialidades</span>
+                    </div>
+                    <div class="col-xs-8" style="padding-left: 0;" >
+                        <span style="font-size:13px;">
+                            <a href="#" id="checkEspecialida" data-type="checklist" data-placement="right" data-pk="1"  data-title="Especialida"></a>
+                        </span>
+                    </div>
+                </div>
+                <!-- TRABAJO(S) ACTUAL -->
+                <div class="row" >
+                    <div class="col-xs-2" style="padding-right: 0;">
+                        <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Actual</span>
+                    </div>
+                    <div class="col-xs-8" style="padding-left: 0;">
+                        <span style="font-size:13px;">Firma de Abogados Arias & Muñoz</span>
+                    </div>
+                </div>
+                <!-- EDUCACION MAS RECIENTE -->
+                <div class="row">
+                    <div class="col-xs-2" style="padding-right: 0;">
+                        <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Educación</span>
+                    </div>
+                    <div class="col-xs-8" style="padding-left: 0;">
+                        <span style="font-size:13px;">
+                            <a href="#" id="txtEducacion" data-type="text" data-placement="right" data-pk="1"  data-title="Educación"></a>
+                        </span>
+                    </div>
+                </div>
+                <!-- EDUCACION MAS RECIENTE -->
+                <div class="row">
+                    <div class="col-xs-2" style="padding-right: 0;">
+                        <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Sitio Web</span>
+                    </div>
+                    <div class="col-xs-8" style="padding-left: 0;">
+                        <span style="font-size:13px;">
+                            <!--a href="#" id="sitioweb" data-type="text" data-placement="right" data-pk="1"  data-title="Sitio web"></a -->
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- INFORMACION DE CONTACTO -->
+    <div class="bloque-main">
+        <div class="row">
+            <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>DATOS DE CONTACTO</strong></p>
+            <p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
+        </div>
+        <!-- Contenido Aqui -->
+        <div class="row">
+            <div class="col-sm-3 col-xs-12">
+                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono(s)</strong></p>
+                <p style="font-size: 11px; margin-bottom: 0px;">
+                    +503  
+                    <a href="#" id="txtMovil" data-type="text" data-placement="right" data-title="Telefono movil">Movil</a>
+                    </br>+503 <a href="#" id="txtOficina" data-type="text" data-placement="right" data-title="Telefono de Oficina">Oficina</a></p>
+            </div>
+            <div class="col-sm-3 col-xs-12">
+                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email(s)</strong></p>
+                <p style="font-size: 11px; margin-bottom: 0px;">
+                    <a href="#" id="txtCorreo" data-type="text" data-placement="right" data-pk="1"  data-title="Sitio web"></a></p>
+            </div>
+            <div class="col-sm-3 col-xs-12">
+                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Dirección</strong></p>
+                <p style="font-size: 11px; margin-bottom: 0px;">
+                    <a href="#" id="txtDireccion" data-type="text" data-placement="right" data-title="Dirección">Dirección</a>
+                </p>
+            </div>
+            <div class="col-sm-3 col-xs-12">
+                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
+                <p style="font-size: 11px; margin-bottom: 0px;"> <a href="#" id="sitioweb" data-type="text" data-placement="right" data-pk="1"  data-title="Sitio web"></a></p>
+            </div>
+        </div>
+        <!-- Fin -->
+    </div> <!-- INFORMACION DE CONTACTO -->
+
+    <!-- EXTRACTO -->
+    <div class="bloque-main">
+        <div class="row">
+            <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>un poco sobre mi</strong></p>
+            <p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
+        </div>
+        <div style="padding-left: 3px; padding-right: 30px;">
+            <p class="text-justify"><a href="#" id="txtUnpoco" data-type="textarea" data-placement="right" data-title="Un poco sobre mi">Un poco sobre mi</a></p>
+            <p class="text-justify"></p>
+        </div>
+    </div>
+
+    <!-- ESPECIALIDADES -->
+    <div  class="bloque-main" >
+        <div class="row">
+            <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;">
+                <strong>ESPECIALIDADES LEGALES</strong></p>
+            <p class="pull-right">
+                <a id="btnespecialida"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar" >add</i></a>
+            </p>
+        </div>
+        <!-- Contenido Aqui -->
+        <hr>
+        <div class="row"  id="contenido" style="min-height:60px; max-height:450px;overflow: auto;">
+        {% embed ':abgpersona:especialidades.html.twig' %}{% endembed %}
+        <!--   <div class="col-xs-3" style="margin-top: .5em; margin-bottom: .5em;">
+               <ul class="prob">
+                   <li><strong>FAMILIAR</strong></li>
+                   <a href="#" class="prob"><li>Divorcios</li></a>
+                   <li>Casamientos</li>
+                   <li>Custodias</li>
+               </ul>
+           </div>
+           <div class="col-xs-3" style="margin-top: .5em; margin-bottom: .5em;">
+               <ul class="prob">
+                   <li><strong>IMPUESTOS</strong></li>
+                   <li>Divorcios</li>
+                   <li>Casamientos</li>
+                   <li>Custodias</li>
+               </ul>
+           </div>
+           <div class="col-xs-3" style="margin-top: .5em; margin-bottom: .5em;">
+               <ul class="prob">
+                   <li><strong>CRIMINAL</strong></li>
+                   <li>Divorcios</li>
+                   <li>Casamientos</li>
+                   <li>Custodias</li>
+               </ul>
+           </div>
+           <div class="col-xs-3" style="margin-top: .5em; margin-bottom: .5em;">
+               <ul class="prob">
+                   <li><strong>COMERCIAL</strong></li>
+                   <li>Divorcios</li>
+                   <li>Casamientos</li>
+                   <li>Custodias</li>
+               </ul>
+           </div>  -->
+    </div>
+    <!-- Fin -->
+</div>
+
+<!-- EXPERIENCIA -->
+<div class="bloque-main" id="contenedorExp">
+    <div class="row" style="margin-bottom: 10px;">
+        <p class="sans text-uppercase pull-left subtitulo"><strong>EXPERIENCIA</strong></p>
+        <p class="pull-right">
+            <a id="btnExperiencia">
+                <i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i>
+            </a>
+        </p>
+    </div>
+    <!-- Contenido Aqui -->
+    <hr>
+
+    <div class="experiencia" id="contenidoExp" >
+        <div id="consultas">
+            {%if RegistradaExperiencia|default is not empty %}
+                {% for datos in RegistradaExperiencia %}
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <img src="http://placehold.it/50x50">
                         </div>
-
-                        <!-- INFORMACION DE CONTACTO -->
-                        <div class="bloque-main">
-                            <div class="row">
-                                <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>DATOS DE CONTACTO</strong></p>
-                                <p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
-                            </div>
-                            <!-- Contenido Aqui -->
-                            <div class="row">
-                                <div class="col-sm-3 col-xs-12">
-                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono(s)</strong></p>
-                                    <p style="font-size: 11px; margin-bottom: 0px;">
-                                        +503  
-                                        <a href="#" id="txtMovil" data-type="text" data-placement="right" data-title="Telefono movil">Movil</a>
-                                        </br>+503 <a href="#" id="txtOficina" data-type="text" data-placement="right" data-title="Telefono de Oficina">Oficina</a></p>
-                                </div>
-                                <div class="col-sm-3 col-xs-12">
-                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email(s)</strong></p>
-                                    <p style="font-size: 11px; margin-bottom: 0px;">{{datos.correo}}</p>
-                                </div>
-                                <div class="col-sm-3 col-xs-12">
-                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Dirección</strong></p>
-                                    <p style="font-size: 11px; margin-bottom: 0px;">
-                                         <a href="#" id="txtDireccion" data-type="text" data-placement="right" data-title="Dirección">Dirección</a>
-                                    </p>
-                                </div>
-                                <div class="col-sm-3 col-xs-12">
-                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
-                                    <p style="font-size: 11px; margin-bottom: 0px;"><a href="http://www.ariaslaw.com" target="_blank">www.ariaslaw.com</a></p>
-                                </div>
-                            </div>
-                            <!-- Fin -->
-                        </div> <!-- INFORMACION DE CONTACTO -->
-                  
-                    <!-- EXTRACTO -->
-                    <div class="bloque-main">
-                        <div class="row">
-                            <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>un poco sobre mi</strong></p>
-                            <p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
-                        </div>
-                        <div style="padding-left: 3px; padding-right: 30px;">
-                            <p class="text-justify"><a href="#" id="txtUnpoco" data-type="textarea" data-placement="right" data-title="Un poco sobre mi">Un poco sobre mi</a></p>
-                            <p class="text-justify"></p>
+                        <div class="col-xs-11">
+                            <span style="font-size: 15px;">{{datos.nombre}}</span> 
+                            <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i>
+                            </br>
+                            <span style="font-size: 13px;">{{datos.puesto}}</br> - Presente (14 años 9 meses) | El Salvador </span>
+                            <p style="width: 90%; margin-top: 5px;">{{datos.funcion}}</p>
                         </div>
                     </div>
+                {%endfor%}
+            {%endif%}
+            <div class="row">
+                <div class="col-xs-1">
+                    <img src="http://placehold.it/50x50">
+                </div>
+                <div class="col-xs-11">
+                    <span style="font-size: 15px;">Digitality Garage SA de CV</span> <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i> </br>
+                    <span style="font-size: 13px;">Director Ejecutivo y Head de Marketing </br> Enero 2001 - Presente (14 años 9 meses) | El Salvador </span>
+                    <p style="width: 90%; margin-top: 5px;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin -->
+</div>
 
-                    <!-- ESPECIALIDADES -->
-                    <div class="bloque-main">
-                        <div class="row">
-                            <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>ESPECIALIDADES LEGALES</strong></p>
-                            <p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
-                        </div>
-                        <!-- Contenido Aqui -->
-                        <div class="row text-center">
-                            <div class="col-xs-3" style="margin-top: .5em; margin-bottom: .5em;">
-                                <ul class="prob">
-                                    <li><strong>FAMILIAR</strong></li>
-                                    <a href="#" class="prob"><li>Divorcios</li></a>
-                                    <li>Casamientos</li>
-                                    <li>Custodias</li>
-                                </ul>
-                            </div>
-                            <div class="col-xs-3" style="margin-top: .5em; margin-bottom: .5em;">
-                                <ul class="prob">
-                                    <li><strong>IMPUESTOS</strong></li>
-                                    <li>Divorcios</li>
-                                    <li>Casamientos</li>
-                                    <li>Custodias</li>
-                                </ul>
-                            </div>
-                            <div class="col-xs-3" style="margin-top: .5em; margin-bottom: .5em;">
-                                <ul class="prob">
-                                    <li><strong>CRIMINAL</strong></li>
-                                    <li>Divorcios</li>
-                                    <li>Casamientos</li>
-                                    <li>Custodias</li>
-                                </ul>
-                            </div>
-                            <div class="col-xs-3" style="margin-top: .5em; margin-bottom: .5em;">
-                                <ul class="prob">
-                                    <li><strong>COMERCIAL</strong></li>
-                                    <li>Divorcios</li>
-                                    <li>Casamientos</li>
-                                    <li>Custodias</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- Fin -->
-                    </div>
+<!-- EDUCACION -->
+<div class="bloque-main">
+    <div class="row">
+        <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>EDUCACION</strong></p>
+        <p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
+    </div>
+    <!-- Contenido Aqui -->
 
-                    <!-- EXPERIENCIA -->
-                    <div class="bloque-main">
-                        <div class="row" style="margin-bottom: 10px;">
-                            <p class="sans text-uppercase pull-left subtitulo"><strong>EXPERIENCIA</strong></p>
-                            <p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
-                        </div>
-                        <!-- Contenido Aqui -->
-                        <div class="experiencia">
-                            <div class="row">
-                                <div class="col-xs-1">
-                                    <img src="http://placehold.it/50x50">
-                                </div>
-                                <div class="col-xs-11">
-                                    <span style="font-size: 15px;">Digitality Garage SA de CV</span> <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i> </br>
-                                    <span style="font-size: 13px;">Director Ejecutivo y Head de Marketing </br> Enero 2001 - Presente (14 años 9 meses) | El Salvador </span>
-                                    <p style="width: 90%; margin-top: 5px;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Fin -->
-                    </div>
+    <!-- Fin -->
+</div>
 
-                    <!-- EDUCACION -->
-                    <div class="bloque-main">
-                        <div class="row">
-                            <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>EDUCACION</strong></p>
-                            <p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
-                        </div>
-                        <!-- Contenido Aqui -->
+<!-- LENGUAJES -->
+<div class="bloque-main">
+    <div class="row">
+        <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>IDIOMAS</strong></p>
+        <p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
+    </div>
+    <!-- Contenido Aqui -->
+    <p class="sans">INGLES</p>
+    <!-- Fin -->
+</div>
 
-                        <!-- Fin -->
-                    </div>
+<!-- ORGANIZACIONES -->
+<div class="bloque-main">
+    <div class="row">
+        <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>ORGANIZACIONES</strong></p>
+        <p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
+    </div>
+    <!-- Contenido Aqui -->
 
-                    <!-- LENGUAJES -->
-                    <div class="bloque-main">
-                        <div class="row">
-                            <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>IDIOMAS</strong></p>
-                            <p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
-                        </div>
-                        <!-- Contenido Aqui -->
-                        <p class="sans">INGLES</p>
-                        <!-- Fin -->
-                    </div>
+    <!-- Fin -->
+</div>
 
-                    <!-- ORGANIZACIONES -->
-                    <div class="bloque-main">
-                        <div class="row">
-                            <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>ORGANIZACIONES</strong></p>
-                            <p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
-                        </div>
-                        <!-- Contenido Aqui -->
+<!-- ORGANIZACIONES -->
+<div class="bloque-main">
+    <div class="row">
+        <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>RESPUESTAS EN LA PLATAFORMA</strong></p>
+        <p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
+    </div>
 
-                        <!-- Fin -->
-                    </div>
+    <!-- Fin -->
+</div>
 
-                    <!-- ORGANIZACIONES -->
-                    <div class="bloque-main">
-                        <div class="row">
-                            <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>RESPUESTAS EN LA PLATAFORMA</strong></p>
-                            <p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
-                        </div>
-                       
-                        <!-- Fin -->
-                    </div>
+<!-- ORGANIZACIONES -->
+<div class="bloque-main">
+    <div class="row">
+        <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>certificaciones</strong></p>
+        <p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
+    </div>
+    <!-- Contenido Aqui -->
 
-                    <!-- ORGANIZACIONES -->
-                    <div class="bloque-main">
-                        <div class="row">
-                            <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>certificaciones</strong></p>
-                            <p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
-                        </div>
-                        <!-- Contenido Aqui -->
+    <!-- Fin -->
+</div>
 
-                        <!-- Fin -->
-                    </div>
+<!-- ORGANIZACIONES -->
+<div class="bloque-main">
+    <div class="row">
+        <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>CURSOS Y SEMINARIOS</strong></p>
+        <p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
+    </div>
 
-                    <!-- ORGANIZACIONES -->
-                    <div class="bloque-main">
-                        <div class="row">
-                            <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>CURSOS Y SEMINARIOS</strong></p>
-                            <p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
-                        </div>
-                      
-                    </div>
+</div>
 
-                    <!-- ORGANIZACIONES -->
-                    <div class="bloque-main">
-                        <div class="row">
-                            <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>ENTRADAS DE BLOG</strong></p>
-                            <p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
-                        </div>
-                  
-                    </div>
-    <div style="height: 10px;"></div>
+<!-- ORGANIZACIONES -->
+<div class="bloque-main" id="contenido" style="height:300px;overflow: auto;">
+    <div class="row">
+        <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;"><strong>ENTRADAS DE BLOG</strong></p>
+        <p class="pull-right"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i></p>
+    </div>
 
-    <script type="text/javascript">
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
-    </script>
+</div>
+<div style="height: 10px;"></div>
+
+<script type="text/javascript">
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
 {% endblock %}
 {% endblock %}
