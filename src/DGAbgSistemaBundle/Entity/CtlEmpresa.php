@@ -131,6 +131,18 @@ class CtlEmpresa
      * @ORM\ManyToMany(targetEntity="AbgPersona", mappedBy="ctlEmpresa")
      */
     private $abgPersona;
+    
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="color", type="string", length=60, nullable=false)
+     */
+    private $color;
+    
+    
+    
+    
+    
 
     /**
      * Constructor
@@ -505,4 +517,35 @@ class CtlEmpresa
     {
         return $this->abgPersona;
     }
+    
+    
+    
+     /**
+     * Set color
+     *
+     * @param string $color
+     * @return CtlEmpresa
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    /**
+     * Get color
+     *
+     * @return string 
+     */
+    public function getColor()
+    {
+        return $this->color;
+    }
+    
+    
+    
+    
+    
+    
 }

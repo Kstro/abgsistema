@@ -69,7 +69,7 @@ class CtlEmpresaController extends Controller
         $ctlEmpresaId =6;
       
         $em = $this->getDoctrine()->getManager();
-        $dqlempresa = "SELECT  e.nombreEmpresa AS nombreEmpresa, e.correoelectronico as correoEmpresa, e.direccion, e.sitioWeb,e.movil, e.telefono"
+        $dqlempresa = "SELECT  e.nombreEmpresa AS nombreEmpresa, e.correoelectronico as correoEmpresa, e.direccion, e.sitioWeb,e.movil, e.telefono, e.color"
                 . " FROM DGAbgSistemaBundle:CtlEmpresa e WHERE e.id=" . $ctlEmpresaId;
         
         $dqlfoto = "SELECT fot.src as src "
@@ -77,8 +77,7 @@ class CtlEmpresaController extends Controller
         
         $result_empresa = $em->createQuery($dqlempresa)->getArrayResult();
         $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
-        
-        //var_dump($result_foto);
+       
         
         return $this->render('ctlempresa/perfilEmpresa.html.twig', array(
              'ctlEmpresa' => $result_empresa,
@@ -262,6 +261,7 @@ class CtlEmpresaController extends Controller
             $ctlEmpresa->setDireccion(null);
             $ctlEmpresa->setDescripcion(null);
             $ctlEmpresa->setCorreoelectronico(null);
+            $ctlEmpresa->setColor(null);
             
             
             
@@ -333,6 +333,9 @@ class CtlEmpresaController extends Controller
         
         
     }
+   
+    
+    
     
 
     /**
@@ -441,7 +444,7 @@ class CtlEmpresaController extends Controller
 
                      $source = \Tinify\fromFile($path1.$nombreSERVER);
                      $resized = $source->resize(array(
-                         "method" => "fit",
+                         "method" => "cover",
                          "width" => 300,
                          "height" => 300
                      ));
@@ -452,8 +455,7 @@ class CtlEmpresaController extends Controller
                 $numero =unlink($path1.$nombreSERVER);
                 
                 
-                
-                
+
                 
                 if ($numero){
                
@@ -503,7 +505,7 @@ class CtlEmpresaController extends Controller
                                                 $entity[0]->setEstado(1);
                                                 $em->merge($entity[0]);
                                                 $em->flush();
-                                                 $src = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("ctlEmpresa" =>$idEmpresa,"tipoFoto"=>1));
+                                                $src = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("ctlEmpresa" =>$idEmpresa,"tipoFoto"=>1));
                                                 $direccion = $src[0]->getSrc();
                                                 $direccionParaAjax = str_replace("\\","" , $direccion);
                                                 $data['direccion']=$direccionParaAjax;
@@ -544,7 +546,7 @@ class CtlEmpresaController extends Controller
     
 
     
- /**
+    /**
      * @Route("/edit/empresa", name="edit_empresa", options={"expose"=true})
      * @Method("POST")
      */
@@ -595,7 +597,7 @@ class CtlEmpresaController extends Controller
            
           $data->estado = true;
             
-            return new Response(json_encode($data));
+           return new Response(json_encode($data));
         } catch (\Exception $e) {
             
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
@@ -605,10 +607,38 @@ class CtlEmpresaController extends Controller
     
     
     
+    /**
+     * @Route("/edit/colorEmpresa", name="edit_color", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function EditColorAction() {
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+
+        try {
+          
+           
+            
+            $empresa = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($request->get('idEmpresa'));
+            $colorEmpresa = $request->get('colorEmpresa');
+            $empresa->setColor($colorEmpresa);
+             $em->merge($empresa);
+             $em->flush();
+             
+             $dato = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlEmpresa')->find($empresa);
+             $colorBase=$dato->getColor();
+             $data['color']=$colorBase;
+          
+            
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+            
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        } 
     
     
-    
-    
+     }
     
     
 

@@ -69,7 +69,7 @@ $(document).ready(function() {
                                        success: function(data){
                                            
                                         $("#prev").attr('src', "/abgsistema/web/"+data.direccion);
-                                      
+                                        
                                             
                                              
                                        }
@@ -91,31 +91,6 @@ $(document).ready(function() {
     
     
     
-    
-    
-    
-//    function mostrarImagen(input) {
-//            if (input.files && input.files[0]) {
-//                 var reader = new FileReader();
-//                    reader.onload = function (e) {
-//                          $('#prev').attr('src', e.target.result);
-//                     }
-//                    reader.readAsDataURL(input.files[0]);
-//                  }
-//              } 
-//                             $("#file-input").change(function () {
-//                                                    mostrarImagen(this);
-//
-//                                               });
-       
-            
-         
-         
-            
-        
-             
-             
-   
 
 $(document).on("submit","#frmEmpresaUsuarioPersona",function(e) {
         
@@ -183,65 +158,6 @@ $(document).on("submit","#frmEmpresaUsuarioPersona",function(e) {
 
  
  
-    
-    
-
-
-
-//$(document).on("click","#saveImagen",function() {
-	
-        
-        
-        //$(document).on("submit","#frmEmpresaConFoto",function(e) {
-	//e.preventDefault();
-    	//información del formulario
-        
-//        var frm = new FormData($("#frmEmpresaConFoto")[0]);
-//        console.log(frm);
-//        if (flag != false) {
-//            
-//     $.ajax({ 
-//            data:frm,
-//            url:Routing.generate('ingresar_foto'),
-//            type: 'POST',
-//           //necesario para subir archivos via ajax
-//            cache: false,
-//            contentType: false,
-//            processData: false,
-//           
-//            //una vez finalizado correctamente
-//            
-//            
-//            
-//            success: function(data){
-//                console.log(data);
-                
-//               data = jQuery.parseJSON(data);//convirtiendo datos
-//                 var mensaje = "Alumno Guardado Correctamento. Espere un momento...";
-//                if (data.estado == true) {
-//                    GetAlert("Éxito",mensaje,"../recursos/imagenes/Ok-icon.png",3000);
-//                    setTimeout(function() {
-//                        location.reload();
-//                    }, 1800);
-//                }else{
-//                    alertify.error(data.mensaje);
-//                }
-//            }
-//        });
-//
-//   
-//            
-//    	}
-	
-//});
-        
-
-//});
-
-
-
-
-       
 
  
     
@@ -258,20 +174,6 @@ $("#contrasenha").strength();
 
 
 
- $('#colorSelector  ').ColorPicker({
-	color: '#0000ff',
-	onShow: function (colpkr) {
-		$(colpkr).fadeIn(500);
-		return false;
-	},
-	onHide: function (colpkr) {
-		$(colpkr).fadeOut(500);
-		return false;
-	},
-	onChange: function (hsb, hex, rgb) {
-		$('#colorSelector div').css('backgroundColor', '#' + hex);
-	}
-}); 
 
 
 //La parte del X-Editable
@@ -446,7 +348,47 @@ $("#contrasenha").strength();
     }); 
     
     
+    
+    var exa;
+   $('#colorSelector').ColorPicker({
+	color: '#4ec24e',
+	onShow: function (colpkr) {
+		$(colpkr).fadeIn(500);
+                $(".colorpicker").css('float','right');
+		return true;
+	},
+	onHide: function (colpkr,hex) {
+		$(colpkr).fadeOut(500);
+//                alert(exa);
+                    var empresaId= $("#empresaIdColor").val();
+                    $.ajax({
+                                type: 'POST',
+                                async: false,
+                                dataType: 'json',
+                                data: {colorEmpresa: exa, idEmpresa: $('input#empresaIdColor').val()},
+                                 url: Routing.generate('edit_color'),
+                                success: function (data)
+                                {
+                                     
+                                     $('#colorBanner div').css('backgroundColor', '#' +  data.color);
 
+
+                                },
+                                error: function (xhr, status)
+                                {
+                                    alert('Disculpe, existió un problema');
+
+                                }
+                            });
+                            
+                            
+		return false;
+	},
+	onChange: function (hsb, hex, rgb) {
+		$('#colorSelector div').css('backgroundColor', '#' + hex);
+                exa = '#' + hex;
+	}
+});
 
 
 
