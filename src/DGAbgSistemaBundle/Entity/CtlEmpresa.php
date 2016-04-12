@@ -244,7 +244,7 @@ class CtlEmpresa
 
         return $this;
     }
-
+    
     /**
      * Get fechaFundacion
      *

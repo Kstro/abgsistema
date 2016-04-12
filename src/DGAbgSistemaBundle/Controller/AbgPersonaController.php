@@ -144,6 +144,7 @@ class AbgPersonaController extends Controller {
      * @Route("/usuario/get", name="usuario", options={"expose"=true})
      * @Method("GET")
      */
+    
     public function UsuarioAction() {
         $em = $this->getDoctrine()->getManager();
         $em->getConnection()->beginTransaction();
@@ -161,14 +162,15 @@ class AbgPersonaController extends Controller {
             $abgPersona->setEstado('1');
             $em->persist($abgPersona);
             $em->flush();
+            
             $idPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgPersona')->find($abgPersona->getId());
 
             $ctlUsuario->setUsername($datos['txtUsername']);
             $ctlUsuario->setPassword($datos['txtPassword']);
-
+            
             $ctlUsuario->setEstado('1');
             $ctlUsuario->setRhPersona($idPersona);
-
+            
             $this->setSecurePassword($ctlUsuario, $datos['txtPassword']);
             $em->persist($ctlUsuario);
             $em->flush();
@@ -189,6 +191,9 @@ class AbgPersonaController extends Controller {
             // echo $e->getMessage();   
         }
     }
+    
+    
+    
 
     private function setSecurePassword(&$entity, $contrasenia) {
         $entity->setSalt(md5(time()));
@@ -218,6 +223,14 @@ class AbgPersonaController extends Controller {
             $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+            
+            //Esta consulta  es la que jala el src de la foto dejela
+            
+            $dqlfoto = "SELECT fot.src as src "
+                . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=1";
+            $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+            
+            
 
             if (($idPersona != null)) {
 
@@ -243,6 +256,8 @@ class AbgPersonaController extends Controller {
 
             $Experiencia= $em->createQuery($dql_experiencia)->getArrayResult();
             
+           
+            
             return $this->render('abgpersona/panelAdministrativoAbg.html.twig', array(
                         'abgPersona' => $result_persona,
                         'usuario' => $username,
@@ -250,6 +265,9 @@ class AbgPersonaController extends Controller {
                         'RegistrosubEsp' => $result_sub,
                         'RegistroEspecialida' => $result_especialida,
                         'RegistradaExperiencia'=>  $Experiencia,
+                //Este  array es el que manda el link de la foto
+                        'abgFoto' =>$result_foto,
+                
             ));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";

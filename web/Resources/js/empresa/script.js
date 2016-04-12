@@ -1,5 +1,8 @@
+
+var tipoEmpresa = [];
+
 $(document).ready(function() {
-  
+    
     $("#prev").show();
    
   
@@ -104,6 +107,7 @@ $(document).on("submit","#frmEmpresaUsuarioPersona",function(e) {
 		},
            url:Routing.generate('validar_correo'),
            type: 'POST',
+           dataType: 'json',
  
 
            success: function(data){
@@ -119,17 +123,18 @@ $(document).on("submit","#frmEmpresaUsuarioPersona",function(e) {
                                        },
                                    url:Routing.generate('ingresar_usuarioEmpresa'),
                                   type: 'POST',
+                                   dataType: 'json',
 
 
                                  success: function(data){
-                                      data = jQuery.parseJSON(data);//convirtiendo datos
-                       //                 var mensaje = "Alumno Guardado Correctamento. Espere un momento...";
+                                     alert(data.estado);
                                 if (data.estado == true) {
                                         
-                                        var url=Routing.generate('ctlempresa_dashbord');
+                                        var url=Routing.generate('admin_abg',{username: data.username});
                                         window.open(url,"_self"); 
+                                        
                                        }else{
-                                           alert(data.valor);
+                                           alert(data.estado);
                                      }
                                    }
                            });
@@ -237,6 +242,10 @@ $("#contrasenha").strength();
     
     
     
+    
+  
+  
+  
     $('#txtCorreoElectronico').editable();
  
     $('#txtCorreoElectronico').on('save', function (e, params) {
@@ -388,9 +397,127 @@ $("#contrasenha").strength();
 		$('#colorSelector div').css('backgroundColor', '#' + hex);
                 exa = '#' + hex;
 	}
-});
+    });
+    
+    
+    
+                 $.ajax({
+                                type: 'POST',
+                                async: false,
+                                dataType: 'json',
+                             
+                                 url: Routing.generate('mostarTipoEmpresa'),
+                                success: function (data)
+                                {
+                                    
+                                                                    
+                                    $.each(data.valores,function (i,values)  {
+                                      
+                                          
+                                          tipoEmpresa.push(values['nombre']);
 
+                                     });
 
+                                     
+                                        
+                                        
+
+                                }
+                                
+                            });
+
+   
+        
+        
+        
+$('#tipoEmpresa').editable({
+     value: 2,    
+        source:eval(tipoEmpresa)
+       
+    });
+    
+  $('#tipoEmpresa').on('save', function (e, params) {
+      
+      
+      
+        $.ajax({
+            type: 'POST',
+            async: false,
+            dataType: 'json',
+            data: {tipoEmpresas: params.newValue, empresa: $('input#empresaId').val(), n: 6},
+            url: Routing.generate('edit_empresa'),
+            success: function (data)
+            {
+                
+               alert('Dato insertado con exito');
+            },
+            error: function (xhr, status)
+            {
+                alert('Disculpe, existió un problema');
+                
+            }
+    });
+    }); 
+    
+  
+ 
+    $("#txtFechaFundacion").editable();
+    $('#txtFechaFundacion').on('save', function (e, params) {
+        $.ajax({
+            type: 'POST',
+            async: false,
+            dataType: 'json',
+            data: {anhoFundacion: params.newValue, empresa: $('input#empresaId').val(), n: 7},
+             url: Routing.generate('edit_empresa'),
+            success: function (data)
+            {
+                    
+                 Lobibox.notify("success", {
+                                        size: 'mini',
+                                        msg: 'Datos modificados con exito'
+                                    });
+                
+        
+            },
+            error: function (xhr, status)
+            {
+                alert('Disculpe, existió un problema');
+                
+            }
+        });
+    });    
+ 
+    
+    $("#btnespecialida").click(function () {
+        $("#contenido").empty();
+        $.ajax({
+            type: "GET",
+            url: Routing.generate('especialida'),
+            data: {hPersona: $('input#hPersona').val()},
+            //   async: false,
+            //  dataType: 'json',
+
+            success: function (data)
+            {
+                $("#contenido").append(data);
+                //  var url=Routing.generate('admin_abg',{username:data.username});
+                // window.open(url,"_self");                   
+            },
+            error: function (errors)
+            {
+
+            }
+        });
+    });
+    
+    
+    
+    
+    
+ 
+    
+
+      
 
 });
 

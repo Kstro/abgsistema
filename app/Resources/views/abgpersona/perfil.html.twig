@@ -33,11 +33,64 @@
         <!-- PRIMERA BLOQUE CON FOTO DE PERFIL -->
 
         <div class="row" >
-            <div class="col-sm-3">
-                <input type="hidden" id="hPersona"  value="{{datos.id}}">
+            
+             <input type="hidden" id="hPersona"  value="{{datos.id}}">
+                
+                                    {#Esta parte es la que se ha agregado para poder mandar los datos via ajax de la foto             #}
+                                         <form id="frmPersonaConFoto" role="form" enctype="multipart/form-data" method="POST">
+                                             <input type="hidden" id="hPersona"  value="{{datos.id}}" name="personaId">
+                                            
+                                             
+                                             {% if abgFoto %}   
+                                                 
+                                                    <div class="col-sm-3" >
+                                                       <div class="image-upload" >
+                                                                <label for="file-inputs" >
+                                                                    <img src="{{ asset('Resources/icons/photo.png') }}" style="width: 25px; height: 25px; margin-left: 10px; margin-top: 18px; position: absolute; " >
+                                                                </label>
+                                                                <input id="file-inputs"  required type="file" name="file">
 
-                <img src=" {{asset('Resources/src/img/profile.png')}}" style="margin-top: 10px; margin-left: 10px; width: 200px; height: 200px; margin-bottom: 10px;" />
-            </div>
+                                                       </div>
+                                                        
+                                                        <div style="background-color: yellow; max-height:250px; max-width: 250px; border-color: black; margin-top: 10px; margin-left: 1px; ">
+                                                            <center>
+                                                                            <img id="prev" src="{{ asset('') }}{{ abgFoto[0].src}}" style="height:200px; width:200px;  "/>
+                                                              </center>              
+                                                        </div>     
+                                                        
+                                                      
+                                                          
+
+                                                            
+
+
+                                                    </div>
+                                              {% else %}
+                                             
+                                              <div class="col-sm-3" style="margin-top: 10px; margin-left: 15px; width: 200px; height: 200px; margin-bottom: 10px; background-color: blanchedalmond;"  >
+                                                  <center>  
+                                                    <div>
+                                                          
+                                                       <img id="previus" src="" style="height:194px; width:195px;  "/>
+
+                                                    </div>   
+                                                  </center>       
+                                                          
+                                                            <div class="image-upload" >
+                                                                <label for="file-inputs" >
+                                                                    <img src="{{ asset('Resources/icons/photo.png') }}" style="width: 25px; height: 25px; margin-left: -5px; margin-top: 5px; " >
+                                                                </label>
+                                                                <input id="file-inputs"  required type="file" name="file">
+                                                                
+
+                                                            </div>
+                                              
+                                              </div> 
+                                                                
+                                              {% endif %}                
+                                        </form> 
+                {# Termina la parte agregada#}
+                                    
 
             <div class="col-sm-9" >
 
@@ -143,7 +196,7 @@
     </div>
 
     <!-- ESPECIALIDADES -->
-    <div  class="bloque-main" >
+        <div  class="bloque-main" >
         <div class="row">
             <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;">
                 <strong>ESPECIALIDADES LEGALES</strong></p>
@@ -317,5 +370,11 @@
         $('[data-toggle="tooltip"]').tooltip()
     })
 </script>
+ <style type="text/css">
+                    .image-upload >input {
+                        display: none;
+                    }
+                   
+ </style>
 {% endblock %}
 {% endblock %}

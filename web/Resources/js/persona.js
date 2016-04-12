@@ -36,6 +36,8 @@ $(document).on('ready', function () {
         });
     });
 
+
+
     $("#btnespecialida").click(function () {
         $("#contenido").empty();
         $.ajax({
@@ -293,6 +295,8 @@ function enviarf()
     });
     return false;
 }
+
+
 
 // Estructura de salario
 function enviarEstructura()

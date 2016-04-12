@@ -20,6 +20,16 @@ use Doctrine\ORM\Mapping as ORM;
 
 class AbgPersonaEmpresa {
     
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="idarg_foto", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idargFoto;
+    
     /**
      * @var \AbgPersona
      *
