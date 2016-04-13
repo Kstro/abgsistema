@@ -383,7 +383,7 @@ else{ // Maximum length not reached so update the value of my_text counter
             var inicio = $('#inicioInput').val(); //numero de registros que se van a mostrar
             var busqueda=$('#searchBox').val();
             var longitud = 10; //numero de registros que se van a mostrar
-            var paginaActual = 1; //numero de registros que se van a mostrar
+            var paginaActual = 1; //primer registro a mostrar
             var numPages = 0;
             //var contenidoOriginal = $('#registros').html();
             buscar(busqueda,inicio,longitud,paginaActual);
@@ -438,14 +438,15 @@ else{ // Maximum length not reached so update the value of my_text counter
         });#}
                 
             $(document).on('click','.paginas', function(){
-                console.log($(this).attr('id'));
+                paginaActual = $(this).attr('id');
+                console.log("Página actual enviada: "+paginaActual);
                 buscar(busqueda,inicio,longitud,paginaActual);
             });
             
             $(document).on('click','.siguiente', function(){
-                if(paginaActual==numPages){
+                if(paginaActual!=numPages){
                     paginaActual++;
-                    console.log(paginaActual);
+                    console.log("Página actual enviada: "+paginaActual);
                     buscar(busqueda,inicio,longitud,paginaActual);
                 }
             });
@@ -454,7 +455,7 @@ else{ // Maximum length not reached so update the value of my_text counter
                 //console.log(paginaActual);
                 if(paginaActual!=1){
                     paginaActual--;
-                    console.log(paginaActual);
+                    console.log("Página actual enviada: "+paginaActual);
                     buscar(busqueda,inicio,longitud,paginaActual);
                 }
             });
@@ -499,17 +500,35 @@ else{ // Maximum length not reached so update the value of my_text counter
                                         
                                         
                                         var busquedaImagen = "#busquedaImagen"+(i+1);
+                                        var busquedaTelefono = "#busquedaTelefono"+(i+1);
+                                        var busquedaEspecialidades = "#busquedaEspecialidades"+(i+1);
+                                        
                                         var busquedaNombre = data.data[i].nombres +' ' + data.data[i].apellido;
                                         var busquedaCargo = "";
-                                        var busquedaTelefono = "#busquedaTelefono"+(i+1);
+                                        
                                         var telefonos = "";
                                         var busquedaCorreo = data.data[i].correoelectronico;
+                                        var busquedaFoto = data.data[i].foto;
                                         //var sitioWeb = data.data[i].sitioWeb;
                                         //var busquedaSitioWeb = "#busquedaSitioWeb"+(i+1);
                                         var busquedaSitioWeb = data.data[i].sitioWeb;;
-                                        var busquedaEspecialidades = "#busquedaEspecialidades"+(i+1);
                                         
                                         
+                                        if(busquedaFoto==null){
+                                            busquedaFoto="";
+                                        }
+                                        
+                                        if(busquedaCargo==null){
+                                            busquedaCargo="";
+                                        }
+                                        
+                                        if(busquedaCorreo==null){
+                                            busquedaCorreo="-";
+                                        }
+                                        
+                                        if(busquedaSitioWeb==null){
+                                            busquedaSitioWeb="-";
+                                        }
 
 
 {#                                      $(busquedaNombre).children().html(data.data[i].nombres +' ' + data.data[i].apellido);#}
@@ -556,15 +575,14 @@ else{ // Maximum length not reached so update the value of my_text counter
                                         //console.log(especialidades);
 
 
-
-                                        $(busquedaImagen).attr('src', "{{asset('Resources/src/img/')}}"+data.data[i].fotoPerfil);
-                                        $(busquedaImagen).load();
+                                        console.log(data.data[i].foto);
+                                        
                                         
                                         {#$(busquedaEspecialidades).html(especialidades);
                                         $(busquedaSitioWeb).children().html(data.data[i].sitioweb);#}
                                         //console.log(data.data[i].fotoPerfil);
                                         cadena = '<div class=\"item-directorio-nexo\" style=\"width: 100%;\"> <div class=\"clearfix\"></div><div class=\"row\">\n\
-                                        <div class=\"col-xs-2 col-sm-3 col-md-3 col-lg-2\"><img id=\"busquedaImagen'+(i+1)+'\" src=\"{{asset('Resources/src/img/')}}'+data.data[i].fotoPerfil+'\" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">\n\
+                                        <div class=\"col-xs-2 col-sm-3 col-md-3 col-lg-2\"><img id=\"busquedaImagen'+(i+1)+'\" src=\"{{asset('')}}'+data.data[i].foto+'\" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">\n\
                                         </div><div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10"><p id=\"busquedaNombre'+(i+1)+'\" style=\"margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;\" class=\"sans\"><strong>'+busquedaNombre+'</strong></p>\n\
                                         <p id=\"busquedaCargo'+(i+1)+'\" style=\"color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;\" class=\"sans\">'+busquedaCargo+'</p>\n\
                                         <div class=\"row\" style=\"margin-top: 2px; margin-bottom: 15px;\"><div class=\"col-sm-4 col-xs-12\"><p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Telefono</strong></p><p id=\"busquedaTelefono1\" style=\"font-size: 11px; margin-bottom: 0px;\">+503 '+telefonos+' </p>\n\
@@ -576,7 +594,8 @@ else{ // Maximum length not reached so update the value of my_text counter
                                         </div><div class=\"col-sm-12\" style=\"margin-top: -0px;\"><span style=\"font-size: 11px;\"><a href=\"#\">Ver perfil</a></span>\n\
                                         <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"#\">Contactar</a></span>\n\
                                         <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"#\">Recomendar</a></span></div></div></div></div></div>';
-
+                                        $(busquedaImagen).attr('src', "{{asset('')}}"+data.data[i].foto);
+                                        $(busquedaImagen).load();
                                         $('#registros').show();
                                         $('#registros').append(cadena);
                                         
@@ -586,7 +605,13 @@ else{ // Maximum length not reached so update the value of my_text counter
                                         numPages=data.pages;
                                         var cadenaPaginas = '<li class="anterior" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-left\"></i></li>';
                                         for(k=1;k<=data.pages;k++){
-                                            cadenaPaginas+='<li class="paginas" id="'+k+'" style=\"display: inline; padding: 7px;\"><strong>'+k+'</strong></li>';
+                                            if(k==paginaActual){
+                                                cadenaPaginas+='<li class="paginas" id="'+k+'" style=\"display: inline; padding: 7px;\"><strong>'+k+'</strong></li>';
+                                            }
+                                            else{
+                                                cadenaPaginas+='<li class="paginas" id="'+k+'" style=\"display: inline; padding: 7px;\">'+k+'</li>';   
+                                            }
+                                            
                                         }
                                         
                                         cadenaPaginas+='<li class="siguiente" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-right\"></i></li>';
@@ -603,8 +628,10 @@ else{ // Maximum length not reached so update the value of my_text counter
                                     $('.filtroRegistros').html(data.filtroRegistros);
                                     $('#registros').hide();
                                     $('#busquedaVacia').show();
-
+                                    
                                 }
+                                console.log("pagina actual: "+data.paginaActual);
+                                console.log("Inicio de registro: "+data.inicioRegistro);
                             },
                         error: function (data) {
                                 Lobibox.notify("error", {

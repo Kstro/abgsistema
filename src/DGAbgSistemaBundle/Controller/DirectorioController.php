@@ -26,8 +26,8 @@ class DirectorioController extends Controller
      * @Method("GET")
      */
     public function indexAction()
-    {
-        $em = $this->getDoctrine()->getManager();
+    { 
+       $em = $this->getDoctrine()->getManager();
 
         $ctlCiudads = $em->getRepository('DGAbgSistemaBundle:CtlCiudad')->findAll();
 
@@ -51,8 +51,9 @@ class DirectorioController extends Controller
         $longitud = $request->get('longitud');
         $paginaActual = $request->get('paginaActual');
         $busqueda = $request->get('busqueda');
-        $inicioRegistro = ($paginaActual*10)-10;
-        
+//        $inicioRegistro = ($paginaActual*10)-10;
+        $inicioRegistro = ($longitud * ($paginaActual - 1));
+                          
         $response = new JsonResponse();
 //        $start = $request->query->get('start');
 //        $draw = $request->query->get('draw');
@@ -63,7 +64,7 @@ class DirectorioController extends Controller
         
         $em = $this->getDoctrine()->getEntityManager();
         $abogadosTotal = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->findBy(array('estado'=>1));
-        $empresaTotal = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->findBy(array('estado'=>1));
+        //$empresaTotal = $em->getRepository('DGAbgSistemaBundle:CtlEmpresa')->findBy(array('estado'=>1));
         
         //var_dump($reg);
         //die();
@@ -71,85 +72,121 @@ class DirectorioController extends Controller
         $reg['inicio']=$inicio++;  
         $reg['longitud'] = $longitud;
         $reg['paginaActual']= $paginaActual;
+        $reg['inicioRegistro']= $inicioRegistro;
         $reg['data']= array();
         
         if($busqueda!=''){        
             $reg['numRegistros']= 0;
-            $reg['pages']=floor(($reg['numRegistros']/10))+1;
+            
         
+        
+        $sql = "SELECT * FROM directorio WHERE CONCAT(upper(nombres),' ',apellido) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT ".$inicioRegistro.",".$longitud;
+        //echo $sql;
+        $em = $this->getDoctrine()->getManager();
+        $stmt = $em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $reg['data'] = $stmt->fetchAll();
+        //var_dump($reg);
+        $sql = "SELECT COUNT(*) as total FROM directorio WHERE CONCAT(upper(nombres),' ',apellido) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
+
+        $em = $this->getDoctrine()->getManager();
+        $stmt = $em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $totales = $stmt->fetchAll();
+        $reg['numRegistros'] = $totales[0]['total'];
+        //var_dump($reg);
+    
             //El tipo perfil es para saber si es empresa o abogado
-            $dql = "SELECT per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, per.telefonoFijo as telefonoFijo, per.telefonoMovil as telefonoMovil, "
-                    . " '' as sitioWeb, per.id, '1' as tipoPerfil "
-                    . "FROM DGAbgSistemaBundle:AbgPersona per "
-                    . "WHERE CONCAT(upper(per.nombres),' ',upper(per.apellido)) LIKE upper(:busqueda) ORDER BY per.nombres, per.apellido";
-            $em = $this->getDoctrine()->getManager();
-            $reg['data'] = $em->createQuery($dql)
-                        ->setParameter('busqueda','%'.$busqueda.'%')
-                        ->setFirstResult($inicioRegistro)
-                        ->setMaxResults($longitud)
-                        ->getResult();
+//            $dql = "SELECT per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, per.telefonoFijo as telefonoFijo, per.telefonoMovil as telefonoMovil, "
+//                    . " '' as sitioWeb, per.id, '1' as tipoPerfil "
+//                    . "FROM DGAbgSistemaBundle:AbgPersona per "
+//                    . "WHERE CONCAT(upper(per.nombres),' ',upper(per.apellido)) LIKE upper(:busqueda) ORDER BY per.nombres ASC, per.apellido ASC, per.correoelectronico ASC";
+//            $em = $this->getDoctrine()->getManager();
+//            $reg['data'] = $em->createQuery($dql)
+//                        ->setParameter('busqueda','%'.$busqueda.'%')
+//                        ->setFirstResult($inicioRegistro)
+//                        ->setMaxResults($longitud)
+//                        ->getResult();
             
             
-            $dql = "SELECT emp.nombreEmpresa as nombres, '' as apellido, emp.correoelectronico as correoelectronico, emp.telefono as telefonoFijo, emp.movil as telefonoMovil, "
-                    . "emp.sitioWeb as sitioWeb, emp.id, '2' as tipoPerfil "
-                    . "FROM DGAbgSistemaBundle:Ctlempresa emp "
-                    . "WHERE upper(emp.nombreEmpresa) LIKE upper(:busqueda) ORDER BY emp.nombreEmpresa";
-            $em = $this->getDoctrine()->getManager();
-            $reg2['data'] = $em->createQuery($dql)
-                        ->setParameter('busqueda','%'.$busqueda.'%')
-                        ->setFirstResult($inicioRegistro)
-                        ->setMaxResults($longitud)
-                        ->getResult();
+//            $dql = "SELECT emp.nombreEmpresa as nombres, '' as apellido, emp.correoelectronico as correoelectronico, emp.telefono as telefonoFijo, emp.movil as telefonoMovil, "
+//                    . "emp.sitioWeb as sitioWeb, emp.id, '2' as tipoPerfil "
+//                    . "FROM DGAbgSistemaBundle:Ctlempresa emp "
+//                    . "WHERE upper(emp.nombreEmpresa) LIKE upper(:busqueda) ORDER BY emp.nombreEmpresa ASC,emp.correoelectronico ASC";
+//            $em = $this->getDoctrine()->getManager();
+//            $reg2['data'] = $em->createQuery($dql)
+//                        ->setParameter('busqueda','%'.$busqueda.'%')
+//                        ->setFirstResult($inicioRegistro)
+//                        ->setMaxResults($longitud)
+//                        ->getResult();
             
             /*******************************/
             /* Esto es para encontrar todos los registros */
              
              
-             $dql = "SELECT per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, per.telefonoFijo as telefonoFijo, per.telefonoMovil as telefonoMovil, "
-                    . " '' as sitioWeb, per.id, '1' as tipoPerfil "
-                    . "FROM DGAbgSistemaBundle:AbgPersona per "
-                    . "WHERE CONCAT(upper(per.nombres),' ',upper(per.apellido)) LIKE upper(:busqueda) ORDER BY per.nombres, per.apellido";
-            $em = $this->getDoctrine()->getManager();
-            $reg3['data'] = $em->createQuery($dql)
-                        ->setParameter('busqueda','%'.$busqueda.'%')
-                        ->getResult();
-            
-            
-            $dql = "SELECT emp.nombreEmpresa as nombres, '' as apellido, emp.correoelectronico as correoelectronico, emp.telefono as telefonoFijo, emp.movil as telefonoMovil, "
-                    . "emp.sitioWeb as sitioWeb, emp.id, '2' as tipoPerfil "
-                    . "FROM DGAbgSistemaBundle:Ctlempresa emp "
-                    . "WHERE upper(emp.nombreEmpresa) LIKE upper(:busqueda) ORDER BY emp.nombreEmpresa";
-            $em = $this->getDoctrine()->getManager();
-            $reg4['data'] = $em->createQuery($dql)
-                        ->setParameter('busqueda','%'.$busqueda.'%')
-                        ->getResult(); 
-             
+//            $dql = "SELECT per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, per.telefonoFijo as telefonoFijo, per.telefonoMovil as telefonoMovil, "
+//                    . " '' as sitioWeb, per.id, '1' as tipoPerfil "
+//                    . "FROM DGAbgSistemaBundle:AbgPersona per "
+//                    . "WHERE CONCAT(upper(per.nombres),' ',upper(per.apellido)) LIKE upper(:busqueda) ORDER BY per.nombres, per.apellido";
+//            $em = $this->getDoctrine()->getManager();
+//            $reg3['data'] = $em->createQuery($dql)
+//                        ->setParameter('busqueda','%'.$busqueda.'%')
+//                        ->getResult();
+//            
+//            
+//            $dql = "SELECT emp.nombreEmpresa as nombres, '' as apellido, emp.correoelectronico as correoelectronico, emp.telefono as telefonoFijo, emp.movil as telefonoMovil, "
+//                    . "emp.sitioWeb as sitioWeb, emp.id, '2' as tipoPerfil "
+//                    . "FROM DGAbgSistemaBundle:Ctlempresa emp "
+//                    . "WHERE upper(emp.nombreEmpresa) LIKE upper(:busqueda) ORDER BY emp.nombreEmpresa";
+//            $em = $this->getDoctrine()->getManager();
+//            $reg4['data'] = $em->createQuery($dql)
+//                        ->setParameter('busqueda','%'.$busqueda.'%')
+//                        ->getResult(); 
+//             
              
              /*******************************/
             
-            foreach($reg2['data'] as $i =>$row){
+//            foreach($reg2['data'] as $i =>$row){
+//                //if(count($reg['data'])<10)
+//                    array_push($reg['data'],$reg2['data'][$i]);
+//                
+//            }
+//            
+//            
+//            
+//            
+//            foreach($reg4['data'] as $i =>$row){
+//            
+//                array_push($reg3['data'],$reg4['data'][$i]);
+//                
+//            }
             
-                array_push($reg['data'],$reg2['data'][$i]);
-                
-            }
             
-            foreach($reg4['data'] as $i =>$row){
             
-                array_push($reg3['data'],$reg4['data'][$i]);
-                
-            }
+//            $reg['numRegistros']= count($reg3['data']);
             
-            $reg['numRegistros']= count($reg3['data']);
+            $reg['pages']=floor(($reg['numRegistros']/10))+1;
+            
+//            $k = 0;
+//            var_dump($reg['data']);
+//            foreach($reg['data'] as $i =>$row){
+//                
+////                if($i < $inicioRegistro )
+////                    unset($reg['data'][$i]);
+//                if( $i>($longitud-1) )
+//                    unset($reg['data'][$i]);
+//                 
+//            }
 //            var_dump($reg['data']);
 //            die();
-            sort($reg['data']);
+            //sort($reg['data']);
             //$reg['numRegistros']= count($reg['data']);
 //            var_dump($reg2['data']);
             //$reg['numRegistros']= count($reg['data']);
             //var_dump(count($reg['data']));
             //die();
             
-            $reg['filtroRegistros'] = 10;/*count($reg['data']);*/
+            $reg['filtroRegistros'] = count($reg['data']);
             $esp = array();
             
             $i=0;
@@ -181,18 +218,18 @@ class DirectorioController extends Controller
                         $reg['data'][$i]['especialidades']=$esp;
                     }
 
-                    $dql = "SELECT foto.src FROM DGAbgSistemaBundle:AbgFoto foto "
-                            . "JOIN foto.abgPersona per "
-                            . "WHERE per.id=:idPersona AND foto.tipoFoto=1";
-                    $em = $this->getDoctrine()->getManager();
-                    $foto = $em->createQuery($dql)
-                           ->setParameter('idPersona',$row['id'])
-                           ->getResult();
+//                    $dql = "SELECT foto.src FROM DGAbgSistemaBundle:AbgFoto foto "
+//                            . "JOIN foto.abgPersona per "
+//                            . "WHERE per.id=:idPersona AND foto.tipoFoto=1";
+//                    $em = $this->getDoctrine()->getManager();
+//                    $foto = $em->createQuery($dql)
+//                           ->setParameter('idPersona',$row['id'])
+//                           ->getResult();
                    //var_dump($foto);
                    //die();
-                    if(count($foto)!=0){
-                        $reg['data'][$i]['fotoPerfil']=$foto[0]['src'];
-                    }
+//                    if(count($foto)!=0){
+//                        $reg['data'][$i]['fotoPerfil']=$foto[0]['src'];
+//                    }
                    //var_dump($reg['data']);
                    //die();
 
@@ -200,7 +237,7 @@ class DirectorioController extends Controller
                 }
             }
             
-            //var_dump($reg['data']);
+            //var_dump($reg);
             //die();  
             //var_dump($reg['data'][0]['especialidades'][0]['nombreEspecialidad']);
             //var_dump($reg['data'][0]['especialidades'][1]['nombreEspecialidad']);
@@ -222,6 +259,16 @@ class DirectorioController extends Controller
         return $response; 
         //return new Response(json_encode($reg));
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     /**
