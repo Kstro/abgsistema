@@ -8,6 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use DGAbgSistemaBundle\Entity\AbgPersona;
 use DGAbgSistemaBundle\Entity\CtlUsuario;
+use DGAbgSistemaBundle\Entity\AbgSitioWeb;
+use DGAbgSistemaBundle\Entity\AbgExperienciaLaboral;
 use Symfony\Component\HttpFoundation\Response;
 use DGAbgSistemaBundle\Form\AbgPersonaType;
 
@@ -142,6 +144,7 @@ class AbgPersonaController extends Controller {
      * @Route("/usuario/get", name="usuario", options={"expose"=true})
      * @Method("GET")
      */
+    
     public function UsuarioAction() {
         $em = $this->getDoctrine()->getManager();
         $em->getConnection()->beginTransaction();
@@ -159,14 +162,15 @@ class AbgPersonaController extends Controller {
             $abgPersona->setEstado('1');
             $em->persist($abgPersona);
             $em->flush();
+            
             $idPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgPersona')->find($abgPersona->getId());
 
             $ctlUsuario->setUsername($datos['txtUsername']);
             $ctlUsuario->setPassword($datos['txtPassword']);
-
+            
             $ctlUsuario->setEstado('1');
             $ctlUsuario->setRhPersona($idPersona);
-
+            
             $this->setSecurePassword($ctlUsuario, $datos['txtPassword']);
             $em->persist($ctlUsuario);
             $em->flush();
@@ -187,6 +191,9 @@ class AbgPersonaController extends Controller {
             // echo $e->getMessage();   
         }
     }
+    
+    
+    
 
     private function setSecurePassword(&$entity, $contrasenia) {
         $entity->setSalt(md5(time()));
@@ -205,6 +212,9 @@ class AbgPersonaController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $em->getConnection()->beginTransaction();
         $request = $this->getRequest();
+        $result_sub = "";
+        $result_especialida = "";
+        $Experiencia="";
         try {
 
             $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
@@ -213,11 +223,51 @@ class AbgPersonaController extends Controller {
             $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+            
+            //Esta consulta  es la que jala el src de la foto dejela
+            
+            $dqlfoto = "SELECT fot.src as src "
+                . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=1";
+            $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+            
+            
 
+            if (($idPersona != null)) {
 
+                $dql_especialida = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre"
+                        . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
+                        . "JOIN  DGAbgSistemaBundle:CtlSubespecialidad sub WHERE e.id=sub.abgEspecialidad "
+                        . "JOIN DGAbgSistemaBundle:AbgPersonaSubespecialidad pe WHERE sub.id=pe.abgSubespecialidad AND pe.abgPersona=" . $idPersona
+                        . " GROUP by e.id";
+                $result_especialida = $em->createQuery($dql_especialida)->getArrayResult();
+
+                if (count($result_especialida) > 0) {
+                    $dsql_sub = "SELECT pe.id AS idSub,sub.abgSubespecialidadcol AS nombre, e.id AS idEsp  "
+                            . "FROM  DGAbgSistemaBundle:AbgPersonaSubespecialidad pe "
+                            . "JOIN  DGAbgSistemaBundle:CtlSubespecialidad sub WHERE  sub.id=pe.abgSubespecialidad AND  pe.abgPersona=" . $idPersona
+                            . "JOIN  DGAbgSistemaBundle:CtlEspecialidad e WHERE e.id=sub.abgEspecialidad ";
+                    $result_sub = $em->createQuery($dsql_sub)->getArrayResult();
+                }
+            }
+  
+            $dql_experiencia = "SELECT  el.id AS id, el.compania AS nombre, el.puesto AS puesto, el.fachaInicio AS fInicio, el.funcion AS funcion"
+                    . " FROM  DGAbgSistemaBundle:AbgExperienciaLaboral el"
+                    . " JOIN DGAbgSistemaBundle:AbgPersona p WHERE p.id=el.abgPersona and el.abgPersona=".$idPersona;
+
+            $Experiencia= $em->createQuery($dql_experiencia)->getArrayResult();
+            
+           
+            
             return $this->render('abgpersona/panelAdministrativoAbg.html.twig', array(
                         'abgPersona' => $result_persona,
                         'usuario' => $username,
+                        'active' => 'perfil',
+                        'RegistrosubEsp' => $result_sub,
+                        'RegistroEspecialida' => $result_especialida,
+                        'RegistradaExperiencia'=>  $Experiencia,
+                //Este  array es el que manda el link de la foto
+                        'abgFoto' =>$result_foto,
+                
             ));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
@@ -236,38 +286,44 @@ class AbgPersonaController extends Controller {
     public function PerfilAction($username) {
         $em = $this->getDoctrine()->getManager();
         $em->getConnection()->beginTransaction();
-        $request = $this->getRequest();
+
         try {
 
             $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
             $idPersona = $RepositorioPersona[0]->getRhPersona()->getId();
 
-            $dql_persona = "SELECT  p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo "
+            $dql_persona = "SELECT  p.id AS id,p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
 
 
-            return $this->render('abgpersona/perfil.html.twig', array(
+
+
+            $dql_departamento = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre"
+                    . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
+                    . "JOIN  DGAbgSistemaBundle:CtlSubespecialidad sub WHERE e.id=sub.abgEspecialidad group by e.id";
+            $result_especialida = $em->createQuery($dql_departamento)->getArrayResult();
+            return $this->render('abgpersona/panelAdministrativoAbg.html.twig', array(
                         'abgPersona' => $result_persona,
-                  'usuario' => $username,
+                        'usuario' => $username,
+                        'active' => 'perfil',
             ));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
-            $em->getConnection()->rollback();
-            $em->close();
 
             // echo $e->getMessage();   
         }
     }
-     /**
+
+    /**
      * @Route("/admin/ajustes/{username}", name="ajustes", options={"expose"=true})
      * @Method("GET")
      */
     public function AjustesAction($username) {
         $em = $this->getDoctrine()->getManager();
         $em->getConnection()->beginTransaction();
-               try {
+        try {
 
             $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
             $idPersona = $RepositorioPersona[0]->getRhPersona()->getId();
@@ -279,7 +335,8 @@ class AbgPersonaController extends Controller {
 
             return $this->render('abgpersona/panelAjustes.html.twig', array(
                         'abgPersona' => $result_persona,
-                  'usuario' => $username,
+                        'usuario' => $username,
+                        'active' => 'ajuste',
             ));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
@@ -330,9 +387,9 @@ class AbgPersonaController extends Controller {
                     $Persona->setTelefonoMovil($request->get('movil'));
                     break;
                 case 9:
-                     $idCiudad= $em->getRepository("DGAbgSistemaBundle:CtlCiudad")->find($request->get('ciudad'));
+                    $idCiudad = $em->getRepository("DGAbgSistemaBundle:CtlCiudad")->find($request->get('ciudad'));
                     $Persona->setCtlCiudad($idCiudad);
-                     $data['ciu'] = $Persona->getCtlCiudad()->getNombreCiudad();
+                    $data['ciu'] = $Persona->getCtlCiudad()->getNombreCiudad();
                     break;
                 case 10:
                     $Persona->setDescripcion($request->get('descripcion'));
@@ -341,7 +398,31 @@ class AbgPersonaController extends Controller {
 
             $em->merge($Persona);
             $em->flush();
-           
+
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
+    }
+
+    /**
+     * @Route("/sitio", name="sitio", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function SitioAction() {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $SitioWeb = new AbgSitioWeb();
+            $request = $this->getRequest();
+            $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
+
+            $SitioWeb->setNombre($request->get('sitio'));
+            $SitioWeb->setAbgPersona($Persona);
+            $em->persist($SitioWeb);
+            $em->flush();
+            $data['sitio'] = $SitioWeb->getNombre();
+
             return new Response(json_encode($data));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
@@ -355,18 +436,19 @@ class AbgPersonaController extends Controller {
      */
     public function DepartamentoAction() {
         try {
-            
+
             $em = $this->getDoctrine()->getManager();
             $dql_departamento = "SELECT  d.id AS id, d.nombreEstado AS nombre"
-                              . " FROM DGAbgSistemaBundle:CtlEstado d";
+                    . " FROM DGAbgSistemaBundle:CtlEstado d";
             $data['depto'] = $em->createQuery($dql_departamento)->getArrayResult();
 
             return new Response(json_encode($data));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
-            return new Response(json_encode($data));  
+            return new Response(json_encode($data));
         }
     }
+
     /**
      * @Route("/ciudad", name="ciudad", options={"expose"=true})
      * @Method("GET")
@@ -376,31 +458,226 @@ class AbgPersonaController extends Controller {
             $request = $this->getRequest();
             $em = $this->getDoctrine()->getManager();
             $dql_departamento = "SELECT  c.id AS id, c.nombreCiudad AS nombre"
-                              . " FROM DGAbgSistemaBundle:CtlCiudad c WHERE c.ctlEstado=".$request->get('estado');
+                    . " FROM DGAbgSistemaBundle:CtlCiudad c WHERE c.ctlEstado=" . $request->get('estado');
             $data['ciudad'] = $em->createQuery($dql_departamento)->getArrayResult();
 
             return new Response(json_encode($data));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
-            return new Response(json_encode($data));  
+            return new Response(json_encode($data));
         }
     }
-     /**
+
+    /**
      * @Route("/especialida", name="especialida", options={"expose"=true})
      * @Method("GET")
      */
     public function EspecialidaAction() {
         try {
-            
+            $n = 0;
+            $subEspS = "";
             $em = $this->getDoctrine()->getManager();
+            $request = $this->getRequest();
+            $subEspecialidadesSeleccionadas = "";
+            if (($request->get('hPersona') != null)) {
+                $dql_especialida = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre"
+                        . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
+                        . "JOIN  DGAbgSistemaBundle:CtlSubespecialidad sub WHERE e.id=sub.abgEspecialidad "
+                        . "JOIN DGAbgSistemaBundle:AbgPersonaSubespecialidad pe WHERE sub.id=pe.abgSubespecialidad AND pe.abgPersona=" . $request->get('hPersona')
+                        . " GROUP by e.id";
+                $subEspecialidadesSeleccionadas = $em->createQuery($dql_especialida)->getArrayResult();
+
+
+
+                if (count($subEspecialidadesSeleccionadas) > 0) {
+                    $sql = "select pe.abg_subespecialidad_id AS idEspSelect, sub.abg_subespecialidadcol AS nombre,sub.id AS idSub, e.id AS idEsp
+                        from  marvinvi_abg.abg_persona_subespecialidad pe "
+                            . " right join marvinvi_abg.ctl_subespecialidad sub on  sub.id=pe.abg_subespecialidad_id AND pe.abg_persona_id=" . $request->get('hPersona')
+                            . " right join marvinvi_abg.ctl_especialidad e on e.id=sub.abg_especialidad_id 
+                        group by  pe.id,pe.abg_subespecialidad_id, sub.abg_subespecialidadcol,sub.abg_especialidad_id";
+
+                    $stm = $this->container->get('database_connection')->prepare($sql);
+                    $stm->execute();
+                    $subEspS = $stm->fetchAll();
+                }
+            }
             $dql_departamento = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre"
-                              . " FROM DGAbgSistemaBundle:CtlEspecialidad e";
-            $data['esp'] = $em->createQuery($dql_departamento)->getArrayResult();
-           
+                    . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
+                    . "JOIN  DGAbgSistemaBundle:CtlSubespecialidad sub WHERE e.id=sub.abgEspecialidad group by e.id";
+            $result_especialida = $em->createQuery($dql_departamento)->getArrayResult();
+
+            $dsql_sub = "SELECT e.id AS idEsp, e.nombreEspecialidad AS nombreEsp, sub.id AS idSub, sub.abgSubespecialidadcol AS nombreSub "
+                    . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
+                    . "JOIN  DGAbgSistemaBundle:CtlSubespecialidad sub WHERE e.id=sub.abgEspecialidad";
+            $result_sub = $em->createQuery($dsql_sub)->getArrayResult();
+            if ($n == 1) {
+                $data['esp'] = $em->createQuery($dql_departamento)->getArrayResult();
+                return new Response(json_encode($data));
+            } else {
+                return $this->render('abgpersona/especialidades.html.twig', array(
+                            'abgEspecialida' => $result_especialida,
+                            'subEsp' => $result_sub,
+                            'subEspS' => $subEspS,
+                            'especialidadesS' => $subEspecialidadesSeleccionadas,
+                ));
+            }
+        } catch (\Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
+    }
+
+    /**
+     * @Route("/subespecialida", name="subespecialida", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function SubespecialidaAction() {
+        try {
+            $request = $this->getRequest();
+            $em = $this->getDoctrine()->getManager();
+            $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
+            $array = $request->get('SubEspecialida');
+
+            $RepositorioSubEsp = $em->getRepository("DGAbgSistemaBundle:AbgPersonaSubespecialidad");
+            if (is_null($RepositorioSubEsp->findBy(array('abgPersona' => $request->get('hPersona'))))) {
+                
+            } else {
+                $PersonaSub = $RepositorioSubEsp->findBy(array('abgPersona' => $request->get('hPersona')));
+                foreach ($PersonaSub as $obj) {
+                    $em->remove($obj);
+                    $em->flush();
+                }
+            }
+            if (is_null($array)) {
+                
+            } else {
+                foreach ($array as $obj) {
+                    $PersonaSubespecialidad = new AbgPersonaSubespecialidad();
+                    $idSub = $em->getRepository("DGAbgSistemaBundle:CtlSubespecialidad")->find(intval($obj));
+                    $PersonaSubespecialidad->setAbgPersona($Persona);
+                    $PersonaSubespecialidad->setAbgSubespecialidad($idSub);
+                    $em->persist($PersonaSubespecialidad);
+                    $em->flush();
+                }
+            }
+
+            $dql_especialida = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre"
+                    . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
+                    . "JOIN  DGAbgSistemaBundle:CtlSubespecialidad sub WHERE e.id=sub.abgEspecialidad "
+                    . "JOIN DGAbgSistemaBundle:AbgPersonaSubespecialidad pe WHERE sub.id=pe.abgSubespecialidad AND pe.abgPersona=" . $request->get('hPersona')
+                    . " GROUP by e.id";
+
+            $data['Esp'] = $em->createQuery($dql_especialida)->getArrayResult();
+
+            $dsql_sub = "SELECT pe.id AS idSub,sub.abgSubespecialidadcol AS nombre, e.id AS idEsp  "
+                    . "FROM  DGAbgSistemaBundle:AbgPersonaSubespecialidad pe "
+                    . "JOIN  DGAbgSistemaBundle:CtlSubespecialidad sub WHERE  sub.id=pe.abgSubespecialidad AND  pe.abgPersona=" . $request->get('hPersona')
+                    . "JOIN  DGAbgSistemaBundle:CtlEspecialidad e WHERE e.id=sub.abgEspecialidad ";
+            $data['subEsp'] = $em->createQuery($dsql_sub)->getArrayResult();
+
             return new Response(json_encode($data));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
-            return new Response(json_encode($data));  
+            return new Response(json_encode($data));
         }
     }
+
+    /**
+     * @Route("/from_experiencia", name="from_experiencia", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function FromExperienciaAction() {
+        try {
+         
+            return $this->render('abgpersona/experienciaLaboral.html.twig');
+        } catch (\Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
+    }
+
+    /**
+     * @Route("/registar_experiencia", name="registrar_experiencia", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function RegistraExperienciaAction() {
+
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $request = $this->getRequest();
+
+            parse_str($request->get('dato'), $datos);
+
+            $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
+
+            $Experiencia = new AbgExperienciaLaboral();
+
+            $fechaIni = date_create($datos['txtFechaIni']);
+            $fechaFin = date_create($datos['txtFechaIni']);
+
+            $Experiencia->setAbgPersona($Persona);
+            $Experiencia->setCompania($datos['txtnombre']);
+            $Experiencia->setFachaInicio($fechaIni);
+            $Experiencia->setFechaFin($fechaFin);
+            $Experiencia->setFuncion($datos['txtfuncion']);
+            $Experiencia->setPuesto($datos['txtpuesto']);
+           
+            $em->persist($Experiencia);
+            $em->flush();
+
+            $dql_experiencia = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre"
+                    . " FROM  DGAbgSistemaBundle:AbgExperienciaLaboral el"
+                    . " JOIN DGAbgSistemaBundle:AbgPersona p WHERE p.id=el.abgPersona=" . $request->get('hPersona');
+
+
+            $data['Exp'] = $em->createQuery($dql_experiencia)->getArrayResult();
+
+            $data['msj'] = "Experiencia registrada";
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
+    }
+    
+    
+    /**
+     * @Route("/empresas/get", name="empresas", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function getEmpresasAction() {
+        $em      = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+        $clue    = ltrim(strtolower($request->get('clue')), '0');
+        $limit = $request->get('page_limit');
+        $page = ($request->get('page') - 1) * 10;
+
+        /*****************************************************************************************
+         * SQL que obtiene el numero de expediente y nombre del paciente para asignar la cita
+         ****************************************************************************************/
+
+        $sql = "SELECT t01.id,
+                       CONCAT_WS(' ', CONCAT(COALESCE(t01.numero, ''), ' - '), t02.primer_apellido, t02.segundo_apellido, t02.apellido_casada) || ', ' || CONCAT_WS(' ', t02.primer_nombre, t02.segundo_nombre, t02.tercer_nombre) AS text,
+                       count(*) OVER() AS total
+                FROM ctl_empresa t01
+               
+                WHERE t01.nombre_empresa ILIKE '%$clue%'
+                    --   OR t02.apellido_completo_fonetico ~~* soundexesp('$clue') OR t02.nombre_completo_fonetico ~~* soundexesp('$clue')
+                GROUP BY t01.id,
+                       CONCAT_WS(' ', CONCAT(COALESCE(t01.numero, ''), ' - '), t02.primer_apellido, t02.segundo_apellido, t02.apellido_casada) || ', ' || CONCAT_WS(' ', t02.primer_nombre, t02.segundo_nombre, t02.tercer_nombre)
+                ORDER BY text
+                LIMIT $limit OFFSET $page";
+
+        $stm  = $this->getDoctrine()->getManager()->getConnection()->prepare($sql);
+        $stm->execute();
+        $result = $stm->fetchAll();
+
+        $citcita['data1'] = $result;
+        $citcita['data2'] = count($result) > 0 ? $result[0]['total'] : 0;
+
+        return new Response(json_encode($citcita));
+    }
+
+    
+
 }
