@@ -92,8 +92,11 @@
     {% endblock %}
     {% block cuerpo %}
         <div class="row">
-            <div class="text-center">
-                <h3>Crear entrada de blog</h3>
+            <div class="text-center" style="margin-top: 40px;">
+                <h3>¡¡¡¡¡Felicidades has creado una nueva entrada en el blog comunitario!!!!!</h3>
+            </div>
+            <div class="text-center" >
+                <img src="{{ asset('Resources/imagenes/success.jpg')}}" style="width: 100%; height: 60%;">
             </div>
             
 
@@ -104,36 +107,7 @@
                     <div class="box-body">
                         <form role="form" id="endatos">
 
-                            <div class="form-group">
-                                <label for="nombreEmpleado">Titulo de la entrada</label>
-                                <input type="text" value="" class="form-control" id="txttitulo" name="titulo"
-                                       placeholder="Titulo de la entrada">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Contenido de la entrada</label>
-                                <textarea name="contenido" class="form-control" rows="3" placeholder="Ingrese el contenido de la entrada..." ></textarea>
-                            </div>
-
-                            {#<div class="form-group">
-                                <label for="exampleInputEmail1">Email address</label>
-                                <input type="email" class="form-control" id="txtEmail" name="email" placeholder="Enter email">
-                            </div>#}
-                            <div class="form-group">
-                                <label for="nombreEmpleado">Categoria de la entrada</label>
-                                
-                                <select class="form-control" id="categoria" name="categoria" placeholder=categoria">
-                                    <option value="5" selected style="margin-bottom: 10px;">Seleccione una categoria</option>                           
-                                    {% for ctlSubespecialidad in ctlSubespecialidad %}
-                                        <option value="{{ ctlSubespecialidad.id  }}">{{ctlSubespecialidad.abgSubespecialidadcol }}</option>  
-                                    {% endfor %}          
-                                </select>    
-                            </div>
-
-                            <div class="form-group">
-                                <img id="img_destino" src="http://placehold.it/900x300" style="max-width: 100%; width: 100%; margin-top: 30px;">
-                                <input id="file" type="file" name="file">
-                            </div>
-                            <button type="submit" class="btn btn-default">Default</button>
+                                                                                                                                       
                         </form>
                     </div>
                     <!-- /.box-body -->

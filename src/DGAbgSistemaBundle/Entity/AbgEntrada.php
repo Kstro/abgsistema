@@ -69,8 +69,6 @@ class AbgEntrada
      */
     private $abgSubespecialidad;
 
-
-
     /**
      * Get id
      *
@@ -80,7 +78,7 @@ class AbgEntrada
     {
         return $this->id;
     }
-
+    
     /**
      * Set tituloEntrada
      *

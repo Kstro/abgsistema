@@ -1,0 +1,104 @@
+{% extends ':Layout:layout2.html.twig' %}
+
+{% block descripcion_y_acciones %}
+
+
+    {% block descripcion %}
+
+    {% endblock%}
+    {% block acciones %}
+
+    {% endblock %}
+
+{% endblock %}
+{% block js_extend %}
+   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="src/js/bootstrap.js"></script>
+    <script type="text/javascript">
+            $(function () {
+              $('[data-toggle="tooltip"]').tooltip()
+            })
+    </script>
+{% endblock %} 
+
+{% block navegacion_Y_body %}
+
+    {% block navegacion %}
+
+    {% endblock %}
+    {% block cuerpo %}
+        
+	<div class="container" style="padding: 20px 0px; background-color: #f6f6f6;">
+		<div class="row">
+			<div class="col-md-3">
+				<div class="bloque-main" style="padding: 10px; margin-top: 10px;">
+					<ul style="list-style: none; padding: 0; margin-bottom: 0px;">
+						<p class="sans text-uppercase" style="font-size: 12px; margin-bottom: 0px;"><strong>CATEGORIAS</strong></p>
+						<li style="padding-top: 5px; padding-left: 8px;">Juridico</li>
+						<li style="padding-top: 5px; padding-left: 8px;">Familiar</li>
+						<li style="padding-top: 5px; padding-left: 8px;">Casos de Divorcio</li>
+						<li style="padding-top: 5px; padding-left: 8px;">No se que</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="col-md-9">
+				<div class="bloque-main">
+					<div class="row">
+						<div class="col-md-4">
+							<img src="{{ asset('Resources/imagenes/blog.jpg')}}" class="blogimage" style="max-width: 100%;  width: 500px; height: 146px;">
+						</div>
+						<div class="col-md-8">
+							<p class="text-left" style="font-size: 16px; color: #555555; margin-bottom: 0px;">
+							<strong>Como funciona la firma electronica? En que nos beneficia?</strong>
+						</p>
+						<p class="text-left sans" style="margin-bottom: 0px; font-size: 12px;">Por: Marvin Jose Vigil | 4 de Abril del 2016 | Tecnologia</p>
+						<div style="height: 83px;">
+						<p class="text-left sans" style="font-weight: 300; font-size: 12px; color: #888888; margin-bottom: 0px;">
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+							quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+							consequat. Duis aute irure dolor in reprehenderit in voluptate velit.
+						</p>
+						</div>
+						<p class="text-right" style="margin-bottom: 0px;">
+						<a href="{{path('admin_blog')}}"><button class="btn btn-default btn-xs">Leer mas</button></a>
+						</p>
+						</div>
+					</div>
+				</div> <!-- end bloque main -->
+				<div class="bloque-nexo">
+					<div class="row">
+						<div class="col-md-4">
+							<img src="{{ asset('Resources/imagenes/blog.jpg')}}" class="blogimage" style="max-width: 100%;  width: 500px; height: 146px;">
+						</div>
+						<div class="col-md-8">
+							<p class="text-left" style="font-size: 16px; color: #555555; margin-bottom: 0px;">
+							<strong>Como funciona la firma electronica? En que nos beneficia?</strong>
+						</p>
+						<p class="text-left sans" style="margin-bottom: 0px; font-size: 12px;">Por: Marvin Jose Vigil | 4 de Abril del 2016 | Tecnologia</p>
+						<div style="height: 83px;">
+						<p class="text-left sans" style="font-weight: 300; font-size: 12px; color: #888888; margin-bottom: 0px;">
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+							quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+							consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+							cillum dolore eu fugiat nulla pariatur. Excepteur.
+						</p>
+						</div>
+						<p class="text-right" style="margin-bottom: 0px;">
+						<a href="{{path('admin_blog')}}"><button class="btn btn-default btn-xs">Leer mas</button></a>
+						</p>
+						</div>
+					</div>
+				</div>
+			</div> <!-- end col md 9 -->
+
+		</div> <!-- end row -->
+	</div> <!-- end container -->
+
+	<div style="height: 10px;"></div>
+    {% endblock %}
+{% endblock %}
