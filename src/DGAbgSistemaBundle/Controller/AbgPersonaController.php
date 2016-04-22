@@ -239,7 +239,6 @@ class AbgPersonaController extends Controller {
             $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
             
             
-
             $dql_ciudad = "SELECT c.nombreCiudad As nombre, es.nombreEstado estado"
                     . " FROM DGAbgSistemaBundle:AbgPersona p "
                     . " JOIN DGAbgSistemaBundle:CtlCiudad c WHERE p.ctlCiudad=c.id AND p.id=" . $idPersona
@@ -335,6 +334,8 @@ class AbgPersonaController extends Controller {
                         'sitio' => $sitio,
                         'ciuda' => $result_ciuda,
                         'url' => $url,
+                        'abgFoto'=>$result_foto
+             
             ));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
@@ -448,6 +449,12 @@ class AbgPersonaController extends Controller {
                     . " FROM  DGAbgSistemaBundle:AbgUrlPersonalizada u "
                     . " JOIN DGAbgSistemaBundle:AbgPersona p WHERE p.id=u.abgPersona AND u.abgPersona=" . $idPersona;
             $url = $em->createQuery($dql_url)->getArrayResult();
+             //Esta consulta  es la que jala el src de la foto dejela
+            
+            $dqlfoto = "SELECT fot.src as src "
+                . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=1";
+            $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+            
 
             return $this->render('abgpersona/panelAdministrativoAbg.html.twig', array(
                         'abgPersona' => $result_persona,
@@ -464,6 +471,7 @@ class AbgPersonaController extends Controller {
                         'sitio' => $sitio,
                         'ciuda' => $result_ciuda,
                         'url' => $url,
+                        'abgFoto'=>$result_foto
             ));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";

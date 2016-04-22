@@ -105,19 +105,6 @@ class CtlEmpresa
      */
     private $fax;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="color", type="string", length=60, nullable=true)
-     */
-    private $color;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="cantidad_empleados", type="string", length=255, nullable=true)
-     */
-    private $cantidadEmpleados;
 
     /**
      * @var \CtlCiudad
@@ -480,28 +467,7 @@ class CtlEmpresa
         return $this->fax;
     }
 
-    /**
-     * Set color
-     *
-     * @param string $color
-     * @return CtlEmpresa
-     */
-    public function setColor($color)
-    {
-        $this->color = $color;
 
-        return $this;
-    }
-
-    /**
-     * Get color
-     *
-     * @return string 
-     */
-    public function getColor()
-    {
-        return $this->color;
-    }
 
     /**
      * Set cantidadEmpleados
@@ -629,34 +595,7 @@ class CtlEmpresa
     {
         return $this->color;
     }
-    
-    
-     /**
-     * Set cantidadEmpleados
-     *
-     * @param string $cantidadEmpleados
-     * @return CtlEmpresa
-     */
-    public function setCantidadEmpleados($cantidadEmpleados)
-    {
-        $this->cantidadEmpleados = $cantidadEmpleados;
-
-        return $this;
-    }
-
-    /**
-     * Get cantidadEmpleados
-     *
-     * @return string 
-     */
-    public function getCantidadEmpleados()
-    {
-        return $this->cantidadEmpleados;
-    }
-    
-    
-    
-    
+     
     
     /**
      * Set latitude

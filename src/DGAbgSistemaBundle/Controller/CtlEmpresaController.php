@@ -540,12 +540,16 @@ class CtlEmpresaController extends Controller
       public function ValidarCorreoAction(Request $request) {
         
         $isAjax = $this->get('Request')->isXMLhttpRequest();
+   /*     var_dump($isAjax);
+        exit();*/
+         
          if($isAjax){
-             
+            
             $em = $this->getDoctrine()->getManager();
             $response = new JsonResponse();
             $datos = $this->get('request')->request->get('frm');       
             $frm = json_decode($datos);
+           
             $correo = $frm->correoEmpresa;
      
             $dqlEmp = "SELECT COUNT(emp.id) AS res FROM DGAbgSistemaBundle:CtlEmpresa emp WHERE"
