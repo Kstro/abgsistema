@@ -58,6 +58,7 @@ tmtags
 
 # netbeans
 nbproject/private/*
+nbproject/private.xml
 build/
 nbbuild/
 dist/

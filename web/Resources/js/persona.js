@@ -968,6 +968,8 @@ function enviarf()
     return false;
 }
 
+
+
 // Estructura de salario
 function enviarEstructura()
 {

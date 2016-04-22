@@ -145,6 +145,45 @@ class CtlEmpresa
      * @ORM\ManyToMany(targetEntity="AbgPersona", mappedBy="ctlEmpresa")
      */
     private $abgPersona;
+    
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="color", type="string", length=60, nullable=false)
+     */
+    private $color;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cantidad_empleados", type="string", length=60, nullable=false)
+     */
+    private $cantidadEmpleados;
+    
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="longitude", type="float", nullable=false)
+     */
+    private $longitude;
+    
+     /**
+     * @var float
+     *
+     * @ORM\Column(name="latitude", type="float", nullable=false)
+     */
+    private $latitude;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="listaEmpleado", type="integer", nullable=false)
+     */
+    private $listaEmpleado;
+    
+    
+    
 
     /**
      * Constructor
@@ -246,7 +285,7 @@ class CtlEmpresa
 
         return $this;
     }
-
+    
     /**
      * Get fechaFundacion
      *
@@ -565,4 +604,138 @@ class CtlEmpresa
     {
         return $this->abgPersona;
     }
+    
+    
+    
+     /**
+     * Set color
+     *
+     * @param string $color
+     * @return CtlEmpresa
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    /**
+     * Get color
+     *
+     * @return string 
+     */
+    public function getColor()
+    {
+        return $this->color;
+    }
+    
+    
+     /**
+     * Set cantidadEmpleados
+     *
+     * @param string $cantidadEmpleados
+     * @return CtlEmpresa
+     */
+    public function setCantidadEmpleados($cantidadEmpleados)
+    {
+        $this->cantidadEmpleados = $cantidadEmpleados;
+
+        return $this;
+    }
+
+    /**
+     * Get cantidadEmpleados
+     *
+     * @return string 
+     */
+    public function getCantidadEmpleados()
+    {
+        return $this->cantidadEmpleados;
+    }
+    
+    
+    
+    
+    
+    /**
+     * Set latitude
+     *
+     * @param float $latitude
+     * @return CtlEmpresa
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    /**
+     * Get latitude
+     *
+     * @return float 
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+    
+    
+      /**
+     * Set longitude
+     *
+     * @param float $longitude
+     * @return CtlEmpresa
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    
+    
+    /**
+     * Get longitude
+     *
+     * @return float 
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+    
+    
+    /**
+     * Set listaEmpleado
+     *
+     * @param integer $listaEmpleado
+     * @return CtlEmpresa
+     */
+    public function setListaEmpleado($listaEmpleado)
+    {
+        $this->listaEmpleado = $listaEmpleado;
+
+        return $this;
+    }
+
+    /**
+     * Get listaEmpleado
+     *
+     * @return integer
+     */
+    public function getListaEmpleado()
+    {
+        return $this->listaEmpleado;
+    }
+
+    
+    
+    
+    
+    
+    
+    
 }

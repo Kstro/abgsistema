@@ -2,14 +2,32 @@
 
 	<div class="container-fluid" style="background-color: #000035; height: 50px;">
 		<div class="container">
-			<p class="pull-left"> <img src="{{ asset('Resources/src/img/loo.png')}}" style="margin-top: 6px;"> </p>
+                       {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')%}
+                        <p class="pull-left"> <img src="{{ asset('Resources/src/img/loo.png')}}" style="margin-top: 6px;"> </p>
+                        <p class="pull-right" style="color: #fff; margin-top: 13px;"> 
+			<span class='sans' style="padding-left: 10px; padding-right: 10px; font-size: 12px; letter-spacing: 0.5px;"><strong>ENCUENTRA ABOGADOS</strong></span>
+                         <span class='sans' style="font-size: 14px;"><strong>|</strong></span>
+                            <a href="{{ path('abogado_logout')}}"  style=" text-decoration:none;" > 
+                                <span class='sans' style="padding-left: 10px; padding-right: 10px; font-size: 12px; letter-spacing: 0.5px;"><strong>LOGOUT</strong></span>
+                            </a>
+                        
+                        
+                        </p>
+                        {% else %}
+                            <p class="pull-left"> <img src="{{ asset('Resources/src/img/loo.png')}}" style="margin-top: 6px;"> </p>
 			<p class="pull-right" style="color: #fff; margin-top: 13px;"> 
 			<span class='sans' style="padding-left: 10px; padding-right: 10px; font-size: 12px; letter-spacing: 0.5px;"><strong>ENCUENTRA ABOGADOS</strong></span>
 			<span class='sans' style="font-size: 14px;"><strong>|</strong></span>
-			<span class='sans' style="padding-left: 10px; padding-right: 10px; font-size: 12px; letter-spacing: 0.5px;"><strong>REGISTRATE</strong></span>
-			<span class='sans' style="font-size: 14px;"><strong>|</strong></span>
-			<span class='sans' style="padding-left: 10px; padding-right: 10px; font-size: 12px; letter-spacing: 0.5px;"><strong>LOGIN</strong></span>
-			</p>
+                        <a href="{{ path('registro')}}"  style=" text-decoration:none;" > 
+                            <span class='sans' style="padding-left: 10px; padding-right: 10px; font-size: 12px; letter-spacing: 0.5px;"><strong>REGISTRATE</strong></span>
+                        </a>
+                        <span class='sans' style="font-size: 14px;"><strong>|</strong></span>
+                            <a href="{{ path('abogado_login')}}"  style=" text-decoration:none;" > 
+                                <span class='sans' style="padding-left: 10px; padding-right: 10px; font-size: 12px; letter-spacing: 0.5px;"><strong>LOGIN</strong></span>
+                            </a>
+                        </p>
+                            
+                       {% endif %}
 		</div>
 	</div>
 

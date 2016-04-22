@@ -151,6 +151,7 @@ class AbgPersonaController extends Controller {
      * @Route("/usuario/get", name="usuario", options={"expose"=true})
      * @Method("GET")
      */
+    
     public function UsuarioAction() {
         $em = $this->getDoctrine()->getManager();
         $em->getConnection()->beginTransaction();
@@ -168,14 +169,15 @@ class AbgPersonaController extends Controller {
             $abgPersona->setEstado('1');
             $em->persist($abgPersona);
             $em->flush();
+            
             $idPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgPersona')->find($abgPersona->getId());
 
             $ctlUsuario->setUsername($datos['txtUsername']);
             $ctlUsuario->setPassword($datos['txtPassword']);
-
+            
             $ctlUsuario->setEstado('1');
             $ctlUsuario->setRhPersona($idPersona);
-
+            
             $this->setSecurePassword($ctlUsuario, $datos['txtPassword']);
             $em->persist($ctlUsuario);
             $em->flush();
@@ -196,6 +198,9 @@ class AbgPersonaController extends Controller {
             // echo $e->getMessage();   
         }
     }
+    
+    
+    
 
     private function setSecurePassword(&$entity, $contrasenia) {
         $entity->setSalt(md5(time()));
@@ -226,6 +231,14 @@ class AbgPersonaController extends Controller {
                     . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+            
+            //Esta consulta  es la que jala el src de la foto dejela
+            
+            $dqlfoto = "SELECT fot.src as src "
+                . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=1";
+            $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+            
+            
 
             $dql_ciudad = "SELECT c.nombreCiudad As nombre, es.nombreEstado estado"
                     . " FROM DGAbgSistemaBundle:AbgPersona p "

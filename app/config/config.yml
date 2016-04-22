@@ -9,7 +9,7 @@ imports:
 parameters:
      locale: en
      photo.perfil: %kernel.root_dir%/../web/Photos/perfil/
-
+     photo.perfil.temporal: %kernel.root_dir%/../web/Photos/perfil/temporal/
 
 framework:
     #esi:             ~

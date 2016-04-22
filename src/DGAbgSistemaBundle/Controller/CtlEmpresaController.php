@@ -14,14 +14,15 @@ use DGAbgSistemaBundle\Entity\CtlUsuario;
 use DGAbgSistemaBundle\Entity\AbgSitioWeb;
 use DGAbgSistemaBundle\Form\CtlEmpresaType;
 use Symfony\Component\HttpFoundation\Response;
+use DGAbgSistemaBundle\Entity\AbgPersonaSubespecialidad;
 use DGAbgSistemaBundle\Resources\Tinypng\lib\lib\Tinify;
-/*
-include_once '../src/DGAbgSistemaBundle/Resources/Tinypng/lib/lib/Tinify.php';
-include_once '../src/DGAbgSistemaBundle/Resources/Tinypng/lib/lib/Tinify/Exception.php';
-include_once '../src/DGAbgSistemaBundle/Resources/Tinypng/lib/lib/Tinify/ResultMeta.php';
-include_once '../src/DGAbgSistemaBundle/Resources/Tinypng/lib/lib/Tinify/Result.php';
-include_once '../src/DGAbgSistemaBundle/Resources/Tinypng/lib/lib/Tinify/Source.php';
-include_once '../src/DGAbgSistemaBundle/Resources/Tinypng/lib/lib/Tinify/Client.php';*/
+
+include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify.php';
+include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Exception.php';
+include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/ResultMeta.php';
+include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Result.php';
+include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Source.php';
+include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Client.php';
 
 
 
@@ -29,60 +30,35 @@ include_once '../src/DGAbgSistemaBundle/Resources/Tinypng/lib/lib/Tinify/Client.
 /**
  * CtlEmpresa controller.
  *
- * @Route("/admin/ctlempresa")
+ * @Route("/")
  */
 class CtlEmpresaController extends Controller
 {
     /**
      * Lists all CtlEmpresa entities.
      *
-     * @Route("/", name="admin_ctlempresa_index")
+     * @Route("/registro", name="registro")
      * @Method({"GET", "POST"})
      */
-    public function indexAction()
+    public function IndexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $ctlEmpresas    = $em->getRepository('DGAbgSistemaBundle:CtlEmpresa')->findAll();
-        $ctlTipoEmpresa = $em->getRepository('DGAbgSistemaBundle:CtlTipoEmpresa')->findAll();
-        $ctlCuidad = $em->getRepository('DGAbgSistemaBundle:CtlCiudad')->findAll();
-        
-
+      
         return $this->render('ctlempresa/index.html.twig', array(
-            'ctlEmpresas' => $ctlEmpresas,
-            'ctlTipoEmpresas' => $ctlTipoEmpresa ,
-            'ctlCuidades' => $ctlCuidad,
+            
         ));
     }
     
     
-    
-    /**
+     /**
      * Lists all CtlEmpresa entities.
      *
-     * @Route("/empresa/dash", name="ctlempresa_dashbord")
+     * @Route("/admin/ajusteFoto", name="ajusteFoto")
      * @Method({"GET", "POST"})
      */
-    
-    public function dashbordAction()
+    public function FotoAction()
     {
-        $ctlEmpresaId =6;
       
-        $em = $this->getDoctrine()->getManager();
-        $dqlempresa = "SELECT  e.nombreEmpresa AS nombreEmpresa, e.correoelectronico as correoEmpresa, e.direccion, e.sitioWeb,e.movil, e.telefono, e.color"
-                . " FROM DGAbgSistemaBundle:CtlEmpresa e WHERE e.id=" . $ctlEmpresaId;
-        
-        $dqlfoto = "SELECT fot.src as src "
-                . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.ctlEmpresa=" . $ctlEmpresaId . " and fot.estado=1 and fot.tipoFoto=1";
-        
-        $result_empresa = $em->createQuery($dqlempresa)->getArrayResult();
-        $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
-       
-        
-        return $this->render('ctlempresa/perfilEmpresa.html.twig', array(
-             'ctlEmpresa' => $result_empresa,
-            'abgFoto' =>$result_foto,
-            'ctlEmpresaId'=>$ctlEmpresaId,
+        return $this->render('ctlempresa/ajustesFotos.html.twig', array(
             
         ));
     }
@@ -90,6 +66,225 @@ class CtlEmpresaController extends Controller
     
     
     
+    /**
+     * Lists all CtlEmpresa entities.
+     *
+     * @Route("admin/empresa", name="empresa")
+     * @Method({"GET", "POST"})
+     */
+    
+
+    public function EmpresaAction()
+    {
+        $username = $this->container->get('security.context')->getToken()->getUser();
+        //$establecimiento = $user->getIdEmpleado()->getIdEstablecimiento()->getId();
+         
+        //var_dump($username);
+        
+      
+         $em = $this->getDoctrine()->getManager();
+         $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username->getUsername()); //->getRhPersona();
+         //var_dump($RepositorioPersona);
+         $ctlEmpresaId = $username->getCtlEmpresa()->getId();
+        
+         //Coleccion de datos de la empresa
+         
+        $dqlempresa = "SELECT  e.nombreEmpresa AS nombreEmpresa, e.correoelectronico as correoEmpresa, e.direccion, e.sitioWeb,e.movil, e.telefono, e.color,e.cantidadEmpleados ,e.latitude, e.longitude ,"
+                . "date_format(e.fechaFundacion, '%Y') As fechaFundacion"
+                . " FROM DGAbgSistemaBundle:CtlEmpresa e WHERE e.id=" . $ctlEmpresaId;
+        
+        $result_empresa = $em->createQuery($dqlempresa)->getArrayResult();
+         
+         //Valor de la foto de la empresa
+        
+        $dqlfoto = "SELECT fot.src as src "
+                . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.ctlEmpresa=" . $ctlEmpresaId . " and fot.estado=1 and fot.tipoFoto=1";
+        $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+       
+        
+        //Array de si se lista o no dentro del perfil de la empresa
+        $RepositorioListaEmpresa = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlEmpresa')->find($ctlEmpresaId); //->getRhPersona();
+        $lista =$RepositorioListaEmpresa->getListaEmpleado();
+        
+       if($lista){
+            //Listar los empleados de la empresa
+        $dql = "SELECT per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, per.telefonoFijo as telefonoFijo, per.telefonoMovil as telefonoMovil, "
+                    . " '' as sitioWeb, per.id, fot.src "
+                    . "FROM DGAbgSistemaBundle:AbgFoto fot "
+                    . "JOIN fot.abgPersona per "
+                    . "JOIN per.ctlEmpresa emp "
+                    . "WHERE emp.id =".$ctlEmpresaId
+                    . " ORDER BY per.nombres ASC";
+        
+        $registro_empleados = $em->createQuery($dql)->getArrayResult();
+           
+       }else{
+           
+           $registro_empleados = null;
+           
+       }
+       
+        //valor de los tipos de empresa  
+        $dqlTipoEmpresa = "SELECT tipo.tipoEmpresa as tipoEmpresa  "
+                            . "FROM DGAbgSistemaBundle:CtlEmpresa emp "
+                            . "JOIN emp.ctlTipoEmpresa tipo "
+                            . "WHERE emp.id =".$ctlEmpresaId;
+        
+        $registro_tipoempresa = $em->createQuery($dqlTipoEmpresa)->getResult();   
+        
+        
+       
+           
+        
+        //Valor de la persona
+        
+        
+        // $RepositorioPersonas = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
+        $idPersona = $username->getRhPersona()->getId();
+        $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo "
+                    . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
+        $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+            
+        
+        
+        //Foto de la persona de perfil cuando este dentro del modulo de empresa
+        $dqlfoto = "SELECT fot.src as src "
+                . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=1";
+        $result_fotoAbogado = $em->createQuery($dqlfoto)->getArrayResult();        
+        
+            
+        return $this->render('ctlempresa/paneladministrativoempresa.html.twig', array(
+             'ctlEmpresa' => $result_empresa,
+            'abgFoto' =>$result_foto,
+            'ctlEmpresaId'=>$ctlEmpresaId,
+            'empleados' =>$registro_empleados,
+            'tipoEmpresa' =>$registro_tipoempresa,
+            'usuario'=>$username,
+             'abgPersona' => $result_persona,
+             'abgFotoP'=>$result_fotoAbogado,
+            
+        ));
+    }
+    
+    
+    
+    /**
+     * Lists all CtlEmpresa entities.
+     *
+     * @Route("/empresapublico/{username}", name="empresapublico")
+     * @Method({"GET", "POST"})
+     */
+    
+    
+    public function PerfilpublicoempresaAction($username)
+    {
+        
+      
+         $em = $this->getDoctrine()->getManager();
+         $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
+         $ctlEmpresaId = $RepositorioPersona[0]->getCtlEmpresa()->getId();
+        
+         //Coleccion de datos de la empresa
+         
+        $dqlempresa = "SELECT  e.nombreEmpresa AS nombreEmpresa, e.correoelectronico as correoEmpresa, e.direccion, e.sitioWeb,e.movil, e.telefono, e.color,e.cantidadEmpleados ,e.latitude, e.longitude ,"
+                . "date_format(e.fechaFundacion, '%Y') As fechaFundacion"
+                . " FROM DGAbgSistemaBundle:CtlEmpresa e WHERE e.id=" . $ctlEmpresaId;
+        
+        $result_empresa = $em->createQuery($dqlempresa)->getArrayResult();
+         
+         //Valor de la foto de la empresa
+        
+        $dqlfoto = "SELECT fot.src as src "
+                . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.ctlEmpresa=" . $ctlEmpresaId . " and fot.estado=1 and fot.tipoFoto=1";
+        $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+       
+        
+        //Array de si se lista o no dentro del perfil de la empresa
+        $RepositorioListaEmpresa = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlEmpresa')->find($ctlEmpresaId); //->getRhPersona();
+        $lista =$RepositorioListaEmpresa->getListaEmpleado();
+        
+       if($lista){
+            //Listar los empleados de la empresa
+        $dql = "SELECT per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, per.telefonoFijo as telefonoFijo, per.telefonoMovil as telefonoMovil, "
+                    . " '' as sitioWeb, per.id, fot.src "
+                    . "FROM DGAbgSistemaBundle:AbgFoto fot "
+                    . "JOIN fot.abgPersona per "
+                    . "JOIN per.ctlEmpresa emp "
+                    . "WHERE emp.id =".$ctlEmpresaId
+                    . " ORDER BY per.nombres ASC";
+        
+        $registro_empleados = $em->createQuery($dql)->getArrayResult();
+           
+       }else{
+           
+           $registro_empleados = null;
+           
+       }
+       
+        //valor de los tipos de empresa  
+        $dqlTipoEmpresa = "SELECT tipo.tipoEmpresa as tipoEmpresa  "
+                            . "FROM DGAbgSistemaBundle:CtlEmpresa emp "
+                            . "JOIN emp.ctlTipoEmpresa tipo "
+                            . "WHERE emp.id =".$ctlEmpresaId;
+        
+        $registro_tipoempresa = $em->createQuery($dqlTipoEmpresa)->getResult();  
+        
+        //Llenando las especialidades
+        
+                $dql_especialida = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre"
+                        . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
+                        . "JOIN  DGAbgSistemaBundle:CtlSubespecialidad sub WHERE e.id=sub.abgEspecialidad "
+                        . "JOIN DGAbgSistemaBundle:AbgPersonaSubespecialidad pe WHERE sub.id=pe.abgSubespecialidad AND pe.ctlEmpresa=" .$ctlEmpresaId 
+                        . " GROUP by e.id";
+                $result_especialida = $em->createQuery($dql_especialida)->getArrayResult();
+               
+                
+                if ($result_especialida) {
+                    
+                    $dsql_sub = "SELECT pe.id AS idSub,sub.abgSubespecialidadcol AS nombre, e.id AS idEsp  "
+                            . "FROM  DGAbgSistemaBundle:AbgPersonaSubespecialidad pe "
+                            . "JOIN  DGAbgSistemaBundle:CtlSubespecialidad sub WHERE  sub.id=pe.abgSubespecialidad AND  pe.ctlEmpresa=" .$ctlEmpresaId 
+                            . "JOIN  DGAbgSistemaBundle:CtlEspecialidad e WHERE e.id=sub.abgEspecialidad ";
+                    $result_sub = $em->createQuery($dsql_sub)->getArrayResult();
+                    
+                   
+
+                }else{
+                     $result_especialida=null;
+                     $result_sub=null;
+                    
+                }
+                
+                
+                
+                
+
+        //Valores de las persona
+                
+        $RepositorioPersonas = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
+        $idPersona = $RepositorioPersonas[0]->getRhPersona()->getId();
+        $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo "
+                    . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
+        $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+     
+        
+        
+         
+        
+        return $this->render('ctlempresa/perfilEmpresa.html.twig', array(
+            'ctlEmpresa' => $result_empresa,
+            'abgFoto' =>$result_foto,
+            'ctlEmpresaId'=>$ctlEmpresaId,
+            'empleados' =>$registro_empleados,
+            'tipoEmpresa' =>$registro_tipoempresa,
+            'usuario'=>$username,
+            'abgPersona' => $result_persona,
+            'abgEspecialida'=>$result_especialida,
+            'subEsp'=>$result_sub,
+            
+           
+        ));
+    }
     
     
     
@@ -225,7 +420,7 @@ class CtlEmpresaController extends Controller
             $ctlEmpresa = new CtlEmpresa();
             $abgPersona = new AbgPersona();
             $ctlUsuario = new CtlUsuario();
-            $abgSitioWeb = new AbgSitioWeb();
+            $abgFoto = new AbgFoto();
             
             
             
@@ -244,50 +439,41 @@ class CtlEmpresaController extends Controller
             $em->persist($abgPersona);
             $em->flush();
             $idPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgPersona')->find($abgPersona->getId());
-             
+            
             //Ingreso null de una empresa
             
-            $ctlEmpresa->setNombreEmpresa(null);
+            $ctlEmpresa->setNombreEmpresa('Nombre de la empresa');
             $ctlEmpresa->setCtlCiudad(null);
             $ctlEmpresa->setCtlTipoEmpresa(null);
-            $ctlEmpresa->setMovil(null);
-            $ctlEmpresa->setTelefono(null);
-            $ctlEmpresa->setSitioWeb(null);
+            $ctlEmpresa->setMovil('00000000');
+            $ctlEmpresa->setTelefono('00000000');
+            $ctlEmpresa->setSitioWeb('Sitio Web');
             $ctlEmpresa->setServicios(null);
             $ctlEmpresa->setNit(null);
             $ctlEmpresa->setFotoPerfil(null);
             $ctlEmpresa->setFechaFundacion(null);
             $ctlEmpresa->setFax(null);
-            $ctlEmpresa->setDireccion(null);
+            $ctlEmpresa->setDireccion('Direccion empresa');
             $ctlEmpresa->setDescripcion(null);
-            $ctlEmpresa->setCorreoelectronico(null);
-            $ctlEmpresa->setColor(null);
+            $ctlEmpresa->setCorreoelectronico('ejemplo@ejemplo.com');
+            $ctlEmpresa->setColor("#000035");
+            $ctlEmpresa->setCantidadEmpleados(null);
+            $ctlEmpresa->setLatitude(13.70036411285400400000);
+            $ctlEmpresa->setLongitude(-89.22023010253906000000);
+            $ctlEmpresa->setListaEmpleado(1);
             
-            
-            
-            
-            
-            
+
             $em->persist($ctlEmpresa);
             $em->flush();
             
             $idEmpresa = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlEmpresa')->find($ctlEmpresa->getId());
-            
-            
-            
-            
+
             //Ingreso de un usuario
             $ctlUsuario->setUsername($correoUsuario);
             $ctlUsuario->setPassword($contrasenha);
             $ctlUsuario->setEstado('1');
             $ctlUsuario->setRhPersona($idPersona);
             $ctlUsuario->setCtlEmpresa($idEmpresa);
-            
-          
-            
-            
-            
-            
             
             $this->setSecurePassword($ctlUsuario, $contrasenha);
             $em->persist($ctlUsuario);
@@ -296,37 +482,44 @@ class CtlEmpresaController extends Controller
 //            $em->close();
             
              //Insercion del registro de la foto de la empresa
-                    $abgFoto = new AbgFoto();
+                  
                     //Ojo que posteriormente tengo que sacar los valores con el id de la variable de sesion que este presente
                     
                     $idEmpresas = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlEmpresa')->find($idEmpresa);
+                    
+                    $abgFotoE= new AbgFoto();
                     //Aqui termina lo del id
-                    $abgFoto->setAbgPersona(null);
-                    $abgFoto->setCtlEmpresa($idEmpresas);
-                    $abgFoto->setTipoFoto(1);
-                    $abgFoto->setSrc(null);
-                    $abgFoto->setFechaRegistro(null);
-                    $abgFoto->setFechaExpiracion(null);
-                    $abgFoto->setEstado(0);
-                     $em->persist($abgFoto);
+                    $abgFotoE->setAbgPersona(null);
+                    $abgFotoE->setCtlEmpresa($idEmpresas);
+                    $abgFotoE->setTipoFoto(1);
+                    $abgFotoE->setSrc('Photos/defecto/defecto.png');
+                    $abgFotoE->setFechaRegistro(null);
+                    $abgFotoE->setFechaExpiracion(null);
+                    $abgFotoE->setEstado(1);
+                     $em->persist($abgFotoE);
                      $em->flush();
             
-         
-        
-            
-            
-            
-            $data = new \stdClass();
-            $data->estado = true;
-            $data->valor = "Las tres entidades fueron insertadas con exito";
              
-        
+                    $abgFoto->setAbgPersona($idPersona);
+                    $abgFoto->setCtlEmpresa(null);
+                    $abgFoto->setTipoFoto(1);
+                    $abgFoto->setSrc('Photos/defecto/defecto.png');
+                    $abgFoto->setFechaRegistro(null);
+                    $abgFoto->setFechaExpiracion(null);
+                    $abgFoto->setEstado(1);
+                     $em->persist($abgFoto);
+                     $em->flush();
+                     
+                  
+                     
+                 $data['username'] = $ctlUsuario->getUsername();
+                 $data['estado']=true;
+     
             return new Response(json_encode($data)); 
          }else{
              
-            $data = new \stdClass();
-            $data->estado = false;
-            $data->valor = "Error al insertar los datos";
+           
+            $data['estado'] = false;
              return new Response(json_encode($data)); 
          }
         
@@ -401,68 +594,65 @@ class CtlEmpresaController extends Controller
     
     
     /**
-     * @Route("/ingresar_empresa/get", name="ingresar_foto", options={"expose"=true})
+     * @Route("/ingresar_foto/get", name="ingresar_foto", options={"expose"=true})
      * @Method("POST")
      */
     
     
-    public function RegistrarEmpresaAction(Request $request) {
-            //data es el valor de retorno de ajax donde puedo ver los valores que trae dependiendo de las instrucciones que hace dentro del controlador
-           
-            $nombreimagen2=" ";
-            $dataForm = $request->get('frm');
+    public function IngresarFotoAction() {
             
-            $EmpresaId = $_POST["empresaId"];
+            $request = $this->getRequest();
+            //data es el valor de retorno de ajax donde puedo ver los valores que trae dependiendo de las instrucciones que hace dentro del controlador
+            
+            $path2 = $this->container->getParameter('photo.perfil.temporal');
+            $horaFecha = date('Y-m-d His');
+            $nombreTemporal = $horaFecha;
+            $nombreTemporal=str_replace(" ", "", $nombreTemporal);
+            
+            define('UPLOAD_DIR', $path2);
+            $img = $request->get('imageDatas');
+            $img = str_replace('data:image/png;base64,', '', $img);
+            $img = str_replace(' ', '+', $img);
+
+            $data = base64_decode($img);
+            $file = UPLOAD_DIR .$nombreTemporal. '.png';
+            $success = file_put_contents($file, $data);
+            
+            $nombreTemporal=$nombreTemporal.'.png';
+            
+            
+   if ($success){
+
+            $EmpresaId = $request->get("empresaId");
             
            
  
-            $nombreimagen=$_FILES['file']['name'];
-
-            $tipo = $_FILES['file']['type'];
-            $extension= explode('/',$tipo);
-            $nombreimagen2.=".".$extension[1];
          
-         if ($nombreimagen != null){
+         if ($nombreTemporal != null){
              
             //Direccion fisica del la imagen  
                 $path1 = $this->container->getParameter('photo.perfil');
                
                 $path = "Photos/perfil/E";
-                $fecha = date('Y-m-d His');
-                
-                $nombreArchivo = $nombreimagen."-".$fecha.$nombreimagen2;
+                $nombreArchivo = $nombreTemporal;
                 
                 $nombreBASE=$path.$nombreArchivo;
-                $nombreBASE=str_replace(" ","", $nombreBASE);
-                $nombreSERVER =str_replace(" ","", $nombreArchivo);
-             
-                $resultado = move_uploaded_file($_FILES["file"]["tmp_name"], $path1.$nombreSERVER);
                 
-                
-                //Codigo para poder redimensionar la  imagenes que se suben
-                    \Tinify\setKey("TGdnhEaY1ZrJB1J_NSAYYLeqno6FdIYF");
+                $nombreSERVER = $nombreArchivo;
 
-                     $source = \Tinify\fromFile($path1.$nombreSERVER);
+                //Codigo para poder redimensionar la  imagenes que se suben
+                    \Tinify\setKey("eY78XR8uy0tp-SCRHjp4R8fX4Ib9mKgg");
+                    
+                     $source = \Tinify\fromFile($path2.$nombreSERVER);
                      $resized = $source->resize(array(
                          "method" => "cover",
                          "width" => 300,
                          "height" => 300
                      ));
                      
-                
-                     
-                $resized->toFile($path1."E".$nombreSERVER);
-                $numero =unlink($path1.$nombreSERVER);
-                
-                
-
-                
-                if ($numero){
-               
-                    
-                    
-                }
-                
+              
+                $resultado=$resized->toFile($path1."E".$nombreSERVER);
+                $numero =unlink($path2.$nombreSERVER);
                 
                 if ($resultado){
                                 $ctlEmpresa = new CtlEmpresa();
@@ -477,7 +667,7 @@ class CtlEmpresaController extends Controller
                                 $direccion = str_replace("\\","" , $direccion);
                                 $direccion = str_replace("Photos/perfil/","", $direccion);
 
-                                if($direccion!=''){
+                                if($direccion!='' && $direccion!='Photos/defecto/defecto.png'){
                                      $eliminacionRegistroExixtente =unlink($path1.$direccion);
 
                                         if($eliminacionRegistroExixtente){
@@ -490,9 +680,10 @@ class CtlEmpresaController extends Controller
                                                 $em->merge($entity[0]);
                                                 $em->flush();
                                                 $src = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("ctlEmpresa" =>$idEmpresa,"tipoFoto"=>1));
-                                                $direccion = $src[0]->getSrc();
-                                                $direccionParaAjax = str_replace("\\","" , $direccion);
-                                                $data['direccion']=$direccionParaAjax;
+                                                $direcciones = $src[0]->getSrc();
+                                                $direccionParaAjax = str_replace("\\","" , $direcciones);
+                                                $datas['direccion']=$direccionParaAjax;
+                                                $datas['estado']=true;
 
                                         }
 
@@ -505,17 +696,18 @@ class CtlEmpresaController extends Controller
                                                 $entity[0]->setEstado(1);
                                                 $em->merge($entity[0]);
                                                 $em->flush();
-                                                $src = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("ctlEmpresa" =>$idEmpresa,"tipoFoto"=>1));
-                                                $direccion = $src[0]->getSrc();
-                                                $direccionParaAjax = str_replace("\\","" , $direccion);
-                                                $data['direccion']=$direccionParaAjax;
                                                 
-                            }
+                                                $enti = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("ctlEmpresa" =>$idEmpresa,"tipoFoto"=>1));
+                                                
+                                                $direcciones = $enti[0]->getSrc();
+                                                $datas['direccion']=$direcciones;
+                                                
+                                }
 
 
                     
                 }else{
-                         $data['servidor'] = "No se pudo mover la imagen al servidor";
+                         $datas['servidor'] = "No se pudo mover la imagen al servidor";
                     
                     
                 }
@@ -523,14 +715,15 @@ class CtlEmpresaController extends Controller
                 
             }
             else{
-                $data['imagen'] = "Imagen invalida";
+                $datas['imagen'] = "Imagen invalida";
                 
                 
             }
             
-         
+             
+    }
             
-           return new Response(json_encode($data));
+           return new Response(json_encode($datas));
            
       
     }
@@ -553,7 +746,7 @@ class CtlEmpresaController extends Controller
     public function EditPersonaAction() {
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
-        $data = new \stdClass();
+       
         try {
           
            
@@ -588,14 +781,66 @@ class CtlEmpresaController extends Controller
                     $sitioWebEmpresa = $request->get('sitiowebEmpresa');
                     $empresa->setSitioWeb($sitioWebEmpresa);
                     break;
-            }
+                case 6:
+                    
+                     $nombreTipoEmpresa = $request->get('tipoEmpresas');
+                     $dato = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlTipoEmpresa')->findBy(array("tipoEmpresa" =>$nombreTipoEmpresa));
+                     $idTipoEmpresa=$dato[0];
+                     $empresa->setCtlTipoEmpresa($idTipoEmpresa);
+                    break;
+                
+                case 7:
+                    $anhoFundacion = $request->get('anhoFundacion');
+                  
+                 
+                    $sql = "select YEAR(NOW()) as num";
+
+                    $stm = $this->container->get('database_connection')->prepare($sql);
+                    $stm->execute();
+                    $anio = $stm->fetchAll();
+                    $numero = $anio[0]['num'];
+         
+                    if ($anhoFundacion<=$numero){
+                        
+                       
+                         $anhoFundacion= $anhoFundacion."-12-31";
+                         $empresa->setFechaFundacion(new \DateTime($anhoFundacion));
+                         
+                         $data['valor']=true;
+                         
+                    }
+                    else{
+                        $data['valor']=false;
+                        
+                    }
+                    
+                    break;
+                
+                 case 8:                    
+                     $cantidadEmpleados = $request->get('cantidadEmpleados');
+                     $empresa->setCantidadEmpleados($cantidadEmpleados);
+                    break;
+                
+                  case 9:                    
+                     $latitude = $request->get('latitudes');
+                     $longitud = $request->get('longitudes');
+
+                     $empresa->setLatitude($latitude);
+                     $empresa->setLongitude($longitud);
+
+                    break;
+                case 10:                    
+                     $valor = $request->get('valor');
+                     $empresa->setListaEmpleado($valor);
+                    break;
+                     
+               }
 
             
              $em->merge($empresa);
              $em->flush();
-          
-           
-          $data->estado = true;
+    
+            $data['estado'] = true;
             
            return new Response(json_encode($data));
         } catch (\Exception $e) {
@@ -639,7 +884,311 @@ class CtlEmpresaController extends Controller
     
     
      }
+     
+     /**
+     * @Route("/ctlempresa/mostrarTipoEmpresa", name="mostarTipoEmpresa", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function mostarTipoEmpresaAction() {
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+
+        try {
+          
+            $valor = $request->get('exa');
+             $dqlTipoEmpresa = "SELECT te.tipoEmpresa as nombre, te.id as id"
+                        . " FROM DGAbgSistemaBundle:CtlTipoEmpresa te"; 
+        
+            $dato['valores'] = $em->createQuery($dqlTipoEmpresa)->getResult();     
+            
+
+            return new Response(json_encode($dato));
+        } catch (\Exception $e) {
+            
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        } 
     
+    
+     }
+     
+    
+     /**
+     * @Route("/ingresar_empresa_persona/get", name="ingresar_foto_persona", options={"expose"=true})
+     * @Method("POST")
+     */
+    
+    
+    public function RegistrarFotoPersonaAction() {
+            //data es el valor de retorno de ajax donde puedo ver los valores que trae dependiendo de las instrucciones que hace dentro del controlador
+         
+        
+            $request = $this->getRequest();
+            //data es el valor de retorno de ajax donde puedo ver los valores que trae dependiendo de las instrucciones que hace dentro del controlador
+            
+            $path2 = $this->container->getParameter('photo.perfil.temporal');
+            $horaFecha = date('Y-m-d His');
+            $nombreTemporal = $horaFecha;
+            $nombreTemporal=str_replace(" ", "", $nombreTemporal);
+            
+            define('UPLOAD_DIR', $path2);
+            $img = $request->get('imageDatas');
+            $img = str_replace('data:image/png;base64,', '', $img);
+            $img = str_replace(' ', '+', $img);
+            $data = base64_decode($img);
+            $file = UPLOAD_DIR .$nombreTemporal. '.png';
+            $success = file_put_contents($file, $data);
+            
+            $nombreTemporal=$nombreTemporal.'.png';
+           
+            
+    if ($success){
+        $personaId = $request->get("personaId");
+  
+         if ($nombreTemporal != null){
+             
+ 
+          //Direccion fisica del la imagen  
+                $path1 = $this->container->getParameter('photo.perfil');
+               
+                $path = "Photos/perfil/E";
+                $nombreArchivo = $nombreTemporal;
+                
+                $nombreBASE=$path.$nombreArchivo;
+                
+                $nombreSERVER = $nombreArchivo;
+
+                //Codigo para poder redimensionar la  imagenes que se suben
+                    \Tinify\setKey("eY78XR8uy0tp-SCRHjp4R8fX4Ib9mKgg");
+                    
+                     $source = \Tinify\fromFile($path2.$nombreSERVER);
+                     $resized = $source->resize(array(
+                         "method" => "cover",
+                         "width" => 300,
+                         "height" => 300
+                     ));
+                     
+              
+                $resultado=$resized->toFile($path1."E".$nombreSERVER);
+                $numero =unlink($path2.$nombreSERVER);
+                
+                
+                if ($resultado){
+                                $abgPersona = new AbgPersona();
+                                $foto = new AbgFoto();
+                                $em = $this->getDoctrine()->getManager();
+                                $idPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgPersona')->find($personaId);
+                                $src = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("abgPersona" =>$idPersona,"tipoFoto"=>1));
+                                $direccion = $src[0]->getSrc();
+                                
+                                $direccion = str_replace("\\","" , $direccion);
+                                $direccion = str_replace("Photos/perfil/","", $direccion);
+                                
+                                if($direccion!='' && $direccion!='Photos/defecto/defecto.png'){
+                                    
+                                    
+                                     $eliminacionRegistroExixtente =unlink($path1.$direccion);
+
+                                        if($eliminacionRegistroExixtente){
+
+                                                $entity = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("abgPersona" =>$idPersona,"tipoFoto"=>1));
+                                                $entity[0]->setSrc($nombreBASE);
+                                                $entity[0]->setFechaRegistro(new \DateTime("now"));
+                                                $entity[0]->setFechaExpiracion(null);
+                                                $entity[0]->setEstado(1);
+                                                $em->merge($entity[0]);
+                                                $em->flush();
+                                                $src = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("abgPersona" =>$idPersona,"tipoFoto"=>1));
+                                                $direccion = $src[0]->getSrc();
+                                                $direccionParaAjax = str_replace("\\","" , $direccion);
+                                                $datas['direccion']=$direccionParaAjax;
+                                                $datas['estado']=true;
+                                                
+
+                                        }
+
+                                }
+                                    else{
+                                                $entity = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("abgPersona" =>$idPersona,"tipoFoto"=>1));
+                                                $entity[0]->setSrc($nombreBASE);
+                                                $entity[0]->setFechaRegistro(new \DateTime("now"));
+                                                $entity[0]->setFechaExpiracion(null);
+                                                $entity[0]->setEstado(1);
+                                                $em->merge($entity[0]);
+                                                $em->flush();
+                                                
+                                                $enti = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("abgPersona" =>$idPersona,"tipoFoto"=>1));
+                                                $direcciones = $enti[0]->getSrc();
+                                                
+                                        
+                                                $direccionPara = str_replace("\\","" , $direcciones);
+                                                $datas['direccion']=$direccionPara;
+                                                $datas['estado']=true;
+                                               
+                                                
+                            }
+
+
+                    
+                }else{
+                         $datas['servidor'] = "No se pudo mover la imagen al servidor";
+                    
+                    
+                }
+               
+                
+            }
+            else{
+                $datas['imagen'] = "Imagen invalida";
+                
+                
+            }
+    }    
+         
+            
+           return new Response(json_encode($datas));
+           
+      
+    }
+     
+    
+    /**
+     * @Route("/ctlempresa/mostarsubcategorias", name="mostarsubcategorias", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function Mostarsubcategorias() {
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+      
+        
+        try {
+            $n = 0;
+            $subEspS = "";
+            $em = $this->getDoctrine()->getManager();
+            $request = $this->getRequest();
+            $subEspecialidadesSeleccionadas = "";
+            if (($request->get('hPersona') != null)) {
+                $dql_especialida = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre"
+                        . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
+                        . "JOIN  DGAbgSistemaBundle:CtlSubespecialidad sub WHERE e.id=sub.abgEspecialidad "
+                        . "JOIN DGAbgSistemaBundle:AbgPersonaSubespecialidad pe WHERE sub.id=pe.abgSubespecialidad AND pe.ctlEmpresa=" . $request->get('hPersona')
+                        . " GROUP by e.id";
+                $subEspecialidadesSeleccionadas = $em->createQuery($dql_especialida)->getArrayResult();
+
+
+
+                if (count($subEspecialidadesSeleccionadas) > 0) {
+                    $sql = "select pe.abg_subespecialidad_id AS idEspSelect, sub.abg_subespecialidadcol AS nombre,sub.id AS idSub, e.id AS idEsp
+                        from  marvinvi_abg.abg_persona_subespecialidad pe "
+                            . " right join marvinvi_abg.ctl_subespecialidad sub on  sub.id=pe.abg_subespecialidad_id AND pe.ctl_empresa_id=" . $request->get('hPersona')
+                            . " right join marvinvi_abg.ctl_especialidad e on e.id=sub.abg_especialidad_id 
+                        group by  pe.id,pe.abg_subespecialidad_id, sub.abg_subespecialidadcol,sub.abg_especialidad_id";
+
+                    $stm = $this->container->get('database_connection')->prepare($sql);
+                    $stm->execute();
+                    $subEspS = $stm->fetchAll();
+                }
+            }
+            $dql_departamento = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre"
+                    . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
+                    . "JOIN  DGAbgSistemaBundle:CtlSubespecialidad sub WHERE e.id=sub.abgEspecialidad group by e.id";
+            $result_especialida = $em->createQuery($dql_departamento)->getArrayResult();
+
+            $dsql_sub = "SELECT e.id AS idEsp, e.nombreEspecialidad AS nombreEsp, sub.id AS idSub, sub.abgSubespecialidadcol AS nombreSub "
+                    . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
+                    . "JOIN  DGAbgSistemaBundle:CtlSubespecialidad sub WHERE e.id=sub.abgEspecialidad";
+            $result_sub = $em->createQuery($dsql_sub)->getArrayResult();
+            if ($n == 1) {
+                $data['esp'] = $em->createQuery($dql_departamento)->getArrayResult();
+                return new Response(json_encode($data));
+            } else {
+                return $this->render('abgpersona/especialidades.html.twig', array(
+                            'abgEspecialida' => $result_especialida,
+                            'subEsp' => $result_sub,
+                            'subEspS' => $subEspS,
+                            'especialidadesS' => $subEspecialidadesSeleccionadas,
+                ));
+            }
+            
+            
+ 
+            
+        } catch (\Exception $e) {
+            
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        } 
+    
+    
+     }
+       
+     
+    /**
+     * @Route("/ctlempresa/insertarsubespecialidad", name="insertarsubespecialidad", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function Insertarsubespecialidad() {
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+
+        try {
+          $request = $this->getRequest();
+            $em = $this->getDoctrine()->getManager();
+            $Persona = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($request->get('hPersona'));
+            $array = $request->get('SubEspecialida');
+
+            $RepositorioSubEsp = $em->getRepository("DGAbgSistemaBundle:AbgPersonaSubespecialidad");
+            if (is_null($RepositorioSubEsp->findBy(array('ctlEmpresa' => $request->get('hPersona'))))) {
+                
+            } else {
+                $PersonaSub = $RepositorioSubEsp->findBy(array('ctlEmpresa' => $request->get('hPersona')));
+                foreach ($PersonaSub as $obj) {
+                    $em->remove($obj);
+                    $em->flush();
+                }
+            }
+            if (is_null($array)) {
+                
+            } else {
+                foreach ($array as $obj) {
+                    $PersonaSubespecialidad = new AbgPersonaSubespecialidad();
+                    $idSub = $em->getRepository("DGAbgSistemaBundle:CtlSubespecialidad")->find(intval($obj));
+                    $PersonaSubespecialidad->setCtlEmpresa($Persona);
+                    $PersonaSubespecialidad->setAbgSubespecialidad($idSub);
+                    $em->persist($PersonaSubespecialidad);
+                    $em->flush();
+                }
+            }
+
+            $dql_especialida = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre"
+                    . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
+                    . "JOIN  DGAbgSistemaBundle:CtlSubespecialidad sub WHERE e.id=sub.abgEspecialidad "
+                    . "JOIN DGAbgSistemaBundle:AbgPersonaSubespecialidad pe WHERE sub.id=pe.abgSubespecialidad AND pe.ctlEmpresa=" . $request->get('hPersona')
+                    . " GROUP by e.id";
+
+            $data['Esp'] = $em->createQuery($dql_especialida)->getArrayResult();
+
+            $dsql_sub = "SELECT pe.id AS idSub,sub.abgSubespecialidadcol AS nombre, e.id AS idEsp  "
+                    . "FROM  DGAbgSistemaBundle:AbgPersonaSubespecialidad pe "
+                    . "JOIN  DGAbgSistemaBundle:CtlSubespecialidad sub WHERE  sub.id=pe.abgSubespecialidad AND  pe.ctlEmpresa=" . $request->get('hPersona')
+                    . "JOIN  DGAbgSistemaBundle:CtlEspecialidad e WHERE e.id=sub.abgEspecialidad ";
+            $data['subEsp'] = $em->createQuery($dsql_sub)->getArrayResult();
+
+            return new Response(json_encode($data));
+
+        } catch (\Exception $e) {
+            
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        } 
+    
+    
+     }    
+     
+ 
+     
+     
+
     
 
 }
