@@ -1,94 +1,88 @@
-{%set n = 0%}
-{%if especialidadesS|default is not empty %}
-    {% for datos in abgEspecialida %}
-        {%set n =n +1%}
-        <div class="col-xs-4" style="margin-top: .5em; margin-bottom: .5em;">
-            <strong><p class="sans">{{datos.nombre| upper }}</p></strong>  
-                {% for datosSub in subEspS %}
-                    {%if(datos.id==datosSub.idEsp)%}
-                        {%if(datosSub.idEspSelect is not empty )%}     
-                        <p class="sans" style="font-size: 13px;">
-                            <input type="checkbox" checked class="{{datos.id}} subEspecialida " name="{{datos.id}}" id="{{datosSub.idSub}}" value="{{datosSub.idSub}}" onclick="fil({{datosSub.idSub}},{{datos.id}} )"/> {{datosSub.nombre}}</p>
-                        {%else%}
-                        <p class="sans" style="font-size: 13px;">
-                            <input type="checkbox" class="{{datos.id}} subEspecialida " name="{{datos.id}}" id="{{datosSub.idSub}}" value="{{datosSub.idSub}}" onclick="fil({{datosSub.idSub}},{{datos.id}} )"/> {{datosSub.nombre}}</p>
+<script type="text/javascript">
+    $(document).ready(function () {
 
-                    {%endif%}
-                {%endif%}
-            {%endfor%}
-        </div>
-        {%if ((n>0)and (n % 3== 0))%}
-            <div class="clearfix"></div>
-        {%endif%}   
-    {%endfor%}
-    <div class="clearfix"></div>
-    <hr >
-    <p align="right" style="margin-right:05px;" ><a  onclick="addSubEspecialida()">Aceptar</a></p>
-{%else%}
-    {%if abgEspecialida|default is not empty %}
-        {% for datos in abgEspecialida %}
+        $("#cancel").click(function () {
+            $("#contenido").show();
+            $("#div01").remove();
+        });
+    });</script>
+<form role="form" id="fEspecialida" >
+    {%set n = 0%}
+    {%if especialidadesS|default is not empty %}
+        {% for datos in especialidadesS %}
             {%set n =n +1%}
-            <div class="col-xs-4" style="margin-top: .5em; margin-bottom: .5em;">
-                <strong><p class="sans" >{{datos.nombre| upper }}</p></strong>  
-                    {% for datosSub in subEsp %}
-                        {%if(datos.id==datosSub.idEsp)%}
-                        <p class="sans" style="font-size: 13px;">
-                            <input type="checkbox" class="{{datos.id}} subEspecialida " name="{{datos.id}}" id="{{datosSub.idSub}}" value="{{datosSub.idSub}}" onclick="fil({{datosSub.idSub}},{{datos.id}} )"/> {{datosSub.nombreSub}}</p>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12" style="margin-top: .5em; margin-bottom: .5em;">
+                        {%if(datos.id==datos.idEsp)%}
+                            {%if(datos.idPE is not empty )%}     
+                                <strong><p class="sans" >
+                                        <input type="checkbox" checked class="{{datos.id}} Especialida" name="{{datos.id}}" id="{{datos.id}}" value="{{datos.id}}" 
+                                               onclick="fil({{datos.id}})"/>&nbsp;{{datos.nombre| upper }}</p></strong>  
+                                <div id="div{{datos.id}}" style="display:block;">
+                                    <textarea class="form-control  input-sm" rows="3" name="txt{{datos.id}}" id="txt{{datos.id}}" placeholder="Descripción de la especialida">{{datos.descripcion}}</textarea>
+                                </div>
+                            {%endif%}
+                        {%else%}
+                            <strong><p class="sans" >
+                                    <input type="checkbox" class="{{datos.id}} Especialida" name="{{datos.id}}" id="{{datos.id}}" value="{{datos.id}}" 
+                                           onclick="fil({{datos.id}})"/>&nbsp;{{datos.nombre| upper }}</p></strong>  
+                            <div id="div{{datos.id}}" style="display:none;"><textarea class="form-control  input-sm" rows="3" name="txt{{datos.id}}" id="txt{{datos.id}}" placeholder="Descripción de la especialida"></textarea>
+                            </div>
                         {%endif%}
-                    {%endfor%}
+                    </div>
+
+
+                    {%if ((n>0)and (n % 3== 0))%}
+                        <div class="clearfix"></div>
+                    {%endif%}  
+                </div>
             </div>
-            {%if ((n>0)and (n % 3== 0))%}
-                <div class="clearfix"></div>
-            {%endif%}              
         {%endfor%}
         <div class="clearfix"></div>
-        <hr >
-        <p align="right" style="margin-right:05px;" ><a  onclick="addSubEspecialida()">Aceptar</a></p>
-    {%else%} 
-
-
-        <script type="text/javascript">
-            
-            var Esp, n = 0;
-           {#{% for datos in RegistroEspecialida %}
-                Especialida.push({{datos.id}});
-              
-                Esp ={{datos.id}}
-                        n = n + 1;
-                datos = '<div class="col-xs-4"  style="margin-top: .5em; margin-bottom: .5em;">';
-                datos += '<strong><p class="sans" >{{datos.nombre| upper }}<p class="sans" ></strong>';
-                {% for datosSub in RegistrosubEsp %}
-                    {%if(datos.id==datosSub.idEsp)%}
-                        datos += '<p class="sans" style="font-size: 13px;">{{datosSub.nombre}}</p>';
-                    {%endif%}
-                {%endfor%}
-                    datos += '</div>';
-                    if ((n > 0) && (n % 3 === 0))
-                    {
-                    datos += '<div class="clearfix"></div>';
-                    }
-                    datosMostrados+=datos;
-                    $("#contenido").append(datos);
-
-            {%endfor%}#}
-
-        </script>
-        {#%set n =n +1%}
-        <div class="col-xs-4" style="margin-top: .5em; margin-bottom: .5em;">
-            <strong><p class="sans" >{{datos.nombre| upper }}</p></strong>  
-                {% for datosSub in RegistrosubEsp %}
-                    {%if(datos.id==datosSub.idEsp)%}
-                    <p class="sans" style="font-size: 13px;">{{datosSub.nombre}}</p>
-                {%endif%}
-            {%endfor%}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary btn-sm"  onclick="addEspecialida()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                </div>
+            </div>
         </div>
-        {%if ((n>0)and (n % 3== 0))%}
-            <div class="clearfix"></div>
-        {%endif%}              
-    {%endfor%#}
+    {%else%}
+        {%if abgEspecialida|default is not empty %}
 
-        <!-- div class="clearfix"></div -->
+            {% for datos in abgEspecialida %}
+                {%set n =n +1%}
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-12" style="margin-top: .5em; margin-bottom: .5em;">
+                            <strong><p class="sans" >
+                                    <input type="checkbox" class="{{datos.id}} Especialida" name="{{datos.id}}" id="{{datos.id}}" value="{{datos.id}}" 
+                                           onclick="fil({{datos.id}})"/>&nbsp;{{datos.nombre| upper }}</p></strong>  
+                            <div id="div{{datos.id}}" style="display:none;"><textarea class="form-control  input-sm" rows="3" name="txt{{datos.id}}" id="txt{{datos.id}}" placeholder="Descripción de la especialida"></textarea>
+                            </div> 
+                        </div>   
+                        {%if ((n>0)and (n % 3== 0))%}
+
+                            <div class="clearfix"></div>
+
+                        {%endif%}  
+                    </div>
+                </div>
+            {%endfor%}
+
+
+            <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary btn-sm"  onclick="addEspecialida()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+
+        {#%else%#}       
+
     {%endif%} 
 {%endif%} 
-
+</form>
 

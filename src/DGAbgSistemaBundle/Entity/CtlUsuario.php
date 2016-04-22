@@ -51,16 +51,6 @@ class CtlUsuario implements AdvancedUserInterface, \Serializable
     private $estado;
 
     /**
-     * @var \AbgPersona
-     *
-     * @ORM\ManyToOne(targetEntity="AbgPersona")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="rh_persona_id", referencedColumnName="id")
-     * })
-     */
-    private $rhPersona;
-
-    /**
      * @var \CtlEmpresa
      *
      * @ORM\ManyToOne(targetEntity="CtlEmpresa")
@@ -69,6 +59,16 @@ class CtlUsuario implements AdvancedUserInterface, \Serializable
      * })
      */
     private $ctlEmpresa;
+
+    /**
+     * @var \AbgPersona
+     *
+     * @ORM\ManyToOne(targetEntity="AbgPersona")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="rh_persona_id", referencedColumnName="id")
+     * })
+     */
+    private $rhPersona;
 
   
     /**
@@ -203,29 +203,6 @@ class CtlUsuario implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * Set rhPersona
-     *
-     * @param \DGAbgSistemaBundle\Entity\AbgPersona $rhPersona
-     * @return CtlUsuario
-     */
-    public function setRhPersona(\DGAbgSistemaBundle\Entity\AbgPersona $rhPersona = null)
-    {
-        $this->rhPersona = $rhPersona;
-
-        return $this;
-    }
-
-    /**
-     * Get rhPersona
-     *
-     * @return \DGAbgSistemaBundle\Entity\AbgPersona 
-     */
-    public function getRhPersona()
-    {
-        return $this->rhPersona;
-    }
-
-    /**
      * Set ctlEmpresa
      *
      * @param \DGAbgSistemaBundle\Entity\CtlEmpresa $ctlEmpresa
@@ -246,6 +223,29 @@ class CtlUsuario implements AdvancedUserInterface, \Serializable
     public function getCtlEmpresa()
     {
         return $this->ctlEmpresa;
+    }
+
+    /**
+     * Set rhPersona
+     *
+     * @param \DGAbgSistemaBundle\Entity\AbgPersona $rhPersona
+     * @return CtlUsuario
+     */
+    public function setRhPersona(\DGAbgSistemaBundle\Entity\AbgPersona $rhPersona = null)
+    {
+        $this->rhPersona = $rhPersona;
+
+        return $this;
+    }
+
+    /**
+     * Get rhPersona
+     *
+     * @return \DGAbgSistemaBundle\Entity\AbgPersona 
+     */
+    public function getRhPersona()
+    {
+        return $this->rhPersona;
     }
 
     /**

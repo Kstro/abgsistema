@@ -5,6 +5,6 @@
       <generator strategy="IDENTITY"/>
     </id>
     <field name="nombrePais" type="string" column="nombre_pais" length="45" nullable="false"/>
-    <field name="codigoPostal" type="integer" column="codigo_postal" nullable="false"/>
+    <field name="area" type="integer" column="area" nullable="false"/>
   </entity>
 </doctrine-mapping>

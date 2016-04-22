@@ -1,0 +1,159 @@
+<!-- Calendar -->
+<link rel="stylesheet" href="{{ asset('Resources/zebra/css/bootstrap.css') }}">
+<script type="text/javascript" src="{{ asset('Resources/zebra/js/zebra_datepicker.js')}}" ></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('.txtFechaIni').Zebra_DatePicker({
+            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            format: 'd-m-Y',
+            direction: false,
+            show_clear_date: false,
+            show_select_today: "Hoy",
+            pair: $('.txtFechaFin'),
+            show_icon: false,
+        });
+        $('.txtFechaFin').Zebra_DatePicker({
+            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            format: 'd-m-Y',
+            // direction:false,
+            show_clear_date: false,
+            show_select_today: "Hoy",
+            show_icon: false,
+        });
+ 
+       
+        $("#cancel").click(function () {
+            $("#Cert"+editEdu).show();
+            $("#div6").remove();
+        });
+        
+         $('#Sdisciplina').select2();
+
+   });
+    $('#checkActual').change(function () {
+        if ($('#checkActual').is(":checked")) {
+
+            $('#fechafin').hide();
+            $('#txtFechaFin').val(null);
+        } else {
+            $('#fechafin').show();
+        }
+
+    });
+    function CambioEmp()
+    {
+        document.getElementById('cambioEmpresa').style.display = 'block';
+        document.getElementById('EditEmpresa').style.display = 'none';
+    }
+    function EditEmp()
+    {
+        document.getElementById('cambioEmpresa').style.display = 'none';
+        document.getElementById('EditEmpresa').style.display = 'block';
+    }
+</script>
+
+<form role="form" id="fCerti" >
+    {%if Certificacion|default is not empty %}
+
+        {% for datos in Certificacion %}
+        <input type="hidden" name="hidCert" id="hidCert" value="">
+        <div class="form-group">
+            <label for="nombreEmpleado">Nombre de la certificación</label>
+             <input type="text" class="form-control  input-sm"  id="txtCerti" name="txtCerti" 
+                   placeholder="Nombre de la certificación"> 
+
+
+        </div>
+        <div class="form-group">
+            <label for="ejemplo_password_1">Autoridad emisora de la certificación</label>
+            <input type="text" class="form-control  input-sm"  id="txtAutorida" name="txtAutorida" 
+                   placeholder="Nombre de autoridad emisora">
+        </div>
+      
+
+
+        <div class="form-group ">
+            <label for="Fecha_inicio">Periodo</label>
+             <div class="row">
+                <div class="col-sm-2">
+                    <input type="text" class="form-control txtFechaIni  input-sm" 
+                           placeholder="Fecha inicio de labor"  id="txtFechIniC" name="txtFechIniC">
+                </div>
+                <div  id="fechafin">
+                    <div class="col-sm-2"  >
+                        <input type="text" class="form-control txtFechaFin  input-sm" 
+                               placeholder="Fecha fin de labor"  id="txtFechFinC" name="txtFechFinC">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--div class="form-group">
+            <div class="row">
+                <div class="col-sm-6">   
+                    <input type="checkbox"  name="checkActual" id="checkActual" />&nbsp;Estudiando actualmente. </div>
+            </div>
+        </div -->
+       
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary btn-sm"  onclick="addCertificacion()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                </div>
+            </div>
+        </div>
+        {%endfor%}
+    {%else%}
+
+        <input type="hidden" name="hidCert" id="hidCert" value="">
+        <div class="form-group">
+            <label for="nombreEmpleado">Nombre de la certificación</label>
+             <input type="text" class="form-control  input-sm"  id="txtCerti" name="txtCerti" 
+                   placeholder="Nombre de la certificación"> 
+
+
+        </div>
+        <div class="form-group">
+            <label for="ejemplo_password_1">Autoridad emisora de la certificación</label>
+            <input type="text" class="form-control  input-sm"  id="txtAutorida" name="txtAutorida" 
+                   placeholder="Nombre de autoridad emisora">
+        </div>
+      
+
+
+        <div class="form-group ">
+            <label for="Fecha_inicio">Periodo</label>
+             <div class="row">
+                <div class="col-sm-2">
+                    <input type="text" class="form-control txtFechaIni  input-sm" 
+                           placeholder="Fecha inicio de labor"  id="txtFechIniC" name="txtFechIniC">
+                </div>
+                <div  id="fechafin">
+                    <div class="col-sm-2"  >
+                        <input type="text" class="form-control txtFechaFin  input-sm" 
+                               placeholder="Fecha fin de labor"  id="txtFechFinC" name="txtFechFinC">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--div class="form-group">
+            <div class="row">
+                <div class="col-sm-6">   
+                    <input type="checkbox"  name="checkActual" id="checkActual" />&nbsp;Estudiando actualmente. </div>
+            </div>
+        </div -->
+       
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary btn-sm"  onclick="addCertificacion()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    {%endif%}
+</form>
+
+

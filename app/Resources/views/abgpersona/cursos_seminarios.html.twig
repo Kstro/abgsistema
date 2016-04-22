@@ -1,0 +1,164 @@
+<!-- Calendar -->
+<link rel="stylesheet" href="{{ asset('Resources/zebra/css/bootstrap.css') }}">
+<script type="text/javascript" src="{{ asset('Resources/zebra/js/zebra_datepicker.js')}}" ></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('.txtFechaIni').Zebra_DatePicker({
+            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            format: 'd-m-Y',
+            direction: false,
+            show_clear_date: false,
+            show_select_today: "Hoy",
+            pair: $('.txtFechaFin'),
+            show_icon: false,
+        });
+        $('.txtFechaFin').Zebra_DatePicker({
+            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            format: 'd-m-Y',
+            // direction:false,
+            show_clear_date: false,
+            show_select_today: "Hoy",
+            show_icon: false,
+        });
+ 
+       
+        $("#cancel").click(function () {
+            $("#CM"+editEdu).show();
+            $("#div7").remove();
+        });
+        
+         $('#Sdisciplina').select2();
+
+   });
+    $('#checkActual').change(function () {
+        if ($('#checkActual').is(":checked")) {
+
+            $('#fechafin').hide();
+            $('#txtFechaFin').val(null);
+        } else {
+            $('#fechafin').show();
+        }
+
+    });
+    function CambioEmp()
+    {
+        document.getElementById('cambioEmpresa').style.display = 'block';
+        document.getElementById('EditEmpresa').style.display = 'none';
+    }
+    function EditEmp()
+    {
+        document.getElementById('cambioEmpresa').style.display = 'none';
+        document.getElementById('EditEmpresa').style.display = 'block';
+    }
+</script>
+
+<form role="form" id="fCurso" >
+    {%if Curso|default is not empty %}
+
+        {% for datos in Curso %}
+
+            <input type="hidden" name="hidCurso" id="hidCurso" value="{{datos.id}}">
+        <div class="form-group">
+            <label for="nombreEmpleado">Nombre del curso/seminario</label>
+             <input type="text" class="form-control  input-sm"  id="txtCurso" name="txtCurso" 
+                   placeholder="Nombre de la certificación" value="{{datos.nombre}}"> 
+
+
+        </div>
+        <div class="form-group">
+            <label for="ejemplo_password_1">Autoridad emisora del curso/seminario</label>
+            <input type="text" class="form-control  input-sm"  id="txtAutoridaCM" name="txtAutoridaCM" 
+                   placeholder="Nombre de autoridad emisora" value="{{datos.institucion}}">
+        </div>
+      
+
+
+        <div class="form-group ">
+            <label for="Fecha_inicio">Periodo</label>
+             <div class="row">
+                <div class="col-sm-2">
+                    <input type="text" class="form-control txtFechaIni  input-sm" 
+                           placeholder="Fecha inicio"  id="txtFechIniCM" name="txtFechIniCM" value="{{datos.fechaIn}}">
+                </div>
+                <div  id="fechafin">
+                    <div class="col-sm-2"  >
+                        <input type="text" class="form-control txtFechaFin  input-sm" 
+                               placeholder="Fecha fin"  id="txtFechFinCM" name="txtFechFinCM" value="{{datos.fechaFin}}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--div class="form-group">
+            <div class="row">
+                <div class="col-sm-6">   
+                    <input type="checkbox"  name="checkActual" id="checkActual" />&nbsp;Estudiando actualmente. </div>
+            </div>
+        </div -->  <div class="form-group">
+            <label for="ejemplo_password_1">Funcion del puesto</label>
+            <textarea class="form-control  input-sm" rows="3" name="txtDescripcionCM" id="txtDescripcionCM" placeholder="Descripcion del curso o seminario">{{datos.descripcion}}</textarea>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary btn-sm"  onclick="addCurso()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                </div>
+            </div>
+        </div>
+        {%endfor%}
+    {%else%}
+
+        <input type="hidden" name="hidCurso" id="hidCurso" value="">
+        <div class="form-group">
+            <label for="nombreEmpleado">Nombre del curso/seminario</label>
+             <input type="text" class="form-control  input-sm"  id="txtCurso" name="txtCurso" 
+                   placeholder="Nombre de la certificación"> 
+
+
+        </div>
+        <div class="form-group">
+            <label for="ejemplo_password_1">Autoridad emisora del curso/seminario</label>
+            <input type="text" class="form-control  input-sm"  id="txtAutoridaCM" name="txtAutoridaCM" 
+                   placeholder="Nombre de autoridad emisora">
+        </div>
+      
+
+
+        <div class="form-group ">
+            <label for="Fecha_inicio">Periodo</label>
+             <div class="row">
+                <div class="col-sm-2">
+                    <input type="text" class="form-control txtFechaIni  input-sm" 
+                           placeholder="Fecha inicio"  id="txtFechIniCM" name="txtFechIniCM">
+                </div>
+                <div  id="fechafin">
+                    <div class="col-sm-2"  >
+                        <input type="text" class="form-control txtFechaFin  input-sm" 
+                               placeholder="Fecha fin"  id="txtFechFinCM" name="txtFechFinCM">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--div class="form-group">
+            <div class="row">
+                <div class="col-sm-6">   
+                    <input type="checkbox"  name="checkActual" id="checkActual" />&nbsp;Estudiando actualmente. </div>
+            </div>
+        </div -->  <div class="form-group">
+            <label for="ejemplo_password_1">Funcion del puesto</label>
+            <textarea class="form-control  input-sm" rows="3" name="txtDescripcionCM" id="txtDescripcionCM" placeholder="Descripcion del curso o seminario"></textarea>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary btn-sm"  onclick="addCurso()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    {%endif%}
+</form>
+
+

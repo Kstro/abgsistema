@@ -24,19 +24,9 @@ class AbgSitioWeb
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="string", length=60, nullable=false)
+     * @ORM\Column(name="nombre", type="string", length=60, nullable=true)
      */
     private $nombre;
-
-    /**
-     * @var \CtlEmpresa
-     *
-     * @ORM\ManyToOne(targetEntity="CtlEmpresa")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="ctl_empresa_id", referencedColumnName="id")
-     * })
-     */
-    private $ctlEmpresa;
 
     /**
      * @var \AbgPersona
@@ -47,6 +37,16 @@ class AbgSitioWeb
      * })
      */
     private $abgPersona;
+
+    /**
+     * @var \CtlEmpresa
+     *
+     * @ORM\ManyToOne(targetEntity="CtlEmpresa")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="ctl_empresa_id", referencedColumnName="id")
+     * })
+     */
+    private $ctlEmpresa;
 
 
 
@@ -84,29 +84,6 @@ class AbgSitioWeb
     }
 
     /**
-     * Set ctlEmpresa
-     *
-     * @param \DGAbgSistemaBundle\Entity\CtlEmpresa $ctlEmpresa
-     * @return AbgSitioWeb
-     */
-    public function setCtlEmpresa(\DGAbgSistemaBundle\Entity\CtlEmpresa $ctlEmpresa = null)
-    {
-        $this->ctlEmpresa = $ctlEmpresa;
-
-        return $this;
-    }
-
-    /**
-     * Get ctlEmpresa
-     *
-     * @return \DGAbgSistemaBundle\Entity\CtlEmpresa 
-     */
-    public function getCtlEmpresa()
-    {
-        return $this->ctlEmpresa;
-    }
-
-    /**
      * Set abgPersona
      *
      * @param \DGAbgSistemaBundle\Entity\AbgPersona $abgPersona
@@ -127,5 +104,28 @@ class AbgSitioWeb
     public function getAbgPersona()
     {
         return $this->abgPersona;
+    }
+
+    /**
+     * Set ctlEmpresa
+     *
+     * @param \DGAbgSistemaBundle\Entity\CtlEmpresa $ctlEmpresa
+     * @return AbgSitioWeb
+     */
+    public function setCtlEmpresa(\DGAbgSistemaBundle\Entity\CtlEmpresa $ctlEmpresa = null)
+    {
+        $this->ctlEmpresa = $ctlEmpresa;
+
+        return $this;
+    }
+
+    /**
+     * Get ctlEmpresa
+     *
+     * @return \DGAbgSistemaBundle\Entity\CtlEmpresa 
+     */
+    public function getCtlEmpresa()
+    {
+        return $this->ctlEmpresa;
     }
 }

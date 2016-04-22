@@ -3,8 +3,6 @@
 namespace DGAbgSistemaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * AbgFoto
@@ -26,19 +24,37 @@ class AbgFoto
     /**
      * @var string
      *
-     * @ORM\Column(name="src", type="string", length=60, nullable=false)
+     * @ORM\Column(name="src", type="string", length=60, nullable=true)
      */
     private $src;
 
     /**
-     * @var \AbgPersona
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="AbgPersona")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="abg_persona_id", referencedColumnName="id")
-     * })
+     * @ORM\Column(name="tipo_foto", type="integer", nullable=false)
      */
-    private $abgPersona;
+    private $tipoFoto;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="estado", type="integer", nullable=false)
+     */
+    private $estado;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_registro", type="date", nullable=true)
+     */
+    private $fechaRegistro;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_expiracion", type="date", nullable=true)
+     */
+    private $fechaExpiracion;
 
     /**
      * @var \CtlEmpresa
@@ -50,36 +66,18 @@ class AbgFoto
      */
     private $ctlEmpresa;
 
-    
     /**
-     * @var integer
+     * @var \AbgPersona
      *
-     * @ORM\Column(name="tipo_foto", type="integer", length=11, nullable=false)
+     * @ORM\ManyToOne(targetEntity="AbgPersona")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="abg_persona_id", referencedColumnName="id")
+     * })
      */
-    private $tipoFoto;
-    
-     /**
-     * @var integer
-     *
-     * @ORM\Column(name="estado", type="integer", length=11, nullable=false)
-     */
-    private $estado;
-    
-     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_registro", type="date", nullable=false)
-     */
-    private $fechaRegistro;
-    
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_expiracion", type="date", nullable=false)
-     */
-    private $fechaExpiracion;
-    
- 
+    private $abgPersona;
+
+
+
     /**
      * Get idargFoto
      *
@@ -114,26 +112,95 @@ class AbgFoto
     }
 
     /**
-     * Set abgPersona
+     * Set tipoFoto
      *
-     * @param \DGAbgSistemaBundle\Entity\AbgPersona $abgPersona
+     * @param integer $tipoFoto
      * @return AbgFoto
      */
-    public function setAbgPersona(\DGAbgSistemaBundle\Entity\AbgPersona $abgPersona = null)
+    public function setTipoFoto($tipoFoto)
     {
-        $this->abgPersona = $abgPersona;
+        $this->tipoFoto = $tipoFoto;
 
         return $this;
     }
 
     /**
-     * Get abgPersona
+     * Get tipoFoto
      *
-     * @return \DGAbgSistemaBundle\Entity\AbgPersona 
+     * @return integer 
      */
-    public function getAbgPersona()
+    public function getTipoFoto()
     {
-        return $this->abgPersona;
+        return $this->tipoFoto;
+    }
+
+    /**
+     * Set estado
+     *
+     * @param integer $estado
+     * @return AbgFoto
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return integer 
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+
+    /**
+     * Set fechaRegistro
+     *
+     * @param \DateTime $fechaRegistro
+     * @return AbgFoto
+     */
+    public function setFechaRegistro($fechaRegistro)
+    {
+        $this->fechaRegistro = $fechaRegistro;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaRegistro
+     *
+     * @return \DateTime 
+     */
+    public function getFechaRegistro()
+    {
+        return $this->fechaRegistro;
+    }
+
+    /**
+     * Set fechaExpiracion
+     *
+     * @param \DateTime $fechaExpiracion
+     * @return AbgFoto
+     */
+    public function setFechaExpiracion($fechaExpiracion)
+    {
+        $this->fechaExpiracion = $fechaExpiracion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaExpiracion
+     *
+     * @return \DateTime 
+     */
+    public function getFechaExpiracion()
+    {
+        return $this->fechaExpiracion;
     }
 
     /**
@@ -158,155 +225,27 @@ class AbgFoto
     {
         return $this->ctlEmpresa;
     }
-    
-    
-    
-    
-    
-    /**
-     * Sets file.
-     *
-     * @param UploadedFile $file
-     */
-    public function setFile(UploadedFile $file = null)
-    {
-        $this->file = $file;
-    }
 
     /**
-     * Get file.
+     * Set abgPersona
      *
-     * @return UploadedFile
-     */
-    public function getFile()
-    {
-        return $this->file;
-    }
-
-    
-    
- 
-
-    /**
-     * Set tipoFoto
-     *
-     * @param integer $tipoFoto
+     * @param \DGAbgSistemaBundle\Entity\AbgPersona $abgPersona
      * @return AbgFoto
      */
-    public function setTipoFoto($tipoFoto)
+    public function setAbgPersona(\DGAbgSistemaBundle\Entity\AbgPersona $abgPersona = null)
     {
-        $this->tipoFoto = $tipoFoto;
-
-        return $this;
-    }
-    
-    
-    
-    /**
-     * Get tipoFoto
-     *
-     * @return integer 
-     */
-    public function getTipoFoto()
-    {
-        return $this->tipoFoto;
-    }
-    
-    
-    /**
-     * Set estado
-     *
-     * @param integer $estado
-     * @return AbgFoto
-     */
-    public function setEstado($estado)
-    {
-        $this->estado = $estado;
-
-        return $this;
-    }
-    
-    
-    
-    /**
-     * Get estado
-     *
-     * @return integer 
-     */
-    public function getEstado()
-    {
-        return $this->estado;
-    }
-    
-    
-    
-    
-    /**
-     * Set fechaRegistro
-     *
-     * @param \DateTime $fechaRegistro
-     * @return AbgBitacora
-     */
-    public function setFechaRegistro($fechaRegistro)
-    {
-        $this->fechaRegistro = $fechaRegistro;
+        $this->abgPersona = $abgPersona;
 
         return $this;
     }
 
     /**
-     * Get fechaRegistro
+     * Get abgPersona
      *
-     * @return \DateTime 
+     * @return \DGAbgSistemaBundle\Entity\AbgPersona 
      */
-    public function getFechaRegistro()
+    public function getAbgPersona()
     {
-        return $this->fechaRegistro;
+        return $this->abgPersona;
     }
-    
-    
-    
-    
-    /**
-     * Set fechaExpiracion
-     *
-     * @param \DateTime $fechaExpiracion
-     * @return AbgBitacora
-     */
-    
-   
-    public function setFechaExpiracion($fechaExpiracion)
-    {
-        $this->fechaExpiracion = $fechaExpiracion;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaExpiracion
-     *
-     * @return \DateTime 
-     */
-    public function getFechaExpiracion()
-    {
-        return $this->fechaExpiracion;
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-       
-    
 }

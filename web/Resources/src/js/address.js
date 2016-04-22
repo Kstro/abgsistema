@@ -27,14 +27,11 @@
 
 (function ($) {
     "use strict";
-
     var Address = function (options) {
         this.init('address', options, Address.defaults);
     };
-
     //inherit from Abstract input
     $.fn.editableutils.inherit(Address, $.fn.editabletypes.abstractinput);
-
     $.extend(Address.prototype, {
         /**
          Renders input from tpl
@@ -67,7 +64,7 @@
         },
         /**
          Converts value to string. 
-         It is used in internal comparing (not for sending to server).
+         It is used in internal comparing (not for sending to server).http://abg.localhost/app_dev.php/abgpersona/admin/orlando
          
          @method value2str(value)  
          **/
@@ -86,7 +83,7 @@
          @method str2value(str)  
          */
         str2value: function (str) {
-            /*
+            /*http://abg.localhost/app_dev.php/abgpersona/admin/orlando
              this is mainly for parsing value defined in data-value attribute. 
              If you will always set value by javascript, no need to overwrite it
              */
@@ -139,7 +136,6 @@
                             estado = '<label for="ejemplo_archivo_1">Estado: </label>\
                                       <select class="form-control input-sm editable-address"  name="sEstado" id="sEstado" onChange=ciudad()>';
                             estado += '<option value="0">Seleccione estado</option>';
-
                             $.each(data.depto, function (indice, val) {
                                 estado += '<option value="' + val.id + '">' + val.nombre + '</option>';
                             });
@@ -152,8 +148,6 @@
                         }
                     })
                     );
-
-
             //  this.$input.filter('[name="building"]').val(value.building);
         },
         /**
@@ -161,7 +155,7 @@
          
          @method input2value() 
          **/
-       input2value: function () {
+        input2value: function () {
 
             return {
                 sEstado: this.$input.filter('[name="sEstado"]').val(),
@@ -204,43 +198,6 @@
                 }
             });
         },
-        
-        // function ciudad()
-       /**
-         Attaches handler to submit form in case of 'showbuttons=false' mode
-         
-         @method ciudad() 
-         **/
-        ciudad:function(){
-    var ciudad;
-
-    $.ajax({
-        type: "GET",
-        url: Routing.generate('ciudad'),
-        async: false,
-        dataType: 'json',
-        data: {estado: $("#sEstado").val()},
-        success: function (data)
-        {
-            $("#divC").empty();
-            ciudad = '<label for="ejemplo_archivo_1">Ciudad: </label>\
-                            <select class="form-control input-sm editable-address"  name="sEstado" id="sEstado" >';
-            ciudad += '<option value="0">Seleccione ciudad</option>';
-
-            $.each(data.ciudad, function (indice, val) {
-                ciudad += '<option value="' + val.id + '">' + val.nombre + '</option>';
-            });
-            ciudad += ' </select></div></div> ';
-            $("#divC").append(ciudad);
-
-        },
-        error: function (errors)
-        {
-
-        }
-    });
-}
-
     });
 
     Address.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
@@ -253,8 +210,33 @@
         // '<div class="editable-address"><label><span>Street: </span><input type="text" name="sEstado" class="input-small"></label></div>' +
         inputclass: ''
     });
-
     $.fn.editabletypes.address = Address;
-
 }(window.jQuery));
 
+function ciudad()
+{
+    var ciudad;
+    $.ajax({
+        type: "GET",
+        url: Routing.generate('ciudad'),
+        async: false,
+        dataType: 'json',
+        data: {estado: $("#sEstado").val()},
+        success: function (data)
+        {
+            $("#divC").empty();
+            ciudad = '<label for="ejemplo_archivo_1">Ciudad: </label>\
+                            <select class="form-control input-sm editable-address"  name="sCiuda" id="sCiuda" >';
+            ciudad += '<option value="0">Seleccione ciudad</option>';
+            $.each(data.ciudad, function (indice, val) {
+                ciudad += '<option value="' + val.id + '">' + val.nombre + '</option>';
+            });
+            ciudad += ' </select></div></div> ';
+            $("#divC").append(ciudad);
+        },
+        error: function (errors)
+        {
+
+        }
+    });
+}

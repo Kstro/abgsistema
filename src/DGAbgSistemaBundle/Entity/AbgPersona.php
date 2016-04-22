@@ -38,7 +38,7 @@ class AbgPersona
     /**
      * @var string
      *
-     * @ORM\Column(name="genero", type="string", length=15, nullable=false)
+     * @ORM\Column(name="genero", type="string", length=15, nullable=true)
      */
     private $genero;
 
@@ -52,29 +52,28 @@ class AbgPersona
     /**
      * @var string
      *
-     * @ORM\Column(name="dui", type="string", length=11, nullable=false)
+     * @ORM\Column(name="dui", type="string", length=11, nullable=true)
      */
     private $dui;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="nit", type="string", length=17, nullable=false)
+     * @ORM\Column(name="nit", type="string", length=17, nullable=true)
      */
     private $nit;
 
-  
-/**
-     * @var string
-     *
-     * @ORM\Column(name="correoelectronico", type="string", length=45, nullable=false)
-     */
-    private $correoelectronico;
-    
     /**
      * @var string
      *
-     * @ORM\Column(name="direccion", type="string", length=45, nullable=false)
+     * @ORM\Column(name="correoelectronico", type="string", length=45, nullable=true)
+     */
+    private $correoelectronico;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="direccion", type="string", length=45, nullable=true)
      */
     private $direccion;
 
@@ -88,7 +87,7 @@ class AbgPersona
     /**
      * @var string
      *
-     * @ORM\Column(name="telefono_movil", type="string", length=10, nullable=false)
+     * @ORM\Column(name="telefono_movil", type="string", length=10, nullable=true)
      */
     private $telefonoMovil;
 
@@ -106,7 +105,19 @@ class AbgPersona
      */
     private $estado;
 
-   
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="abg_personacol", type="string", length=45, nullable=true)
+     */
+    private $abgPersonacol;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="codigo", type="string", length=15, nullable=false)
+     */
+    private $codigo;
 
     /**
      * @var \CtlCiudad
@@ -134,27 +145,11 @@ class AbgPersona
     private $ctlEmpresa;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="CtlIdioma", inversedBy="abgPersona")
-     * @ORM\JoinTable(name="abg_persona_idioma",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="abg_persona_id", referencedColumnName="id")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="abg_idioma_id", referencedColumnName="id")
-     *   }
-     * )
-     */
-    private $abgioma;
-
-    /**
      * Constructor
      */
     public function __construct()
     {
         $this->ctlEmpresa = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->abgioma = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
 
@@ -444,7 +439,51 @@ class AbgPersona
         return $this->estado;
     }
 
- 
+    /**
+     * Set abgPersonacol
+     *
+     * @param string $abgPersonacol
+     * @return AbgPersona
+     */
+    public function setAbgPersonacol($abgPersonacol)
+    {
+        $this->abgPersonacol = $abgPersonacol;
+
+        return $this;
+    }
+
+    /**
+     * Get abgPersonacol
+     *
+     * @return string 
+     */
+    public function getAbgPersonacol()
+    {
+        return $this->abgPersonacol;
+    }
+
+    /**
+     * Set codigo
+     *
+     * @param string $codigo
+     * @return AbgPersona
+     */
+    public function setCodigo($codigo)
+    {
+        $this->codigo = $codigo;
+
+        return $this;
+    }
+
+    /**
+     * Get codigo
+     *
+     * @return string 
+     */
+    public function getCodigo()
+    {
+        return $this->codigo;
+    }
 
     /**
      * Set ctlCiudad
@@ -500,38 +539,5 @@ class AbgPersona
     public function getCtlEmpresa()
     {
         return $this->ctlEmpresa;
-    }
-
-    /**
-     * Add abgioma
-     *
-     * @param \DGAbgSistemaBundle\Entity\CtlIdioma $abgioma
-     * @return AbgPersona
-     */
-    public function addAbgioma(\DGAbgSistemaBundle\Entity\CtlIdioma $abgioma)
-    {
-        $this->abgioma[] = $abgioma;
-
-        return $this;
-    }
-
-    /**
-     * Remove abgioma
-     *
-     * @param \DGAbgSistemaBundle\Entity\CtlIdioma $abgioma
-     */
-    public function removeAbgioma(\DGAbgSistemaBundle\Entity\CtlIdioma $abgioma)
-    {
-        $this->abgioma->removeElement($abgioma);
-    }
-
-    /**
-     * Get abgioma
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getAbgioma()
-    {
-        return $this->abgioma;
     }
 }

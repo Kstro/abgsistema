@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AbgPersonaIdioma" table="abg_persona_idioma">
+    <indexes>
+      <index name="ctl_idioma_id" columns="ctl_idioma_id"/>
+      <index name="abg_persona_id" columns="abg_persona_id"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="nivel" type="string" column="nivel" length="45" nullable="false"/>
+    <many-to-one field="ctlioma" target-entity="CtlIdioma">
+      <join-columns>
+        <join-column name="ctl_idioma_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="abgPersona" target-entity="AbgPersona">
+      <join-columns>
+        <join-column name="abg_persona_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

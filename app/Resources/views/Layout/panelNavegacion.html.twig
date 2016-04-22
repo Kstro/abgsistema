@@ -8,7 +8,15 @@
             {%endif%}">
             <span style="margin-left: 20px; margin-right: 13px;"><i class="fa fa-user" style="color: #7e7e7e;"></i></span> Mi perfil
         </li></a>
-        <a href="{{ path('ajustes', { 'username':usuario}) }}" class="admin-menu-navi">
+             <a href="{{ path('ver_perfil', { 'username':usuario}) }}" class="admin-menu-navi">
+        <li style="height: 40px; line-height: 40px; border-top: 1px solid #e0e0e0;" class="sans admin-menu-navi-li 
+            {%if active|default is not empty %}
+                {%if(active=='verperfil')%} active {%endif%}
+
+            {%endif%}">
+            <span style="margin-left: 20px; margin-right: 13px;"><i class="fa fa-user" style="color: #7e7e7e;"></i></span> Ver mi perfil
+        </li></a>
+    <a href="{{ path('ajustes', { 'username':usuario}) }}" class="admin-menu-navi">
         <li style="height: 40px; line-height: 40px; border-top: 1px solid #e0e0e0;" class="sans admin-menu-navi-li 
             {%if active|default is not empty %}
                 {%if(active=='ajuste')%} active {%endif%}
