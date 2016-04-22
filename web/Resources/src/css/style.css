@@ -320,8 +320,8 @@ a.prob:focus {
     z-index:999;
 }
 .profile img {
-    max-width:100%;
-    z-index:999;
+/*    max-width:100%;
+    z-index:999;*/
 }
 
 /*ON/OFF SWITCH*/

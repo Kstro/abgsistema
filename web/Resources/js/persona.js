@@ -59,6 +59,8 @@ $(document).on('ready', function () {
             }
         });
     });
+    
+    
 
     $("#btnExperiencia").click(function () {
         var div,divn;

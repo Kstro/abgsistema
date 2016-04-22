@@ -295,7 +295,12 @@ class AbgPersonaController extends Controller {
             $dql_persona = "SELECT  p.id AS id,p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
-
+            
+            //Valor de la foto de la empresa
+        
+        $dqlfoto = "SELECT fot.src as src "
+                . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=1";
+        $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
 
 
 
@@ -307,6 +312,7 @@ class AbgPersonaController extends Controller {
                         'abgPersona' => $result_persona,
                         'usuario' => $username,
                         'active' => 'perfil',
+                        'abgFoto'=>$result_foto,
             ));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";

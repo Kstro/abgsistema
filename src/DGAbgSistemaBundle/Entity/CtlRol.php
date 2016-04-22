@@ -2,6 +2,7 @@
 
 namespace DGAbgSistemaBundle\Entity;
 
+use Symfony\Component\Security\Core\Role\RoleInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="ctl_rol")
  * @ORM\Entity
  */
-class CtlRol
+class CtlRol implements RoleInterface
 {
     /**
      * @var integer
@@ -85,6 +86,15 @@ class CtlRol
         return $this->rol;
     }
 
+     public function getRole() {
+        return $this->getRol();
+    }
+    
+    public function __toString() {
+        return $this->getRole();
+    }   
+    
+
     /**
      * Add ctlUsuario
      *
@@ -117,4 +127,7 @@ class CtlRol
     {
         return $this->ctlUsuario;
     }
+    
+    
+    
 }

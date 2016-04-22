@@ -13,6 +13,145 @@
 
 {% endblock %}
 {% block js_extend %}
+       <script src = "{{ asset('Resources/cropit-master/dist/jquery.cropit.js') }}"  type = "text/javascript" ></script>  
+    <style>
+                  
+                  .modal-backdrop {
+                      
+                        z-index: -1 !important;;
+
+                        
+                        
+                  }
+                  
+              </style>
+     <style>
+                    .image-editor{
+                        top: -150px!important;;
+                    }
+                .cropit-preview {
+                  background-color: #f8f8f8;
+                  background-size: cover;
+                  border: 1px solid #ccc;
+                  border-radius: 3px;
+                  margin-top: 7px;
+                  width: 200px;
+                  height: 200px;
+                  
+                }
+
+                .cropit-preview-image-container {
+                  cursor: move;
+                  position: absolute;
+                 
+                 
+                }
+
+                .image-size-label {
+                  margin-top: 10px;
+                }
+
+                input {
+                  display: block;
+                }
+
+                button[type="submit"] {
+                  margin-top: 10px;
+                }
+
+                #result {
+                  margin-top: 10px;
+                  width: 900px;
+                }
+
+                #result-data {
+                  display: block;
+                  overflow: hidden;
+                  white-space: nowrap;
+                  text-overflow: ellipsis;
+                  word-wrap: break-word;
+                }
+              </style>
+    
+     <script>
+              
+            $(document).ready(function() {
+
+                $("#gif").hide();
+
+
+                $(document).on("click","#botonModalP",function() {
+                     $("#idModalFotoP").modal();
+
+
+                     });
+
+
+
+
+
+
+
+
+            });
+                $(function editarFoto() {
+                  $('.image-editor').cropit();
+                  $('form').submit(function() {
+                     
+                   
+                    // Move cropped image data to hidden input
+                    var imageData = $('.image-editor').cropit('export');
+                    $('.hidden-image-data').val(imageData);
+                    //alert(imageData);
+                    var usuario = $("#usuario").val();
+                    var hPersona = $("#hPersonaModal").val();
+                    $("#gif").show();
+                    //Aqui tiene que ir el ajax
+                        $.ajax({
+                            type: 'POST',
+                            async: false,
+                            dataType: 'json',
+                            data: {imageDatas: imageData, usuario: usuario,personaId:hPersona},
+                            url: Routing.generate('ingresar_foto_persona'),
+                            success: function (data)
+                            {
+                               if(data.estado==true){
+                                   
+                                Lobibox.notify("success", {
+                                                       size: 'mini',
+                                                       msg: 'Datos modificados con exito'
+                                                   });
+                                 $("#prevP").attr('src', "/abgsistema/web/"+data.direccion);
+                                 $("#perfilAdminP2").attr('src', "/abgsistema/web/"+data.direccion);
+                                 $("#gif").hide();
+                              $('#idModalFotoP').modal('toggle');
+                                
+                                 
+
+                           }
+                            },
+                            error: function (xhr, status)
+                            {
+                                 Lobibox.notify("danger", {
+                                                        size: 'mini',
+                                                        msg: 'Lo sentimos, ocurrio un error'
+                                                    });
+                                    $("#gif").hide();
+                                    $(".close").click();
+                                    $('#idModalFotoP').modal('toggle');
+                                
+                            }
+                        });
+                        
+                    // Print HTTP request params
+                    var formValue = $(this).serialize();
+                    $('#result-data').text(formValue);
+                    // Prevent the form from actually submitting
+                    return false;
+                  });
+                });
+
+                </script>
 
 {% endblock %} 
 
@@ -44,48 +183,24 @@
                                              {% if abgFoto %}   
                                                  
                                                     <div class="col-sm-3" >
-                                                       <div class="image-upload" >
-                                                                <label for="file-inputs" >
-                                                                    <img src="{{ asset('Resources/icons/photo.png') }}" style="width: 25px; height: 25px; margin-left: 10px; margin-top: 18px; position: absolute; " >
-                                                                </label>
+                                                      {# <div class="image-upload" >
+                                                                <label for="file-inputs" >#}
+                                                      <img src="{{ asset('Resources/icons/photo.png') }}" style="width: 25px; height: 25px; margin-left: 10px; margin-top: 18px; position: absolute; " id="botonModalP" title="Cambiar foto de perfil">
+                                                             {#   </label>
                                                                 <input id="file-inputs"  required type="file" name="file">
 
-                                                       </div>
+                                                       </div>#}
                                                         
                                                         <div style="background-color: yellow; max-height:250px; max-width: 250px; border-color: black; margin-top: 10px; margin-left: 1px; ">
-                                                            <center>
-                                                                            <img id="prev" src="{{ asset('') }}{{ abgFoto[0].src}}" style="height:200px; width:200px;  "/>
+                                                               <center>
+                                                                            <img id="prevP" src="{{ asset('') }}{{ abgFoto[0].src}}" style="height:200px; width:200px;  "/>
                                                               </center>              
                                                         </div>     
                                                         
                                                       
-                                                          
-
-                                                            
 
 
                                                     </div>
-                                              {% else %}
-                                             
-                                              <div class="col-sm-3" style="margin-top: 10px; margin-left: 15px; width: 200px; height: 200px; margin-bottom: 10px; background-color: blanchedalmond;"  >
-                                                  <center>  
-                                                    <div>
-                                                          
-                                                       <img id="previus" src="" style="height:194px; width:195px;  "/>
-
-                                                    </div>   
-                                                  </center>       
-                                                          
-                                                            <div class="image-upload" >
-                                                                <label for="file-inputs" >
-                                                                    <img src="{{ asset('Resources/icons/photo.png') }}" style="width: 25px; height: 25px; margin-left: -5px; margin-top: 5px; " >
-                                                                </label>
-                                                                <input id="file-inputs"  required type="file" name="file">
-                                                                
-
-                                                            </div>
-                                              
-                                              </div> 
                                                                 
                                               {% endif %}                
                                         </form> 
@@ -376,5 +491,59 @@
                     }
                    
  </style>
+
 {% endblock %}
 {% endblock %}
+  <div class="modal fade modal" id="idModalFotoP" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header " Style="height:45px;">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                                <span class="robo" style="font-size: 20px;">Editar foto de perfil</span> 
+                            </div>
+                            <div class="modal-body" id="mbodyExperiencia" >
+                                    
+                              <form action="#" id="frmEmpresaConFoto" role="form" enctype="multipart/form-data" method="POST">
+                                 {% if abgFoto %} 
+                                           
+                                     
+                                           <div class="image-editor" >
+                                               <center>
+                                                <div class="cropit-preview" style="z-index: 3; background-image:url({{ asset('') }}{{ abgFoto[0].src}}) ; border-color:white; " ></div>
+                                               </center>
+                                                          <div class="image-upload" >
+                                                              <label for="input" >
+                                                                  <img src="{{ asset('Resources/icons/photo.png') }}" style="width: 25px; height: 25px; margin-left: 40px; margin-top:-200px;; position: relative; z-index: 3; " title="Click para seleccionar una imagen" >
+                                                              </label>
+                                                                       
+                                                              <input type="file" class="cropit-image-input" id="input">      
+
+                                                          </div> 
+                                                       <center>    
+                                                          <div class="image-size-label" id="labelid">
+                                                                    Dimension de imagen
+                                                          </div>
+                                                          <input type="range" class="cropit-image-zoom-input" style="width: 140px;" id="idrange">
+                                                          <input type="hidden" name="image-data" class="hidden-image-data" />
+                                                          <input type="hidden" name="user" value="{{ usuario }}" id="usuario">
+                                                          <input type="hidden" id="hPersonaModal"  value="{{datos.id}}" name="personaId">
+                                                       </center>
+                                                          
+                                           </div>
+                                                
+                                    
+                               {% endif %} 
+
+                            </div>
+                            <div class="modal-footer" id="botomExperiencia" >
+                                <img src='{{ asset('Resources/icons/transfer.gif') }}' style="width: 25px; height: 25px; margin-right:70px; " id="gif">
+                                
+                                <button type="submit" id="cmd" class="btn btn-success">Cortar y Guardar</button>
+                            </div>
+
+                        </div>
+                    </div> 
+                                          </form>  
+                  </div>
+        
+

@@ -23,7 +23,7 @@
     {%endfor%}
     <div class="clearfix"></div>
     <hr >
-    <p align="right" style="margin-right:05px;" ><a  onclick="addSubEspecialida()">Acepta</a></p>
+    <p align="right" style="margin-right:05px;" ><a  onclick="addSubEspecialida()">Aceptar</a></p>
 {%else%}
     {%if abgEspecialida|default is not empty %}
         {% for datos in abgEspecialida %}
@@ -43,14 +43,14 @@
         {%endfor%}
         <div class="clearfix"></div>
         <hr >
-        <p align="right" style="margin-right:05px;" ><a  onclick="addSubEspecialida()">Acepta</a></p>
+        <p align="right" style="margin-right:05px;" ><a  onclick="addSubEspecialida()">Aceptar</a></p>
     {%else%} 
 
 
         <script type="text/javascript">
             
             var Esp, n = 0;
-            {#{% for datos in RegistroEspecialida %}
+           {#{% for datos in RegistroEspecialida %}
                 Especialida.push({{datos.id}});
               
                 Esp ={{datos.id}}
