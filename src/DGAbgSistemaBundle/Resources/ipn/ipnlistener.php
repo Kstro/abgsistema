@@ -53,7 +53,7 @@ class IpnListener {
      *
      *  @var boolean
      */
-    public $use_sandbox = false; 
+    public $use_sandbox = true; 
     
     /**
      *  The amount of time, in seconds, to wait for the PayPal server to respond

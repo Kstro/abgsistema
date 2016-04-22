@@ -457,27 +457,33 @@ class CtlEmpresaController extends Controller
             $ctlEmpresa->setDescripcion(null);
             $ctlEmpresa->setCorreoelectronico('ejemplo@ejemplo.com');
             $ctlEmpresa->setColor("#000035");
+            
             $ctlEmpresa->setCantidadEmpleados(null);
             $ctlEmpresa->setLatitude(13.70036411285400400000);
             $ctlEmpresa->setLongitude(-89.22023010253906000000);
             $ctlEmpresa->setListaEmpleado(1);
-            
-
             $em->persist($ctlEmpresa);
             $em->flush();
             
             $idEmpresa = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlEmpresa')->find($ctlEmpresa->getId());
 
+            
             //Ingreso de un usuario
+            $rol = $em->getRepository('DGAbgSistemaBundle:CtlRol')->find(2);
+            
             $ctlUsuario->setUsername($correoUsuario);
             $ctlUsuario->setPassword($contrasenha);
             $ctlUsuario->setEstado('1');
             $ctlUsuario->setRhPersona($idPersona);
             $ctlUsuario->setCtlEmpresa($idEmpresa);
-            
+            $ctlUsuario->addCtlRol($rol);
             $this->setSecurePassword($ctlUsuario, $contrasenha);
             $em->persist($ctlUsuario);
             $em->flush();
+            
+          
+            
+            
 //            $em->getConnection()->commit();
 //            $em->close();
             
@@ -540,6 +546,7 @@ class CtlEmpresaController extends Controller
       public function ValidarCorreoAction(Request $request) {
         
         $isAjax = $this->get('Request')->isXMLhttpRequest();
+       
          if($isAjax){
              
             $em = $this->getDoctrine()->getManager();

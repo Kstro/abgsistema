@@ -1,8 +1,5 @@
-
 <?php
-
 namespace DGAbgSistemaBundle\Controller;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -17,10 +14,10 @@ include_once '../src/DGAbgSistemaBundle/Resources/ipn/ipnlistener.php';
 class CtlPaypalController extends Controller
 {
     /**
-     * Lists all CtlPais entities.
+     * 
      *
-     * @Route("/", name="ipn_paypal")
-     * @Method({"GET", "POST"})
+     * @Route("/datas", name="datas")
+     * @Method("GET")
      */
     public function indexAction()
     {
@@ -34,7 +31,7 @@ class CtlPaypalController extends Controller
             }
 
             if ($verified) {
-
+                
                 $data = $_POST;
                 $user_id = json_decode($data['custom'])->user_id;
 
@@ -49,7 +46,7 @@ class CtlPaypalController extends Controller
                 );
 
                 Payment::create($txn);
-
+                
             } else {
                 Log::error('Transaction not verified');
             }
