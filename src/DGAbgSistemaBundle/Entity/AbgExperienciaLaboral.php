@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AbgExperienciaLaboral
  *
- * @ORM\Table(name="abg_experiencia_laboral", indexes={@ORM\Index(name="fk_experiencia_laboral_persona1_idx", columns={"abg_persona_id"})})
+ * @ORM\Table(name="abg_experiencia_laboral", indexes={@ORM\Index(name="fk_experiencia_laboral_persona1_idx", columns={"abg_persona_id"}), @ORM\Index(name="ctl_empresa_id", columns={"ctl_empresa_id"})})
  * @ORM\Entity
  */
 class AbgExperienciaLaboral
@@ -64,6 +64,30 @@ class AbgExperienciaLaboral
     private $orden;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="funcion", type="string", length=500, nullable=true)
+     */
+    private $funcion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ubicacion", type="string", length=60, nullable=true)
+     */
+    private $ubicacion;
+
+    /**
+     * @var \CtlEmpresa
+     *
+     * @ORM\ManyToOne(targetEntity="CtlEmpresa")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="ctl_empresa_id", referencedColumnName="id")
+     * })
+     */
+    private $ctlEmpresa;
+
+    /**
      * @var \AbgPersona
      *
      * @ORM\ManyToOne(targetEntity="AbgPersona")
@@ -73,12 +97,7 @@ class AbgExperienciaLaboral
      */
     private $abgPersona;
 
-/**
-     * @var string
-     *
-     * @ORM\Column(name="funcion", type="string", length=255, nullable=true)
-     */
-    private $funcion;
+
 
     /**
      * Get id
@@ -204,27 +223,7 @@ class AbgExperienciaLaboral
     {
         return $this->telefono;
     }
-   /**
-     * Set telefono
-     *
-     * @param string $funcion
-     * @return AbgExperienciaLaboral
-     */
-    public function setFuncion($funcion)
-    {
-        $this->funcion = $funcion;
 
-        return $this;
-    }
-    /**
-     * Get telefono
-     *
-     * @return string 
-     */
-    public function getFuncion()
-    {
-        return $this->funcion;
-    }
     /**
      * Set orden
      *
@@ -246,6 +245,75 @@ class AbgExperienciaLaboral
     public function getOrden()
     {
         return $this->orden;
+    }
+
+    /**
+     * Set funcion
+     *
+     * @param string $funcion
+     * @return AbgExperienciaLaboral
+     */
+    public function setFuncion($funcion)
+    {
+        $this->funcion = $funcion;
+
+        return $this;
+    }
+
+    /**
+     * Get funcion
+     *
+     * @return string 
+     */
+    public function getFuncion()
+    {
+        return $this->funcion;
+    }
+
+    /**
+     * Set ubicacion
+     *
+     * @param string $ubicacion
+     * @return AbgExperienciaLaboral
+     */
+    public function setUbicacion($ubicacion)
+    {
+        $this->ubicacion = $ubicacion;
+
+        return $this;
+    }
+
+    /**
+     * Get ubicacion
+     *
+     * @return string 
+     */
+    public function getUbicacion()
+    {
+        return $this->ubicacion;
+    }
+
+    /**
+     * Set ctlEmpresa
+     *
+     * @param \DGAbgSistemaBundle\Entity\CtlEmpresa $ctlEmpresa
+     * @return AbgExperienciaLaboral
+     */
+    public function setCtlEmpresa(\DGAbgSistemaBundle\Entity\CtlEmpresa $ctlEmpresa = null)
+    {
+        $this->ctlEmpresa = $ctlEmpresa;
+
+        return $this;
+    }
+
+    /**
+     * Get ctlEmpresa
+     *
+     * @return \DGAbgSistemaBundle\Entity\CtlEmpresa 
+     */
+    public function getCtlEmpresa()
+    {
+        return $this->ctlEmpresa;
     }
 
     /**

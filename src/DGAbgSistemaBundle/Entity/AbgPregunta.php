@@ -50,14 +50,14 @@ class AbgPregunta
     private $correoelectronico;
 
     /**
-     * @var \CtlUsuario
+     * @var \CtlSubespecialidad
      *
-     * @ORM\ManyToOne(targetEntity="CtlUsuario")
+     * @ORM\ManyToOne(targetEntity="CtlSubespecialidad")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="ctl_usuario_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="abg_subespecialidad_id", referencedColumnName="id")
      * })
      */
-    private $ctlUsuario;
+    private $abgSubespecialidad;
 
     /**
      * @var \CtlTipoReporte
@@ -70,14 +70,14 @@ class AbgPregunta
     private $ctlTipoReporte;
 
     /**
-     * @var \CtlSubespecialidad
+     * @var \CtlUsuario
      *
-     * @ORM\ManyToOne(targetEntity="CtlSubespecialidad")
+     * @ORM\ManyToOne(targetEntity="CtlUsuario")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="abg_subespecialidad_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="ctl_usuario_id", referencedColumnName="id")
      * })
      */
-    private $abgSubespecialidad;
+    private $ctlUsuario;
 
 
 
@@ -184,26 +184,26 @@ class AbgPregunta
     }
 
     /**
-     * Set ctlUsuario
+     * Set abgSubespecialidad
      *
-     * @param \DGAbgSistemaBundle\Entity\CtlUsuario $ctlUsuario
+     * @param \DGAbgSistemaBundle\Entity\CtlSubespecialidad $abgSubespecialidad
      * @return AbgPregunta
      */
-    public function setCtlUsuario(\DGAbgSistemaBundle\Entity\CtlUsuario $ctlUsuario = null)
+    public function setAbgSubespecialidad(\DGAbgSistemaBundle\Entity\CtlSubespecialidad $abgSubespecialidad = null)
     {
-        $this->ctlUsuario = $ctlUsuario;
+        $this->abgSubespecialidad = $abgSubespecialidad;
 
         return $this;
     }
 
     /**
-     * Get ctlUsuario
+     * Get abgSubespecialidad
      *
-     * @return \DGAbgSistemaBundle\Entity\CtlUsuario 
+     * @return \DGAbgSistemaBundle\Entity\CtlSubespecialidad 
      */
-    public function getCtlUsuario()
+    public function getAbgSubespecialidad()
     {
-        return $this->ctlUsuario;
+        return $this->abgSubespecialidad;
     }
 
     /**
@@ -230,25 +230,25 @@ class AbgPregunta
     }
 
     /**
-     * Set abgSubespecialidad
+     * Set ctlUsuario
      *
-     * @param \DGAbgSistemaBundle\Entity\CtlSubespecialidad $abgSubespecialidad
+     * @param \DGAbgSistemaBundle\Entity\CtlUsuario $ctlUsuario
      * @return AbgPregunta
      */
-    public function setAbgSubespecialidad(\DGAbgSistemaBundle\Entity\CtlSubespecialidad $abgSubespecialidad = null)
+    public function setCtlUsuario(\DGAbgSistemaBundle\Entity\CtlUsuario $ctlUsuario = null)
     {
-        $this->abgSubespecialidad = $abgSubespecialidad;
+        $this->ctlUsuario = $ctlUsuario;
 
         return $this;
     }
 
     /**
-     * Get abgSubespecialidad
+     * Get ctlUsuario
      *
-     * @return \DGAbgSistemaBundle\Entity\CtlSubespecialidad 
+     * @return \DGAbgSistemaBundle\Entity\CtlUsuario 
      */
-    public function getAbgSubespecialidad()
+    public function getCtlUsuario()
     {
-        return $this->abgSubespecialidad;
+        return $this->ctlUsuario;
     }
 }

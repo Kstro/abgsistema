@@ -1,0 +1,148 @@
+<!-- Calendar -->
+<link rel="stylesheet" href="{{ asset('Resources/zebra/css/bootstrap.css') }}">
+<script type="text/javascript" src="{{ asset('Resources/zebra/js/zebra_datepicker.js')}}" ></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+ 
+       
+        $("#cancel").click(function () {
+            $("#"+editEdu).show();
+            $("#div2").remove();
+        });
+        
+         $('#Sdisciplina').select2();
+
+    });
+
+    $('#checkActual').change(function () {
+        if ($('#checkActual').is(":checked")) {
+
+            $('#fechafin').hide();
+            $('#txtAnioFin').val(null);
+        } else {
+            $('#fechafin').show();
+        }
+
+    });
+
+</script>
+
+<form role="form" id="fEdu" >
+    {%if Educacion|default is not empty %}
+
+        {% for datos in Educacion %}
+
+            <input type="hidden" name="hidEdu" id="hidEdu" value="{{datos.idEs}}">
+
+        
+        <div class="form-group">
+            <label for="nombreEmpleado">Centros de estudios</label>
+             <input type="text" class="form-control  input-sm"  id="txtCentro" name="txtCentro" 
+                   placeholder="Centros de estudios" value="{{datos.institucion}}"> 
+
+
+        </div>
+        <div class="form-group">
+            <label for="ejemplo_password_1">Títulacion</label>
+            <input type="text" class="form-control  input-sm"  id="txtTitulo" name="txtTitulo" 
+                   placeholder="Nombre del puesto "  value="{{datos.titulo}}">
+        </div>
+        <div class="form-group">
+            <label for="ejemplo_password_1">Disciplina academica</label>
+          <select id="Sdisciplina" name="Sdisciplina" class="form-control input-sm empresa">
+                <option value="0" selected>Select an option...</option>
+                 {% for datosD in disciplina %}
+                       <option value="{{datosD.id}}" {%if(datosD.id==datos.idDis)%}selected{%endif%}>{{datosD.nombre}}</option>
+                 {%endfor%}
+            </select> 
+        </div>
+
+
+        <div class="form-group ">
+            <label for="Fecha_inicio">Periodo de estudio</label>
+            <div class="row">
+                <div class="col-sm-2">
+                    <input type="number" min="1975" max="2016" class="form-control input-sm" id="txtAnioIni" name="txtAnioIni"  placeholder="Año inicio" value="{{datos.anioIni}}">
+                </div>
+                <div  id="fechafin">
+                    <div class="col-sm-2"  >
+                         <input type="number" min="1975" max="2016" class="form-control input-sm" 
+                                    placeholder="Año fin" id="txtAnioFin" name="txtAnioFin" value="{{datos.anio}}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-6">   
+                    <input type="checkbox"  name="checkActual" id="checkActual" />&nbsp;Estudiando actualmente. </div>
+            </div>
+        </div>
+   
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary btn-sm"  onclick="addEdu()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                </div>
+            </div>
+        </div>
+        {%endfor%}
+    {%else%}
+
+        <input type="hidden" name="hidEdu" id="hidEdu" value="">
+        <div class="form-group">
+            <label for="nombreEmpleado">Centros de estudios</label>
+             <input type="text" class="form-control  input-sm"  id="txtCentro" name="txtCentro" 
+                   placeholder="Centros de estudios"> 
+
+
+        </div>
+        <div class="form-group">
+            <label for="ejemplo_password_1">Títulacion</label>
+            <input type="text" class="form-control  input-sm"  id="txtTitulo" name="txtTitulo" 
+                   placeholder="Nombre del puesto ">
+        </div>
+        <div class="form-group">
+            <label for="ejemplo_password_1">Disciplina academica</label>
+          <select id="Sdisciplina" name="Sdisciplina" class="form-control input-sm empresa">
+                <option value="0" selected>Select an option...</option>
+                 {% for datos in disciplina %}
+                       <option value="{{datos.id}}" selected>{{datos.nombre}}</option>
+                 {%endfor%}
+            </select> 
+        </div>
+
+
+        <div class="form-group ">
+            <label for="Fecha_inicio">Periodo de estudio</label>
+            <div class="row">
+                <div class="col-sm-2">
+                    <input type="number" min="1975" max="2016" class="form-control input-sm" id="txtAnioIni" name="txtAnioIni"  placeholder="Año inicio" >
+                </div>
+                <div  id="fechafin">
+                    <div class="col-sm-2"  >
+                         <input type="number" min="1975" max="2016" class="form-control input-sm" 
+                                    placeholder="Año fin" id="txtAnioFin" name="txtAnioFin" >
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-6">   
+                    <input type="checkbox"  name="checkActual" id="checkActual" />&nbsp;Estudiando actualmente. </div>
+            </div>
+        </div>
+       
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary btn-sm"  onclick="addEdu()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    {%endif%}
+</form>
+

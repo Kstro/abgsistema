@@ -1,0 +1,144 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#cancel").click(function () {
+            $("#consultaIdiomas").show();
+            $("#div3").remove();
+        });
+    });</script>
+
+<form role="form" id="fIdiomas" >
+    {%if  IdiomaRegistrado |default is not empty %}
+        <input type="hidden" name="hidIdioma" id="hidIdioma" value="1">
+        <div class="form-group" id="divContenedor">
+            <div class="row" id="divIdioma">
+                <div class="col-sm-3"><label for="Fecha_inicio">Idioma</label></div>
+            </div>
+        
+            {% for datosIR in IdiomaRegistrado %}
+
+                <div class="form-group " >
+                    <div class="row" id="divIdioma{{datosIR.idPi}}">
+                       
+                        <div class="col-sm-3">
+                            <select id="SIdioma{{datosIR.idPi}}" name="SIdioma{{datosIR.idPi}}" class="form-control input-sm newIdioma" >
+
+                                {% for datos in idioma %}
+                                    <option value="{{datos.id}}" {%if(datos.id==datosIR.idIdioma)%}selected{%endif%}>{{datos.nombre}}</option>
+                                {%endfor%}
+
+                            </select>
+                        </div>
+                        <div class="col-sm-3"  >
+                            <select id="Snivel{{datosIR.idPi}}" name="Snivel{{datosIR.idPi}}" class="form-control input-sm newIdioma" >
+
+                                <option value="Avanzado" {%if(datosIR.nivel=='Avanzado')%}selected{%endif%}>Avanzado</option>
+                                <option value="Basico" {%if(datosIR.nivel=='Basico')%}selected{%endif%}>Basico</option>
+                                <option value="Intermedio" {%if(datosIR.nivel=='Intermedio')%}selected{%endif%}>Intermedio</option>
+                                <option value="Navito" {%if(datosIR.nivel=='Navito')%}selected{%endif%}>Navito</option>
+                            </select> 
+                        </div>
+                        <a onClick="RemoveIdioma({{datosIR.idPi}})"><i class="fa fa-remove" style="color: #999999;" data-toggle="tooltip" data-placement="left" title="Remover" ></i></a>
+                    </div>
+                </div>
+            
+            {%endfor%}
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-6">   
+                    <a onClick="NewIdioma()">Añadir otro idioma.</a> </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary btn-sm"  onclick="addIdiomas()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    {%else%}
+        <script type="text/javascript">
+
+        </script>
+        <input type="hidden" name="hidIdioma" id="hidIdioma" value="">
+        <div class="form-group" id="divContenedor">
+            <div class="row" id="divIdioma">
+                <div class="col-sm-3"><label for="Fecha_inicio">Idioma</label></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <select id="SIdioma1" name="SIdioma1" class="form-control input-sm newIdioma" >
+                        <option value="0" selected>Selecione una opcion...</option>
+                        {% for datos in idioma %}
+                            <option value="{{datos.id}}">{{datos.nombre}}</option>
+                        {%endfor%}
+
+                    </select>
+                </div>
+                <div class="col-sm-3"  >
+                    <select id="Snivel1" name="Snivel1" class="form-control input-sm newIdioma" >
+                        <option value="0">Select an option...</option>
+                        <option value="Avanzado">Avanzado</option>
+                        <option value="Basico">Basico</option>
+                        <option value="Intermedio">Intermedio</option>
+                        <option value="Navito">Navito</option>
+                    </select> 
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-6">   
+                    <a onClick="NewIdioma()">Añadir otro idioma.</a> </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary btn-sm"  onclick="addIdiomas()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    {%endif%}
+
+    <script type="text/javascript">
+
+
+        function NewIdioma()
+        {
+
+            var div;
+            Idioma = [];
+            div = '<div class="form-group "><div class="row" id="divIdioma' + $("#divContenedor div").length + '">';
+            div += '<div class="col-sm-3">';
+            div += '<select id="SIdioma' + $("#divContenedor div").length + '" name="SIdioma' + $("#divContenedor div").length + '" class="form-control input-sm newIdioma">';
+            $('#SIdioma' + $("#divContenedor div").length).select2();
+            div += '<option value="0" selected>Selecione una opcion...</option>';
+        {% for datos in idioma %}
+                div += '<option value="{{datos.id}}">{{datos.nombre}}</option>';
+        {%endfor%}
+                div += '</select></div>';
+                div += '<div class="col-sm-3">';
+                div += '<select id="Snivel' + $("#divContenedor div").length + '" name="Snivel' + $("#divContenedor div").length + '"';
+                div += 'class="form-control input-sm newIdioma">';
+                div += '<option value="0">Select an option...</option>';
+                div += '<option value="Avanzado">Avanzado</option>';
+                div += '<option value="Basico">Basico</option>';
+                div += '<option value="Intermedio">Intermedio</option>';
+                div += '<option value="Navito">Navito</option>';
+                div += '</select></div>';
+                div += '<a onClick="RemoveIdioma(' + $("#divContenedor div").length + ')"><i class="fa fa-remove" style="color: #999999;" data-toggle="tooltip" data-placement="left" title="Remover" ></i></a>';
+                div += '</div></div>';
+                 $("#divIdioma").after(div);
+
+            }
+
+            function RemoveIdioma(val)
+            {
+                $("#divIdioma" + val).remove();
+         
+            }
+
+    </script>
+</form>

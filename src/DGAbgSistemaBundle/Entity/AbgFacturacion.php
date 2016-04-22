@@ -53,16 +53,6 @@ class AbgFacturacion
     private $abgPersona;
 
     /**
-     * @var \CtlEmpresa
-     *
-     * @ORM\ManyToOne(targetEntity="CtlEmpresa")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="ctl_empresa_id", referencedColumnName="id")
-     * })
-     */
-    private $ctlEmpresa;
-
-    /**
      * @var \CtlTipoPago
      *
      * @ORM\ManyToOne(targetEntity="CtlTipoPago")
@@ -71,6 +61,16 @@ class AbgFacturacion
      * })
      */
     private $abgTipoPago;
+
+    /**
+     * @var \CtlEmpresa
+     *
+     * @ORM\ManyToOne(targetEntity="CtlEmpresa")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="ctl_empresa_id", referencedColumnName="id")
+     * })
+     */
+    private $ctlEmpresa;
 
     /**
      * @var \AdmPromociones
@@ -187,29 +187,6 @@ class AbgFacturacion
     }
 
     /**
-     * Set ctlEmpresa
-     *
-     * @param \DGAbgSistemaBundle\Entity\CtlEmpresa $ctlEmpresa
-     * @return AbgFacturacion
-     */
-    public function setCtlEmpresa(\DGAbgSistemaBundle\Entity\CtlEmpresa $ctlEmpresa = null)
-    {
-        $this->ctlEmpresa = $ctlEmpresa;
-
-        return $this;
-    }
-
-    /**
-     * Get ctlEmpresa
-     *
-     * @return \DGAbgSistemaBundle\Entity\CtlEmpresa 
-     */
-    public function getCtlEmpresa()
-    {
-        return $this->ctlEmpresa;
-    }
-
-    /**
      * Set abgTipoPago
      *
      * @param \DGAbgSistemaBundle\Entity\CtlTipoPago $abgTipoPago
@@ -230,6 +207,29 @@ class AbgFacturacion
     public function getAbgTipoPago()
     {
         return $this->abgTipoPago;
+    }
+
+    /**
+     * Set ctlEmpresa
+     *
+     * @param \DGAbgSistemaBundle\Entity\CtlEmpresa $ctlEmpresa
+     * @return AbgFacturacion
+     */
+    public function setCtlEmpresa(\DGAbgSistemaBundle\Entity\CtlEmpresa $ctlEmpresa = null)
+    {
+        $this->ctlEmpresa = $ctlEmpresa;
+
+        return $this;
+    }
+
+    /**
+     * Get ctlEmpresa
+     *
+     * @return \DGAbgSistemaBundle\Entity\CtlEmpresa 
+     */
+    public function getCtlEmpresa()
+    {
+        return $this->ctlEmpresa;
     }
 
     /**

@@ -24,28 +24,28 @@ class CtlEmpresa
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre_empresa", type="string", length=45, nullable=false)
+     * @ORM\Column(name="nombre_empresa", type="string", length=45, nullable=true)
      */
     private $nombreEmpresa;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="nit", type="string", length=45, nullable=false)
+     * @ORM\Column(name="nit", type="string", length=45, nullable=true)
      */
     private $nit;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="servicios", type="string", length=60, nullable=false)
+     * @ORM\Column(name="servicios", type="string", length=60, nullable=true)
      */
     private $servicios;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_fundacion", type="date", nullable=false)
+     * @ORM\Column(name="fecha_fundacion", type="date", nullable=true)
      */
     private $fechaFundacion;
 
@@ -66,7 +66,7 @@ class CtlEmpresa
     /**
      * @var string
      *
-     * @ORM\Column(name="direccion", type="string", length=75, nullable=false)
+     * @ORM\Column(name="direccion", type="string", length=75, nullable=true)
      */
     private $direccion;
 
@@ -87,7 +87,7 @@ class CtlEmpresa
     /**
      * @var string
      *
-     * @ORM\Column(name="telefono_", type="string", length=9, nullable=false)
+     * @ORM\Column(name="telefono_", type="string", length=9, nullable=true)
      */
     private $telefono;
 
@@ -101,9 +101,23 @@ class CtlEmpresa
     /**
      * @var string
      *
-     * @ORM\Column(name="fax", type="string", length=20, nullable=false)
+     * @ORM\Column(name="fax", type="string", length=20, nullable=true)
      */
     private $fax;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="color", type="string", length=60, nullable=true)
+     */
+    private $color;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cantidad_empleados", type="string", length=255, nullable=true)
+     */
+    private $cantidadEmpleados;
 
     /**
      * @var \CtlCiudad
@@ -131,18 +145,6 @@ class CtlEmpresa
      * @ORM\ManyToMany(targetEntity="AbgPersona", mappedBy="ctlEmpresa")
      */
     private $abgPersona;
-    
-     /**
-     * @var string
-     *
-     * @ORM\Column(name="color", type="string", length=60, nullable=false)
-     */
-    private $color;
-    
-    
-    
-    
-    
 
     /**
      * Constructor
@@ -440,6 +442,52 @@ class CtlEmpresa
     }
 
     /**
+     * Set color
+     *
+     * @param string $color
+     * @return CtlEmpresa
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    /**
+     * Get color
+     *
+     * @return string 
+     */
+    public function getColor()
+    {
+        return $this->color;
+    }
+
+    /**
+     * Set cantidadEmpleados
+     *
+     * @param string $cantidadEmpleados
+     * @return CtlEmpresa
+     */
+    public function setCantidadEmpleados($cantidadEmpleados)
+    {
+        $this->cantidadEmpleados = $cantidadEmpleados;
+
+        return $this;
+    }
+
+    /**
+     * Get cantidadEmpleados
+     *
+     * @return string 
+     */
+    public function getCantidadEmpleados()
+    {
+        return $this->cantidadEmpleados;
+    }
+
+    /**
      * Set ctlCiudad
      *
      * @param \DGAbgSistemaBundle\Entity\CtlCiudad $ctlCiudad
@@ -517,35 +565,4 @@ class CtlEmpresa
     {
         return $this->abgPersona;
     }
-    
-    
-    
-     /**
-     * Set color
-     *
-     * @param string $color
-     * @return CtlEmpresa
-     */
-    public function setColor($color)
-    {
-        $this->color = $color;
-
-        return $this;
-    }
-
-    /**
-     * Get color
-     *
-     * @return string 
-     */
-    public function getColor()
-    {
-        return $this->color;
-    }
-    
-    
-    
-    
-    
-    
 }

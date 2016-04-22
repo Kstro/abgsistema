@@ -12,7 +12,11 @@
             <title>Directorio de Abogados de El Salvador | Primero y unico directorio de abogados de El Salvador | Abogados.com.sv</title>
 
             {% block css %}
+                
                 <style type="text/css">
+                  .input-large {
+                       width:750px;
+                    }
                     .main {
                         display:block;
                         position:relative;
@@ -36,13 +40,7 @@
                     .profile img {
                         z-index:999;
                     }
-                    .nueva-Experiencia {
-                        margin-top: -10px;
-                        border: 1px solid #e0e0e0;
-                        background-color: #ffffff;
-                        padding: 20px; 
-                        z-index: 0;
-                    }
+                    
                 </style>
 
 
@@ -55,12 +53,20 @@
             <!-- Stylesheet de Bootstrap -->
 
             <link href="{{asset('Resources/src/css/bootstrap.css')}}" rel="stylesheet">
+         
             <!-- Stylesheet Personales -->
             <link href="{{asset('Resources/src/css/style.css')}}" rel="stylesheet">
             <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
             <!-- bootstrap -->
             <script src="{{ asset('Resources/src/js/jquery-2.0.3.min.js')}}"></script>
             <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>  
+            
+            <!--  Select  2-->
+            <!-- link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
+            <script src="{#{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
+            <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }#}"></script-->
+
+            
             <!-- Favicon (Icono Pequeño) -->
             <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
             <link rel="icon" href="favicon.png" type="image/x-icon">
@@ -71,8 +77,7 @@
 
 
             <script src="{{ asset('Resources/js/persona.js')}}"></script>
-
-
+            
         {% endblock %}
 
     </head>

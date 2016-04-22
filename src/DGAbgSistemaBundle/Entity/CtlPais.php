@@ -31,9 +31,9 @@ class CtlPais
     /**
      * @var integer
      *
-     * @ORM\Column(name="codigo_postal", type="integer", nullable=false)
+     * @ORM\Column(name="area", type="integer", nullable=false)
      */
-    private $codigoPostal;
+    private $area;
 
 
 
@@ -71,25 +71,25 @@ class CtlPais
     }
 
     /**
-     * Set codigoPostal
+     * Set area
      *
-     * @param integer $codigoPostal
+     * @param integer $area
      * @return CtlPais
      */
-    public function setCodigoPostal($codigoPostal)
+    public function setArea($area)
     {
-        $this->codigoPostal = $codigoPostal;
+        $this->area = $area;
 
         return $this;
     }
 
     /**
-     * Get codigoPostal
+     * Get area
      *
      * @return integer 
      */
-    public function getCodigoPostal()
+    public function getArea()
     {
-        return $this->codigoPostal;
+        return $this->area;
     }
 }
