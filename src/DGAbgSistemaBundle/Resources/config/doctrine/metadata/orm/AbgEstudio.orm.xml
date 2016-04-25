@@ -4,21 +4,28 @@
     <indexes>
       <index name="fk_formacion_academica_persona1_idx" columns="abg_persona_id"/>
       <index name="fk_abg_estudio_superior_abg_titulo_profesional1_idx" columns="abg_titulo_profesional_id"/>
+      <index name="ctl_centro_estudio_id" columns="ctl_centro_estudio_id"/>
     </indexes>
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
     </id>
     <field name="institucion" type="string" column="institucion" length="45" nullable="false"/>
-    <field name="anioGraduacion" type="string" column="anio_graduacion" length="45" nullable="false"/>
+    <field name="anioGraduacion" type="string" column="anio_graduacion" length="45" nullable="true"/>
     <field name="titulo" type="string" column="titulo" length="45" nullable="false"/>
-    <many-to-one field="abgTituloProfesional" target-entity="CtlTituloProfesional">
-      <join-columns>
-        <join-column name="abg_titulo_profesional_id" referenced-column-name="id"/>
-      </join-columns>
-    </many-to-one>
+    <field name="anioInicio" type="string" column="anio_inicio" length="10" nullable="true"/>
     <many-to-one field="abgPersona" target-entity="AbgPersona">
       <join-columns>
         <join-column name="abg_persona_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="ctlCentroEstudio" target-entity="CtlCentroEstudio">
+      <join-columns>
+        <join-column name="ctl_centro_estudio_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="abgTituloProfesional" target-entity="CtlTituloProfesional">
+      <join-columns>
+        <join-column name="abg_titulo_profesional_id" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
   </entity>

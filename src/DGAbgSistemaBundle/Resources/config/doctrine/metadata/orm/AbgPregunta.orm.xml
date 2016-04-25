@@ -13,9 +13,9 @@
     <field name="respuesta" type="text" column="respuesta" length="65535" nullable="false"/>
     <field name="estado" type="string" column="estado" length="45" nullable="false"/>
     <field name="correoelectronico" type="string" column="correoelectronico" length="60" nullable="false"/>
-    <many-to-one field="abgSubespecialidad" target-entity="CtlSubespecialidad">
+    <many-to-one field="ctlUsuario" target-entity="CtlUsuario">
       <join-columns>
-        <join-column name="abg_subespecialidad_id" referenced-column-name="id"/>
+        <join-column name="ctl_usuario_id" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
     <many-to-one field="ctlTipoReporte" target-entity="CtlTipoReporte">
@@ -23,9 +23,9 @@
         <join-column name="ctl_tipo_reporte_id" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
-    <many-to-one field="ctlUsuario" target-entity="CtlUsuario">
+    <many-to-one field="abgSubespecialidad" target-entity="CtlSubespecialidad">
       <join-columns>
-        <join-column name="ctl_usuario_id" referenced-column-name="id"/>
+        <join-column name="abg_subespecialidad_id" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
   </entity>

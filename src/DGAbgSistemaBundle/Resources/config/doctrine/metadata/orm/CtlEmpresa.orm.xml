@@ -8,18 +8,20 @@
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="nombreEmpresa" type="string" column="nombre_empresa" length="45" nullable="false"/>
-    <field name="nit" type="string" column="nit" length="45" nullable="false"/>
-    <field name="servicios" type="string" column="servicios" length="60" nullable="false"/>
-    <field name="fechaFundacion" type="date" column="fecha_fundacion" nullable="false"/>
+    <field name="nombreEmpresa" type="string" column="nombre_empresa" length="45" nullable="true"/>
+    <field name="nit" type="string" column="nit" length="45" nullable="true"/>
+    <field name="servicios" type="string" column="servicios" length="60" nullable="true"/>
+    <field name="fechaFundacion" type="date" column="fecha_fundacion" nullable="true"/>
     <field name="fotoPerfil" type="string" column="foto_perfil" length="60" nullable="true"/>
     <field name="descripcion" type="string" column="descripcion" length="255" nullable="true"/>
-    <field name="direccion" type="string" column="direccion" length="75" nullable="false"/>
+    <field name="direccion" type="string" column="direccion" length="75" nullable="true"/>
     <field name="sitioWeb" type="string" column="sitio_web" length="60" nullable="true"/>
     <field name="correoelectronico" type="string" column="correoelectronico" length="45" nullable="true"/>
-    <field name="telefono" type="string" column="telefono_" length="9" nullable="false"/>
+    <field name="telefono" type="string" column="telefono_" length="9" nullable="true"/>
     <field name="movil" type="string" column="movil" length="9" nullable="true"/>
-    <field name="fax" type="string" column="fax" length="20" nullable="false"/>
+    <field name="fax" type="string" column="fax" length="20" nullable="true"/>
+    <field name="color" type="string" column="color" length="60" nullable="true"/>
+    <field name="cantidadEmpleados" type="string" column="cantidad_empleados" length="255" nullable="true"/>
     <many-to-one field="ctlCiudad" target-entity="CtlCiudad">
       <join-columns>
         <join-column name="ctl_ciudad_id" referenced-column-name="id"/>

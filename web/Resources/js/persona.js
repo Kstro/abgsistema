@@ -1,22 +1,37 @@
 
-var trs, trs2, idEspS = null;
+var editExp = "", actExp, editEdu = "", idEspS = null;
 var Especialida = [];
-var SubEspecialida = [];
-
+var DataEspecialida = [];
+var Idioma = [];
+var DatosIdiomas = [];
+var EspecialidaSelect = [];
 var datos = "", datosMostrados = "";
-//   jQuery.noConflict();
-/*   jQuery(function($){
- $("#txtdui").mask("99999999-9");
- $("#txtnit").mask("9999-999999-999-9");
- $("#txtfijo").mask("9999-9999");
- $("#txtmovil").mask("9999-9999");
- 
- });*/
 
 $(document).on('ready', function () {
+    
+     $("#btnDatosContacto").click(function () {
 
+        if ($("#div001").length > 0) {
 
+        } else {
+            $.ajax({
+                type: "GET",
+                url: Routing.generate('datos_contacto'),
+              //  data: {hPersona: $('input#hPersona').val()},
+                success: function (data)
+                {
+                    div = '<div class="nueva-Experiencia" id="div001"  style="background-color: #f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+                    $("#datosContacto").before(div);
 
+                },
+                error: function (errors)
+                {
+
+                }
+            });
+        }
+    });
+     
     $("#enfiarf").click(function () {
         $.ajax({
             type: "GET",
@@ -35,129 +50,331 @@ $(document).on('ready', function () {
             }
         });
     });
-
-
-
     $("#btnespecialida").click(function () {
-        $("#contenido").empty();
-        $.ajax({
-            type: "GET",
-            url: Routing.generate('especialida'),
-            data: {hPersona: $('input#hPersona').val()},
-            //   async: false,
-            //  dataType: 'json',
 
-            success: function (data)
-            {
-                $("#contenido").append(data);
-                //  var url=Routing.generate('admin_abg',{username:data.username});
-                // window.open(url,"_self");                   
-            },
-            error: function (errors)
-            {
+        if ($("#div01").length > 0) {
 
-            }
-        });
+        } else {
+            $.ajax({
+                type: "GET",
+                url: Routing.generate('especialida'),
+                data: {hPersona: $('input#hPersona').val()},
+                //   async: false,
+                //  dataType: 'json',
+
+                success: function (data)
+                {
+                    // $("#contenido").append(data);
+                    div = '<div class="nueva-Experiencia" id="div01"  style="background-color: #f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+                    $("#contenido").before(div);
+                },
+                error: function (errors)
+                {
+
+                }
+            });
+        }
     });
-
+    var div, divn;
     $("#btnExperiencia").click(function () {
-        var div,divn;
-        $.ajax({
-            type: "GET",
-            url: Routing.generate('from_experiencia'),
-            data: {hPersona: $('input#hPersona').val()},
-            //   async: false,
-            //  dataType: 'json',
 
-            success: function (data)
-            {//$("#contenidoExp").empty();
-  
-             //  divn=$('div #contenidoExp').children('div').length;
-                div='<div class="nueva-Experiencia " id="div1"  style="background-color: #f6f6f6; border: 1px solid #e0e0e0;">'+data+'</div>';
-                $("#contenedorExp").append(div);
-                               
-            },
-            error: function (errors)
-            {
+        if ($("#div1").length > 0) {
 
-            }
-        });
+        } else {
+            $.ajax({
+                type: "GET",
+                url: Routing.generate('from_experiencia'),
+                data: {hPersona: $('input#hPersona').val()},
+                success: function (data)
+                {
+                    actExp = 0;
+                    div = '<div class="nueva-Experiencia" id="div1"  style="background-color: #f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+                    $("#consultas").before(div);
+
+                },
+                error: function (errors)
+                {
+
+                }
+            });
+        }
     });
 
+
+    $("#btnEducacion").click(function () {
+
+        if ($("#div2").length > 0) {
+
+        } else {
+            $.ajax({
+                type: "GET",
+                url: Routing.generate('from_educacion'),
+                data: {hPersona: $('input#hPersona').val()},
+                success: function (data)
+                {
+                    div = '<div class="nueva-Experiencia" id="div2"  style="background-color:#f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+                    $("#consultaEducacion").before(div);
+                },
+                error: function (errors)
+                {
+
+                }
+            });
+        }
+    });
+
+
+    $("#btnCertificacion").click(function () {
+
+        if ($("#div6").length > 0) {
+
+        } else {
+            $.ajax({
+                type: "GET",
+                url: Routing.generate('from_certificacion'),
+                data: {hPersona: $('input#hPersona').val()},
+                success: function (data)
+                {
+                    div = '<div class="nueva-Experiencia" id="div6"  style="background-color: #f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+                    $("#consultaCertificacion").before(div);
+                },
+                error: function (errors)
+                {
+
+                }
+            });
+        }
+    });
+
+    $("#btnCurso").click(function () {
+        if ($("#div7").length > 0) {
+        } else {
+            $.ajax({
+                type: "GET",
+                url: Routing.generate('from_curso'),
+                data: {hPersona: $('input#hPersona').val()},
+                success: function (data)
+                {
+                    div = '<div class="nueva-Experiencia" id="div7"  style="background-color: #f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+                    $("#consultaCurso").before(div);
+                },
+                error: function (errors)
+                {
+
+                }
+            });
+        }
+    });
+
+    $("#btnOrganizacion").click(function () {
+        if ($("#div5").length > 0) {
+        } else {
+            $.ajax({
+                type: "GET",
+                url: Routing.generate('from_organizacion'),
+                data: {hPersona: $('input#hPersona').val()},
+                success: function (data)
+                {
+                    div = '<div class="nueva-Experiencia" id="div5"  style="background-color: #f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+                    $("#consultaOrg").before(div);
+                },
+                error: function (errors)
+                {
+
+                }
+            });
+        }
+    });
+
+    $("#btnIdioma").click(function () {
+        if ($("#div3").length > 0) {
+        } else {
+            $.ajax({
+                type: "GET",
+                url: Routing.generate('from_idioma'),
+                data: {hPersona: $('input#hPersona').val()},
+                success: function (data)
+                {
+                    div = '<div class="nueva-Experiencia" id="div3"  style="background-color: #f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+                    $("#consultaIdiomas").hide();
+                    $("#consultaIdiomas").before(div);
+                },
+                error: function (errors)
+                {
+
+                }
+            });
+        }
+    });
+        
+ 
 
 });
-
-function fil(idcheckbox, idEsp)
+function editExperiencia(val)
 {
-    if (Especialida.indexOf(idEsp) === -1)
+    var div, divn;
+    $.ajax({
+        type: "GET",
+        url: Routing.generate('from_experiencia'),
+        data: {experiencia: val},
+        success: function (data)
+        {
+            actExp = 1;
+            div = '<div class="nueva-Experiencia" id="div1"  style="background-color: #f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+            $("#consultas").before(div);
+            $("#" + val).hide();
+            editExp = val;
+
+        },
+        error: function (errors)
+        {
+
+        }
+    });
+}
+function removeExperiencia(val)
+{
+    var div, divn;
+    $.ajax({
+        type: "GET",
+        url: Routing.generate('remove_experiencia'),
+        data: {experiencia: val},
+        success: function (data)
+        {
+        if (data.msj !== false) 
+        {
+             Lobibox.notify("success", {
+                        size: 'mini',
+                        msg: data.msj
+                    });
+        }
+
+        },
+        error: function (errors)
+        {
+
+        }
+    });
+}
+function fil(idcheckbox)
+{
+    console.log(DataEspecialida);
+    if (Especialida.indexOf(idcheckbox) === -1)
     {
         if (Especialida.length < 3)
         {
-            Especialida.push(idEsp);
-            SubEspecialida = [];
-            $.each($('.subEspecialida'), function (indice, val) {
+            Especialida = [];
+            DataEspecialida = [];
+            $.each($('.Especialida'), function (indice, val) {
                 if ($(this).is(':checked')) {
-                    SubEspecialida.push(parseInt($(this).attr('id')));
+                    Especialida.push(parseInt($(this).attr('id')));
+                    EspecialidaSelect.push(parseInt($(this).attr('id')));
+                    EspecialidaSelect.push('txt' + parseInt($(this).attr('id')));
+
+                    if (EspecialidaSelect.length % 2 === 0)
+                    {
+                        DataEspecialida.push(EspecialidaSelect);
+                        EspecialidaSelect = [];
+                    }
+                    document.getElementById('div' + parseInt($(this).attr('id'))).style.display = 'block';
+                } else {
+                    document.getElementById('div' + parseInt($(this).attr('id'))).style.display = 'none';
                 }
             });
+
         } else {
             Lobibox.notify("warning", {
                 size: 'mini',
                 msg: 'Se deben seleccionar maxino 3 especialidades.'
             });
             $("#" + idcheckbox).prop('checked', false);
+            document.getElementById('div' + idcheckbox).style.display = 'none';
         }
     } else {
-        SubEspecialida = [];
+
         Especialida = [];
-        $.each($('.subEspecialida'), function (indice, val) {
+        DataEspecialida = [];
+        $.each($('.Especialida'), function (indice, val) {
             if ($(this).is(':checked')) {
+
                 if (Especialida.indexOf(parseInt($(this).attr('name'))) === -1)
                 {
                     Especialida.push(parseInt($(this).attr('name')));
+                    EspecialidaSelect.push(parseInt($(this).attr('id')));
+                    EspecialidaSelect.push('txt' + parseInt($(this).attr('id')));
+
+                    if (EspecialidaSelect.length % 2 === 0)
+                    {
+                        DataEspecialida.push(EspecialidaSelect);
+                        EspecialidaSelect = [];
+                    }
+                    document.getElementById('div' + parseInt($(this).attr('id'))).style.display = 'block';
                 }
-                SubEspecialida.push(parseInt($(this).attr('id')));
+
+            } else {
+                document.getElementById('div' + parseInt($(this).attr('id'))).style.display = 'none';
             }
         });
     }
+    console.log(DataEspecialida);
 }
 
 
 
-function addSubEspecialida()
+function addEspecialida()
 {
-    if (SubEspecialida.length > 0)
+    
+     $("#fEspecialida").submit();
+    if (DataEspecialida.length > 0)
     {
-        var Esp, n = 0;
+        // $("#div01").remove();
         $("#contenido").empty();
+        var Esp, n = 0;
+        var datos;
         $.ajax({
             type: "GET",
             url: Routing.generate('subespecialida'),
-            data: {hPersona: $('input#hPersona').val(), SubEspecialida: SubEspecialida},
+            data: {hPersona: $('input#hPersona').val(), DataEspecialida: DataEspecialida, dato: $("#fEspecialida").serialize()},
             async: false,
             dataType: 'json',
             success: function (data)
             {
-                $.each($(data.Esp), function (indice, val) {
 
-                    Esp = val.id;
-                    n = n + 1;
-                    datos = '<div class="col-xs-4"  style="margin-top: .5em; margin-bottom: .5em;">';
-                    datos += '<strong><p class="sans" >' + val.nombre.toUpperCase() + '<p class="sans" ></strong>';
-                    $.each($(data.subEsp), function (indice, val) {
-                        if (Esp === val.idEsp)
+                console.log(data.Esp);
+                if (data.msj !== false) {
+                    $.each($(data.Esp), function (indice, val) {
+
+                        Esp = val.id;
+                        n = n + 1;
+                        datos = '<div class="form-group">';
+                        datos += '<div class="row">';
+                        datos += '<div class="col-xs-12" style="margin-top: .5em; margin-bottom: .5em;"><ul class="prob">';
+                        datos += ' <li><strong><p class="sans">' + val.nombre.toUpperCase() + '<p class="sans" ></strong></li>';
+                        datos += ' <li><p class="sans" style="text-align:justify;" >' + val.descripcion + '</p></strong></li>';
+                        datos += '</ul></div>';
+                        if ((n > 0) && (n % 3 === 0))
                         {
-                            datos += '<p class="sans" style="font-size: 13px;">' + val.nombre + '</p>';
+                            datos += '<div class="clearfix"></div>';
                         }
-                    });
-                    datos += '</div>';
-                    if ((n > 0) && (n % 3 === 0))
-                    {
-                        datos += '<div class="clearfix"></div>';
-                    }
+                        datos += '</div></div>';
 
-                    $("#contenido").append(datos);
-                });
+                        $("#div01").remove();
+                        $("#contenido").append(datos);
+                    });
+                    Lobibox.notify("success", {
+                        size: 'mini',
+                        msg: data.msj
+                    });
+
+                } else {
+                    Lobibox.notify("warning", {
+                        size: 'mini',
+                        msg: data.error
+                    });
+                }
+
+                $("#div01").remove();
+                $("#contenido").append(data);
 
             },
             error: function (errors)
@@ -175,20 +392,479 @@ function addSubEspecialida()
 
 
 function addExperiencia() {
-
+    
+    $("#fExperiencia").submit(
+            function( event ) {
+ var empresa, tipo;
+    if ($('#cambioEmpresa').is(":visible")) {
+        empresa = ($("#ScambioEmpresa").val());
+        tipo = 1;
+    } else {
+        empresa = $("#txtEditEmpresa").val();
+        tipo = 0;
+    }
+    var datos;
     $.ajax({
         type: 'POST',
         async: false,
         dataType: 'json',
         url: Routing.generate('registrar_experiencia'),
-        data: {hPersona: $('input#hPersona').val(), dato: $("#fExperiencia").serialize()},
+        data: {hPersona: $('input#hPersona').val(), dato: $("#fExperiencia").serialize(), empresa: empresa, tipo: tipo},
         success: function (data)
         {
-            Lobibox.notify("success", {
-                size: 'mini',
-                msg: data.msj
-            });
 
+            if (data.msj !== false) {
+                $.each($(data.Exp), function (indice, val) {
+                    $("#Exp" + val.id).remove();
+                    datos = '<div class="row" id="Exp' + val.id + '">';
+                    datos += '<div class="col-xs-1">';
+                    if (val.src !== null)
+                    {
+                        datos += '<img src="' + val.src.substring(18) + '">';
+                    }
+                    datos += '</div>';
+                    datos += '<div class="col-xs-11">';
+                    datos += '<span style="font-size: 15px;">' + val.empresa + '</span>';
+                    datos += '&nbsp;<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
+                    datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
+                    datos += '<span style="font-size: 13px;">' + val.puesto + ' </br>';
+
+                    if (val.dias === null) {
+                        datos += val.fechaIn + ' - Actualmente';
+                    } else {
+                        datos += val.fechaIn + ' - ' + val.fechaFin + '&nbsp;';
+                        datos += '(&nbsp;' + parseFloat(val.dias / 365).toFixed(0) + '&nbsp;años&nbsp' + ((parseFloat(val.dias / 365) - (parseFloat(val.dias / 365).toFixed(0))) * 12).toFixed(0) + '&nbsp;meses)&nbsp;|&nbsp;';
+                    }
+                    datos += val.hubicacion + '</span>';
+                    datos += '<p style = "width: 90%; margin-top: 5px;text-align:justify;">' + val.funcion;
+                    datos += '<script type="text/javascript">';
+                    datos += '$("#Exp' + val.id + '").hover(';
+                    datos += 'function(){';
+                    datos += '$(this).append($(\'<span  style="margin-left:83px;"><i class ="fa fa-pencil fa-x2 btn  btn-default" ';
+                    datos += 'onclick="editExperiencia(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn  btn-default" ';
+                    datos += 'onclick="editExperiencia(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
+                    datos += '},function(){';
+                    datos += '$(this).find("span:last").remove();';
+                    datos += '});';
+                    datos += '</script></p>';
+                    datos += '</div>';
+                    datos += '</div>';
+                }
+                );
+                $("#consultas").append(datos);
+                Lobibox.notify("success", {
+                    size: 'mini',
+                    msg: data.msj
+                });
+                $("#div1").remove();
+            } else {
+                Lobibox.notify("warning", {
+                    size: 'mini',
+                    msg: data.error
+                });
+            }
+        }
+        ,
+        error: function (errors)
+        {
+
+        }
+    }
+    );
+  event.preventDefault();
+});
+    
+}
+
+
+function addEdu() {
+    var empresa, tipo;
+    /*  if ($('#cambioEmpresa').is(":visible")) {
+     empresa = ($("#ScambioEmpresa").val());
+     tipo = 1;
+     } else {
+     empresa = $("#txtEditEmpresa").val();
+     tipo = 0;
+     }*/
+    var datos;
+    $.ajax({
+        type: 'POST',
+        async: false,
+        dataType: 'json',
+        url: Routing.generate('registrar_edu'),
+        data: {hPersona: $('input#hPersona').val(), dato: $("#fEdu").serialize()},
+        success: function (data)
+        {
+
+            if (data.msj !== false) {
+                $.each($(data.Edu), function (indice, val) {
+                    $("#Edu" + val.idEs).remove();
+                    datos = '<div class="row" id="Edu' + val.idEs + '">';
+                    datos += '<div class="col-xs-11">';
+                    datos += '<span style="font-size: 15px;">' + val.institucion + '</span>';
+                    datos += '<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
+                    datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
+                    datos += '<span style="font-size: 13px;">' + val.disciplina + ' | ' + val.titulo + ' </br>' + val.anioIni + ' - ' + val.anio + '</span>';
+                    datos += '<p style = "width: 90%; margin-top: 5px;text-align:justify;">';
+                    datos += '<script type="text/javascript">';
+                    datos += '$("#Edu' + val.idEs + '").hover(';
+                    datos += 'function(){';
+                    datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn  btn-default" ';
+                    datos += 'onclick="editEducacion(' + val.idEs + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn  btn-default" ';
+                    datos += 'onclick="editEducacion(' + val.idEs + ')">&nbsp;Eliminar</i></span>\'));';
+                    datos += '},function(){';
+                    datos += '$(this).find("span:last").remove();';
+                    datos += '});';
+                    datos += '</script></p>';
+                    datos += '</div>';
+                    datos += '</div>';
+                });
+                $("#consultaEducacion").append(datos);
+                Lobibox.notify("success", {
+                    size: 'mini',
+                    msg: data.msj
+                });
+                $("#div2").remove();
+            } else {
+                Lobibox.notify("warning", {
+                    size: 'mini',
+                    msg: data.error
+                });
+            }
+        }
+        ,
+        error: function (errors)
+        {
+
+        }
+    });
+
+}
+
+function addOrganizacion() {
+    var empresa, tipo;
+    /*  if ($('#cambioEmpresa').is(":visible")) {
+     empresa = ($("#ScambioEmpresa").val());
+     tipo = 1;
+     } else {
+     empresa = $("#txtEditEmpresa").val();
+     tipo = 0;
+     }*/
+    var datos;
+    $.ajax({
+        type: 'POST',
+        async: false,
+        dataType: 'json',
+        url: Routing.generate('registrar_org'),
+        data: {hPersona: $('input#hPersona').val(), dato: $("#fOrg").serialize()},
+        success: function (data)
+        {
+
+            if (data.msj !== false) {
+                $.each($(data.Organizacion), function (indice, val) {
+                    $("#Org" + val.id).remove();
+                    datos = '<div class="row" id="Org' + val.id + '">';
+                    datos += '<div class="col-xs-11">';
+                    datos += '<span style="font-size: 16px;">' + val.nombre + '</span>';
+                    datos += '<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
+                    datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
+                    datos += '<span style="font-size: 13px;">' + val.puesto + ' </br>' + val.fechaIn + ' - ' + val.fechaFin + '</span>';
+                    datos += '<p style = "width: 100%; margin-top: 5px;text-align:justify;">' + val.descripcion;
+                    datos += '<script type="text/javascript">';
+                    datos += '$("#Org' + val.id + '").hover(';
+                    datos += 'function(){';
+                    datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn  btn-default" ';
+                    datos += 'onclick="editOrganizacion(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn  btn-default" ';
+                    datos += 'onclick="editOrganizacion(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
+                    datos += '},function(){';
+                    datos += '$(this).find("span:last").remove();';
+                    datos += '});';
+                    datos += '</script></p>';
+                    datos += '</div>';
+                    datos += '</div>';
+                });
+                $("#consultaOrg").append(datos);
+                Lobibox.notify("success", {
+                    size: 'mini',
+                    msg: data.msj
+                });
+                $("#div5").remove();
+            } else {
+                Lobibox.notify("warning", {
+                    size: 'mini',
+                    msg: data.error
+                });
+
+
+            }
+        }
+        ,
+        error: function (errors)
+        {
+
+        }
+    });
+
+}
+
+function editOrganizacion(val)
+{
+    var div, divn;
+    $.ajax({
+        type: "GET",
+        url: Routing.generate('from_organizacion'),
+        data: {organizacion: val},
+        success: function (data)
+        {
+            div = '<div class="nueva-Experiencia" id="div5"  style="background-color:#f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+            $("#consultaOrg").before(div);
+            $("#Org" + val).hide();
+            editEdu = val;
+        },
+        error: function (errors)
+        {
+
+        }
+    });
+}
+
+function editEducacion(val)
+{
+    var div, divn;
+    $.ajax({
+        type: "GET",
+        url: Routing.generate('from_educacion'),
+        data: {educacion: val},
+        success: function (data)
+        {
+            div = '<div class="nueva-Experiencia" id="div2"  style="background-color:#f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+            $("#consultaEducacion").before(div);
+            $("#Edu" + val).hide();
+            editEdu = val;
+        },
+        error: function (errors)
+        {
+
+        }
+    });
+}
+
+function addCertificacion() {
+    var empresa, tipo;
+
+    var datos;
+    $.ajax({
+        type: 'POST',
+        async: false,
+        dataType: 'json',
+        url: Routing.generate('registrar_certi'),
+        data: {hPersona: $('input#hPersona').val(), dato: $("#fCerti").serialize()},
+        success: function (data)
+        {
+
+            if (data.msj !== false) {
+
+                $.each($(data.Cert), function (indice, val) {
+                    $("#Cert" + val.id).remove();
+                    datos = '<div class="row" id="Cert' + val.id + '">';
+                    datos += '<div class="col-xs-11">';
+                    datos += '<span style="font-size: 15px;">' + val.institucion + '</span>';
+                    datos += '<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
+                    datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
+                    datos += '<span style="font-size: 13px;">' + val.nombre + '</br>' + val.fechaIn + ' - ' + val.fechaFin + '</span>';
+                    datos += '<p style = "width: 90%; margin-top: 5px;text-align:justify;">';
+                    datos += '<script type="text/javascript">';
+                    datos += '$("#Cert' + val.id + '").hover(';
+                    datos += 'function(){';
+                    datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn  btn-default" ';
+                    datos += 'onclick="editEdu(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn  btn-default" ';
+                    datos += 'onclick="editEdu(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
+                    datos += '},function(){';
+                    datos += '$(this).find("span:last").remove();';
+                    datos += '});';
+                    datos += '</script></p>';
+                    datos += '</div>';
+                    datos += '</div>';
+                });
+                $("#consultaCertificacion").append(datos);
+                Lobibox.notify("success", {
+                    size: 'mini',
+                    msg: data.msj
+                });
+                $("#div6").remove();
+            } else {
+                Lobibox.notify("warning", {
+                    size: 'mini',
+                    msg: data.error
+                });
+            }
+
+        }
+        ,
+        error: function (errors)
+        {
+
+        }
+    });
+}
+function editCertificacion(val)
+{
+    var div, divn;
+    $.ajax({
+        type: "GET",
+        url: Routing.generate('from_certificacion'),
+        data: {certificacion: val},
+        success: function (data)
+        {
+            div = '<div class="nueva-Experiencia" id="div6"  style="background-color:#f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+            $("#consultaCertificacion").before(div);
+            $("#Cert" + val).hide();
+            editEdu = val;
+        },
+        error: function (errors)
+        {
+
+        }
+    });
+}
+function addCurso() {
+    var empresa, tipo;
+
+    var datos;
+    $.ajax({
+        type: 'POST',
+        async: false,
+        dataType: 'json',
+        url: Routing.generate('registrar_curso'),
+        data: {hPersona: $('input#hPersona').val(), dato: $("#fCurso").serialize()},
+        success: function (data)
+        {
+            if (data.msj !== false) {
+                $.each($(data.Curso), function (indice, val) {
+                    $("#CM" + val.id).remove();
+                    datos = '<div class="row" id="CM' + val.id + '">';
+                    datos += '<div class="col-xs-11">';
+                    datos += '<span style="font-size: 15px;">' + val.institucion + '</span>';
+                    datos += '<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
+                    datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
+                    datos += '<span style="font-size: 13px;">' + val.nombre + '</br>' + val.fechaIn + ' - ' + val.fechaFin + '</span>';
+                    datos += '<p style = "width: 90%; margin-top: 5px;text-align:justify;">' + val.descripcion;
+                    datos += '<script type="text/javascript">';
+                    datos += '$("#CM' + val.id + '").hover(';
+                    datos += 'function(){';
+                    datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn  btn-default" ';
+                    datos += 'onclick="editEdu(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn  btn-default" ';
+                    datos += 'onclick="editEdu(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
+                    datos += '},function(){';
+                    datos += '$(this).find("span:last").remove();';
+                    datos += '});';
+                    datos += '</script></p>';
+                    datos += '</div>';
+                    datos += '<a onclick="editEducacion(' + val.id + ')">h';
+                    datos += '<i class="fa fa-cog" style="margin-right: 28px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i>';
+                    datos += '</a></div>';
+                });
+                $("#consultaCurso").append(datos);
+                Lobibox.notify("success", {
+                    size: 'mini',
+                    msg: data.msj
+                });
+                $("#div7").remove();
+            } else {
+                Lobibox.notify("warning", {
+                    size: 'mini',
+                    msg: data.error
+                });
+            }
+        }
+        ,
+        error: function (errors)
+        {
+
+        }
+    });
+}
+
+
+function addIdiomas() {
+
+    var datos;
+    // console.log(DatosIdiomas);
+
+
+    $.each($('.newIdioma'), function (indice, val) {
+
+        Idioma.push($(this).attr('id'));
+        if (Idioma.length % 2 == 0)
+        {
+            DatosIdiomas.push(Idioma);
+            Idioma = [];
+        }
+
+    });
+
+
+
+    $.ajax({
+        type: 'POST',
+        async: false,
+        dataType: 'json',
+        url: Routing.generate('registrar_idioma'),
+        data: {hPersona: $('input#hPersona').val(), dato: $("#fIdiomas").serialize(), DatosIdiomas: DatosIdiomas},
+        success: function (data)
+        {
+            $("#consultaIdiomas").empty();
+            if (data.msj !== false) {
+                datos = '<div class="row " id="Idioma">';
+                $.each($(data.Idiomas), function (indice, val) {
+                    datos += '<div class="col-xs-3" style="margin-top: .5em; margin-bottom: .5em;">';
+                    datos += '<ul class="prob"><li><strong>' + val.nombre + '</strong></li>';
+                    datos += '<li>' + val.nivel + '</li>';
+                    datos += '</ul>';
+                    datos += '</div>';
+                });
+                datos += '<div class="clearfix"></div></div>';
+                $("#consultaIdiomas").append(datos);
+                $("#consultaIdiomas").show();
+
+                Lobibox.notify("success", {
+                    size: 'mini',
+                    msg: data.msj
+                });
+                $("#div3").remove();
+
+            } else {
+                Lobibox.notify("warning", {
+                    size: 'mini',
+                    msg: data.error
+                });
+            }
+
+            DatosIdiomas = [];
+            Idioma = [];
+        }
+        ,
+        error: function (errors)
+        {
+
+        }
+    });
+
+}
+
+function editCurso(val)
+{
+    var div, divn;
+    $.ajax({
+        type: "GET",
+        url: Routing.generate('from_curso'),
+        data: {curso: val},
+        success: function (data)
+        {
+            div = '<div class="nueva-Experiencia" id="div7"  style="background-color:#f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+            $("#consultaCurso").before(div);
+            $("#CM" + val).hide();
+            editEdu = val;
         },
         error: function (errors)
         {
@@ -247,10 +923,6 @@ function puestoDept()
 
 function ciudad()
 {
-
-
-
-
     var Dataciudad;
     $("#divCiudad").empty();
     $.ajax({

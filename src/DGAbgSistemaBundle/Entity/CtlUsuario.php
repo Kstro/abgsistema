@@ -1,7 +1,8 @@
 <?php
 
 namespace DGAbgSistemaBundle\Entity;
-
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="ctl_usuario", indexes={@ORM\Index(name="fk_ctl_usuario_rh_persona1_idx", columns={"rh_persona_id"}), @ORM\Index(name="fk_ctl_usuario_ctl_empresa1_idx", columns={"ctl_empresa_id"})})
  * @ORM\Entity
  */
-class CtlUsuario
+class CtlUsuario implements AdvancedUserInterface, \Serializable
 {
     /**
      * @var integer
@@ -50,16 +51,6 @@ class CtlUsuario
     private $estado;
 
     /**
-     * @var \AbgPersona
-     *
-     * @ORM\ManyToOne(targetEntity="AbgPersona")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="rh_persona_id", referencedColumnName="id")
-     * })
-     */
-    private $rhPersona;
-
-    /**
      * @var \CtlEmpresa
      *
      * @ORM\ManyToOne(targetEntity="CtlEmpresa")
@@ -70,12 +61,36 @@ class CtlUsuario
     private $ctlEmpresa;
 
     /**
+     * @var \AbgPersona
+     *
+     * @ORM\ManyToOne(targetEntity="AbgPersona")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="rh_persona_id", referencedColumnName="id")
+     * })
+     */
+    private $rhPersona;
+
+  
+    /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="CtlRol", mappedBy="ctlUsuario")
+     * @ORM\ManyToMany(targetEntity="CtlRol", inversedBy="ctlRol")
+     * @ORM\JoinTable(name="ctl_rol_usuario",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="ctl_usuario_id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="ctl_rol_id", referencedColumnName="id")
+     *   }
+     * )
      */
+   
     private $ctlRol;
-
+    
+    private $isEnabled;// = false; 
+    
+    
+    
     /**
      * Constructor
      */
@@ -188,29 +203,6 @@ class CtlUsuario
     }
 
     /**
-     * Set rhPersona
-     *
-     * @param \DGAbgSistemaBundle\Entity\AbgPersona $rhPersona
-     * @return CtlUsuario
-     */
-    public function setRhPersona(\DGAbgSistemaBundle\Entity\AbgPersona $rhPersona = null)
-    {
-        $this->rhPersona = $rhPersona;
-
-        return $this;
-    }
-
-    /**
-     * Get rhPersona
-     *
-     * @return \DGAbgSistemaBundle\Entity\AbgPersona 
-     */
-    public function getRhPersona()
-    {
-        return $this->rhPersona;
-    }
-
-    /**
      * Set ctlEmpresa
      *
      * @param \DGAbgSistemaBundle\Entity\CtlEmpresa $ctlEmpresa
@@ -231,6 +223,29 @@ class CtlUsuario
     public function getCtlEmpresa()
     {
         return $this->ctlEmpresa;
+    }
+
+    /**
+     * Set rhPersona
+     *
+     * @param \DGAbgSistemaBundle\Entity\AbgPersona $rhPersona
+     * @return CtlUsuario
+     */
+    public function setRhPersona(\DGAbgSistemaBundle\Entity\AbgPersona $rhPersona = null)
+    {
+        $this->rhPersona = $rhPersona;
+
+        return $this;
+    }
+
+    /**
+     * Get rhPersona
+     *
+     * @return \DGAbgSistemaBundle\Entity\AbgPersona 
+     */
+    public function getRhPersona()
+    {
+        return $this->rhPersona;
     }
 
     /**
@@ -265,4 +280,100 @@ class CtlUsuario
     {
         return $this->ctlRol;
     }
+    /**
+     * Get roles
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getRoles()
+    {
+        return $this->ctlRol->toArray(); //IMPORTANTE: el mecanismo de seguridad de Sf2 requiere ésto como un array
+    }
+    
+    
+    
+     /**
+     * Compares this user to another to determine if they are the same.
+     *
+     * @param UserInterface $user The user
+     * @return boolean True if equal, false othwerwise.
+     */
+    public function equals(UserInterface $user) {
+        return md5($this->getUsername()) == md5($user->getUsername());
+ 
+    }
+ 
+    /**
+     * Erases the user credentials.
+     */
+    public function eraseCredentials() {
+ 
+    }
+    
+    /*public function __toString() {
+        return $this->username ? $this->username : '';
+    }*/
+    
+    /**
+     * @see \Serializable::serialize()
+     */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+        ));
+    }
+    /**
+     * @see \Serializable::unserialize()
+     */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            ) = unserialize($serialized);
+    }
+    
+    public function isAccountNonExpired()
+    {
+            return true;
+    }
+
+    public function isAccountNonLocked()
+    {
+            return  !$this->isEnabled;
+    }
+
+    public function isCredentialsNonExpired()
+    {
+            return true;
+    }
+
+    public function isEnabled()
+    {
+        if ((int)$this->estado == 1)
+            $this->isEnabled = true;
+        else
+            $this->isEnabled  = false;
+        return  $this->isEnabled;
+    }
+    
+    public function __toString() {
+        return $this->username ? $this->username : '';
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

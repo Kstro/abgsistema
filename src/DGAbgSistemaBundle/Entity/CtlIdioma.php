@@ -28,27 +28,6 @@ class CtlIdioma
      */
     private $idioma;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nivel", type="string", length=45, nullable=false)
-     */
-    private $nivel;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="AbgPersona", mappedBy="abgioma")
-     */
-    private $abgPersona;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->abgPersona = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
 
     /**
@@ -82,61 +61,5 @@ class CtlIdioma
     public function getIdioma()
     {
         return $this->idioma;
-    }
-
-    /**
-     * Set nivel
-     *
-     * @param string $nivel
-     * @return CtlIdioma
-     */
-    public function setNivel($nivel)
-    {
-        $this->nivel = $nivel;
-
-        return $this;
-    }
-
-    /**
-     * Get nivel
-     *
-     * @return string 
-     */
-    public function getNivel()
-    {
-        return $this->nivel;
-    }
-
-    /**
-     * Add abgPersona
-     *
-     * @param \DGAbgSistemaBundle\Entity\AbgPersona $abgPersona
-     * @return CtlIdioma
-     */
-    public function addAbgPersona(\DGAbgSistemaBundle\Entity\AbgPersona $abgPersona)
-    {
-        $this->abgPersona[] = $abgPersona;
-
-        return $this;
-    }
-
-    /**
-     * Remove abgPersona
-     *
-     * @param \DGAbgSistemaBundle\Entity\AbgPersona $abgPersona
-     */
-    public function removeAbgPersona(\DGAbgSistemaBundle\Entity\AbgPersona $abgPersona)
-    {
-        $this->abgPersona->removeElement($abgPersona);
-    }
-
-    /**
-     * Get abgPersona
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getAbgPersona()
-    {
-        return $this->abgPersona;
     }
 }

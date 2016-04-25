@@ -1,0 +1,116 @@
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+       
+        $("#cancel").click(function () {
+            $("#Org"+editEdu).show();
+            $("#div001").remove();
+        });
+        
+       
+
+   });
+</script>
+
+<form role="form" id="fOrg" >
+    {%if Organizacion|default is not empty %}
+
+        {% for datos in Organizacion %}
+            
+        <input type="hidden" name="hidOrg" id="hidOrg" value="{{datos.id}}">
+        <div class="form-group">
+            <label for="nombreEmpleado">Organización</label>
+             <input type="text" class="form-control  input-sm"  id="txtOrg" name="txtOrg" 
+                   placeholder="Nombre de la organización" value="{{datos.nombre}}"> 
+
+
+        </div>
+        <div class="form-group">
+            <label for="ejemplo_password_1">Puesto desempeñado </label>
+            <input type="text" class="form-control  input-sm"  id="txtPuestoOrg" name="txtPuestoOrg" 
+                   placeholder="Nombre del puesto desempeñado" value="{{datos.puesto}}">
+        </div>
+      
+        <div class="form-group ">
+            <label for="Fecha_inicio">Periodo</label>
+             <div class="row">
+                <div class="col-sm-2">
+                    <input type="text" class="form-control txtFechaIni  input-sm" 
+                           placeholder="Fecha inicio"  id="txtFechIniOrg" name="txtFechIniOrg"  value="{{datos.fechaIn}}">
+                </div>
+                    <div class="col-sm-2"  id="fechafin" >
+                        <input type="text" class="form-control txtFechaFin  input-sm" 
+                               placeholder="Fecha fin"  id="txtFechFinOrg" name="txtFechFinOrg"  value="{{datos.fechaFin}}">
+                    </div>
+            </div>
+        </div>
+        <!--div class="form-group">
+            <div class="row">
+                <div class="col-sm-6">   
+                    <input type="checkbox"  name="checkActual" id="checkActual" />&nbsp;Estudiando actualmente. </div>
+            </div>
+        </div -->  <div class="form-group">
+            <label for="ejemplo_password_1">Función del puesto</label>
+            <textarea class="form-control  input-sm" rows="3" name="txtDescripcion" id="txtDescripcion" placeholder="Descripción del puesto">{{datos.descripcion}}</textarea>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary btn-sm"  onclick="addOrganizacion()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                </div>
+            </div>
+        </div>
+        {%endfor%}
+    {%else%}
+
+        <input type="hidden" name="hidOrg" id="hidOrg" value="">
+        <div class="form-group">
+            <label for="nombreEmpleado">Organización</label>
+             <input type="text" class="form-control  input-sm"  id="txtOrg" name="txtOrg" 
+                   placeholder="Nombre de la organización"> 
+
+
+        </div>
+        <div class="form-group">
+            <label for="ejemplo_password_1">Puesto desempeñado </label>
+            <input type="text" class="form-control  input-sm"  id="txtPuestoOrg" name="txtPuestoOrg" 
+                   placeholder="Nombre del puesto desempeñado">
+        </div>
+      
+        <div class="form-group ">
+            <label for="Fecha_inicio">Periodo</label>
+             <div class="row">
+                <div class="col-sm-2">
+                    <input type="text" class="form-control txtFechaIni  input-sm" 
+                           placeholder="Fecha inicio"  id="txtFechIniOrg" name="txtFechIniOrg">
+                </div>
+                    <div class="col-sm-2"  id="fechafin" >
+                        <input type="text" class="form-control txtFechaFin  input-sm" 
+                               placeholder="Fecha fin"  id="txtFechFinOrg" name="txtFechFinOrg">
+                    </div>
+            </div>
+        </div>
+        <!--div class="form-group">
+            <div class="row">
+                <div class="col-sm-6">   
+                    <input type="checkbox"  name="checkActual" id="checkActual" />&nbsp;Estudiando actualmente. </div>
+            </div>
+        </div -->  <div class="form-group">
+            <label for="ejemplo_password_1">Función del puesto</label>
+            <textarea class="form-control  input-sm" rows="3" name="txtDescripcion" id="txtDescripcion" placeholder="Descripción del puesto"></textarea>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary btn-sm"  onclick="addOrganizacion()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    {%endif%}
+</form>
+
+
+
+

@@ -8,15 +8,19 @@
     <id name="idargFoto" type="integer" column="idarg_foto">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="src" type="string" column="src" length="60" nullable="false"/>
-    <many-to-one field="ctlEmpresa" target-entity="CtlEmpresa">
-      <join-columns>
-        <join-column name="ctl_empresa_id" referenced-column-name="id"/>
-      </join-columns>
-    </many-to-one>
+    <field name="src" type="string" column="src" length="60" nullable="true"/>
+    <field name="tipoFoto" type="integer" column="tipo_foto" nullable="false"/>
+    <field name="estado" type="integer" column="estado" nullable="false"/>
+    <field name="fechaRegistro" type="date" column="fecha_registro" nullable="true"/>
+    <field name="fechaExpiracion" type="date" column="fecha_expiracion" nullable="true"/>
     <many-to-one field="abgPersona" target-entity="AbgPersona">
       <join-columns>
         <join-column name="abg_persona_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="ctlEmpresa" target-entity="CtlEmpresa">
+      <join-columns>
+        <join-column name="ctl_empresa_id" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
   </entity>

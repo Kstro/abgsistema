@@ -5,7 +5,5 @@
       <generator strategy="IDENTITY"/>
     </id>
     <field name="idioma" type="string" column="idioma" length="45" nullable="false"/>
-    <field name="nivel" type="string" column="nivel" length="45" nullable="false"/>
-    <many-to-many field="abgPersona" target-entity="AbgPersona" mapped-by="abgioma"/>
   </entity>
 </doctrine-mapping>

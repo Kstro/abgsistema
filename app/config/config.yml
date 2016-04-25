@@ -7,10 +7,9 @@ imports:
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: en
-    photo.perfil: %kernel.root_dir%/../web/Photos/perfil/
-    photo.entrada: %kernel.root_dir%/../web/Photos/entrada/
-
+     locale: en
+     photo.perfil: %kernel.root_dir%/../web/Photos/perfil/
+     photo.perfil.temporal: %kernel.root_dir%/../web/Photos/perfil/temporal/
 
 framework:
     #esi:             ~
@@ -80,3 +79,11 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+# Activation de l'extension Twig intl
+services:
+    twig.extension.text:
+       class: Twig_Extensions_Extension_Text
+       tags:
+           - { name: twig.extension }
+    

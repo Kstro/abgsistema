@@ -24,28 +24,28 @@ class CtlEmpresa
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre_empresa", type="string", length=45, nullable=false)
+     * @ORM\Column(name="nombre_empresa", type="string", length=45, nullable=true)
      */
     private $nombreEmpresa;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="nit", type="string", length=45, nullable=false)
+     * @ORM\Column(name="nit", type="string", length=45, nullable=true)
      */
     private $nit;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="servicios", type="string", length=60, nullable=false)
+     * @ORM\Column(name="servicios", type="string", length=60, nullable=true)
      */
     private $servicios;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_fundacion", type="date", nullable=false)
+     * @ORM\Column(name="fecha_fundacion", type="date", nullable=true)
      */
     private $fechaFundacion;
 
@@ -66,7 +66,7 @@ class CtlEmpresa
     /**
      * @var string
      *
-     * @ORM\Column(name="direccion", type="string", length=75, nullable=false)
+     * @ORM\Column(name="direccion", type="string", length=75, nullable=true)
      */
     private $direccion;
 
@@ -87,7 +87,7 @@ class CtlEmpresa
     /**
      * @var string
      *
-     * @ORM\Column(name="telefono_", type="string", length=9, nullable=false)
+     * @ORM\Column(name="telefono_", type="string", length=9, nullable=true)
      */
     private $telefono;
 
@@ -101,9 +101,10 @@ class CtlEmpresa
     /**
      * @var string
      *
-     * @ORM\Column(name="fax", type="string", length=20, nullable=false)
+     * @ORM\Column(name="fax", type="string", length=20, nullable=true)
      */
     private $fax;
+
 
     /**
      * @var \CtlCiudad
@@ -139,7 +140,34 @@ class CtlEmpresa
      */
     private $color;
     
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cantidad_empleados", type="string", length=60, nullable=false)
+     */
+    private $cantidadEmpleados;
     
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="longitude", type="float", nullable=false)
+     */
+    private $longitude;
+    
+     /**
+     * @var float
+     *
+     * @ORM\Column(name="latitude", type="float", nullable=false)
+     */
+    private $latitude;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="listaEmpleado", type="integer", nullable=false)
+     */
+    private $listaEmpleado;
     
     
     
@@ -439,6 +467,31 @@ class CtlEmpresa
         return $this->fax;
     }
 
+
+
+    /**
+     * Set cantidadEmpleados
+     *
+     * @param string $cantidadEmpleados
+     * @return CtlEmpresa
+     */
+    public function setCantidadEmpleados($cantidadEmpleados)
+    {
+        $this->cantidadEmpleados = $cantidadEmpleados;
+
+        return $this;
+    }
+
+    /**
+     * Get cantidadEmpleados
+     *
+     * @return string 
+     */
+    public function getCantidadEmpleados()
+    {
+        return $this->cantidadEmpleados;
+    }
+
     /**
      * Set ctlCiudad
      *
@@ -542,6 +595,82 @@ class CtlEmpresa
     {
         return $this->color;
     }
+     
+    
+    /**
+     * Set latitude
+     *
+     * @param float $latitude
+     * @return CtlEmpresa
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    /**
+     * Get latitude
+     *
+     * @return float 
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+    
+    
+      /**
+     * Set longitude
+     *
+     * @param float $longitude
+     * @return CtlEmpresa
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    
+    
+    /**
+     * Get longitude
+     *
+     * @return float 
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+    
+    
+    /**
+     * Set listaEmpleado
+     *
+     * @param integer $listaEmpleado
+     * @return CtlEmpresa
+     */
+    public function setListaEmpleado($listaEmpleado)
+    {
+        $this->listaEmpleado = $listaEmpleado;
+
+        return $this;
+    }
+
+    /**
+     * Get listaEmpleado
+     *
+     * @return integer
+     */
+    public function getListaEmpleado()
+    {
+        return $this->listaEmpleado;
+    }
+
+    
     
     
     

@@ -1,99 +1,22 @@
 
 var tipoEmpresa = [];
 
+var trs, trs2, idEspS = null;
+var Especialida = [];
+var SubEspecialida = [];
+
+var datos = "", datosMostrados = "";
+
 $(document).ready(function() {
-    
-    $("#prev").show();
-   
   
-    //queremos que esta variable sea global
-    var fileExtension = "";
-    var flag = true;
-    //función que observa los cambios del campo file y obtiene información
-    
-    $(document).on("change","#file-input",function(){
-        $("#prev").show();
-      
-        
-        $("#saveImagen").hide();
-        
-        
-        //obtenemos un array con los datos del archivo
-        var file = $(this)[0].files[0];
-        //obtenemos el nombre del archivo
-        var fileName = file.name;
-        //obtenemos la extensión del archivo
-        fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
-        //obtenemos el tamaño del archivo
-        var fileSize = file.size;
-       
-        
-        //obtenemos el tipo de archivo image/png ejemplo
-        var fileType = file.type;
-        console.log(fileType);
-        console.log(fileExtension);
-        
-        
-        if (fileExtension == 'PNG' || fileExtension == 'png' ||fileExtension == 'JPG'|| fileExtension == 'jpg' && fileType =='imagen' || fileType =='image' || fileType =='image/jpeg' )
-        {
-            flag = true;
-        }else{
-            flag = false;
-        }
-        
-                if (flag==false){
-                    alert("Archivo invalido, seleccione una imagen ");
-                    $("#file-input").val("");
-                    $("#prev").hide();
-                    $("#saveImagen").hide();
-                     
+  $("#gif").hide();
+  
+  $(document).on("click","#botonModal",function() {
+	 $("#idModalFoto").modal();
+         
+	
+});
 
-                }else{  
-                    
-                     var pesoKb=(fileSize/1024);
-                     if (pesoKb<=1024){
-
-                        
-                        var frm = new FormData($("#frmEmpresaConFoto")[0]);
-                      
-                             if (flag != false) {
-
-                                $.ajax({ 
-                                       data:frm,
-                                       url:Routing.generate('ingresar_foto'),
-                                       type: 'POST',
-                                       dataType: 'json',
-                                      
-                                       cache: false,
-                                       contentType: false,
-                                       processData: false,
-
-                                      
-                                       success: function(data){
-                                           
-                                        $("#prev").attr('src', "/abgsistema/web/"+data.direccion);
-                                        
-                                            
-                                             
-                                       }
-                                             
-                                             
-                                     });
-
-
-                                 }
-                        }
-                        else{
-                            console.log(pesoKb);
-                            alert("Imagen demasiado grande, intente con una mas pequeña");
-                        }
-                }
-
-        });
-    
-    
-    
-    
 
 $(document).on("submit","#frmEmpresaUsuarioPersona",function(e) {
         
@@ -111,11 +34,12 @@ $(document).on("submit","#frmEmpresaUsuarioPersona",function(e) {
  
 
            success: function(data){
+                 console.log(data);
            data = jQuery.parseJSON(data);
-           console.log(data);
+         
           
 
-            if (data) {
+            if (data==true) {
                       //Ajax de insersion de datos               
                          $.ajax({ 
                                  data:{
@@ -127,14 +51,24 @@ $(document).on("submit","#frmEmpresaUsuarioPersona",function(e) {
 
 
                                  success: function(data){
-                                     alert(data.estado);
+                                    
                                 if (data.estado == true) {
                                         
                                         var url=Routing.generate('admin_abg',{username: data.username});
                                         window.open(url,"_self"); 
                                         
+                                        Lobibox.notify("success", {
+                                        size: 'mini',
+                                        msg: 'Registro exitoso, espere un momento'
+                                    });
+                                    
+                                        
                                        }else{
-                                           alert(data.estado);
+                                           
+                                        Lobibox.notify("Error", {
+                                        size: 'mini',
+                                        msg: 'Error al ingresar los datos'
+                                    });
                                      }
                                    }
                            });
@@ -145,10 +79,10 @@ $(document).on("submit","#frmEmpresaUsuarioPersona",function(e) {
                }else{
                   
                   
-                    alert("El Correo ya existe, intenta con otro");
-                  
-                  
-                  
+                    Lobibox.notify("success", {
+                                        size: 'mini',
+                                        msg: 'Correo ya existente, intenete con otro.'
+                                    });
                     
                }
               
@@ -166,8 +100,7 @@ $(document).on("submit","#frmEmpresaUsuarioPersona",function(e) {
 
  
     
-$("#contrasenha").strength();  
-    
+
 //  $('#contrasenha').strength({
 //        strengthClass: 'strength',
 //        strengthMeterClass: 'strength_meter',
@@ -185,9 +118,18 @@ $("#contrasenha").strength();
 
 
 
- $('#txtMovil').editable();
+ $('#txtMovil').editable({
+         
+         type: 'text',
+         name: 'zip',
+         tpl:'   <input type="text" id ="zipiddemo" class="form-control    input-sm" style="padding-right: 24px;">'
+            }).on('shown',function(){
+    $("input#zipiddemo").mask("0000-0000");
+  });
 
- 
+
+
+// 
 
  $('#txtMovil').on('save', function (e, params) {
         $.ajax({
@@ -198,25 +140,31 @@ $("#contrasenha").strength();
             url: Routing.generate('edit_empresa'),
             success: function (data)
             {
-                   console.log(data);
-                
-                  $.each(data,function (i,value)  {
-                            
-			 $('#txtFijo').html(value['valor']);
-                         console.log(value['valor']);
-			});
+                    Lobibox.notify("success", {
+                                        size: 'mini',
+                                        msg: 'Datos modificados con exito'
+                                    });
              
                 
             },
             error: function (xhr, status)
             {
-                alert('Disculpe, existió un problema');
+                 Lobibox.notify("danger", {
+                                        size: 'mini',
+                                        msg: 'Lo sentimos, ocurrio un error'
+                                    });
                 
             }
         });
     });
 
- $('#txtFijo').editable();
+ $('#txtFijo').editable({
+         type: 'text',
+         name: 'zip',
+         tpl:'   <input type="text" id ="telefonoFijo" class="form-control    input-sm" style="padding-right: 24px;">'
+            }).on('shown',function(){
+    $("input#telefonoFijo").mask("0000-0000");
+  });
  
     $('#txtFijo').on('save', function (e, params) {
         $.ajax({
@@ -227,14 +175,18 @@ $("#contrasenha").strength();
             url: Routing.generate('edit_empresa'),
             success: function (data)
             {
+                 Lobibox.notify("success", {
+                                        size: 'mini',
+                                        msg: 'Datos modificados con exito'
+                                    });
                 
-                $('#txtFijo').editable({
-                    value: data.tel
-                });
             },
             error: function (xhr, status)
             {
-                alert('Disculpe, existió un problema');
+                 Lobibox.notify("danger", {
+                                        size: 'mini',
+                                        msg: 'Lo sentimos, ocurrio un error'
+                                    });
                 
             }
         });
@@ -247,7 +199,7 @@ $("#contrasenha").strength();
   
   
     $('#txtCorreoElectronico').editable();
- 
+
     $('#txtCorreoElectronico').on('save', function (e, params) {
         $.ajax({
             type: 'POST',
@@ -258,13 +210,17 @@ $("#contrasenha").strength();
             success: function (data)
             {
                 
-                $('#txtCorreoElectronico').editable({
-                    value: data.tel
-                });
+                Lobibox.notify("success", {
+                                        size: 'mini',
+                                        msg: 'Datos modificados con exito'
+                                    });
             },
             error: function (xhr, status)
             {
-                alert('Disculpe, existió un problema');
+                 Lobibox.notify("danger", {
+                                        size: 'mini',
+                                        msg: 'Lo sentimos, ocurrio un error'
+                                    });
                 
             }
         });
@@ -283,9 +239,10 @@ $("#contrasenha").strength();
             success: function (data)
             {
                 
-                $('#txtDireccion').editable({
-                    value: data.tel
-                });
+               Lobibox.notify("success", {
+                                        size: 'mini',
+                                        msg: 'Datos modificados con exito'
+                                    });
             },
             error: function (xhr, status)
             {
@@ -321,7 +278,10 @@ $("#contrasenha").strength();
             },
             error: function (xhr, status)
             {
-                alert('Disculpe, existió un problema');
+                Lobibox.notify("danger", {
+                                        size: 'mini',
+                                        msg: 'Lo sentimos, ocurrio un error'
+                                    });
                 
             }
         });
@@ -350,13 +310,16 @@ $("#contrasenha").strength();
             },
             error: function (xhr, status)
             {
-                alert('Disculpe, existió un problema');
+                Lobibox.notify("danger", {
+                                        size: 'mini',
+                                        msg: 'Lo sentimos, ocurrio un error'
+                                    });
                 
             }
         });
     }); 
     
-    
+ //Funcion que cambia el color del banner
     
     var exa;
    $('#colorSelector').ColorPicker({
@@ -380,12 +343,19 @@ $("#contrasenha").strength();
                                 {
                                      
                                      $('#colorBanner div').css('backgroundColor', '#' +  data.color);
+                                     Lobibox.notify("success", {
+                                        size: 'mini',
+                                        msg: 'Datos modificados con exito'
+                                    });
 
 
                                 },
                                 error: function (xhr, status)
                                 {
-                                    alert('Disculpe, existió un problema');
+                                    Lobibox.notify("danger", {
+                                        size: 'mini',
+                                        msg: 'Lo sentimos, ocurrio un error'
+                                    });
 
                                 }
                             });
@@ -431,7 +401,7 @@ $("#contrasenha").strength();
         
         
 $('#tipoEmpresa').editable({
-     value: 2,    
+     value: 'Buffet',    
         source:eval(tipoEmpresa)
        
     });
@@ -449,11 +419,17 @@ $('#tipoEmpresa').editable({
             success: function (data)
             {
                 
-               alert('Dato insertado con exito');
+               Lobibox.notify("success", {
+                                        size: 'mini',
+                                        msg: 'Datos modificados con exito'
+                                    });
             },
             error: function (xhr, status)
             {
-                alert('Disculpe, existió un problema');
+                Lobibox.notify("danger", {
+                                        size: 'mini',
+                                        msg: 'Lo sentimos, ocurrio un error'
+                                    });
                 
             }
     });
@@ -471,34 +447,53 @@ $('#tipoEmpresa').editable({
              url: Routing.generate('edit_empresa'),
             success: function (data)
             {
-                    
-                 Lobibox.notify("success", {
+                 console.log(data);
+
+                if (data.valor){
+                     
+                     Lobibox.notify("succes", {
                                         size: 'mini',
-                                        msg: 'Datos modificados con exito'
+                                        msg: 'Año ingresado con exito'
                                     });
+                    
+                }else{
+                     Lobibox.notify("danger", {
+                                        size: 'mini',
+                                        msg: 'No se puede insertar un año invalido'
+                                    });
+                    
+                }
+                    
+                     
                 
         
             },
             error: function (xhr, status)
             {
-                alert('Disculpe, existió un problema');
+                Lobibox.notify("success", {
+                                        size: 'mini',
+                                        msg: 'Lo sentimos, ocurrio un error'
+                                    });
                 
             }
         });
     });    
  
     
-    $("#btnespecialida").click(function () {
-        $("#contenido").empty();
+    $("#btnespecialidad").click(function () {
+        //$("#contenido").empty();
+        console.log($("input#empresaId").val());
+        
         $.ajax({
             type: "GET",
-            url: Routing.generate('especialida'),
-            data: {hPersona: $('input#hPersona').val()},
+            url: Routing.generate('mostarsubcategorias'),
+            data: {hPersona: $('input#empresaId').val()},
             //   async: false,
             //  dataType: 'json',
 
             success: function (data)
             {
+                   $("#contenido").empty();
                 $("#contenido").append(data);
                 //  var url=Routing.generate('admin_abg',{username:data.username});
                 // window.open(url,"_self");                   
@@ -509,15 +504,221 @@ $('#tipoEmpresa').editable({
             }
         });
     });
+ $('#cantidadEmpleados').editable({
+        value: 'De 1 a 10 empleados',    
+       source: [
+              {value:'De 1 a 10 empleados', text: 'De 1 a 10 empleados'},
+              {value: 'De 11 a 50 empleados', text: 'De 11 a 50 empleados'},
+              {value: 'De 51 a 100 empleados', text: 'De 51 a 100 empleados'},
+              {value: 'Mas 100 empleados', text: 'Mas 100 empleados'}
+           ]
+       
+    });
+   
+    
+  $('#cantidadEmpleados').on('save', function (e, params) {
+      
+      
+      
+        $.ajax({
+            type: 'POST',
+            async: false,
+            dataType: 'json',
+            data: {cantidadEmpleados: params.newValue, empresa: $('input#empresaId').val(), n: 8},
+            url: Routing.generate('edit_empresa'),
+            success: function (data)
+            {
+                
+              Lobibox.notify("success", {
+                                        size: 'mini',
+                                        msg: 'Datos modificados con exito'
+                                    });
+            },
+            error: function (xhr, status)
+            {
+                Lobibox.notify("danger", {
+                                        size: 'mini',
+                                        msg: 'Lo sentimos, ocurrio un error'
+                                    });
+                
+            }
+    });
+    
+    
+    });    
+    
+    $('#somecomponent').locationpicker();
+    
+    var elemento = $("#elemento").val();
+                         
+                         if(elemento==1){
+                              $(".listarEmpleados").prop('checked', true);
+                            console.log(elemento);
+                             
+                         }else{
+                             
+                         $(".listarEmpleados").prop('checked', false);
+                             console.log(elemento);
+                         }
+                         
     
     
     
     
-    
- 
-    
+    $(document).on("click",".listarEmpleados",function() {
 
+                if ($(this).is(':checked')) {
+                   numero =1;
+                    $.ajax({
+                            type: 'POST',
+                            async: false,
+                            dataType: 'json',
+                            data: {valor: numero , empresa: $('input#empresaId').val(), n: 10},
+                            url: Routing.generate('edit_empresa'),
+                            success: function (data)
+                            {
+                                 Lobibox.notify("success", {
+                                        size: 'mini',
+                                        msg: 'Modificando datos, espere un momento'
+                                    });
+                              location.reload();
+                              
+                            },
+                            error: function (xhr, status)
+                            {
+                               Lobibox.notify("danger", {
+                                        size: 'mini',
+                                        msg: 'Lo sentimos, ocurrio un error'
+                                    });
+
+                            }
+                    });
+                   
+                }else{
+                    numero =0;
+                    $.ajax({
+                            type: 'POST',
+                            async: false,
+                            dataType: 'json',
+                            data: {valor: numero , empresa: $('input#empresaId').val(), n: 10},
+                            url: Routing.generate('edit_empresa'),
+                            success: function (data)
+                            {
+                                Lobibox.notify("success", {
+                                        size: 'mini',
+                                        msg: 'Modificando datos, espere un momento'
+                                    });
+                                location.reload();
+                              
+                            },
+                            error: function (xhr, status)
+                            {
+                                Lobibox.notify("danger", {
+                                        size: 'mini',
+                                        msg: 'Lo sentimos, ocurrio un error'
+                                    });
+
+                            }
+                    });
+                   
+                    
+                    
+                }
+              
+    });    
+    
+    
+    
+    
+  
       
 
 });
 
+function fil(idcheckbox, idEsp)
+{
+    if (Especialida.indexOf(idEsp) === -1)
+    {
+        if (Especialida.length < 3)
+        {
+            Especialida.push(idEsp);
+            SubEspecialida = [];
+            $.each($('.subEspecialida'), function (indice, val) {
+                if ($(this).is(':checked')) {
+                    SubEspecialida.push(parseInt($(this).attr('id')));
+                }
+            });
+        } else {
+            Lobibox.notify("warning", {
+                size: 'mini',
+                msg: 'Se deben seleccionar maxino 3 especialidades.'
+            });
+            $("#" + idcheckbox).prop('checked', false);
+        }
+    } else {
+        SubEspecialida = [];
+        Especialida = [];
+        $.each($('.subEspecialida'), function (indice, val) {
+            if ($(this).is(':checked')) {
+                if (Especialida.indexOf(parseInt($(this).attr('name'))) === -1)
+                {
+                    Especialida.push(parseInt($(this).attr('name')));
+                }
+                SubEspecialida.push(parseInt($(this).attr('id')));
+            }
+        });
+    }
+}
+
+
+
+function addSubEspecialida()
+{
+    if (SubEspecialida.length > 0)
+    {
+        var Esp, n = 0;
+        $("#contenido").empty();
+        $.ajax({
+            type: "GET",
+            url: Routing.generate('insertarsubespecialidad'),
+            data: {hPersona: $('input#empresaId').val(), SubEspecialida: SubEspecialida},
+            async: false,
+            dataType: 'json',
+            success: function (data)
+            {
+                $.each($(data.Esp), function (indice, val) {
+
+                    Esp = val.id;
+                    n = n + 1;
+                    datos = '<div class="col-xs-4"  style="margin-top: .5em; margin-bottom: .5em;">';
+                    datos += '<strong><p class="sans" >' + val.nombre.toUpperCase() + '<p class="sans" ></strong>';
+                    $.each($(data.subEsp), function (indice, val) {
+                        if (Esp === val.idEsp)
+                        {
+                            datos += '<p class="sans" style="font-size: 13px;">' + val.nombre + '</p>';
+                        }
+                    });
+                    datos += '</div>';
+                    if ((n > 0) && (n % 3 === 0))
+                    {
+                        datos += '<div class="clearfix"></div>';
+                    }
+
+                    $("#contenido").append(datos);
+                });
+
+            },
+            error: function (errors)
+            {
+
+            }
+
+        });
+    } else
+    {
+        $("#contenido").empty();
+        $("#contenido").append(datosMostrados);
+    }
+}
+
+ 

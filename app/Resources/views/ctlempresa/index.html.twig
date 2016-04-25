@@ -38,13 +38,13 @@
         {% endblock %}
         {% block cuerpo %}
     <div class="row">
-        <h1 style="color: black;">Registrar Empresa</h1>
+        <h1 style="color: black;">Registro de abogados</h1>
              
     <form id="frmEmpresaUsuarioPersona" role="form" enctype="multipart/form-data" method="POST">
     
         <div class="col-md-12">
             <div class="box-header with-border">
-              <h3 class="box-title text-success">Datos Generales de la empresa</h3>
+              <h3 class="box-title text-success">Ingreso de datos Genrales</h3>
             </div>
         </div>
         <div class="clearfix"></div>
@@ -57,22 +57,21 @@
             
                                         <div class="form-group">
                                              <label for="nombreEmpleado">Nombre</label>
-                                             <input type="text"  class="form-control" id="txtnombre" name="txtnombre"
-                                                    placeholder="Nombre del empleado">
+                                             <input type="text" required class="form-control" id="txtnombre" name="txtnombre" placeholder="Nombres">
                                          </div>
                                          <div class="form-group">
                                              <label for="ejemplo_password_1">Apellido</label>
-                                             <input type="text"  class="form-control"  id="txtapellido" name="txtapellido" 
-                                                    placeholder="Apellido empleado">
+                                             <input type="text" required class="form-control"  id="txtapellido" name="txtapellido" 
+                                                    placeholder="Apellidos">
                                          </div>
 
                 <div class="form-group">
                      <label for="correoEmpresa">Correo electronico :</label>
-                     <input type="email" class="form-control" id="correoEmpresa" name="correoEmpresa" placeholder="ejemplo@ejemplo.com">
+                     <input type="email" class="form-control" id="correoEmpresa" name="correoEmpresa" required placeholder="ejemplo@ejemplo.com">
                 </div>
                 <div class="form-group">
                      <label for="correoEmpresa">Contraseña:</label>
-                     <input type="password" class="form-control" id="contrasenha" name="contrasenha">
+                     <input type="password" required class="form-control" id="contrasenha" name="contrasenha">
                 </div>
                 
                 

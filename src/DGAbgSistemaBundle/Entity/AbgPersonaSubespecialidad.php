@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AbgPersonaSubespecialidad
  *
- * @ORM\Table(name="abg_persona_subespecialidad", indexes={@ORM\Index(name="fk_abg_persona_has_abg_subespecialidad_abg_subespecialidad1_idx", columns={"abg_subespecialidad_id"}), @ORM\Index(name="fk_abg_persona_has_abg_subespecialidad_abg_persona1_idx", columns={"abg_persona_id"})})
+ * @ORM\Table(name="abg_persona_subespecialidad", indexes={@ORM\Index(name="fk_abg_persona_has_abg_subespecialidad_abg_subespecialidad1_idx", columns={"abg_subespecialidad_id"}), @ORM\Index(name="fk_abg_persona_has_abg_subespecialidad_abg_persona1_idx", columns={"abg_persona_id"}), @ORM\Index(name="ctl_empresa_id", columns={"ctl_empresa_id"})})
  * @ORM\Entity
  */
 class AbgPersonaSubespecialidad
@@ -24,14 +24,14 @@ class AbgPersonaSubespecialidad
     /**
      * @var string
      *
-     * @ORM\Column(name="fecha", type="string", length=45, nullable=false)
+     * @ORM\Column(name="fecha", type="string", length=45, nullable=true)
      */
     private $fecha;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="institucion", type="string", length=60, nullable=false)
+     * @ORM\Column(name="institucion", type="string", length=60, nullable=true)
      */
     private $institucion;
 
@@ -54,6 +54,16 @@ class AbgPersonaSubespecialidad
      * })
      */
     private $abgSubespecialidad;
+
+    /**
+     * @var \CtlEmpresa
+     *
+     * @ORM\ManyToOne(targetEntity="CtlEmpresa")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="ctl_empresa_id", referencedColumnName="id")
+     * })
+     */
+    private $ctlEmpresa;
 
 
 
@@ -157,5 +167,28 @@ class AbgPersonaSubespecialidad
     public function getAbgSubespecialidad()
     {
         return $this->abgSubespecialidad;
+    }
+
+    /**
+     * Set ctlEmpresa
+     *
+     * @param \DGAbgSistemaBundle\Entity\CtlEmpresa $ctlEmpresa
+     * @return AbgPersonaSubespecialidad
+     */
+    public function setCtlEmpresa(\DGAbgSistemaBundle\Entity\CtlEmpresa $ctlEmpresa = null)
+    {
+        $this->ctlEmpresa = $ctlEmpresa;
+
+        return $this;
+    }
+
+    /**
+     * Get ctlEmpresa
+     *
+     * @return \DGAbgSistemaBundle\Entity\CtlEmpresa 
+     */
+    public function getCtlEmpresa()
+    {
+        return $this->ctlEmpresa;
     }
 }

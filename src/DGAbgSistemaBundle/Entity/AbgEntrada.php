@@ -76,6 +76,16 @@ class AbgEntrada
     private $abgSubespecialidad;
 
     /**
+     * @var \CtlUsuario
+     *
+     * @ORM\ManyToOne(targetEntity="CtlUsuario")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="ctl_usuario_id", referencedColumnName="id")
+     * })
+     */
+    private $ctlUsuario;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -178,29 +188,6 @@ class AbgEntrada
     }
 
     /**
-     * Set ctlUsuario
-     *
-     * @param \DGAbgSistemaBundle\Entity\CtlUsuario $ctlUsuario
-     * @return AbgEntrada
-     */
-    public function setCtlUsuario(\DGAbgSistemaBundle\Entity\CtlUsuario $ctlUsuario = null)
-    {
-        $this->ctlUsuario = $ctlUsuario;
-
-        return $this;
-    }
-
-    /**
-     * Get ctlUsuario
-     *
-     * @return \DGAbgSistemaBundle\Entity\CtlUsuario 
-     */
-    public function getCtlUsuario()
-    {
-        return $this->ctlUsuario;
-    }
-
-    /**
      * Set abgSubespecialidad
      *
      * @param \DGAbgSistemaBundle\Entity\CtlSubespecialidad $abgSubespecialidad
@@ -221,5 +208,28 @@ class AbgEntrada
     public function getAbgSubespecialidad()
     {
         return $this->abgSubespecialidad;
+    }
+
+    /**
+     * Set ctlUsuario
+     *
+     * @param \DGAbgSistemaBundle\Entity\CtlUsuario $ctlUsuario
+     * @return AbgEntrada
+     */
+    public function setCtlUsuario(\DGAbgSistemaBundle\Entity\CtlUsuario $ctlUsuario = null)
+    {
+        $this->ctlUsuario = $ctlUsuario;
+
+        return $this;
+    }
+
+    /**
+     * Get ctlUsuario
+     *
+     * @return \DGAbgSistemaBundle\Entity\CtlUsuario 
+     */
+    public function getCtlUsuario()
+    {
+        return $this->ctlUsuario;
     }
 }

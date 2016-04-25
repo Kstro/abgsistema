@@ -1,0 +1,691 @@
+{#{% extends ':Layout:layout2.html.twig' %}#}
+
+{% block descripcion_y_acciones %}
+
+
+    
+        {% block descripcion %}
+            
+        {% endblock%}
+        {% block acciones %}
+                     
+        {% endblock %}
+
+
+{% endblock %}
+{% block js_extend %}
+    <style type="text/css">
+                    .image-upload >input {
+                        display: none;
+                    }
+                   
+      </style>
+    
+<!-- x-editable (bootstrap version) -->
+
+
+            <link href="{{ asset('Resources/src/css/bootstrap-editable.css')}}" rel="stylesheet"/>
+            <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
+           
+            <script src="{{asset('Resources/src/js/bootstrap-editable.min.js')}}"></script>
+            <link href="{{ asset('Resources/src/css/address.css')}}" rel="stylesheet"/>
+            <link rel="stylesheet" media="screen" type="text/css" href="{{ asset('Resources/colorpicker/css/colorpicker.css') }}" />
+
+         
+            <!-- Los script que he importado -->
+            
+            <script type="text/javascript" src='http://maps.google.com/maps/api/js?sensor=false&libraries=places'></script>
+            
+            <script src="{{ asset('Resources/localizacion/src/locationpicker.jquery.js') }}"></script>
+
+            <script type="text/javascript" src="{{ asset('Resources/colorpicker/js/colorpicker.js') }}"></script>
+            <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
+
+            <script src = "{{ asset('Resources/js/empresa/script.js') }}"  type = "text/javascript" ></script>    
+            <script src = "{{ asset('Resources/Empresa/globalfunction.js') }}"  type = "text/javascript" ></script> 
+            
+            <script src = "{{ asset('Resources/cropit-master/dist/jquery.cropit.js') }}"  type = "text/javascript" ></script> 
+          
+            <script src = "{{ asset('Resources/vContra/strength.js') }}"  type = "text/javascript" ></script>
+            <script src = "{{ asset('Resources/vContra/js.js') }}"  type = "text/javascript" ></script> 
+            <script src="{{asset('Resources/src/js/address.js')}}"></script>
+            <script src="{{ asset('Resources/jQuery-Mask/src/jquery.mask.js') }}"></script>
+               
+     
+              <style>
+                  
+                  .colorpicker {
+                        width: 356px!important;;
+                        height: 176px!important;;
+                        overflow: hidden;
+                        position: absolute;
+                        display: none;
+                        left: 1175px!important;
+                        top: 80px !important;;
+                        opacity: 0.986549 !important;;
+                        z-index: 2 !important;;
+
+                        background: url({{asset('Resources/colorpicker/images/colorpicker_background.png')}});
+                        font-family: Arial, Helvetica, sans-serif;
+                        
+                  }
+                  
+              </style>
+                <style>
+                    .image-editor{
+                        top: -150px!important;;
+                    }
+                .cropit-preview {
+                  background-color: #f8f8f8;
+                  background-size: cover;
+                  border: 1px solid #ccc;
+                  border-radius: 3px;
+                  margin-top: 7px;
+                  width: 200px;
+                  height: 200px;
+                  
+                }
+
+                .cropit-preview-image-container {
+                  cursor: move;
+                  position: absolute;
+                 
+                 
+                }
+
+                .image-size-label {
+                  margin-top: 10px;
+                }
+
+                input {
+                  display: block;
+                }
+
+                button[type="submit"] {
+                  margin-top: 10px;
+                }
+
+                #result {
+                  margin-top: 10px;
+                  width: 900px;
+                }
+
+                #result-data {
+                  display: block;
+                  overflow: hidden;
+                  white-space: nowrap;
+                  text-overflow: ellipsis;
+                  word-wrap: break-word;
+                }
+              </style>
+                 <script>
+                     
+                     
+                $(function editarFoto() {
+                  $('.image-editor').cropit();
+                  $('form').submit(function() {
+                     
+                   
+                    // Move cropped image data to hidden input
+                    var imageData = $('.image-editor').cropit('export');
+                    $('.hidden-image-data').val(imageData);
+                    //alert(imageData);
+                    var usuario = $("#usuario").val();
+                    var empresaId = $("#empresaId").val();
+                    $("#gif").show();
+                    //Aqui tiene que ir el ajax
+                        $.ajax({
+                            type: 'POST',
+                            async: false,
+                            dataType: 'json',
+                            data: {imageDatas: imageData, usuario: usuario,empresaId:empresaId},
+                            url: Routing.generate('ingresar_foto'),
+                            success: function (data)
+                            {
+                               if(data.estado==true){
+                                   
+                                Lobibox.notify("success", {
+                                                       size: 'mini',
+                                                       msg: 'Datos modificados con exito'
+                                                   });
+                                 $("#prev").attr('src', "/abgsistema/web/"+data.direccion);
+                                 $("#gif").hide();
+                                 $(".close").click();
+                                
+                                 
+
+                           }
+                            },
+                            error: function (xhr, status)
+                            {
+                                 Lobibox.notify("danger", {
+                                                        size: 'mini',
+                                                        msg: 'Lo sentimos, ocurrio un error'
+                                                    });
+                                    $("#gif").hide();
+                                    $(".close").click();
+                                
+                            }
+                        });
+                        
+                    // Print HTTP request params
+                    var formValue = $(this).serialize();
+                    $('#result-data').text(formValue);
+                    // Prevent the form from actually submitting
+                    return false;
+                  });
+                });
+
+                </script>
+
+
+      
+  {% endblock %} 
+
+{% block navegacion_Y_body %}
+  
+        {% block navegacion %}
+            
+        {% endblock %}
+        {% block cuerpo %}
+   
+            
+      
+   
+                
+			<!-- LADO IZQUIERDO -->
+                        
+                        
+                        
+                {% for datos in ctlEmpresa %}
+                   
+                    
+				<div class="bloque-main" style="padding: 5px; margin-top: 20px;">
+					<div class="main">
+                                            
+                                                <input type="hidden" id="empresaIdColor"  value="{{ctlEmpresaId }}" name="empresaId">
+                                                <div class="cover" id="colorSelector" >
+
+                                                    <div style="width: 100%; max-width: 100%; background-color: {{ datos.color }}; height: 400px; " id="colorBanner">
+                                                    </div> 
+
+
+                                                </div>
+                                   
+                                        <form id="frmEmpresaConFoto" role="form" enctype="multipart/form-data" method="POST">
+                                             <input type="hidden" id="empresaId"  value="{{ctlEmpresaId }}" name="empresaId">
+                                                {% if abgFoto %}    
+                                                    <div class="profile" style="background-color: black; max-height:200px; max-width: 200px; border-color: white;" >
+
+                                                        <div>
+                                                            
+                                                           <center>
+                                                               <img id="prev" src="{{ asset('') }}{{ abgFoto[0].src}}" style="height:194px; width:195px;  " />
+                                                           </center>
+                                                                        
+
+                                                        </div>     
+                                                        
+                                                            {#<div class="image-upload" >
+                                                                <label for="file-input" >#}
+                                                                    <img src="{{ asset('Resources/icons/photo.png') }}" style="width: 25px; height: 25px; margin-left: 5px; margin-top: -193px; position: relative; " id="botonModal" title="Cambiar imagen de perfil" >
+                                                                {#</label>
+                                                                <input id="file-input"  required type="file" name="file">#}
+
+
+                                                          {#  </div>#}
+
+                                                    </div>
+                                    
+                                                {% endif %}
+                                             
+                                        </form>
+					    <!-- TITULO DE EMPRESA -->
+					    <div style="margin-top: -55px; margin-bottom: 5px;">
+					    	<p class="text-right sans" style="font-size: 20px; margin-right: 10px; margin-bottom: 0px; z-index: 555;"><strong>
+                                                      
+                                                <a href="#" id="txtNombreEmpresa" data-type="text" data-placement="right" data-title="Telefono movil">
+                                                                {% if datos.nombreEmpresa %}
+                                                                    {{datos.nombreEmpresa}} 
+                                                                {% else %}
+                                                                   Nombre de la empresa                                                           
+                                                                {% endif %}   
+                                                                       
+                                                </a>
+                                                       
+                                                </strong>
+                                                </p>
+					    	<p class="text-right sans" style="font-size: 12px; color: #777777; margin-right: 10px; z-index: 555; margin-bottom: 0px;">
+                                                    {% if datos.movil %}
+                                                                    {{" +503 "~datos.movil~" |"}}
+                                                                    
+                                                    {% else %}
+                                                                  + 503 2512 - 6247 |                                                          
+                                                   {% endif %}  
+                                                    {% if datos.correoEmpresa %}
+                                                           {{datos.correoEmpresa~"| "}} 
+                                                    {% else %}
+                                                             info@monkey-systems.com |                                                  
+                                                   {% endif %}
+                                                   
+                                                   
+                                                    {% if datos.sitioWeb %}
+                                                               {{datos.sitioWeb}} 
+                                                    {% else %}
+                                                               www.monkey-systems.com                                                    
+                                                   {% endif %}
+
+                                                </p>
+                                            </div>
+					</div>
+				</div>                  
+           
+                       
+            
+                         <div class="bloque-nexo">
+					<!-- Contenido Aqui -->
+					<div class="row">
+						<div class="col-sm-3 col-xs-12">
+							<p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono(s)</strong></p>
+							<p style="font-size: 11px; margin-bottom: 0px;">
+                                                            503+
+                                                            <a href="#" id="txtMovil" data-type="text" data-placement="right" data-title="Telefono movil">
+                                                                {% if datos.movil %}
+                                                                    {{datos.movil}} 
+                                                                   
+                                                                {% else %}
+                                                                  Movil                                                                
+                                                                {% endif %}   
+                                                                
+                                                                
+                                                            </a>
+                                                            <br>
+                                                            503+
+                                                            <a href="#" id="txtFijo" data-type="text" data-placement="right" data-title="Telefono fijo">
+                                                                 {% if datos.telefono %}
+                                                                    {{datos.telefono}} 
+                                                                {% else %}
+                                                                 Oficina                                                              
+                                                                {% endif %}  
+                                                            </a>
+                                                       
+						</div>
+                                            
+                                            
+                                            
+                                                <!--Prueba de X-Editable-->
+						<div class="col-sm-3 col-xs-12">
+							<p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email(s)</strong></p>
+                                                        <a href="#" id="txtCorreoElectronico" data-type="text" data-placement="right" data-title="Correo Electronico" style="font-size: 11px; margin-bottom: 0px;">
+                                                            
+                                                           {% if datos.correoEmpresa %}
+                                                                {{datos.correoEmpresa}} 
+                                                               
+                                                              
+                                                           {% else %}
+                                                              Correo                                                                
+                                                           {% endif %}    
+                                                        </a>
+							
+                                                        
+						</div>
+                                                        
+                                                 <!--Prueba de X-Editable-->
+                          
+						<div class="col-sm-3 col-xs-12">
+							<p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Oficina central</strong></p>
+							 <a href="#" id="txtDireccion" data-type="text" data-placement="right" data-title="Direccion oficina central" style="font-size: 11px; margin-bottom: 0px;">
+                                                            
+                                                            {% if datos.direccion %}
+                                                                {{datos.direccion}} 
+                                                           {% else %}
+                                                              Direccion                                                              
+                                                           {% endif %}  
+                                                        </a>
+						</div>
+                                                <div class="col-sm-3 col-xs-12">
+							<p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Fecha fundada</strong></p>
+							 <a href="#" id="txtFechaFundacion" data-type="text" data-placement="right" data-title="Año de funcacion" style="font-size: 11px; margin-bottom: 0px;">
+                                                            
+                                                            {% if datos.fechaFundacion %}
+                                                                {{datos.fechaFundacion}} 
+                                                           {% else %}
+                                                              Fecha de fundacion                                                              
+                                                           {% endif %}  
+                                                        </a>
+						</div>      
+                                                 <div class="col-sm-3 col-xs-12">
+							<p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Cantidad de empleados</strong></p>
+                                                         
+                                                        <a href="#" id="cantidadEmpleados" data-pk="1" data-type="select" data-title="Select status" style="font-size: 11px; margin-bottom: 0px;">
+                                                            {% if datos.cantidadEmpleados %}
+                                                                {{datos.cantidadEmpleados}} 
+                                                           {% else %}
+                                                              Cantidad de empleados
+                                                                                                                          
+                                                           {% endif %}      
+                                                            
+                                                              
+                                                        </a>
+                                
+						</div>         
+                                                        
+                                                        
+						<div class="col-sm-3 col-xs-12">
+							<p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
+                                                         <a href="#" id="txtSitioWeb" data-type="text" data-placement="right" data-title="Sitio web" style="font-size: 11px; margin-bottom: 0px;">
+                                                            
+                                                            {% if datos.sitioWeb %}
+                                                                {{datos.sitioWeb}} 
+                                                           {% else %}
+                                                              SitioWeb                                                              
+                                                           {% endif %}  
+                                                        </a>
+							
+						</div>
+                                {% endfor %} 
+                                {% if tipoEmpresa %}
+                                {% for valor in tipoEmpresa %}
+                                                    <div class="col-sm-3 col-xs-12">
+                                                            <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Tipo de Empresa</strong></p>
+
+                                                            <a href="#" id="tipoEmpresa" data-pk="1" data-type="select" data-title="Select status" style="font-size: 11px; margin-bottom: 0px;">
+                                                                  {% if valor.tipoEmpresa %}
+                                                                    {{ valor.tipoEmpresa}}
+                                                                  {% else %}
+                                                                      Tipo de empresa
+                                                                  {% endif %}   
+                                                            </a>
+
+
+
+                                                    </div>        
+                                            </div>   
+
+                                    </div>  
+                                {% endfor %}
+                             {% else %}
+                                  </div>  
+                            {% endif %}   
+                           
+                {% if empleados is not null %}
+                
+                   
+                   
+                                <div class="bloque-main">
+					<p>Abogados trabajando en nuestro bufete.</p>
+                                        
+                                            <label for="listarEmpleados" style="font-size: small;">
+                                                Listar empleados
+                                            </label>
+                                            <input type="checkbox" class="listarEmpleados" ><br>
+                                            Chekea este valor si ya no quieres listar a tus empleados dentro de tu perfil.
+                                        
+                                        <input type="hidden" value="1" id="elemento">
+                                        
+				</div>
+				<!-- item 2 -->
+                                
+                {% for data in empleados %}
+				<div class="item-directorio-nexo">
+					<div class="row">
+						<div class="col-xs-2 col-sm-3 col-md-3 col-lg-2">
+							<img src="{{asset('')}}{{ data.src}}" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
+						</div>
+						<div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10">
+							<p style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>{{ data.nombres~" "~data.apellido }}</strong></p>
+							<p style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">Puesto dentro de la empresa</p>
+							<div class="row" style="margin-top: 2px; margin-bottom: 15px;">
+								<div class="col-sm-4 col-xs-12">
+									<p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono</strong></p>
+									<p style="font-size: 11px; margin-bottom: 0px;">+503 {{data.telefonoMovil}}</p>
+								</div>
+								<div class="col-sm-4 col-xs-12">
+									<p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p>
+									<p style="font-size: 11px; margin-bottom: 0px;">{{ data.correoelectronico }}</p>
+								</div>
+								<div class="col-sm-4 col-xs-12">
+									<p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
+									<p style="font-size: 11px; margin-bottom: 0px;"><a href="http://www.ariaslaw.com" target="_blank">{{ data.sitioWeb }}</a></p>
+								</div>
+								{#<div class="col-sm-12">
+									<span style="color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;"><strong>Especialidades:</strong> </span>
+									<span style="font-size: 11px;">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span>
+								</div>#}
+								<div class="col-sm-12" style="margin-top: -0px;">
+									<span style='font-size: 11px;'><a href="perfil.php">Ver perfil</a></span>
+									<span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+									<span style='font-size: 11px;'><a href="#">Contactar</a></span>
+									<span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+									<span style='font-size: 11px;'><a href="#">Recomendar</a></span>							
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>                                
+                  {% endfor %}
+                  {% else %}
+                     
+                                <div class="bloque-main">
+					<p>Abogados trabajando en nuestro bufete.</p>
+                                        <p>
+                                            <label for="listarEmpleados" style="font-size: small;">
+                                                Listar empleados
+                                            </label>
+                                            <input type="checkbox"  class="listarEmpleados" ><br>
+                                            Chekea este valor si quieres listar a tus empleados dentro de tu perfil.
+                                        </p>
+                                        <input type="hidden" value="0" id="elemento">
+				</div>
+                      
+                  {% endif %}    
+                  
+ <div  class="bloque-main" >
+        <div class="row">
+            <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;">
+                <strong>ESPECIALIDADES LEGALES</strong></p>
+            <p class="pull-right">
+                <a id="btnespecialidad"><i class="fa fa-cog" style="margin-right: 25px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar" >add</i></a>
+            </p>
+        </div>
+        <!-- Contenido Aqui -->
+        <hr>
+        <div class="row"  id="contenido" style="min-height:60px; max-height:450px;overflow: auto;">
+        {% embed ':abgpersona:especialidades.html.twig' %}{% endembed %}
+       
+    </div>
+   
+</div> 
+           
+        
+{#  Aqui empieza el mapa de geolocalizacion    #}
+     {% for datos in ctlEmpresa %} 
+      
+      <div class="bloque-main">
+          <h4>Busca la direccion de tu empresa</h4>           
+                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+             </head>
+
+           
+                 <div class="form-horizontal" style="width: 550px">
+                     <div class="form-group">
+                         <label class="col-sm-2 control-label">Direccion:</label>
+
+                         <div class="col-sm-8">
+                             <input type="text" class="form-control" id="us3-address" />
+                         </div>
+                         <div class="col-sm-2">
+                             <input type="button" class="btn btn-success" id="guardarCambios" value="Guardar Cambios">
+                         </div>
+                     </div>
+                     <div class="form-group" style="display: none;">
+                         <label class="col-sm-2 control-label">Radio:</label>
+
+                         <div class="col-sm-5">
+                             <input type="text" class="form-control" id="us3-radius"  />
+                         </div>
+                     </div>
+                     <div id="us3" style="width: 550px; height: 400px;"></div>
+
+                     <div class="clearfix">&nbsp;</div>
+                     <div class="m-t-small" style="display: none;">
+                         <label class="p-r-small col-sm-1 control-label">Lat.:</label>
+
+                         <div class="col-sm-3">
+                             <input type="text" class="form-control" style="width: 110px" id="us3-lat" />
+                         </div>
+                         <label class="p-r-small col-sm-2 control-label">Long.:</label>
+
+                         <div class="col-sm-3">
+                             <input type="text" class="form-control" style="width: 110px" id="us3-lon" />
+                         </div>
+                     </div>
+                     <div class="clearfix"></div>
+                     <script>
+                         var x = ($("input#us3-lat").val());
+                         var  y = ($("input#us3-lon").val());
+                     
+                         
+                         
+                        if(x==="" && y===""){
+                              x =parseFloat({{datos.latitude}});
+                              y =parseFloat({{datos.longitude}});
+                             
+                         }else{
+                          x =parseFloat($("input#us3-lat").val());
+                          y =parseFloat($("input#us3-lon").val());
+                             
+                             
+                         }
+                         
+                    $(document).ready(function() {
+                        $("#guardarCambios").hide();
+ 
+                         $('#us3').locationpicker({
+                             
+
+                             location: {
+                               
+                                 latitude: x,
+                                 longitude: y	
+                             },
+                             radius: 0,
+                             inputBinding: {
+                                 latitudeInput: $('#us3-lat'),
+                                 longitudeInput: $('#us3-lon'),
+                                 radiusInput: $('#us3-radius'),
+                                 locationNameInput: $('#us3-address')
+                             },
+                             enableAutocomplete: true,
+                             onchanged: function (currentLocation, radius, isMarkerDropped) {
+                                 // Uncomment line below to show alert on each Location Changed event
+                                //alert("Location changed. New location (" + currentLocation.latitude + ", " + currentLocation.longitude  +")");
+                                 var  latitud=currentLocation.latitude;
+                                 var longitud = currentLocation.longitude;
+                                 
+                                 var mapContext = $(this).locationpicker('map');
+                                 mapContext.map.setZoom(17);
+
+                                 $.ajax({
+                                        type: 'POST',
+                                        async: false,
+                                        dataType: 'json',
+                                        data: {longitudes:longitud , latitudes:latitud,n: 9,empresa: $('input#empresaId').val()},
+                                        url: Routing.generate('edit_empresa'),
+                                        success: function (data)
+                                        {
+                                              $("#guardarCambios").show();
+                                            console.log(true);
+                                        },
+                                        error: function (xhr, status)
+                                        {
+                                            alert('Disculpe, existió un problema');
+
+                                        }
+                                });
+                                 
+                                 
+                                 
+
+                             }
+                           
+
+                         });
+                         
+                       
+                     $(document).on("click","#guardarCambios",function() {
+                            
+                             Lobibox.notify("success", {
+                                        size: 'mini',
+                                        msg: 'Datos modificados con exito'
+                                    });
+                            $("#guardarCambios").hide();
+                      });    
+                         
+                         
+                         
+                         
+                     });
+                     </script>
+                 </div>
+             
+             
+        </div>
+                              
+     {% endfor %}
+	          <div class="modal fade modal" id="idModalFoto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header " Style="height:45px;">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                                <span class="robo" style="font-size: 20px;">Editar foto de perfil</span> 
+                            </div>
+                            <div class="modal-body" id="mbodyExperiencia" >
+                                    
+                              <form action="#" id="frmEmpresaConFoto" role="form" enctype="multipart/form-data" method="POST">
+                                 {% if abgFoto %} 
+                                           
+                                     
+                                           <div class="image-editor" >
+                                               <center>
+                                                <div class="cropit-preview" style="z-index: 3; background-image:url({{ asset('') }}{{ abgFoto[0].src}}) ; border-color:white; " ></div>
+                                               </center>
+                                                          <div class="image-upload" >
+                                                              <label for="input" >
+                                                                  <img src="{{ asset('Resources/icons/photo.png') }}" style="width: 25px; height: 25px; margin-left: 40px; margin-top:-200px;; position: relative; z-index: 3; " title="Click para seleccionar una imagen" >
+                                                              </label>
+                                                                       
+                                                              <input type="file" class="cropit-image-input" id="input">      
+
+                                                          </div> 
+                                                       <center>    
+                                                          <div class="image-size-label" id="labelid">
+                                                                    Dimension de imagen
+                                                          </div>
+                                                          <input type="range" class="cropit-image-zoom-input" style="width: 140px;" id="idrange">
+                                                          <input type="hidden" name="image-data" class="hidden-image-data" />
+                                                          <input type="hidden" name="user" value="{{ usuario }}" id="usuario">
+                                                          <input type="hidden" id="empresaId"  value="{{ctlEmpresaId }}" name="empresaId">
+                                                       </center>
+                                                          
+                                           </div>
+                                                
+                                    
+                               {% endif %} 
+
+                            </div>
+                            <div class="modal-footer" id="botomExperiencia" >
+                                <img src='{{ asset('Resources/icons/transfer.gif') }}' style="width: 25px; height: 25px; margin-right:70px; " id="gif">
+                                
+                                <button type="submit" id="cmd" class="btn btn-success">Cortar y Guardar</button>
+                            </div>
+
+                        </div>
+                    </div> 
+                                          </form>  
+                  </div>
+        
+        {% endblock %}
+{% endblock %}
+
+

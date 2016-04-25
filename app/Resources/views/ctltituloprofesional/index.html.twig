@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>CtlTituloProfesional list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Abgtitulocol</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ctlTituloProfesional in ctlTituloProfesionals %}
+            <tr>
+                <td><a href="{{ path('ctltituloprofesional_show', { 'id': ctlTituloProfesional.id }) }}">{{ ctlTituloProfesional.id }}</a></td>
+                <td>{{ ctlTituloProfesional.abgTitulocol }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('ctltituloprofesional_show', { 'id': ctlTituloProfesional.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('ctltituloprofesional_edit', { 'id': ctlTituloProfesional.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('ctltituloprofesional_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}
