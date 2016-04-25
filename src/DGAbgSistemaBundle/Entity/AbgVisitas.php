@@ -22,16 +22,16 @@ class AbgVisitas
     private $id;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(name="visita_unica", type="text", length=16777215, nullable=false)
+     * @ORM\Column(name="visita_unica", type="float", nullable=false)
      */
     private $visitaUnica;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(name="visita", type="text", length=16777215, nullable=false)
+     * @ORM\Column(name="visita", type="float", nullable=false)
      */
     private $visita;
 
@@ -70,7 +70,7 @@ class AbgVisitas
     /**
      * Set visitaUnica
      *
-     * @param string $visitaUnica
+     * @param float $visitaUnica
      * @return AbgVisitas
      */
     public function setVisitaUnica($visitaUnica)
@@ -83,7 +83,7 @@ class AbgVisitas
     /**
      * Get visitaUnica
      *
-     * @return string 
+     * @return float 
      */
     public function getVisitaUnica()
     {
@@ -93,7 +93,7 @@ class AbgVisitas
     /**
      * Set visita
      *
-     * @param string $visita
+     * @param float $visita
      * @return AbgVisitas
      */
     public function setVisita($visita)
@@ -106,7 +106,7 @@ class AbgVisitas
     /**
      * Get visita
      *
-     * @return string 
+     * @return float 
      */
     public function getVisita()
     {

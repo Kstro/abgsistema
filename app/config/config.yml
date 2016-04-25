@@ -80,10 +80,5 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
-# Activation de l'extension Twig intl
-services:
-    twig.extension.text:
-       class: Twig_Extensions_Extension_Text
-       tags:
-           - { name: twig.extension }
+
     

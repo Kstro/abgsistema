@@ -390,7 +390,7 @@
                                                             <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Tipo de Empresa</strong></p>
 
                                                             <a href="#" id="tipoEmpresa" data-pk="1" data-type="select" data-title="Select status" style="font-size: 11px; margin-bottom: 0px;">
-                                                                  {% if valor.tipoEmpresa %}
+                                                                {% if valor.tipoEmpresa is not empty %}
                                                                     {{ valor.tipoEmpresa}}
                                                                   {% else %}
                                                                       Tipo de empresa
