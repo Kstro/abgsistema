@@ -37,7 +37,7 @@ $(document).on("submit","#frmEmpresaUsuarioPersona",function(e) {
                  console.log(data);
            data = jQuery.parseJSON(data);
          
-          
+          console.log(frm);
 
             if (data==true) {
                       //Ajax de insersion de datos               
