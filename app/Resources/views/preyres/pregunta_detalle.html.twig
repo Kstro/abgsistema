@@ -26,84 +26,81 @@
 {% block navegacion_Y_body %}
 
     {% block navegacion %}
-
     {% endblock %}
     {% block cuerpo %}
         
         <div class="container" style="padding: 20px 0px; background-color: #f6f6f6;">
 		<div class="row">
-			<div class="col-md-3">
-				<div class="bloque-main" style="padding: 10px; margin-top: 20px;">
-				<ul style="list-style: none; padding: 0; margin-bottom: 0px;">
-					<p class="sans text-uppercase" style="font-size: 12px; margin-bottom: 0px;"><strong>CATEGORIAS</strong></p>
-					<li style="padding-top: 5px; padding-left: 8px;">Juridico</li>
-					<li style="padding-top: 5px; padding-left: 8px;">Familiar</li>
-					<li style="padding-top: 5px; padding-left: 8px;">Casos de Divorcio</li>
-					<li style="padding-top: 5px; padding-left: 8px;">No se que</li>
-				</ul>
-				</div>
-			</div>
-			<div class="col-md-6" style="padding-right: 0px; padding-left: 0px;">
-				<div class="bloque-main" style="padding: 10px; margin-top: 20px;">
-				<a href="bloglist.php">Regresar</a>
-				<img src="{{ asset('Resources/imagenes/blog.jpg')}}" style="max-width: 100%; width: 950px; height: 243px;">
-				<p class="sans" style="font-size: 1.5em; margin-top: 10px; padding-left: 10px;">Firma Electronia, algo bueno o malo?</p>
-				<p class="sans" style="font-size: 13px; padding-left: 10px;">Fecha | Escrito por: Nombre de la persona | Jurisiccion</p>
-				<p class="sans text-justify" style="font-size: 13px; font-weight: 300; padding-left: 10px; padding-right: 10px;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-				consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-				cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-				proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</br></br>
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-				consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-				cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-				proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-				</br></br>
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-				consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-				cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-				proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-				</br></br>
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-				consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-				cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-				proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="bloque-main" style="padding: 10px; margin-top: 20px;">
-					<div class="mainblog">
-					    <div class="coverblog">
-					    	<div style="width: 100%; max-width: 100%; background-color: #f6f6f6; height: 110px;">
-					    	</div>
-					    </div>
-					    <div class="profileblog">
-					        <img src="{{ asset('Resources/imagenes/1.jpg')}}" class="img-thumbnail" />
-					    </div>
-					    <!-- TITULO DE EMPRESA -->
-					    <div style="margin-top: 5px; margin-bottom: 5px;">
-					    	<p class="text-center sans" style="font-size: 15px; color: #777777; margin-bottom: 0px;">
-					    		Marvin Jose Vigil Martinez
-					    	</p>
-					    	<p class="text-center sans" style="font-size: 12px; color: #777777; z-index: 555; margin-bottom: 0px;">+ 503 2512 - 6247 | info@monkey-systems.com| www.monkey-systems.com </p>
-							</div>
-					</div>
-				</div>
-				<!-- <img src="src/img/1.jpg" style="width: 100%; max-width: 100%; margin-top: 50px;" class="img-thumbnail">
-				<p class="sans text-left" style="font-size: 13px; margin-bottom: 0px;">Joaqiun Ernesto Aguilar Chicas</p>
-				<p class="sans text-left" style="font-size: 13px; font-weight: 300;">Directo en Arias y Asociados Bufete Juridico</p> -->
-			</div>
+                    
+                    <form class="navbar-form" role="search" action="{{ path('envio_pregunta') }}" method="POST">
+                        <p class="text-center" style="font-size: 15px;">Si usted desea puede modificar su pregunta aqui</p>
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8 text-center">
+                            <div class="form-group">
+                                <textarea id="" name="pregunta" class="form-control textarea" maxlength="140" placeholder="Haga su pregunta aqui ..." style="max-width: 400px; min-width: 400px; width: 400px; max-height: 150px; min-height: 150px; height: 150px;">{{pregunta}}</textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-2"></div>
+                        <div class="clearfix"></div>
+                        
+                        <p class="text-center" style="font-size: 15px;">Diganos mas sobre su pregunta</p>
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8 text-center">
+                            <div class="form-group">
+                                <textarea id="" name="detalle" class="form-control textarea" maxlength="140" placeholder="Haga su pregunta aqui ..." style="max-width: 400px; min-width: 400px; width: 400px; max-height: 150px; min-height: 150px; height: 150px;"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-2"></div>
+                        <div class="clearfix"></div>
+                        
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8 text-center">
+                            <div class="form-group" style="margin-top: 10px;">
+                                <label for="nombreEmpleado">Categoria de la entrada</label>
+                                <select required class="form-control" id="categoria" name="subespecialidad" placeholder=Especialidad">
+                                    <option value="5" selected style="margin-bottom: 10px;">Seleccione una categoria</option>                           
+                                    {% for ctlSubespecialidad in ctlSubespecialidad %}
+                                        <option value="{{ ctlSubespecialidad.id  }}">{{ctlSubespecialidad.abgSubespecialidadcol }}</option>  
+                                    {% endfor %}          
+                                </select>    
+                            </div>
+                        </div>                        
+                        <div class="col-md-2"></div>
+                        <div class="clearfix"></div>
+                        
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8 text-center">
+                            <hr style="border: 1px solid #262626; width: 100%;">
+                            <div class="form-group" style="margin-top: 10px;">                                
+                                <label for="exampleInputEmail1">Escriba su correo</label> 
+                                <input id="" name="email" type="email" class="form-control" placeholder="Email contacto" required />
+                            </div>
+                        </div>                        
+                        <div class="col-md-2"></div>
+                        <div class="clearfix"></div>
+                        
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8 text-center">
+                            <div class="checkbox">
+                            <label>
+                                <input type="checkbox" required> Dar click para enviar su pregunta. Al marcar esta casilla usted esta aceptando los terminos y condiciones de Abogados.com
+                            </label>
+                        </div>
+                        </div>                        
+                        <div class="col-md-2"></div>
+                        <div class="clearfix"></div>
+                                                               
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8 text-center"><button type="submit" class="btn btn-primary" style="margin-top: 10px;">Enviar Pregunta </button></div>                        
+                        <div class="col-md-2"></div>
+                    </form>                                            
 		</div>
 	</div>
-
 	<div style="height: 10px;"></div>
 	
     {% endblock %}
+    
+    
+    {% block js_template %}
+    {% endblock js_template %}
 {% endblock %}

@@ -50,6 +50,20 @@ class AbgPregunta
     private $correoelectronico;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="detalle", type="string", length=1000, nullable=false)
+     */
+    private $detalle;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="fechapregunta", type="string", length=45, nullable=false)
+     */
+    private $fechapregunta;
+
+    /**
      * @var \CtlUsuario
      *
      * @ORM\ManyToOne(targetEntity="CtlUsuario")
@@ -172,7 +186,7 @@ class AbgPregunta
 
         return $this;
     }
-
+    
     /**
      * Get correoelectronico
      *
@@ -181,6 +195,49 @@ class AbgPregunta
     public function getCorreoelectronico()
     {
         return $this->correoelectronico;
+    }
+    
+    /**
+     * Set correoelectronico
+     *
+     * @param string $detalle
+     * @return AbgPregunta
+     */
+    public function setDetalle($detalle)
+    {
+        $this->detalle = $detalle;
+
+        return $this;
+    }
+    
+    /**
+     * Get detalle
+     *
+     * @return string 
+     */
+    public function getDetalle() {
+        return $this->detalle;
+    }
+    
+    /**
+     * Set fecha
+     *
+     * @param string $fecha
+     * @return AbgPregunta
+     */
+    public function setFechaPregunta($fechapregunta) {
+        $this->fechapregunta = $fechapregunta;
+
+        return $this;
+    }
+
+    /**
+     * Get fechapregunta
+     *
+     * @return string 
+     */
+    public function getFechaPregunta() {
+        return $this->fechapregunta;
     }
 
     /**

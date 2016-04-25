@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use DGAbgSistemaBundle\Entity\AbgEntrada;
 use DGAbgSistemaBundle\Entity\CtlUsuario;
+use DGAbgSistemaBundle\Entity\AbgImagenBlog;
 use Symfony\Component\HttpFoundation\Response;
 use DGAbgSistemaBundle\Form\AbgPersonaType;
 
@@ -30,10 +31,10 @@ class AbgEntradaController extends Controller {
         
         $em = $this->getDoctrine()->getManager();
 
-        $ctlSubespecialidad = $em->getRepository('DGAbgSistemaBundle:CtlSubespecialidad')->findAll();
+        $ctlCategoriasBlog = $em->getRepository('DGAbgSistemaBundle:CtlCategoriaBlog')->findAll();
         
         return $this->render('blog/index.html.twig', array(
-                           'ctlSubespecialidad' => $ctlSubespecialidad,
+                           'ctlCategoriasBlog' => $ctlCategoriasBlog,
         ));
     }
   
@@ -57,6 +58,7 @@ class AbgEntradaController extends Controller {
         
             
             $abgEntrada = new AbgEntrada();
+            $abgImagenBlog = new AbgImagenBlog();
         
             $nombreimagen2=" ";
             $dataForm = $request->get('frm');
@@ -73,6 +75,8 @@ class AbgEntradaController extends Controller {
             $contenidoEntrada = $_POST["contenido"];
             //$email = $_POST["email"];
             $categoria = $_POST["categoria"];
+            $em = $this->getDoctrine()->getManager();
+            $CatBlog = $em->getRepository('DGAbgSistemaBundle:CtlCategoriaBlog')->find($categoria);
             
             //$imagen = $_POST["imagen"];
                         
@@ -80,7 +84,11 @@ class AbgEntradaController extends Controller {
             $abgEntrada->setTituloEntrada($tituloEntrada);
             $abgEntrada->setFecha($fecha);
             $abgEntrada->setContenido($contenidoEntrada);
-            $abgEntrada->setAbgCategoriaEntradaId($categoria);
+            $abgEntrada->setAbgCategoriaEntradaId($CatBlog);
+            $abgEntrada->setAbgCategoriaEntradaId;
+            
+            $abgImagenBlog->setSrc($nombreimagen);
+            $abgImagenBlog->setAbgEntrada($abgEntrada);
             /*$direccionEmpresa= $_POST["direccionEmpresa"];
             $sitioWebEmpresa = $_POST["sitioWebEmpresa"];
             $correoEmpresa = $_POST["correoEmpresa"];
@@ -91,15 +99,20 @@ class AbgEntradaController extends Controller {
          if ($nombreimagen != null){
               
                 $path = $this->container->getParameter('photo.entrada');
-                $fecha = date('Y-m-d His');
+                $fecha = date('Y-m-d-His');
                 $nombreArchivo = $nombreimagen. "-" . $fecha.$nombreimagen2;
                 $resultado = move_uploaded_file($_FILES["file"]["tmp_name"], $path.$nombreArchivo);
 
             }
         
+        $abgImagenBlog->setSrc($nombreArchivo);
+        $abgImagenBlog->setAbgEntrada($abgEntrada);
+
         $em = $this->getDoctrine()->getManager();
         $em->persist($abgEntrada);
+        $em->persist($abgImagenBlog);
         $em->flush();
+        
         
         try {
            

@@ -43,7 +43,7 @@
     //Este es el codigo que me permite enviar la imagen con todo!!
 
         $(document).on("submit","#endatos",function(e) {
-                alert("asdasd");
+                //alert("asdasd");
                 e.preventDefault();
                 //información del formulario
                 var frm = new FormData($(this)[0]);
@@ -52,7 +52,7 @@
                         if (1 == 1) {
                     console.log('aqui llega');
              $.ajax({ 
-                    data:frm,
+                    data:frm,                 
                     url:Routing.generate('ingresar_entrada'),
                     {#url: {{path('ingresar_entrada')}},   #}             
                     type: 'POST',
@@ -123,8 +123,8 @@
                                 
                                 <select class="form-control" id="categoria" name="categoria" placeholder=categoria">
                                     <option value="5" selected style="margin-bottom: 10px;">Seleccione una categoria</option>                           
-                                    {% for ctlSubespecialidad in ctlSubespecialidad %}
-                                        <option value="{{ ctlSubespecialidad.id  }}">{{ctlSubespecialidad.abgSubespecialidadcol }}</option>  
+                                    {% for ctlCategoriasBlog in ctlCategoriasBlog %}
+                                        <option value="{{ ctlCategoriasBlog.id  }}">{{ctlCategoriasBlog.nombreCategoria }}</option>  
                                     {% endfor %}          
                                 </select>    
                             </div>

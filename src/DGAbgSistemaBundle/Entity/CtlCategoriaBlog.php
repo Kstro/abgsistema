@@ -5,12 +5,12 @@ namespace DGAbgSistemaBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * CtlSubespecialidad
+ * CtlCategoriaBlog
  *
- * @ORM\Table(name="ctl_subespecialidad", indexes={@ORM\Index(name="fk_abg_subespecialidad_abg_especialidad1_idx", columns={"abg_especialidad_id"})})
+ * @ORM\Table(name="ctl_categoria_blog", indexes={@ORM\Index(name="fk_abg_entrada_ctl_categoria_blog_idx", columns={"abg_categoria_entrada_id"})})
  * @ORM\Entity
  */
-class CtlSubespecialidad
+class CtlCategoriaBlog
 {
     /**
      * @var integer
@@ -24,21 +24,9 @@ class CtlSubespecialidad
     /**
      * @var string
      *
-     * @ORM\Column(name="abg_subespecialidadcol", type="string", length=45, nullable=false)
+     * @ORM\Column(name="nombre", type="string", length=150, nullable=false)
      */
-    private $abgSubespecialidadcol;
-
-    /**
-     * @var \CtlEspecialidad
-     *
-     * @ORM\ManyToOne(targetEntity="CtlEspecialidad")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="abg_especialidad_id", referencedColumnName="id")
-     * })
-     */
-    private $abgEspecialidad;
-
-
+    private $nombreCategoria;
 
     /**
      * Get id
@@ -51,48 +39,30 @@ class CtlSubespecialidad
     }
 
     /**
-     * Set abgSubespecialidadcol
+     * Set nombreCategoria
      *
-     * @param string $abgSubespecialidadcol
-     * @return CtlSubespecialidad
+     * @param string $nombreCategoria
+     * @return CtlCategoriaBlog
      */
-    public function setAbgSubespecialidadcol($abgSubespecialidadcol)
+    public function setNombreCategoria($nombreCategoria)
     {
-        $this->abgSubespecialidadcol = $abgSubespecialidadcol;
+        $this->nombreCategoria = $nombreCategoria;
 
         return $this;
     }
 
     /**
-     * Get abgSubespecialidadcol
+     * Get nombreCategoria
      *
      * @return string 
      */
-    public function getAbgSubespecialidadcol()
+    public function getNombreCategoria()
     {
-        return $this->abgSubespecialidadcol;
+        return $this->nombreCategoria;
+    }
+    
+    public function __toString() {
+    return $this->nombreCategoria;
     }
 
-    /**
-     * Set abgEspecialidad
-     *
-     * @param \DGAbgSistemaBundle\Entity\CtlEspecialidad $abgEspecialidad
-     * @return CtlSubespecialidad
-     */
-    public function setAbgEspecialidad(\DGAbgSistemaBundle\Entity\CtlEspecialidad $abgEspecialidad = null)
-    {
-        $this->abgEspecialidad = $abgEspecialidad;
-
-        return $this;
-    }
-
-    /**
-     * Get abgEspecialidad
-     *
-     * @return \DGAbgSistemaBundle\Entity\CtlEspecialidad 
-     */
-    public function getAbgEspecialidad()
-    {
-        return $this->abgEspecialidad;
-    }
 }

@@ -24,6 +24,28 @@ class AbgBlogController extends Controller{
      */
     public function indexAction()
     {
-        return $this->render('DGAbgSistemaBundle:blog:blog.html.twig');     
+        $request = $this->getRequest();
+        $identrada = $request->get('id');
+        
+        $em = $this->getDoctrine()->getManager();            
+        $dql = "SELECT en.id as identrada, en.tituloEntrada as titulo, en.fecha as fecha, en.contenido as contenido, im.src as src, ctlblog.nombreCategoria as catblognombre "
+                . "FROM DGAbgSistemaBundle:AbgImagenBlog im "
+                . "JOIN im.abgEntrada en "
+                . "JOIN en.abgCategoriaEntradaId ctlblog "
+                . "WHERE en.id =  :identrada";
+        $parametros = $em->createQuery($dql)
+                        ->setParameter('identrada', $identrada)
+                        ->getSingleResult();
+        
+                //var_dump($parametros);
+                //die();
+        
+        
+        $em = $this->getDoctrine()->getManager();
+        $ctlCategoriasBlog = $em->getRepository('DGAbgSistemaBundle:CtlCategoriaBlog')->findAll();
+        //$reg['data'] = $em->createQuery($dql);        
+//        var_dump($parametros);
+//        die();
+        return $this->render('DGAbgSistemaBundle:blog:blog.html.twig', array('detalleblog'=>$parametros, 'ctlCategoriasBlog'=>$ctlCategoriasBlog));     
     }
 }

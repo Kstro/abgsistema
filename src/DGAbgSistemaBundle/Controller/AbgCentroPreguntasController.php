@@ -3,25 +3,29 @@
 namespace DGAbgSistemaBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+//use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use DGAbgSistemaBundle\Entity\AbgEntrada;
 use DGAbgSistemaBundle\Entity\CtlUsuario;
+use DGAbgSistemaBundle\Entity\AbgImagenBlog;
+use DGAbgSistemaBundle\Entity\AbgPregunta;
 use Symfony\Component\HttpFoundation\Response;
 use DGAbgSistemaBundle\Form\AbgPersonaType;
 
 /**
  * AbgEntrada controller.
  *
- * @Route("/abgentrada")
+ * @Route("/preguntascentro")
  */
-class AbgEntradaController extends Controller {
+class AbgCentroPreguntasController extends Controller {
 
     /**
-     * Lists all AbgPersona entities.
+     * Lists all Preguntas entities.
      *
-     * @Route("/", name="entrada_index")
+     * @Route("/", name="pregunta_index")
      * @Method("GET")
      */
     public function indexAction() {
@@ -29,93 +33,165 @@ class AbgEntradaController extends Controller {
         //  $abgPersonas = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->findAll();
         
         $em = $this->getDoctrine()->getManager();
-
-        $ctlSubespecialidad = $em->getRepository('DGAbgSistemaBundle:CtlSubespecialidad')->findAll();
+        $preguntas = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->findBy(array('estado' => 1), array('id' => 'DESC'), 10, 0);
+                
+        return $this->render('centropreg/indexcentro.html.twig', array('preguntas'=>$preguntas));
+    }
         
-        return $this->render('blog/index.html.twig', array(
-                           'ctlSubespecialidad' => $ctlSubespecialidad,
-        ));
-    }
-  
-    private function setSecurePassword(&$entity, $contrasenia) {
-        $entity->setSalt(md5(time()));
-        $encoder = new \Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder('sha512', true, 10);
-        $password = $encoder->encodePassword($contrasenia, $entity->getSalt());
-        $entity->setPassword($password);
-    }
-    
-    //Metodo del controlador que inserta y mueve una imagen mediante ajax
-
-
     /**
-    * @Route("/ingresar_entrada/get", name="ingresar_entrada", options={"expose"=true})
-    * @Method("POST")
-    */
-    
-    
-    public function RegistrarEntradaAction(Request $request) {
-        
-            
-            $abgEntrada = new AbgEntrada();
-        
-            $nombreimagen2=" ";
-            $dataForm = $request->get('frm');
-            $nombreimagen=$_FILES['file']['name'];
-            
-            $tipo = $_FILES['file']['type'];
-            $extension= explode('/',$tipo);
-            $nombreimagen2.=".".$extension[1];
-            
-
-            
-            
-            $tituloEntrada = $_POST["titulo"];
-            $contenidoEntrada = $_POST["contenido"];
-            //$email = $_POST["email"];
-            $categoria = $_POST["categoria"];
-            
-            //$imagen = $_POST["imagen"];
-                        
-            $fecha = date('Y-m-d');  
-            $abgEntrada->setTituloEntrada($tituloEntrada);
-            $abgEntrada->setFecha($fecha);
-            $abgEntrada->setContenido($contenidoEntrada);
-            $abgEntrada->setAbgCategoriaEntradaId($categoria);
-            /*$direccionEmpresa= $_POST["direccionEmpresa"];
-            $sitioWebEmpresa = $_POST["sitioWebEmpresa"];
-            $correoEmpresa = $_POST["correoEmpresa"];
-            $telefono=$_POST["telefono"];
-            $movil = $_POST["movil"];*/
-            
- 
-         if ($nombreimagen != null){
-              
-                $path = $this->container->getParameter('photo.entrada');
-                $fecha = date('Y-m-d His');
-                $nombreArchivo = $nombreimagen. "-" . $fecha.$nombreimagen2;
-                $resultado = move_uploaded_file($_FILES["file"]["tmp_name"], $path.$nombreArchivo);
-
-            }
-        
+     * Respuesta
+     *
+     * @Route("/respuestacentro", name="respuesta_centro")
+     * @Method("GET")
+     */
+    public function respuestacentroAction(Request $request) {
+        $id = $request->get('id');
         $em = $this->getDoctrine()->getManager();
-        $em->persist($abgEntrada);
-        $em->flush();
-        
-        try {
-           
-            
-            $request = $this->getRequest();
-
-           
-           return new Response(json_encode($data));
-        } catch (\Exception $e) {
-           
-            $data['msj'] = $e->getMessage();
-          
-
-            return new Response(json_encode($data));
-        }
+        $pregunta = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->find($id);
+        //var_dump($pregunta);
+        //die();
+        return $this->render('centropreg/respuestacentro.html.twig', array('pregunta'=>$pregunta));
     }
-  
+         
+    /**
+     * 
+     *
+     * @Route("/busqueda/data/pregunta", name="busqueda_pregunta")
+     */
+    public function databusquedaAction(Request $request) {
 
-}
+        $inicio = $request->get('inicio');
+        $longitud = $request->get('longitud');
+        $paginaActual = $request->get('paginaActual');
+        $busqueda = $request->get('busqueda');
+         
+
+        $inicioRegistro = ($longitud * ($paginaActual - 1));
+
+        $response = new JsonResponse();
+
+        $em = $this->getDoctrine()->getEntityManager();
+        //$abogadosTotal = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->findBy(array('estado' => 1));
+        $preguntasTotal = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->findAll();
+        
+        $reg['inicio'] = $inicio++;
+        $reg['longitud'] = $longitud;
+        $reg['paginaActual'] = $paginaActual;
+        $reg['inicioRegistro'] = $inicioRegistro;
+        $reg['data'] = array();
+
+        if ($busqueda != '') {
+            $reg['numRegistros'] = 0;
+           
+            $sql = "SELECT * FROM abg_pregunta WHERE CONCAT(upper(pregunta),' ',upper(detalle)) LIKE '%" . strtoupper($busqueda) . "%' ORDER BY id ASC LIMIT " . $inicioRegistro . "," . $longitud;
+            //echo $sql;            
+            $em = $this->getDoctrine()->getManager();
+            $stmt = $em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $reg['data'] = $stmt->fetchAll();
+            //var_dump($reg);
+            //die();
+
+            $sql = "SELECT COUNT(*) as total FROM abg_pregunta WHERE CONCAT(upper(pregunta),' ',detalle) LIKE '%" . strtoupper($busqueda) . "%' ORDER BY id ASC LIMIT 0,10";
+            $em = $this->getDoctrine()->getManager();
+            $stmt = $em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $totales = $stmt->fetchAll();
+            $reg['numRegistros'] = $totales[0]['total'];
+            
+
+            $reg['pages'] = floor(($reg['numRegistros'] / 10)) + 1;
+
+            $reg['filtroRegistros'] = count($reg['data']);
+            $esp = array();
+
+            $i = 0;
+                                               
+        } else {
+            $reg['numRegistros'] = 0;
+            $reg['pages'] = 0;
+            $reg['filtroRegistros'] = 0;
+            $reg['data'] = array();
+            $reg['pages'] = 0;
+        }
+        
+        //var_dump($reg);
+        //die();
+        
+        $response->setData($reg);
+        return $response;
+        //return new Response(json_encode($reg));
+    }//Fin de la funcion databusqueda
+    
+//    ESTA PARTE ES PARA CUANDO EL SEARCH ESTA VACIO
+    /**
+     * 
+     *
+     * @Route("/busqueda/data/preguntavacia", name="busquedavacia_pregunta")
+     */
+    public function databusquedavaciaAction(Request $request) {
+
+        $inicio = $request->get('inicio');
+        $longitud = $request->get('longitud');
+        $paginaActual = $request->get('paginaActual');
+        $busqueda = $request->get('busqueda');
+
+
+        $inicioRegistro = ($longitud * ($paginaActual - 1));
+
+        $response = new JsonResponse();
+
+        $em = $this->getDoctrine()->getEntityManager();
+        //$abogadosTotal = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->findBy(array('estado' => 1));
+        $preguntasTotal = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->findAll();
+
+        $reg['inicio'] = $inicio++;
+        $reg['longitud'] = $longitud;
+        $reg['paginaActual'] = $paginaActual;
+        $reg['inicioRegistro'] = $inicioRegistro;
+        $reg['data'] = array();
+
+        if ($busqueda == '') {
+            $reg['numRegistros'] = 0;
+
+            $sql = "SELECT * FROM abg_pregunta ORDER BY id ASC LIMIT " . $inicioRegistro . "," . $longitud;
+            //echo $sql;            
+            $em = $this->getDoctrine()->getManager();
+            $stmt = $em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $reg['data'] = $stmt->fetchAll();
+            //var_dump($reg);
+            //die();
+
+            $sql = "SELECT COUNT(*) as total FROM abg_pregunta ORDER BY id ASC LIMIT 0,10";
+            $em = $this->getDoctrine()->getManager();
+            $stmt = $em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $totales = $stmt->fetchAll();
+            $reg['numRegistros'] = $totales[0]['total'];
+
+
+            $reg['pages'] = floor(($reg['numRegistros'] / 10)) + 1;
+
+            $reg['filtroRegistros'] = count($reg['data']);
+            $esp = array();
+
+            $i = 0;
+        } else {
+            $reg['numRegistros'] = 0;
+            $reg['pages'] = 0;
+            $reg['filtroRegistros'] = 0;
+            $reg['data'] = array();
+            $reg['pages'] = 0;
+        }
+
+        //var_dump($reg);
+        //die();
+
+        $response->setData($reg);
+        return $response;
+        //return new Response(json_encode($reg));
+    }
+
+//Fin de la funcion databusqueda
+}//FIN DEL CONTROLADOR
