@@ -57,7 +57,8 @@ tmtags
 *.sublime-workspace
 
 # netbeans
-nbproject/private/
+nbproject/private/*
+nbproject/private.xml
 build/
 nbbuild/
 dist/

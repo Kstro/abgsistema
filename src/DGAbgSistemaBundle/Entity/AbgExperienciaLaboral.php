@@ -73,7 +73,12 @@ class AbgExperienciaLaboral
      */
     private $abgPersona;
 
-
+/**
+     * @var string
+     *
+     * @ORM\Column(name="funcion", type="string", length=255, nullable=true)
+     */
+    private $funcion;
 
     /**
      * Get id
@@ -199,7 +204,27 @@ class AbgExperienciaLaboral
     {
         return $this->telefono;
     }
+   /**
+     * Set telefono
+     *
+     * @param string $funcion
+     * @return AbgExperienciaLaboral
+     */
+    public function setFuncion($funcion)
+    {
+        $this->funcion = $funcion;
 
+        return $this;
+    }
+    /**
+     * Get telefono
+     *
+     * @return string 
+     */
+    public function getFuncion()
+    {
+        return $this->funcion;
+    }
     /**
      * Set orden
      *

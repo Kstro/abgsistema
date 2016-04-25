@@ -13,6 +13,7 @@
     <field name="fechaFin" type="date" column="fecha_fin" nullable="true"/>
     <field name="telefono" type="string" column="telefono_" length="45" nullable="true"/>
     <field name="orden" type="integer" column="orden" nullable="true"/>
+     <field name="funcion" type="string" column="funcion" length="255" nullable="true"/>
     <many-to-one field="abgPersona" target-entity="AbgPersona">
       <join-columns>
         <join-column name="abg_persona_id" referenced-column-name="id"/>

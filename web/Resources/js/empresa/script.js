@@ -1,11 +1,23 @@
+
+var tipoEmpresa = [];
+
 $(document).ready(function() {
     
+    $("#prev").show();
+   
+  
     //queremos que esta variable sea global
     var fileExtension = "";
     var flag = true;
     //función que observa los cambios del campo file y obtiene información
-    $(document).on("change","#imagen",function()
-    {
+    
+    $(document).on("change","#file-input",function(){
+        $("#prev").show();
+      
+        
+        $("#saveImagen").hide();
+        
+        
         //obtenemos un array con los datos del archivo
         var file = $(this)[0].files[0];
         //obtenemos el nombre del archivo
@@ -18,154 +30,494 @@ $(document).ready(function() {
         
         //obtenemos el tipo de archivo image/png ejemplo
         var fileType = file.type;
+        console.log(fileType);
+        console.log(fileExtension);
         
         
-        var isimage = isImage(fileExtension);
-
-        if (isimage === false) {
-        	flag = false;
-             var mensaje = "Formato de imagen seleccionado no es admitido. Seleccione otro archivo";
-             
+        if (fileExtension == 'PNG' || fileExtension == 'png' ||fileExtension == 'JPG'|| fileExtension == 'jpg' && fileType =='imagen' || fileType =='image' || fileType =='image/jpeg' )
+        {
+            flag = true;
         }else{
-        	flag = true;
+            flag = false;
         }
         
-    });
+                if (flag==false){
+                    alert("Archivo invalido, seleccione una imagen ");
+                    $("#file-input").val("");
+                    $("#prev").hide();
+                    $("#saveImagen").hide();
+                     
 
-        
+                }else{  
+                    
+                     var pesoKb=(fileSize/1024);
+                     if (pesoKb<=1024){
+
+                        
+                        var frm = new FormData($("#frmEmpresaConFoto")[0]);
+                      
+                             if (flag != false) {
+
+                                $.ajax({ 
+                                       data:frm,
+                                       url:Routing.generate('ingresar_foto'),
+                                       type: 'POST',
+                                       dataType: 'json',
+                                      
+                                       cache: false,
+                                       contentType: false,
+                                       processData: false,
+
+                                      
+                                       success: function(data){
+                                           
+                                        $("#prev").attr('src', "/abgsistema/web/"+data.direccion);
+                                        
+                                            
+                                             
+                                       }
+                                             
+                                             
+                                     });
 
 
+                                 }
+                        }
+                        else{
+                            console.log(pesoKb);
+                            alert("Imagen demasiado grande, intente con una mas pequeña");
+                        }
+                }
 
-
-
-
- 
-
-
-
-
-function mostrarImagen(input) {
-      if (input.files && input.files[0]) {
-           var reader = new FileReader();
-              reader.onload = function (e) {
-                    $('#img_destino').attr('src', e.target.result);
-               }
-              reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        $("#imagen").change(function () {
-            mostrarImagen(this);
         });
+    
+    
+    
+    
 
-
- 
- 
- 
-$(document).on("submit","#frmEmpresa",function(e) {
-       
+$(document).on("submit","#frmEmpresaUsuarioPersona",function(e) {
+        
+        var estadoCorreo;
 	e.preventDefault();
 	frm = serializeToJson($(this).serializeArray());
-        console.log(frm);
-        
-        $.ajax({ 
-            data:{
-		frm: JSON.stringify(frm)
+    //Ajax que valida  el correo
+    $.ajax({ 
+           data:{
+                    frm: JSON.stringify(frm)
 		},
-            url:Routing.generate('ingresar_usuarioEmpresa'),
-            type: 'POST',
+           url:Routing.generate('validar_correo'),
+           type: 'POST',
+           dataType: 'json',
  
 
-//            success: function(data){
-//                console.log(data);
-//                data = jQuery.parseJSON(data);//convirtiendo datos
-//                //console.log(data);
-//                 var mensaje = "Alumno Guardado Correctamento. Espere un momento...";
-//                if (data.estado == true) {
-//                    GetAlert("Éxito",mensaje,"../recursos/imagenes/Ok-icon.png",3000);
-//                    setTimeout(function() {
-//                        location.reload();
-//                    }, 1800);
-//                }else{
-//                    alertify.error(data.mensaje);
-//                }
-//            }
-        });
-       
-        
+           success: function(data){
+           data = jQuery.parseJSON(data);
+           console.log(data);
+          
+
+            if (data) {
+                      //Ajax de insersion de datos               
+                         $.ajax({ 
+                                 data:{
+                                       frm: JSON.stringify(frm)
+                                       },
+                                   url:Routing.generate('ingresar_usuarioEmpresa'),
+                                  type: 'POST',
+                                   dataType: 'json',
 
 
+                                 success: function(data){
+                                     alert(data.estado);
+                                if (data.estado == true) {
+                                        
+                                        var url=Routing.generate('admin_abg',{username: data.username});
+                                        window.open(url,"_self"); 
+                                        
+                                       }else{
+                                           alert(data.estado);
+                                     }
+                                   }
+                           });
 
-
-
-$(document).on("submit","#frmEmpresaCompleto",function(e) {
-	e.preventDefault();
-    	//información del formulario
-        var frm = new FormData($(this)[0]);
-        console.log(frm);
-        if (flag != false) {
-            
-     $.ajax({ 
-            data:frm,
-            url:Routing.generate('ingresar_empresa'),
-            type: 'POST',
-           //necesario para subir archivos via ajax
-            cache: false,
-            contentType: false,
-            processData: false,
-           
-            //una vez finalizado correctamente
-            
-            
-            
-            success: function(data){
-                console.log(data);
-//               data = jQuery.parseJSON(data);//convirtiendo datos
-                //console.log(data);
-//                 var mensaje = "Alumno Guardado Correctamento. Espere un momento...";
-//                if (data.estado == true) {
-//                    GetAlert("Éxito",mensaje,"../recursos/imagenes/Ok-icon.png",3000);
-//                    setTimeout(function() {
-//                        location.reload();
-//                    }, 1800);
-//                }else{
-//                    alertify.error(data.mensaje);
-//                }
+                   
+                   
+                    
+               }else{
+                  
+                  
+                    alert("El Correo ya existe, intenta con otro");
+                  
+                  
+                  
+                    
+               }
+              
             }
         });
-
-   
-            
-    	}
-	
-});
        
 
+       
+        
+ });
+      
+
+ 
+ 
+
+ 
+    
+$("#contrasenha").strength();  
+    
+//  $('#contrasenha').strength({
+//        strengthClass: 'strength',
+//        strengthMeterClass: 'strength_meter',
+//        strengthButtonClass: 'button_strength',
+//        strengthButtonText: 'Show password',
+//        strengthButtonTextToggle: 'Hide Password'
+//    });       
+
+
+
+
+
+
+//La parte del X-Editable
+
+
+
+ $('#txtMovil').editable();
+
+ 
+
+ $('#txtMovil').on('save', function (e, params) {
+        $.ajax({
+            type: 'POST',
+            async: false,
+            dataType: 'json',
+            data: {movil: params.newValue, empresa: $('input#empresaId').val(), n: 1},
+            url: Routing.generate('edit_empresa'),
+            success: function (data)
+            {
+                   console.log(data);
+                
+                  $.each(data,function (i,value)  {
+                            
+			 $('#txtFijo').html(value['valor']);
+                         console.log(value['valor']);
+			});
+             
+                
+            },
+            error: function (xhr, status)
+            {
+                alert('Disculpe, existió un problema');
+                
+            }
+        });
+    });
+
+ $('#txtFijo').editable();
+ 
+    $('#txtFijo').on('save', function (e, params) {
+        $.ajax({
+            type: 'POST',
+            async: false,
+            dataType: 'json',
+            data: {fijo: params.newValue, empresa: $('input#empresaId').val(), n: 2},
+            url: Routing.generate('edit_empresa'),
+            success: function (data)
+            {
+                
+                $('#txtFijo').editable({
+                    value: data.tel
+                });
+            },
+            error: function (xhr, status)
+            {
+                alert('Disculpe, existió un problema');
+                
+            }
+        });
+    });
     
     
     
     
+  
+  
+  
+    $('#txtCorreoElectronico').editable();
+ 
+    $('#txtCorreoElectronico').on('save', function (e, params) {
+        $.ajax({
+            type: 'POST',
+            async: false,
+            dataType: 'json',
+            data: {correoEmpresa: params.newValue, empresa: $('input#empresaId').val(), n: 3},
+            url: Routing.generate('edit_empresa'),
+            success: function (data)
+            {
+                
+                $('#txtCorreoElectronico').editable({
+                    value: data.tel
+                });
+            },
+            error: function (xhr, status)
+            {
+                alert('Disculpe, existió un problema');
+                
+            }
+        });
+    });
     
+    
+   $('#txtDireccion').editable();
+ 
+    $('#txtDireccion').on('save', function (e, params) {
+        $.ajax({
+            type: 'POST',
+            async: false,
+            dataType: 'json',
+            data: {direccionEmpresa: params.newValue, empresa: $('input#empresaId').val(), n: 4},
+            url: Routing.generate('edit_empresa'),
+            success: function (data)
+            {
+                
+                $('#txtDireccion').editable({
+                    value: data.tel
+                });
+            },
+            error: function (xhr, status)
+            {
+                alert('Disculpe, existió un problema');
+                
+            }
+        });
+    }); 
+    
+    
+    
+    $('#txtSitioWeb').editable();
+ 
+    $('#txtSitioWeb').on('save', function (e, params) {
+        $.ajax({
+            type: 'POST',
+            async: false,
+            dataType: 'json',
+            data: {sitiowebEmpresa: params.newValue, empresa: $('input#empresaId').val(), n: 5},
+            url: Routing.generate('edit_empresa'),
+            success: function (data)
+            {
+                    
+                 Lobibox.notify("success", {
+                                        size: 'mini',
+                                        msg: 'Datos modificados con exito'
+                                    });
+                
+                
+                $('#txtSitioWeb').editable({
+                    value: data.tel
+                });
+            },
+            error: function (xhr, status)
+            {
+                alert('Disculpe, existió un problema');
+                
+            }
+        });
+    }); 
+    
+    
+    
+    
+    $("#txtNombreEmpresa").editable();
+    $('#txtNombreEmpresa').on('save', function (e, params) {
+        $.ajax({
+            type: 'POST',
+            async: false,
+            dataType: 'json',
+            data: {nombreEmpresa: params.newValue, empresa: $('input#empresaId').val(), n: 0},
+             url: Routing.generate('edit_empresa'),
+            success: function (data)
+            {
+                    
+                 Lobibox.notify("success", {
+                                        size: 'mini',
+                                        msg: 'Datos modificados con exito'
+                                    });
+                
+        
+            },
+            error: function (xhr, status)
+            {
+                alert('Disculpe, existió un problema');
+                
+            }
+        });
+    }); 
+    
+    
+    
+    var exa;
+   $('#colorSelector').ColorPicker({
+	color: '#4ec24e',
+	onShow: function (colpkr) {
+		$(colpkr).fadeIn(500);
+                $(".colorpicker").css('float','right');
+		return true;
+	},
+	onHide: function (colpkr,hex) {
+		$(colpkr).fadeOut(500);
+//                alert(exa);
+                    var empresaId= $("#empresaIdColor").val();
+                    $.ajax({
+                                type: 'POST',
+                                async: false,
+                                dataType: 'json',
+                                data: {colorEmpresa: exa, idEmpresa: $('input#empresaIdColor').val()},
+                                 url: Routing.generate('edit_color'),
+                                success: function (data)
+                                {
+                                     
+                                     $('#colorBanner div').css('backgroundColor', '#' +  data.color);
+
+
+                                },
+                                error: function (xhr, status)
+                                {
+                                    alert('Disculpe, existió un problema');
+
+                                }
+                            });
+                            
+                            
+		return false;
+	},
+	onChange: function (hsb, hex, rgb) {
+		$('#colorSelector div').css('backgroundColor', '#' + hex);
+                exa = '#' + hex;
+	}
+    });
+    
+    
+    
+                 $.ajax({
+                                type: 'POST',
+                                async: false,
+                                dataType: 'json',
+                             
+                                 url: Routing.generate('mostarTipoEmpresa'),
+                                success: function (data)
+                                {
+                                    
+                                                                    
+                                    $.each(data.valores,function (i,values)  {
+                                      
+                                          
+                                          tipoEmpresa.push(values['nombre']);
+
+                                     });
+
+                                     
+                                        
+                                        
+
+                                }
+                                
+                            });
+
+   
         
         
-	
-	
-});
+        
+$('#tipoEmpresa').editable({
+     value: 2,    
+        source:eval(tipoEmpresa)
+       
+    });
+    
+  $('#tipoEmpresa').on('save', function (e, params) {
+      
+      
+      
+        $.ajax({
+            type: 'POST',
+            async: false,
+            dataType: 'json',
+            data: {tipoEmpresas: params.newValue, empresa: $('input#empresaId').val(), n: 6},
+            url: Routing.generate('edit_empresa'),
+            success: function (data)
+            {
+                
+               alert('Dato insertado con exito');
+            },
+            error: function (xhr, status)
+            {
+                alert('Disculpe, existió un problema');
+                
+            }
+    });
+    }); 
+    
+  
+ 
+    $("#txtFechaFundacion").editable();
+    $('#txtFechaFundacion').on('save', function (e, params) {
+        $.ajax({
+            type: 'POST',
+            async: false,
+            dataType: 'json',
+            data: {anhoFundacion: params.newValue, empresa: $('input#empresaId').val(), n: 7},
+             url: Routing.generate('edit_empresa'),
+            success: function (data)
+            {
+                    
+                 Lobibox.notify("success", {
+                                        size: 'mini',
+                                        msg: 'Datos modificados con exito'
+                                    });
+                
+        
+            },
+            error: function (xhr, status)
+            {
+                alert('Disculpe, existió un problema');
+                
+            }
+        });
+    });    
+ 
+    
+    $("#btnespecialida").click(function () {
+        $("#contenido").empty();
+        $.ajax({
+            type: "GET",
+            url: Routing.generate('especialida'),
+            data: {hPersona: $('input#hPersona').val()},
+            //   async: false,
+            //  dataType: 'json',
 
+            success: function (data)
+            {
+                $("#contenido").append(data);
+                //  var url=Routing.generate('admin_abg',{username:data.username});
+                // window.open(url,"_self");                   
+            },
+            error: function (errors)
+            {
 
+            }
+        });
+    });
+    
+    
+    
+    
+    
+ 
     
 
-
-
-
-
-
-
-
-
-
-
-    
-
+      
 
 });
+

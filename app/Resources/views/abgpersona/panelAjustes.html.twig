@@ -1,0 +1,45 @@
+{% extends ':Layout:layout2.html.twig' %}
+{% block descripcion_y_acciones %}
+    {% block descripcion %}
+    {% endblock%}
+    {% block acciones %}
+    {% endblock %}
+{% endblock %}
+{% block js_extend %}
+    <!-- x-editable (bootstrap version) -->
+    <link href="{{ asset('Resources/src/css/bootstrap-editable.css')}}" rel="stylesheet"/>
+    <script src="{{asset('Resources/src/js/bootstrap-editable.min.js')}}"></script>
+    <link href="{{ asset('Resources/src/css/address.css')}}" rel="stylesheet"/>
+    <script src="{{asset('Resources/src/js/address.js')}}"></script>
+    <script src="{{ asset('Resources/src/js/main_perfil.js')}}"></script>
+{% endblock %} 
+{% block navegacion_Y_body %}
+    {% block navegacion %}
+    {% endblock %}
+    {% block cuerpo %}
+        <div class="clearfix"></div>
+        <div class="container" style="background-color: #ffffff; border: 1px solid #e0e0e0;">
+            {% for datos in abgPersona %}
+                <div class="row">
+                    <div class="col-md-3" style="padding: 0; background-color: #fff; border-right: 1px solid #e0e0e0; border-top-left-radius: 3px; border-bottom-left-radius: 3px;">
+                        <!-- INFOMRACION BASICA DE ABOGADO -->
+                        <p class="text-center"><img src="{{asset('Resources/src/img/profile.png')}}" style="width: 200px; height: 200px; margin: 10px; margin-bottom: 0px;" class="img-thumbnail" /></p>
+                        <p style="margin-top: 10px; font-size: 17px; margin-left: 10px; margin-bottom: 0px;" class="sans text-center">
+                            <strong>{{datos.nombre~' '~datos.apellido}}</strong>
+                            <img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
+                        <p style="color: #777777; font-size: 13px; margin-top: -3px; margin-bottom: 0px;" class="sansli text-center">Director Ejecutivo en Digitality Garage</p>
+                        <p style="color: 5555555; font-size: 12px; margin-bottom: 5px;" class="sansli text-center">San Salvador | El Salvador</p>
+                        <!-- SEPARADOR -->
+                        <div style="margin-top: 15px;"></div>
+                        <!-- PANEL DE NAVEGACION -->
+                    {% embed ':Layout:panelNavegacion.html.twig' %}{% endembed %}
+                    <!-- FIN PANEL DE NAVEGACION -->
+                </div>
+                <div class="col-md-9" style="background-color: #fff; border-top-right-radius: 3px; 	border-bottom-right-radius: 3px;">
+                {% embed ':abgpersona:ajustes.html.twig' %}{% endembed %}
+            </div>
+        {%endfor%}
+    </div>
+</div>
+{% endblock %} 
+{% endblock %}

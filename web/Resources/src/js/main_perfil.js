@@ -1,0 +1,218 @@
+
+var arrayEspecialidad = [];
+
+jQuery(function ($) {
+    /*$("#txtdui").mask("99999999-9");
+     $("#txtnit").mask("9999-999999-999-9");
+     $("#txtfijo").mask("9999-9999");*/
+
+});
+$(document).ready(function () {
+
+    //toggle `popup` / `inline` mode
+    $.fn.editable.defaults.mode = 'inline';
+    var a = '';
+    $.ajax({
+        async: false,
+        dataType: 'json',
+        url: Routing.generate('especialida'),
+        success: function (data)
+        {
+
+            $.each(data.esp, function (indice, val) {
+
+
+                arrayEspecialidad.push(val.nombre);
+                //        console.log("value:" + val.id + ", text:'" + val.nombre);
+//eval("document." + var1 + ".hevaluacion.value") === '
+            });
+        }
+
+    });
+
+    //a = datacheck.slice(0, -2);
+    // a=datacheck.slice(0,-2);
+    // console.log(eval(datacheck.slice(0,-2)));
+    $('#txtMovil').editable();
+    $('#txtOficina').editable();
+    $('#txtDireccion').editable();
+    $('#txtCorreo').editable();
+    $('#sitioweb').editable({value: 'siti web'});
+    $('#txtEducacion').editable({value: 'Educación'});
+    $('#txtMunicipio').editable({
+        // url: '/post',
+        title: 'Departamento ',
+        value: {
+            SDepartamento: "Moscow",
+            sEstado: "Lenina"
+        }
+
+    });
+
+    $('#txtUnpoco').editable({
+       
+        row: 3,
+       
+    });
+    $('#checkEspecialida').editable({
+        source: eval(arrayEspecialidad),
+        display: function (value, sourceData) {
+
+            var html = [],
+                    checked = $.fn.editableutils.itemsByValue(value, sourceData);
+
+            if (checked.length) {
+                $.each(checked, function (i, v) {
+                    html.push($.fn.editableutils.escape(v.text));
+                });
+                $(this).html(html.join(', '));
+            } else {
+                $(this).empty();
+            }
+        }
+    });
+
+    $('#checkEspecialida').on('save', function (e, params) {
+        if (params.newValue.length > 3)
+        {
+            Lobibox.notify("warning", {
+                size: 'mini',
+                msg: 'Se deben seleccionar maxino 3 especialidades.'
+            });
+        }
+        console.log(params.newValue.length);
+        console.log(params.newValue);
+        /*
+         $.ajax({
+         type: 'POST',
+         async: false,
+         dataType: 'json',
+         data: {ciudad: $("#sEstado").val(), hPersona: $('input#hPersona').val(), n: 9},
+         url: Routing.generate('edit_persona'),
+         success: function (data)
+         {
+         $('#txtMunicipio').editable('setValue', data.ciu);
+         },
+         error: function (xhr, status)
+         {
+         alert('Disculpe, existió un problema');
+         }
+         });
+         */
+    });
+
+    $('#txtMunicipio').on('save', function (e, params) {
+
+        $.ajax({
+            type: 'POST',
+            async: false,
+            dataType: 'json',
+            data: {ciudad: $("#sEstado").val(), hPersona: $('input#hPersona').val(), n: 9},
+            url: Routing.generate('edit_persona'),
+            success: function (data)
+            {
+                $('#txtMunicipio').editable('setValue', data.ciu);
+            },
+            error: function (xhr, status)
+            {
+                alert('Disculpe, existió un problema');
+            }
+        });
+
+    });
+
+    $('#sitioweb').on('save', function (e, params) {
+
+        $.ajax({
+            type: 'POST',
+            async: false,
+            dataType: 'json',
+            data: {sitio: params.newValue, hPersona: $('input#hPersona').val()},
+            url: Routing.generate('sitio'),
+            success: function (data)
+            {
+                $('#sitioweb').editable('setValue', data.sitio);
+            },
+            error: function (xhr, status)
+            {
+                alert('Disculpe, existió un problema');
+            }
+        });
+
+    });
+    $('#txtMovil').on('save', function (e, params) {
+        $.ajax({
+            type: 'POST',
+            async: false,
+            dataType: 'json',
+            data: {movil: params.newValue, hPersona: $('input#hPersona').val(), n: 8},
+            url: Routing.generate('edit_persona'),
+            success: function (data)
+            {
+                $('#txtMovil').editable({
+                    value: data.tel
+                });
+            },
+            error: function (xhr, status)
+            {
+                alert('Disculpe, existió un problema');
+            }
+        });
+    });
+
+    $('#txtOficina').on('save', function (e, params) {
+        $.ajax({
+            type: 'POST',
+            async: false,
+            dataType: 'json',
+            data: {oficina: params.newValue, hPersona: $('input#hPersona').val(), n: 7},
+            url: Routing.generate('edit_persona'),
+            success: function (data)
+            {
+                $('#txtOficina').editable({
+                    value: data.tel
+                });
+            },
+            error: function (xhr, status)
+            {
+                alert('Disculpe, existió un problema');
+            }
+        });
+    });
+    $('#txtDireccion').on('save', function (e, params) {
+        $.ajax({
+            type: 'POST',
+            async: false,
+            dataType: 'json',
+            data: {direccion: params.newValue, hPersona: $('input#hPersona').val(), n: 6},
+            url: Routing.generate('edit_persona'),
+            success: function (data)
+            {
+            },
+            error: function (xhr, status)
+            {
+                alert('Disculpe, existió un problema');
+            }
+        });
+    });
+
+
+    $('#txtUnpoco').on('save', function (e, params) {
+        $.ajax({
+            type: 'POST',
+            async: false,
+            dataType: 'json',
+            data: {descripcion: params.newValue, hPersona: $('input#hPersona').val(), n: 10},
+            url: Routing.generate('edit_persona'),
+            success: function (data)
+            {
+
+            },
+            error: function (xhr, status)
+            {
+                alert('Disculpe, existió un problema');
+            }
+        });
+    });
+
+});

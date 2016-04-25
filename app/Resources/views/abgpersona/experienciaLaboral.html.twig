@@ -1,0 +1,126 @@
+{# empty Twig template #}
+<!-- Calendar -->
+<link rel="stylesheet" href="{{ asset('Resources/zebra/css/bootstrap.css') }}">
+<script type="text/javascript" src="{{ asset('Resources/zebra/js/zebra_datepicker.js')}}" ></script>
+<script type="text/javascript">
+
+
+
+    $('.txtFechaIni').Zebra_DatePicker({
+        months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        format: 'd-m-Y',
+        direction: false,
+        show_clear_date: false,
+        show_select_today: "Hoy",
+        pair: $('.txtFechaFin'),
+    });
+    $('.txtFechaFin').Zebra_DatePicker({
+        months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        format: 'd-m-Y',
+        // direction:false,
+        show_clear_date: false,
+        show_select_today: "Hoy",
+    });
+    $("#cancel").click(function () {
+
+        $("#div1").remove();
+    });
+      $('#checkActual').change(function () {
+        
+    if ($(this).attr("checked")) {
+       
+    }
+    else{
+        //  $('#fechafin').sho();
+    }
+    
+});
+
+        var vtab = null; // para limpiar el contenedor del tab anteriormente seleccionado
+
+       
+
+            var numExpNomPac = $('#txtnombre');
+            numExpNomPac.select2({
+                allowClear: true,
+                placeholder: 'Seleccionar Expediente...',
+                minimumInputLength: 1,
+                dropdownAutoWidth: true,
+                ajax: {
+                    url: Routing.generate('empresas'),
+                    dataType: 'json',
+                    quietMillis: 500,
+                    data: function (term, page) {
+                        return {
+                            clue: term, //search term
+                            page_limit: 10, // page size
+                            page: page, // page number
+                        };
+                    },
+                    results: function (data, page) {
+                        var more = (page * 10) < data.data2;
+                        return {results: data.data1, more: more};
+                    }
+                }
+            })
+      
+   
+
+</script>
+
+<form role="form" id="fExperiencia" >
+    <input type="hidden" name="hIdPersona" id="hIdPersona" >
+
+    <div class="form-group">
+        <label for="nombreEmpleado">Nombre de la Empresa</label>
+       
+        <input type="text"  class="form-control input-sm" id="txtnombre" name="txtnombre"
+               placeholder="Nombre del empleado">
+    </div>
+    <div class="form-group">
+        <label for="ejemplo_password_1">Título</label>
+        <input type="text" class="form-control  input-sm"  id="txtpuesto" name="txtpuesto" 
+               placeholder="Nombre del puesto ">
+    </div>
+    <div class="form-group">
+        <label for="ejemplo_password_1">Ubicación</label>
+        <input type="text" class="form-control  input-sm" id="txttelefono" 
+               placeholder="Telefono" name="txttelefono" >
+    </div>
+
+
+    <div class="form-group ">
+        <label for="Fecha_inicio">Periodo </label>
+        <div class="row">
+            <div class="col-sm-3">
+                <input type="text" class="form-control txtFechaIni  input-sm" 
+                       placeholder="Fecha inicio de labor"  id="txtFechaIni" name="txtFechaIni">
+            </div>
+            <div  id="fechafin">
+            <div class="col-sm-3"  >
+                <input type="text" class="form-control txtFechaFin  input-sm" 
+                       placeholder="Fecha fin de labor"  id="txtFechaFin" name="txtFechaFin">
+            </div>
+                  </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-6">   
+                <input type="checkbox"  name="checkActual" id="checkActual" />Trabajo aquí actualmente. </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="ejemplo_password_1">Funcion del puesto</label>
+        <textarea class="form-control  input-sm" rows="3" name="txtfuncion" id="txtfuncion" placeholder="Funcion desempeñada"></textarea>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <button type="button" class="btn btn-primary btn-sm"  onclick="addExperiencia()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</form>
