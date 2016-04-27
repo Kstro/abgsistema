@@ -34,11 +34,12 @@ $(document).on("submit","#frmEmpresaUsuarioPersona",function(e) {
  
 
            success: function(data){
+                 console.log(data);
            data = jQuery.parseJSON(data);
-           console.log(data);
+         
           
 
-            if (data) {
+            if (data==true) {
                       //Ajax de insersion de datos               
                          $.ajax({ 
                                  data:{
@@ -64,7 +65,7 @@ $(document).on("submit","#frmEmpresaUsuarioPersona",function(e) {
                                         
                                        }else{
                                            
-                                        Lobibox.notify("danger", {
+                                        Lobibox.notify("Error", {
                                         size: 'mini',
                                         msg: 'Error al ingresar los datos'
                                     });
@@ -78,13 +79,10 @@ $(document).on("submit","#frmEmpresaUsuarioPersona",function(e) {
                }else{
                   
                   
-                   Lobibox.notify("danger", {
+                    Lobibox.notify("success", {
                                         size: 'mini',
-                                        msg: 'Lo sentimos mucho, el correo ingresa no es valido.'
+                                        msg: 'Correo ya existente, intenete con otro.'
                                     });
-                  
-                  
-                  
                     
                }
               

@@ -70,13 +70,23 @@ class CtlUsuario implements AdvancedUserInterface, \Serializable
      */
     private $rhPersona;
 
+  
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="CtlRol", mappedBy="ctlUsuario")
+     * @ORM\ManyToMany(targetEntity="CtlRol", inversedBy="ctlRol")
+     * @ORM\JoinTable(name="ctl_rol_usuario",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="ctl_usuario_id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="ctl_rol_id", referencedColumnName="id")
+     *   }
+     * )
      */
    
     private $ctlRol;
+    
     private $isEnabled;// = false; 
     
     

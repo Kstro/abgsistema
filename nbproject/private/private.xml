@@ -3,16 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/datos_contacto.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/perfilPublico.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/perfil.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/especialidades.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/idiomas.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/web/Resources/js/persona.js</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/experienciaLaboral.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/panelAdministrativoAbg.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/web/Resources/src/js/main_perfil.js</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/AbgPersonaController.php</file>
+            <file>file:/C:/xampp/htdocs/abgsistema/src/DGAbgSistemaBundle/Controller/CtlPaypalController.php</file>
+            <file>file:/C:/xampp/htdocs/abgsistema/src/DGAbgSistemaBundle/Controller/CtlEmpresaController.php</file>
         </group>
     </open-files>
 </project-private>

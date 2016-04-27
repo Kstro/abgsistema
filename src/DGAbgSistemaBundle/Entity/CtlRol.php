@@ -28,19 +28,11 @@ class CtlRol implements RoleInterface
      * @ORM\Column(name="rol", type="string", length=555, nullable=false)
      */
     private $rol;
-
-    /**
+    
+      /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="CtlUsuario", inversedBy="ctlRol")
-     * @ORM\JoinTable(name="ctl_rol_usuario",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="ctl_rol_id", referencedColumnName="id")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="ctl_usuario_id", referencedColumnName="id")
-     *   }
-     * )
+     * @ORM\ManyToMany(targetEntity="CtlUsuario", mappedBy="ctlRol")
      */
     private $ctlUsuario;
 

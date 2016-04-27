@@ -12,6 +12,8 @@ use DGAbgSistemaBundle\Entity\AbgFoto;
 use DGAbgSistemaBundle\Entity\AbgPersona;
 use DGAbgSistemaBundle\Entity\CtlUsuario;
 use DGAbgSistemaBundle\Entity\AbgSitioWeb;
+use DGAbgSistemaBundle\Entity\AbgUrlPersonalizada;
+use DGAbgSistemaBundle\Entity\AbgVisitas;
 use DGAbgSistemaBundle\Form\CtlEmpresaType;
 use Symfony\Component\HttpFoundation\Response;
 use DGAbgSistemaBundle\Entity\AbgPersonaSubespecialidad;
@@ -132,10 +134,7 @@ class CtlEmpresaController extends Controller
         
         $registro_tipoempresa = $em->createQuery($dqlTipoEmpresa)->getResult();   
         
-        
-       
-           
-        
+      
         //Valor de la persona
         
         
@@ -152,7 +151,7 @@ class CtlEmpresaController extends Controller
                 . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=1";
         $result_fotoAbogado = $em->createQuery($dqlfoto)->getArrayResult();        
         
-            
+
         return $this->render('ctlempresa/paneladministrativoempresa.html.twig', array(
              'ctlEmpresa' => $result_empresa,
             'abgFoto' =>$result_foto,
@@ -184,7 +183,16 @@ class CtlEmpresaController extends Controller
          $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
          $ctlEmpresaId = $RepositorioPersona[0]->getCtlEmpresa()->getId();
         
-         //Coleccion de datos de la empresa
+      //Completo los elementos de las visitas
+      $entity = $em->getRepository('DGAbgSistemaBundle:AbgVisitas')->findBy(array("ctlEmpresa" =>$ctlEmpresaId));
+      $valor=$entity[0]->getVisita();
+      
+      $contador = $valor+1;
+      $entity[0]->setVisita($contador);
+      $em->merge($entity[0]);
+      $em->flush();
+     
+       //Coleccion de datos de la empresa
          
         $dqlempresa = "SELECT  e.nombreEmpresa AS nombreEmpresa, e.correoelectronico as correoEmpresa, e.direccion, e.sitioWeb,e.movil, e.telefono, e.color,e.cantidadEmpleados ,e.latitude, e.longitude ,"
                 . "date_format(e.fechaFundacion, '%Y') As fechaFundacion"
@@ -198,7 +206,7 @@ class CtlEmpresaController extends Controller
                 . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.ctlEmpresa=" . $ctlEmpresaId . " and fot.estado=1 and fot.tipoFoto=1";
         $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
        
-        
+     
         //Array de si se lista o no dentro del perfil de la empresa
         $RepositorioListaEmpresa = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlEmpresa')->find($ctlEmpresaId); //->getRhPersona();
         $lista =$RepositorioListaEmpresa->getListaEmpleado();
@@ -231,29 +239,8 @@ class CtlEmpresaController extends Controller
         
         //Llenando las especialidades
         
-                $dql_especialida = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre"
-                        . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
-                        . "JOIN  DGAbgSistemaBundle:CtlSubespecialidad sub WHERE e.id=sub.abgEspecialidad "
-                        . "JOIN DGAbgSistemaBundle:AbgPersonaSubespecialidad pe WHERE sub.id=pe.abgSubespecialidad AND pe.ctlEmpresa=" .$ctlEmpresaId 
-                        . " GROUP by e.id";
-                $result_especialida = $em->createQuery($dql_especialida)->getArrayResult();
-               
-                
-                if ($result_especialida) {
-                    
-                    $dsql_sub = "SELECT pe.id AS idSub,sub.abgSubespecialidadcol AS nombre, e.id AS idEsp  "
-                            . "FROM  DGAbgSistemaBundle:AbgPersonaSubespecialidad pe "
-                            . "JOIN  DGAbgSistemaBundle:CtlSubespecialidad sub WHERE  sub.id=pe.abgSubespecialidad AND  pe.ctlEmpresa=" .$ctlEmpresaId 
-                            . "JOIN  DGAbgSistemaBundle:CtlEspecialidad e WHERE e.id=sub.abgEspecialidad ";
-                    $result_sub = $em->createQuery($dsql_sub)->getArrayResult();
-                    
-                   
 
-                }else{
-                     $result_especialida=null;
-                     $result_sub=null;
-                    
-                }
+              
                 
                 
                 
@@ -268,7 +255,7 @@ class CtlEmpresaController extends Controller
         $result_persona = $em->createQuery($dql_persona)->getArrayResult();
      
         
-        
+       
          
         
         return $this->render('ctlempresa/perfilEmpresa.html.twig', array(
@@ -279,8 +266,9 @@ class CtlEmpresaController extends Controller
             'tipoEmpresa' =>$registro_tipoempresa,
             'usuario'=>$username,
             'abgPersona' => $result_persona,
-            'abgEspecialida'=>$result_especialida,
-            'subEsp'=>$result_sub,
+            'visitas'=>$valor,
+         
+            
             
            
         ));
@@ -457,27 +445,81 @@ class CtlEmpresaController extends Controller
             $ctlEmpresa->setDescripcion(null);
             $ctlEmpresa->setCorreoelectronico('ejemplo@ejemplo.com');
             $ctlEmpresa->setColor("#000035");
+            
             $ctlEmpresa->setCantidadEmpleados(null);
             $ctlEmpresa->setLatitude(13.70036411285400400000);
             $ctlEmpresa->setLongitude(-89.22023010253906000000);
             $ctlEmpresa->setListaEmpleado(1);
-            
-
             $em->persist($ctlEmpresa);
             $em->flush();
             
             $idEmpresa = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlEmpresa')->find($ctlEmpresa->getId());
 
+            
             //Ingreso de un usuario
+            $rol = $em->getRepository('DGAbgSistemaBundle:CtlRol')->find(2);
+            
             $ctlUsuario->setUsername($correoUsuario);
             $ctlUsuario->setPassword($contrasenha);
             $ctlUsuario->setEstado('1');
             $ctlUsuario->setRhPersona($idPersona);
             $ctlUsuario->setCtlEmpresa($idEmpresa);
-            
+            $ctlUsuario->addCtlRol($rol);
             $this->setSecurePassword($ctlUsuario, $contrasenha);
             $em->persist($ctlUsuario);
             $em->flush();
+            
+            
+            //Creo el registro de visitas de los perfiles publicos de empresa y persona
+            
+            $visitasE = new AbgVisitas();
+            $visitasE->setAbgPersona(null);
+            $visitasE->setCtlEmpresa($idEmpresa);
+            $visitasE->setVisita(0);
+            $visitasE->setVisitaUnica(0);
+             $em->persist($visitasE);
+             $em->flush();
+            
+            
+            $visitasP = new AbgVisitas();
+            $visitasP->setAbgPersona($idPersona);
+            $visitasP->setCtlEmpresa(null);
+            $visitasP->setVisita(0);
+            $visitasP->setVisitaUnica(0);
+            $em->persist($visitasP);
+            $em->flush();
+            
+          //Creacion de las registros de la URL personalizada
+            //Ingreso de url de la empresa
+     
+            $url = $this->generarCorrelativoEmpresa();
+            $urlPerE= new AbgUrlPersonalizada();
+            $urlPerE->setCtlEmpresa($idEmpresa);
+            $urlPerE->setAbgPersona(null);
+            $urlPerE->setEstado(1);
+            $urlPerE->setUrl($url);
+            $em->persist($urlPerE);
+            $em->flush();
+            
+            
+            
+            //Ingreso de la url del abogado
+           
+            $urlA=  $this->generarCorrelativoAbogado();
+            
+            $urlPerA= new AbgUrlPersonalizada();
+            $urlPerA->setCtlEmpresa(null);
+            $urlPerA->setAbgPersona($idPersona);
+            $urlPerA->setEstado(1);
+            $urlPerA->setUrl($urlA);
+            $em->persist($urlPerA);
+            $em->flush();
+            
+            
+            
+            
+            
+            
 //            $em->getConnection()->commit();
 //            $em->close();
             
@@ -486,7 +528,6 @@ class CtlEmpresaController extends Controller
                     //Ojo que posteriormente tengo que sacar los valores con el id de la variable de sesion que este presente
                     
                     $idEmpresas = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlEmpresa')->find($idEmpresa);
-                    
                     $abgFotoE= new AbgFoto();
                     //Aqui termina lo del id
                     $abgFotoE->setAbgPersona(null);
@@ -507,9 +548,14 @@ class CtlEmpresaController extends Controller
                     $abgFoto->setFechaRegistro(null);
                     $abgFoto->setFechaExpiracion(null);
                     $abgFoto->setEstado(1);
-                     $em->persist($abgFoto);
-                     $em->flush();
+                    $em->persist($abgFoto);
+                    $em->flush();
                      
+                    
+                    
+                    
+                    
+                    
                   
                      
                  $data['username'] = $ctlUsuario->getUsername();
@@ -540,9 +586,7 @@ class CtlEmpresaController extends Controller
       public function ValidarCorreoAction(Request $request) {
         
         $isAjax = $this->get('Request')->isXMLhttpRequest();
-   /*     var_dump($isAjax);
-        exit();*/
-         
+
          if($isAjax){
             
             $em = $this->getDoctrine()->getManager();
@@ -700,7 +744,7 @@ class CtlEmpresaController extends Controller
                                                 $entity[0]->setEstado(1);
                                                 $em->merge($entity[0]);
                                                 $em->flush();
-                                                
+                                               
                                                 $enti = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("ctlEmpresa" =>$idEmpresa,"tipoFoto"=>1));
                                                 
                                                 $direcciones = $enti[0]->getSrc();
@@ -1189,10 +1233,79 @@ class CtlEmpresaController extends Controller
     
      }    
      
- 
-     
-     
-
+     public function generarCorrelativoEmpresa(){
     
-
+       
+        $em = $this->getDoctrine()->getManager();
+        $dqlNumerocorrelativo = "SELECT COUNT(u.id) as numero FROM DGAbgSistemaBundle:AbgUrlPersonalizada u"
+                . " WHERE u.url like '%EMP%' ";
+        $resultCorrelativo = $em->createQuery($dqlNumerocorrelativo)->getArrayResult();
+        $numero_base = $resultCorrelativo[0]['numero'];
+        
+        
+       $primerLetras="EM"; 
+       $valor ="";
+        
+       $numero = $numero_base+1;
+        switch (strlen($numero_base)){
+            case 1:
+                $valor=$primerLetras.=$numero.="0000";
+            break;
+            case 2:    
+                 $valor= $primerLetras.=$numero.="000";
+            break;
+            case 3:    
+                 $valor= $primerLetras.=$numero.="00";
+            break;
+            case 4:    
+                 $valor= $primerLetras.=$numero.="0";
+            break;
+            case 5:    
+                  $valor=$primerLetras.=$numero;
+            break;
+            
+              
+            
+        }
+        return $valor;
+     }
+     
+     
+        public function generarCorrelativoAbogado(){
+    
+       
+        $em = $this->getDoctrine()->getManager();
+        $dqlNumerocorrelativo = "SELECT COUNT(u.id) as numero FROM DGAbgSistemaBundle:AbgUrlPersonalizada u"
+                . " WHERE u.url like '%AB%' ";
+        $resultCorrelativo = $em->createQuery($dqlNumerocorrelativo)->getArrayResult();
+        $numero_base = $resultCorrelativo[0]['numero'];
+        
+        
+       $primerLetras="AB"; 
+       $valor ="";
+        
+       $numero = $numero_base+1;
+        switch (strlen($numero_base)){
+            case 1:
+                $valor=$primerLetras.=$numero.="0000";
+            break;
+            case 2:    
+                 $valor= $primerLetras.=$numero.="000";
+            break;
+            case 3:    
+                 $valor= $primerLetras.=$numero.="00";
+            break;
+            case 4:    
+                 $valor= $primerLetras.=$numero.="0";
+            break;
+            case 5:    
+                  $valor=$primerLetras.=$numero;
+            break;
+            
+              
+            
+        }
+        return $valor;
+     }
+   
 }
