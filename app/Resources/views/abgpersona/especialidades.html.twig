@@ -1,6 +1,5 @@
 <script type="text/javascript">
     $(document).ready(function () {
-
         $("#cancel").click(function () {
             $("#contenido").show();
             $("#div01").remove();
@@ -9,6 +8,9 @@
 <form role="form" id="fEspecialida" >
     {%set n = 0%}
     {%if especialidadesS|default is not empty %}
+        <script type="text/javascript">
+           fil();
+        </script>
         {% for datos in especialidadesS %}
             {%set n =n +1%}
             <div class="form-group">
@@ -31,8 +33,6 @@
                             </div>
                         {%endif%}
                     </div>
-
-
                     {%if ((n>0)and (n % 3== 0))%}
                         <div class="clearfix"></div>
                     {%endif%}  
@@ -69,8 +69,6 @@
                     </div>
                 </div>
             {%endfor%}
-
-
             <div class="clearfix"></div>
             <div class="row">
                 <div class="col-sm-12">
@@ -78,11 +76,8 @@
                         <button type="button" class="btn btn-primary btn-sm"  onclick="addEspecialida()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
                     </div>
                 </div>
-            </div>
-
-        {#%else%#}       
-
+            </div>  
+        {%endif%} 
     {%endif%} 
-{%endif%} 
 </form>
 

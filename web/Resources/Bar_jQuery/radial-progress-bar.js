@@ -177,7 +177,7 @@ $.fn.radialPieChart = function(func, options) {
     }, 0);
     for (var i = 0; i < options['data'].length; i++) {
       $(this).data("__pieChartSegment" + i, new radialProgress($(this), $.extend(options, options['data'][i], {'lines': options['data'].length, 'line': i })));
-      $(this).data("__pieChartSegment" + i).toPerc({'perc': sum, 'offset': sum - options['data'][i].perc});
+     // $(this).data("__pieChartSegment" + i).toPerc({'perc': sum, 'offset': sum - options['data'][i].perc});
       sum -= options['data'][i].perc;
     }
   }

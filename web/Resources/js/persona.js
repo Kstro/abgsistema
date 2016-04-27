@@ -2,14 +2,57 @@
 var editExp = "", actExp, editEdu = "", idEspS = null;
 var Especialida = [];
 var DataEspecialida = [];
-var Idioma = [];
+var Nidioma, Idioma = [];
 var DatosIdiomas = [];
 var EspecialidaSelect = [];
 var datos = "", datosMostrados = "";
 
 $(document).on('ready', function () {
-    
-     $("#btnDatosContacto").click(function () {
+
+    $("#btnVerperfil").click(function () {
+        $.ajax({
+            type: "GET",
+            url: Routing.generate('ver_perfil'),
+            success: function (data)
+            {
+                $("#verPerfil").show();
+                $("#verPerfil").html(data);
+                $("#editarPerfil").hide();
+            },
+            error: function (errors)
+            {
+
+            }
+        });
+    });
+
+
+    $('#myonoffswitch').change(function () {
+        var estado;
+        if ($('#myonoffswitch').is(":checked")) {
+            estado = 1;
+        } else {
+            estado = 0;
+        }
+        $.ajax({
+            type: 'POST',
+            async: false,
+            dataType: 'json',
+            data: {estado: estado, hPersona: $('input#hPersona').val(), n: 2},
+            url: Routing.generate('edit_persona'),
+            success: function (data)
+            {
+
+            },
+            error: function (xhr, status)
+            {
+                alert('Disculpe, existió un problema');
+            }
+        });
+
+    });
+
+    $("#btnDatosContacto").click(function () {
 
         if ($("#div001").length > 0) {
 
@@ -17,11 +60,12 @@ $(document).on('ready', function () {
             $.ajax({
                 type: "GET",
                 url: Routing.generate('datos_contacto'),
-              //  data: {hPersona: $('input#hPersona').val()},
+                //  data: {hPersona: $('input#hPersona').val()},
                 success: function (data)
                 {
                     div = '<div class="nueva-Experiencia" id="div001"  style="background-color: #f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
                     $("#datosContacto").before(div);
+                    $("#datosContacto").hide();
 
                 },
                 error: function (errors)
@@ -31,7 +75,30 @@ $(document).on('ready', function () {
             });
         }
     });
-     
+
+    $("#btnUnpoco").click(function () {
+
+        if ($("#div002").length > 0) {
+
+        } else {
+            $.ajax({
+                type: "GET",
+                url: Routing.generate('sobremi'),
+                success: function (data)
+                {
+                    div = '<div class="nueva-Experiencia" id="div002"  style="background-color: #f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+                    $("#conetenedorUnpoco").hide();
+                    $("#conetenedorUnpoco").before(div);
+
+
+                },
+                error: function (errors)
+                {
+
+                }
+            });
+        }
+    });
     $("#enfiarf").click(function () {
         $.ajax({
             type: "GET",
@@ -206,10 +273,17 @@ $(document).on('ready', function () {
             });
         }
     });
-        
- 
+
 
 });
+function editIdioma()
+{
+    $('#btnIdioma').click();
+}
+function editEspe()
+{
+    $('#btnespecialida').click();
+}
 function editExperiencia(val)
 {
     var div, divn;
@@ -239,15 +313,24 @@ function removeExperiencia(val)
         type: "GET",
         url: Routing.generate('remove_experiencia'),
         data: {experiencia: val},
+        async: false,
+        dataType: 'json',
         success: function (data)
         {
-        if (data.msj !== false) 
-        {
-             Lobibox.notify("success", {
-                        size: 'mini',
-                        msg: data.msj
-                    });
-        }
+            if (data.msj !== false)
+            {
+                Lobibox.notify("success", {
+                    size: 'mini',
+                    msg: data.msj
+                });
+                $("#Exp" + val).remove();
+            } else
+            {
+                Lobibox.notify("warning", {
+                    size: 'mini',
+                    msg: data.error
+                });
+            }
 
         },
         error: function (errors)
@@ -258,7 +341,7 @@ function removeExperiencia(val)
 }
 function fil(idcheckbox)
 {
-    console.log(DataEspecialida);
+
     if (Especialida.indexOf(idcheckbox) === -1)
     {
         if (Especialida.length < 3)
@@ -316,15 +399,85 @@ function fil(idcheckbox)
             }
         });
     }
-    console.log(DataEspecialida);
 }
 
+function editDatosContacto() {
 
+    if ($("#txtFijo").val() !== "" && $("#txtDirecion").val() !== "" && $("#txtEmail").val() !== "")
+    {
+        var datos;
+        $("#fdatosContacto").submit(
+                function (event) {
+                    $.ajax({
+                        type: 'POST',
+                        async: false,
+                        dataType: 'json',
+                        url: Routing.generate('edit_persona'),
+                        data: {hPersona: $('input#hPersona').val(), dato: $("#fdatosContacto").serialize(), n: 0},
+                        success: function (data)
+                        {
+                            if (data.msj !== false) {
+                                $('#txtOficina').editable('setValue', $("#txtFijo").val());
+                                $('#txtMovil').editable('setValue', $("#txtMovil").val());
+                                $('#txtCorreo').editable('setValue', $("#txtEmail").val());
+                                $('#txtDireccion').editable('setValue', $("#txtDirecion").val());
+                                $("#div001").remove();
+                                $("#datosContacto").show();
+                                Lobibox.notify("success", {
+                                    size: 'mini',
+                                    msg: data.msj
+                                });
+                            }
+                        }
+                        ,
+                        error: function (errors)
+                        {
 
+                        }
+                    });
+                    event.preventDefault();
+                });
+    }
+}
+
+function editSobremi() {
+
+    if ($("#txtUnpoco1").val() !== "")
+    {
+        $("#funpoco").submit(
+                function (event) {
+
+                    $.ajax({
+                        type: 'POST',
+                        async: false,
+                        dataType: 'json',
+                        url: Routing.generate('edit_persona'),
+                        data: {hPersona: $('input#hPersona').val(), descripcion: $("#txtUnpoco1").val(), n: 10},
+                        success: function (data)
+                        {
+                            if (data.msj !== false) {
+                                $('#txtUnpoco').editable('setValue', $("#txtUnpoco1").val());
+                                $("#div002").remove();
+                                $("#conetenedorUnpoco").show();
+                                Lobibox.notify("success", {
+                                    size: 'mini',
+                                    msg: data.msj
+                                });
+                            }
+                        }
+                        ,
+                        error: function (errors)
+                        {
+
+                        }
+                    });
+                    event.preventDefault();
+                });
+    }
+}
 function addEspecialida()
 {
-    
-     $("#fEspecialida").submit();
+
     if (DataEspecialida.length > 0)
     {
         // $("#div01").remove();
@@ -339,8 +492,6 @@ function addEspecialida()
             dataType: 'json',
             success: function (data)
             {
-
-                console.log(data.Esp);
                 if (data.msj !== false) {
                     $.each($(data.Esp), function (indice, val) {
 
@@ -361,6 +512,17 @@ function addEspecialida()
                         $("#div01").remove();
                         $("#contenido").append(datos);
                     });
+                    var boton = '<div><p><script type="text/javascript">';
+                                datos += '$("#Idioma").hover(';
+                                datos += 'function(){';
+                                datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
+                                datos += 'onclick="editIdioma()"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
+                                datos += 'onclick="editIdioma()">&nbsp;Eliminar</i></span>\'));';
+                                datos += '},function(){';
+                                datos += '$(this).find("span:last").remove();';
+                                datos += '});';
+                                datos += '</script></p></div>';
+                                $("#contenido").append(boton);
                     Lobibox.notify("success", {
                         size: 'mini',
                         msg: data.msj
@@ -385,228 +547,295 @@ function addEspecialida()
         });
     } else
     {
-        $("#contenido").empty();
-        $("#contenido").append(datosMostrados);
+        // $("#contenido").empty();
+        // $("#contenido").append(datosMostrados);
     }
 }
 
+function addExperiencia()
+{
 
-function addExperiencia() {
-    
-    $("#fExperiencia").submit(
-            function( event ) {
- var empresa, tipo;
-    if ($('#cambioEmpresa').is(":visible")) {
-        empresa = ($("#ScambioEmpresa").val());
-        tipo = 1;
-    } else {
-        empresa = $("#txtEditEmpresa").val();
-        tipo = 0;
-    }
-    var datos;
-    $.ajax({
-        type: 'POST',
-        async: false,
-        dataType: 'json',
-        url: Routing.generate('registrar_experiencia'),
-        data: {hPersona: $('input#hPersona').val(), dato: $("#fExperiencia").serialize(), empresa: empresa, tipo: tipo},
-        success: function (data)
-        {
+    if ($("#txtpuesto").val() !== "" && $("#txthubicacion").val() !== "" && $("#txtFechaIni").val() !== "" && ($("#txtEditEmpresa").val() !== "" || $("#ScambioEmpresa").val() !== ""))
+    {
 
-            if (data.msj !== false) {
-                $.each($(data.Exp), function (indice, val) {
-                    $("#Exp" + val.id).remove();
-                    datos = '<div class="row" id="Exp' + val.id + '">';
-                    datos += '<div class="col-xs-1">';
-                    if (val.src !== null)
-                    {
-                        datos += '<img src="' + val.src.substring(18) + '">';
-                    }
-                    datos += '</div>';
-                    datos += '<div class="col-xs-11">';
-                    datos += '<span style="font-size: 15px;">' + val.empresa + '</span>';
-                    datos += '&nbsp;<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
-                    datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
-                    datos += '<span style="font-size: 13px;">' + val.puesto + ' </br>';
+        $("#fExperiencia").submit(
+                function (event) {
 
-                    if (val.dias === null) {
-                        datos += val.fechaIn + ' - Actualmente';
+                    var empresa, tipo;
+                    if ($('#cambioEmpresa').is(":visible")) {
+                        empresa = ($("#ScambioEmpresa").val());
+                        tipo = 1;
                     } else {
-                        datos += val.fechaIn + ' - ' + val.fechaFin + '&nbsp;';
-                        datos += '(&nbsp;' + parseFloat(val.dias / 365).toFixed(0) + '&nbsp;años&nbsp' + ((parseFloat(val.dias / 365) - (parseFloat(val.dias / 365).toFixed(0))) * 12).toFixed(0) + '&nbsp;meses)&nbsp;|&nbsp;';
+                        empresa = $("#txtEditEmpresa").val();
+                        tipo = 0;
                     }
-                    datos += val.hubicacion + '</span>';
-                    datos += '<p style = "width: 90%; margin-top: 5px;text-align:justify;">' + val.funcion;
-                    datos += '<script type="text/javascript">';
-                    datos += '$("#Exp' + val.id + '").hover(';
-                    datos += 'function(){';
-                    datos += '$(this).append($(\'<span  style="margin-left:83px;"><i class ="fa fa-pencil fa-x2 btn  btn-default" ';
-                    datos += 'onclick="editExperiencia(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn  btn-default" ';
-                    datos += 'onclick="editExperiencia(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
-                    datos += '},function(){';
-                    datos += '$(this).find("span:last").remove();';
-                    datos += '});';
-                    datos += '</script></p>';
-                    datos += '</div>';
-                    datos += '</div>';
-                }
-                );
-                $("#consultas").append(datos);
-                Lobibox.notify("success", {
-                    size: 'mini',
-                    msg: data.msj
-                });
-                $("#div1").remove();
-            } else {
-                Lobibox.notify("warning", {
-                    size: 'mini',
-                    msg: data.error
-                });
-            }
-        }
-        ,
-        error: function (errors)
-        {
+                    var datos;
+                    $.ajax({
+                        type: 'POST',
+                        async: false,
+                        dataType: 'json',
+                        url: Routing.generate('registrar_experiencia'),
+                        data: {hPersona: $('input#hPersona').val(), dato: $("#fExperiencia").serialize(), empresa: empresa, tipo: tipo},
+                        success: function (data)
+                        {
+                            if (data.msj !== false) {
+                                $.each($(data.Exp), function (indice, val) {
+                                    $("#Exp" + val.id).remove();
+                                    datos = '<div class="row" id="Exp' + val.id + '">';
+                                    datos += '<div class="col-xs-1">';
+                                    if (val.src !== null)
+                                    {
+                                        datos += '<img src="' + val.src.substring(18) + '">';
+                                    }
+                                    datos += '</div>';
+                                    datos += '<div class="col-xs-11">';
+                                    datos += '<span style="font-size: 15px;">' + val.empresa + '</span>';
+                                    datos += '&nbsp;<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
+                                    datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
+                                    datos += '<span style="font-size: 13px;">' + val.puesto + ' </br>';
 
-        }
+                                    if (val.dias === null) {
+                                        datos += val.fechaIn + ' - Actualmente';
+                                    } else {
+                                        datos += val.fechaIn + ' - ' + val.fechaFin + '&nbsp;';
+                                        datos += '(&nbsp;' + parseFloat(val.dias / 365).toFixed(0) + '&nbsp;años&nbsp' + ((parseFloat(val.dias / 365) - (parseFloat(val.dias / 365).toFixed(0))) * 12).toFixed(0) + '&nbsp;meses)&nbsp;|&nbsp;';
+                                    }
+                                    datos += val.hubicacion + '</span>';
+                                    datos += '<p style = "width: 90%; margin-top: 5px;text-align:justify;">' + val.funcion;
+                                    datos += '<script type="text/javascript">';
+                                    datos += '$("#Exp' + val.id + '").hover(';
+                                    datos += 'function(){';
+                                    datos += '$(this).append($(\'<span  style="margin-left:83px;"><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
+                                    datos += 'onclick="editExperiencia(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn  btnperfil" ';
+                                    datos += 'onclick="removeExperiencia(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
+                                    datos += '},function(){';
+                                    datos += '$(this).find("span:last").remove();';
+                                    datos += '});';
+                                    datos += '</script></p>';
+                                    datos += '</div>';
+                                    datos += '</div>';
+                                }
+                                );
+                                $("#consultas").append(datos);
+                                Lobibox.notify("success", {
+                                    size: 'mini',
+                                    msg: data.msj
+                                });
+                                $("#div1").remove();
+                            } else {
+                                Lobibox.notify("warning", {
+                                    size: 'mini',
+                                    msg: data.error
+                                });
+                            }
+                        }
+                        ,
+                        error: function (errors)
+                        {
+
+                        }
+                    }
+                    );
+                    event.preventDefault();
+                });
     }
-    );
-  event.preventDefault();
-});
-    
-}
 
+}
 
 function addEdu() {
-    var empresa, tipo;
-    /*  if ($('#cambioEmpresa').is(":visible")) {
-     empresa = ($("#ScambioEmpresa").val());
-     tipo = 1;
-     } else {
-     empresa = $("#txtEditEmpresa").val();
-     tipo = 0;
-     }*/
-    var datos;
+    if ($("#txtCentro").val() !== "" && $("#txtTitulo").val() !== "" && $("#Sdisciplina").val() !== "" && $("#txtAnioIni").val() !== "")
+    {
+
+        var datos;
+        $("#fEdu").submit(
+                function (event) {
+                    $.ajax({
+                        type: 'POST',
+                        async: false,
+                        dataType: 'json',
+                        url: Routing.generate('registrar_edu'),
+                        data: {hPersona: $('input#hPersona').val(), dato: $("#fEdu").serialize()},
+                        success: function (data)
+                        {
+
+                            if (data.msj !== false) {
+                                $.each($(data.Edu), function (indice, val) {
+                                    $("#Edu" + val.idEs).remove();
+                                    datos = '<div class="row" id="Edu' + val.idEs + '">';
+                                    datos += '<div class="col-xs-11">';
+                                    datos += '<span style="font-size: 15px;">' + val.institucion + '</span>';
+                                    datos += '<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
+                                    datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
+                                    datos += '<span style="font-size: 13px;">' + val.disciplina + ' | ' + val.titulo + ' </br>' + val.anioIni + ' - ' + val.anio + '</span>';
+                                    datos += '<p style = "width: 90%; margin-top: 5px;text-align:justify;">';
+                                    datos += '<script type="text/javascript">';
+                                    datos += '$("#Edu' + val.idEs + '").hover(';
+                                    datos += 'function(){';
+                                    datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
+                                    datos += 'onclick="editEducacion(' + val.idEs + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
+                                    datos += 'onclick="removeEdu(' + val.idEs + ')">&nbsp;Eliminar</i></span>\'));';
+                                    datos += '},function(){';
+                                    datos += '$(this).find("span:last").remove();';
+                                    datos += '});';
+                                    datos += '</script></p>';
+                                    datos += '</div>';
+                                    datos += '</div>';
+                                });
+                                $("#consultaEducacion").append(datos);
+                                Lobibox.notify("success", {
+                                    size: 'mini',
+                                    msg: data.msj
+                                });
+                                $("#div2").remove();
+                            } else {
+                                Lobibox.notify("warning", {
+                                    size: 'mini',
+                                    msg: data.error
+                                });
+                            }
+                        }
+                        ,
+                        error: function (errors)
+                        {
+
+                        }
+                    });
+                    event.preventDefault();
+                });
+    }
+}
+function removeEdu(val)
+{
     $.ajax({
-        type: 'POST',
+        type: "POST",
+        url: Routing.generate('remove_educacion'),
         async: false,
         dataType: 'json',
-        url: Routing.generate('registrar_edu'),
-        data: {hPersona: $('input#hPersona').val(), dato: $("#fEdu").serialize()},
+        data: {edu: val},
         success: function (data)
         {
-
-            if (data.msj !== false) {
-                $.each($(data.Edu), function (indice, val) {
-                    $("#Edu" + val.idEs).remove();
-                    datos = '<div class="row" id="Edu' + val.idEs + '">';
-                    datos += '<div class="col-xs-11">';
-                    datos += '<span style="font-size: 15px;">' + val.institucion + '</span>';
-                    datos += '<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
-                    datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
-                    datos += '<span style="font-size: 13px;">' + val.disciplina + ' | ' + val.titulo + ' </br>' + val.anioIni + ' - ' + val.anio + '</span>';
-                    datos += '<p style = "width: 90%; margin-top: 5px;text-align:justify;">';
-                    datos += '<script type="text/javascript">';
-                    datos += '$("#Edu' + val.idEs + '").hover(';
-                    datos += 'function(){';
-                    datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn  btn-default" ';
-                    datos += 'onclick="editEducacion(' + val.idEs + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn  btn-default" ';
-                    datos += 'onclick="editEducacion(' + val.idEs + ')">&nbsp;Eliminar</i></span>\'));';
-                    datos += '},function(){';
-                    datos += '$(this).find("span:last").remove();';
-                    datos += '});';
-                    datos += '</script></p>';
-                    datos += '</div>';
-                    datos += '</div>';
-                });
-                $("#consultaEducacion").append(datos);
+            if (data.msj)
+            {
                 Lobibox.notify("success", {
                     size: 'mini',
                     msg: data.msj
                 });
-                $("#div2").remove();
-            } else {
+
+                $("#Edu" + val).remove();
+            } else
+            {
                 Lobibox.notify("warning", {
                     size: 'mini',
                     msg: data.error
                 });
             }
-        }
-        ,
+
+        },
         error: function (errors)
         {
 
         }
     });
-
 }
-
 function addOrganizacion() {
-    var empresa, tipo;
-    /*  if ($('#cambioEmpresa').is(":visible")) {
-     empresa = ($("#ScambioEmpresa").val());
-     tipo = 1;
-     } else {
-     empresa = $("#txtEditEmpresa").val();
-     tipo = 0;
-     }*/
-    var datos;
+
+    if ($("#txtOrg").val() !== "" && $("#txtPuestoOrg").val() !== "" && $("#txtFechIniOrg").val() !== "")
+    {
+
+        var datos;
+        $("#fOrg").submit(
+                function (event) {
+                    var datos;
+                    $.ajax({
+                        type: 'POST',
+                        async: false,
+                        dataType: 'json',
+                        url: Routing.generate('registrar_org'),
+                        data: {hPersona: $('input#hPersona').val(), dato: $("#fOrg").serialize()},
+                        success: function (data)
+                        {
+
+                            if (data.msj !== false) {
+                                $.each($(data.Organizacion), function (indice, val) {
+                                    $("#Org" + val.id).remove();
+                                    datos = '<div class="row" id="Org' + val.id + '">';
+                                    datos += '<div class="col-xs-11">';
+                                    datos += '<span style="font-size: 16px;">' + val.nombre + '</span>';
+                                    datos += '<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
+                                    datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
+                                    datos += '<span style="font-size: 13px;">' + val.puesto + ' </br>' + val.fechaIn + ' - ' + val.fechaFin + '</span>';
+                                    datos += '<p style = "width: 100%; margin-top: 5px;text-align:justify;">' + val.descripcion;
+                                    datos += '<script type="text/javascript">';
+                                    datos += '$("#Org' + val.id + '").hover(';
+                                    datos += 'function(){';
+                                    datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
+                                    datos += 'onclick="editOrganizacion(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
+                                    datos += 'onclick="removeOrg(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
+                                    datos += '},function(){';
+                                    datos += '$(this).find("span:last").remove();';
+                                    datos += '});';
+                                    datos += '</script></p>';
+                                    datos += '</div>';
+                                    datos += '</div>';
+                                });
+                                $("#consultaOrg").append(datos);
+                                Lobibox.notify("success", {
+                                    size: 'mini',
+                                    msg: data.msj
+                                });
+                                $("#div5").remove();
+                            } else {
+                                Lobibox.notify("warning", {
+                                    size: 'mini',
+                                    msg: data.error
+                                });
+
+
+                            }
+                        }
+                        ,
+                        error: function (errors)
+                        {
+
+                        }
+                    });
+                    event.preventDefault();
+                });
+    }
+}
+function removeOrg(val)
+{
     $.ajax({
-        type: 'POST',
+        type: "POST",
+        url: Routing.generate('remove_org'),
         async: false,
         dataType: 'json',
-        url: Routing.generate('registrar_org'),
-        data: {hPersona: $('input#hPersona').val(), dato: $("#fOrg").serialize()},
+        data: {org: val},
         success: function (data)
         {
-
-            if (data.msj !== false) {
-                $.each($(data.Organizacion), function (indice, val) {
-                    $("#Org" + val.id).remove();
-                    datos = '<div class="row" id="Org' + val.id + '">';
-                    datos += '<div class="col-xs-11">';
-                    datos += '<span style="font-size: 16px;">' + val.nombre + '</span>';
-                    datos += '<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
-                    datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
-                    datos += '<span style="font-size: 13px;">' + val.puesto + ' </br>' + val.fechaIn + ' - ' + val.fechaFin + '</span>';
-                    datos += '<p style = "width: 100%; margin-top: 5px;text-align:justify;">' + val.descripcion;
-                    datos += '<script type="text/javascript">';
-                    datos += '$("#Org' + val.id + '").hover(';
-                    datos += 'function(){';
-                    datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn  btn-default" ';
-                    datos += 'onclick="editOrganizacion(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn  btn-default" ';
-                    datos += 'onclick="editOrganizacion(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
-                    datos += '},function(){';
-                    datos += '$(this).find("span:last").remove();';
-                    datos += '});';
-                    datos += '</script></p>';
-                    datos += '</div>';
-                    datos += '</div>';
-                });
-                $("#consultaOrg").append(datos);
+            if (data.msj)
+            {
                 Lobibox.notify("success", {
                     size: 'mini',
                     msg: data.msj
                 });
-                $("#div5").remove();
-            } else {
+
+                $("#Org" + val).remove();
+            } else
+            {
                 Lobibox.notify("warning", {
                     size: 'mini',
                     msg: data.error
                 });
-
-
             }
-        }
-        ,
+
+        },
         error: function (errors)
         {
 
         }
     });
-
 }
-
 function editOrganizacion(val)
 {
     var div, divn;
@@ -650,57 +879,100 @@ function editEducacion(val)
 }
 
 function addCertificacion() {
-    var empresa, tipo;
 
-    var datos;
+
+    if ($("#txtCerti").val() !== "" && $("#txtAutorida").val() !== "" && $("#txtFechIniC").val() !== "" && $("#txtFechFinC").val() !== "")
+    {
+
+        var datos;
+        $("#fCerti").submit(
+                function (event) {
+
+                    var datos;
+                    $.ajax({
+                        type: 'POST',
+                        async: false,
+                        dataType: 'json',
+                        url: Routing.generate('registrar_certi'),
+                        data: {hPersona: $('input#hPersona').val(), dato: $("#fCerti").serialize()},
+                        success: function (data)
+                        {
+
+                            if (data.msj !== false) {
+
+                                $.each($(data.Cert), function (indice, val) {
+                                    $("#Cert" + val.id).remove();
+                                    datos = '<div class="row" id="Cert' + val.id + '">';
+                                    datos += '<div class="col-xs-11">';
+                                    datos += '<span style="font-size: 15px;">' + val.institucion + '</span>';
+                                    datos += '<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
+                                    datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
+                                    datos += '<span style="font-size: 13px;">' + val.nombre + '</br>' + val.fechaIn + ' - ' + val.fechaFin + '</span>';
+                                    datos += '<p style = "width: 90%; margin-top: 5px;text-align:justify;">';
+                                    datos += '<script type="text/javascript">';
+                                    datos += '$("#Cert' + val.id + '").hover(';
+                                    datos += 'function(){';
+                                    datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
+                                    datos += 'onclick="editCertificacion(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
+                                    datos += 'onclick="removeCertificacion(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
+                                    datos += '},function(){';
+                                    datos += '$(this).find("span:last").remove();';
+                                    datos += '});';
+                                    datos += '</script></p>';
+                                    datos += '</div>';
+                                    datos += '</div>';
+                                });
+                                $("#consultaCertificacion").append(datos);
+                                Lobibox.notify("success", {
+                                    size: 'mini',
+                                    msg: data.msj
+                                });
+                                $("#div6").remove();
+                            } else {
+                                Lobibox.notify("warning", {
+                                    size: 'mini',
+                                    msg: data.error
+                                });
+                            }
+
+                        }
+                        ,
+                        error: function (errors)
+                        {
+
+                        }
+                    });
+                    event.preventDefault();
+                });
+    }
+}
+function removeCertificacion(val)
+{
     $.ajax({
-        type: 'POST',
+        type: "POST",
+        url: Routing.generate('remove_certificacion'),
         async: false,
         dataType: 'json',
-        url: Routing.generate('registrar_certi'),
-        data: {hPersona: $('input#hPersona').val(), dato: $("#fCerti").serialize()},
+        data: {org: val},
         success: function (data)
         {
-
-            if (data.msj !== false) {
-
-                $.each($(data.Cert), function (indice, val) {
-                    $("#Cert" + val.id).remove();
-                    datos = '<div class="row" id="Cert' + val.id + '">';
-                    datos += '<div class="col-xs-11">';
-                    datos += '<span style="font-size: 15px;">' + val.institucion + '</span>';
-                    datos += '<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
-                    datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
-                    datos += '<span style="font-size: 13px;">' + val.nombre + '</br>' + val.fechaIn + ' - ' + val.fechaFin + '</span>';
-                    datos += '<p style = "width: 90%; margin-top: 5px;text-align:justify;">';
-                    datos += '<script type="text/javascript">';
-                    datos += '$("#Cert' + val.id + '").hover(';
-                    datos += 'function(){';
-                    datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn  btn-default" ';
-                    datos += 'onclick="editEdu(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn  btn-default" ';
-                    datos += 'onclick="editEdu(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
-                    datos += '},function(){';
-                    datos += '$(this).find("span:last").remove();';
-                    datos += '});';
-                    datos += '</script></p>';
-                    datos += '</div>';
-                    datos += '</div>';
-                });
-                $("#consultaCertificacion").append(datos);
+            if (data.msj)
+            {
                 Lobibox.notify("success", {
                     size: 'mini',
                     msg: data.msj
                 });
-                $("#div6").remove();
-            } else {
+
+                $("#Cert" + val).remove();
+            } else
+            {
                 Lobibox.notify("warning", {
                     size: 'mini',
                     msg: data.error
                 });
             }
 
-        }
-        ,
+        },
         error: function (errors)
         {
 
@@ -728,56 +1000,97 @@ function editCertificacion(val)
     });
 }
 function addCurso() {
-    var empresa, tipo;
+    if ($("#txtCurso").val() !== "" && $("#txtAutoridaCM").val() !== "" && $("#txtFechIniCM").val() !== "" && $("#txtFechFinCM").val() !== "")
+    {
 
-    var datos;
+        var datos;
+        $("#fCurso").submit(
+                function (event) {
+
+                    var datos;
+                    $.ajax({
+                        type: 'POST',
+                        async: false,
+                        dataType: 'json',
+                        url: Routing.generate('registrar_curso'),
+                        data: {hPersona: $('input#hPersona').val(), dato: $("#fCurso").serialize()},
+                        success: function (data)
+                        {
+                            if (data.msj !== false) {
+                                $.each($(data.Curso), function (indice, val) {
+                                    $("#CM" + val.id).remove();
+                                    datos = '<div class="row" id="CM' + val.id + '">';
+                                    datos += '<div class="col-xs-11">';
+                                    datos += '<span style="font-size: 15px;">' + val.institucion + '</span>';
+                                    datos += '<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
+                                    datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
+                                    datos += '<span style="font-size: 13px;">' + val.nombre + '</br>' + val.fechaIn + ' - ' + val.fechaFin + '</span>';
+                                    datos += '<p style = "width: 90%; margin-top: 5px;text-align:justify;">' + val.descripcion;
+                                    datos += '<script type="text/javascript">';
+                                    datos += '$("#CM' + val.id + '").hover(';
+                                    datos += 'function(){';
+                                    datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
+                                    datos += 'onclick="editCurso(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
+                                    datos += 'onclick="removeSeminario(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
+                                    datos += '},function(){';
+                                    datos += '$(this).find("span:last").remove();';
+                                    datos += '});';
+                                    datos += '</script></p>';
+                                    datos += '</div>';
+                                    datos += '<a onclick="editEducacion(' + val.id + ')">h';
+                                    datos += '<i class="fa fa-cog" style="margin-right: 28px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i>';
+                                    datos += '</a></div>';
+                                });
+                                $("#consultaCurso").append(datos);
+                                Lobibox.notify("success", {
+                                    size: 'mini',
+                                    msg: data.msj
+                                });
+                                $("#div7").remove();
+                            } else {
+                                Lobibox.notify("warning", {
+                                    size: 'mini',
+                                    msg: data.error
+                                });
+                            }
+                        }
+                        ,
+                        error: function (errors)
+                        {
+
+                        }
+                    });
+                    event.preventDefault();
+                });
+    }
+}
+function removeSeminario(val)
+{
     $.ajax({
-        type: 'POST',
+        type: "POST",
+        url: Routing.generate('remove_seminario'),
         async: false,
         dataType: 'json',
-        url: Routing.generate('registrar_curso'),
-        data: {hPersona: $('input#hPersona').val(), dato: $("#fCurso").serialize()},
+        data: {sem: val},
         success: function (data)
         {
-            if (data.msj !== false) {
-                $.each($(data.Curso), function (indice, val) {
-                    $("#CM" + val.id).remove();
-                    datos = '<div class="row" id="CM' + val.id + '">';
-                    datos += '<div class="col-xs-11">';
-                    datos += '<span style="font-size: 15px;">' + val.institucion + '</span>';
-                    datos += '<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
-                    datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
-                    datos += '<span style="font-size: 13px;">' + val.nombre + '</br>' + val.fechaIn + ' - ' + val.fechaFin + '</span>';
-                    datos += '<p style = "width: 90%; margin-top: 5px;text-align:justify;">' + val.descripcion;
-                    datos += '<script type="text/javascript">';
-                    datos += '$("#CM' + val.id + '").hover(';
-                    datos += 'function(){';
-                    datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn  btn-default" ';
-                    datos += 'onclick="editEdu(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn  btn-default" ';
-                    datos += 'onclick="editEdu(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
-                    datos += '},function(){';
-                    datos += '$(this).find("span:last").remove();';
-                    datos += '});';
-                    datos += '</script></p>';
-                    datos += '</div>';
-                    datos += '<a onclick="editEducacion(' + val.id + ')">h';
-                    datos += '<i class="fa fa-cog" style="margin-right: 28px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i>';
-                    datos += '</a></div>';
-                });
-                $("#consultaCurso").append(datos);
+            if (data.msj)
+            {
                 Lobibox.notify("success", {
                     size: 'mini',
                     msg: data.msj
                 });
-                $("#div7").remove();
-            } else {
+
+                $("#CM" + val).remove();
+            } else
+            {
                 Lobibox.notify("warning", {
                     size: 'mini',
                     msg: data.error
                 });
             }
-        }
-        ,
+
+        },
         error: function (errors)
         {
 
@@ -785,71 +1098,98 @@ function addCurso() {
     });
 }
 
+function validation()
+{
+    var val;
+    $.each($('.newIdioma'), function (indice, val) {
+        if ($("#" + $(this).attr('id')).val() === "")
+        {
+            Nidioma = 0;
+            return false;
+        } else
+        {
+            Nidioma = 1;
+            return true;
+        }
+
+    });
+    return Nidioma;
+}
 
 function addIdiomas() {
 
-    var datos;
-    // console.log(DatosIdiomas);
-
-
-    $.each($('.newIdioma'), function (indice, val) {
-
-        Idioma.push($(this).attr('id'));
-        if (Idioma.length % 2 == 0)
-        {
-            DatosIdiomas.push(Idioma);
-            Idioma = [];
-        }
-
-    });
-
-
-
-    $.ajax({
-        type: 'POST',
-        async: false,
-        dataType: 'json',
-        url: Routing.generate('registrar_idioma'),
-        data: {hPersona: $('input#hPersona').val(), dato: $("#fIdiomas").serialize(), DatosIdiomas: DatosIdiomas},
-        success: function (data)
-        {
-            $("#consultaIdiomas").empty();
-            if (data.msj !== false) {
-                datos = '<div class="row " id="Idioma">';
-                $.each($(data.Idiomas), function (indice, val) {
-                    datos += '<div class="col-xs-3" style="margin-top: .5em; margin-bottom: .5em;">';
-                    datos += '<ul class="prob"><li><strong>' + val.nombre + '</strong></li>';
-                    datos += '<li>' + val.nivel + '</li>';
-                    datos += '</ul>';
-                    datos += '</div>';
-                });
-                datos += '<div class="clearfix"></div></div>';
-                $("#consultaIdiomas").append(datos);
-                $("#consultaIdiomas").show();
-
-                Lobibox.notify("success", {
-                    size: 'mini',
-                    msg: data.msj
-                });
-                $("#div3").remove();
-
-            } else {
-                Lobibox.notify("warning", {
-                    size: 'mini',
-                    msg: data.error
-                });
+    if (validation())
+    {
+        $.each($('.newIdioma'), function (indice, val) {
+            Idioma.push($(this).attr('id'));
+            if (Idioma.length % 2 == 0)
+            {
+                DatosIdiomas.push(Idioma);
+                Idioma = [];
             }
 
-            DatosIdiomas = [];
-            Idioma = [];
-        }
-        ,
-        error: function (errors)
-        {
+        });
+        var datos;
+        $("#fIdiomas").submit(
+                function (event) {
+                    var datos;
+                    $.ajax({
+                        type: 'POST',
+                        async: false,
+                        dataType: 'json',
+                        url: Routing.generate('registrar_idioma'),
+                        data: {hPersona: $('input#hPersona').val(), dato: $("#fIdiomas").serialize(), DatosIdiomas: DatosIdiomas},
+                        success: function (data)
+                        {
+                            $("#consultaIdiomas").empty();
+                            if (data.msj !== false) {
+                                datos = '<div class="row " id="Idioma">';
+                                $.each($(data.Idiomas), function (indice, val) {
+                                    datos += '<div class="col-xs-3" style="margin-top: .5em; margin-bottom: .5em;">';
+                                    datos += '<ul class="prob"><li><strong>' + val.nombre + '</strong></li>';
+                                    datos += '<li>' + val.nivel + '</li>';
+                                    datos += '</ul>';
+                                    datos += '</div>';
+                                });
+                                datos += '<div class="clearfix"></div>';
+                                datos += '<p><script type="text/javascript">';
+                                datos += '$("#Idioma").hover(';
+                                datos += 'function(){';
+                                datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
+                                datos += 'onclick="editIdioma()"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
+                                datos += 'onclick="editIdioma()">&nbsp;Eliminar</i></span>\'));';
+                                datos += '},function(){';
+                                datos += '$(this).find("span:last").remove();';
+                                datos += '});';
+                                datos += '</script></p></div>';
+                                $("#consultaIdiomas").append(datos);
+                                $("#consultaIdiomas").show();
 
-        }
-    });
+                                Lobibox.notify("success", {
+                                    size: 'mini',
+                                    msg: data.msj
+                                });
+                                $("#div3").remove();
 
+                            } else {
+                                Lobibox.notify("warning", {
+                                    size: 'mini',
+                                    msg: data.error
+                                });
+                            }
+
+                            DatosIdiomas = [];
+                            Idioma = [];
+                        }
+                        ,
+                        error: function (errors)
+                        {
+
+                        }
+                    });
+                    event.preventDefault();
+                });
+    }
 }
 
 function editCurso(val)
@@ -872,7 +1212,7 @@ function editCurso(val)
         }
     });
 }
-
+/*
 function departamentoEmpresa()
 {
     var Dept;
@@ -945,51 +1285,4 @@ function ciudad()
     $("#divCiudad").append(Dataciudad);
 }
 
-function enviarf()
-{
-    console.log($("#SEstado").val());
-    jQuery(document).ready(function ($) {
-
-        $.ajax({
-            type: "GET",
-            url: Routing.generate('registrar_persona'),
-            data: {dato: $("#fdatos").serialize(), datosDetalleEmpleo: $("#fDetalleEmpleo").serialize(), datosPersonaPP: $("#fPeronaPP").serialize(),
-                datosContacto: $("#fContacto").serialize(), datosFormacion: datosFormacion, datosExperiencia: datosExperiencia},
-            success: function (data)
-            {
-                alert(data);
-            },
-            error: function (xhr, status)
-            {
-                alert('Disculpe, existió un problema');
-            },
-        });
-    });
-    return false;
-}
-
-
-
-// Estructura de salario
-function enviarEstructura()
-{
-    console.log(datosIngresos);
-    console.log(datosDeduccion);
-    jQuery(document).ready(function ($) {
-
-        $.ajax({
-            type: "GET",
-            url: Routing.generate('registrar_estructura'),
-            data: {persona: $("#sPersona").prop('selectedIndex'), datosIngreso: datosIngresos, datosDeduccion: datosDeduccion},
-            success: function (data)
-            {
-                alert(data);
-            },
-            error: function (xhr, status)
-            {
-                alert('Disculpe, existió un problema');
-            },
-        });
-    });
-    return false;
-}
+*/

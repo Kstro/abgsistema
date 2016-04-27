@@ -104,16 +104,14 @@ $(document).ready(function () {
     });
     $('#txtNombres').editable();
     $('#txtUnpoco').editable({
+        
         row: 4,
         validate: function (value) {
             if (value === "")
                 return 'requerido';
         }
-
-
+        
     });
-
-
 
     $('#txtNombres').on('save', function (e, params) {
 

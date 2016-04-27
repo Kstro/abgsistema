@@ -17,7 +17,7 @@ use DGAbgSistemaBundle\Entity\Seminario;
 use DGAbgSistemaBundle\Entity\AbgOrganizacion;
 use DGAbgSistemaBundle\Entity\AbgUrlPersonalizada;
 use DGAbgSistemaBundle\Entity\AbgPersonaEspecialida;
-use DGAbgSistemaBundle\Entity\AbgP;
+use DGAbgSistemaBundle\Entity\AbgPersonaIdioma;
 use Symfony\Component\HttpFoundation\Response;
 use DGAbgSistemaBundle\Form\AbgPersonaType;
 
@@ -151,7 +151,6 @@ class AbgPersonaController extends Controller {
      * @Route("/usuario/get", name="usuario", options={"expose"=true})
      * @Method("GET")
      */
-    
     public function UsuarioAction() {
         $em = $this->getDoctrine()->getManager();
         $em->getConnection()->beginTransaction();
@@ -169,15 +168,15 @@ class AbgPersonaController extends Controller {
             $abgPersona->setEstado('1');
             $em->persist($abgPersona);
             $em->flush();
-            
+
             $idPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgPersona')->find($abgPersona->getId());
 
             $ctlUsuario->setUsername($datos['txtUsername']);
             $ctlUsuario->setPassword($datos['txtPassword']);
-            
+
             $ctlUsuario->setEstado('1');
             $ctlUsuario->setRhPersona($idPersona);
-            
+
             $this->setSecurePassword($ctlUsuario, $datos['txtPassword']);
             $em->persist($ctlUsuario);
             $em->flush();
@@ -198,9 +197,6 @@ class AbgPersonaController extends Controller {
             // echo $e->getMessage();   
         }
     }
-    
-    
-    
 
     private function setSecurePassword(&$entity, $contrasenia) {
         $entity->setSalt(md5(time()));
@@ -228,17 +224,17 @@ class AbgPersonaController extends Controller {
             $idPersona = $RepositorioPersona[0]->getRhPersona()->getId();
 
             $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
-                    . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil "
+                    . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil,p.estado As estado "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
-            
+
             //Esta consulta  es la que jala el src de la foto dejela
-            
+
             $dqlfoto = "SELECT fot.src as src "
-                . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=1";
+                    . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=1";
             $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
-            
-            
+
+
             $dql_ciudad = "SELECT c.nombreCiudad As nombre, es.nombreEstado estado"
                     . " FROM DGAbgSistemaBundle:AbgPersona p "
                     . " JOIN DGAbgSistemaBundle:CtlCiudad c WHERE p.ctlCiudad=c.id AND p.id=" . $idPersona
@@ -334,8 +330,7 @@ class AbgPersonaController extends Controller {
                         'sitio' => $sitio,
                         'ciuda' => $result_ciuda,
                         'url' => $url,
-                        'abgFoto'=>$result_foto
-             
+                        'abgFoto' => $result_foto
             ));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
@@ -366,7 +361,7 @@ class AbgPersonaController extends Controller {
             $idPersona = $RepositorioPersona[0]->getRhPersona()->getId();
 
             $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
-                    . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil "
+                    . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
 
@@ -449,12 +444,12 @@ class AbgPersonaController extends Controller {
                     . " FROM  DGAbgSistemaBundle:AbgUrlPersonalizada u "
                     . " JOIN DGAbgSistemaBundle:AbgPersona p WHERE p.id=u.abgPersona AND u.abgPersona=" . $idPersona;
             $url = $em->createQuery($dql_url)->getArrayResult();
-             //Esta consulta  es la que jala el src de la foto dejela
-            
+            //Esta consulta  es la que jala el src de la foto dejela
+
             $dqlfoto = "SELECT fot.src as src "
-                . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=1";
+                    . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
             $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
-            
+
 
             return $this->render('abgpersona/panelAdministrativoAbg.html.twig', array(
                         'abgPersona' => $result_persona,
@@ -471,7 +466,7 @@ class AbgPersonaController extends Controller {
                         'sitio' => $sitio,
                         'ciuda' => $result_ciuda,
                         'url' => $url,
-                        'abgFoto'=>$result_foto
+                        'abgFoto' => $result_foto
             ));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
@@ -482,10 +477,10 @@ class AbgPersonaController extends Controller {
     }
 
     /**
-     * @Route("/admin/ver_perfil/{username}", name="ver_perfil", options={"expose"=true})
+     * @Route("/ver_perfil", name="ver_perfil", options={"expose"=true})
      * @Method("GET")
      */
-    public function VerPerfilAction($username) {
+    public function VerPerfilAction() {
         $em = $this->getDoctrine()->getManager();
         $em->getConnection()->beginTransaction();
         $request = $this->getRequest();
@@ -494,13 +489,17 @@ class AbgPersonaController extends Controller {
         $Experiencia = "";
         $Certificacion = "";
         $Curso = "";
+
         try {
+            /* $username = $this->container->get('security.context')->getToken()->getUser();
+              var_dump($username);
+              exit();
 
-            $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
-            $idPersona = $RepositorioPersona[0]->getRhPersona()->getId();
-
+              $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
+              $idPersona = $RepositorioPersona[0]->getRhPersona()->getId(); */
+            $idPersona = 82;
             $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
-                    . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil "
+                    . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
 
@@ -584,9 +583,51 @@ class AbgPersonaController extends Controller {
                     . " JOIN DGAbgSistemaBundle:AbgPersona p WHERE p.id=u.abgPersona AND u.abgPersona=" . $idPersona;
             $url = $em->createQuery($dql_url)->getArrayResult();
 
-            return $this->render('abgpersona/panelPerfilPublico.html.twig', array(
+            //Esta consulta  es la que jala el src de la foto dejela
+
+            $dqlfoto = "SELECT fot.src as src, fot.estado As estado"
+                    . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=0 or fot.tipoFoto=1";
+            $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+
+            $dqlfoto = "SELECT fot.src as src, fot.estado As estado"
+                    . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=1";
+            $fotoP = $em->createQuery($dqlfoto)->getArrayResult();
+
+            $cumplimiento = 0;
+            if (count($result_persona) >= 1) {
+                $cumplimiento = 10;
+            }
+            if (count($result_especialida) >= 1) {
+                $cumplimiento = $cumplimiento + 10;
+            }
+            if (count($Experiencia) >= 1) {
+                $cumplimiento = $cumplimiento + 10;
+            }
+            if (count($Edu) >= 1) {
+                $cumplimiento = $cumplimiento + 10;
+            }
+            if (count($Certificacion) >= 1) {
+                $cumplimiento = $cumplimiento + 10;
+            }
+            if (count($Curso) >= 1) {
+                $cumplimiento = $cumplimiento + 10;
+            }
+            if (count($Organizacion) >= 1) {
+                $cumplimiento = $cumplimiento + 10;
+            }
+            if (count($Idiomas) >= 1) {
+                $cumplimiento = $cumplimiento + 10;
+            }
+            if (count($fotoP) >= 1) {
+                $cumplimiento = $cumplimiento + 10;
+            }
+            if (count($sitio) >= 1) {
+                $cumplimiento = $cumplimiento + 10;
+            }
+
+
+            return $this->render('abgpersona/perfilPublico.html.twig', array(
                         'abgPersona' => $result_persona,
-                        'usuario' => $username,
                         'active' => 'verperfil',
                         'RegistrosubEsp' => $result_sub,
                         'RegistroEspecialida' => $result_especialida,
@@ -599,6 +640,8 @@ class AbgPersonaController extends Controller {
                         'sitio' => $sitio,
                         'ciuda' => $result_ciuda,
                         'url' => $url,
+                        'abgFoto' => $result_foto,
+                        'cumplimiento' => $cumplimiento
             ));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
@@ -654,20 +697,30 @@ class AbgPersonaController extends Controller {
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
             switch ($request->get('n')) {
                 case 0:
-
+                     parse_str($request->get('dato'), $datos);
+                   
+                    $Persona->setTelefonoFijo($datos['txtFijo']);
+                    if ((($datos['txtMovil'] == ""))) {
+                    $Persona->setTelefonoMovil(null);
+                    }
+                    $Persona->setCorreoelectronico($datos['txtEmail']);
+                    $Persona->setDireccion($datos['txtDirecion']);
+               
+                     $data['msj'] ="Datos actualizados";
                     break;
                 case 1:
                     $Persona->setNombres($request->get('nombres')['txtnombre']);
                     $Persona->setApellido($request->get('nombres')['txtApellido']);
                     break;
                 case 2:
-                    $Persona->setGenero($request->get('oficina'));
+                   $Persona->setEstado($request->get('estado'));
                     break;
+                    
                 case 3:
-                    $Persona->setDui($request->get('oficina'));
+                  
                     break;
                 case 4:
-                    $Persona->setNit($request->get('oficina'));
+              
                     break;
                 case 5:
                     $Persona->setCorreoelectronico($request->get('correo'));
@@ -691,7 +744,9 @@ class AbgPersonaController extends Controller {
                     break;
                 case 10:
                     $Persona->setDescripcion($request->get('descripcion'));
+                     $data['msj'] ="Dato actualizado";
                     break;
+                
             }
 
             $em->merge($Persona);
@@ -711,11 +766,44 @@ class AbgPersonaController extends Controller {
     public function getDatosContactoAction() {
 
         try {
+            $em = $this->getDoctrine()->getManager();
 
-            $Organizacion = "";
+            $idPersona = 81;
+            $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
+                    . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil "
+                    . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
+            $result_persona = $em->createQuery($dql_persona)->getArrayResult();
 
+       
             return $this->render('abgpersona/datos_contacto.html.twig', array(
-                        'Organizacion' => $Organizacion,
+                        'result_persona' => $result_persona,
+            ));
+        } catch (\Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+
+
+            // echo $e->getMessage();   
+        }
+    }
+/**
+     * @Route("/sobremi", name="sobremi", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function getSobremiAction() {
+
+        try {
+            $em = $this->getDoctrine()->getManager();
+
+           
+            $idPersona = 80;
+            $dql_persona = "SELECT  p.id AS id, p.descripcion AS  descripcion,"
+                    . " p.direccion AS direccion "
+                    . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
+            $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+
+            return $this->render('abgpersona/sobreMi.html.twig', array(
+                        'result_persona' => $result_persona,
             ));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
@@ -803,15 +891,6 @@ class AbgPersonaController extends Controller {
                     $data['msj'] = "registrado";
                 }
             }
-
-
-
-            /*
-              $SitioWeb->setNombre($request->get('sitio'));
-              $SitioWeb->setAbgPersona($Persona);
-              $em->persist($SitioWeb);
-              $em->flush();
-              $data['sitio'] = $SitioWeb->getNombre(); */
 
             return new Response(json_encode($data));
         } catch (\Exception $e) {
@@ -944,6 +1023,7 @@ class AbgPersonaController extends Controller {
                         . "JOIN DGAbgSistemaBundle:AbgPersonaEspecialida pe WHERE e.id=pe.ctlEspecialidad AND pe.abgPersona=" . $request->get('hPersona')
                         . " GROUP by e.id";
                 $data['Esp'] = $em->createQuery($dql_especialida)->getArrayResult();
+             
             }
 
 
@@ -1118,13 +1198,13 @@ class AbgPersonaController extends Controller {
         try {
             $em = $this->getDoctrine()->getEntityManager();
             $request = $this->getRequest();
-          
-            
-            $Experiencia= $this->getDoctrine()->getEntityManager("DGAbgSistemaBundle:AbgExperienciaLaboral")->find(intval($request->get('experiencia')));
-         // $Experiencia = $em->getRepository("DGAbgSistemaBundle:AbgExperienciaLaboral")->find(intval($request->get('experiencia')));
+
+            $Experiencia = $em->getRepository("DGAbgSistemaBundle:AbgExperienciaLaboral")->find(intval($request->get('experiencia')));
+            /*  var_dump($Experiencia);
+              exit(); */
             $em->remove($Experiencia);
             $em->flush();
-            $data['msj']="Experiencia eliminada";
+            $data['msj'] = "Experiencia eliminada";
 
             return new Response(json_encode($data));
         } catch (\Exception $e) {
@@ -1199,6 +1279,29 @@ class AbgPersonaController extends Controller {
     }
 
     /**
+     * @Route("/remove_educacion", name="remove_educacion", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function RemoveEducacionAction() {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $request = $this->getRequest();
+
+            $Educacion = $em->getRepository("DGAbgSistemaBundle:AbgEstudio")->find(($request->get('edu')));
+
+            $em->remove($Educacion);
+            $em->flush();
+            $data['id'] = $request->get('edu');
+            $data['msj'] = "Educación eliminada";
+
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+            $data['error'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
+    }
+
+    /**
      * @Route("/registar_edu", name="registrar_edu", options={"expose"=true})
      * @Method("POST")
      */
@@ -1227,7 +1330,7 @@ class AbgPersonaController extends Controller {
 
                 $em->persist($Estudio);
                 $em->flush();
-                $data['msj'] = "Educacion registrada";
+                $data['msj'] = "Educación registrada";
                 $IdEducacion = $Estudio->getId();
             } else {
 
@@ -1244,7 +1347,7 @@ class AbgPersonaController extends Controller {
                 $em->merge($Estudio);
                 $em->flush();
                 $IdEducacion = $Estudio->getId();
-                $data['msj'] = "Educacion actualizada";
+                $data['msj'] = "Educación actualizada";
             }
 
             $sqlEdu = "SELECT e.id AS idEs, e.institucion AS institucion, e.titulo AS titulo, e.anio_inicio AS anioIni, e.anio_graduacion AS anio, tp.abg_titulocol AS disciplina "
@@ -1269,10 +1372,9 @@ class AbgPersonaController extends Controller {
      */
     public function FromCertificacionAction() {
         try {
-
-
             $request = $this->getRequest();
             $Certificacion = "";
+
             if ((($request->get('certificacion') != null))) {
 
                 $sqlCert = "SELECT c.id AS id, c.certficacion_nombre AS nombre,c.institucion As institucion, "
@@ -1338,7 +1440,7 @@ class AbgPersonaController extends Controller {
 
                 $em->persist($AbgCertificacion);
                 $em->flush();
-                $data['msj'] = "Educacion registrada";
+                $data['msj'] = "Certificación registrada";
                 $IdCertificacion = $AbgCertificacion->getId();
             } else {
 
@@ -1355,7 +1457,7 @@ class AbgPersonaController extends Controller {
                 $em->merge($AbgCertificacion);
                 $em->flush();
                 $IdCertificacion = $AbgCertificacion->getId();
-                $data['msj'] = "Educacion actualizada";
+                $data['msj'] = "Certificación actualizada";
             }
 
             $sqlEdu = "SELECT c.id AS id, c.certficacion_nombre AS nombre,c.institucion As institucion, "
@@ -1365,6 +1467,29 @@ class AbgPersonaController extends Controller {
             $stm = $this->container->get('database_connection')->prepare($sqlEdu);
             $stm->execute();
             $data['Cert'] = $stm->fetchAll();
+
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+            $data['error'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
+    }
+
+    /**
+     * @Route("/remove_certificacion", name="remove_certificacion", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function RemoveCertificacionAction() {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $request = $this->getRequest();
+
+            $Certificacion = $em->getRepository("DGAbgSistemaBundle:AbgCertificacion")->find(($request->get('org')));
+
+            $em->remove($Certificacion);
+            $em->flush();
+
+            $data['msj'] = "Certificación eliminada";
 
             return new Response(json_encode($data));
         } catch (\Exception $e) {
@@ -1435,7 +1560,7 @@ class AbgPersonaController extends Controller {
 
                 $em->persist($Seminario);
                 $em->flush();
-                $data['msj'] = "Seminario registrada";
+                $data['msj'] = "Seminario registrado";
                 $IdSeminario = $Seminario->getId();
             } else {
 
@@ -1453,7 +1578,7 @@ class AbgPersonaController extends Controller {
                 $em->merge($Seminario);
                 $em->flush();
                 $IdSeminario = $Seminario->getId();
-                $data['msj'] = "Educacion actualizada";
+                $data['msj'] = "Seminario actualizado";
             }
 
             $sqlCurso = "SELECT s.id AS id, s.nombre AS nombre,s.institucion As institucion, "
@@ -1464,6 +1589,29 @@ class AbgPersonaController extends Controller {
             $stm = $this->container->get('database_connection')->prepare($sqlCurso);
             $stm->execute();
             $data['Curso'] = $stm->fetchAll();
+
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+            $data['error'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
+    }
+
+    /**
+     * @Route("/remove_seminario", name="remove_seminario", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function RemoveSeminarioAction() {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $request = $this->getRequest();
+
+            $Seminario = $em->getRepository("DGAbgSistemaBundle:Seminario")->find(($request->get('sem')));
+
+            $em->remove($Seminario);
+            $em->flush();
+
+            $data['msj'] = "Seminario eliminado";
 
             return new Response(json_encode($data));
         } catch (\Exception $e) {
@@ -1553,7 +1701,7 @@ class AbgPersonaController extends Controller {
                 $em->merge($AbgOrganizacion);
                 $em->flush();
                 $IdOrganizacion = $AbgOrganizacion->getId();
-                $data['msj'] = "Educacion actualizada";
+                $data['msj'] = "Organización actualizada";
             }
 
             $sqlEdu = "SELECT org.id AS id, org.nombre AS nombre,org.puesto As puesto, org.descripcion AS descripcion, "
@@ -1564,6 +1712,29 @@ class AbgPersonaController extends Controller {
             $stm = $this->container->get('database_connection')->prepare($sqlEdu);
             $stm->execute();
             $data['Organizacion'] = $stm->fetchAll();
+
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+            $data['error'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
+    }
+
+    /**
+     * @Route("/remove_org", name="remove_org", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function RemoveOrgAction() {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $request = $this->getRequest();
+
+            $Organizacion = $em->getRepository("DGAbgSistemaBundle:AbgOrganizacion")->find(($request->get('org')));
+
+            $em->remove($Organizacion);
+            $em->flush();
+
+            $data['msj'] = "Organización eliminada";
 
             return new Response(json_encode($data));
         } catch (\Exception $e) {
