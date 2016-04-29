@@ -20,6 +20,78 @@
                     }
                    
       </style>
+      <style>
+          /* Círculos de colores numerados */
+            span.red {
+              background: red;
+               border-radius: 0.8em;
+              -moz-border-radius: 0.8em;
+              -webkit-border-radius: 0.8em;
+              color: #ffffff;
+              display: inline-block;
+              font-weight: bold;
+              line-height: 1.6em;
+              margin-right: 15px;
+              text-align: center;
+              width: 1.6em; 
+            }
+
+            span.grey {
+              background: #cccccc;
+              border-radius: 0.8em;
+              -moz-border-radius: 0.8em;
+              -webkit-border-radius: 0.8em;
+              color: #fff;
+              display: inline-block;
+              font-weight: bold;
+              line-height: 1.6em;
+              margin-right: 15px;
+              text-align: center;
+              width: 1.6em; 
+            }
+
+            span.green {
+              background: #5EA226;
+              border-radius: 0.8em;
+              -moz-border-radius: 0.8em;
+              -webkit-border-radius: 0.8em;
+              color: #ffffff;
+              display: inline-block;
+              font-weight: bold;
+              line-height: 1.6em;
+              margin-right: 15px;
+              text-align: center;
+              width: 1.6em; 
+            }
+
+            span.blue {
+              background: #5178D0;
+              border-radius: 0.8em;
+              -moz-border-radius: 0.8em;
+              -webkit-border-radius: 0.8em;
+              color: #ffffff;
+              display: inline-block;
+              font-weight: bold;
+              line-height: 1.6em;
+              margin-right: 15px;
+              text-align: center;
+              width: 1.6em; 
+            }
+
+            span.pink {
+              background: #EF0BD8;
+              border-radius: 0.8em;
+              -moz-border-radius: 0.8em;
+              -webkit-border-radius: 0.8em;
+              color: #ffffff;
+              display: inline-block;
+              font-weight: bold;
+              line-height: 1.6em;
+              margin-right: 15px;
+              text-align: center;
+              width: 1.6em; 
+            }
+      </style>    
     
 <!-- x-editable (bootstrap version) -->
             <link href="{{ asset('Resources/src/css/bootstrap-editable.css')}}" rel="stylesheet"/>
@@ -34,6 +106,9 @@
             <!-- Los script que he importado -->
             
             <script type="text/javascript" src='http://maps.google.com/maps/api/js?sensor=false&libraries=places'></script>
+            
+            
+               <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
             
             <script src="{{ asset('Resources/localizacion/src/locationpicker.jquery.js') }}"></script>
 
@@ -95,7 +170,7 @@
                                                 <div class="cover" id="" >
 
                                                     <div style="width: 100%; max-width: 100%; background-color: {{ datos.color }}; height: 400px; " id="">
-                                                    </div> 
+                                                </div> 
 
 
                                                 </div>
@@ -275,24 +350,46 @@
 						</div>
                             {% endfor %} 
                             
-                            {% for valor in tipoEmpresa %}
-                                                <div class="col-sm-3 col-xs-12">
-							<p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Tipo de Empresa</strong></p>
-                                                        <p style="font-size: 11px; margin-bottom: 0px;">
-                                                        <a id="" data-pk="1" data-type="select" data-title="Seleccione el tipo de empresa" style="color: inherit; text-decoration: none;">
-                                                              {% if valor.tipoEmpresa %}
-                                                                {{ valor.tipoEmpresa}}
-                                                              {% else %}
-                                                                  Tipo de empresa
-                                                              {% endif %}   
-                                                        </a>
-                                                        </p>
-                                          
-						</div>        
-					  
-                            {% endfor %}                          
-                                </div>  
-                            </div>                         
+                             {% if tipoEmpresa is not empty %}
+                                {% for valor in tipoEmpresa %}
+                                                    <div class="col-sm-3 col-xs-12">
+                                                            <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Tipo de Empresa</strong></p>
+                                                              <p style="font-size: 11px; margin-bottom: 0px;">
+                                                            <a id="" data-type="text" data-placement="right" data-title="Sitio web" style="color: inherit; text-decoration: none;">
+                                                                {% if valor.tipoEmpresa is not empty %}
+                                                                    {{ valor.tipoEmpresa}}
+                                                                  {% else %}
+                                                                      Tipo de empresa
+                                                                  {% endif %}   
+                                                            </a>
+                                                             </p>
+
+
+                                                    </div>        
+                                            </div>   
+
+                                    </div>  
+                             {% endfor %}
+                             {% else %}
+                                             <div class="col-sm-3 col-xs-12">
+                                                            <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Tipo de Empresa</strong></p>
+
+                                                            <a href="#" id="tipoEmpresa" data-pk="1" data-type="select" data-title="Select status" style="font-size: 11px; margin-bottom: 0px;">
+                                                               
+                                                                      Tipo de empresa
+                                                                
+                                                            </a>
+
+
+
+                                                    </div>        
+                                            </div>   
+                                 
+                                 
+                                 
+                                 
+                                  </div>  
+                            {% endif %}        
                   
                      
               {% if empleados is not null %}
@@ -343,53 +440,55 @@
                   {% endif %}
                   
       <div class="clearfix"></div>      
-   <div  class="bloque-main" >
-        <div class="row">
-            <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;">
-                <strong>ESPECIALIDADES LEGALES</strong></p>
-         
-            
-        </div>
-      {#  {%if abgEspecialida|default is not null %}
-        <div id="contenido" style="min-height:60px; max-height:450px;overflow: auto;">
-            
-            
-            {%set n = 0%}
-                {% for datos in abgEspecialida %}
-            {%set n =n +1%}
-           
-            <div class="col-md-12">
-                 <div class="row">
-                    <div class="col-md-12" style="margin-top: 15px;">
-                        <strong>{{datos.nombre| upper }}</strong>
-                    </div>
-               
+      
+         <!-- ESPECIALIDADES -->
+        <div  class="bloque-contenedor" id="Especialidades">
+            <div class="row hedeExperiencia">
+                <p class="sans text-uppercase pull-left">
+                <ul class="prob"  style="font-size: 18px;"><li><strong>ESPECIALIDADES LEGALES</strong></li></ul>
 
-                    {% for datosSub in subEsp %}
-                        {%if(datos.id==datosSub.idEsp)%}
-                    
-                            <div class="col-md-4">{{datosSub.nombre}}</div>
-                        
-                        {%endif%}
-                    {%endfor%}
-                 
-            </div>    
-           </div>
-                            
-            {%if ((n>0) and (n % 3== 0))%}
-                <div class="clearfix"></div>
-            {%endif%}              
-        {%endfor%}
+            </div>
+            <!-- Contenido Aqui -->
+            <div class="experiencia " id="contenidoExp" >
+
+                <div class="experiencias"  id="contenido">
+                    {%if RegistroEspecialida|default is not empty %}
+                        {%set n = 0%}
+                        {% for datos in RegistroEspecialida %}
+                            {%set n =n +1%}
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-12" style="margin-top: .5em; margin-bottom: .5em;">
+                                        <ul class="prob">
+                                            <li><strong><p>&nbsp;
+                                                        {%if(datos.nombre| upper=='DERECHO LABORAL')%}
+                                                            <img src="{{asset('Resources/src/img/especialidades/dlaboral.png')}}" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
+
+                                                    {%endif%}
+                                                    <img src="{{asset('Resources/src/img/especialidades/dlaboral.png')}}" style="width:100%; margin-bottom: 8px;"  data-placement="right" ></p>
+
+                                                    {#{datos.nombre| upper }#}<p class="sans" ></strong></li>
+                                            <li><p style="text-align:justify;">{{datos.descripcion}}</p></li>
+                                    </div>   
+                                    {%if ((n>0)and (n % 3== 0))%}
+
+                                        <div class="clearfix"></div>
+
+                                    {%endif%}  
+                                </div>
+                            </div>
+                        {%endfor%}
+                    {%endif%}
+
+                    {#% embed ':abgpersona:especialidades.html.twig' %}{% endembed %#}
+
+                </div></div>
+            <!-- Fin -->
+        </div>
       
-         </div>
-        {%endif%}#}
-        
-        <div class="clearfix"></div>
-        
-   
-    </div> 
       
-       
+      
+
                                                              
    </div>
                   
@@ -402,7 +501,9 @@
      {% for datos in ctlEmpresa %} 
       
          <center>
-             <h5>Numero de Visitas a este perfil:{% if  visitas  %} {{ visitas}} {% endif %}</h5>
+             <div>
+                 <h4>Numero de visitas {% if  visitas  %}<span class="blue">{{ visitas}}</span>{% else %}<span class="blue"> {{0}}</span> {% endif %}</h4>
+             </div>
          </center>
          <center>
              <h5>Ubicacion de nuestra empresa</h5>

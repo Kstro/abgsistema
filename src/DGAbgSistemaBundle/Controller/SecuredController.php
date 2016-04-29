@@ -2,13 +2,19 @@
 
 namespace DGAbgSistemaBundle\Controller;
 
+
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use DG\ImpresionBundle\Entity\Usuario;
+use DG\ImpresionBundle\Controller\UsuarioController;
 /**
  * @Route("/secured")
  */
@@ -74,6 +80,82 @@ class SecuredController extends Controller
     {
         // The security layer will intercept this request
     }
+    
+    
+    
+    
+     /**
+     * Recuperar contraseÃ±a
+     * 
+     * @Route("/forgot-password", name="admin_forgot_passw")
+     */
+    public function forgotPasswordAction(Request $request) 
+    {
+        $parameters = $request->request->all();
+        $email = $parameters['email'];
+        
+        $em = $this->getDoctrine()->getManager();
+        $usuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->findOneBy(array('username' => $email));        
+        
+        $password = $this->generateRandomString(12);
+       
+        $usuario->setPassword($password);
+        $this->setSecurePassword($usuario,$password);
+        
+        $this->get('envio_correo')->sendEmail($usuario->getUsername(), "", "", "",
+                    "
+                        <table style=\"width: 540px; margin: 0 auto;\">
+                          <tr>
+                            <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
+                            <center>
+                              <img style=\"width:50%;\" src=\"http://expressionsprint.com/img/logo.jpg\">
+                            </center>
+                                <p>" . $usuario->getRhPersona() . ", you have requested to reset your password, then displays your new password.</p>
+                                <p> User:" . $usuario->getUsername() . "</p>
+                                <p> Email: " . $email . "</p>
+                                <p><b> Password: " . $password . "</b></p>
+                                <p>Thanks, by the use of our services. </p>    
+                            </td>
+                            <td class=\"expander\"></td>
+                          </tr>
+                        </table>
+                    ");
+        //var_dump($password);
+        //var_dump($usuario);
+         
+        
+        //die();
+        $em->persist($usuario);
+        $em->flush();
+         
+        $mensaje="Se le envió la nueva contraseña a su correo electrónico , para introducir la nueva contraseña revise su correo electronico.";
+//        var_dump($password);
+        return $this->render('ctlempresa/ayuda.html.twig', array(
+            'mensaje'=>$mensaje,
+            'redirect'=>'Login',
+            'header'=>'Tu contraseña ha sido cambiada',
+        ));    
+    }
+    
+     function generateRandomString($length) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        
+        return $randomString;
+    }
+    
+    private function setSecurePassword(&$entity, $contrasenia) {
+        $entity->setSalt(md5(time()));
+        $encoder = new \Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder('sha512', true, 10);
+        $password = $encoder->encodePassword($contrasenia, $entity->getSalt());
+        $entity->setPassword($password);
+    } 
+    
     
     
     

@@ -36,6 +36,7 @@
             
             <script type="text/javascript" src='http://maps.google.com/maps/api/js?sensor=false&libraries=places'></script>
             
+             <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
             <script src="{{ asset('Resources/localizacion/src/locationpicker.jquery.js') }}"></script>
 
             <script type="text/javascript" src="{{ asset('Resources/colorpicker/js/colorpicker.js') }}"></script>
@@ -97,12 +98,12 @@
                   margin-top: 10px;
                 }
 
-                input {
+              {#  input {
                   display: block;
-                }
+                }#}
 
                 button[type="submit"] {
-                  margin-top: 10px;
+                  margin-top: 0px;
                 }
 
                 #result {
@@ -118,6 +119,24 @@
                   word-wrap: break-word;
                 }
               </style>
+   
+<style>
+       .btnperfil:hover {
+           background:#00c0ef !important;
+           color:#fff ;
+
+           border-radius:0px;
+           box-shadow: 2px 2px 5px #999;
+
+       }
+       .btnperfil {
+           background:#F0F0F0;
+           color: #505050;
+           border-radius:0px;
+
+       }
+
+   </style>
                  <script>
                      
                      
@@ -384,7 +403,7 @@
 							
 						</div>
                                 {% endfor %} 
-                                {% if tipoEmpresa %}
+                                {% if tipoEmpresa is not empty %}
                                 {% for valor in tipoEmpresa %}
                                                     <div class="col-sm-3 col-xs-12">
                                                             <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Tipo de Empresa</strong></p>
@@ -403,8 +422,25 @@
                                             </div>   
 
                                     </div>  
-                                {% endfor %}
+                             {% endfor %}
                              {% else %}
+                                             <div class="col-sm-3 col-xs-12">
+                                                            <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Tipo de Empresa</strong></p>
+
+                                                            <a href="#" id="tipoEmpresa" data-pk="1" data-type="select" data-title="Select status" style="font-size: 11px; margin-bottom: 0px;">
+                                                               
+                                                                      Tipo de empresa
+                                                                
+                                                            </a>
+
+
+
+                                                    </div>        
+                                            </div>   
+                                 
+                                 
+                                 
+                                 
                                   </div>  
                             {% endif %}   
                            
@@ -479,8 +515,90 @@
 				</div>
                       
                   {% endif %}    
+  
+   <!-- ESPECIALIDADES -->
+                               <div  class="bloque-contenedor" id="Especialidades">
+                                   <div class="row hedeExperiencia">
+                                       <p class="sans text-uppercase pull-left">
+                                       <ul class="prob"  style="font-size: 18px;"><li><strong>ESPECIALIDADES LEGALES</strong><a id="btnespecialidad"><i class="fa fa-cog pull-right" style="color: #999999;font-size: 13px;" data-toggle="tooltip" data-placement="left" title="Editar" ></i></a></li></ul>
+                                       <p class="pull-right"></p>
+                                   </div>
+                                   <!-- Contenido Aqui -->
+                                   <div class="experiencia " id="contenidoExp" >
+
+                                       <div class="experiencias"  id="contenido">
+                                           {%if RegistroEspecialida|default is not empty %}
+                                               {%set n = 0%}
+                                               {% for datos in RegistroEspecialida %}
+                                                   {%set n =n +1%}
+                                                   <div class="form-group">
+                                                       <div class="row">
+                                                           <div class="col-xs-12" style="margin-top: .5em; margin-bottom: .5em;">
+                                                               <ul class="prob">
+                                                                   <li><strong><p>&nbsp;
+                                                                               {%if(datos.nombre| upper=='DERECHO LABORAL')%}
+                                                                                   <!-- img src="{#{asset('Resources/src/img/especialidades/dlaboral.png')}#}" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p-->
+
+                                                                               {%endif%}
+                                                                               <!--img src="{#{asset('Resources/src/img/especialidades/dlaboral.png')}#}" style="width:100%; margin-bottom: 8px;"  data-placement="right" ></p-->
+
+                                                                           {{datos.nombre| upper }}<p class="sans" ></strong></li>
+                                                                   <li><p style="text-align:justify;">{{datos.descripcion}}</p></li>
+                                                           </div>  
+                                                           {%if ((n>0)and (n % 3== 0))%}
+
+                                                               <div class="clearfix"></div>
+
+                                                           {%endif%}  
+                                                       </div>
+                                                   </div>
+                                               {%endfor%}
+                                               <script type="text/javascript">
+                                                   $("#contenido").hover(
+                                                           function () {
+                                                           $(this).append($('<span style="margin-left:13px;"><i class="fa fa-pencil fa-x2 btn btnperfil" onClick="editEspe()"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn btnperfil"  onClick="editEspe()">&nbsp;Eliminar</i></span>'));
+                                                           }, function () {
+                                                   $(this).find("span:last").remove();
+                                                   });
+                                               </script>
+                                           {%endif%}
+
+                                           {#% embed ':abgpersona:especialidades.html.twig' %}{% endembed %#}
+
+                                       </div></div>
+                                   <!-- Fin -->
+                               </div>
                   
- <div  class="bloque-main" >
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+ {#<div  class="bloque-main" >
         <div class="row">
             <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;">
                 <strong>ESPECIALIDADES LEGALES</strong></p>
@@ -495,7 +613,7 @@
        
     </div>
    
-</div> 
+</div> #}
            
         
 {#  Aqui empieza el mapa de geolocalizacion    #}

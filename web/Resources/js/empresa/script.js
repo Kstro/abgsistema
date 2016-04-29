@@ -3,7 +3,7 @@ var tipoEmpresa = [];
 
 var trs, trs2, idEspS = null;
 var Especialida = [];
-var SubEspecialida = [];
+var DataEspecialida = [];
 
 var datos = "", datosMostrados = "";
 
@@ -15,7 +15,7 @@ $(document).ready(function() {
 	 $("#idModalFoto").modal();
          
 	
-});
+  });
 
 
 $(document).on("submit","#frmEmpresaUsuarioPersona",function(e) {
@@ -99,24 +99,6 @@ $(document).on("submit","#frmEmpresaUsuarioPersona",function(e) {
  
 
  
-    
-
-//  $('#contrasenha').strength({
-//        strengthClass: 'strength',
-//        strengthMeterClass: 'strength_meter',
-//        strengthButtonClass: 'button_strength',
-//        strengthButtonText: 'Show password',
-//        strengthButtonTextToggle: 'Hide Password'
-//    });       
-
-
-
-
-
-
-//La parte del X-Editable
-
-
 
  $('#txtMovil').editable({
          
@@ -390,7 +372,7 @@ $(document).on("submit","#frmEmpresaUsuarioPersona",function(e) {
 
                                      
                                         
-                                        
+                                       console.log(tipoEmpresa); 
 
                                 }
                                 
@@ -402,7 +384,7 @@ $(document).on("submit","#frmEmpresaUsuarioPersona",function(e) {
         
 $('#tipoEmpresa').editable({
      value: 'Buffet',    
-        source:eval(tipoEmpresa)
+     source:eval(tipoEmpresa)
        
     });
     
@@ -480,30 +462,7 @@ $('#tipoEmpresa').editable({
     });    
  
     
-    $("#btnespecialidad").click(function () {
-        //$("#contenido").empty();
-        console.log($("input#empresaId").val());
-        
-        $.ajax({
-            type: "GET",
-            url: Routing.generate('mostarsubcategorias'),
-            data: {hPersona: $('input#empresaId').val()},
-            //   async: false,
-            //  dataType: 'json',
-
-            success: function (data)
-            {
-                   $("#contenido").empty();
-                $("#contenido").append(data);
-                //  var url=Routing.generate('admin_abg',{username:data.username});
-                // window.open(url,"_self");                   
-            },
-            error: function (errors)
-            {
-
-            }
-        });
-    });
+   
  $('#cantidadEmpleados').editable({
         value: 'De 1 a 10 empleados',    
        source: [
@@ -628,86 +587,111 @@ $('#tipoEmpresa').editable({
     });    
     
     
+   $("#btnespecialidad").click(function () {
+     
+        if ($("#div01").length > 0) {
+
+        } else {
+            $.ajax({
+                type: "GET",
+                url: Routing.generate('especialidaE'),
+                data: {hPersona: $('input#empresaId').val()},
+                //   async: false,
+                //  dataType: 'json',
+
+                success: function (data)
+                {
+                    // $("#contenido").append(data);
+                    div = '<div class="nueva-Experiencia" id="div01"  style="background-color: #f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+                    $("#contenido").before(div);
+                },
+                error: function (errors)
+                {
+
+                }
+            });
+        }
+    });
     
     
-  
-      
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 });
 
-function fil(idcheckbox, idEsp)
+
+ function addEspecialida()
 {
-    if (Especialida.indexOf(idEsp) === -1)
+    
+     $("#fEspecialida").submit();
+    if (DataEspecialida.length > 0)
     {
-        if (Especialida.length < 3)
-        {
-            Especialida.push(idEsp);
-            SubEspecialida = [];
-            $.each($('.subEspecialida'), function (indice, val) {
-                if ($(this).is(':checked')) {
-                    SubEspecialida.push(parseInt($(this).attr('id')));
-                }
-            });
-        } else {
-            Lobibox.notify("warning", {
-                size: 'mini',
-                msg: 'Se deben seleccionar maxino 3 especialidades.'
-            });
-            $("#" + idcheckbox).prop('checked', false);
-        }
-    } else {
-        SubEspecialida = [];
-        Especialida = [];
-        $.each($('.subEspecialida'), function (indice, val) {
-            if ($(this).is(':checked')) {
-                if (Especialida.indexOf(parseInt($(this).attr('name'))) === -1)
-                {
-                    Especialida.push(parseInt($(this).attr('name')));
-                }
-                SubEspecialida.push(parseInt($(this).attr('id')));
-            }
-        });
-    }
-}
-
-
-
-function addSubEspecialida()
-{
-    if (SubEspecialida.length > 0)
-    {
-        var Esp, n = 0;
+        // $("#div01").remove();
         $("#contenido").empty();
+        var Esp, n = 0;
+        var datos;
         $.ajax({
             type: "GET",
-            url: Routing.generate('insertarsubespecialidad'),
-            data: {hPersona: $('input#empresaId').val(), SubEspecialida: SubEspecialida},
+            url: Routing.generate('subespecialidad'),
+            data: {hPersona: $('input#empresaId').val(), DataEspecialida: DataEspecialida, dato: $("#fEspecialida").serialize()},
             async: false,
             dataType: 'json',
-            success: function (data)
-            {
-                $.each($(data.Esp), function (indice, val) {
+          success: function (data)
+           {
+               if (data.msj !== false) {
+                   $.each($(data.Esp), function (indice, val) {
 
-                    Esp = val.id;
-                    n = n + 1;
-                    datos = '<div class="col-xs-4"  style="margin-top: .5em; margin-bottom: .5em;">';
-                    datos += '<strong><p class="sans" >' + val.nombre.toUpperCase() + '<p class="sans" ></strong>';
-                    $.each($(data.subEsp), function (indice, val) {
-                        if (Esp === val.idEsp)
-                        {
-                            datos += '<p class="sans" style="font-size: 13px;">' + val.nombre + '</p>';
-                        }
-                    });
-                    datos += '</div>';
-                    if ((n > 0) && (n % 3 === 0))
-                    {
-                        datos += '<div class="clearfix"></div>';
-                    }
+                       Esp = val.id;
+                       n = n + 1;
+                       datos = '<div class="form-group">';
+                       datos += '<div class="row">';
+                       datos += '<div class="col-xs-12" style="margin-top: .5em; margin-bottom: .5em;"><ul class="prob">';
+                       datos += ' <li><strong><p class="sans">' + val.nombre.toUpperCase() + '<p class="sans" ></strong></li>';
+                       datos += ' <li><p class="sans" style="text-align:justify;" >' + val.descripcion + '</p></strong></li>';
+                       datos += '</ul></div>';
+                       if ((n > 0) && (n % 3 === 0))
+                       {
+                           datos += '<div class="clearfix"></div>';
+                       }
+                       datos += '</div></div>';
 
-                    $("#contenido").append(datos);
-                });
+                       $("#div01").remove();
+                       $("#contenido").append(datos);
+                   });
+                   var boton = '<div><p><script type="text/javascript">';
+                               datos += '$("#Idioma").hover(';
+                               datos += 'function(){';
+                               datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
+                               datos += 'onclick="editIdioma()"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
+                               datos += 'onclick="editIdioma()">&nbsp;Eliminar</i></span>\'));';
+                               datos += '},function(){';
+                               datos += '$(this).find("span:last").remove();';
+                               datos += '});';
+                               datos += '</script></p></div>';
+                               $("#contenido").append(boton);
+                   Lobibox.notify("success", {
+                       size: 'mini',
+                       msg: data.msj
+                   });
 
-            },
+               } else {
+                   Lobibox.notify("warning", {
+                       size: 'mini',
+                       msg: data.error
+                   });
+               }
+
+               $("#div01").remove();
+               $("#contenido").append(data);
+
+           },
             error: function (errors)
             {
 
@@ -721,4 +705,7 @@ function addSubEspecialida()
     }
 }
 
- 
+           function editEspe()
+{
+   $('#btnespecialidad').click();
+}

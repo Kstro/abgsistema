@@ -1,0 +1,125 @@
+
+{% extends ':Layout:layout2.html.twig' %}
+
+{% block descripcion_y_acciones %}
+
+
+    
+        {% block descripcion %}
+            
+        {% endblock%}
+        {% block acciones %}
+            
+        {% endblock %}
+
+
+{% endblock %}
+{% block js_extend %}
+
+            
+          
+            <script>
+                $(document).ready(function () {
+                    $('#email').val('');
+                    $('#enviar').prop( "disabled", true );
+                    $(':text').blur(function(){
+                        var email = document.getElementById('email');
+                        var span = document.getElementById('semail');
+                        $.post( "{{ path('validar_correoR') }}", { 'email': $(this).val() }, function( data ) {
+                            if(data.valido === 1){
+                                 email.setAttribute('class', 'form-control');
+                                 email.setAttribute('style', 'border-color: green');
+                                 span.setAttribute('style', 'border-color: green');
+                                 span.setAttribute('style', 'background-color: green');
+                                 $('#enviar').prop( "disabled", false );
+                            } else {
+                                 email.setAttribute('class', 'form-control');
+                                 email.setAttribute('style', 'border-color: red');
+                                 span.setAttribute('style', 'border-color: red');
+                                 span.setAttribute('style', 'background-color: red');
+                                 $('#enviar').prop( "disabled", true );
+                            }
+                        }, "json");
+                 });
+            });
+            </script>    
+            
+           
+      
+  {% endblock %} 
+
+        {% block navegacion_Y_body %}
+  
+        {% block navegacion %}
+            
+        {% endblock %}
+        {% block cuerpo %}
+    
+                                                    
+                        <section id="pr-contact" class="pr-main">
+                          <div class="container" style="height: 540px">
+                              <div class="row">
+                                  <div class="acc-title lg">
+                                      <div class="col-md-12 pull-left">
+                                          <h3 class="" style="color:black;"><center>Reestablecer tu contraseña</center></h3>
+                                      </div>
+                                  </div>
+                              </div>    
+                              <div class="clearfix"></div>
+                              <div class="row">
+                                  <form id="reset-psw-form" action="{{ path('admin_forgot_passw') }}" method="POST">
+                                      <div class="col-md-4 col-md-offset-4 pull-center well text-justify" style="margin-top: 50px; background-color: bisque;">
+                                          <div class="row">
+                                              <div class="col-md-12">
+                                                  <p><center>
+                                                      Ingresa tu correo electronico con el que te logeaste para poder enviarte una nueva contraseña
+                                                  </center>
+                                                  </p>
+                                              </div>
+                                          </div>
+                                          <div class="row">
+                                              <div class="col-md-12">
+                                                  {#<input type="text" name="email" class="form-control">#}
+                                                  <div class="input-group input-group-in">
+                                                      <span class="input-group-addon" id="semail"><i class="fa fa-at"></i></span>
+                                                      <input data-mask="phone_with_ddd" class="form-control" name="email" id="email">
+                                                  </div>
+                                              </div>
+
+                                          </div> 
+                                          <div class="row" style="margin-top: 10px; margin-bottom: 10px">
+                                              <div class="col-md-12">
+                                                  <input type="submit" name="enviar" id="enviar" class="form-control btn btn-primary" value="Reset password" style="color: black;"> 
+                                              </div>
+                                          </div> 
+                                            <div class="row" style="margin-top: 10px; margin-bottom: 10px">
+                                              <div class="col-md-12">
+                                                 {% if header %}
+                                                  <p>
+                                                     {{header}}
+                                                  </p>
+                                                {% endif %}
+                                                {% if mensaje %}
+                                                  <p>
+                                                     {{mensaje}}
+                                                  </p>
+                                                {% endif %}  
+                                              </div>
+                                          </div> 
+                                      </div>
+
+                                  </form>    
+                              </div>
+                                                  
+                          </div>
+                                                                   
+                      </section>
+                    
+                                               
+                         
+                   
+  
+     
+{% endblock %}
+{% endblock %}
+

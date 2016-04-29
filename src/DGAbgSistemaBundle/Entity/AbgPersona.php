@@ -540,4 +540,10 @@ class AbgPersona
     {
         return $this->ctlEmpresa;
     }
+    
+//Deje este metodo que me permite retornar el nombre
+        public function __toString() {
+            return $this->nombres;
+        }
+    
 }

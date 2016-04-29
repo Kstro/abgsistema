@@ -11,7 +11,13 @@
 					</div>
 					<div class="col-md-5 col-md-offset-1">
 						<p style="margin-bottom: 0px; color: #989898; font-size: 13px;" class="sans">ID de Cliente:</p>
-						<p class="sans" style="font-size: 13px;">SV3490</p>
+						<p class="sans" style="font-size: 13px;">
+                                                    {% for datos in abgPersona %}
+                                                        
+                                                        <b>{{ datos.codigo }}</b>
+                                                        
+                                                    {% endfor %}   
+                                                </p>
 					</div>
 					<div class="col-md-5">
 						<p style="margin-bottom: 0px; color: #989898; font-size: 13px;" class="sans">Suscripcion:</p>
@@ -24,19 +30,176 @@
 					</div>
 					<div class="col-md-5" style="margin-top: 10px;">
 						<p style="margin-bottom: 0px; color: #989898; font-size: 13px;" class="sans">Password:</p>
-						<p class="sans" style="font-size: 13px;">Olvidaste tu contraseña? <a href="#">Cambiar</a></p>
+                                                <p class="sans" style="font-size: 13px;">¿Modificar tu contraseña? <a href="#" id="showFormPassword">Cambiar</a>
+                                                <a href="#" id="hideFormPassword">Cerrar</a>
+                                                </p>
+                                                
+                                                
+                                                
+                                                <div class="row" style="background-color: bisque; padding-bottom: 10px;" id="formPassword">
+                                                    
+                                                    <div class="form-group" style="margin-top: 5px;">
+                                                        <p>
+                                                            <label class="col-md-12">
+                                                             Cambio de contraseña
+                                                          </label> 
+                                                        </p>
+                                                      
+                                                      <p class="sans col-md-12" style="font-size: 13px;" >
+                                                          Llena los siguietes campos para poder cambiar tu contraseña.
+                                                      </p>
+                                                        
+                                                   </div>
+                                                    
+                                                   <div class="form-group" style="margin-top: 5px;">
+                                                       
+                                                   <div class="col-md-12">
+                                                       <label for="contrasenhaAntigua" style="margin-bottom: 0px; color: #989898; font-size: 13px;">Contraseña actual</label>
+                                                       <input type="password" name="contrasenhaAntigua" class="form-control input-sm" id="idcontrasenhaAntigua">
+                                                        <label for="contrasenhaAntigua" style="margin-bottom: 0px; color: #989898; font-size: 13px;">Nueva contraseña</label>    
+                                                       <input type="password" name="contrsenhaNueva" class="form-control input-sm verificacion" id="idcontrsenhaNueva">
+                                                       
+                                                       <label for="contrasenhaAntigua" style="margin-bottom: 0px; color: #989898; font-size: 13px;">Confirmar contraseña</label>
+                                                       <input type="password" name="contrasenhaNuevaConfirmacion" class="form-control input-sm verificacion" id="idcontrsenhaNuevaConfirmacion">
+                                                               
+                                                            
+                                                   </div>
+                                                         
+                                                        
+                                                   </div>
+                                                   <div class="form-group" >
+                                                       <div class="col-md-12">
+                                                        
+                                                        <input type="button" class="btn btn-success" name=""  id="cmdCambiarContra" value="Modificar" style="margin-top: 10px;">
+                                                        <input type="button" class="btn btn-close" name=""  id="cmdCancelarCambiarContra" value="Cancelar" style="margin-top: 10px;">
+                                                        <center><label id="mensaje" style="margin-top: 15px;"></label></center>
+                                                       </div>
+                                                   </div>
+                                     
+                                                </div>       
+                                    
 					</div>
                                        
                                         
 					<div class="clearfix"></div>
                                         
                                           <div class="col-md-offset-1" style="margin-top: 30px;">
-						<p class="sans" style="font-size: 13px;">
-							Url Personalizada
-						</p>
-                                                <p class="sans" style="font-size: 13px;">¿Modificar Urls personalizadas? <a href="#" id="ancla">Cambiar</a></p>
-                                           </div>
+						<p class="sans" style="font-size: 13px;">URL Personalizada:</p>
+                                                <p style="margin-bottom: 0px; color: #989898; font-size: 13px;" class="sans">¿Modificar Urls personalizadas? <a href="#" id="urlAncla">Cambiar</a>
+                                                <a href="#" id="cerarModificarionUrl">Cerrar</a>
+                                                </p>
+                                          </div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-5" id="urlform" style="margin-left: 0px;  background-color: bisque;">
+                                                    <div class="form-group" style="margin-top: 5px;">
+                                                        <p>
+                                                            <label>
+                                                                Personalizacion de la URL de Abogado
+                                                            </label>
+                                                       </p>
+                                                      <p class="sans" style="font-size: 13px;">
+                                                      Ingreso de URL personalizada del perfil de abogado, solo puedes modificar estos datos un maximo de 2 veces.
+                                                      </p>
+                                                        
+                                                   </div>
+                                                    
+                                                    <div class="form-group" style="margin-top: 5px;">
+                                                       <label for="urlDireccion">
+                                                           www.abogados.com.sv/
+                                                       </label> 
+                                                         
+                                                        <input type="text" required class="form-control input-sm" name="txtUrlPersonalizada" id="UrlPersonalizada" placeholder="Nombre de la url personlizada">
+                                                   </div>
+                                                   <div class="form-group" style="margin-top: 5px;">
+                                                      
+                                                        <input type="button" class="btn btn-success" name=""  id="cmdInsertarUrl" value="Modificar">
+                                                        <input type="button" class="btn btn-close" name=""  id="cmdCancelarUrl" value="Cancelar">
+                                                   </div>
+
+                                               </div> {#fin del pimer panel#}
+                                                    
+                                                    
+                                                 <div class="col-md-1"> </div>
+                                                <div class="col-md-5" style="margin-left: -30px; background-color: #e4b9b9;" id="urlformE">
+                                                    <div class="form-group" style="margin-top: 5px;">
+                                                      <p>
+                                                        <label>
+                                                            Personalizacion de la URL de Empresa
+                                                        </label> 
+                                                      </p>
+                                                      <p class="sans" style="font-size: 13px;" id="siPermiso">
+                                                      Ingreso de URL personalizada del perfil de Empresa, solo puedes modificar estos datos un maximo de 2 veces.
+                                                      </p>
+                                                       <p class="sans" style="font-size: 13px;" id="noPermiso">
+                                                      Tiene que llenar por lo menos el campo nombre de  empresa, para poder modificar la URL personalizada.
+                                                      </p>
+                                                        
+                                                   </div>
+                                                    
+                                                    <div class="form-group" style="margin-top: 5px;">
+                                                       <label for="urlDireccion">
+                                                           www.abogados.com.sv/
+                                                       </label> 
+                                                         
+                                                        <input type="text" required class="form-control input-sm" name="txtUrlPersonalizadaEmp" id="UrlPersonalizadaEmp" placeholder="Nombre de la url personlizada de la empresa">
+                                                   </div>
+                                                   <div class="form-group" style="margin-top: 5px;">
+                                                      
+                                                        <input type="button" class="btn btn-success" name=""  id="cmdInsertarUrlEmp" value="Modificar">
+                                                        <input type="button" class="btn btn-close" name=""  id="cmdCancelarUrlEmp" value="Cancelar">
+                                                   </div>
+
+                                               </div> {#fin segundo panel#}
+                                                       
+                                                
+                                            </div> 
+                                            <div class="clearfix"></div>
                                         
+                                          <div class="col-md-offset-1" style="margin-top: 30px;">
+						<p class="sans" style="font-size: 13px;">Codigo QR:</p>
+                                                <p style="margin-bottom: 0px; color: #989898; font-size: 13px;" class="sans">¿Mostrar mi codigo QR? <a href="#" id="idAqrContenedor">Mostrar</a>
+                                                    <a href="#" id="carncelarQR">Cerrar</a>
+                                                </p>
+                                          </div>
+                                            <div class="row">
+
+                                               <div class="col-md-1"></div>
+                                               <div class="col-md-5"  style="margin-left: 0px;margin-left: -30px;  background-color: white;" id="formQR">
+                                                    
+                                                    <div id="qrcode" style="margin-left: 60px; margin-top: 10px;">
+
+
+
+                                                    </div>
+                                                
+
+
+                                               </div>
+                                               <div class="col-md-1"></div>
+                                               
+                                               <div class="col-md-5"  style="margin-left: 0px;margin-left: -30px;  background-color: white;" id="exportarImagen" >
+                                                    
+                                                      <p class="sans" style="font-size: 13px;" id="siPermiso">
+                                                          Descarga tu codigo QR en el formato que necesites
+                                                      </p>
+                                                      <p>
+                                                        <a href="" id="ancla32jpg" class="descargajpg btn btn-success">JPG</a>
+                                                        <a href="" id="ancla32png" class="descargapng btn btn-success">PNG</a>
+                                                        <a href="" id="ancla32eps" class="descargaeps btn btn-success">EPS</a>
+                                                        <a href="" id="ancla32svg" class="descargasvg btn btn-success">SVG</a>
+                                                      </p>
+                                                      
+                                                      
+                                               </div>
+                                               
+                                                  
+                                                      
+                                                       
+                                               
+                                               {#fin del pimer panel#}
+                         
+                                            </div>
 					<!-- NOTIFICACION DE EMAILS -->
 					<div class="col-md-offset-1" style="margin-top: 30px;">
 						<p class="sans" style="font-size: 13px; margin-bottom: 0px;">

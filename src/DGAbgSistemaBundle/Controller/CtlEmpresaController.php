@@ -13,11 +13,14 @@ use DGAbgSistemaBundle\Entity\AbgPersona;
 use DGAbgSistemaBundle\Entity\CtlUsuario;
 use DGAbgSistemaBundle\Entity\AbgSitioWeb;
 use DGAbgSistemaBundle\Entity\AbgUrlPersonalizada;
+
 use DGAbgSistemaBundle\Entity\AbgVisitas;
 use DGAbgSistemaBundle\Form\CtlEmpresaType;
 use Symfony\Component\HttpFoundation\Response;
-use DGAbgSistemaBundle\Entity\AbgPersonaSubespecialidad;
+use DGAbgSistemaBundle\Entity\AbgPersonaEspecialida;
 use DGAbgSistemaBundle\Resources\Tinypng\lib\lib\Tinify;
+
+
 
 include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify.php';
 include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Exception.php';
@@ -149,7 +152,8 @@ class CtlEmpresaController extends Controller
         //Foto de la persona de perfil cuando este dentro del modulo de empresa
         $dqlfoto = "SELECT fot.src as src "
                 . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=1";
-        $result_fotoAbogado = $em->createQuery($dqlfoto)->getArrayResult();        
+        $result_fotoAbogado = $em->createQuery($dqlfoto)->getArrayResult();  
+        
         
 
         return $this->render('ctlempresa/paneladministrativoempresa.html.twig', array(
@@ -161,9 +165,69 @@ class CtlEmpresaController extends Controller
             'usuario'=>$username,
              'abgPersona' => $result_persona,
              'abgFotoP'=>$result_fotoAbogado,
+           
             
         ));
     }
+    
+    
+     /**
+     * @Route("/especialidaE", name="especialidaE", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function EspecialidaEAction() {
+        try {
+            $n = 0;
+            $subEspS = "";
+            $em = $this->getDoctrine()->getManager();
+            $request = $this->getRequest();
+            $subEspecialidadesSeleccionadas = "";
+            if (($request->get('hPersona') != null)) {
+
+                $dql_departamento = "SELECT  c.id AS id"
+                        . " FROM DGAbgSistemaBundle:AbgPersonaEspecialida c WHERE c.ctlEmpresa=" . $request->get('hPersona');
+                $esp = $em->createQuery($dql_departamento)->getArrayResult();
+                if (count($esp) > 0) {
+
+                    $sql = "SELECT  e.id AS id, e.nombre_especialidad AS nombre, pe.descripcion AS descripcion, pe.id As idPE, pe.ctl_especialidad_id AS idEsp "
+                            . " FROM  marvinvi_abg.ctl_especialidad e "
+                            . " left JOIN marvinvi_abg.abg_persona_especialidad pe ON e.id=pe.ctl_especialidad_id AND pe.ctl_empresa_id=" . $request->get('hPersona')
+                            . " ORDER BY e.nombre_especialidad";
+                    $stm = $this->container->get('database_connection')->prepare($sql);
+                    $stm->execute();
+                    $subEspecialidadesSeleccionadas = $stm->fetchAll();
+                }
+            }
+            $dql_departamento = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre"
+                    . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
+                    . "JOIN  DGAbgSistemaBundle:CtlSubespecialidad sub WHERE e.id=sub.abgEspecialidad group by e.id";
+            $result_especialida = $em->createQuery($dql_departamento)->getArrayResult();
+
+
+
+            return $this->render('abgpersona/especialidades.html.twig', array(
+                        'abgEspecialida' => $result_especialida,
+                        'especialidadesS' => $subEspecialidadesSeleccionadas,
+            ));
+        } catch (\Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -179,9 +243,9 @@ class CtlEmpresaController extends Controller
     {
         
       
-         $em = $this->getDoctrine()->getManager();
-         $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
-         $ctlEmpresaId = $RepositorioPersona[0]->getCtlEmpresa()->getId();
+      $em = $this->getDoctrine()->getManager();
+      $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
+      $ctlEmpresaId = $RepositorioPersona[0]->getCtlEmpresa()->getId();
         
       //Completo los elementos de las visitas
       $entity = $em->getRepository('DGAbgSistemaBundle:AbgVisitas')->findBy(array("ctlEmpresa" =>$ctlEmpresaId));
@@ -254,7 +318,14 @@ class CtlEmpresaController extends Controller
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
         $result_persona = $em->createQuery($dql_persona)->getArrayResult();
      
-        
+         //metodo que me retorna Especialidades
+         $dql_especialida = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre, pe.descripcion AS descripcion "
+                    . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
+                    . " JOIN DGAbgSistemaBundle:AbgPersonaEspecialida pe WHERE e.id=pe.ctlEspecialidad AND pe.ctlEmpresa=" . $ctlEmpresaId
+                    . " GROUP by e.id "
+                    . " ORDER BY e.nombreEspecialidad";
+         $result_especialida = $em->createQuery($dql_especialida)->getArrayResult();
+         
        
          
         
@@ -267,124 +338,13 @@ class CtlEmpresaController extends Controller
             'usuario'=>$username,
             'abgPersona' => $result_persona,
             'visitas'=>$valor,
+            'RegistroEspecialida' => $result_especialida,
          
             
             
            
         ));
     }
-    
-    
-    
-    
-
-    /**
-     * Creates a new CtlEmpresa entity.
-     *
-     * @Route("/new", name="admin_ctlempresa_new")
-     * @Method({"GET", "POST"})
-     */
-    public function newAction(Request $request)
-    {
-        $ctlEmpresa = new CtlEmpresa();
-        $form = $this->createForm('DGAbgSistemaBundle\Form\CtlEmpresaType', $ctlEmpresa);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($ctlEmpresa);
-            $em->flush();
-
-            return $this->redirectToRoute('admin_ctlempresa_show', array('id' => $ctlEmpresa->getId()));
-        }
-
-        return $this->render('ctlempresa/new.html.twig', array(
-            'ctlEmpresa' => $ctlEmpresa,
-            'form' => $form->createView(),
-        ));
-    }
-
-    /**
-     * Finds and displays a CtlEmpresa entity.
-     *
-     * @Route("/{id}", name="admin_ctlempresa_show")
-     * @Method("GET")
-     */
-    public function showAction(CtlEmpresa $ctlEmpresa)
-    {
-        $deleteForm = $this->createDeleteForm($ctlEmpresa);
-
-        return $this->render('ctlempresa/show.html.twig', array(
-            'ctlEmpresa' => $ctlEmpresa,
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
-    /**
-     * Displays a form to edit an existing CtlEmpresa entity.
-     *
-     * @Route("/{id}/edit", name="admin_ctlempresa_edit")
-     * @Method({"GET", "POST"})
-     */
-    public function editAction(Request $request, CtlEmpresa $ctlEmpresa)
-    {
-        $deleteForm = $this->createDeleteForm($ctlEmpresa);
-        $editForm = $this->createForm('DGAbgSistemaBundle\Form\CtlEmpresaType', $ctlEmpresa);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($ctlEmpresa);
-            $em->flush();
-
-            return $this->redirectToRoute('admin_ctlempresa_edit', array('id' => $ctlEmpresa->getId()));
-        }
-
-        return $this->render('ctlempresa/edit.html.twig', array(
-            'ctlEmpresa' => $ctlEmpresa,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
-    /**
-     * Deletes a CtlEmpresa entity.
-     *
-     * @Route("/{id}", name="admin_ctlempresa_delete")
-     * @Method("DELETE")
-     */
-    public function deleteAction(Request $request, CtlEmpresa $ctlEmpresa)
-    {
-        $form = $this->createDeleteForm($ctlEmpresa);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($ctlEmpresa);
-            $em->flush();
-        }
-
-        return $this->redirectToRoute('admin_ctlempresa_index');
-    }
-
-    /**
-     * Creates a form to delete a CtlEmpresa entity.
-     *
-     * @param CtlEmpresa $ctlEmpresa The CtlEmpresa entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm(CtlEmpresa $ctlEmpresa)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('admin_ctlempresa_delete', array('id' => $ctlEmpresa->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
-    }
-    
-    
-    
     
     /**
      * @Route("/ingresar_usuarioEmpresa/", name="ingresar_usuarioEmpresa", options={"expose"=true})
@@ -400,7 +360,7 @@ class CtlEmpresaController extends Controller
         $isAjax = $this->get('Request')->isXMLhttpRequest();
          if($isAjax){
              
-             
+            
             $em = $this->getDoctrine()->getManager();  
             $datos = $this->get('request')->request->get('frm');       
             $frm = json_decode($datos);
@@ -418,102 +378,107 @@ class CtlEmpresaController extends Controller
             $contrasenha = $frm->contrasenha;
             
             //Ingreso de una persona
-            
-            $abgPersona->setNombres($nombreAbogado);
-            $abgPersona->setApellido($apellidoAbogado);
-            $abgPersona->setCorreoelectronico($correoUsuario);
-            $abgPersona->setFechaIngreso(new \DateTime("now"));
-            $abgPersona->setEstado('1');
-            $em->persist($abgPersona);
-            $em->flush();
-            $idPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgPersona')->find($abgPersona->getId());
-            
+        
+                $codigo = $this->generarIdClienteAbogado();
+                $abgPersona->setNombres($nombreAbogado);
+                $abgPersona->setApellido($apellidoAbogado);
+                $abgPersona->setCorreoelectronico($correoUsuario);
+                $abgPersona->setFechaIngreso(new \DateTime("now"));
+                $abgPersona->setEstado('1');
+                $abgPersona->setCodigo($codigo);
+                $em->persist($abgPersona);
+                $em->flush();
+                $idPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgPersona')->find($abgPersona->getId());
+
+
             //Ingreso null de una empresa
             
-            $ctlEmpresa->setNombreEmpresa('Nombre de la empresa');
-            $ctlEmpresa->setCtlCiudad(null);
-            $ctlEmpresa->setCtlTipoEmpresa(null);
-            $ctlEmpresa->setMovil('00000000');
-            $ctlEmpresa->setTelefono('00000000');
-            $ctlEmpresa->setSitioWeb('Sitio Web');
-            $ctlEmpresa->setServicios(null);
-            $ctlEmpresa->setNit(null);
-            $ctlEmpresa->setFotoPerfil(null);
-            $ctlEmpresa->setFechaFundacion(null);
-            $ctlEmpresa->setFax(null);
-            $ctlEmpresa->setDireccion('Direccion empresa');
-            $ctlEmpresa->setDescripcion(null);
-            $ctlEmpresa->setCorreoelectronico('ejemplo@ejemplo.com');
-            $ctlEmpresa->setColor("#000035");
-            
-            $ctlEmpresa->setCantidadEmpleados(null);
-            $ctlEmpresa->setLatitude(13.70036411285400400000);
-            $ctlEmpresa->setLongitude(-89.22023010253906000000);
-            $ctlEmpresa->setListaEmpleado(1);
-            $em->persist($ctlEmpresa);
-            $em->flush();
-            
-            $idEmpresa = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlEmpresa')->find($ctlEmpresa->getId());
+                $ctlEmpresa->setNombreEmpresa('Nombre de la empresa');
+                $ctlEmpresa->setCtlCiudad(null);
+                $ctlEmpresa->setCtlTipoEmpresa(null);
+                $ctlEmpresa->setMovil('00000000');
+                $ctlEmpresa->setTelefono('00000000');
+                $ctlEmpresa->setSitioWeb('Sitio Web');
+                $ctlEmpresa->setServicios(null);
+                $ctlEmpresa->setNit(null);
+                $ctlEmpresa->setFotoPerfil(null);
+                $ctlEmpresa->setFechaFundacion(null);
+                $ctlEmpresa->setFax(null);
+                $ctlEmpresa->setDireccion('Direccion empresa');
+                $ctlEmpresa->setDescripcion(null);
+                $ctlEmpresa->setCorreoelectronico('ejemplo@ejemplo.com');
+                $ctlEmpresa->setColor("#000035");
+
+                $ctlEmpresa->setCantidadEmpleados(null);
+                $ctlEmpresa->setLatitude(13.70036411285400400000);
+                $ctlEmpresa->setLongitude(-89.22023010253906000000);
+                $ctlEmpresa->setListaEmpleado(1);
+
+                $ctlEmpresa->setUrlPermiso(0);
+                $em->persist($ctlEmpresa);
+                $em->flush();
+
+                $idEmpresa = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlEmpresa')->find($ctlEmpresa->getId());
 
             
             //Ingreso de un usuario
-            $rol = $em->getRepository('DGAbgSistemaBundle:CtlRol')->find(2);
-            
-            $ctlUsuario->setUsername($correoUsuario);
-            $ctlUsuario->setPassword($contrasenha);
-            $ctlUsuario->setEstado('1');
-            $ctlUsuario->setRhPersona($idPersona);
-            $ctlUsuario->setCtlEmpresa($idEmpresa);
-            $ctlUsuario->addCtlRol($rol);
-            $this->setSecurePassword($ctlUsuario, $contrasenha);
-            $em->persist($ctlUsuario);
-            $em->flush();
+                $rol = $em->getRepository('DGAbgSistemaBundle:CtlRol')->find(2);
+
+                $ctlUsuario->setUsername($correoUsuario);
+                $ctlUsuario->setPassword($contrasenha);
+                $ctlUsuario->setEstado('1');
+                $ctlUsuario->setRhPersona($idPersona);
+                $ctlUsuario->setCtlEmpresa($idEmpresa);
+                $ctlUsuario->addCtlRol($rol);
+                $this->setSecurePassword($ctlUsuario, $contrasenha);
+                $em->persist($ctlUsuario);
+                $em->flush();
             
             
             //Creo el registro de visitas de los perfiles publicos de empresa y persona
             
-            $visitasE = new AbgVisitas();
-            $visitasE->setAbgPersona(null);
-            $visitasE->setCtlEmpresa($idEmpresa);
-            $visitasE->setVisita(0);
-            $visitasE->setVisitaUnica(0);
-             $em->persist($visitasE);
-             $em->flush();
+                $visitasE = new AbgVisitas();
+                $visitasE->setAbgPersona(null);
+                $visitasE->setCtlEmpresa($idEmpresa);
+                $visitasE->setVisita(0);
+                $visitasE->setVisitaUnica(0);
+                 $em->persist($visitasE);
+                 $em->flush();
             
             
-            $visitasP = new AbgVisitas();
-            $visitasP->setAbgPersona($idPersona);
-            $visitasP->setCtlEmpresa(null);
-            $visitasP->setVisita(0);
-            $visitasP->setVisitaUnica(0);
-            $em->persist($visitasP);
-            $em->flush();
+                $visitasP = new AbgVisitas();
+                $visitasP->setAbgPersona($idPersona);
+                $visitasP->setCtlEmpresa(null);
+                $visitasP->setVisita(0);
+                $visitasP->setVisitaUnica(0);
+                $em->persist($visitasP);
+                $em->flush();
             
           //Creacion de las registros de la URL personalizada
             //Ingreso de url de la empresa
      
-            $url = $this->generarCorrelativoEmpresa();
-            $urlPerE= new AbgUrlPersonalizada();
-            $urlPerE->setCtlEmpresa($idEmpresa);
-            $urlPerE->setAbgPersona(null);
-            $urlPerE->setEstado(1);
-            $urlPerE->setUrl($url);
-            $em->persist($urlPerE);
-            $em->flush();
-            
+                $url = $this->generarCorrelativoEmpresa();
+                $urlPerE= new AbgUrlPersonalizada();
+                $urlPerE->setCtlEmpresa($idEmpresa);
+                $urlPerE->setAbgPersonas(null);
+                $urlPerE->setEstado(1);
+                $urlPerE->setUrl($url);
+                $em->persist($urlPerE);
+                $em->flush();
+
             
             
             //Ingreso de la url del abogado
            
-            $urlA=  $this->generarCorrelativoAbogado();
-            
-            $urlPerA= new AbgUrlPersonalizada();
-            $urlPerA->setCtlEmpresa(null);
-            $urlPerA->setAbgPersona($idPersona);
-            $urlPerA->setEstado(1);
-            $urlPerA->setUrl($urlA);
-            $em->persist($urlPerA);
-            $em->flush();
+                $urlA=  $this->generarCorrelativoAbogado();
+
+                $urlPerA= new AbgUrlPersonalizada();
+                $urlPerA->setCtlEmpresa(null);
+                $urlPerA->setAbgPersonas($idPersona);
+                $urlPerA->setEstado(1);
+                $urlPerA->setUrl($urlA);
+                $em->persist($urlPerA);
+                $em->flush();
             
             
             
@@ -552,11 +517,7 @@ class CtlEmpresaController extends Controller
                     $em->flush();
                      
                     
-                    
-                    
-                    
-                    
-                  
+
                      
                  $data['username'] = $ctlUsuario->getUsername();
                  $data['estado']=true;
@@ -578,7 +539,7 @@ class CtlEmpresaController extends Controller
     
 
     /**
-     * @Route("/validar_correo/", name="validar_correo", options={"expose"=true})
+     * @Route("admin/validar_correo/", name="validar_correo", options={"expose"=true})
      * @Method("POST")
      */
     
@@ -642,7 +603,7 @@ class CtlEmpresaController extends Controller
     
     
     /**
-     * @Route("/ingresar_foto/get", name="ingresar_foto", options={"expose"=true})
+     * @Route("admin/ingresar_foto/get", name="ingresar_foto", options={"expose"=true})
      * @Method("POST")
      */
     
@@ -737,6 +698,8 @@ class CtlEmpresaController extends Controller
 
                                 }
                             else{
+                                              
+                                                
                                                 $entity = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("ctlEmpresa" =>$idEmpresa,"tipoFoto"=>1));
                                                 $entity[0]->setSrc($nombreBASE);
                                                 $entity[0]->setFechaRegistro(new \DateTime("now"));
@@ -744,11 +707,15 @@ class CtlEmpresaController extends Controller
                                                 $entity[0]->setEstado(1);
                                                 $em->merge($entity[0]);
                                                 $em->flush();
-                                               
-                                                $enti = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("ctlEmpresa" =>$idEmpresa,"tipoFoto"=>1));
                                                 
+                                                $enti = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("ctlEmpresa" =>$idEmpresa,"tipoFoto"=>1));
                                                 $direcciones = $enti[0]->getSrc();
-                                                $datas['direccion']=$direcciones;
+                                                
+                                        
+                                                $direccionPara = str_replace("\\","" , $direcciones);
+                                                $datas['direccion']=$direccionPara;
+                                                $datas['estado']=true;
+                                                
                                                 
                                 }
 
@@ -785,10 +752,20 @@ class CtlEmpresaController extends Controller
         $entity->setPassword($password);
     }  
     
+    
+     private function comparePassword(&$entity, $contrasenia) {
+       
+        $encoder = new \Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder('sha512', true, 10);
+        $password = $encoder->encodePassword($contrasenia, $entity->getSalt());
+        
+        return $password;
+    }  
+    
+    
 
     
     /**
-     * @Route("/edit/empresa", name="edit_empresa", options={"expose"=true})
+     * @Route("admin/edit/empresa", name="edit_empresa", options={"expose"=true})
      * @Method("POST")
      */
     public function EditPersonaAction() {
@@ -806,6 +783,7 @@ class CtlEmpresaController extends Controller
                 case 0:
                     $nombreEmpresa = ($request->get('nombreEmpresa'));
                     $empresa->setNombreEmpresa($nombreEmpresa);
+                    $empresa->setUrlPermiso(1);
                        
                     break;
                 case 1:
@@ -898,7 +876,60 @@ class CtlEmpresaController extends Controller
         }
     }   
     
-    
+     /**
+     * @Route("/subespecialidad", name="subespecialidad", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function SubespecialidadAction() {
+        try {
+            $request = $this->getRequest();
+            $em = $this->getDoctrine()->getManager();
+            $Persona = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($request->get('hPersona'));
+            $array = $request->get('DataEspecialida');
+            parse_str($request->get('dato'), $datos);
+
+
+            $RepositorioSubEsp = $em->getRepository("DGAbgSistemaBundle:AbgPersonaEspecialida");
+            if (is_null($RepositorioSubEsp->findBy(array('abgPersona' => $request->get('hPersona'))))) {
+                
+            } else {
+                $PersonaSub = $RepositorioSubEsp->findBy(array('abgPersona' => $request->get('hPersona')));
+                foreach ($PersonaSub as $obj) {
+                    $em->remove($obj);
+                    $em->flush();
+                }
+            }
+            if (is_null($array)) {
+                
+            } else {
+                foreach ($array as $obj) {
+
+                    $PersonaEspecialidad = new AbgPersonaEspecialida();
+                    $idSub = $em->getRepository("DGAbgSistemaBundle:CtlEspecialidad")->find(intval($obj['0']));
+                    $PersonaEspecialidad->setCtlEmpresa($Persona);
+                    $PersonaEspecialidad->setCtlEspecialidad($idSub);
+                    $PersonaEspecialidad->setDescripcion($datos[$obj['1']]);
+                    $em->persist($PersonaEspecialidad);
+                    $em->flush();
+                }
+                $data['msj'] = "Especialida registrada";
+                $dql_especialida = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre, pe.descripcion AS descripcion "
+                        . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
+                        . "JOIN DGAbgSistemaBundle:AbgPersonaEspecialida pe WHERE e.id=pe.ctlEspecialidad AND pe.ctlEmpresa=" . $request->get('hPersona')
+                        . " GROUP by e.id";
+                $data['Esp'] = $em->createQuery($dql_especialida)->getArrayResult();
+            }
+
+
+
+
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+            $data['error'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
+    }
+
     
     /**
      * @Route("/edit/colorEmpresa", name="edit_color", options={"expose"=true})
@@ -934,7 +965,7 @@ class CtlEmpresaController extends Controller
      }
      
      /**
-     * @Route("/ctlempresa/mostrarTipoEmpresa", name="mostarTipoEmpresa", options={"expose"=true})
+     * @Route("admin/ctlempresa/mostrarTipoEmpresa", name="mostarTipoEmpresa", options={"expose"=true})
      * @Method("POST")
      */
     public function mostarTipoEmpresaAction() {
@@ -962,7 +993,7 @@ class CtlEmpresaController extends Controller
      
     
      /**
-     * @Route("/ingresar_empresa_persona/get", name="ingresar_foto_persona", options={"expose"=true})
+     * @Route("admin/ingresar_empresa_persona/get", name="ingresar_foto_persona", options={"expose"=true})
      * @Method("POST")
      */
     
@@ -1100,139 +1131,6 @@ class CtlEmpresaController extends Controller
     }
      
     
-    /**
-     * @Route("/ctlempresa/mostarsubcategorias", name="mostarsubcategorias", options={"expose"=true})
-     * @Method("GET")
-     */
-    public function Mostarsubcategorias() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
-      
-        
-        try {
-            $n = 0;
-            $subEspS = "";
-            $em = $this->getDoctrine()->getManager();
-            $request = $this->getRequest();
-            $subEspecialidadesSeleccionadas = "";
-            if (($request->get('hPersona') != null)) {
-                $dql_especialida = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre"
-                        . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
-                        . "JOIN  DGAbgSistemaBundle:CtlSubespecialidad sub WHERE e.id=sub.abgEspecialidad "
-                        . "JOIN DGAbgSistemaBundle:AbgPersonaSubespecialidad pe WHERE sub.id=pe.abgSubespecialidad AND pe.ctlEmpresa=" . $request->get('hPersona')
-                        . " GROUP by e.id";
-                $subEspecialidadesSeleccionadas = $em->createQuery($dql_especialida)->getArrayResult();
-
-
-
-                if (count($subEspecialidadesSeleccionadas) > 0) {
-                    $sql = "select pe.abg_subespecialidad_id AS idEspSelect, sub.abg_subespecialidadcol AS nombre,sub.id AS idSub, e.id AS idEsp
-                        from  marvinvi_abg.abg_persona_subespecialidad pe "
-                            . " right join marvinvi_abg.ctl_subespecialidad sub on  sub.id=pe.abg_subespecialidad_id AND pe.ctl_empresa_id=" . $request->get('hPersona')
-                            . " right join marvinvi_abg.ctl_especialidad e on e.id=sub.abg_especialidad_id 
-                        group by  pe.id,pe.abg_subespecialidad_id, sub.abg_subespecialidadcol,sub.abg_especialidad_id";
-
-                    $stm = $this->container->get('database_connection')->prepare($sql);
-                    $stm->execute();
-                    $subEspS = $stm->fetchAll();
-                }
-            }
-            $dql_departamento = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre"
-                    . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
-                    . "JOIN  DGAbgSistemaBundle:CtlSubespecialidad sub WHERE e.id=sub.abgEspecialidad group by e.id";
-            $result_especialida = $em->createQuery($dql_departamento)->getArrayResult();
-
-            $dsql_sub = "SELECT e.id AS idEsp, e.nombreEspecialidad AS nombreEsp, sub.id AS idSub, sub.abgSubespecialidadcol AS nombreSub "
-                    . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
-                    . "JOIN  DGAbgSistemaBundle:CtlSubespecialidad sub WHERE e.id=sub.abgEspecialidad";
-            $result_sub = $em->createQuery($dsql_sub)->getArrayResult();
-            if ($n == 1) {
-                $data['esp'] = $em->createQuery($dql_departamento)->getArrayResult();
-                return new Response(json_encode($data));
-            } else {
-                return $this->render('abgpersona/especialidades.html.twig', array(
-                            'abgEspecialida' => $result_especialida,
-                            'subEsp' => $result_sub,
-                            'subEspS' => $subEspS,
-                            'especialidadesS' => $subEspecialidadesSeleccionadas,
-                ));
-            }
-            
-            
- 
-            
-        } catch (\Exception $e) {
-            
-            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
-            return new Response(json_encode($data));
-        } 
-    
-    
-     }
-       
-     
-    /**
-     * @Route("/ctlempresa/insertarsubespecialidad", name="insertarsubespecialidad", options={"expose"=true})
-     * @Method("GET")
-     */
-    public function Insertarsubespecialidad() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
-
-        try {
-          $request = $this->getRequest();
-            $em = $this->getDoctrine()->getManager();
-            $Persona = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($request->get('hPersona'));
-            $array = $request->get('SubEspecialida');
-
-            $RepositorioSubEsp = $em->getRepository("DGAbgSistemaBundle:AbgPersonaSubespecialidad");
-            if (is_null($RepositorioSubEsp->findBy(array('ctlEmpresa' => $request->get('hPersona'))))) {
-                
-            } else {
-                $PersonaSub = $RepositorioSubEsp->findBy(array('ctlEmpresa' => $request->get('hPersona')));
-                foreach ($PersonaSub as $obj) {
-                    $em->remove($obj);
-                    $em->flush();
-                }
-            }
-            if (is_null($array)) {
-                
-            } else {
-                foreach ($array as $obj) {
-                    $PersonaSubespecialidad = new AbgPersonaSubespecialidad();
-                    $idSub = $em->getRepository("DGAbgSistemaBundle:CtlSubespecialidad")->find(intval($obj));
-                    $PersonaSubespecialidad->setCtlEmpresa($Persona);
-                    $PersonaSubespecialidad->setAbgSubespecialidad($idSub);
-                    $em->persist($PersonaSubespecialidad);
-                    $em->flush();
-                }
-            }
-
-            $dql_especialida = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre"
-                    . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
-                    . "JOIN  DGAbgSistemaBundle:CtlSubespecialidad sub WHERE e.id=sub.abgEspecialidad "
-                    . "JOIN DGAbgSistemaBundle:AbgPersonaSubespecialidad pe WHERE sub.id=pe.abgSubespecialidad AND pe.ctlEmpresa=" . $request->get('hPersona')
-                    . " GROUP by e.id";
-
-            $data['Esp'] = $em->createQuery($dql_especialida)->getArrayResult();
-
-            $dsql_sub = "SELECT pe.id AS idSub,sub.abgSubespecialidadcol AS nombre, e.id AS idEsp  "
-                    . "FROM  DGAbgSistemaBundle:AbgPersonaSubespecialidad pe "
-                    . "JOIN  DGAbgSistemaBundle:CtlSubespecialidad sub WHERE  sub.id=pe.abgSubespecialidad AND  pe.ctlEmpresa=" . $request->get('hPersona')
-                    . "JOIN  DGAbgSistemaBundle:CtlEspecialidad e WHERE e.id=sub.abgEspecialidad ";
-            $data['subEsp'] = $em->createQuery($dsql_sub)->getArrayResult();
-
-            return new Response(json_encode($data));
-
-        } catch (\Exception $e) {
-            
-            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
-            return new Response(json_encode($data));
-        } 
-    
-    
-     }    
-     
      public function generarCorrelativoEmpresa(){
     
        
@@ -1249,16 +1147,16 @@ class CtlEmpresaController extends Controller
        $numero = $numero_base+1;
         switch (strlen($numero_base)){
             case 1:
-                $valor=$primerLetras.=$numero.="0000";
+                $valor=$primerLetras.="0000".$numero;
             break;
             case 2:    
-                 $valor= $primerLetras.=$numero.="000";
+                $valor=$primerLetras.="000".$numero;
             break;
             case 3:    
-                 $valor= $primerLetras.=$numero.="00";
+                 $valor=$primerLetras.="00".$numero;
             break;
             case 4:    
-                 $valor= $primerLetras.=$numero.="0";
+                $valor=$primerLetras.="0".$numero;
             break;
             case 5:    
                   $valor=$primerLetras.=$numero;
@@ -1287,16 +1185,16 @@ class CtlEmpresaController extends Controller
        $numero = $numero_base+1;
         switch (strlen($numero_base)){
             case 1:
-                $valor=$primerLetras.=$numero.="0000";
+                $valor=$primerLetras.="0000".$numero;
             break;
             case 2:    
-                 $valor= $primerLetras.=$numero.="000";
+                $valor=$primerLetras.="000".$numero;
             break;
             case 3:    
-                 $valor= $primerLetras.=$numero.="00";
+                 $valor=$primerLetras.="00".$numero;
             break;
             case 4:    
-                 $valor= $primerLetras.=$numero.="0";
+                $valor=$primerLetras.="0".$numero;
             break;
             case 5:    
                   $valor=$primerLetras.=$numero;
@@ -1307,5 +1205,535 @@ class CtlEmpresaController extends Controller
         }
         return $valor;
      }
+     
+     
+     
+     
+     
+    /**
+     * @Route("admin/validarUrlPersonalizada/", name="validarUrlPersonalizada", options={"expose"=true})
+     * @Method("POST")
+     */
+    
+    
+      public function ValidarUrlPersonalizada(Request $request) {
+        
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+
+         if($isAjax){
+         
+            
+            $em = $this->getDoctrine()->getManager();
+            $username = $this->container->get('security.context')->getToken()->getUser();
+         
+//            $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username->getUsername()); 
+            $abgPersonaId = $username->getRhPersona()->getId();
+           
+            $direccion = $request->get('url');
+          
+     
+            $dqlEmp = "SELECT COUNT(u.id) AS res FROM DGAbgSistemaBundle:AbgUrlPersonalizada u WHERE"
+                   . " u.url = :url ";
+  
+            $resultadoBusqueda = $em->createQuery($dqlEmp)
+                        ->setParameters(array('url'=>$direccion))
+                        ->getResult();
+            
+ 
+            $numero = $resultadoBusqueda[0]['res'];
+            
+            
+            
+             $dqlNumeroRegistrosExistentes = "SELECT COUNT(u.id) AS numR FROM DGAbgSistemaBundle:AbgUrlPersonalizada u WHERE"
+                   . " u.abgPersona = :abgPersona ";
+             
+            $resultadoBusquedas = $em->createQuery($dqlNumeroRegistrosExistentes)
+                        ->setParameters(array('abgPersona'=>$abgPersonaId))
+                        ->getResult();
+     
+             $numR = $resultadoBusquedas[0]['numR'];
+             
+             
+            //Evaluacion si  ya ingreso la cantidad de veces permitidas
+             
+            if ($numR>=1 && $numR<3 ){
+                
+                $data['registro'] = true;
+            }else{
+                
+                $data['registro'] =false;
+                
+                
+            }
+            
+            //Evaluacion si la url que viene ya existe dentro del sistema
+            if ($numero==0){
+                
+                $data['estado'] = true;
+            }else{
+                
+                $data['estado'] =false;
+                
+                
+            }
+            
+                 return new Response(json_encode($data)); 
+            
+            
+         }
+        
+        
+        
+    }
+     
+     
+     
+     
+     
+     
+      /**
+     * @Route("admin/insertarUrl/", name="insertarUrl", options={"expose"=true})
+     * @Method("POST")
+     */
+    
+    
+      public function InsertarUrlPersonalizada(Request $request) {
+        
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+
+         if($isAjax){
+             
+            $em = $this->getDoctrine()->getManager();
+            $username = $this->container->get('security.context')->getToken()->getUser();
+            $abgPersonaId = $username->getRhPersona();
+            
+            
+            $entity = $em->getRepository('DGAbgSistemaBundle:AbgUrlPersonalizada')->findBy(array("abgPersona" =>$abgPersonaId,"estado"=>1));
+            $entity[0]->setEstado(0);
+            $em->merge($entity[0]);
+            $em->flush();
+            
+            
+           
+            $direccionUrl = $request->get('url');
+            $urlPe= new AbgUrlPersonalizada();
+            $urlPe->setCtlEmpresa(null);
+            $urlPe->setAbgPersonas($abgPersonaId);
+            $urlPe->setEstado(1);
+            $urlPe->setUrl($direccionUrl);
+            $em->persist($urlPe);
+            $em->flush();
+            
+            $data['estados']=true;
+            
+            return new Response(json_encode($data)); 
+            
+            
+         }
+        
+        
+        
+    }
+     
+     
+   /**
+     * @Route("admin/evaluarPermisoUrlEmp/", name="evaluarPermisoUrlEmp", options={"expose"=true})
+     * @Method("POST")
+     */
+    
+    
+      public function EvaluarPermisoUrlEmpAction(Request $request) {
+        
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+
+         if($isAjax){
+             
+            $em = $this->getDoctrine()->getManager();
+            $username = $this->container->get('security.context')->getToken()->getUser();
+            
+            
+            $ctlEmpresaId = $username->getCtlEmpresa();
+           
+            $valor=$ctlEmpresaId->getUrlPermiso();
+           
+            if ($valor==1){
+            $data['estado']=true;
+                
+            }else{
+                $data['estado']=false;
+            }
+            
+            
+            return new Response(json_encode($data)); 
+            
+            
+         }
+        
+        
+        
+    }
+        
+     
+     
+     
+     /**
+     * @Route("admin/validarUrlPersonalizadaEmpresa/", name="validarUrlPersonalizadaEmpresa", options={"expose"=true})
+     * @Method("POST")
+     */
+    
+    
+      public function ValidarUrlPersonalizadaEmpresa(Request $request) {
+        
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+
+         if($isAjax){
+         
+            
+            $em = $this->getDoctrine()->getManager();
+            $username = $this->container->get('security.context')->getToken()->getUser();
+         
+//            $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username->getUsername()); 
+            
+            
+            $ctlEmpresaId = $username->getCtlEmpresa()->getId();
+            $direccion = $request->get('url');
+          
+     
+            $dqlEmp = "SELECT COUNT(u.id) AS res FROM DGAbgSistemaBundle:AbgUrlPersonalizada u WHERE"
+                   . " u.url = :url ";
+  
+            $resultadoBusqueda = $em->createQuery($dqlEmp)
+                        ->setParameters(array('url'=>$direccion))
+                        ->getResult();
+            
+ 
+            $numero = $resultadoBusqueda[0]['res'];
+            
+            
+            
+             $dqlNumeroRegistrosExistentes = "SELECT COUNT(u.id) AS numR FROM DGAbgSistemaBundle:AbgUrlPersonalizada u WHERE"
+                   . " u.ctlEmpresa = :ctlEmpresa ";
+             
+            $resultadoBusquedas = $em->createQuery($dqlNumeroRegistrosExistentes)
+                        ->setParameters(array('ctlEmpresa'=>$ctlEmpresaId))
+                        ->getResult();
+     
+            $numR = $resultadoBusquedas[0]['numR'];
+            
+             
+            //Evaluacion si  ya ingreso la cantidad de veces permitidas
+             
+            if ($numR>=1 && $numR<3 ){
+                
+                $data['registro'] = true;
+            }else{
+                
+                $data['registro'] =false;
+                
+                
+            }
+            
+            //Evaluacion si la url que viene ya existe dentro del sistema
+            if ($numero==0){
+                
+                $data['estado'] = true;
+            }else{
+                
+                $data['estado'] =false;
+                
+                
+            }
+            
+                 return new Response(json_encode($data)); 
+            
+            
+         }
+        
+        
+        
+    }
+         
+     
+   /**
+     * @Route("admin/insertarUrlEmpresa/", name="insertarUrlEmpresa", options={"expose"=true})
+     * @Method("POST")
+     */
+    
+    
+      public function InsertarUrlEmpresa(Request $request) {
+        
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+
+         if($isAjax){
+             
+            $em = $this->getDoctrine()->getManager();
+            $username = $this->container->get('security.context')->getToken()->getUser();
+            $ctlEmpresaId = $username->getCtlEmpresa();
+            
+            
+            $entity = $em->getRepository('DGAbgSistemaBundle:AbgUrlPersonalizada')->findBy(array("ctlEmpresa" =>$ctlEmpresaId,"estado"=>1));
+            $entity[0]->setEstado(0);
+            $em->merge($entity[0]);
+            $em->flush();
+            
+            
+           
+            $direccionUrl = $request->get('url');
+            $urlPe= new AbgUrlPersonalizada();
+            $urlPe->setCtlEmpresa($ctlEmpresaId);
+            $urlPe->setAbgPersonas(null);
+            $urlPe->setEstado(1);
+            $urlPe->setUrl($direccionUrl);
+            $em->persist($urlPe);
+            $em->flush();
+            
+            $data['estados']=true;
+            
+            return new Response(json_encode($data)); 
+            
+            
+         }
+        
+        
+        
+    }   
+     
+
+    /**
+     * @Route("admin/mostrarUrl/", name="mostrarUrl", options={"expose"=true})
+     * @Method("POST")
+     */
+    
+    
+      public function MostrarUrl(Request $request) {
+        
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+
+         if($isAjax){
+             
+            $em = $this->getDoctrine()->getManager();
+            $username = $this->container->get('security.context')->getToken()->getUser();
+            
+          
+            $personaId = $username->getRhPersona();
+            
+            
+            $entity = $em->getRepository('DGAbgSistemaBundle:AbgUrlPersonalizada')->findBy(array("abgPersona" =>$personaId,"estado"=>1));
+            $url=$entity[0]->getUrl();
+            
+            $numero="http://www.abogados.com.sv/".$url;
+            $numero=  str_replace("\\", "", $numero);
+            $data['url']=$numero;
+            return new Response(json_encode($data)); 
+            
+            
+         }
+        
+        
+        
+    }
+    
+    
+    
+     public function generarIdClienteAbogado(){
+    
+       
+        $em = $this->getDoctrine()->getManager();
+        $dqlNumerocorrelativoAbogado = "SELECT COUNT(Abg.id) as numero FROM DGAbgSistemaBundle:AbgPersona Abg";
+        $resultCorrelativo = $em->createQuery($dqlNumerocorrelativoAbogado)->getArrayResult();
+        $numero_baseAbo = $resultCorrelativo[0]['numero'];
+        
+        
+        $dqlLetrasPais = "SELECT pa.nombrePais as nombre FROM DGAbgSistemaBundle:CtlPais pa"
+                . " WHERE pa.estado=1";
+        $resultLetras= $em->createQuery($dqlLetrasPais)->getArrayResult();
+        $nombrePais = $resultLetras[0]['nombre'];
+        
+  
+       $primerLetras="";
+       
+         switch ($nombrePais){
+            case 'El Salvador':
+                $primerLetras="SV"; 
+            break;
+             case 'Nicaragua':
+                $primerLetras="NC"; 
+            break;
+            case 'Guatemala':
+                $primerLetras="GT"; 
+            break;
+             case 'Costa Rica':
+                $primerLetras="CR"; 
+            break;
+            case 'Honduras':
+                $primerLetras="H"; 
+            break;
+            
+             
+            
+        }
+       
+       
+       
+       $numero = $numero_baseAbo+1;
+        switch (strlen($numero_baseAbo)){
+            case 1:
+                $valor=$primerLetras.="0000".$numero;
+            break;
+            case 2:    
+                $valor=$primerLetras.="000".$numero;
+            break;
+            case 3:    
+                 $valor=$primerLetras.="00".$numero;
+            break;
+            case 4:    
+                $valor=$primerLetras.="0".$numero;
+            break;
+            case 5:    
+                  $valor=$primerLetras.=$numero;
+            break;
+            
+             
+            
+        }
+      
+        return $valor; 
+     }
+    
+    
+//Configuracion de nueva contraseña
+     
+     
+    /**
+     * @Route("admin/cambiarContra/", name="cambiarContra", options={"expose"=true})
+     * @Method("POST")
+     */
+    
+    
+      public function CambiarContra(Request $request) {
+        
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+
+         if($isAjax){
+             
+             $em = $this->getDoctrine()->getManager();
+             $contraNueva=$request->get('contraNueva');
+             $contraVieja=$request->get('contraVieja');
+              
+          
+            $username = $this->container->get('security.context')->getToken()->getUser();
+            $contraBase = $username->getPassword();
+           
+             
+           
+           $resultadoConsulta =$this->comparePassword($username,$contraVieja);
+           
+            
+           if($resultadoConsulta==$contraBase){
+               
+               $this->setSecurePassword($username, $contraNueva);
+                $em->persist($username);
+                $em->flush();
+               
+               
+               $data['estado']=true;
+           }else{
+               $data['estado']=false;
+           }
+    
+            return new Response(json_encode($data)); 
+            
+            
+         }
+        
+        
+        
+    } 
+     
+     
+       /**
+     * Lists all CtlEmpresa entities.
+     *
+     * @Route("/reset-password/", name="restablecerContra")
+     * @Method({"GET", "POST"})
+     */
+    public function RestablecerContraAction()
+    {
+      
+         return $this->render('ctlempresa/ayuda.html.twig', array(
+            'mensaje'=>'',
+            'redirect'=>'Login',
+            'header'=>'',
+        )); 
+    }
+    
+    
+    
+    
+    /**
+     * @Route("/validar_correoR/", name="validar_correoR", options={"expose"=true})
+     * @Method("POST")
+     */
+    
+    
+      public function ValidarCorreoForResetAction(Request $request) {
+        
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+
+         if($isAjax){
+            
+            $em = $this->getDoctrine()->getManager();
+           
+            $datos = $request->get('email'); 
+            
+            
+            $dqlPer = "SELECT COUNT(us.id) AS resp FROM DGAbgSistemaBundle:CtlUsuario us WHERE"
+                   . " us.username = :username ";
+
+            $resultadoPersona = $em->createQuery($dqlPer)
+                        ->setParameters(array('username'=>$datos))
+                        ->getResult();
+            
+              
+            
+            $rp=$resultadoPersona[0]['resp'];
+      
+            if ($rp==0){
+                
+                $data['valido'] = 0;
+            }else{
+                
+                $data['valido'] =1;
+   
+            }
+                
+             return new Response(json_encode($data)); 
+            
+            
+         }
+        
+        
+        
+    }
+      
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+     
+ 
+     
    
 }
