@@ -14,6 +14,34 @@
 {% endblock %}
 {% block js_extend %}
 
+    <script type="text/javascript">
+        $("#btnEditarperfil").click(function () {
+            $("#verPerfil").empty();
+            $("#verPerfil").hide();
+            $("#editarPerfil").show();
+        });
+
+        jQuery("#example1").radialProgress("init", {
+            'size': 100,
+            'fill': 5
+        }).radialProgress("to", {'perc':{{cumplimiento}}, 'time': 10000});
+    </script>
+
+    <style type="text/css">
+        .divinfo {
+            border-radius:10px; 
+            /* position: absolute;
+            z-index: 999;
+            width: 200px;
+            height: 100px;
+           display: none;
+            background-color: #fff;
+            border: 3px solid #ebebeb;
+            padding: 10px;*/
+        }
+    </style>
+
+
 {% endblock %} 
 
 {% block navegacion_Y_body %}
@@ -25,266 +53,297 @@
 
     {% block cuerpo %}
 
-        <!-- body style="background-color: #f6f6f6;" -->
+        {%set cumplimiento=10%}
 
-        <!-- PRIMERA BLOQUE CON FOTO DE PERFIL -->
+        {% for datos in abgPersona %}
+            <div class="row" >
 
-        <div class="row" >
-            <div class="col-sm-3">
-                <input type="hidden" id="hPersona"  value="{{datos.id}}">
+                <br>
+                <div class="col-sm-8">
+                    <div class="box box-primary box-solid direct-chat direct-chat-info">
+                        <div class="box-header">
+                            <h3 class="box-title">¿Dónde has trabajado?</h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div><!-- /.box-header -->
+                        <div class="box-body info">
 
-                <img src=" {{asset('Resources/src/img/profile.png')}}" style="margin-top: 10px; margin-left: 10px; width: 200px; height: 200px; margin-bottom: 10px;" />
+                        </div><!-- /.box-body -->
+                        <div class="box-footer">
+                            <form action="#" method="post">
+                                <div class="input-group">
+                                    <input type="text" name="message" placeholder="Type Message ..." class="form-control">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-primary btn-flat">Guardar</button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div><!-- /.box-footer-->
+                    </div>
+                </div>
             </div>
+            <div class="row" >
+                <div class="col-sm-3">
 
-            <div class="col-sm-5" >
+                    <div style="background-color: yellow; border-color: black;margin-top:5px;">
+                        <center>
+                            <img src="{{ asset('') }}{{abgFoto[0].src}}" style="height:200px; width:200px;  "/>
+                        </center>              
+                    </div>     
 
-                <div class="row" >
-                    <div class="col-xs-10" style="padding-right: 0;">
-                        <p style="margin-top: 10px; font-size: 23px; margin-left: 10px; margin-bottom: 0px;" class="sans">
-
-                            <strong>  
-                                {{datos.nombre~' '~datos.apellido}}
-
-                            </strong>
-
-                            <img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
-                    </div></div>
-                <div class="row" >
-                    <div class="col-xs-12" style="padding-right: 0;">
-                        <p style="color: #777777; margin-left: 11px; margin-top: -3px; margin-bottom: 0px;" class="sansli">
-
-                            {%if RegistradaExperiencia|default is not empty %}
-                                {% for datos in RegistradaExperiencia %}
-                                    {%if (datos.dias is null)%}
-                                        {{datos.puesto}}
-                                    {%else%}
-
-                                    {%endif%}   
-                                {%endfor%}
-                            {%else%}
-                                Puesto
-                            {%endif%}
-                        </p>
-                    </div>
+                <!-- img src=" {#{asset('Resources/src/img/profile.png')}#}" style="margin-top: 10px; margin-left: 10px; width: 200px; height: 200px; margin-bottom: 10px;" /-->
                 </div>
-                <div class="row" >
-                    <div class="col-xs-12" style="padding-right: 0;">
 
-                        {%if ciuda|default is not empty %}
+                <div class="col-sm-6" >
 
-                            <div  style="display:block;" id="divMunicipiox">
-                                <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">
-                                    {% for datos in ciuda %}
-                                        <b> {{datos.estado}} </b> | {{datos.nombre}} 
-                                    {%endfor%}
+                    <div class="row" >
+                        <div class="col-xs-10" style="padding-right: 0;">
+                            <p style="margin-top: 10px; font-size: 23px; margin-left: 10px; margin-bottom: 0px;" class="sans">
 
-                                </p>
-                            </div>
+                                <strong>  
 
-                        {%else%}
-                            <div id="divMunicipio">
-                                <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">
-                                    <b>Departament</b> | Municipiio
+                                    {{datos.nombre~' '~datos.apellido}}
 
-                                </p>
-                            </div>
-                        {%endif%}
+                                </strong>
 
-                    </div>
-                </div>
-                <!-- ESPECIALIDAD(ES) -->
-                <div class="row" >
-                    <div class="col-xs-4" style="padding-right: 0;">
-                        <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Especialidades</span>
-                    </div>
-                    <div class="col-xs-8" style="padding-left: 0;" >
-                        <span style="font-size:13px;">
+                                <img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
+                        </div></div>
+                    <div class="row" >
+                        <div class="col-xs-12" style="padding-right: 0;">
+                            <p style="color: #777777; margin-left: 11px; margin-top: -3px; margin-bottom: 0px;" class="sansli">
 
-                            {%if RegistroEspecialida|default is not empty %}
-                                {%set n=1%}
-                                {% for datos in RegistroEspecialida %}
-                                    {%if(n==3)%}
-                                        {{datos.nombre}} 
-                                    {%else%}
-                                        {{datos.nombre~","}} 
-                                    {%endif%}
-                                    {%set n=n+1%}
-                                {%endfor%}
-                            {%else%}
-                                Especialidades
-                            {%endif%}
+                                {%if RegistradaExperiencia|default is not empty %}
+                                    {% for datos in RegistradaExperiencia %}
+                                        {%if (datos.dias is null)%}
+                                            {{datos.puesto}}
+                                        {%else%}
 
-                        </span>
-                    </div>
-                </div>
-                <!-- TRABAJO(S) ACTUAL -->
-                <div class="row" >
-                    <div class="col-xs-4" style="padding-right: 0;">
-                        <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Actual</span>
-                    </div>
-                    <div class="col-xs-8" style="padding-left: 0;">
-                        <span style="font-size:13px;">
-                            {%if RegistradaExperiencia|default is not empty %}
-                                {% for datos in RegistradaExperiencia %}
-                                    {%if (datos.dias is null)%}
-                                        <a href="#Experiencia"  >{{datos.empresa}}</a>
-                                    {%else%}
-
-                                    {%endif%}   
-                                {%endfor%}
-                            {%else%}
-                                <a href="#Experiencia"  >Puesto</a> 
-                            {%endif%}
-
-                        </span>
-                    </div>
-                </div>
-                <!-- EDUCACION MAS RECIENTE -->
-                <div class="row">
-                    <div class="col-xs-4" style="padding-right: 0;">
-                        <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Educación</span>
-                    </div>
-                    <div class="col-xs-8" style="padding-left: 0;">
-                        <span style="font-size:13px;">
-                            <a href="#divEducacion">
-                                {%if Edu|default is not empty %}
-                                    {% for datos in Edu %}
-                                        {%if(datos.anio=='')%} {{datos.institucion}}
-                                        {%endif%}
+                                        {%endif%}   
                                     {%endfor%}
                                 {%else%}
-                                    Educación
+                                    Puesto
                                 {%endif%}
-                            </a>
-                        </span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row" >
+                        <div class="col-xs-12" style="padding-right: 0;">
+
+                            {%if ciuda|default is not empty %}
+
+                                <div  style="display:block;" id="divMunicipiox">
+                                    <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">
+                                        {% for datos in ciuda %}
+                                            <b> {{datos.estado}} </b> | {{datos.nombre}} 
+                                        {%endfor%}
+
+                                    </p>
+                                </div>
+
+                            {%else%}
+                                <div id="divMunicipio">
+                                    <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">
+                                        <b>Departament</b> | Municipiio
+
+                                    </p>
+                                </div>
+                            {%endif%}
+
+                        </div>
+                    </div>
+                    <!-- ESPECIALIDAD(ES) -->
+                    <div class="row" >
+                        <div class="col-xs-4" style="padding-right: 0;">
+                            <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Especialidades</span>
+                        </div>
+                        <div class="col-xs-8" style="padding-left: 0;" >
+                            <span style="font-size:13px;">
+
+                                {%if RegistroEspecialida|default is not empty %}
+                                    {%set n=1%}
+                                    {% for datos in RegistroEspecialida %}
+                                        {%if(n==3)%}
+                                            {{datos.nombre}} 
+                                        {%else%}
+                                            {{datos.nombre~","}} 
+                                        {%endif%}
+                                        {%set n=n+1%}
+                                    {%endfor%}
+                                {%else%}
+                                    Especialidades
+                                {%endif%}
+
+                            </span>
+                        </div>
+                    </div>
+                    <!-- TRABAJO(S) ACTUAL -->
+                    <div class="row" >
+                        <div class="col-xs-4" style="padding-right: 0;">
+                            <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Actual</span>
+                        </div>
+                        <div class="col-xs-8" style="padding-left: 0;">
+                            <span style="font-size:13px;">
+                                {%if RegistradaExperiencia|default is not empty %}
+                                    {% for datos in RegistradaExperiencia %}
+                                        {%if (datos.dias is null)%}
+                                            <a href="#Experiencia"  >{{datos.empresa}}</a>
+                                        {%else%}
+
+                                        {%endif%}   
+                                    {%endfor%}
+                                {%else%}
+                                    <a href="#Experiencia"  >Puesto</a> 
+                                {%endif%}
+
+                            </span>
+                        </div>
+                    </div>
+                    <!-- EDUCACION MAS RECIENTE -->
+                    <div class="row">
+                        <div class="col-xs-4" style="padding-right: 0;">
+                            <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Educación</span>
+                        </div>
+                        <div class="col-xs-8" style="padding-left: 0;">
+                            <span style="font-size:13px;">
+                                <a href="#divEducacion">
+                                    {%if Edu|default is not empty %}
+                                        {% for datos in Edu %}
+                                            {%if(datos.anio=='')%} {{datos.institucion}}
+                                            {%endif%}
+                                        {%endfor%}
+                                    {%else%}
+                                        Educación
+                                    {%endif%}
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                    <!-- EDUCACION MAS RECIENTE -->
+                    <div class="row">
+                        <div class="col-xs-4" style="padding-right: 0;">
+                            <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Sitio Web</span>
+                        </div>
+                        <div class="col-xs-8" style="padding-left: 0;">
+                            <span style="font-size:13px;">
+
+                                {%if sitio|default is not empty %}
+                                    {% for datos in sitio %}
+                                        {{datos.nombre}} 
+                                    {%endfor%}
+                                {%else%}
+                                    Sitio web
+                                {%endif%}
+
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2" style="padding-right: 0;margin-top:25px;">
+                            <p class="pull-right">
+
+                            </p>
+                            <span style="color: #4444444; margin-left: 10px;" >
+                                <i class=" btn  btnperfil fa fa-pencil" id="btnEditarperfil">&nbsp;Editar perfil</i></span>
+                        </div>
+
                     </div>
                 </div>
-                <!-- EDUCACION MAS RECIENTE -->
                 <div class="row">
-                    <div class="col-xs-4" style="padding-right: 0;">
-                        <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Sitio Web</span>
-                    </div>
-                    <div class="col-xs-8" style="padding-left: 0;">
-                        <span style="font-size:13px;">
-
-                            {%if sitio|default is not empty %}
-                                {% for datos in sitio %}
-                                    {{datos.nombre}} 
-                                {%endfor%}
-                            {%else%}
-                                Sitio web
-                            {%endif%}
-
-                        </span>
+                    <div class="col-xs-2">
+                        <section style=" margin-top: 30px;">
+                            <div id="example1" class="example"></div>
+                            <center><h4>Perfil</h4></center>
+                        </section>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-2">
-                    
-        <section style=" margin-top: 30px;">
-          <div id="example1" class="example"></div>
-          
-          <center><h4>Perfil</h4></center>
-        </section>
-    
+            <!-- FIN PRIMERA BLOQUE CON FOTO DE PERFIL -->
+            <!-- INFORMACION DE CONTACTO -->
+            <div class="bloque-contenedor">
+                <div class="row hedeExperiencia">
+                    <ul class="prob"  style="font-size: 18px;"><li><strong>DATOS DE CONTACTO</strong></li></ul>
                 </div>
-            </div>
-        </div>
-        <!-- FIN PRIMERA BLOQUE CON FOTO DE PERFIL -->
-        <!-- INFORMACION DE CONTACTO -->
-        <div class="bloque-contenedor">
-            <div class="row hedeExperiencia">
-                <ul class="prob"  style="font-size: 18px;"><li><strong>DATOS DE CONTACTO</strong></li></ul>
-            </div>
-            <!-- Contenido Aqui -->
-            <div class="experiencia " id="contenidoExp" >
+                <!-- Contenido Aqui -->
+                <div class="experiencia " id="contenidoExp" >
 
-                <div class="row experiencias">
-                    <div class="col-sm-3 col-xs-12">
-                        <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono(s)</strong></p>
-                        <p style="font-size: 11px; margin-bottom: 0px;">
-                            +503  
-                            {%if datos.movil|default is not empty %}{{datos.movil}}
-                            {%else%}
+                    <div class="row experiencias">
+                        <div class="col-sm-3 col-xs-12">
+                            <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono(s)</strong></p>
+                            <p style="font-size: 11px; margin-bottom: 0px;">
+                                +503  
+                                {%if datos.movil|default is not empty %}{{datos.movil}}
+                                {%else%}
 
-                            {%endif%}
-                            </br>+503 
-                            {%if datos.Tfijo|default is not empty %}
-                                {{datos.Tfijo}}
-                            {%else%}
+                                {%endif%}
+                                </br>+503 
+                                {%if datos.Tfijo|default is not empty %}
+                                    {{datos.Tfijo}}
+                                {%else%}
 
-                            {%endif %}
-                            </a></p>
-                    </div>
-                    <div class="col-sm-3 col-xs-12">
-                        <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email(s)</strong></p>
-                        <p style="font-size: 11px; margin-bottom: 0px;">
+                                {%endif %}
+                                </a></p>
+                        </div>
+                        <div class="col-sm-3 col-xs-12">
+                            <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email(s)</strong></p>
+                            <p style="font-size: 11px; margin-bottom: 0px;">
 
-                            {%if datos.correo|default is not empty %}
-                                {{datos.correo}}
-                            {%endif %}
-                        </p>
-                    </div>
-                    <div class="col-sm-3 col-xs-12">
-                        <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Dirección</strong></p>
-                        <p style="font-size: 11px; margin-bottom: 0px;">
+                                {%if datos.correo|default is not empty %}
+                                    {{datos.correo}}
+                                {%endif %}
+                            </p>
+                        </div>
+                        <div class="col-sm-3 col-xs-12">
+                            <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Dirección</strong></p>
+                            <p style="font-size: 11px; margin-bottom: 0px;">
 
-                            {%if datos.direccion|default is not empty %}
-                                {{datos.direccion}}
-                            {%else%}
-                                Dirección
-                            {%endif%}
-                        </p>
-                    </div>
-                    <div class="col-sm-3 col-xs-12">
-                        <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Url personalizada </strong></p>
-                        <p style="font-size: 11px; margin-bottom: 0px;">
-                            {%if url|default is not empty %}
-                                {% for datos in url %}
-                                    {{datos.url}}
-                                {%endfor%}
-                            {%else%}
-                                Url
-                            {%endif%}
-
+                                {%if datos.direccion|default is not empty %}
+                                    {{datos.direccion}}
+                                {%else%}
+                                    Dirección
+                                {%endif%}
+                            </p>
+                        </div>
+                        <div class="col-sm-3 col-xs-12">
+                            <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Url personalizada </strong></p>
+                            <p style="font-size: 11px; margin-bottom: 0px;">
+                                {%if url|default is not empty %}
+                                    {% for datos in url %}
+                                        {{datos.url}}
+                                    {%endfor%}
+                                {%else%}
+                                    Url
+                                {%endif%}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- Fin -->
-        </div> <!-- INFORMACION DE CONTACTO -->
-
-        <!-- EXTRACTO -->
-        <div class="bloque-contenedor">
-            <div class="row hedeExperiencia">
-                <ul class="prob"  style="font-size: 18px;"><li><strong>UN POCO SOBRE MI</strong></li></ul>
-
-            </div>
-            <div class="experiencia " >
-                <div class="experiencias">
-                    <div style="padding-left: 3px; padding-right: 30px;" class="experiencia">
-
-                        <p class="text-justify">
-
-                            {%if datos.descripcion|default is not empty %} {{datos.descripcion}}{%else%}Un poco sobre mi{%endif%}</p>
-                        <p class="text-justify"></p>
+                <!-- Fin -->
+            </div> <!-- INFORMACION DE CONTACTO -->
+            {%if datos.descripcion|default is not empty %}
+                <div class="bloque-contenedor">
+                    <div class="row hedeExperiencia">
+                        <ul class="prob"  style="font-size: 18px;"><li><strong>UN POCO SOBRE MI</strong></li></ul>
+                    </div>
+                    <div class="experiencia " >
+                        <div class="experiencias">
+                            <div style="padding-left: 3px; padding-right: 30px;" class="experiencia">
+                                <p class="text-justify">
+                                    {{datos.descripcion}}</p>
+                                <p class="text-justify"></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- ESPECIALIDADES -->
-        <div  class="bloque-contenedor" id="Especialidades">
-            <div class="row hedeExperiencia">
-                <p class="sans text-uppercase pull-left">
-                <ul class="prob"  style="font-size: 18px;"><li><strong>ESPECIALIDADES LEGALES</strong></li></ul>
-
-            </div>
-            <!-- Contenido Aqui -->
-            <div class="experiencia " id="contenidoExp" >
-
-                <div class="experiencias"  id="contenido">
-                    {%if RegistroEspecialida|default is not empty %}
+        {%else%}{%endif%}
+        {%if RegistroEspecialida|default is not empty %}
+            <div  class="bloque-contenedor" id="Especialidades">
+                <div class="row hedeExperiencia">
+                    <p class="sans text-uppercase pull-left">
+                    <ul class="prob"  style="font-size: 18px;"><li><strong>ESPECIALIDADES LEGALES</strong></li></ul>
+                </div>
+                <div class="experiencia " id="contenidoExp" >
+                    <div class="experiencias"  id="contenido">
                         {%set n = 0%}
                         {% for datos in RegistroEspecialida %}
                             {%set n =n +1%}
@@ -295,48 +354,31 @@
                                             <li><strong><p>&nbsp;
                                                         {%if(datos.nombre| upper=='DERECHO LABORAL')%}
                                                             <img src="{{asset('Resources/src/img/especialidades/dlaboral.png')}}" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
-
                                                     {%endif%}
                                                     <img src="{{asset('Resources/src/img/especialidades/dlaboral.png')}}" style="width:100%; margin-bottom: 8px;"  data-placement="right" ></p>
-
                                                     {#{datos.nombre| upper }#}<p class="sans" ></strong></li>
                                             <li><p style="text-align:justify;">{{datos.descripcion}}</p></li>
                                     </div>   
                                     {%if ((n>0)and (n % 3== 0))%}
-
                                         <div class="clearfix"></div>
-
                                     {%endif%}  
                                 </div>
                             </div>
                         {%endfor%}
-                    {%endif%}
-
-                    {#% embed ':abgpersona:especialidades.html.twig' %}{% endembed %#}
-
-                </div></div>
-            <!-- Fin -->
-        </div>
-
-        <!-- EXPERIENCIA -->
-        <div class="bloque-contenedor" id="Experiencia">
-            <div class="row hedeExperiencia ">
-                <p class="sans text-uppercase pull-left" style="font-size: 20px;"><strong>EXPERIENCIA</strong></p>
-
-
+                    </div></div>
             </div>
-            <!-- Contenido Aqui -->
-
-
-            <div class="experiencia " id="contenidoExp" >
-                <div id="consultas" class="experiencias">
-                    {%if RegistradaExperiencia|default is not empty %}
+        {%endif%}
+        {%if RegistradaExperiencia|default is not empty %}
+            <div class="bloque-contenedor" id="Experiencia">
+                <div class="row hedeExperiencia ">
+                    <p class="sans text-uppercase pull-left" style="font-size: 20px;"><strong>EXPERIENCIA</strong></p>
+                </div>
+                <div class="experiencia " id="contenidoExp" >
+                    <div id="consultas" class="experiencias">
                         {% for datos in RegistradaExperiencia %}
-
                             <div class="row " id="Exp{{datos.id}}">
                                 <div class="col-xs-1" >
                                     {%if (datos.src is null)%}
-
                                     {%else%}
                                         <img style="max-width:50px;max-height:50px;" src="{{asset('')}}{{datos.src}}">
                                     {%endif%}
@@ -356,28 +398,22 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-10 col-md-offset-2">
-
                                 </div>
                             </div>
                             <p></p>
                         {%endfor%}
-                    {%endif%}
-
+                    </div>
                 </div>
             </div>
-            <!-- Fin -->
-        </div>
+        {%endif%}
+        {%if Edu|default is not empty %}
+            <div class="bloque-contenedor" id="divEducacion">
+                <div class="row hedeExperiencia">
+                    <p class="sans text-uppercase pull-left" style="font-weight: 500; color: #262626; font-size: 16px;"><strong>EDUCACION</strong></p>
+                </div>
+                <div class="experiencia " id="contenidoEdu" >
+                    <div id="consultaEducacion" class="experiencias">
 
-        <!-- EDUCACION -->
-        <div class="bloque-contenedor" id="divEducacion">
-            <div class="row hedeExperiencia">
-                <p class="sans text-uppercase pull-left" style="font-weight: 500; color: #262626; font-size: 16px;"><strong>EDUCACION</strong></p>
-
-            </div>
-            <!-- Contenido Aqui -->
-            <div class="experiencia " id="contenidoEdu" >
-                <div id="consultaEducacion" class="experiencias">
-                    {%if Edu|default is not empty %}
                         {% for datos in Edu %}
                             <div class="row " id="Edu{{datos.idEs}}">
                                 <div class="col-xs-11">
@@ -392,22 +428,17 @@
                             </div>
                             <p></p>
                         {%endfor%}
-                    {%endif%}
+                    </div>
                 </div>
             </div>
-            <!-- Fin -->
-        </div>
-
-        <!-- LENGUAJES -->
-        <div class="bloque-contenedor">
-            <div class="row hedeExperiencia">
-                <p class="sans text-uppercase pull-left" style="font-weight: 500; color: #262626; font-size: 16px;"><strong>IDIOMAS</strong></p>
-
-            </div>
-            <!-- Contenido Aqui -->
-            <div class="experiencia " id="contenidoCerti" >
-                <div id="consultaIdiomas" class="experiencias">
-                    {%if Idiomas|default is not empty %}
+        {%endif%}
+        {%if Idiomas|default is not empty %}
+            <div class="bloque-contenedor">
+                <div class="row hedeExperiencia">
+                    <p class="sans text-uppercase pull-left" style="font-weight: 500; color: #262626; font-size: 16px;"><strong>IDIOMAS</strong></p>
+                </div>
+                <div class="experiencia " id="contenidoCerti" >
+                    <div id="consultaIdiomas" class="experiencias">
                         <div class="row " id="Idioma">
                             {% for datos in Idiomas %}
                                 <div class="col-xs-3" style="margin-top: .5em; margin-bottom: .5em;" >
@@ -417,24 +448,18 @@
                                 </div>
                             {%endfor%}
                             <div class="clearfix"></div>
-
                         </div>
-                    {%endif%}
+                    </div>
                 </div>
             </div>
-            <!-- Fin -->
-        </div>
-
-        <!-- ORGANIZACIONES -->
-        <div class="bloque-contenedor">
-            <div class="row hedeExperiencia">
-                <p class="sans text-uppercase pull-left" style="font-weight: 500; color: #262626; font-size: 16px;"><strong>ORGANIZACIONES</strong></p>
-
-            </div>
-            <!-- Contenido Aqui -->
-            <div class="experiencia " id="contenidoOrg" >
-                <div id="consultaOrg" class="experiencias">
-                    {%if Organizacion|default is not empty %}
+        {%endif%}
+        {%if Organizacion|default is not empty %}
+            <div class="bloque-contenedor">
+                <div class="row hedeExperiencia">
+                    <p class="sans text-uppercase pull-left" style="font-weight: 500; color: #262626; font-size: 16px;"><strong>ORGANIZACIONES</strong></p>
+                </div>
+                <div class="experiencia " id="contenidoOrg" >
+                    <div id="consultaOrg" class="experiencias">
                         {% for datos in Organizacion %}
                             <div class="row " id="Org{{datos.id}}">
                                 <div class="col-xs-11">
@@ -443,27 +468,22 @@
                                     </br>
                                     <span style="font-size: 13px;">{{datos.puesto}}</br> {{datos.fechaIn}} - {{datos.fechaFin}}</span>
                                     <p style="width: 100%; margin-top: 5px;text-align:justify;">{{datos.descripcion}}
-
                                     </p>
                                 </div>
                             </div>
                             <p></p>
                         {%endfor%}
-                    {%endif%}
+                    </div>
                 </div>
             </div>
-            <!-- Fin -->
-        </div>
-        <!-- ORGANIZACIONES -->
-        <div class="bloque-contenedor">
-            <div class="row hedeExperiencia">
-                <p class="sans text-uppercase pull-left" style="font-weight: 500; color: #262626; font-size: 16px;"><strong>Certificacion</strong></p>
-
-            </div>
-            <!-- Contenido Aqui -->
-            <div class="experiencia " id="contenidoCerti" >
-                <div id="consultaCertificacion" class="experiencias">
-                    {%if Certificacion|default is not empty %}
+        {%endif%}
+        {%if Certificacion|default is not empty %}
+            <div class="bloque-contenedor">
+                <div class="row hedeExperiencia">
+                    <p class="sans text-uppercase pull-left" style="font-weight: 500; color: #262626; font-size: 16px;"><strong>Certificacion</strong></p>
+                </div>
+                <div class="experiencia " id="contenidoCerti" >
+                    <div id="consultaCertificacion" class="experiencias">
                         {% for datos in Certificacion %}
                             <div class="row " id="Cert{{datos.id}}">
                                 <div class="col-xs-11">
@@ -472,28 +492,22 @@
                                     </br>
                                     <span style="font-size: 13px;">{{datos.nombre}}</br> {{datos.fechaIn}} - {{datos.fechaFin}}</span>
                                     <p style="width: 100%; margin-top: 5px;text-align:justify;">
-
                                     </p>
                                 </div>
                             </div>
                             <p></p>
                         {%endfor%}
-                    {%endif%}
+                    </div>
                 </div>
             </div>
-            <!-- Fin -->
-        </div>
-
-        <!-- ORGANIZACIONES -->
-        <div class="bloque-contenedor">
-            <div class="row hedeExperiencia">
-                <p class="sans text-uppercase pull-left" style="font-weight: 500; color: #262626; font-size: 16px;"><strong>CURSOS Y SEMINARIOS  </strong></p>
-
-            </div>
-            <!-- Contenido Aqui -->
-            <div class="experiencia " id="contenidoCurso" >
-                <div id="consultaCurso" class="experiencias">
-                    {%if Curso|default is not empty %}
+        {%endif%}
+        {%if Curso|default is not empty %}
+            <div class="bloque-contenedor">
+                <div class="row hedeExperiencia">
+                    <p class="sans text-uppercase pull-left" style="font-weight: 500; color: #262626; font-size: 16px;"><strong>CURSOS Y SEMINARIOS  </strong></p>
+                </div>
+                <div class="experiencia " id="contenidoCurso" >
+                    <div id="consultaCurso" class="experiencias">
                         {% for datos in Curso %}
                             <div class="row " id="CM{{datos.id}}">
                                 <div class="col-xs-11">
@@ -502,25 +516,21 @@
                                     </br>
                                     <span style="font-size: 13px;">{{datos.nombre}}</br> {{datos.fechaIn}} - {{datos.fechaFin}}</span>
                                     <p style="width: 90%; margin-top: 5px;text-align:justify;">{{datos.descripcion}}
-
                                     </p>
                                 </div>
                             </div>
                             <p></p>
                         {%endfor%}
-                    {%endif%}
+                    </div>
                 </div>
             </div>
-            <!-- Fin -->
-        </div>
-
+        {%endif%}
         <div style="height: 10px;"></div>
-
         <script type="text/javascript">
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip()
             })
         </script>
-
-    {% endblock %}
+    {%endfor%}
+{% endblock %}
 {% endblock %}

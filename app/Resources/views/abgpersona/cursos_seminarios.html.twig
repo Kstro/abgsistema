@@ -1,10 +1,27 @@
 <!-- Calendar -->
 <link rel="stylesheet" href="{{ asset('Resources/zebra/css/bootstrap.css') }}">
 <script type="text/javascript" src="{{ asset('Resources/zebra/js/zebra_datepicker.js')}}" ></script>
+
+
+<link href="{{asset('Resources/jquery-validation-1.15.0/demo/css/screen.css')}}" rel="stylesheet">
+<script src="{{ asset('Resources/jquery-validation-1.15.0/dist/jquery.validate.js')}}"></script>
 <script type="text/javascript">
 
     $(document).ready(function () {
-
+   $("#fCurso").validate({
+            messages: {
+                txtCurso: {
+                    required: 'Requerido!'
+                },
+                txtAutoridaCM: {
+                    required: 'Requerido!'
+                },
+                txtFechIniCM:
+                        {required: 'Requerido!'}
+            },
+            txtFechFinCM: {
+                required: 'Requerido!'}
+        });
         $('.txtFechaIni').Zebra_DatePicker({
             months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
             days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
@@ -65,14 +82,14 @@
         <div class="form-group">
             <label for="nombreEmpleado">Nombre del curso/seminario</label>
              <input type="text" class="form-control  input-sm"  id="txtCurso" name="txtCurso" 
-                   placeholder="Nombre de la certificación" value="{{datos.nombre}}"> 
+                   placeholder="Nombre de la certificación" value="{{datos.nombre}}" data-rule-required="true"> 
 
 
         </div>
         <div class="form-group">
             <label for="ejemplo_password_1">Autoridad emisora del curso/seminario</label>
             <input type="text" class="form-control  input-sm"  id="txtAutoridaCM" name="txtAutoridaCM" 
-                   placeholder="Nombre de autoridad emisora" value="{{datos.institucion}}">
+                   placeholder="Nombre de autoridad emisora" value="{{datos.institucion}}" data-rule-required="true">
         </div>
       
 
@@ -82,29 +99,24 @@
              <div class="row">
                 <div class="col-sm-2">
                     <input type="text" class="form-control txtFechaIni  input-sm" 
-                           placeholder="Fecha inicio"  id="txtFechIniCM" name="txtFechIniCM" value="{{datos.fechaIn}}">
+                           placeholder="Fecha inicio"  id="txtFechIniCM" name="txtFechIniCM" value="{{datos.fechaIn}}" data-rule-required="true">
                 </div>
                 <div  id="fechafin">
                     <div class="col-sm-2"  >
                         <input type="text" class="form-control txtFechaFin  input-sm" 
-                               placeholder="Fecha fin"  id="txtFechFinCM" name="txtFechFinCM" value="{{datos.fechaFin}}">
+                               placeholder="Fecha fin"  id="txtFechFinCM" name="txtFechFinCM" value="{{datos.fechaFin}}" data-rule-required="true">
                     </div>
                 </div>
             </div>
         </div>
-        <!--div class="form-group">
-            <div class="row">
-                <div class="col-sm-6">   
-                    <input type="checkbox"  name="checkActual" id="checkActual" />&nbsp;Estudiando actualmente. </div>
-            </div>
-        </div -->  <div class="form-group">
+     <div class="form-group">
             <label for="ejemplo_password_1">Funcion del puesto</label>
             <textarea class="form-control  input-sm" rows="3" name="txtDescripcionCM" id="txtDescripcionCM" placeholder="Descripcion del curso o seminario">{{datos.descripcion}}</textarea>
         </div>
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group">
-                    <button type="button" class="btn btn-primary btn-sm"  onclick="addCurso()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                    <button type="submit" class="btn btn-primary btn-sm"  onclick="addCurso()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -115,14 +127,14 @@
         <div class="form-group">
             <label for="nombreEmpleado">Nombre del curso/seminario</label>
              <input type="text" class="form-control  input-sm"  id="txtCurso" name="txtCurso" 
-                   placeholder="Nombre de la certificación"> 
+                   placeholder="Nombre de la certificación" data-rule-required="true"> 
 
 
         </div>
         <div class="form-group">
             <label for="ejemplo_password_1">Autoridad emisora del curso/seminario</label>
             <input type="text" class="form-control  input-sm"  id="txtAutoridaCM" name="txtAutoridaCM" 
-                   placeholder="Nombre de autoridad emisora">
+                   placeholder="Nombre de autoridad emisora" data-rule-required="true">
         </div>
       
 
@@ -132,29 +144,24 @@
              <div class="row">
                 <div class="col-sm-2">
                     <input type="text" class="form-control txtFechaIni  input-sm" 
-                           placeholder="Fecha inicio"  id="txtFechIniCM" name="txtFechIniCM">
+                           placeholder="Fecha inicio"  id="txtFechIniCM" name="txtFechIniCM" data-rule-required="true">
                 </div>
                 <div  id="fechafin">
                     <div class="col-sm-2"  >
                         <input type="text" class="form-control txtFechaFin  input-sm" 
-                               placeholder="Fecha fin"  id="txtFechFinCM" name="txtFechFinCM">
+                               placeholder="Fecha fin"  id="txtFechFinCM" name="txtFechFinCM" data-rule-required="true">
                     </div>
                 </div>
             </div>
         </div>
-        <!--div class="form-group">
-            <div class="row">
-                <div class="col-sm-6">   
-                    <input type="checkbox"  name="checkActual" id="checkActual" />&nbsp;Estudiando actualmente. </div>
-            </div>
-        </div -->  <div class="form-group">
+       <div class="form-group">
             <label for="ejemplo_password_1">Funcion del puesto</label>
             <textarea class="form-control  input-sm" rows="3" name="txtDescripcionCM" id="txtDescripcionCM" placeholder="Descripcion del curso o seminario"></textarea>
         </div>
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group">
-                    <button type="button" class="btn btn-primary btn-sm"  onclick="addCurso()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                    <button type="submit" class="btn btn-primary btn-sm"  onclick="addCurso()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
                 </div>
             </div>
         </div>

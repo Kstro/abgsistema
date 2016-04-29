@@ -31,7 +31,12 @@
  <!-- Progresbar-->
  <script src="{{ asset('Resources/Bar_jQuery/radial-progress-bar.js')}}"></script>
 <script src="{{ asset('Resources/Bar_jQuery/examples.js')}}"></script>
- 
+ <script type="text/javascript">
+          jQuery("#example1").radialProgress("init", {
+  'size': 100,
+  'fill': 5
+}).radialProgress("to", {'perc':{{cumplimiento}}, 'time': 10000});
+</script>
 {% endblock %} 
 
 {% block navegacion_Y_body %}
@@ -40,9 +45,10 @@
 
     {% endblock %}
 
-    {% block cuerpo %}
+    {#% block cuerpo %}
 <div class="clearfix"></div>
 	<div class="container" style="background-color: #ffffff; border: 1px solid #e0e0e0;">
+            {%set cumplimiento=10%}
              {% for datos in abgPersona %}
                 
 		<div class="row">
@@ -85,4 +91,4 @@
                          {%endfor%}
 		</div>
 	</div>
-  {% endblock %}  {% endblock %}
+  {% endblock %#}  {% endblock %}

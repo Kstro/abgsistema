@@ -1,7 +1,7 @@
-jQuery("#example1").radialProgress("init", {
+/*jQuery("#example1").radialProgress("init", {
   'size': 100,
   'fill': 5
-}).radialProgress("to", {'perc': 60, 'time': 10000});
+}).radialProgress("to", {'perc': 60, 'time': 10000});*/
 
 jQuery("#pie").radialPieChart("init", {
   'font-size': 13,

@@ -1,9 +1,27 @@
 <!-- Calendar -->
 <link rel="stylesheet" href="{{ asset('Resources/zebra/css/bootstrap.css') }}">
 <script type="text/javascript" src="{{ asset('Resources/zebra/js/zebra_datepicker.js')}}" ></script>
+<link href="{{asset('Resources/jquery-validation-1.15.0/demo/css/screen.css')}}" rel="stylesheet">
+<script src="{{ asset('Resources/jquery-validation-1.15.0/dist/jquery.validate.js')}}"></script>
 <script type="text/javascript">
 
     $(document).ready(function () {
+
+        $("#fOrg").validate({
+            messages: {
+                txtOrg: {
+                    required: 'Requerido!'
+                },
+                txtPuestoOrg: {
+                    required: 'Requerido!'
+                },
+                txtFechIniOrg:
+                        {required: 'Requerido!'}
+            },
+            txtFechFinOrg: {
+                required: 'Requerido!'}
+        });
+
 
         $('.txtFechaIni').Zebra_DatePicker({
             months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
@@ -24,16 +42,16 @@
             show_select_today: "Hoy",
             show_icon: false,
         });
- 
-       
+
+
         $("#cancel").click(function () {
-            $("#Org"+editEdu).show();
+            $("#Org" + editEdu).show();
             $("#div5").remove();
         });
-        
-         $('#Sdisciplina').select2();
 
-   });
+        $('#Sdisciplina').select2();
+
+    });
     $('#checkActual').change(function () {
         if ($('#checkActual').is(":checked")) {
 
@@ -60,78 +78,78 @@
     {%if Organizacion|default is not empty %}
 
         {% for datos in Organizacion %}
-            
-        <input type="hidden" name="hidOrg" id="hidOrg" value="{{datos.id}}">
-        <div class="form-group">
-            <label for="nombreEmpleado">Organización</label>
-             <input type="text" class="form-control  input-sm"  id="txtOrg" name="txtOrg" 
-                   placeholder="Nombre de la organización" value="{{datos.nombre}}"> 
+
+            <input type="hidden" name="hidOrg" id="hidOrg" value="{{datos.id}}">
+            <div class="form-group">
+                <label for="nombreEmpleado">Organización</label>
+                <input type="text" class="form-control  input-sm"  id="txtOrg" name="txtOrg" 
+                       placeholder="Nombre de la organización" value="{{datos.nombre}}" data-rule-required="true"> 
 
 
-        </div>
-        <div class="form-group">
-            <label for="ejemplo_password_1">Puesto desempeñado </label>
-            <input type="text" class="form-control  input-sm"  id="txtPuestoOrg" name="txtPuestoOrg" 
-                   placeholder="Nombre del puesto desempeñado" value="{{datos.puesto}}">
-        </div>
-      
-        <div class="form-group ">
-            <label for="Fecha_inicio">Periodo</label>
-             <div class="row">
-                <div class="col-sm-2">
-                    <input type="text" class="form-control txtFechaIni  input-sm" 
-                           placeholder="Fecha inicio"  id="txtFechIniOrg" name="txtFechIniOrg"  value="{{datos.fechaIn}}">
-                </div>
+            </div>
+            <div class="form-group">
+                <label for="ejemplo_password_1">Puesto desempeñado </label>
+                <input type="text" class="form-control  input-sm"  id="txtPuestoOrg" name="txtPuestoOrg" 
+                       placeholder="Nombre del puesto desempeñado" value="{{datos.puesto}}" data-rule-required="true">
+            </div>
+
+            <div class="form-group ">
+                <label for="Fecha_inicio">Periodo</label>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control txtFechaIni  input-sm" 
+                               placeholder="Fecha inicio"  id="txtFechIniOrg" name="txtFechIniOrg"  value="{{datos.fechaIn}}" data-rule-required="true">
+                    </div>
                     <div class="col-sm-2"  id="fechafin" >
                         <input type="text" class="form-control txtFechaFin  input-sm" 
-                               placeholder="Fecha fin"  id="txtFechFinOrg" name="txtFechFinOrg"  value="{{datos.fechaFin}}">
+                               placeholder="Fecha fin"  id="txtFechFinOrg" name="txtFechFinOrg"  value="{{datos.fechaFin}}" data-rule-required="true">
                     </div>
-            </div>
-        </div>
-        <!--div class="form-group">
-            <div class="row">
-                <div class="col-sm-6">   
-                    <input type="checkbox"  name="checkActual" id="checkActual" />&nbsp;Estudiando actualmente. </div>
-            </div>
-        </div -->  <div class="form-group">
-            <label for="ejemplo_password_1">Función del puesto</label>
-            <textarea class="form-control  input-sm" rows="3" name="txtDescripcion" id="txtDescripcion" placeholder="Descripción del puesto">{{datos.descripcion}}</textarea>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <button type="button" class="btn btn-primary btn-sm"  onclick="addOrganizacion()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
                 </div>
             </div>
-        </div>
+            <!--div class="form-group">
+                <div class="row">
+                    <div class="col-sm-6">   
+                        <input type="checkbox"  name="checkActual" id="checkActual" />&nbsp;Estudiando actualmente. </div>
+                </div>
+            </div -->  <div class="form-group">
+                <label for="ejemplo_password_1">Función del puesto</label>
+                <textarea class="form-control  input-sm" rows="3" name="txtDescripcion" id="txtDescripcion" placeholder="Descripción del puesto">{{datos.descripcion}}</textarea>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-sm"  onclick="addOrganizacion()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                    </div>
+                </div>
+            </div>
         {%endfor%}
     {%else%}
 
         <input type="hidden" name="hidOrg" id="hidOrg" value="">
         <div class="form-group">
             <label for="nombreEmpleado">Organización</label>
-             <input type="text" class="form-control  input-sm"  id="txtOrg" name="txtOrg" 
-                   placeholder="Nombre de la organización"> 
+            <input type="text" class="form-control  input-sm"  id="txtOrg" name="txtOrg" 
+                   placeholder="Nombre de la organización" data-rule-required="true"> 
 
 
         </div>
         <div class="form-group">
             <label for="ejemplo_password_1">Puesto desempeñado </label>
             <input type="text" class="form-control  input-sm"  id="txtPuestoOrg" name="txtPuestoOrg" 
-                   placeholder="Nombre del puesto desempeñado">
+                   placeholder="Nombre del puesto desempeñado" data-rule-required="true">
         </div>
-      
+
         <div class="form-group ">
             <label for="Fecha_inicio">Periodo</label>
-             <div class="row">
+            <div class="row">
                 <div class="col-sm-2">
                     <input type="text" class="form-control txtFechaIni  input-sm" 
-                           placeholder="Fecha inicio"  id="txtFechIniOrg" name="txtFechIniOrg">
+                           placeholder="Fecha inicio"  id="txtFechIniOrg" name="txtFechIniOrg" data-rule-required="true">
                 </div>
-                    <div class="col-sm-2"  id="fechafin" >
-                        <input type="text" class="form-control txtFechaFin  input-sm" 
-                               placeholder="Fecha fin"  id="txtFechFinOrg" name="txtFechFinOrg">
-                    </div>
+                <div class="col-sm-2"  id="fechafin" >
+                    <input type="text" class="form-control txtFechaFin  input-sm" 
+                           placeholder="Fecha fin"  id="txtFechFinOrg" name="txtFechFinOrg" data-rule-required="true">
+                </div>
             </div>
         </div>
         <!--div class="form-group">
@@ -146,7 +164,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group">
-                    <button type="button" class="btn btn-primary btn-sm"  onclick="addOrganizacion()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                    <button type="submit" class="btn btn-primary btn-sm"  onclick="addOrganizacion()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
                 </div>
             </div>
         </div>
