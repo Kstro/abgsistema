@@ -110,11 +110,11 @@ class SecuredController extends Controller
                             <center>
                               <img style=\"width:50%;\" src=\"http://expressionsprint.com/img/logo.jpg\">
                             </center>
-                                <p>" . $usuario->getRhPersona() . ", you have requested to reset your password, then displays your new password.</p>
-                                <p> User:" . $usuario->getUsername() . "</p>
-                                <p> Email: " . $email . "</p>
-                                <p><b> Password: " . $password . "</b></p>
-                                <p>Thanks, by the use of our services. </p>    
+                                <p>" . $usuario->getRhPersona() . ", tu has recibido una solicitud para reestablecer tu contraseña.</p>
+                                <p> Usuario:" . $usuario->getUsername() . "</p>
+                                <p> Correo: " . $email . "</p>
+                                <p><b> Contraseña: " . $password . "</b></p>
+                                <p>Gracias, por usar nuestros servicios. </p>    
                             </td>
                             <td class=\"expander\"></td>
                           </tr>
@@ -122,8 +122,6 @@ class SecuredController extends Controller
                     ");
         //var_dump($password);
         //var_dump($usuario);
-         
-        
         //die();
         $em->persist($usuario);
         $em->flush();
@@ -133,7 +131,7 @@ class SecuredController extends Controller
         return $this->render('ctlempresa/ayuda.html.twig', array(
             'mensaje'=>$mensaje,
             'redirect'=>'Login',
-            'header'=>'Tu contraseña ha sido cambiada',
+            'header'=>'Tu contraseña ha sido modificada, en un momento recibiras un correo para poder reestablecerla',
         ));    
     }
     

@@ -539,7 +539,7 @@ class CtlEmpresaController extends Controller
     
 
     /**
-     * @Route("admin/validar_correo/", name="validar_correo", options={"expose"=true})
+     * @Route("/validar_correo/", name="validar_correo", options={"expose"=true})
      * @Method("POST")
      */
     
@@ -1141,7 +1141,7 @@ class CtlEmpresaController extends Controller
         $numero_base = $resultCorrelativo[0]['numero'];
         
         
-       $primerLetras="EM"; 
+       $primerLetras="EMP"; 
        $valor ="";
         
        $numero = $numero_base+1;
@@ -1211,7 +1211,7 @@ class CtlEmpresaController extends Controller
      
      
     /**
-     * @Route("admin/validarUrlPersonalizada/", name="validarUrlPersonalizada", options={"expose"=true})
+     * @Route("/validarUrlPersonalizada/", name="validarUrlPersonalizada", options={"expose"=true})
      * @Method("POST")
      */
     
@@ -1292,7 +1292,7 @@ class CtlEmpresaController extends Controller
      
      
       /**
-     * @Route("admin/insertarUrl/", name="insertarUrl", options={"expose"=true})
+     * @Route("/insertarUrl/", name="insertarUrl", options={"expose"=true})
      * @Method("POST")
      */
     
@@ -1337,7 +1337,7 @@ class CtlEmpresaController extends Controller
      
      
    /**
-     * @Route("admin/evaluarPermisoUrlEmp/", name="evaluarPermisoUrlEmp", options={"expose"=true})
+     * @Route("/evaluarPermisoUrlEmp/", name="evaluarPermisoUrlEmp", options={"expose"=true})
      * @Method("POST")
      */
     
@@ -1377,7 +1377,7 @@ class CtlEmpresaController extends Controller
      
      
      /**
-     * @Route("admin/validarUrlPersonalizadaEmpresa/", name="validarUrlPersonalizadaEmpresa", options={"expose"=true})
+     * @Route("/validarUrlPersonalizadaEmpresa/", name="validarUrlPersonalizadaEmpresa", options={"expose"=true})
      * @Method("POST")
      */
     
@@ -1455,7 +1455,7 @@ class CtlEmpresaController extends Controller
          
      
    /**
-     * @Route("admin/insertarUrlEmpresa/", name="insertarUrlEmpresa", options={"expose"=true})
+     * @Route("/insertarUrlEmpresa/", name="insertarUrlEmpresa", options={"expose"=true})
      * @Method("POST")
      */
     
@@ -1716,16 +1716,128 @@ class CtlEmpresaController extends Controller
         
     }
       
+
     
+    //Busqueda de perfiles de la empresa en base a la URL
     
+    /**
+     * Lists all CtlEmpresa entities.
+     *
+     * @Route("/{url}", name="busquedaPerfil")
+     * @Method({"GET", "POST"})
+     */
+    public function BusquedaAction($url)
+    {
+        
+      $em = $this->getDoctrine()->getManager();
+      $ObjetoUrl = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgUrlPersonalizada')->findByUrl($url); 
+      if (!empty($ObjetoUrl)){
+          
+          $persona=$ObjetoUrl[0]->getAbgPersona();
+          $empresa=$ObjetoUrl[0]->getCtlEmpresa();
+      
+      if ($empresa!=null){
+
+            //Completo los elementos de las visitas
+            $entity = $em->getRepository('DGAbgSistemaBundle:AbgVisitas')->findBy(array("ctlEmpresa" =>$empresa->getId()));
+            $valor=$entity[0]->getVisita();
+
+            $ctlEmpresaId=$empresa->getId();
+            $contador = $valor+1;
+            $entity[0]->setVisita($contador);
+            $em->merge($entity[0]);
+            $em->flush();
+
+             //Coleccion de datos de la empresa
+
+              $dqlempresa = "SELECT  e.nombreEmpresa AS nombreEmpresa, e.correoelectronico as correoEmpresa, e.direccion, e.sitioWeb,e.movil, e.telefono, e.color,e.cantidadEmpleados ,e.latitude, e.longitude ,"
+                      . "date_format(e.fechaFundacion, '%Y') As fechaFundacion"
+                      . " FROM DGAbgSistemaBundle:CtlEmpresa e WHERE e.id=" . $ctlEmpresaId;
+
+              $result_empresa = $em->createQuery($dqlempresa)->getArrayResult();
+
+               //Valor de la foto de la empresa
+
+              $dqlfoto = "SELECT fot.src as src "
+                      . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.ctlEmpresa=" . $ctlEmpresaId . " and fot.estado=1 and fot.tipoFoto=1";
+              $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+
+
+              //Array de si se lista o no dentro del perfil de la empresa
+              $RepositorioListaEmpresa = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlEmpresa')->find($ctlEmpresaId); //->getRhPersona();
+              $lista =$RepositorioListaEmpresa->getListaEmpleado();
+
+             if($lista){
+                  //Listar los empleados de la empresa
+              $dql = "SELECT per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, per.telefonoFijo as telefonoFijo, per.telefonoMovil as telefonoMovil, "
+                          . " '' as sitioWeb, per.id, fot.src "
+                          . "FROM DGAbgSistemaBundle:AbgFoto fot "
+                          . "JOIN fot.abgPersona per "
+                          . "JOIN per.ctlEmpresa emp "
+                          . "WHERE emp.id =".$ctlEmpresaId
+                          . " ORDER BY per.nombres ASC";
+
+              $registro_empleados = $em->createQuery($dql)->getArrayResult();
+
+             }else{
+
+                 $registro_empleados = null;
+
+             }
+
+              //valor de los tipos de empresa  
+              $dqlTipoEmpresa = "SELECT tipo.tipoEmpresa as tipoEmpresa  "
+                                  . "FROM DGAbgSistemaBundle:CtlEmpresa emp "
+                                  . "JOIN emp.ctlTipoEmpresa tipo "
+                                  . "WHERE emp.id =".$ctlEmpresaId;
+
+              $registro_tipoempresa = $em->createQuery($dqlTipoEmpresa)->getResult();  
+
+               //metodo que me retorna Especialidades
+               $dql_especialida = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre, pe.descripcion AS descripcion "
+                          . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
+                          . " JOIN DGAbgSistemaBundle:AbgPersonaEspecialida pe WHERE e.id=pe.ctlEspecialidad AND pe.ctlEmpresa=" . $ctlEmpresaId
+                          . " GROUP by e.id "
+                          . " ORDER BY e.nombreEspecialidad";
+               $result_especialida = $em->createQuery($dql_especialida)->getArrayResult();
+
+
+
+
+              return $this->render('ctlempresa/perfilEmpresa.html.twig', array(
+                  'ctlEmpresa' => $result_empresa,
+                  'abgFoto' =>$result_foto,
+                  'ctlEmpresaId'=>$ctlEmpresaId,
+                  'empleados' =>$registro_empleados,
+                  'tipoEmpresa' =>$registro_tipoempresa,
+                  'visitas'=>$valor,
+                  'RegistroEspecialida' => $result_especialida,
+
+
+
+
+              ));
+
+
+
+
+
+            }else{
+
+               
+
+
+
+            }
+          
+      }else{
+          var_dump("Lo sentimos mucho esa url no existe");
+          
+      }
     
-    
-    
-    
-    
-    
-    
-    
+      
+      
+  }
     
     
     
