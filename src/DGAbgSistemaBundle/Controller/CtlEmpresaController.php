@@ -20,8 +20,6 @@ use Symfony\Component\HttpFoundation\Response;
 use DGAbgSistemaBundle\Entity\AbgPersonaEspecialida;
 use DGAbgSistemaBundle\Resources\Tinypng\lib\lib\Tinify;
 
-
-
 include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify.php';
 include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Exception.php';
 include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/ResultMeta.php';
@@ -1285,11 +1283,7 @@ class CtlEmpresaController extends Controller
         
         
     }
-     
-     
-     
-     
-     
+
      
       /**
      * @Route("/insertarUrl/", name="insertarUrl", options={"expose"=true})
@@ -1533,7 +1527,42 @@ class CtlEmpresaController extends Controller
         
     }
     
+    /**
+     * @Route("admin/mostrarUrlBadge/", name="mostrarUrlBadge", options={"expose"=true})
+     * @Method("POST")
+     */
     
+    
+      public function MostrarUrlBadge(Request $request) {
+        
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+
+         if($isAjax){
+             
+            $em = $this->getDoctrine()->getManager();
+            $username = $this->container->get('security.context')->getToken()->getUser();
+            
+          
+            $personaId = $username->getRhPersona();
+            
+            
+            $entity = $em->getRepository('DGAbgSistemaBundle:AbgUrlPersonalizada')->findBy(array("abgPersona" =>$personaId,"estado"=>1));
+            $url=$entity[0]->getUrl();
+            
+            $numero=$url;
+            $direccionAncla="http://www.abogados.com.sv/".$url;
+            
+            $numero=  str_replace("\\", "", $numero);
+            $data['url']=$numero;
+            $data['direccionWeb']=$direccionAncla;
+            return new Response(json_encode($data)); 
+            
+            
+         }
+        
+        
+        
+    }
     
      public function generarIdClienteAbogado(){
     
@@ -1839,9 +1868,79 @@ class CtlEmpresaController extends Controller
       
   }
     
+    /**
+     * @Route("/admin/verificacion/{username}", name="verificacion", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function AjustesAction($username) {
+        $em = $this->getDoctrine()->getManager();
+        $em->getConnection()->beginTransaction();
+        try {
+            //Se agrego la seleccion del campo codigo para en
+            $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
+            $idPersona = $RepositorioPersona[0]->getRhPersona()->getId();
+
+            $dql_persona = "SELECT  p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo,p.codigo as codigo "
+                    . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
+            $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+            
+            //Este es la consulta que carga la foto del panel de ajuste de
+            $dqlfoto = "SELECT fot.src as src "
+                . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . "  and fot.tipoFoto=1";
+                $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+            
+
+            return $this->render('abgpersona/panelVerificacion.html.twig', array(
+                       'AbgFoto'=>$result_foto,
+                        'abgPersona'=>$result_persona,
+                        'usuario'=>$username
+            ));
+        } catch (\Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+            $em->getConnection()->rollback();
+            $em->close();
+
+            // echo $e->getMessage();   
+        }
+    }
+
+    
+ /**
+     * @Route("/verficacionAbogado/get", name="verficacionAbogado", options={"expose"=true})
+     * @Method("POST")
+     */
     
     
+    public function VerificacionAbogadoAction(Request $request) {
+        
+         $nombreimagen2="";
+        
+          $path2 = $this->container->getParameter('photo.verificacion');
+        
+          $nombreimagen=$_FILES['imagen']['name'];    
+          $tipo = $_FILES['imagen']['type'];
+          $extension= explode('/',$tipo);
+          $nombreimagen2.=".".$extension[1];
+          $fecha = date('Y-m-d His');
+          $nombreArchivo = $nombreimagen."-".$fecha.$nombreimagen2;
+          $nombreSERVER =str_replace(" ","", $nombreArchivo);
+          $resultados = move_uploaded_file($_FILES["imagen"]["tmp_name"], $path2.$nombreSERVER);
+          if($resultados){
+              
+              $data['estado']=true;
+              
+          }else{
+              $data['estado']=false;
+          }
+          
+         return new Response(json_encode($data)); 
+        
+    }
     
+    
+
+   
     
     
      
