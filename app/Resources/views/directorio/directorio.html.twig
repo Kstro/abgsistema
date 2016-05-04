@@ -581,6 +581,7 @@ else{ // Maximum length not reached so update the value of my_text counter
                                         {#$(busquedaEspecialidades).html(especialidades);
                                         $(busquedaSitioWeb).children().html(data.data[i].sitioweb);#}
                                         //console.log(data.data[i].fotoPerfil);
+                                        
                                         cadena = '<div class=\"item-directorio-nexo\" style=\"width: 100%;\"> <div class=\"clearfix\"></div><div class=\"row\">\n\
                                         <div class=\"col-xs-2 col-sm-3 col-md-3 col-lg-2\"><img id=\"busquedaImagen'+(i+1)+'\" src=\"{{asset('')}}'+data.data[i].foto+'\" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">\n\
                                         </div><div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10"><p id=\"busquedaNombre'+(i+1)+'\" style=\"margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;\" class=\"sans\"><strong>'+busquedaNombre+'</strong></p>\n\
@@ -592,7 +593,7 @@ else{ // Maximum length not reached so update the value of my_text counter
                                         <div class=\"col-sm-12\"><span style=\"color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;\"><strong>Especialidades:</strong> </span>\n\
                                         <span id=\"busquedaEspecialidades'+(i+1)+'\" style=\"font-size: 11px;\">'+especialidades+'</span>\n\
                                         </div><div class=\"col-sm-12\" style=\"margin-top: -0px;\"><span style=\"font-size: 11px;\"><a href=\"../'+data.data[i].url+'\">Ver perfil</a></span>\n\
-                                        <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"{{path('contacto')}}\">Contactar</a></span>\n\
+                                        <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"{{path('contacto')}}?id='+busquedaCorreo+'\">Contactar</a></span>\n\
                                         <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"#\">Recomendar</a></span></div></div></div></div></div>';
                                         $(busquedaImagen).attr('src', "{{asset('')}}"+data.data[i].foto);
                                         $(busquedaImagen).load();
