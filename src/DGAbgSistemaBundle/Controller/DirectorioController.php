@@ -197,9 +197,9 @@ class DirectorioController extends Controller
                     //var_dump($row);
                     $reg['data'][$i]['especialidades']=array();
                     //var_dump($reg['data']);
-                    $dql = "SELECT esp.nombreEspecialidad FROM DGAbgSistemaBundle:AbgPersonaSubespecialidad subper "
-                        . "JOIN subper.abgSubespecialidad sub "
-                        . "JOIN sub.abgEspecialidad esp "
+                    $dql = "SELECT esp.nombreEspecialidad FROM DGAbgSistemaBundle:AbgPersonaEspecialida subper "
+                        
+                        . "JOIN subper.ctlEspecialidad esp "
                         . "JOIN subper.abgPersona per WHERE per.id=:idPersona";
                     $em = $this->getDoctrine()->getManager();
                     $especialidades = $em->createQuery($dql)
