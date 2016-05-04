@@ -9,8 +9,8 @@ imports:
 parameters:
      locale: en
      photo.verificacion: %kernel.root_dir%/../web/Photos/verificacion/
-     photo.perfil: %kernel.root_dir%/../web/Photos/perfil/
-     photo.perfil.temporal: %kernel.root_dir%/../web/Photos/perfil/temporal/
+     photo.perfil: %kernel.root_dir%/../web/Photos/Perfil/
+     photo.perfil.temporal: %kernel.root_dir%/../web/Photos/Perfil/temporal/
 
 framework:
     #esi:             ~

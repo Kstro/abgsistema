@@ -496,7 +496,7 @@
                 
 <div class="col-md-3" style="margin-top: 10px;">
                                 <div class="bloque-main" style="padding: 5px;">
-                                    <div style="width:300px;overflow:hidden;height:450px;max-width:100%;">
+                                    <div style="width:300px;overflow:hidden;height:450px;max-width:100%;" >
                                        {#  Aqui empieza el mapa de geolocalizacion    #}
      {% for datos in ctlEmpresa %} 
       
@@ -531,9 +531,9 @@
                              <input type="text" class="form-control" id="us3-radius"  />
                          </div>
                      </div>
-             <div id="us3" style="width: 100%; height: 87%;">
-                 
-             </div>
+                <div id="us3" style="width: 100%; height: 87%;">
+
+                </div>
 
                      <div class="clearfix">&nbsp;</div>
                      <div class="m-t-small" style="display: none;">
@@ -576,7 +576,18 @@
                                  radiusInput: $('#us3-radius'),
                                  locationNameInput: $('#us3-address')
                              },
-                             enableAutocomplete: true,
+                             
+                             
+                             //Aqui va la seccion donde se pueden poner las opciones del mapa, como : Desabilitar el Scroll
+                             //Hacerlo auto-ajustable
+                               enableAutocomplete: true,
+                               scrollwheel: false,
+                               navigationControl: false,
+                               mapTypeControl: false,
+                               scaleControl: false,
+                               draggable: false,
+                              
+                              
                              onchanged: function (currentLocation, radius, isMarkerDropped) {
                                   
 

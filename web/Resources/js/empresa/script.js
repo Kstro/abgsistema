@@ -272,7 +272,10 @@ $(document).on("submit","#frmEmpresaUsuarioPersona",function(e) {
     
     
     
-    $("#txtNombreEmpresa").editable();
+    $("#txtNombreEmpresa").editable({
+                tpl: '<input type="text" maxlength="45">'
+                
+              });
     $('#txtNombreEmpresa').on('save', function (e, params) {
         $.ajax({
             type: 'POST',
@@ -709,3 +712,63 @@ $('#tipoEmpresa').editable({
 {
    $('#btnespecialidad').click();
 }
+
+        
+                     
+                     
+                $(function editarFoto() {
+                  $('.image-editor').cropit();
+                  $('form').submit(function() {
+                     
+                   
+                    // Move cropped image data to hidden input
+                    var imageData = $('.image-editor').cropit('export');
+                    $('.hidden-image-data').val(imageData);
+                    //alert(imageData);
+                    var usuario = $("#usuario").val();
+                    var empresaId = $("#empresaId").val();
+                    $("#gif").show();
+                    //Aqui tiene que ir el ajax
+                        $.ajax({
+                            type: 'POST',
+                            async: false,
+                            dataType: 'json',
+                            data: {imageDatas: imageData, usuario: usuario,empresaId:empresaId},
+                            url: Routing.generate('ingresar_foto'),
+                            success: function (data)
+                            {
+                               if(data.estado==true){
+                                   
+                                Lobibox.notify("success", {
+                                                       size: 'mini',
+                                                       msg: 'Datos modificados con exito'
+                                                   });
+                                 $("#prev").attr('src', "/abgsistema/web/"+data.direccion);
+                                 $("#gif").hide();
+                                 $(".close").click();
+                                
+                                 
+
+                           }
+                            },
+                            error: function (xhr, status)
+                            {
+                                 Lobibox.notify("danger", {
+                                                        size: 'mini',
+                                                        msg: 'Lo sentimos, ocurrio un error'
+                                                    });
+                                    $("#gif").hide();
+                                    $(".close").click();
+                                
+                            }
+                        });
+                        
+                    // Print HTTP request params
+                    var formValue = $(this).serialize();
+                    $('#result-data').text(formValue);
+                    // Prevent the form from actually submitting
+                    return false;
+                  });
+                });
+
+              

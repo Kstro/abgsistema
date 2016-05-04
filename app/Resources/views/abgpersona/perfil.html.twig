@@ -12,15 +12,15 @@
                         display: none;
                     }
                    
-      </style>
+   </style>
     <style>
-        /*  .modal-backdrop {
+       .modal-backdrop {
               z-index: -1 !important;
           }
-        */
+       
     </style>
     <style>
-        /*    .image-editor{
+           .image-editor{
                 top: -150px!important;;
             }
             .cropit-preview {
@@ -55,7 +55,7 @@
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 word-wrap: break-word;
-            }*/
+            }
 
         .btnperfil:hover {
             background:#00c0ef !important;
@@ -86,7 +86,7 @@
         $(function editarFoto() {
         $('.image-editor').cropit();
         $('form').submit(function() {
-
+            
 
         // Move cropped image data to hidden input
         var imageData = $('.image-editor').cropit('export');

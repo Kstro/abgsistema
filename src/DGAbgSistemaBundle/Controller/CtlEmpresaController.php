@@ -13,7 +13,6 @@ use DGAbgSistemaBundle\Entity\AbgPersona;
 use DGAbgSistemaBundle\Entity\CtlUsuario;
 use DGAbgSistemaBundle\Entity\AbgSitioWeb;
 use DGAbgSistemaBundle\Entity\AbgUrlPersonalizada;
-
 use DGAbgSistemaBundle\Entity\AbgVisitas;
 use DGAbgSistemaBundle\Form\CtlEmpresaType;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,22 +50,7 @@ class CtlEmpresaController extends Controller
         ));
     }
     
-    
-     /**
-     * Lists all CtlEmpresa entities.
-     *
-     * @Route("/admin/ajusteFoto", name="ajusteFoto")
-     * @Method({"GET", "POST"})
-     */
-    public function FotoAction()
-    {
-      
-        return $this->render('ctlempresa/ajustesFotos.html.twig', array(
-            
-        ));
-    }
-    
-    
+ 
     
     
     /**
@@ -213,21 +197,7 @@ class CtlEmpresaController extends Controller
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     
     /**
      * Lists all CtlEmpresa entities.
@@ -239,8 +209,7 @@ class CtlEmpresaController extends Controller
     
     public function PerfilpublicoempresaAction($username)
     {
-        
-      
+
       $em = $this->getDoctrine()->getManager();
       $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
       $ctlEmpresaId = $RepositorioPersona[0]->getCtlEmpresa()->getId();
@@ -299,15 +268,6 @@ class CtlEmpresaController extends Controller
         
         $registro_tipoempresa = $em->createQuery($dqlTipoEmpresa)->getResult();  
         
-        //Llenando las especialidades
-        
-
-              
-                
-                
-                
-                
-
         //Valores de las persona
                 
         $RepositorioPersonas = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
@@ -601,7 +561,7 @@ class CtlEmpresaController extends Controller
     
     
     /**
-     * @Route("admin/ingresar_foto/get", name="ingresar_foto", options={"expose"=true})
+     * @Route("ingresar_foto/get", name="ingresar_foto", options={"expose"=true})
      * @Method("POST")
      */
     
@@ -610,6 +570,7 @@ class CtlEmpresaController extends Controller
             
             $request = $this->getRequest();
             //data es el valor de retorno de ajax donde puedo ver los valores que trae dependiendo de las instrucciones que hace dentro del controlador
+         
             
             $path2 = $this->container->getParameter('photo.perfil.temporal');
             $horaFecha = date('Y-m-d His');
@@ -626,6 +587,7 @@ class CtlEmpresaController extends Controller
             $success = file_put_contents($file, $data);
             
             $nombreTemporal=$nombreTemporal.'.png';
+         
             
             
    if ($success){
@@ -639,8 +601,8 @@ class CtlEmpresaController extends Controller
              
             //Direccion fisica del la imagen  
                 $path1 = $this->container->getParameter('photo.perfil');
-               
-                $path = "Photos/perfil/E";
+                 
+                $path = "Photos/Perfil/E";
                 $nombreArchivo = $nombreTemporal;
                 
                 $nombreBASE=$path.$nombreArchivo;
@@ -648,7 +610,7 @@ class CtlEmpresaController extends Controller
                 $nombreSERVER = $nombreArchivo;
 
                 //Codigo para poder redimensionar la  imagenes que se suben
-                    \Tinify\setKey("eY78XR8uy0tp-SCRHjp4R8fX4Ib9mKgg");
+                    \Tinify\setKey("H9jR26ywRdh6J3Es7TXAPjIRAz5xuQHZ");
                     
                      $source = \Tinify\fromFile($path2.$nombreSERVER);
                      $resized = $source->resize(array(
@@ -656,7 +618,7 @@ class CtlEmpresaController extends Controller
                          "width" => 300,
                          "height" => 300
                      ));
-                     
+                    
               
                 $resultado=$resized->toFile($path1."E".$nombreSERVER);
                 $numero =unlink($path2.$nombreSERVER);
@@ -665,14 +627,12 @@ class CtlEmpresaController extends Controller
                                 $ctlEmpresa = new CtlEmpresa();
                                 $foto = new AbgFoto();
                                 $em = $this->getDoctrine()->getManager();
-                                //Ojo que posteriormente tengo que sacar los valores con el id de la variable de sesion que este presente
-                                 //Este numero 6 es el id de la empresa, posteriormente hay que trabajarlo con la variable de sesion
                                 $idEmpresa = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlEmpresa')->find($EmpresaId);
                                 $src = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("ctlEmpresa" =>$idEmpresa,"tipoFoto"=>1));
                                 $direccion = $src[0]->getSrc();
                                 
                                 $direccion = str_replace("\\","" , $direccion);
-                                $direccion = str_replace("Photos/perfil/","", $direccion);
+                                $direccion = str_replace("Photos/Perfil/","", $direccion);
 
                                 if($direccion!='' && $direccion!='Photos/defecto/defecto.png'){
                                      $eliminacionRegistroExixtente =unlink($path1.$direccion);
@@ -705,11 +665,8 @@ class CtlEmpresaController extends Controller
                                                 $entity[0]->setEstado(1);
                                                 $em->merge($entity[0]);
                                                 $em->flush();
-                                                
                                                 $enti = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("ctlEmpresa" =>$idEmpresa,"tipoFoto"=>1));
                                                 $direcciones = $enti[0]->getSrc();
-                                                
-                                        
                                                 $direccionPara = str_replace("\\","" , $direcciones);
                                                 $datas['direccion']=$direccionPara;
                                                 $datas['estado']=true;
@@ -778,7 +735,8 @@ class CtlEmpresaController extends Controller
              
             
             switch ($request->get('n')) {
-                case 0:
+                case 0: 
+                   
                     $nombreEmpresa = ($request->get('nombreEmpresa'));
                     $empresa->setNombreEmpresa($nombreEmpresa);
                     $empresa->setUrlPermiso(1);
@@ -1008,6 +966,7 @@ class CtlEmpresaController extends Controller
             $nombreTemporal = $horaFecha;
             $nombreTemporal=str_replace(" ", "", $nombreTemporal);
             
+            
             define('UPLOAD_DIR', $path2);
             $img = $request->get('imageDatas');
             $img = str_replace('data:image/png;base64,', '', $img);
@@ -1028,7 +987,7 @@ class CtlEmpresaController extends Controller
           //Direccion fisica del la imagen  
                 $path1 = $this->container->getParameter('photo.perfil');
                
-                $path = "Photos/perfil/E";
+                $path = "Photos/Perfil/E";
                 $nombreArchivo = $nombreTemporal;
                 
                 $nombreBASE=$path.$nombreArchivo;
@@ -1036,7 +995,7 @@ class CtlEmpresaController extends Controller
                 $nombreSERVER = $nombreArchivo;
 
                 //Codigo para poder redimensionar la  imagenes que se suben
-                    \Tinify\setKey("eY78XR8uy0tp-SCRHjp4R8fX4Ib9mKgg");
+                    \Tinify\setKey("H9jR26ywRdh6J3Es7TXAPjIRAz5xuQHZ");
                     
                      $source = \Tinify\fromFile($path2.$nombreSERVER);
                      $resized = $source->resize(array(
@@ -1059,9 +1018,9 @@ class CtlEmpresaController extends Controller
                                 $direccion = $src[0]->getSrc();
                                 
                                 $direccion = str_replace("\\","" , $direccion);
-                                $direccion = str_replace("Photos/perfil/","", $direccion);
+                                $direccion = str_replace("Photos/Perfil/","", $direccion);
                                 
-                                if($direccion!='' && $direccion!='Photos/defecto/defecto.png'){
+                                if($direccion!="" && $direccion!='Photos/defecto/defecto.png'){
                                     
                                     
                                      $eliminacionRegistroExixtente =unlink($path1.$direccion);

@@ -137,65 +137,7 @@
        }
 
    </style>
-                 <script>
-                     
-                     
-                $(function editarFoto() {
-                  $('.image-editor').cropit();
-                  $('form').submit(function() {
-                     
-                   
-                    // Move cropped image data to hidden input
-                    var imageData = $('.image-editor').cropit('export');
-                    $('.hidden-image-data').val(imageData);
-                    //alert(imageData);
-                    var usuario = $("#usuario").val();
-                    var empresaId = $("#empresaId").val();
-                    $("#gif").show();
-                    //Aqui tiene que ir el ajax
-                        $.ajax({
-                            type: 'POST',
-                            async: false,
-                            dataType: 'json',
-                            data: {imageDatas: imageData, usuario: usuario,empresaId:empresaId},
-                            url: Routing.generate('ingresar_foto'),
-                            success: function (data)
-                            {
-                               if(data.estado==true){
-                                   
-                                Lobibox.notify("success", {
-                                                       size: 'mini',
-                                                       msg: 'Datos modificados con exito'
-                                                   });
-                                 $("#prev").attr('src', "/abgsistema/web/"+data.direccion);
-                                 $("#gif").hide();
-                                 $(".close").click();
-                                
-                                 
-
-                           }
-                            },
-                            error: function (xhr, status)
-                            {
-                                 Lobibox.notify("danger", {
-                                                        size: 'mini',
-                                                        msg: 'Lo sentimos, ocurrio un error'
-                                                    });
-                                    $("#gif").hide();
-                                    $(".close").click();
-                                
-                            }
-                        });
-                        
-                    // Print HTTP request params
-                    var formValue = $(this).serialize();
-                    $('#result-data').text(formValue);
-                    // Prevent the form from actually submitting
-                    return false;
-                  });
-                });
-
-                </script>
+         
 
 
       
@@ -263,7 +205,7 @@
 					    <div style="margin-top: -55px; margin-bottom: 5px;">
 					    	<p class="text-right sans" style="font-size: 20px; margin-right: 10px; margin-bottom: 0px; z-index: 555;"><strong>
                                                       
-                                                <a href="#" id="txtNombreEmpresa" data-type="text" data-placement="right" data-title="Telefono movil">
+                                                <a href="#" id="txtNombreEmpresa" data-type="text" data-placement="right" data-title="Nombre de la empresa" class="text-capitalize" e-maxlength="45">
                                                                 {% if datos.nombreEmpresa %}
                                                                     {{datos.nombreEmpresa}} 
                                                                 {% else %}
@@ -274,7 +216,7 @@
                                                        
                                                 </strong>
                                                 </p>
-					    	<p class="text-right sans" style="font-size: 12px; color: #777777; margin-right: 10px; z-index: 555; margin-bottom: 0px;">
+                                                <p class="text-right sans" style="font-size: 12px; color: #777777; margin-right: 10px; z-index: 555; margin-bottom: 0px;">
                                                     {% if datos.movil %}
                                                                     {{" +503 "~datos.movil~" |"}}
                                                                     
@@ -301,10 +243,10 @@
            
                        
             
-                         <div class="bloque-nexo">
+                                                <div class="bloque-nexo">
 					<!-- Contenido Aqui -->
-					<div class="row">
-						<div class="col-sm-3 col-xs-12">
+			<div class="row">
+                                                    <div class="col-sm-3 col-xs-12">
 							<p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono(s)</strong></p>
 							<p style="font-size: 11px; margin-bottom: 0px;">
                                                             503+
@@ -353,30 +295,30 @@
                           
 						<div class="col-sm-3 col-xs-12">
 							<p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Oficina central</strong></p>
-							 <a href="#" id="txtDireccion" data-type="text" data-placement="right" data-title="Direccion oficina central" style="font-size: 11px; margin-bottom: 0px;">
-                                                            
-                                                            {% if datos.direccion %}
-                                                                {{datos.direccion}} 
-                                                           {% else %}
-                                                              Direccion                                                              
-                                                           {% endif %}  
-                                                        </a>
+							 <a href="#" id="txtDireccion" data-type="text" data-placement="right" data-title="Direccion oficina central" style="font-size: 11px; margin-bottom: 0px;" class="text-capitalize">
+
+                                                                                                                    {% if datos.direccion %}
+                                                                                                                        {{datos.direccion}} 
+                                                                                                                   {% else %}
+                                                                                                                      Direccion                                                              
+                                                                                                                   {% endif %}  
+                                                                                                                </a>
 						</div>
-                                                <div class="col-sm-3 col-xs-12">
+                                                                                                 <div class="col-sm-3 col-xs-12">
 							<p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Fecha fundada</strong></p>
 							 <a href="#" id="txtFechaFundacion" data-type="text" data-placement="right" data-title="Año de funcacion" style="font-size: 11px; margin-bottom: 0px;">
-                                                            
-                                                            {% if datos.fechaFundacion %}
-                                                                {{datos.fechaFundacion}} 
-                                                           {% else %}
-                                                              Fecha de fundacion                                                              
-                                                           {% endif %}  
-                                                        </a>
+
+                                                                                                                    {% if datos.fechaFundacion %}
+                                                                                                                        {{datos.fechaFundacion}} 
+                                                                                                                   {% else %}
+                                                                                                                      Fecha de fundacion                                                              
+                                                                                                                   {% endif %}  
+                                                                                                                </a>
 						</div>      
                                                  <div class="col-sm-3 col-xs-12">
 							<p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Cantidad de empleados</strong></p>
                                                          
-                                                        <a href="#" id="cantidadEmpleados" data-pk="1" data-type="select" data-title="Select status" style="font-size: 11px; margin-bottom: 0px;">
+                                                        <a href="#" id="cantidadEmpleados" data-pk="1" data-type="select" data-title="Cantidad de empleados" style="font-size: 11px; margin-bottom: 0px;">
                                                             {% if datos.cantidadEmpleados %}
                                                                 {{datos.cantidadEmpleados}} 
                                                            {% else %}
@@ -387,7 +329,7 @@
                                                               
                                                         </a>
                                 
-						</div>         
+			</div>         
                                                         
                                                         
 						<div class="col-sm-3 col-xs-12">
@@ -408,15 +350,13 @@
                                                     <div class="col-sm-3 col-xs-12">
                                                             <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Tipo de Empresa</strong></p>
 
-                                                            <a href="#" id="tipoEmpresa" data-pk="1" data-type="select" data-title="Select status" style="font-size: 11px; margin-bottom: 0px;">
+                                                            <a href="#" id="tipoEmpresa" data-pk="1" data-type="select" data-title="Tipo de empresa" style="font-size: 11px; margin-bottom: 0px;">
                                                                 {% if valor.tipoEmpresa is not empty %}
                                                                     {{ valor.tipoEmpresa}}
                                                                   {% else %}
                                                                       Tipo de empresa
                                                                   {% endif %}   
                                                             </a>
-
-
 
                                                     </div>        
                                             </div>   
@@ -484,12 +424,9 @@
 									<p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
 									<p style="font-size: 11px; margin-bottom: 0px;"><a href="http://www.ariaslaw.com" target="_blank">{{ data.sitioWeb }}</a></p>
 								</div>
-								{#<div class="col-sm-12">
-									<span style="color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;"><strong>Especialidades:</strong> </span>
-									<span style="font-size: 11px;">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span>
-								</div>#}
+								
 								<div class="col-sm-12" style="margin-top: -0px;">
-									<span style='font-size: 11px;'><a href="perfil.php">Ver perfil</a></span>
+									<span style='font-size: 11px;'><a href="www.abogados.com.sv">Ver perfil</a></span>
 									<span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
 									<span style='font-size: 11px;'><a href="#">Contactar</a></span>
 									<span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
@@ -568,36 +505,7 @@
                                        </div></div>
                                    <!-- Fin -->
                                </div>
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
+  
  {#<div  class="bloque-main" >
         <div class="row">
             <p class="sans text-uppercase pull-left" style="margin-left: 15px; font-weight: 500; color: #262626; font-size: 16px;">
@@ -752,6 +660,7 @@
                               
      {% endfor %}
 	          <div class="modal fade modal" id="idModalFoto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                      
                     <div class="modal-dialog modal-sm">
                         <div class="modal-content">
                             <div class="modal-header " Style="height:45px;">

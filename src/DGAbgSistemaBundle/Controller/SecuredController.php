@@ -127,10 +127,15 @@ class SecuredController extends Controller
         $em->flush();
          
         $mensaje="Se le envió la nueva contraseña a su correo electrónico , para introducir la nueva contraseña revise su correo electronico.";
-//        var_dump($password);
-        return $this->render('ctlempresa/ayuda.html.twig', array(
+
+         $error = null; // The value does not come from the security component.
+        $lastUsername = null; 
+         
+        return $this->render('DGAbgSistemaBundle:Secured:login.html.twig', array(
             'mensaje'=>$mensaje,
             'redirect'=>'Login',
+            'error' => $error,
+            'last_username' => $lastUsername,
             'header'=>'Tu contraseña ha sido modificada, en un momento recibiras un correo para poder reestablecerla',
         ));    
     }

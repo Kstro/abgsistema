@@ -75,4 +75,5 @@ function almomentodeCerrar(){
           $("#badgeMuestra").hide();
           $("#cancelarBadge").hide();
           $("#formBadge").hide();
+            $('#badgeCode').val("");
 }
