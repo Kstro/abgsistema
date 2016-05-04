@@ -1905,11 +1905,11 @@ class CtlEmpresaController extends Controller
      * @Route("busqueda/contacto", name="contacto")
      * @Method({"GET", "POST"})
      */
-    public function ContactoAction()
+    public function ContactoAction(Request $request)
     {
       
         return $this->render('ctlempresa/formularioContacto.html.twig', array(
-            
+           'correoAbogado'=>$request->get('correo'),
         ));
     }
     

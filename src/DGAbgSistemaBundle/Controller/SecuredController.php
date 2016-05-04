@@ -169,7 +169,7 @@ class SecuredController extends Controller
     {
         
         $parameters = $request->request->all();
-        $emailAbogado = $parameters['email'];
+        $emailAbogado = $parameters['correoAbogado'];
         $emailCliente=$parameters['emailC'];
         
         
