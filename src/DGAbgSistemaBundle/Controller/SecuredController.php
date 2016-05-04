@@ -160,6 +160,77 @@ class SecuredController extends Controller
     } 
     
     
+    /**
+     * Recuperar contraseÃ±a
+     * 
+     * @Route("/correoContacto", name="correoContacto")
+     */
+    public function correoContacto(Request $request) 
+    {
+        
+        $parameters = $request->request->all();
+        $emailAbogado = $parameters['email'];
+        $emailCliente=$parameters['emailC'];
+        
+        
+        var_dump($email);
+        die();
+        
+        
+        $em = $this->getDoctrine()->getManager();
+        $usuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->findOneBy(array('username' => $email));        
+        
+        $password = $this->generateRandomString(12);
+       
+        $usuario->setPassword($password);
+        $this->setSecurePassword($usuario,$password);
+        
+        $this->get('envio_correo')->sendEmail($usuario->getUsername(), "", "", "",
+                    "
+                        <table style=\"width: 540px; margin: 0 auto;\">
+                          <tr>
+                            <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
+                            <center>
+                              <img style=\"width:50%;\" src=\"http://expressionsprint.com/img/logo.jpg\">
+                            </center>
+                                <p>" . $usuario->getRhPersona() . ", tu has recibido una solicitud para reestablecer tu contraseña.</p>
+                                <p> Usuario:" . $usuario->getUsername() . "</p>
+                                <p> Correo: " . $email . "</p>
+                                <p><b> Contraseña: " . $password . "</b></p>
+                                <p>Gracias, por usar nuestros servicios. </p>    
+                            </td>
+                            <td class=\"expander\"></td>
+                          </tr>
+                        </table>
+                    ");
+  
+         
+        $mensaje="Se le envió la nueva contraseña a su correo electrónico , para introducir la nueva contraseña revise su correo electronico.";
+
+         $error = null; // The value does not come from the security component.
+        $lastUsername = null; 
+         
+        return $this->render('DGAbgSistemaBundle:Secured:login.html.twig', array(
+            'mensaje'=>$mensaje,
+            'redirect'=>'Login',
+            'error' => $error,
+            'last_username' => $lastUsername,
+            'header'=>'Tu contraseña ha sido modificada, en un momento recibiras un correo para poder reestablecerla',
+        ));    
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     

@@ -1899,7 +1899,19 @@ class CtlEmpresaController extends Controller
     
     
 
-   
+   /**
+     * Lists all CtlEmpresa entities.
+     *
+     * @Route("busqueda/contacto", name="contacto")
+     * @Method({"GET", "POST"})
+     */
+    public function ContactoAction()
+    {
+      
+        return $this->render('ctlempresa/formularioContacto.html.twig', array(
+            
+        ));
+    }
     
     
      
