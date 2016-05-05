@@ -95,7 +95,7 @@ class CtlEmpresaController extends Controller
         
        if($lista){
             //Listar los empleados de la empresa
-        $dql = "SELECT per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, per.telefonoFijo as telefonoFijo, per.telefonoMovil as telefonoMovil, "
+        $dql = "SELECT per.id as idPersona, per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, per.telefonoFijo as telefonoFijo, per.telefonoMovil as telefonoMovil, "
                     . " '' as sitioWeb, per.id, fot.src "
                     . "FROM DGAbgSistemaBundle:AbgFoto fot "
                     . "JOIN fot.abgPersona per "
@@ -136,7 +136,15 @@ class CtlEmpresaController extends Controller
                 . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=1";
         $result_fotoAbogado = $em->createQuery($dqlfoto)->getArrayResult();  
         
-        
+          //Selccion de las URL personalizadas de los abogados de las empresas
+        $dqlUrl = "SELECT per.id as idpersonaUrl, per.nombres, url.url  FROM DGAbgSistemaBundle:AbgUrlPersonalizada url "
+                    . "JOIN url.abgPersona per  "
+                    . "JOIN per.ctlEmpresa emp "
+                    . " WHERE emp.id=".$ctlEmpresaId
+                    . " AND url.estado=1";
+            
+        $result_url = $em->createQuery($dqlUrl)->getArrayResult();
+       
 
         return $this->render('ctlempresa/paneladministrativoempresa.html.twig', array(
              'ctlEmpresa' => $result_empresa,
@@ -147,7 +155,7 @@ class CtlEmpresaController extends Controller
             'usuario'=>$username,
              'abgPersona' => $result_persona,
              'abgFotoP'=>$result_fotoAbogado,
-           
+             'url'=>$result_url,
             
         ));
     }
@@ -236,7 +244,7 @@ class CtlEmpresaController extends Controller
         $dqlfoto = "SELECT fot.src as src "
                 . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.ctlEmpresa=" . $ctlEmpresaId . " and fot.estado=1 and fot.tipoFoto=1";
         $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
-       
+        
      
         //Array de si se lista o no dentro del perfil de la empresa
         $RepositorioListaEmpresa = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlEmpresa')->find($ctlEmpresaId); //->getRhPersona();
@@ -244,7 +252,7 @@ class CtlEmpresaController extends Controller
         
        if($lista){
             //Listar los empleados de la empresa
-        $dql = "SELECT per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, per.telefonoFijo as telefonoFijo, per.telefonoMovil as telefonoMovil, "
+        $dql = "SELECT per.id as idPersona,per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, per.telefonoFijo as telefonoFijo, per.telefonoMovil as telefonoMovil, "
                     . " '' as sitioWeb, per.id, fot.src "
                     . "FROM DGAbgSistemaBundle:AbgFoto fot "
                     . "JOIN fot.abgPersona per "
@@ -252,8 +260,8 @@ class CtlEmpresaController extends Controller
                     . "WHERE emp.id =".$ctlEmpresaId
                     . " ORDER BY per.nombres ASC";
         
-        $registro_empleados = $em->createQuery($dql)->getArrayResult();
-           
+        $registro_empleados = $em->createQuery($dql)->setMaxResults(20)->getArrayResult();
+
        }else{
            
            $registro_empleados = null;
@@ -284,9 +292,19 @@ class CtlEmpresaController extends Controller
                     . " ORDER BY e.nombreEspecialidad";
          $result_especialida = $em->createQuery($dql_especialida)->getArrayResult();
          
-       
          
+         
+       //Selccion de las URL personalizadas de los abogados de las empresas
+        $dqlUrl = "SELECT per.id as idpersonaUrl, per.nombres, url.url  FROM DGAbgSistemaBundle:AbgUrlPersonalizada url "
+                    . "JOIN url.abgPersona per  "
+                    . "JOIN per.ctlEmpresa emp "
+                    . " WHERE emp.id=".$ctlEmpresaId
+                    . " AND url.estado=1";
+            
+        $result_url = $em->createQuery($dqlUrl)->getArrayResult();
+       
         
+            
         return $this->render('ctlempresa/perfilEmpresa.html.twig', array(
             'ctlEmpresa' => $result_empresa,
             'abgFoto' =>$result_foto,
@@ -297,6 +315,7 @@ class CtlEmpresaController extends Controller
             'abgPersona' => $result_persona,
             'visitas'=>$valor,
             'RegistroEspecialida' => $result_especialida,
+            'url'=>$result_url,
          
             
             
@@ -1757,7 +1776,7 @@ class CtlEmpresaController extends Controller
 
              if($lista){
                   //Listar los empleados de la empresa
-              $dql = "SELECT per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, per.telefonoFijo as telefonoFijo, per.telefonoMovil as telefonoMovil, "
+              $dql = "SELECT per.id as idPersona,per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, per.telefonoFijo as telefonoFijo, per.telefonoMovil as telefonoMovil, "
                           . " '' as sitioWeb, per.id, fot.src "
                           . "FROM DGAbgSistemaBundle:AbgFoto fot "
                           . "JOIN fot.abgPersona per "
@@ -1789,7 +1808,15 @@ class CtlEmpresaController extends Controller
                           . " ORDER BY e.nombreEspecialidad";
                $result_especialida = $em->createQuery($dql_especialida)->getArrayResult();
 
+                      //Selccion de las URL personalizadas de los abogados de las empresas
+                $dqlUrl = "SELECT per.id as idpersonaUrl, per.nombres, url.url  FROM DGAbgSistemaBundle:AbgUrlPersonalizada url "
+                            . "JOIN url.abgPersona per  "
+                            . "JOIN per.ctlEmpresa emp "
+                            . " WHERE emp.id=".$ctlEmpresaId
+                            . " AND url.estado=1";
 
+                $result_url = $em->createQuery($dqlUrl)->getArrayResult();
+       
 
 
               return $this->render('ctlempresa/perfilEmpresa.html.twig', array(
@@ -1800,7 +1827,7 @@ class CtlEmpresaController extends Controller
                   'tipoEmpresa' =>$registro_tipoempresa,
                   'visitas'=>$valor,
                   'RegistroEspecialida' => $result_especialida,
-
+                   'url'=>$result_url,
 
 
 
@@ -1912,6 +1939,31 @@ class CtlEmpresaController extends Controller
            'correoAbogado'=>$request->get('correo'),
         ));
     }
+    
+    
+    
+     /**
+     * Lists all CtlEmpresa entities.
+     *
+     * @Route("busqueda/recomendacion", name="recomendacion")
+     * @Method({"GET", "POST"})
+     */
+    public function RecomedacionAction(Request $request)
+    {
+      
+        return $this->render('ctlempresa/recomendacion.html.twig', array(
+           'correoAbogado'=>$request->get('correo'),
+        ));
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
      

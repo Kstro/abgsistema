@@ -1,0 +1,91 @@
+{% extends ':Layout:layout2.html.twig' %}
+
+{% block descripcion_y_acciones %}
+
+
+    
+        {% block descripcion %}
+            
+        {% endblock%}
+        {% block acciones %}
+                     
+        {% endblock %}
+
+
+{% endblock %}
+{% block js_extend %}
+   
+
+      
+  {% endblock %} 
+
+{% block navegacion_Y_body %}
+  
+        {% block navegacion %}
+            
+        {% endblock %}
+        {% block cuerpo %}
+   
+            
+      
+   
+   <div class="row">
+			
+          <div class="col-md-6">
+            
+              <center> <h3 style="margin-top: 90px;font-family: cursive; ">Formulario de recomendacion</h3></center>
+              <form class="form-horizontal" role="form" method="post" action="{{ path('correoRecomendacion') }}" >
+                    <input type="hidden" name="correoAbogado" value="{{correoAbogado}}">
+	<div class="form-group">
+		<label for="name" class="col-sm-4 control-label">Mi nombre</label>
+		<div class="col-sm-8">
+                    <input type="text" class="form-control" id="name" name="nombreRecomendador" placeholder="Nombre completo" required>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="email" class="col-sm-4 control-label">Mi correo electronico</label>
+		<div class="col-sm-8">
+                    <input type="email" class="form-control" value="" id="email" name="correoRecomendador" placeholder="example@domain.com" required>
+		</div>
+	</div>
+                <div class="form-group">
+		<label for="name" class="col-sm-4 control-label">Nombre persona a quien recomiendo</label>
+		<div class="col-sm-8">
+                    <input type="text" class="form-control" id="name" name="nombrePersonaAaRecomendar" placeholder="Nombre completo" required>
+		</div>
+	</div>
+                <div class="form-group">
+		<label for="email" class="col-sm-4 control-label">Correo persona a quien recomiendo</label>
+		<div class="col-sm-8">
+                    <input type="email" class="form-control" value="" id="email" name="correoPersonaARecomendar" placeholder="example@domain.com" required>
+		</div>
+	</div>
+	
+	<div class="form-group">
+            <center>
+		<div class="col-sm-12 ">
+			<input id="submit" name="submit" type="submit" value="Enviar" class="btn btn-primary">
+		</div>
+            </center>
+	</div>
+	
+              </form>
+                
+                </div>
+                  
+
+               
+             
+             
+  
+
+   </div>
+  
+        
+        {% endblock %}
+{% endblock %}
+
+
+
+
+

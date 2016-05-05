@@ -65,7 +65,7 @@ $(document).on("submit","#frmEmpresaUsuarioPersona",function(e) {
                                         
                                        }else{
                                            
-                                        Lobibox.notify("Error", {
+                                        Lobibox.notify("error", {
                                         size: 'mini',
                                         msg: 'Error al ingresar los datos'
                                     });
@@ -79,7 +79,7 @@ $(document).on("submit","#frmEmpresaUsuarioPersona",function(e) {
                }else{
                   
                   
-                    Lobibox.notify("success", {
+                    Lobibox.notify("error", {
                                         size: 'mini',
                                         msg: 'Correo ya existente, intenete con otro.'
                                     });
