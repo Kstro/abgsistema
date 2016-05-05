@@ -1,5 +1,8 @@
 <!-- para validar -->
 
+<link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
+            <script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
+<script src="{{ asset('Resources/src/js/jquery-2.0.3.min.js')}}"></script>
 <link href="{{asset('Resources/jquery-validation-1.15.0/demo/css/screen.css')}}" rel="stylesheet">
 <script src="{{ asset('Resources/jquery-validation-1.15.0/dist/jquery.validate.js')}}"></script>
 
@@ -24,15 +27,15 @@
     form.cmxform {
         width: 50em;
     }
-  
-   form.cmxform label.error {
+
+    form.cmxform label.error {
         margin-left: auto;
         width: auto;
     }
     form.cmxform input.submit {
         margin-left: 20px;
     }
-  
+
     select.error {
         border: 1px dotted red;
     }
@@ -71,7 +74,14 @@
                         <a onClick="RemoveIdioma({{datosIR.idPi}})"><i class="fa fa-remove" style="color: #999999;" data-toggle="tooltip" data-placement="left" title="Remover" ></i></a>
                     </div>
                 </div>
-
+                <script type="text/javascript">
+                     $(document).ready(function () {
+/*
+                  $('#SIdioma'+{#{datosIR.idPi}}).select2();
+                    $('#Snivel'+{{datosIR.idPi}#}).select2(); 
+                    */
+                });
+                </script>
             {%endfor%}
         </div>
         <div class="form-group">
@@ -88,7 +98,7 @@
             </div>
         </div>
     {%else%}
-      
+
         <input type="hidden" name="hidIdioma" id="hidIdioma" value="">
         <div class="form-group" id="divContenedor">
             <div class="row" id="divIdioma">
@@ -131,8 +141,9 @@
     {%endif%}
 
     <script type="text/javascript">
-
-
+        /*
+         $('#SIdioma1').select2();
+         $('#Snivel1').select2();*/
         function NewIdioma()
         {
 
@@ -141,10 +152,11 @@
             div = '<div class="form-group "><div class="row" id="divIdioma' + $("#divContenedor div").length + '">';
             div += '<div class="col-sm-4">';
             div += '<select id="SIdioma' + $("#divContenedor div").length + '" name="SIdioma' + $("#divContenedor div").length + '" class="form-control input-sm newIdioma" data-rule-required="true">';
-            $('#SIdioma' + $("#divContenedor div").length).select2();
+            //$('#SIdioma' + $("#divContenedor div").length).select2();
             div += '<option value="">Selecione una opcion...</option>';
         {% for datos in idioma %}
                 div += '<option value="{{datos.id}}">{{datos.nombre}}</option>';
+
         {%endfor%}
                 div += '</select></div>';
                 div += '<div class="col-sm-4">';
@@ -158,6 +170,7 @@
                 div += '</select></div>';
                 div += '<a onClick="RemoveIdioma(' + $("#divContenedor div").length + ')"><i class="fa fa-remove" style="color: #999999;" data-toggle="tooltip" data-placement="left" title="Remover" ></i></a>';
                 div += '</div></div>';
+                //      $('#Snivel' + $("#divContenedor div").length).select2();
                 $("#divIdioma").after(div);
             }
 
@@ -165,6 +178,8 @@
             {
                 $("#divIdioma" + val).remove();
             }
+
+
 
     </script>
 </form>

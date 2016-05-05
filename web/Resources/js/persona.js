@@ -9,6 +9,12 @@ var datos = "", datosMostrados = "";
 
 $(document).on('ready', function () {
 
+    $("#btnExtracto").click(function () {
+
+        document.getElementById('divExtracto').style.display = 'block';
+    });
+
+
     $("#btnVerperfil").click(function () {
         $.ajax({
             type: "GET",
@@ -222,7 +228,7 @@ $(document).on('ready', function () {
                 data: {hPersona: $('input#hPersona').val()},
                 success: function (data)
                 {
-                    div = '<div class="nueva-Experiencia" id="div7"  style="background-color: #f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+                    div = '<div class="nueva-Experiencia" id="div7"  style="background-color: #f4f4f4;  border-bottom: 0.5px solid #D3D3D3;">' + data + '</div>';
                     $("#consultaCurso").before(div);
                 },
                 error: function (errors)
@@ -276,10 +282,15 @@ $(document).on('ready', function () {
 
 
 });
+function Fsobremi()
+{
+    $("#btnUnpoco").click();
+}
 function editIdioma()
 {
     $('#btnIdioma').click();
 }
+
 function editEspe()
 {
     $('#btnespecialida').click();
@@ -416,11 +427,14 @@ function editDatosContacto() {
                         data: {hPersona: $('input#hPersona').val(), dato: $("#fdatosContacto").serialize(), n: 0},
                         success: function (data)
                         {
+                          
                             if (data.msj !== false) {
                                 $('#txtOficina').editable('setValue', $("#txtFijo").val());
                                 $('#txtMovil').editable('setValue', $("#txtMovil").val());
                                 $('#txtCorreo').editable('setValue', $("#txtEmail").val());
                                 $('#txtDireccion').editable('setValue', $("#txtDirecion").val());
+                                $('#sitioweb').editable('setValue', $("#txtsitio").val());
+                                $('#sitioweb2').editable('setValue', $("#txtsitio").val());
                                 $("#div001").remove();
                                 $("#datosContacto").show();
                                 Lobibox.notify("success", {
@@ -513,16 +527,16 @@ function addEspecialida()
                         $("#contenido").append(datos);
                     });
                     var boton = '<div><p><script type="text/javascript">';
-                                datos += '$("#Idioma").hover(';
-                                datos += 'function(){';
-                                datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
-                                datos += 'onclick="editIdioma()"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
-                                datos += 'onclick="editIdioma()">&nbsp;Eliminar</i></span>\'));';
-                                datos += '},function(){';
-                                datos += '$(this).find("span:last").remove();';
-                                datos += '});';
-                                datos += '</script></p></div>';
-                                $("#contenido").append(boton);
+                    datos += '$("#Idioma").hover(';
+                    datos += 'function(){';
+                    datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
+                    datos += 'onclick="editIdioma()"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
+                    datos += 'onclick="editIdioma()">&nbsp;Eliminar</i></span>\'));';
+                    datos += '},function(){';
+                    datos += '$(this).find("span:last").remove();';
+                    datos += '});';
+                    datos += '</script></p></div>';
+                    $("#contenido").append(boton);
                     Lobibox.notify("success", {
                         size: 'mini',
                         msg: data.msj
@@ -585,11 +599,11 @@ function addExperiencia()
                                     datos += '<div class="col-xs-1">';
                                     if (val.src !== null)
                                     {
-                                        datos += '<img src="' + val.src.substring(18) + '">';
+                                        datos += '<img src="/' + val.src+ '" style="max-width:50px;max-height:50px;">';
                                     }
                                     datos += '</div>';
                                     datos += '<div class="col-xs-11">';
-                                    datos += '<span style="font-size: 15px;">' + val.empresa + '</span>';
+                                    datos += '<span style="font-size: 15px;">' + val.empresa + '&nbsp;</span>';
                                     datos += '&nbsp;<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
                                     datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
                                     datos += '<span style="font-size: 13px;">' + val.puesto + ' </br>';
@@ -663,7 +677,7 @@ function addEdu() {
                                     $("#Edu" + val.idEs).remove();
                                     datos = '<div class="row" id="Edu' + val.idEs + '">';
                                     datos += '<div class="col-xs-11">';
-                                    datos += '<span style="font-size: 15px;">' + val.institucion + '</span>';
+                                    datos += '<span style="font-size: 15px;">' + val.institucion + '&nbsp;</span>';
                                     datos += '<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
                                     datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
                                     datos += '<span style="font-size: 13px;">' + val.disciplina + ' | ' + val.titulo + ' </br>' + val.anioIni + ' - ' + val.anio + '</span>';
@@ -760,7 +774,7 @@ function addOrganizacion() {
                                     $("#Org" + val.id).remove();
                                     datos = '<div class="row" id="Org' + val.id + '">';
                                     datos += '<div class="col-xs-11">';
-                                    datos += '<span style="font-size: 16px;">' + val.nombre + '</span>';
+                                    datos += '<span style="font-size: 16px;">&nbsp;' + val.nombre + '&nbsp;</span>';
                                     datos += '<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
                                     datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
                                     datos += '<span style="font-size: 13px;">' + val.puesto + ' </br>' + val.fechaIn + ' - ' + val.fechaFin + '</span>';
@@ -904,7 +918,7 @@ function addCertificacion() {
                                     $("#Cert" + val.id).remove();
                                     datos = '<div class="row" id="Cert' + val.id + '">';
                                     datos += '<div class="col-xs-11">';
-                                    datos += '<span style="font-size: 15px;">' + val.institucion + '</span>';
+                                    datos += '<span style="font-size: 15px;">' + val.institucion + '&nbsp;</span>';
                                     datos += '<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
                                     datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
                                     datos += '<span style="font-size: 13px;">' + val.nombre + '</br>' + val.fechaIn + ' - ' + val.fechaFin + '</span>';
@@ -1021,7 +1035,7 @@ function addCurso() {
                                     $("#CM" + val.id).remove();
                                     datos = '<div class="row" id="CM' + val.id + '">';
                                     datos += '<div class="col-xs-11">';
-                                    datos += '<span style="font-size: 15px;">' + val.institucion + '</span>';
+                                    datos += '<span style="font-size: 15px;">' + val.institucion + '&nbsp;</span>';
                                     datos += '<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
                                     datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
                                     datos += '<span style="font-size: 13px;">' + val.nombre + '</br>' + val.fechaIn + ' - ' + val.fechaFin + '</span>';
@@ -1037,9 +1051,7 @@ function addCurso() {
                                     datos += '});';
                                     datos += '</script></p>';
                                     datos += '</div>';
-                                    datos += '<a onclick="editEducacion(' + val.id + ')">h';
-                                    datos += '<i class="fa fa-cog" style="margin-right: 28px; color: #999999;" data-toggle="tooltip" data-placement="left" title="Editar"></i>';
-                                    datos += '</a></div>';
+                                    datos += '</div>';
                                 });
                                 $("#consultaCurso").append(datos);
                                 Lobibox.notify("success", {
@@ -1080,6 +1092,7 @@ function removeSeminario(val)
                     size: 'mini',
                     msg: data.msj
                 });
+                Fsobremi
 
                 $("#CM" + val).remove();
             } else
@@ -1213,76 +1226,76 @@ function editCurso(val)
     });
 }
 /*
-function departamentoEmpresa()
-{
-    var Dept;
-    //  Datos de departamentos de la sucursal
-    $("#divDepartamento").empty();
-    $.ajax({
-        async: false,
-        dataType: 'json',
-        data: {idSucursal: $("#SSucursal").prop('selectedIndex')},
-        url: Routing.generate('datos_dep_suc'),
-        success: function (data)
-        {
-            Dept = '<label for="ejemplo_archivo_1">Departamento</label>\
-                            <select class="form-control"  name="SDepartamento" id="SDepartamento" onChange="puestoDept()">';
-            Dept += '<option value="0">Seleccione Tipo empleo --></option>';
-            $.each(data.ArrayDep, function (indice, val) {
-                Dept += '<option value="' + val.id + '">' + val.nombre + '</option>';
-            });
-            Dept += ' </select></div></div> ';
-            $("#divDepartamento").append(Dept);
-        }
-    });
-}
-
-function puestoDept()
-{
-    var puesto;
-    //  Datos de departamentos de la sucursal
-    $("#divPuesto").empty();
-    $.ajax({
-        async: false,
-        dataType: 'json',
-        data: {idDepartamento: $("#SDepartamento").prop('selectedIndex')},
-        url: Routing.generate('datos_puesto'),
-        success: function (data)
-        {
-            puesto = '<label for="ejemplo_archivo_1">Puesto de trabajo</label>\
-                            <select class="form-control"  name="SPuesto" id="SPuesto">';
-            puesto += '<option >Seleccione Tipo empleo</option>';
-            $.each(data.ArrayDep, function (indice, val) {
-                puesto += '<option value="' + val.id + '">' + val.nombre + '</option>';
-            });
-            puesto += ' </select></div></div> ';
-            $("#divPuesto").append(puesto);
-        }
-    });
-}
-
-function ciudad()
-{
-    var Dataciudad;
-    $("#divCiudad").empty();
-    $.ajax({
-        async: false,
-        dataType: 'json',
-        data: {idEstado: $("#sEstado").prop('selectedIndex')},
-        url: Routing.generate('datos_ciudad'),
-        success: function (data)
-        {
-
-            Dataciudad = '<label for="ejemplo_archivo_1">Ciudad</label>\
-                            <select class="form-control"  name="sCiudad" id="sCiudad" >';
-            $.each(data.ArrayCiudad, function (indice, val) {
-
-                Dataciudad += '<option value="' + val.id + '">' + val.nombre + '</option>';
-            });
-            Dataciudad += ' </select></div></div> ';
-        }
-    });
-    $("#divCiudad").append(Dataciudad);
-}
-
-*/
+ function departamentoEmpresa()
+ {
+ var Dept;
+ //  Datos de departamentos de la sucursal
+ $("#divDepartamento").empty();
+ $.ajax({
+ async: false,
+ dataType: 'json',
+ data: {idSucursal: $("#SSucursal").prop('selectedIndex')},
+ url: Routing.generate('datos_dep_suc'),
+ success: function (data)
+ {
+ Dept = '<label for="ejemplo_archivo_1">Departamento</label>\
+ <select class="form-control"  name="SDepartamento" id="SDepartamento" onChange="puestoDept()">';
+ Dept += '<option value="0">Seleccione Tipo empleo --></option>';
+ $.each(data.ArrayDep, function (indice, val) {
+ Dept += '<option value="' + val.id + '">' + val.nombre + '</option>';
+ });
+ Dept += ' </select></div></div> ';
+ $("#divDepartamento").append(Dept);
+ }
+ });
+ }
+ 
+ function puestoDept()
+ {
+ var puesto;
+ //  Datos de departamentos de la sucursal
+ $("#divPuesto").empty();
+ $.ajax({
+ async: false,
+ dataType: 'json',
+ data: {idDepartamento: $("#SDepartamento").prop('selectedIndex')},
+ url: Routing.generate('datos_puesto'),
+ success: function (data)
+ {
+ puesto = '<label for="ejemplo_archivo_1">Puesto de trabajo</label>\
+ <select class="form-control"  name="SPuesto" id="SPuesto">';
+ puesto += '<option >Seleccione Tipo empleo</option>';
+ $.each(data.ArrayDep, function (indice, val) {
+ puesto += '<option value="' + val.id + '">' + val.nombre + '</option>';
+ });
+ puesto += ' </select></div></div> ';
+ $("#divPuesto").append(puesto);
+ }
+ });
+ }
+ 
+ function ciudad()
+ {
+ var Dataciudad;
+ $("#divCiudad").empty();
+ $.ajax({
+ async: false,
+ dataType: 'json',
+ data: {idEstado: $("#sEstado").prop('selectedIndex')},
+ url: Routing.generate('datos_ciudad'),
+ success: function (data)
+ {
+ 
+ Dataciudad = '<label for="ejemplo_archivo_1">Ciudad</label>\
+ <select class="form-control"  name="sCiudad" id="sCiudad" >';
+ $.each(data.ArrayCiudad, function (indice, val) {
+ 
+ Dataciudad += '<option value="' + val.id + '">' + val.nombre + '</option>';
+ });
+ Dataciudad += ' </select></div></div> ';
+ }
+ });
+ $("#divCiudad").append(Dataciudad);
+ }
+ 
+ */

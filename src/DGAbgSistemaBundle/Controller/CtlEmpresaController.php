@@ -681,7 +681,7 @@ class CtlEmpresaController extends Controller
             //Direccion fisica del la imagen  
                 $path1 = $this->container->getParameter('photo.perfil');
                
-                $path = "Photos/perfil/E";
+                $path = "Photos/Perfil/E";
                 $nombreArchivo = $nombreTemporal;
                 
                 $nombreBASE=$path.$nombreArchivo;
@@ -1148,7 +1148,7 @@ class CtlEmpresaController extends Controller
             $result_sub = $em->createQuery($dsql_sub)->getArrayResult();
             if ($n == 1) {
                 $data['esp'] = $em->createQuery($dql_departamento)->getArrayResult();
-                return new Response(json_encode($data));
+                return new Respfoto_eonse(json_encode($data));
             } else {
                 return $this->render('abgpersona/especialidades.html.twig', array(
                             'abgEspecialida' => $result_especialida,

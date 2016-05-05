@@ -160,7 +160,7 @@ $(function(){
     });
 
     Addnombres.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
-        tpl: '<div class="editable-address"><label><span>Nombre: </span><input type="text" name="txtnombre" id="txtnombre" class="form-control input-sm"></label></div>'+
+        tpl: '<div class="editable-address"><label><span>Nombre: </span><input type="text" name="txtnombre" id="txtnombre" class="form-control input-sm " ></label></div>'+
              '<div class="editable-address"><label><span>Apellido: </span><input type="text" name="txtApellido" id="txtApellido" class="form-control input-sm"></label></div>',
              
         inputclass: ''

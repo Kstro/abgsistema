@@ -133,13 +133,15 @@
                         success: function (data)
                         {
                             $("#divD").empty();
-                            estado = '<label for="ejemplo_archivo_1">Estado: </label>\
+                            estado='<div class="row"><div class="col-sm-12"> ';
+                            estado += '<label for="ejemplo_archivo_1">Estado: </label>\
                                       <select class="form-control input-sm editable-address"  name="sEstado" id="sEstado" onChange=ciudad()>';
                             estado += '<option value="0">Seleccione estado</option>';
                             $.each(data.depto, function (indice, val) {
                                 estado += '<option value="' + val.id + '">' + val.nombre + '</option>';
                             });
                             estado += ' </select></div></div> ';
+                             estado+='</div></div> ';
                             $("#divD").append(estado);
                         },
                         error: function (errors)
@@ -148,6 +150,7 @@
                         }
                     })
                     );
+                    // $('#sEstado').select2();
             //  this.$input.filter('[name="building"]').val(value.building);
         },
         /**
@@ -240,3 +243,4 @@ function ciudad()
         }
     });
 }
+
