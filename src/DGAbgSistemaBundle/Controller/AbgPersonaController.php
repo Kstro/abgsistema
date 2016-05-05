@@ -706,15 +706,21 @@ class AbgPersonaController extends Controller {
             /*   $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
               $idPersona = $RepositorioPersona[0]->getRhPersona()->getId(); */
 
-            $dql_persona = "SELECT  p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo "
+            $dql_persona = "SELECT  p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo,p.codigo as codigo "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
-
+            
+            //Este es la consulta que carga la foto del panel de ajuste de
+            $dqlfoto = "SELECT fot.src as src "
+                . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . "  and fot.tipoFoto=1";
+                $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+            
 
             return $this->render('abgpersona/panelAjustes.html.twig', array(
                         'abgPersona' => $result_persona,
                         'usuario' => $username,
                         'active' => 'ajuste',
+                        'AbgFoto'=>$result_foto,
             ));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";

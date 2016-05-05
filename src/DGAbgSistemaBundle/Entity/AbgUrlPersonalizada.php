@@ -119,7 +119,7 @@ class AbgUrlPersonalizada
      * @param \DGAbgSistemaBundle\Entity\AbgPersona $abgPersona
      * @return AbgUrlPersonalizada
      */
-    public function setAbgPersona(\DGAbgSistemaBundle\Entity\AbgPersona $abgPersona = null)
+    public function setAbgPersonas(\DGAbgSistemaBundle\Entity\AbgPersona $abgPersona = null)
     {
         $this->abgPersona = $abgPersona;
 
