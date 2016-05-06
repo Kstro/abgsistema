@@ -597,6 +597,7 @@ class CtlEmpresaController extends Controller
             $request = $this->getRequest();
             //data es el valor de retorno de ajax donde puedo ver los valores que trae dependiendo de las instrucciones que hace dentro del controlador
          
+      
             $path2 = $this->container->getParameter('photo.perfil.temporal');
             $horaFecha = date('Y-m-d His');
             $nombreTemporal = $horaFecha;
@@ -867,7 +868,41 @@ class CtlEmpresaController extends Controller
         try {
             $request = $this->getRequest();
             $em = $this->getDoctrine()->getManager();
+            //$idPersona = $this->container->get('security.context')->getToken()->getUser()->getId();
       
+            
+            $Persona = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($request->get('empresaId'));
+            $array = $request->get('DataEspecialida');
+            parse_str($request->get('dato'), $datos);
+
+
+            $RepositorioSubEsp = $em->getRepository("DGAbgSistemaBundle:AbgPersonaEspecialida");
+            if (is_null($RepositorioSubEsp->findBy(array('ctlEmpresa' => $request->get('empresaId'))))) {
+                
+            } else {
+                $PersonaSub = $RepositorioSubEsp->findBy(array('ctlEmpresa' => $request->get('empresaId')));
+                foreach ($PersonaSub as $obj) {
+                    $em->remove($obj);
+                    $em->flush();
+                }
+            }
+            if (is_null($array)) {
+                
+            } else {
+                foreach ($array as $obj) {
+
+                    $PersonaEspecialidad = new AbgPersonaEspecialida();
+                    $idSub = $em->getRepository("DGAbgSistemaBundle:CtlEspecialidad")->find(intval($obj['0']));
+                    $PersonaEspecialidad->setCtlEmpresa($Persona);
+                    $PersonaEspecialidad->setCtlEspecialidad($idSub);
+                    $PersonaEspecialidad->setDescripcion($datos[$obj['1']]);
+                    $em->persist($PersonaEspecialidad);
+                    $em->flush();
+                }
+                $data['msj'] = "Especialida registrada";
+                $dql_especialida = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre, pe.descripcion AS descripcion "
+                        . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
+                        . "JOIN DGAbgSistemaBundle:AbgPersonaEspecialida pe WHERE e.id=pe.ctlEspecialidad AND pe.ctlEmpresa=" . $request->get('empresaId')
                         . " GROUP by e.id";
                 $data['Esp'] = $em->createQuery($dql_especialida)->getArrayResult();
             }
@@ -945,41 +980,7 @@ class CtlEmpresaController extends Controller
      
     
      /**
-            //$idPersona = $this->container->get('security.context')->getToken()->getUser()->getId();
-      
-            
-            $Persona = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($request->get('empresaId'));
-            $array = $request->get('DataEspecialida');
-            parse_str($request->get('dato'), $datos);
-
-
-            $RepositorioSubEsp = $em->getRepository("DGAbgSistemaBundle:AbgPersonaEspecialida");
-            if (is_null($RepositorioSubEsp->findBy(array('ctlEmpresa' => $request->get('empresaId'))))) {
-                
-            } else {
-                $PersonaSub = $RepositorioSubEsp->findBy(array('ctlEmpresa' => $request->get('empresaId')));
-                foreach ($PersonaSub as $obj) {
-                    $em->remove($obj);
-                    $em->flush();
-                }
-            }
-            if (is_null($array)) {
-                
-            } else {
-                foreach ($array as $obj) {
-
-                    $PersonaEspecialidad = new AbgPersonaEspecialida();
-                    $idSub = $em->getRepository("DGAbgSistemaBundle:CtlEspecialidad")->find(intval($obj['0']));
-                    $PersonaEspecialidad->setCtlEmpresa($Persona);
-                    $PersonaEspecialidad->setCtlEspecialidad($idSub);
-                    $PersonaEspecialidad->setDescripcion($datos[$obj['1']]);
-                    $em->persist($PersonaEspecialidad);
-                    $em->flush();
-                }
-                $data['msj'] = "Especialida registrada";
-                $dql_especialida = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre, pe.descripcion AS descripcion "
-                        . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
-                        . "JOIN DGAbgSistemaBundle:AbgPersonaEspecialida pe WHERE e.id=pe.ctlEspecialidad AND pe.ctlEmpresa=" . $request->get('empresaId')
+     * @Route("admin/ingresar_foto_persona", name="ingresar_foto_persona", options={"expose"=true})
      * @Method("POST")
      */
     
@@ -1987,4 +1988,3 @@ class CtlEmpresaController extends Controller
      
    
 }
-     * @Route("admin/ingresar_foto_persona", name="ingresar_foto_persona", options={"expose"=true})
