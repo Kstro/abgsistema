@@ -1,104 +1,147 @@
 
 {% block js_extend %}
-<!-- Calendar -->
-<link rel="stylesheet" href="{{ asset('Resources/zebra/css/bootstrap.css') }}">
-<script type="text/javascript" src="{{ asset('Resources/zebra/js/zebra_datepicker.js')}}" ></script>
+    <!-- Calendar -->
+    <style type="text/css">
+        .image-upload >input {
+            display: none;
+        }
+    </style>
+      <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
+    <!--link rel="stylesheet" href="{#{ asset('Resources/zebra/css/bootstrap.css') }}">
+    <script type="text/javascript" src="{{ asset('Resources/zebra/js/zebra_datepicker.js')}}" ></script>
+    <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
+
+    <!--  Select  2-->
+    <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }#}"-->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
     <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
-    <!--  Select  2-->
-    <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
+    <link rel="stylesheet" media="screen" type="text/css" href="{{ asset('Resources/colorpicker/css/colorpicker.css') }}" />
 
-               
+    <!-- Los script que he importado -->
 
-    <!-- script src = "{#{ asset('Resources/cropit-master/dist/jquery.cropit.js') }#}"  type = "text/javascript" ></script-->  
+
+    <script type="text/javascript" src='http://maps.google.com/maps/api/js?sensor=false&libraries=places'></script>
+
+    <script src = "{{ asset('Resources/cropit-master/dist/jquery.cropit.js') }}"  type = "text/javascript" ></script> 
+
+ <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
+ <script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
     <style>
-        .btnperfil:hover {
-            background:#00c0ef !important;
-            color:#fff ;
-
-            border-radius:0px; 
-            box-shadow: 2px 2px 5px #999;
+        .image-editor{
+            top: -150px!important;;
+        }
+        .cropit-preview {
+            background-color: #f8f8f8;
+            background-size: cover;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            margin-top: 7px;
+            width: 200px;
+            height: 200px;
 
         }
-        .btnperfil {
-            background:#F0F0F0;
-            color: #505050;
-            border-radius:0px; 
+
+        .cropit-preview-image-container {
+            cursor: move;
+            position: absolute;
+
 
         }
 
+        .image-size-label {
+            margin-top: 10px;
+        }
+
+        {#  input {
+            display: block;
+          }#}
+
+        button[type="submit"] {
+            margin-top: 0px;
+        }
+
+        #result {
+            margin-top: 10px;
+            width: 900px;
+        }
+
+        #result-data {
+            display: block;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            word-wrap: break-word;
+        }
     </style>
 
     <script type="text/javascript">
+        
 
+        
+        $(document).ready(function() {
 
+        $("#gif").hide();
+        $(document).on("click", "#botonModalP", function() {
+            $("#idModalFotoP").modal();
 
+                });
+        });
+        $(function editarFoto() {
+            
+        $('.image-editor').cropit();
+        $('form').submit(function() {
+            
 
-        /*
-         $(document).ready(function() {
-         
-         $("#gif").hide();
-         $(document).on("click", "#botonModalP", function() {
-         $("#idModalFotoP").modal();
-         });
-         });
-         $(function editarFoto() {
-         $('.image-editor').cropit();
-         $('form').submit(function() {
-         
-         
-         // Move cropped image data to hidden input
-         var imageData = $('.image-editor').cropit('export');
-         $('.hidden-image-data').val(imageData);
-         //alert(imageData);
-         var usuario = $("#usuario").val();
-         var hPersona = $("#hPersonaModal").val();
-         $("#gif").show();
-         //Aqui tiene que ir el ajax
-         $.ajax({
-         type: 'POST',
-         async: false,
-         dataType: 'json',
-         data: {imageDatas: imageData, usuario: usuario, personaId:hPersona},
-         url: Routing.generate('ingresar_foto_persona'),
-         success: function (data)
-         {
-         if (data.estado == true){
-         
-         Lobibox.notify("success", {
-         size: 'mini',
-         msg: 'Datos modificados con exito'
-         });
-         $("#prevP").attr('src', "/abgsistema/web/" + data.direccion);
-         $("#perfilAdminP2").attr('src', "/abgsistema/web/" + data.direccion);
-         $("#gif").hide();
-         $('#idModalFotoP').modal('toggle');
-         }
-         },
-         error: function (xhr, status)
-         {
-         Lobibox.notify("danger", {
-         size: 'mini',
-         msg: 'Lo sentimos, ocurrio un error'
-         });
-         $("#gif").hide();
-         $(".close").click();
-         $('#idModalFotoP').modal('toggle');
-         }
-         });
-         // Print HTTP request params
-         var formValue = $(this).serialize();
-         $('#result-data').text(formValue);
-         // Prevent the form from actually submitting
-         return false;
-         });
-         });
-         $(function () {
-         $('[data-toggle="popover"]').popover()
-         })
-         */
+        // Move cropped image data to hidden input
+        var imageData = $('.image-editor').cropit('export');
+        $('.hidden-image-data').val(imageData);
+        //alert(imageData);
+        var usuario = $("#usuario").val();
+        var hPersona = $("#hPersonaModal").val();
+        $("#gif").show();
+        //Aqui tiene que ir el ajax
+        $.ajax({
+        type: 'POST',
+                async: false,
+                dataType: 'json',
+                data: {imageDatas: imageData, usuario: usuario, personaId:hPersona},
+                url: Routing.generate('ingresar_foto_persona'),
+                success: function (data)
+                {
+                if (data.estado == true){
+
+                Lobibox.notify("success", {
+                size: 'mini',
+                        msg: 'Datos modificados con exito'
+                });
+                $("#prevP").attr('src', "/abgsistema/web/" + data.direccion);
+                $("#perfilAdminP2").attr('src', "/abgsistema/web/" + data.direccion);
+                $("#gif").hide();
+                $('#idModalFotoP').modal('toggle');
+                }
+                
+                },
+                error: function (xhr, status)
+                {
+                Lobibox.notify("danger", {
+                size: 'mini',
+                        msg: 'Lo sentimos, ocurrio un error'
+                });
+                $("#gif").hide();
+                $(".close").click();
+                $('#idModalFotoP').modal('toggle');
+                }
+        });
+        // Print HTTP request params
+        var formValue = $(this).serialize();
+        $('#result-data').text(formValue);
+        // Prevent the form from actually submitting
+        return false;
+        });
+        });
     </script>
-
 {% endblock %} 
 
 {% block navegacion_Y_body %}
@@ -167,7 +210,7 @@
 
                                         <div  style="display:block;" id="divMunicipiox">
                                             <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">
-                                                <a href="#" id="txtMunicipio" data-type="address" data-pk="1" data-title="Departamento, municipio" data-placement="right" class="editable editable-click" >
+                                                <a href="#" id="txtMunicipio" data-type="address" data-pk="1" data-title="Departamento | municipio" data-placement="right" class="editable editable-click" >
                                                     {% for datos in ciuda %}
                                                         <b> {{datos.estado}} </b> | {{datos.nombre}} 
                                                     {%endfor%}
@@ -195,11 +238,11 @@
                                     <span style="font-size:13px;">
                                         <a href="#Especialidades"  >
                                             {%if RegistroEspecialida|default is not empty %}
-                                               {%set esp=""%}
+                                                {%set esp=""%}
                                                 {% for datos in RegistroEspecialida %}
-                                                     {%set esp=datos.nombre~", "~esp%}
+                                                    {%set esp=datos.nombre~", "~esp%}
                                                 {%endfor%}
-                                                  {{esp|slice(0,-2)}}
+                                                {{esp|slice(0,-2)}}
                                             {%else%}
                                                 Añadir especialidades
                                             {%endif%}
@@ -301,7 +344,7 @@
                                     <center>
                                         <section style=" margin-top: 10px;">
                                             <div id="example1" class="example"></div>
-                                           
+
                                         </section>
                                     </center>
                                 </div>
@@ -311,364 +354,270 @@
                     </div> 
                 </div>  
             </div>        
-       
-        <div class="row" style="margin:0px;">
-            <div class="col-md-12">
 
-                <div class="box box-widget">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">DATOS DE CONTACTO</h3>
+            <div class="row" style="margin:0px;">
+                <div class="col-md-12">
 
-                        <div class="box-tools pull-right">
+                    <div class="box box-widget">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">DATOS DE CONTACTO</h3>
 
-                            <button type="button" class="btn btn-box-tool"  id="btnDatosContacto">
-                                <i class="fa fa-cog pull-right"></i></button>
+                            <div class="box-tools pull-right">
 
+                                <button type="button" class="btn btn-box-tool"  id="btnDatosContacto">
+                                    <i class="fa fa-cog pull-right"></i></button>
+
+                            </div>
                         </div>
-                    </div>
-                    <div class="box-body">
+                        <div class="box-body">
 
 
-                        <div class="row " id="datosContacto" style="padding-left: 10px; padding-right: 15px;">
-                            <div class="col-sm-3 col-xs-12">
-                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono(s)</strong></p>
-                                <p style="font-size: 11px; margin-bottom: 0px;">
-                                    +503  
-                                    <a href="#" id="txtMovil" data-type="text" data-placement="right" data-title="Telefono movil"> {%if datos.movil|default is not empty %}{{datos.movil}}
-                                        {%else%}
-                                            Movil
-                                            {%endif%}</a>
-                                            </br>+503 <a href="#" id="txtOficina" data-type="text" data-placement="right" data-title="Telefono de Oficina">
-                                                {%if datos.Tfijo|default is not empty %}
-                                                    {{datos.Tfijo}}
-                                                {%else%}
-                                                    Oficina
-                                                {%endif %}
-                                            </a></p>
-                                    </div>
-                                    <div class="col-sm-3 col-xs-12">
-                                        <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email(s)</strong></p>
-                                        <p style="font-size: 11px; margin-bottom: 0px;">
-                                            <a href="#" id="txtCorreo" data-type="text" data-placement="right" data-pk="1"  data-title="Sitio web">
-                                                {%if datos.correo|default is not empty %}
-                                                    {{datos.correo}}
-                                                {%endif %}
-                                            </a></p>
-                                    </div>
-                                    <div class="col-sm-3 col-xs-12">
-                                        <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Dirección</strong></p>
-                                        <p style="font-size: 11px; margin-bottom: 0px;">
-                                            <a href="#" id="txtDireccion" data-type="text" data-placement="right" data-title="Dirección">
-                                                {%if datos.direccion|default is not empty %}
-                                                    {{datos.direccion}}
-                                                {%else%}
-                                                    Dirección
-                                                {%endif%}</a>
-                                        </p>
-                                    </div>
-                                    <div class="col-sm-3 col-xs-12">
-                                        <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio web</strong></p>
-                                        <p style="font-size: 11px; margin-bottom: 0px;">
-                                            <a href="#" id="sitioweb2" data-type="text" data-placement="right" data-title="Sitio">
-                                                {%if sitio|default is not empty %}
-                                                {% for datos in sitio %}
-                                                    {{datos.nombre}} 
-                                                {%endfor%}
+                            <div class="row " id="datosContacto" style="padding-left: 10px; padding-right: 15px;">
+                                <div class="col-sm-3 col-xs-12">
+                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono(s)</strong></p>
+                                    <p style="font-size: 11px; margin-bottom: 0px;">
+                                        +503  
+                                        <a href="#" id="txtMovil" data-type="text" data-placement="right" data-title="Telefono movil"> {%if datos.movil|default is not empty %}{{datos.movil}}
                                             {%else%}
-                                                Sitio web
-                                            {%endif%}
-                                            </a>
-                                    </div>
-
-                                </div>
-                                <!-- Fin -->
-                            </div>
-                        </div> <!-- INFORMACION DE CONTACTO -->
-
-
-                        <div class="box box-widget">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">UN POCO SOBRE MI </h3>
-
-                                <div class="box-tools pull-right">
-
-                                    <button type="button" class="btn btn-box-tool"  id="btnUnpoco">
-                                        <i class="fa fa-cog pull-right"></i></button>
-
-                                </div>
-                            </div>
-                            <div class="box-body">
-                                <div  id="conetenedorUnpoco">
-                                    <div style="padding-left: 0px; padding-right: 15px;" class="experiencia">
-
-                                        <p class="text-justify" style="text-align:justify;" onclick="Fsobremi()"><a href="#" >
-                                                {%if datos.descripcion|default is not empty %} {{datos.descripcion}}{%else%}Un poco sobre mi{%endif%}</a></p>
-                                        <p class="text-justify"></p>
-
-                                    </div>
-                                </div>
-                                    
-                            </div>
-                            <!-- /.box-body -->
-
-                            <!-- /.box-footer-->
-                        </div>
-
-
-                        <div class="box box-widget">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">ESPECIALIDADES LEGALES</h3>
-
-                                <div class="box-tools pull-right">
-
-                                    <button type="button" class="btn btn-box-tool"  id="btnespecialida">
-                                        <i class="fa fa-cog pull-right"></i></button>
-
-                                </div>
-                            </div>
-                            <div class="box-body">
-
-
-                                <div   id="contenido" style="padding-left: 83px; padding-right: 30px;">
-                                    <br>
-                                    {%if RegistroEspecialida|default is not empty %}
-                                        {%set n = 0%}
-                                        {% for datos in RegistroEspecialida %}
-                                            {%set n =n +1%}
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    <div class="col-xs-12" style="margin-top: .5em; margin-bottom: .5em;">
-                                                        <ul class="prob">
-                                                            <li><strong><p>
-                                                                        {%if(datos.nombre| upper=='DERECHO LABORAL')%}
-                                                                            <!-- img src="{#{asset('Resources/src/img/especialidades/dlaboral.png')}#}" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p-->
-
-                                                                        {%endif%}
-                                                                        <!--img src="{#{asset('Resources/src/img/especialidades/dlaboral.png')}#}" style="width:100%; margin-bottom: 8px;"  data-placement="right" ></p-->
-
-                                                                    {{datos.nombre| upper }}<p class="sans" ></strong></li>
-                                                            <li><p style="text-align:justify;">{{datos.descripcion}}</p></li>
-                                                    </div>   
-                                                    {%if ((n>0)and (n % 3== 0))%}
-
-                                                        <div class="clearfix"></div>
-
-                                                    {%endif%}  
-                                                </div>
-                                            </div>
-                                        {%endfor%}
-                                        <script type="text/javascript">
-                                            $("#contenido").hover(
-                                                    function () {
-                                                    $(this).append($('<span style="margin-left:13px;"><i class="fa fa-pencil fa-x2 btn btnperfil" onClick="editEspe()"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn btnperfil"  onClick="editEspe()">&nbsp;Eliminar</i></span>'));
-                                                    }, function () {
-                                            $(this).find("span:last").remove();
-                                            });
-                                        </script>
-                                    {%endif%}
-
-                                    {#% embed ':abgpersona:especialidades.html.twig' %}{% endembed %#}
-
-                                </div>
-                            </div>
-                            <!-- /.box-body -->
-
-                            <!-- /.box-footer-->
-                        </div>
-
-
-                        <!-- EXPERIENCIA -->
-                        <div class="box box-widget">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">EXPERIENCIA </h3>
-
-                                <div class="box-tools pull-right">
-
-                                    <button type="button" class="btn btn-box-tool"  id="btnExperiencia">
-                                        <i class="fa fa-cog pull-right"></i></button>
-
-                                </div>
-                            </div>
-                            <div class="box-body">
-
-                                <!-- Contenido Aqui -->
-
-
-
-                                <div id="consultas">
-                                    <br>
-                                    {%if RegistradaExperiencia|default is not empty %}
-                                        {% for datos in RegistradaExperiencia %}
-
-                                            <div class="row " id="Exp{{datos.id}}">
-                                                <div class="col-xs-1" >
-                                                    {%if (datos.src is null)%}
-
+                                                Movil
+                                                {%endif%}</a>
+                                                </br>+503 <a href="#" id="txtOficina" data-type="text" data-placement="right" data-title="Telefono de Oficina">
+                                                    {%if datos.Tfijo|default is not empty %}
+                                                        {{datos.Tfijo}}
                                                     {%else%}
-                                                        <img style="max-width:50px;max-height:50px;" src="{{asset('')}}{{datos.src}}">
+                                                        Oficina
+                                                    {%endif %}
+                                                </a></p>
+                                        </div>
+                                        <div class="col-sm-3 col-xs-12">
+                                            <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email(s)</strong></p>
+                                            <p style="font-size: 11px; margin-bottom: 0px;">
+                                                <a href="#" id="txtCorreo" data-type="text" data-placement="right" data-pk="1"  data-title="Sitio web">
+                                                    {%if datos.correo|default is not empty %}
+                                                        {{datos.correo}}
+                                                    {%endif %}
+                                                </a></p>
+                                        </div>
+                                        <div class="col-sm-3 col-xs-12">
+                                            <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Dirección</strong></p>
+                                            <p style="font-size: 11px; margin-bottom: 0px;">
+                                                <a href="#" id="txtDireccion" data-type="text" data-placement="right" data-title="Dirección">
+                                                    {%if datos.direccion|default is not empty %}
+                                                        {{datos.direccion}}
+                                                    {%else%}
+                                                        Dirección
+                                                    {%endif%}</a>
+                                            </p>
+                                        </div>
+                                        <div class="col-sm-3 col-xs-12">
+                                            <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio web</strong></p>
+                                            <p style="font-size: 11px; margin-bottom: 0px;">
+                                                <a href="#" id="sitioweb2" data-type="text" data-placement="right" data-title="Sitio">
+                                                    {%if sitio|default is not empty %}
+                                                        {% for datos in sitio %}
+                                                            {{datos.nombre}} 
+                                                        {%endfor%}
+                                                    {%else%}
+                                                        Sitio web
                                                     {%endif%}
+                                                </a>
+                                        </div>
+
+                                    </div>
+                                    <!-- Fin -->
+                                </div>
+                            </div> <!-- INFORMACION DE CONTACTO -->
+
+
+                            <div class="box box-widget">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">UN POCO SOBRE MI </h3>
+
+                                    <div class="box-tools pull-right">
+
+                                        <button type="button" class="btn btn-box-tool"  id="btnUnpoco">
+                                            <i class="fa fa-cog pull-right"></i></button>
+
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <div  id="conetenedorUnpoco">
+                                        <div style="padding-left: 0px; padding-right: 15px;" class="experiencia">
+
+                                            <p class="text-justify" style="text-align:justify;" onclick="Fsobremi()"><a href="#" >
+                                                    {%if datos.descripcion|default is not empty %} {{datos.descripcion}}{%else%}Un poco sobre mi{%endif%}</a></p>
+                                            <p class="text-justify"></p>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- /.box-body -->
+
+                                <!-- /.box-footer-->
+                            </div>
+
+
+                            <div class="box box-widget">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">ESPECIALIDADES LEGALES</h3>
+
+                                    <div class="box-tools pull-right">
+
+                                        <button type="button" class="btn btn-box-tool"  id="btnespecialida">
+                                            <i class="fa fa-cog pull-right"></i></button>
+
+                                    </div>
+                                </div>
+                                <div class="box-body">
+
+
+                                    <div   id="contenido" style="padding-left: 83px; padding-right: 30px;">
+                                        <br>
+                                        {%if RegistroEspecialida|default is not empty %}
+                                            {%set n = 0%}
+                                            {% for datos in RegistroEspecialida %}
+                                                {%set n =n +1%}
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-xs-12" style="margin-top: .5em; margin-bottom: .5em;">
+                                                            <ul class="prob">
+                                                                <li><strong><p>
+                                                                            {%if(datos.nombre| upper=='DERECHO LABORAL')%}
+                                                                                <!-- img src="{#{asset('Resources/src/img/especialidades/dlaboral.png')}#}" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p-->
+
+                                                                            {%endif%}
+                                                                            <!--img src="{#{asset('Resources/src/img/especialidades/dlaboral.png')}#}" style="width:100%; margin-bottom: 8px;"  data-placement="right" ></p-->
+
+                                                                        {{datos.nombre| upper }}<p class="sans" ></strong></li>
+                                                                <li><p style="text-align:justify;">{{datos.descripcion}}</p></li>
+                                                        </div>   
+                                                        {%if ((n>0)and (n % 3== 0))%}
+
+                                                            <div class="clearfix"></div>
+
+                                                        {%endif%}  
+                                                    </div>
                                                 </div>
-                                                <div class="col-xs-11">
-                                                    <span style="font-size: 15px;">{{datos.empresa}}</span> 
-                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i>
-                                                    </br>
-                                                    <span style="font-size: 13px;">{{datos.puesto}}</br> 
-                                                        {%if (datos.dias is null)%}
-                                                            {{datos.fechaIn}} - Actualmente
+                                            {%endfor%}
+                                            <script type="text/javascript">
+                                                $("#contenido").hover(
+                                                        function () {
+                                                        $(this).append($('<span style="margin-left:13px;"><i class="fa fa-pencil fa-x2 btn btnperfil" onClick="editEspe()"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn btnperfil"  onClick="editEspe()">&nbsp;Eliminar</i></span>'));
+                                                        }, function () {
+                                                $(this).find("span:last").remove();
+                                                });
+                                            </script>
+                                        {%endif%}
+
+                                        {#% embed ':abgpersona:especialidades.html.twig' %}{% endembed %#}
+
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+
+                                <!-- /.box-footer-->
+                            </div>
+
+
+                            <!-- EXPERIENCIA -->
+                            <div class="box box-widget">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">EXPERIENCIA </h3>
+
+                                    <div class="box-tools pull-right">
+
+                                        <button type="button" class="btn btn-box-tool"  id="btnExperiencia">
+                                            <i class="fa fa-cog pull-right"></i></button>
+
+                                    </div>
+                                </div>
+                                <div class="box-body">
+
+                                    <!-- Contenido Aqui -->
+
+
+
+                                    <div id="consultas">
+                                        <br>
+                                        {%if RegistradaExperiencia|default is not empty %}
+                                            {% for datos in RegistradaExperiencia %}
+
+                                                <div class="row " id="Exp{{datos.id}}">
+                                                    <div class="col-xs-1" >
+                                                        {%if (datos.src is null)%}
+
                                                         {%else%}
-                                                            {{datos.fechaIn}} - {{datos.fechaFin}} (&nbsp;{{(datos.dias/365)|round(0, 'floor')}} años {{(((datos.dias/365)-(datos.dias/365)|round(0, 'floor'))*12)|round(0, 'floor')}} meses) 
-                                                        {%endif%}| {{datos.hubicacion}} </span>
-                                                    </br><p style="width: 90%; margin-top: 5px;text-align:justify;">{{datos.funcion}}</p>
-                                                </div>  
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-10 col-md-offset-2">
-                                                    <script type="text/javascript">
+                                                            <img style="max-width:50px;max-height:50px;" src="{{asset('')}}{{datos.src}}">
+                                                        {%endif%}
+                                                    </div>
+                                                    <div class="col-xs-11">
+                                                        <span style="font-size: 15px;">{{datos.empresa}}</span> 
+                                                        <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i>
+                                                        </br>
+                                                        <span style="font-size: 13px;">{{datos.puesto}}</br> 
+                                                            {%if (datos.dias is null)%}
+                                                                {{datos.fechaIn}} - Actualmente
+                                                            {%else%}
+                                                                {{datos.fechaIn}} - {{datos.fechaFin}} (&nbsp;{{(datos.dias/365)|round(0, 'floor')}} años {{(((datos.dias/365)-(datos.dias/365)|round(0, 'floor'))*12)|round(0, 'floor')}} meses) 
+                                                            {%endif%}| {{datos.hubicacion}} </span>
+                                                        </br><p style="width: 90%; margin-top: 5px;text-align:justify;">{{datos.funcion}}</p>
+                                                    </div>  
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-10 col-md-offset-2">
+                                                        <script type="text/javascript">
                                                             $("#Exp" +{{datos.id}} ).hover(
                                                                     function () {
                                                                     $(this).append($('<span style="margin-left:83px;"><i class="fa fa-pencil fa-x3 btn  btnperfil" onclick="editExperiencia({{datos.id}})"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn  btnperfil" onclick="removeExperiencia({{datos.id}})">&nbsp;Eliminar</i></span>'));
                                                                     }, function () {
                                                             $(this).find("span:last").remove();
                                                             });
-                                                    </script>
+                                                        </script>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <p></p>
-                                        {%endfor%}
-                                    {%endif%}
+                                                <p></p>
+                                            {%endfor%}
+                                        {%endif%}
 
+                                    </div>
                                 </div>
+                                <!-- Fin -->
                             </div>
-                            <!-- Fin -->
-                        </div>
 
-                        <!-- EDUCACION -->
+                            <!-- EDUCACION -->
 
-                        <div class="box box-widget">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">EDUCACION </h3>
+                            <div class="box box-widget">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">EDUCACION </h3>
 
-                                <div class="box-tools pull-right">
+                                    <div class="box-tools pull-right">
 
-                                    <button type="button" class="btn btn-box-tool"  id="btnEducacion">
-                                        <i class="fa fa-cog pull-right"></i></button>
+                                        <button type="button" class="btn btn-box-tool"  id="btnEducacion">
+                                            <i class="fa fa-cog pull-right"></i></button>
 
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="box-body">
+                                <div class="box-body">
 
-                                <div id="consultaEducacion" style="padding-left: 83px; padding-right: 30px;">
-                                    <br>
-                                    {%if Edu|default is not empty %}
-                                        {% for datos in Edu %}
-                                            <div class="row " id="Edu{{datos.idEs}}">
-                                                <div class="col-xs-11">
-                                                    <span style="font-size: 16px;">{{datos.institucion}}</span> 
-                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i>
-                                                    </br>
-                                                    <span style="font-size: 13px;">{{datos.disciplina~' | '~datos.titulo}}</br> {{datos.anioIni}} -  {%if datos.anio|default is not empty %}{{datos.anio}}{%else%}Actualmente{%endif%}</span>
-                                                    <p style="width: 90%; margin-top: 5px;text-align:justify;">
-                                                        <script type="text/javascript">
+                                    <div id="consultaEducacion" style="padding-left: 83px; padding-right: 30px;">
+                                        <br>
+                                        {%if Edu|default is not empty %}
+                                            {% for datos in Edu %}
+                                                <div class="row " id="Edu{{datos.idEs}}">
+                                                    <div class="col-xs-11">
+                                                        <span style="font-size: 16px;">{{datos.institucion}}</span> 
+                                                        <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i>
+                                                        </br>
+                                                        <span style="font-size: 13px;">{{datos.disciplina~' | '~datos.titulo}}</br> {{datos.anioIni}} -  {%if datos.anio|default is not empty %}{{datos.anio}}{%else%}Actualmente{%endif%}</span>
+                                                        <p style="width: 90%; margin-top: 5px;text-align:justify;">
+                                                            <script type="text/javascript">
                                                                 $("#Edu" +{{datos.idEs}} ).hover(
                                                                         function () {
                                                                         $(this).append($('<span style="margin-left:13px;"><i class="fa fa-pencil fa-x2 btn btnperfil" onclick="editEducacion({{datos.idEs}})"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn  btnperfil" onclick="removeEdu({{datos.idEs}})">&nbsp;Eliminar</i></span>'));
                                                                         }, function () {
                                                                 $(this).find("span:last").remove();
                                                                 });
-                                                        </script>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <p></p>
-                                        {%endfor%}
-                                    {%endif%}
-                                </div>
-                            </div>
-                            <!-- Fin -->
-                        </div>
-
-                        <!-- LENGUAJES -->
-
-                        <div class="box box-widget">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">IDIOMAS</h3>
-
-                                <div class="box-tools pull-right">
-
-                                    <button type="button" class="btn btn-box-tool"  id="btnIdioma">
-                                        <i class="fa fa-cog pull-right"></i></button>
-
-                                </div>
-                            </div>
-                            <div class="box-body">
-
-
-
-                                <!-- Contenido Aqui -->
-
-                                <div id="consultaIdiomas" style="padding-left: 10px; padding-right: 15px;">
-                                    {%if Idiomas|default is not empty %}
-                                        <div class="row " id="Idioma">
-                                            {% for datos in Idiomas %}
-                                                <div class="col-xs-3" style="margin-top: .5em; margin-bottom: .5em;" >
-                                                    <ul class="prob"><li><strong>{{datos.nombre}}</strong></li>
-                                                        <li>{{datos.nivel}}</li>
-                                                    </ul>
-                                                </div>
-                                            {%endfor%}
-                                            <div class="clearfix"></div>
-                                            <script type="text/javascript">
-                                                $("#Idioma").hover(
-                                                        function () {
-                                                        $(this).append($('<span style="margin-left:13px;"><i class="fa fa-pencil fa-x2 btn btnperfil" onClick="\
-                                             editIdioma()"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn btnperfil" onClick="editIdioma()">&nbsp;Eliminar</i></span>'));
-                                                        }, function () {
-                                                $(this).find("span:last").remove();
-                                                });
-                                            </script>
-                                        </div>
-                                    {%endif%}
-                                </div>
-                            </div>
-                            <!-- Fin -->
-                        </div>
-
-                        <!-- ORGANIZACIONES -->
-
-                        <div class="box box-widget">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">ORGANIZACIONES</h3>
-
-                                <div class="box-tools pull-right">
-
-                                    <button type="button" class="btn btn-box-tool"  id="btnOrganizacion">
-                                        <i class="fa fa-cog pull-right"></i></button>
-
-                                </div>
-                            </div>
-                            <div class="box-body">
-
-
-                                <!-- Contenido Aqui -->
-                                <div  id="contenidoOrg" >
-                                    <div id="consultaOrg" style="padding-left: 10px; padding-right: 15px;">
-                                        <br>
-                                        {%if Organizacion|default is not empty %}
-                                            {% for datos in Organizacion %}
-                                                <div class="row " id="Org{{datos.id}}">
-                                                    <div class="col-xs-11">
-                                                        <span style="font-size: 16px;">{{datos.nombre}}</span> 
-                                                        <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i>
-                                                        </br>
-                                                        <span style="font-size: 13px;">{{datos.puesto}}</br> {{datos.fechaIn}} - {{datos.fechaFin}}</span>
-                                                        <p style="width: 100%; margin-top: 5px;text-align:justify;">{{datos.descripcion}}
-                                                            <script type="text/javascript">
-                                                                    $("#Org" +{{datos.id}} ).hover(
-                                                                            function () {
-                                                                            $(this).append($('<span style="margin-left:13px;"><i class="fa fa-pencil fa-x2 btn btnperfil" onclick="editOrganizacion({{datos.id}})"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn btnperfil" onclick="removeOrg({{datos.id}})">&nbsp;Eliminar</i></span>'));
-                                                                            }, function () {
-                                                                    $(this).find("span:last").remove();
-                                                                    });
                                                             </script>
                                                         </p>
                                                     </div>
@@ -680,204 +629,258 @@
                                 </div>
                                 <!-- Fin -->
                             </div>
-                        </div>
-                        <!-- ORGANIZACIONES -->
 
-                        <div class="box box-widget">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">CERTIFICACIONES</h3>
+                            <!-- LENGUAJES -->
 
-                                <div class="box-tools pull-right">
+                            <div class="box box-widget">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">IDIOMAS</h3>
 
-                                    <button type="button" class="btn btn-box-tool"  id="btnCertificacion">
-                                        <i class="fa fa-cog pull-right"></i></button>
+                                    <div class="box-tools pull-right">
 
+                                        <button type="button" class="btn btn-box-tool"  id="btnIdioma">
+                                            <i class="fa fa-cog pull-right"></i></button>
+
+                                    </div>
+                                </div>
+                                <div class="box-body">
+
+
+
+                                    <!-- Contenido Aqui -->
+
+                                    <div id="consultaIdiomas" style="padding-left: 10px; padding-right: 15px;">
+                                        {%if Idiomas|default is not empty %}
+                                            <div class="row " id="Idioma">
+                                                {% for datos in Idiomas %}
+                                                    <div class="col-xs-3" style="margin-top: .5em; margin-bottom: .5em;" >
+                                                        <ul class="prob"><li><strong>{{datos.nombre}}</strong></li>
+                                                            <li>{{datos.nivel}}</li>
+                                                        </ul>
+                                                    </div>
+                                                {%endfor%}
+                                                <div class="clearfix"></div>
+                                                <script type="text/javascript">
+                                                    $("#Idioma").hover(
+                                                            function () {
+                                                            $(this).append($('<span style="margin-left:13px;"><i class="fa fa-pencil fa-x2 btn btnperfil" onClick="\
+                                                 editIdioma()"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn btnperfil" onClick="editIdioma()">&nbsp;Eliminar</i></span>'));
+                                                            }, function () {
+                                                    $(this).find("span:last").remove();
+                                                    });
+                                                </script>
+                                            </div>
+                                        {%endif%}
+                                    </div>
+                                </div>
+                                <!-- Fin -->
+                            </div>
+
+                            <!-- ORGANIZACIONES -->
+
+                            <div class="box box-widget">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">ORGANIZACIONES</h3>
+
+                                    <div class="box-tools pull-right">
+
+                                        <button type="button" class="btn btn-box-tool"  id="btnOrganizacion">
+                                            <i class="fa fa-cog pull-right"></i></button>
+
+                                    </div>
+                                </div>
+                                <div class="box-body">
+
+
+                                    <!-- Contenido Aqui -->
+                                    <div  id="contenidoOrg" >
+                                        <div id="consultaOrg" style="padding-left: 10px; padding-right: 15px;">
+                                            <br>
+                                            {%if Organizacion|default is not empty %}
+                                                {% for datos in Organizacion %}
+                                                    <div class="row " id="Org{{datos.id}}">
+                                                        <div class="col-xs-11">
+                                                            <span style="font-size: 16px;">{{datos.nombre}}</span> 
+                                                            <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i>
+                                                            </br>
+                                                            <span style="font-size: 13px;">{{datos.puesto}}</br> {{datos.fechaIn}} - {{datos.fechaFin}}</span>
+                                                            <p style="width: 100%; margin-top: 5px;text-align:justify;">{{datos.descripcion}}
+                                                                <script type="text/javascript">
+                                                                    $("#Org" +{{datos.id}} ).hover(
+                                                                            function () {
+                                                                            $(this).append($('<span style="margin-left:13px;"><i class="fa fa-pencil fa-x2 btn btnperfil" onclick="editOrganizacion({{datos.id}})"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn btnperfil" onclick="removeOrg({{datos.id}})">&nbsp;Eliminar</i></span>'));
+                                                                            }, function () {
+                                                                    $(this).find("span:last").remove();
+                                                                    });
+                                                                </script>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <p></p>
+                                                {%endfor%}
+                                            {%endif%}
+                                        </div>
+                                    </div>
+                                    <!-- Fin -->
                                 </div>
                             </div>
-                            <div class="box-body">
+                            <!-- ORGANIZACIONES -->
 
-                                <!-- Contenido Aqui -->
+                            <div class="box box-widget">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">CERTIFICACIONES</h3>
 
-                                <div id="consultaCertificacion" style="padding-left: 10px; padding-right: 15px;">
-                                    <br>
-                                    {%if Certificacion|default is not empty %}
-                                        {% for datos in Certificacion %}
-                                            <div class="row " id="Cert{{datos.id}}">
-                                                <div class="col-xs-11">
-                                                    <span style="font-size: 16px;">{{datos.institucion}}</span> 
-                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i>
-                                                    </br>
-                                                    <span style="font-size: 13px;">{{datos.nombre}}</br> {{datos.fechaIn}} - {{datos.fechaFin}}</span>
-                                                    <p style="width: 100%; margin-top: 5px;text-align:justify;">
-                                                        <script type="text/javascript">
+                                    <div class="box-tools pull-right">
+
+                                        <button type="button" class="btn btn-box-tool"  id="btnCertificacion">
+                                            <i class="fa fa-cog pull-right"></i></button>
+
+                                    </div>
+                                </div>
+                                <div class="box-body">
+
+                                    <!-- Contenido Aqui -->
+
+                                    <div id="consultaCertificacion" style="padding-left: 10px; padding-right: 15px;">
+                                        <br>
+                                        {%if Certificacion|default is not empty %}
+                                            {% for datos in Certificacion %}
+                                                <div class="row " id="Cert{{datos.id}}">
+                                                    <div class="col-xs-11">
+                                                        <span style="font-size: 16px;">{{datos.institucion}}</span> 
+                                                        <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i>
+                                                        </br>
+                                                        <span style="font-size: 13px;">{{datos.nombre}}</br> {{datos.fechaIn}} - {{datos.fechaFin}}</span>
+                                                        <p style="width: 100%; margin-top: 5px;text-align:justify;">
+                                                            <script type="text/javascript">
                                                                 $("#Cert" +{{datos.id}} ).hover(
                                                                         function () {
                                                                         $(this).append($('<span style="margin-left:13px;"><i class="fa fa-pencil fa-x2 btn btnperfil" onclick="editCertificacion({{datos.id}})"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn btnperfil" onclick="removeCertificacion({{datos.id}})">&nbsp;Eliminar</i></span>'));
                                                                         }, function () {
                                                                 $(this).find("span:last").remove();
                                                                 });
-                                                        </script>
-                                                    </p>
+                                                            </script>
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <p></p>
-                                        {%endfor%}
-                                    {%endif%}
+                                                <p></p>
+                                            {%endfor%}
+                                        {%endif%}
+                                    </div>
                                 </div>
+                                <!-- Fin -->
                             </div>
-                            <!-- Fin -->
-                        </div>
 
-                        <!-- CURSOS Y SEMINARIOS -->
+                            <!-- CURSOS Y SEMINARIOS -->
 
-                        <div class="box box-widget">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">CURSOS Y SEMINARIOS</h3>
+                            <div class="box box-widget">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">CURSOS Y SEMINARIOS</h3>
 
-                                <div class="box-tools pull-right">
+                                    <div class="box-tools pull-right">
 
-                                    <button type="button" class="btn btn-box-tool"  id="btnCurso">
-                                        <i class="fa fa-cog pull-right"></i></button>
+                                        <button type="button" class="btn btn-box-tool"  id="btnCurso">
+                                            <i class="fa fa-cog pull-right"></i></button>
 
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="box-body"> 
-                                <div id="consultaCurso" style="padding-left: 10px; padding-right: 15px;">
-                                    <br>
-                                    {%if Curso|default is not empty %}
-                                        {% for datos in Curso %}
-                                            <div class="row " id="CM{{datos.id}}">
-                                                <div class="col-xs-11">
-                                                    <span style="font-size: 16px;">{{datos.institucion}}</span> 
-                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i>
-                                                    </br>
-                                                    <span style="font-size: 13px;">{{datos.nombre}}</br> {{datos.fechaIn}} - {{datos.fechaFin}}</span>
-                                                    <p style="width: 90%; margin-top: 5px;text-align:justify;">{{datos.descripcion}}
-                                                        <script type="text/javascript">
+                                <div class="box-body"> 
+                                    <div id="consultaCurso" style="padding-left: 10px; padding-right: 15px;">
+                                        <br>
+                                        {%if Curso|default is not empty %}
+                                            {% for datos in Curso %}
+                                                <div class="row " id="CM{{datos.id}}">
+                                                    <div class="col-xs-11">
+                                                        <span style="font-size: 16px;">{{datos.institucion}}</span> 
+                                                        <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i>
+                                                        </br>
+                                                        <span style="font-size: 13px;">{{datos.nombre}}</br> {{datos.fechaIn}} - {{datos.fechaFin}}</span>
+                                                        <p style="width: 90%; margin-top: 5px;text-align:justify;">{{datos.descripcion}}
+                                                            <script type="text/javascript">
                                                                 $("#CM" +{{datos.id}} ).hover(
                                                                         function () {
                                                                         $(this).append($('<span style="margin-left:13px;"><i class="fa fa-pencil fa-x2 btn btnperfil" onclick="editCurso({{datos.id}})"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn btnperfil" onclick="removeSeminario({{datos.id}})">&nbsp;Eliminar</i></span>'));
                                                                         }, function () {
                                                                 $(this).find("span:last").remove();
                                                                 });
-                                                        </script>
-                                                    </p>
+                                                            </script>
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <p></p>
-                                        {%endfor%}
-                                    {%endif%}
+                                                <p></p>
+                                            {%endfor%}
+                                        {%endif%}
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div style="height: 10px;"></div>
+                                <div style="height: 10px;"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </div> 
+
                 <script type="text/javascript">
                     $(function () {
                     $('[data-toggle="tooltip"]').tooltip()
                     })
+                    
+                    
                 </script>
 
                 {% endblock %}
                     {% endblock %}
-                        <style>
-                            /* .image-upload >input {
-                                             display: none;
-                                         }
-                          .modal-backdrop {
-                                   z-index: -1 !important;
-                               }
-                          
-                              .image-editor{
-                                     top: -150px!important;;
-                                 }
-                                 .cropit-preview {
-                                     background-color: #f8f8f8;
-                                     background-size: cover;
-                                     border: 1px solid #ccc;
-                                     border-radius: 3px;
-                                     margin-top: 7px;
-                                     width: 200px;
-                                     height: 200px;
-                                 }
-                                 .cropit-preview-image-container {
-                                     cursor: move;
-                                     position: absolute;
-                                 }
-                                 .image-size-label {
-                                     margin-top: 10px;
-                                 }
-                                 input {
-                                     display: block;
-                                 }
-                                 button[type="submit"] {
-                                     margin-top: 10px;
-                                 }
-                                 #result {
-                                     margin-top: 10px;
-                                     width: 900px;
-                                 }
-                                 #result-data {
-                                     display: block;
-                                     overflow: hidden;
-                                     white-space: nowrap;
-                                     text-overflow: ellipsis;
-                                     word-wrap: break-word;
-                                 }*/
-                        </style>
-                        <div class="modal fade modal" id="idModalFotoP" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-sm">
-                                <div class="modal-content">
-                                    <div class="modal-header " Style="height:45px;">
-                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                                        <span class="robo" style="font-size: 20px;">Editar foto de perfil</span> 
-                                    </div>
-                                    <div class="modal-body" id="mbodyExperiencia" >
 
-                                        <form action="#" id="frmEmpresaConFoto" role="form" enctype="multipart/form-data" method="POST">
-                                            {% if abgFoto %} 
+                        
+
+<div class="modal fade modal" id="idModalFotoP" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                   <div class="modal-dialog modal-sm">
+                                       <div class="modal-content">
+                                           <div class="modal-header " Style="height:45px;">
+                                               <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                                               <span class="robo" style="font-size: 20px; ">Editar foto de perfil</span>
+                                           </div>
+                                           <div class="modal-body" id="mbodyExperiencia" >
+
+                                               <form action="#" id="frmEmpresaConFoto" role="form" enctype="multipart/form-data" method="POST">
+                                                   {% if abgFoto %}
 
 
-                                                <div class="image-editor" >
-                                                    <center>
-                                                        <div class="cropit-preview" style="z-index: 3; background-image:url({{ asset('') }}{{ abgFoto[0].src}}) ; border-color:white; " ></div>
-                                                    </center>
-                                                    <div class="image-upload" >
-                                                        <label for="input" >
-                                                            <img src="{{ asset('Resources/icons/photo.png') }}" style="width: 25px; height: 25px; margin-left: 40px; margin-top:-200px;; position: relative; z-index: 3; " title="Click para seleccionar una imagen" >
-                                                        </label>
+                                                       <div class="image-editor" >
+                                                           <center>
+                                                               <div class="cropit-preview" style="z-index: 3; background-image:url({{ asset('') }}{{ abgFoto[0].src}}) ; border-color:white; " ></div>
+                                                           </center>
+                                                           <div class="image-upload" >
+                                                               <label for="input" >
+                                                                   <img src="{{ asset('Resources/icons/photo.png') }}" style="width: 25px; height: 25px; margin-left: 40px; margin-top:-200px;; position: relative; z-index: 3; " title="Click para seleccionar una imagen" >
+                                                               </label>
 
-                                                        <input type="file" class="cropit-image-input" id="input">      
+                                                               <input type="file" class="cropit-image-input" id="input">      
 
-                                                    </div> 
-                                                    <center>    
-                                                        <div class="image-size-label" id="labelid">
-                                                            Dimension de imagen
-                                                        </div>
-                                                        <input type="range" class="cropit-image-zoom-input" style="width: 140px;" id="idrange">
-                                                        <input type="hidden" name="image-data" class="hidden-image-data" />
-                                                        <input type="hidden" name="user" value="{{ usuario }}" id="usuario">
-                                                        <input type="hidden" id="hPersonaModal"  value="{{datos.id}}" name="personaId">
-                                                    </center>
+                                                           </div>
+                                                           <center>    
+                                                               <div class="image-size-label" id="labelid">
+                                                                   Dimension de imagen
+                                                               </div>
+                                                               <input type="range" class="cropit-image-zoom-input" style="width: 140px;" id="idrange">
+                                                               <input type="hidden" name="image-data" class="hidden-image-data" />
+                                                               <input type="hidden" name="user" value="{{ usuario }}" id="usuario">
+                                                               <input type="hidden" id="hPersonaModal"  value="{{datos.id}}" name="personaId">
+                                                           </center>
 
-                                                </div>
+                                                       </div>
 
 
-                                            {% endif %} 
+                                                   {% endif %}
 
-                                    </div>
-                                    <div class="modal-footer" id="botomExperiencia" >
-                                        <img src='{{ asset('Resources/icons/transfer.gif') }}' style="width: 25px; height: 25px; margin-right:70px; " id="gif">
+                                           </div>
+                                           <div class="modal-footer" id="botomExperiencia" >
+                                               <img src='{{ asset('Resources/icons/transfer.gif') }}' style="width: 25px; height: 25px; margin-right:70px; " id="gif">
 
-                                        <button type="submit" id="cmd" class="btn btn-success">Cortar y Guardar</button>
-                                    </div>
+                                               <button type="submit" id="cmd" class="btn btn-success">Cortar y Guardar</button>
+                                           </div>
 
-                                </div>
-                            </div> 
-                        </form>  
-                    </div>
-
+                                       </div>
+                                   </div>
+                                   </form>  
+                               </div>
 

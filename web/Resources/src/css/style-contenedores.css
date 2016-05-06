@@ -41,3 +41,19 @@
     padding:20px; 
 
 }
+
+        .btnperfil:hover {
+            background:#00c0ef !important;
+            color:#fff ;
+
+            border-radius:0px;
+            box-shadow: 2px 2px 5px #999;
+
+        }
+        .btnperfil {
+            background:#F0F0F0;
+            color: #505050;
+            border-radius:0px;
+
+        }
+

@@ -145,6 +145,13 @@ class CtlEmpresaController extends Controller
             
         $result_url = $em->createQuery($dqlUrl)->getArrayResult();
        
+            $dql_especialida = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre, pe.descripcion AS descripcion "
+                    . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
+                    . " JOIN DGAbgSistemaBundle:AbgPersonaEspecialida pe WHERE e.id=pe.ctlEspecialidad AND pe.ctlEmpresa=" . $ctlEmpresaId
+                    . " GROUP by e.id "
+                    . " ORDER BY e.nombreEspecialidad";
+            $result_especialida = $em->createQuery($dql_especialida)->getArrayResult();
+      
 
         return $this->render('ctlempresa/paneladministrativoempresa.html.twig', array(
              'ctlEmpresa' => $result_empresa,
@@ -156,48 +163,48 @@ class CtlEmpresaController extends Controller
              'abgPersona' => $result_persona,
              'abgFotoP'=>$result_fotoAbogado,
              'url'=>$result_url,
+            'RegistroEspecialida' => $result_especialida,
             
         ));
     }
     
     
      /**
-     * @Route("/especialidaE", name="especialidaE", options={"expose"=true})
+     * @Route("/especialidad_emp", name="especialidad_emp", options={"expose"=true})
      * @Method("GET")
      */
-    public function EspecialidaEAction() {
+    public function getEspecialidadEmpAction() {
         try {
             $n = 0;
             $subEspS = "";
             $em = $this->getDoctrine()->getManager();
             $request = $this->getRequest();
             $subEspecialidadesSeleccionadas = "";
-            if (($request->get('hPersona') != null)) {
+            if (($request->get('empresaId') != null)) {
 
                 $dql_departamento = "SELECT  c.id AS id"
-                        . " FROM DGAbgSistemaBundle:AbgPersonaEspecialida c WHERE c.ctlEmpresa=" . $request->get('hPersona');
+                        . " FROM DGAbgSistemaBundle:AbgPersonaEspecialida c WHERE c.ctlEmpresa=" . $request->get('empresaId');
                 $esp = $em->createQuery($dql_departamento)->getArrayResult();
                 if (count($esp) > 0) {
 
                     $sql = "SELECT  e.id AS id, e.nombre_especialidad AS nombre, pe.descripcion AS descripcion, pe.id As idPE, pe.ctl_especialidad_id AS idEsp "
                             . " FROM  marvinvi_abg.ctl_especialidad e "
-                            . " left JOIN marvinvi_abg.abg_persona_especialidad pe ON e.id=pe.ctl_especialidad_id AND pe.ctl_empresa_id=" . $request->get('hPersona')
+                            . " left JOIN marvinvi_abg.abg_persona_especialidad pe ON e.id=pe.ctl_especialidad_id AND pe.ctl_empresa_id=" . $request->get('empresaId')
                             . " ORDER BY e.nombre_especialidad";
                     $stm = $this->container->get('database_connection')->prepare($sql);
                     $stm->execute();
                     $subEspecialidadesSeleccionadas = $stm->fetchAll();
                 }
             }
-            $dql_departamento = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre"
+          /*  $dql_departamento = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre"
                     . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
                     . "JOIN  DGAbgSistemaBundle:CtlSubespecialidad sub WHERE e.id=sub.abgEspecialidad group by e.id";
             $result_especialida = $em->createQuery($dql_departamento)->getArrayResult();
+*/
 
 
-
-            return $this->render('abgpersona/especialidades.html.twig', array(
-                        'abgEspecialida' => $result_especialida,
-                        'especialidadesS' => $subEspecialidadesSeleccionadas,
+           return $this->render('ctlempresa/especialidades_emp.html.twig', array(
+                        'especialidadesS' => $subEspecialidadesSeleccionadas
             ));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
@@ -590,7 +597,7 @@ class CtlEmpresaController extends Controller
             $request = $this->getRequest();
             //data es el valor de retorno de ajax donde puedo ver los valores que trae dependiendo de las instrucciones que hace dentro del controlador
          
-            
+      
             $path2 = $this->container->getParameter('photo.perfil.temporal');
             $horaFecha = date('Y-m-d His');
             $nombreTemporal = $horaFecha;
@@ -604,7 +611,9 @@ class CtlEmpresaController extends Controller
             $data = base64_decode($img);
             $file = UPLOAD_DIR .$nombreTemporal. '.png';
             $success = file_put_contents($file, $data);
-            
+              /*    var_dump($request->get('imageDatas'));
+                  var_dump($success);
+            exit();*/
             $nombreTemporal=$nombreTemporal.'.png';
          
             
@@ -711,7 +720,7 @@ class CtlEmpresaController extends Controller
             
              
     }
-            
+
            return new Response(json_encode($datas));
            
       
@@ -859,16 +868,19 @@ class CtlEmpresaController extends Controller
         try {
             $request = $this->getRequest();
             $em = $this->getDoctrine()->getManager();
-            $Persona = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($request->get('hPersona'));
+            //$idPersona = $this->container->get('security.context')->getToken()->getUser()->getId();
+      
+            
+            $Persona = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($request->get('empresaId'));
             $array = $request->get('DataEspecialida');
             parse_str($request->get('dato'), $datos);
 
 
             $RepositorioSubEsp = $em->getRepository("DGAbgSistemaBundle:AbgPersonaEspecialida");
-            if (is_null($RepositorioSubEsp->findBy(array('abgPersona' => $request->get('hPersona'))))) {
+            if (is_null($RepositorioSubEsp->findBy(array('ctlEmpresa' => $request->get('empresaId'))))) {
                 
             } else {
-                $PersonaSub = $RepositorioSubEsp->findBy(array('abgPersona' => $request->get('hPersona')));
+                $PersonaSub = $RepositorioSubEsp->findBy(array('ctlEmpresa' => $request->get('empresaId')));
                 foreach ($PersonaSub as $obj) {
                     $em->remove($obj);
                     $em->flush();
@@ -890,7 +902,7 @@ class CtlEmpresaController extends Controller
                 $data['msj'] = "Especialida registrada";
                 $dql_especialida = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre, pe.descripcion AS descripcion "
                         . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
-                        . "JOIN DGAbgSistemaBundle:AbgPersonaEspecialida pe WHERE e.id=pe.ctlEspecialidad AND pe.ctlEmpresa=" . $request->get('hPersona')
+                        . "JOIN DGAbgSistemaBundle:AbgPersonaEspecialida pe WHERE e.id=pe.ctlEspecialidad AND pe.ctlEmpresa=" . $request->get('empresaId')
                         . " GROUP by e.id";
                 $data['Esp'] = $em->createQuery($dql_especialida)->getArrayResult();
             }
@@ -968,12 +980,12 @@ class CtlEmpresaController extends Controller
      
     
      /**
-     * @Route("admin/ingresar_empresa_persona/get", name="ingresar_foto_persona", options={"expose"=true})
+     * @Route("admin/ingresar_foto_persona", name="ingresar_foto_persona", options={"expose"=true})
      * @Method("POST")
      */
     
     
-    public function RegistrarFotoPersonaAction() {
+    public function IngresarFotoPersonaAction() {
             //data es el valor de retorno de ajax donde puedo ver los valores que trae dependiendo de las instrucciones que hace dentro del controlador
          
         
@@ -999,6 +1011,7 @@ class CtlEmpresaController extends Controller
             
     if ($success){
         $personaId = $request->get("personaId");
+     
   
          if ($nombreTemporal != null){
              
@@ -1033,9 +1046,13 @@ class CtlEmpresaController extends Controller
                                 $foto = new AbgFoto();
                                 $em = $this->getDoctrine()->getManager();
                                 $idPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgPersona')->find($personaId);
-                                $src = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("abgPersona" =>$idPersona,"tipoFoto"=>1));
-                                $direccion = $src[0]->getSrc();
+                               
+                          
+                                $src = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("abgPersona" =>$idPersona->getId(),"tipoFoto"=>0));
                                 
+                             
+                                $direccion = $src[0]->getSrc(); 
+                               
                                 $direccion = str_replace("\\","" , $direccion);
                                 $direccion = str_replace("Photos/Perfil/","", $direccion);
                                 
@@ -1046,14 +1063,14 @@ class CtlEmpresaController extends Controller
 
                                         if($eliminacionRegistroExixtente){
 
-                                                $entity = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("abgPersona" =>$idPersona,"tipoFoto"=>1));
+                                                $entity = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("abgPersona" =>$idPersona,"tipoFoto"=>0));
                                                 $entity[0]->setSrc($nombreBASE);
                                                 $entity[0]->setFechaRegistro(new \DateTime("now"));
                                                 $entity[0]->setFechaExpiracion(null);
                                                 $entity[0]->setEstado(1);
                                                 $em->merge($entity[0]);
                                                 $em->flush();
-                                                $src = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("abgPersona" =>$idPersona,"tipoFoto"=>1));
+                                                $src = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("abgPersona" =>$idPersona,"tipoFoto"=>0));
                                                 $direccion = $src[0]->getSrc();
                                                 $direccionParaAjax = str_replace("\\","" , $direccion);
                                                 $datas['direccion']=$direccionParaAjax;
@@ -1064,7 +1081,7 @@ class CtlEmpresaController extends Controller
 
                                 }
                                     else{
-                                                $entity = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("abgPersona" =>$idPersona,"tipoFoto"=>1));
+                                                $entity = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("abgPersona" =>$idPersona,"tipoFoto"=>0));
                                                 $entity[0]->setSrc($nombreBASE);
                                                 $entity[0]->setFechaRegistro(new \DateTime("now"));
                                                 $entity[0]->setFechaExpiracion(null);
@@ -1072,7 +1089,7 @@ class CtlEmpresaController extends Controller
                                                 $em->merge($entity[0]);
                                                 $em->flush();
                                                 
-                                                $enti = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("abgPersona" =>$idPersona,"tipoFoto"=>1));
+                                                $enti = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("abgPersona" =>$idPersona,"tipoFoto"=>0));
                                                 $direcciones = $enti[0]->getSrc();
                                                 
                                         

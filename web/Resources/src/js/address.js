@@ -134,15 +134,16 @@
                         {
                             $("#divD").empty();
                             estado='<div class="row"><div class="col-sm-12"> ';
-                            estado += '<label for="ejemplo_archivo_1">Estado: </label>\
-                                      <select class="form-control input-sm editable-address"  name="sEstado" id="sEstado" onChange=ciudad()>';
-                            estado += '<option value="0">Seleccione estado</option>';
+                            estado += '<label for="ejemplo_archivo_1"> </label>\
+                                      <select   class="form-control input-sm editable-address select2"  name="sEstado" id="sEstado" onChange=ciudad()>';
+                            estado += '<option value="0">Seleccione Deptamento</option>';
                             $.each(data.depto, function (indice, val) {
                                 estado += '<option value="' + val.id + '">' + val.nombre + '</option>';
                             });
                             estado += ' </select></div></div> ';
                              estado+='</div></div> ';
                             $("#divD").append(estado);
+                              $('.select2').select2();
                         },
                         error: function (errors)
                         {
@@ -150,7 +151,7 @@
                         }
                     })
                     );
-                    // $('#sEstado').select2();
+                $('.select3').select2(); 
             //  this.$input.filter('[name="building"]').val(value.building);
         },
         /**
@@ -207,13 +208,16 @@
         tpl: '<div class="editable-address"><div id="divD">'
                 + '<select class="form-control input-sm" name="SDepartamento" id="SDepartamento" onChange="puestoDept()">' +
                 '<option></option><select></div>' +
-                '<div class="editable-address"><div id="divC"><label for="ejemplo_archivo_1">Ciudad: </label>\
-                            <select class="form-control input-sm editable-address" name="sEstado" id="sEstado">'
+                '<div class="editable-address" id="divC" style="margin-top:7px; "><label for="ejemplo_archivo_1"></label>\
+                            <select class="form-control input-sm  select3" name="sEstado" id="sEstado">'
                 + '<option value="0">Seleccione ciudad</option><select></div>',
         // '<div class="editable-address"><label><span>Street: </span><input type="text" name="sEstado" class="input-small"></label></div>' +
         inputclass: ''
+        
     });
+      
     $.fn.editabletypes.address = Address;
+ 
 }(window.jQuery));
 
 function ciudad()
@@ -228,19 +232,22 @@ function ciudad()
         success: function (data)
         {
             $("#divC").empty();
-            ciudad = '<label for="ejemplo_archivo_1">Ciudad: </label>\
-                            <select class="form-control input-sm editable-address"  name="sCiuda" id="sCiuda" >';
+            ciudad = '<label for="ejemplo_archivo_1"></label>\
+                            <select class="form-control input-sm select3"  name="sCiuda" id="sCiuda" >';
             ciudad += '<option value="0">Seleccione ciudad</option>';
             $.each(data.ciudad, function (indice, val) {
                 ciudad += '<option value="' + val.id + '">' + val.nombre + '</option>';
             });
             ciudad += ' </select></div></div> ';
             $("#divC").append(ciudad);
+     $('.select3').select2();     
         },
         error: function (errors)
         {
 
         }
     });
+    
 }
 
+ 

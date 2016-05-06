@@ -427,7 +427,7 @@ function editDatosContacto() {
                         data: {hPersona: $('input#hPersona').val(), dato: $("#fdatosContacto").serialize(), n: 0},
                         success: function (data)
                         {
-                          
+
                             if (data.msj !== false) {
                                 $('#txtOficina').editable('setValue', $("#txtFijo").val());
                                 $('#txtMovil').editable('setValue', $("#txtMovil").val());
@@ -599,7 +599,7 @@ function addExperiencia()
                                     datos += '<div class="col-xs-1">';
                                     if (val.src !== null)
                                     {
-                                        datos += '<img src="/' + val.src+ '" style="max-width:50px;max-height:50px;">';
+                                        datos += '<img src="/' + val.src + '" style="max-width:50px;max-height:50px;">';
                                     }
                                     datos += '</div>';
                                     datos += '<div class="col-xs-11">';
@@ -1202,6 +1202,14 @@ function addIdiomas() {
                     });
                     event.preventDefault();
                 });
+    } else
+    {
+        if ($('.newIdioma').length === 0) {
+
+            $("#divContenedor").append("<p  style='font-size:13px; color: #F33;'><strong>Debe de seleccionar almenos un idioma</strong></p>");
+
+        }
+
     }
 }
 
@@ -1299,3 +1307,4 @@ function editCurso(val)
  }
  
  */
+      

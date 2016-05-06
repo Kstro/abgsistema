@@ -22,9 +22,8 @@ $(document).on('click', "#txtUnpoco", function (e) {
 });
 
 $(document).on('click', "#txtMunicipio", function (e) {
-    $('.popover-content').css("width", "310px");
-    $('.popover-content').css("height", "85px");
-    $('.popover-content').css("resize", "auto");
+    
+   
 
 });
 
@@ -134,7 +133,9 @@ $(document).ready(function () {
             SDepartamento: "Moscow",
             sEstado: "Lenina"
         }
+     
     });
+  
     $('#txtNombres').editable({
         validate: function (value) {
             if (value === "")
@@ -287,7 +288,7 @@ $(document).ready(function () {
                 alert('Disculpe, existió un problema');
             }
         });
-
+     
     });
 
     $('#sitioweb').on('save', function (e, params) {
