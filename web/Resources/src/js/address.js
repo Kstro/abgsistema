@@ -206,7 +206,7 @@
 
     Address.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         tpl: '<div class="editable-address"><div id="divD">'
-                + '<select class="form-control input-sm" name="SDepartamento" id="SDepartamento" onChange="puestoDept()">' +
+                + '<select style="resize:none;width:250px;" class="form-control input-sm" name="SDepartamento" id="SDepartamento" onChange="puestoDept()">' +
                 '<option></option><select></div>' +
                 '<div class="editable-address" id="divC" style="margin-top:7px; "><label for="ejemplo_archivo_1"></label>\
                             <select class="form-control input-sm  select3" name="sEstado" id="sEstado">'

@@ -597,7 +597,7 @@ $(document).ready(function () {
                 success: function (data)
                 {
                     // $("#contenido").append(data);
-                    div = '<div class="nueva-Experiencia" id="div01"  style="background-color: #f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div><br>';
+                    div = '<div class="nueva-Experiencia" id="div01"  style="background-color: #f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
                     $("#contenido").before(div);
                 },
                 error: function (errors)
