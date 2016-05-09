@@ -28,6 +28,8 @@
 
  <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
  <script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
+ 
+  <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
     <style>
         .image-editor{
             top: -150px!important;;
@@ -184,9 +186,10 @@
                                             <a href="#" id="txtNombres" data-type="addnombres" data-pk="1" data-title="Nombre" data-placement="right" class="editable editable-click" > {{datos.nombre~' '~datos.apellido}}
                                             </a>
                                         </strong>
-
-                                        <img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
-                                </div></div>
+                          {%if(datos.verificado==1)%}
+                   <img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
+                      {%endif%}
+                                                  </div></div>
                             <div class="row" >
                                 <div class="col-xs-10" style="padding-right: 0;">
                                     <p style="color: #777777; margin-left: 11px; margin-top: -3px; margin-bottom: 0px;" class="sansli">

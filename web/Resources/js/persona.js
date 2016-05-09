@@ -332,14 +332,14 @@ function removeExperiencia(val)
             {
                 Lobibox.notify("success", {
                     size: 'mini',
-                    msg: data.msj
+                    msg: "<p>"+data.msj+"</p>"
                 });
                 $("#Exp" + val).remove();
             } else
             {
                 Lobibox.notify("warning", {
                     size: 'mini',
-                    msg: data.error
+                    msg: "<p>"+data.error+"</p>"
                 });
             }
 
@@ -379,7 +379,7 @@ function fil(idcheckbox)
         } else {
             Lobibox.notify("warning", {
                 size: 'mini',
-                msg: 'Se deben seleccionar maxino 3 especialidades.'
+                msg: '<p>Se deben seleccionar maxino 3 especialidades.</p>'
             });
             $("#" + idcheckbox).prop('checked', false);
             document.getElementById('div' + idcheckbox).style.display = 'none';
@@ -439,7 +439,7 @@ function editDatosContacto() {
                                 $("#datosContacto").show();
                                 Lobibox.notify("success", {
                                     size: 'mini',
-                                    msg: data.msj
+                                    msg: "<p>"+data.msj+"</p>"
                                 });
                             }
                         }
@@ -475,7 +475,7 @@ function editSobremi() {
                                 $("#conetenedorUnpoco").show();
                                 Lobibox.notify("success", {
                                     size: 'mini',
-                                    msg: data.msj
+                                 msg: "<p>"+data.msj+"</p>"
                                 });
                             }
                         }
@@ -539,13 +539,13 @@ function addEspecialida()
                     $("#contenido").append(boton);
                     Lobibox.notify("success", {
                         size: 'mini',
-                        msg: data.msj
+                        msg: "<p>"+data.msj+"</p>"
                     });
 
                 } else {
                     Lobibox.notify("warning", {
                         size: 'mini',
-                        msg: data.error
+                        msg: "<p>"+data.error+"</p>"
                     });
                 }
 
@@ -633,13 +633,13 @@ function addExperiencia()
                                 $("#consultas").append(datos);
                                 Lobibox.notify("success", {
                                     size: 'mini',
-                                    msg: data.msj
+                                   msg: "<p>"+data.msj+"</p>"
                                 });
                                 $("#div1").remove();
                             } else {
                                 Lobibox.notify("warning", {
                                     size: 'mini',
-                                    msg: data.error
+                                    msg: "<p>"+data.error+"</p>"
                                 });
                             }
                         }
@@ -698,13 +698,13 @@ function addEdu() {
                                 $("#consultaEducacion").append(datos);
                                 Lobibox.notify("success", {
                                     size: 'mini',
-                                    msg: data.msj
+                                    msg: "<p>"+data.msj+"</p>"
                                 });
                                 $("#div2").remove();
                             } else {
                                 Lobibox.notify("warning", {
                                     size: 'mini',
-                                    msg: data.error
+                                    msg: "<p>"+data.error+"</p>"
                                 });
                             }
                         }
@@ -732,7 +732,7 @@ function removeEdu(val)
             {
                 Lobibox.notify("success", {
                     size: 'mini',
-                    msg: data.msj
+                    msg: "<p>"+data.msj+"</p>"
                 });
 
                 $("#Edu" + val).remove();
@@ -740,7 +740,7 @@ function removeEdu(val)
             {
                 Lobibox.notify("warning", {
                     size: 'mini',
-                    msg: data.error
+                    msg: "<p>"+data.error+"</p>"
                 });
             }
 
@@ -795,13 +795,13 @@ function addOrganizacion() {
                                 $("#consultaOrg").append(datos);
                                 Lobibox.notify("success", {
                                     size: 'mini',
-                                    msg: data.msj
+                                    msg: "<p>"+data.msj+"</p>"
                                 });
                                 $("#div5").remove();
                             } else {
                                 Lobibox.notify("warning", {
                                     size: 'mini',
-                                    msg: data.error
+                                    msg: "<p>"+data.error+"</p>"
                                 });
 
 
@@ -831,7 +831,7 @@ function removeOrg(val)
             {
                 Lobibox.notify("success", {
                     size: 'mini',
-                    msg: data.msj
+                   msg: "<p>"+data.msj+"</p>"
                 });
 
                 $("#Org" + val).remove();
@@ -839,7 +839,7 @@ function removeOrg(val)
             {
                 Lobibox.notify("warning", {
                     size: 'mini',
-                    msg: data.error
+                   msg: "<p>"+data.error+"</p>"
                 });
             }
 
@@ -939,13 +939,13 @@ function addCertificacion() {
                                 $("#consultaCertificacion").append(datos);
                                 Lobibox.notify("success", {
                                     size: 'mini',
-                                    msg: data.msj
+                                    msg: "<p>"+data.msj+"</p>"
                                 });
                                 $("#div6").remove();
                             } else {
                                 Lobibox.notify("warning", {
                                     size: 'mini',
-                                    msg: data.error
+                                   msg: "<p>"+data.error+"</p>"
                                 });
                             }
 
@@ -974,7 +974,7 @@ function removeCertificacion(val)
             {
                 Lobibox.notify("success", {
                     size: 'mini',
-                    msg: data.msj
+                    msg: "<p>"+data.msj+"</p>"
                 });
 
                 $("#Cert" + val).remove();
@@ -982,7 +982,7 @@ function removeCertificacion(val)
             {
                 Lobibox.notify("warning", {
                     size: 'mini',
-                    msg: data.error
+                    msg: "<p>"+data.error+"</p>"
                 });
             }
 
@@ -1056,13 +1056,13 @@ function addCurso() {
                                 $("#consultaCurso").append(datos);
                                 Lobibox.notify("success", {
                                     size: 'mini',
-                                    msg: data.msj
+                                    msg: "<p>"+data.msj+"</p>"
                                 });
                                 $("#div7").remove();
                             } else {
                                 Lobibox.notify("warning", {
                                     size: 'mini',
-                                    msg: data.error
+                                    msg: "<p>"+data.error+"</p>"
                                 });
                             }
                         }
@@ -1090,7 +1090,7 @@ function removeSeminario(val)
             {
                 Lobibox.notify("success", {
                     size: 'mini',
-                    msg: data.msj
+                   msg: "<p>"+data.msj+"</p>"
                 });
                 Fsobremi
 
@@ -1099,7 +1099,7 @@ function removeSeminario(val)
             {
                 Lobibox.notify("warning", {
                     size: 'mini',
-                    msg: data.error
+                    msg: "<p>"+data.error+"</p>"
                 });
             }
 
@@ -1180,14 +1180,14 @@ function addIdiomas() {
 
                                 Lobibox.notify("success", {
                                     size: 'mini',
-                                    msg: data.msj
+                                    msg: "<p>"+data.msj+"</p>"
                                 });
                                 $("#div3").remove();
 
                             } else {
                                 Lobibox.notify("warning", {
                                     size: 'mini',
-                                    msg: data.error
+                                    msg: "<p>"+data.error+"</p>"
                                 });
                             }
 

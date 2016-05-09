@@ -2,9 +2,9 @@
     margin-top: 10px; border: 1px solid #e0e0e0; background-color: #ffffff; border-radius: 2px; 
 }
 .bloque-ocultar {
-   /* margin:6px; border: 1px solid #e0e0e0; background-color: #ffffff; */
-     padding:5px; 
-     
+    /* margin:6px; border: 1px solid #e0e0e0; background-color: #ffffff; */
+    padding:5px; 
+
 }
 .nueva-Experiencia {
 
@@ -12,7 +12,7 @@
     margin-left: -10px;
     margin-right: -10px;
     margin-bottom: -10px;
-  
+
     background-color: #ffffff;
     padding: 10px; 
 
@@ -42,18 +42,17 @@
 
 }
 
-        .btnperfil:hover {
-            background:#00c0ef !important;
-            color:#fff ;
+.btnperfil:hover {
+    background:#00c0ef !important;
+    color:#fff ;
 
-            border-radius:0px;
-            box-shadow: 2px 2px 5px #999;
+    border-radius:0px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    
+}
+.btnperfil {
+    background:#F0F0F0;
+    color: #505050;
+    border-radius:0px;
 
-        }
-        .btnperfil {
-            background:#F0F0F0;
-            color: #505050;
-            border-radius:0px;
-
-        }
-
+}
