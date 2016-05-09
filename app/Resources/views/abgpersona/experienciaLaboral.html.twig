@@ -6,7 +6,7 @@
 
 <link href="{{asset('Resources/jquery-validation-1.15.0/demo/css/screen.css')}}" rel="stylesheet">
 <script src="{{ asset('Resources/jquery-validation-1.15.0/dist/jquery.validate.js')}}"></script>
-
+<script src="{{ asset('Resources/select2/dist/js/select2.min_1.js') }}"></script>
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -14,14 +14,13 @@
 
         $("#fExperiencia").validate({
             messages: {
-                txthubicacion:{
-                     required: 'Requerido!'
-                },
-             
-                ScambioEmpresa:{
+                txthubicacion: {
                     required: 'Requerido!'
                 },
-                txtEditEmpresa:{required: 'Requerido!'}
+                ScambioEmpresa: {
+                    required: 'Requerido!'
+                },
+                txtEditEmpresa: {required: 'Requerido!'}
             }
         });
 
@@ -48,8 +47,8 @@
             $("#" + editExp).show();
             $("#div1").remove();
         });
-        
-       
+
+
     });
 
     $('#checkActual').change(function () {
@@ -85,7 +84,7 @@
 
 </script>
 
-<form role="form" id="fExperiencia"  class="cmxform" >
+<form role="form" id="fExperiencia" >
     {%if Experiencia|default is not empty %}
 
         {% for datos in Experiencia %}
@@ -93,9 +92,9 @@
             <input type="hidden" name="hidExp" id="hidExp" value="{{datos.id}}">
 
             <div class="form-group">
-                  
+
                 <label for="nombreEmpleado">Nombre de la Empresa</label>
-             
+
                 <p style="font-size:14px;">{{datos.empresa}}&nbsp;&nbsp;<a style="font-size:11px;" onclick="CambioEmp()">Cambiar empresa  |</a> <a style="font-size:11px;" onclick="EditEmp()">Editar nombre que se muestra</a> </p>
 
                 <div style="width: 100%;" class="form-group" id="cambioEmpresa">
@@ -161,9 +160,9 @@
         <input type="hidden" name="hidExp" id="hidExp" value="">
         <div class="form-group" >
             <label for="nombreEmpleado">Nombre de la Empresa</label>
-            <div style="width: 90%;" class="form-group" id="cambioEmpresa">
+            <div  class="form-group" id="cambioEmpresa">
                 <select id="ScambioEmpresa" name="ScambioEmpresa" class="form-control input-sm empresa" data-rule-required="true" data-rule-select="true">
-                    
+
 
                 </select> 
             </div>
@@ -182,7 +181,7 @@
         </div>
         <div class="form-group">
             <label for="ejemplo_password_1">Ubicación</label>
-                <input type="text" class="form-control  input-sm" id="txthubicacion" 
+            <input type="text" class="form-control  input-sm" id="txthubicacion" 
                    placeholder="Ubicación" name="txthubicacion" data-rule-required="true" >
         </div>
 

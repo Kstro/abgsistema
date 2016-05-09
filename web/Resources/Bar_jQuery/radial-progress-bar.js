@@ -98,7 +98,7 @@ function radialProgress($obj, options) {
   });
 
   if (this.options['text-color']) {
-    this.$radialLabel = $("<div>").appendTo($obj).css({
+    this.$radialLabel = $("<div id='cum'>").appendTo($obj).css({
       "position": "absolute",
       "font-size": this.options['font-size'] + "px",
       "font-family": this.options['font-family'],

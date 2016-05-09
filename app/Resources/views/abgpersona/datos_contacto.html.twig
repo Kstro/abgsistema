@@ -3,6 +3,8 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
+         $("#txtFijo").mask("0000-0000");
+          $("#txtMovil").mask("0000-0000");
         $("#fdatosContacto").validate({
          
             messages: {
@@ -73,9 +75,11 @@
             <div class="form-group">
                 <div class="row">
                     <div class="col-sm-5">
-                        <label for="ejemplo_password_1">Url Personalizada</label>
-                        <input type="text" class="form-control  input-sm"  id="txtPuestoOrg" name="txtPuestoOrg" 
-                               placeholder="Url Personalizada">
+                        <label for="ejemplo_password_1">Sitio web</label>
+                        <input type="text" class="form-control  input-sm"  id="txtsitio" name="txtsitio" 
+                               placeholder="Sitio web" value="{%if sitio|default is not empty %}{% for datos in sitio %}{{datos.nombre}}{%endfor%}
+                                            {%endif%}">
+                                           
                     </div>
                 </div>
             </div>

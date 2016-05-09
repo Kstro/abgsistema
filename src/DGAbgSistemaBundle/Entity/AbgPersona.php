@@ -106,11 +106,11 @@ class AbgPersona
     private $estado;
 
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="abg_personacol", type="string", length=45, nullable=true)
+     * @ORM\Column(name="verificado", type="integer", nullable=false)
      */
-    private $abgPersonacol;
+    private $verificado;
 
     /**
      * @var string
@@ -143,6 +143,15 @@ class AbgPersona
      * )
      */
     private $ctlEmpresa;
+
+        /**
+     * @var string
+     *
+     * @ORM\Column(name="titulo_profesional", type="string", length=45, nullable=true)
+     */
+    private $tituloProfesional;
+    
+    
 
     /**
      * Constructor
@@ -440,26 +449,26 @@ class AbgPersona
     }
 
     /**
-     * Set abgPersonacol
+     * Set verificado
      *
-     * @param string $abgPersonacol
+     * @param integer $verificado
      * @return AbgPersona
      */
-    public function setAbgPersonacol($abgPersonacol)
+    public function setAbgPersonacol($verificado)
     {
-        $this->abgPersonacol = $abgPersonacol;
+        $this->verificado = $verificado;
 
         return $this;
     }
 
     /**
-     * Get abgPersonacol
+     * Get verificado
      *
-     * @return string 
+     * @return integer 
      */
-    public function getAbgPersonacol()
+    public function getVerificado()
     {
-        return $this->abgPersonacol;
+        return $this->verificado;
     }
 
     /**
@@ -541,9 +550,28 @@ class AbgPersona
         return $this->ctlEmpresa;
     }
     
-//Deje este metodo que me permite retornar el nombre
-        public function __toString() {
-            return $this->nombres;
-        }
-    
+     /**
+     * Set tituloProfesional
+     *
+     * @param string  $tituloProfesional
+     * @return AbgPersona
+     */
+    public function setTituloProfesional($tituloProfesional)
+    {
+        $this->tituloProfesional =  $tituloProfesional;
+
+        return $this;
+    }
+
+    /**
+     * Get tituloProfesional
+     *
+     * @return string 
+     */
+    public function getTituloProfesional()
+    {
+        return $this->tituloProfesional;
+    }
+
+   
 }

@@ -108,10 +108,10 @@ class SecuredController extends Controller
                           <tr>
                             <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
                             <center>
-                              <img style=\"width:50%;\" src=\"http://expressionsprint.com/img/logo.jpg\">
+                              <img style=\"width:50%;\" src=\"http://www.abogados.com.sv/badge1.png\">
                             </center>
-                                <p>" . $usuario->getRhPersona() . ", tu has recibido una solicitud para reestablecer tu contraseña.</p>
-                                <p> Usuario:" . $usuario->getUsername() . "</p>
+                                <p>Hola " . $usuario->getRhPersona() . ", tu has recibido una solicitud para reestablecer tu contraseña.</p>
+                                <p> Usuario: " . $usuario->getUsername() . "</p>
                                 <p> Correo: " . $email . "</p>
                                 <p><b> Contraseña: " . $password . "</b></p>
                                 <p>Gracias, por usar nuestros servicios. </p>    
@@ -169,35 +169,31 @@ class SecuredController extends Controller
     {
         
         $parameters = $request->request->all();
-        $emailAbogado = $parameters['email'];
-        $emailCliente=$parameters['emailC'];
         
+        $emailAbogado = $parameters['correoAbogado'];
+        $emailCliente=$parameters['correoCliente'];
+        $nombreCliente=$parameters['nombreCliente'];
+        $mensajeCliente=$parameters['mensajeCliente'];
+        $emailAbogado=str_replace(" ", "", $emailAbogado);
         
-        var_dump($email);
-        die();
-        
-        
-        $em = $this->getDoctrine()->getManager();
-        $usuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->findOneBy(array('username' => $email));        
-        
-        $password = $this->generateRandomString(12);
        
-        $usuario->setPassword($password);
-        $this->setSecurePassword($usuario,$password);
-        
-        $this->get('envio_correo')->sendEmail($usuario->getUsername(), "", "", "",
+      
+        $em = $this->getDoctrine()->getManager();
+        $usuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->findOneBy(array('username' => $emailAbogado));        
+  
+        $this->get('envio_correo')->sendEmail($emailAbogado, "", "", "",
                     "
-                        <table style=\"width: 540px; margin: 0 auto;\">
+                        <table style=\"width: 600px; margin: 0 auto;\">
                           <tr>
                             <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
                             <center>
-                              <img style=\"width:50%;\" src=\"http://expressionsprint.com/img/logo.jpg\">
+                              <img style=\"width:50%;\" src=\"http://www.abogados.com.sv/badge1.png\">
                             </center>
-                                <p>" . $usuario->getRhPersona() . ", tu has recibido una solicitud para reestablecer tu contraseña.</p>
-                                <p> Usuario:" . $usuario->getUsername() . "</p>
-                                <p> Correo: " . $email . "</p>
-                                <p><b> Contraseña: " . $password . "</b></p>
-                                <p>Gracias, por usar nuestros servicios. </p>    
+                                <p>"."Hola " . $usuario->getRhPersona() . " esperamos la estes pasando bien dentro de nuestra plataforma, queremos notificarte que : <b>".$nombreCliente. "</b>  esta solicitando tus servicios profesionales, enviandote el siguiente mensaje.</p>  
+                                <p>" .'"'. $mensajeCliente .'"'. "</p>
+                                <p> Puedes ponerte en contacto al siguiente correo: " . $emailCliente . "</p>
+                                <p>Gracias, por utilizar los servicios de abogados.com.sv  </p> 
+                                <p>Saludos.</p>
                             </td>
                             <td class=\"expander\"></td>
                           </tr>
@@ -205,22 +201,72 @@ class SecuredController extends Controller
                     ");
   
          
-        $mensaje="Se le envió la nueva contraseña a su correo electrónico , para introducir la nueva contraseña revise su correo electronico.";
+       
 
          $error = null; // The value does not come from the security component.
         $lastUsername = null; 
          
-        return $this->render('DGAbgSistemaBundle:Secured:login.html.twig', array(
-            'mensaje'=>$mensaje,
+        return $this->render(':directorio:directorio.html.twig', array(
             'redirect'=>'Login',
             'error' => $error,
             'last_username' => $lastUsername,
-            'header'=>'Tu contraseña ha sido modificada, en un momento recibiras un correo para poder reestablecerla',
+            
         ));    
     }
     
     
-    
+   /**
+     * Recuperar contraseÃ±a
+     * 
+     * @Route("/correoRecomendacion", name="correoRecomendacion")
+     */
+    public function correoRecomendacion(Request $request) 
+    {
+        
+        $parameters = $request->request->all();
+        
+        $emailAbogado = $parameters['correoAbogado'];
+        
+        $emailRecomendador=$parameters['correoRecomendador'];
+        $nombreRecomandador=$parameters['nombreRecomendador'];
+        $nombrePersonaARecomendar=$parameters['nombrePersonaAaRecomendar'];
+        $emailPersonaRecomendar=$parameters['correoPersonaARecomendar'];
+        $emailAbogado=str_replace(" ", "", $emailAbogado);
+
+        $this->get('envio_correoRe')->sendEmail($emailPersonaRecomendar, "", "", "",
+                    "
+                        <table style=\"width: 600px; margin: 0 auto;\">
+                          <tr>
+                            <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
+                            <center>
+                              <img style=\"width:50%;\" src=\"http://www.abogados.com.sv/badge1.png\">
+                            </center>
+                                <p>"."Hola " . $nombrePersonaARecomendar. ",te saludamos de abogados.com.sv, queremos notificarte que : <b>".$nombreRecomandador. "</b>  quiere recomendarte a un abogado que se encuentra dentro de nuestra plataforma. </p>  
+           
+                                <p> Puedes ponerte en contacto al siguiente correo: " . $emailAbogado . "</p>
+                                <p> Tambien puedes visitar su perfil en esta direccion: abogados.com.sv/directorio/  </p>
+                                <p>Gracias, por utilizar nuestros servicios</p> 
+                                <p>Saludos.</p>
+                            </td>
+                            <td class=\"expander\"></td>
+                          </tr>
+                        </table>
+                    ");
+  
+         
+       
+
+         $error = null; // The value does not come from the security component.
+        $lastUsername = null; 
+         
+        return $this->render(':directorio:directorio.html.twig', array(
+            'redirect'=>'Login',
+            'error' => $error,
+            'last_username' => $lastUsername,
+            
+        ));    
+    }
+      
     
     
     
