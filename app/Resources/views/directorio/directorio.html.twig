@@ -602,7 +602,7 @@ else{ // Maximum length not reached so update the value of my_text counter
                                         <span id=\"busquedaEspecialidades'+(i+1)+'\" style=\"font-size: 11px;\">'+especialidades+'</span>\n\
                                         </div><div class=\"col-sm-12\" style=\"margin-top: -0px;\"><span style=\"font-size: 11px;\"><a href=\"../'+data.data[i].url+'\">Ver perfil</a></span>\n\
                                         <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"{{path('contacto')}}?correo='+busquedaCorreo+'\">Contactar</a></span>\n\
-                                        <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"#\">Recomendar</a></span></div></div></div></div></div>';
+                                        <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"{{path('recomendacion')}}?correo='+busquedaCorreo+'\">Recomendar</a></span></div></div></div></div></div>';
                                         $(busquedaImagen).attr('src', "{{asset('')}}"+data.data[i].foto);
                                         $(busquedaImagen).load();
                                         $('#registros').show();
