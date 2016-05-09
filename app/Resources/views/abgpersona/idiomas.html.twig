@@ -6,6 +6,7 @@
 <link href="{{asset('Resources/jquery-validation-1.15.0/demo/css/screen.css')}}" rel="stylesheet">
 <script src="{{ asset('Resources/jquery-validation-1.15.0/dist/jquery.validate.js')}}"></script>
 <script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
+ <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
 <script type="text/javascript">
     $(document).ready(function () {
 
@@ -52,7 +53,7 @@
 
                 <div class="form-group " >
                     <div class="row" id="divIdioma{{datosIR.idPi}}">
-
+  <div class="col-sm-12">
                         <div class="col-sm-4">
                             <select id="SIdioma{{datosIR.idPi}}" name="SIdioma{{datosIR.idPi}}" class="form-control input-sm newIdioma" data-rule-required="true">
                                 <option value="">Select...</option>
@@ -62,6 +63,7 @@
 
                             </select>
                         </div>
+                                
                         <div class="col-sm-4"  >
                             <select id="Snivel{{datosIR.idPi}}" name="Snivel{{datosIR.idPi}}" class="form-control input-sm newIdioma" data-rule-required="true">
                                 <option value="">Select...</option>
@@ -72,6 +74,7 @@
                             </select> 
                         </div>
                         <a onClick="RemoveIdioma({{datosIR.idPi}})"><i class="fa fa-remove" style="color: #999999;" data-toggle="tooltip" data-placement="left" title="Remover" ></i></a>
+                    </div>
                     </div>
                 </div>
                 <script type="text/javascript">

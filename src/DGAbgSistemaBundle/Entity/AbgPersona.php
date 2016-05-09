@@ -470,7 +470,18 @@ class AbgPersona
     {
         return $this->verificado;
     }
+ /**
+     * Set verificado
+     *
+     * @param string $verificado
+     * @return AbgPersona
+     */
+    public function setVerificado($verificado)
+    {
+        $this->verificado = $verificado;
 
+        return $this;
+    }
     /**
      * Set codigo
      *
@@ -566,12 +577,13 @@ class AbgPersona
     /**
      * Get tituloProfesional
      *
-     * @return string 
+     * @return string
      */
     public function getTituloProfesional()
     {
         return $this->tituloProfesional;
     }
-
-   
+     public function __toString() {
+            return $this->nombres;
+        }
 }

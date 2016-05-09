@@ -217,18 +217,23 @@ class CtlEmpresaController extends Controller
     /**
      * Lists all CtlEmpresa entities.
      *
-     * @Route("/empresapublico/{username}", name="empresapublico")
-     * @Method({"GET", "POST"})
+     * @Route("/empresapublico", name="empresapublico")
+     * @Method({"GET"})
      */
     
     
-    public function PerfilpublicoempresaAction($username)
+    public function EmpresapublicoAction()
     {
 
       $em = $this->getDoctrine()->getManager();
+      
+        $ctlEmpresaId = $this->container->get('security.context')->getToken()->getUser()->getCtlEmpresa()->getId();
+        $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+     /*  
       $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
-      $ctlEmpresaId = $RepositorioPersona[0]->getCtlEmpresa()->getId();
+      $ctlEmpresaId = $RepositorioPersona[0]->getCtlEmpresa()->getId();*/
         
+           
       //Completo los elementos de las visitas
       $entity = $em->getRepository('DGAbgSistemaBundle:AbgVisitas')->findBy(array("ctlEmpresa" =>$ctlEmpresaId));
       $valor=$entity[0]->getVisita();
@@ -264,7 +269,7 @@ class CtlEmpresaController extends Controller
                     . "FROM DGAbgSistemaBundle:AbgFoto fot "
                     . "JOIN fot.abgPersona per "
                     . "JOIN per.ctlEmpresa emp "
-                    . "WHERE emp.id =".$ctlEmpresaId
+                    . " WHERE emp.id =".$ctlEmpresaId
                     . " ORDER BY per.nombres ASC";
         
         $registro_empleados = $em->createQuery($dql)->setMaxResults(20)->getArrayResult();
@@ -284,9 +289,13 @@ class CtlEmpresaController extends Controller
         $registro_tipoempresa = $em->createQuery($dqlTipoEmpresa)->getResult();  
         
         //Valores de las persona
-                
+                /*
         $RepositorioPersonas = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
-        $idPersona = $RepositorioPersonas[0]->getRhPersona()->getId();
+        $idPersona = $RepositorioPersonas[0]->getRhPersona()->getId();*/
+              
+        
+  
+        
         $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
         $result_persona = $em->createQuery($dql_persona)->getArrayResult();
@@ -318,7 +327,6 @@ class CtlEmpresaController extends Controller
             'ctlEmpresaId'=>$ctlEmpresaId,
             'empleados' =>$registro_empleados,
             'tipoEmpresa' =>$registro_tipoempresa,
-            'usuario'=>$username,
             'abgPersona' => $result_persona,
             'visitas'=>$valor,
             'RegistroEspecialida' => $result_especialida,
@@ -370,7 +378,9 @@ class CtlEmpresaController extends Controller
                 $abgPersona->setFechaIngreso(new \DateTime("now"));
                 $abgPersona->setEstado('1');
                 $abgPersona->setCodigo($codigo);
+                $abgPersona->setVerificado(0);
                 $em->persist($abgPersona);
+                
                 $em->flush();
                 $idPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgPersona')->find($abgPersona->getId());
 

@@ -1,6 +1,3 @@
-{# empty Twig template #}
-
-
 {% block descripcion_y_acciones %}
 
     {% block descripcion %}
@@ -15,9 +12,9 @@
 {% block js_extend %}
     <!--script src="{#{ asset('Resources/select2/dist/js/select2.min_1.js') }#}"></script-->
     <script src="{{ asset('Resources/js/editarPerfilPublico.js')}}"></script>
-                <script type="text/javascript">
+    <script type="text/javascript">
         //$('#SEmpresa').select2();
-           $("#btnEditarperfil").click(function () {
+        $("#btnEditarperfil").click(function () {
             $("#verPerfil").empty();
             $("#verPerfil").hide();
             $("#editarPerfil").show();
@@ -25,7 +22,7 @@
 
 
     </script>
-    
+
     <style type="text/css">
         .divinfo {
             border-radius:10px; 
@@ -75,23 +72,20 @@
                                 <div class="row" >
                                     <div class="col-xs-10" style="padding-right: 0;">
                                         <p style="margin-top: 10px; font-size: 23px; margin-left: 10px; margin-bottom: 0px;" class="sans">
-
-                                            <strong>  
-
+                                            <strong>
                                                 {{datos.nombre~' '~datos.apellido}}
-
                                             </strong>
-
-                                            <img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
-                                    </div></div>
+                                            {%if(datos.verificado==1)%}
+                                                <img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
+                                        {%endif%}         </div></div>
                                 <div class="row" >
                                     <div class="col-xs-12" style="padding-right: 0;">
                                         <p style="color: #777777; margin-left: 11px; margin-top: -3px; margin-bottom: 0px;" class="sansli">
 
-                                        {%if datos.tprofesional|default is not empty %} {{datos.tprofesional}}
-                                                 {%else%}
-                                                     Título Profesional
-                                                  {%endif%}
+                                            {%if datos.tprofesional|default is not empty %} {{datos.tprofesional}}
+                                            {%else%}
+                                                Título Profesional
+                                            {%endif%}
                                         </p>
                                     </div>
                                 </div>
@@ -109,7 +103,7 @@
 
                                                 </p>
                                             </div>
-                                            
+
                                         {%else%}
                                             <div id="divMunicipio">
                                                 <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">
@@ -132,9 +126,9 @@
                                             {%if RegistroEspecialida|default is not empty %}
                                                 {%set esp=""%}
                                                 {% for datos in RegistroEspecialida %}
-                                                     {%set esp=datos.nombre~", "~esp%}
+                                                    {%set esp=datos.nombre~", "~esp%}
                                                 {%endfor%}
-                                                  {{esp|slice(0,-2)}}
+                                                {{esp|slice(0,-2)}}
                                             {%else%}
                                                 Especialidades
                                             {%endif%}
@@ -214,7 +208,7 @@
 
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -222,7 +216,7 @@
             <div class="row"  style="margin:0px;">
                 <div class="col-md-12">
                     <!-- FIN PRIMERA BLOQUE CON FOTO DE PERFIL -->
-                    
+
                     <!-- INFORMACION DE CONTACTO -->
                     <div class="box box-widget">
                         <div class="box-header with-border">
@@ -271,16 +265,16 @@
                                 </div>
                                 <div class="col-sm-3 col-xs-12">
                                     <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio web</strong></p>
-                                        <p style="font-size: 11px; margin-bottom: 0px;">
-                                        
-                                                {%if sitio|default is not empty %}
-                                                {% for datos in sitio %}
-                                                    {{datos.nombre}} 
-                                                {%endfor%}
-                                            {%else%}
-                                                Sitio web
-                                            {%endif%}
-                                 
+                                    <p style="font-size: 11px; margin-bottom: 0px;">
+
+                                        {%if sitio|default is not empty %}
+                                            {% for datos in sitio %}
+                                                {{datos.nombre}} 
+                                            {%endfor%}
+                                        {%else%}
+                                            Sitio web
+                                        {%endif%}
+
                                 </div>
                             </div>
                         </div>
@@ -505,7 +499,7 @@
                 $(function () {
                     $('[data-toggle="tooltip"]').tooltip()
                 })
-    
+
             </script>
 
         {%endfor%}
