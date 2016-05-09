@@ -83,7 +83,7 @@ class AbgCentroPreguntasController extends Controller {
         if ($busqueda != '') {
             $reg['numRegistros'] = 0;
            
-            $sql = "SELECT * FROM abg_pregunta WHERE CONCAT(upper(pregunta),' ',upper(detalle)) LIKE '%" . strtoupper($busqueda) . "%' ORDER BY id ASC LIMIT " . $inicioRegistro . "," . $longitud;
+            $sql = "SELECT * FROM abg_pregunta WHERE CONCAT(upper(pregunta),' ',upper(detalle)) LIKE '%" . strtoupper($busqueda) . "%' ORDER BY id DESC LIMIT " . $inicioRegistro . "," . $longitud;
             //echo $sql;            
             $em = $this->getDoctrine()->getManager();
             $stmt = $em->getConnection()->prepare($sql);
@@ -92,7 +92,7 @@ class AbgCentroPreguntasController extends Controller {
             //var_dump($reg);
             //die();
 
-            $sql = "SELECT COUNT(*) as total FROM abg_pregunta WHERE CONCAT(upper(pregunta),' ',detalle) LIKE '%" . strtoupper($busqueda) . "%' ORDER BY id ASC LIMIT 0,10";
+            $sql = "SELECT COUNT(*) as total FROM abg_pregunta WHERE CONCAT(upper(pregunta),' ',detalle) LIKE '%" . strtoupper($busqueda) . "%' ORDER BY id DESC LIMIT 0,10";
             $em = $this->getDoctrine()->getManager();
             $stmt = $em->getConnection()->prepare($sql);
             $stmt->execute();
@@ -154,7 +154,7 @@ class AbgCentroPreguntasController extends Controller {
         if ($busqueda == '') {
             $reg['numRegistros'] = 0;
 
-            $sql = "SELECT * FROM abg_pregunta ORDER BY id ASC LIMIT " . $inicioRegistro . "," . $longitud;
+            $sql = "SELECT * FROM abg_pregunta ORDER BY id DESC LIMIT " . $inicioRegistro . "," . $longitud;
             //echo $sql;            
             $em = $this->getDoctrine()->getManager();
             $stmt = $em->getConnection()->prepare($sql);
@@ -163,7 +163,7 @@ class AbgCentroPreguntasController extends Controller {
             //var_dump($reg);
             //die();
 
-            $sql = "SELECT COUNT(*) as total FROM abg_pregunta ORDER BY id ASC LIMIT 0,10";
+            $sql = "SELECT COUNT(*) as total FROM abg_pregunta ORDER BY id DESC LIMIT 0,10";
             $em = $this->getDoctrine()->getManager();
             $stmt = $em->getConnection()->prepare($sql);
             $stmt->execute();

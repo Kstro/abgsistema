@@ -56,11 +56,11 @@
                         <div class="col-md-2"></div>
                         <div class="col-md-8 text-center">
                             <div class="form-group" style="margin-top: 10px;">
-                                <label for="nombreEmpleado">Categoria de la entrada</label>
-                                <select required class="form-control" id="categoria" name="subespecialidad" placeholder=Especialidad">
+                                <label for="nombreEmpleado">Especialidad de la pregunta</label>
+                                <select required class="form-control" id="categoria" name="especialidad" placeholder=Especialidad">
                                     <option value="5" selected style="margin-bottom: 10px;">Seleccione una categoria</option>                           
-                                    {% for ctlSubespecialidad in ctlSubespecialidad %}
-                                        <option value="{{ ctlSubespecialidad.id  }}">{{ctlSubespecialidad.abgSubespecialidadcol }}</option>  
+                                    {% for ctlEspecialidad in ctlEspecialidad %}
+                                        <option value="{{ ctlEspecialidad.id  }}">{{ctlEspecialidad.nombreEspecialidad }}</option>  
                                     {% endfor %}          
                                 </select>    
                             </div>

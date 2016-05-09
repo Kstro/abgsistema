@@ -66,12 +66,12 @@ class AbgPregunta
     /**
      * @var \CtlUsuario
      *
-     * @ORM\ManyToOne(targetEntity="CtlSubespecialidad")
+     * @ORM\ManyToOne(targetEntity="CtlEspecialidad")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="abg_subespecialidad_id", referencedColumnName="id")
      * })
      */
-    private $abgSubespecialidad;
+    private $abgEspecialidad;
 
     /**
      * @var \CtlTipoReporte
@@ -241,14 +241,14 @@ class AbgPregunta
     }
 
     /**
-     * Set abgSubespecialidad
+     * Set abgEspecialidad
      *
-     * @param \DGAbgSistemaBundle\Entity\CtlSubespecialidad $abgSubespecialidad
+     * @param \DGAbgSistemaBundle\Entity\CtlEspecialidad $abgEspecialidad
      * @return AbgPregunta
      */
-    public function setAbgSubespecialidad(\DGAbgSistemaBundle\Entity\CtlSubespecialidad $abgSubespecialidad = null)
+    public function setAbgEspecialidad(\DGAbgSistemaBundle\Entity\CtlEspecialidad $abgEspecialidad = null)
     {
-        $this->abgSubespecialidad = $abgSubespecialidad;
+        $this->abgEspecialidad = $abgEspecialidad;
 
         return $this;
     }
@@ -256,11 +256,11 @@ class AbgPregunta
     /**
      * Get abgSubespecialidad
      *
-     * @return \DGAbgSistemaBundle\Entity\CtlSubespecialidad 
+     * @return \DGAbgSistemaBundle\Entity\CtlEspecialidad 
      */
-    public function getAbgSubespecialidad()
+    public function getAbgEspecialidad()
     {
-        return $this->abgSubespecialidad;
+        return $this->abgEspecialidad;
     }
 
     /**
