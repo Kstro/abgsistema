@@ -80,14 +80,14 @@ class DirectorioController extends Controller
             
         
         
-        $sql = "SELECT * FROM directorio WHERE CONCAT(upper(nombres),' ',apellido) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT ".$inicioRegistro.",".$longitud;
+        $sql = "SELECT * FROM directorio WHERE CONCAT(upper(nombres),' ',upper(apellido)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT ".$inicioRegistro.",".$longitud;
         //echo $sql;
         $em = $this->getDoctrine()->getManager();
         $stmt = $em->getConnection()->prepare($sql);
         $stmt->execute();
         $reg['data'] = $stmt->fetchAll();
         //var_dump($reg);
-        $sql = "SELECT COUNT(*) as total FROM directorio WHERE CONCAT(upper(nombres),' ',apellido) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
+        $sql = "SELECT COUNT(*) as total FROM directorio WHERE CONCAT(upper(nombres),' ',upper(apellido)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
 
         $em = $this->getDoctrine()->getManager();
         $stmt = $em->getConnection()->prepare($sql);
