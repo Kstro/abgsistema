@@ -502,7 +502,7 @@ class CtlEmpresaController extends Controller
              
                     $abgFoto->setAbgPersona($idPersona);
                     $abgFoto->setCtlEmpresa(null);
-                    $abgFoto->setTipoFoto(1);
+                    $abgFoto->setTipoFoto(0);
                     $abgFoto->setSrc('Photos/defecto/defecto.png');
                     $abgFoto->setFechaRegistro(null);
                     $abgFoto->setFechaExpiracion(null);

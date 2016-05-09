@@ -18,6 +18,7 @@ use DGAbgSistemaBundle\Entity\AbgOrganizacion;
 use DGAbgSistemaBundle\Entity\AbgUrlPersonalizada;
 use DGAbgSistemaBundle\Entity\AbgPersonaEspecialida;
 use DGAbgSistemaBundle\Entity\AbgPersonaIdioma;
+use DGAbgSistemaBundle\Entity\AbgPersonaEmpresa;
 use Symfony\Component\HttpFoundation\Response;
 use DGAbgSistemaBundle\Form\AbgPersonaType;
 
@@ -222,7 +223,8 @@ class AbgPersonaController extends Controller {
             /* $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
               $idPersona = $RepositorioPersona[0]->getRhPersona()->getId();
              */
-            $idPersona = $this->container->get('security.context')->getToken()->getUser()->getId();
+                   $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+           
             $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
                     . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil,p.estado As estado, p.verificado As verificado "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
@@ -360,7 +362,8 @@ class AbgPersonaController extends Controller {
 
             /*    $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
               $idPersona = $RepositorioPersona[0]->getRhPersona()->getId(); */
-            $idPersona = $this->container->get('security.context')->getToken()->getUser()->getId();
+               $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+
             $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
                     . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.tituloProfesional AS tprofesional, p.verificado As verificado "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
@@ -534,7 +537,7 @@ class AbgPersonaController extends Controller {
         $Curso = "";
 
         try {
-            $idPersona = $this->container->get('security.context')->getToken()->getUser()->getId();
+                 $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
                     . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado,  p.tituloProfesional AS tprofesional,"
                     . " p.verificado As verificado "
@@ -702,7 +705,7 @@ class AbgPersonaController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $em->getConnection()->beginTransaction();
         try {
-            $idPersona = $this->container->get('security.context')->getToken()->getUser()->getId();
+          $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
                     . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.codigo as codigo "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
@@ -722,9 +725,9 @@ class AbgPersonaController extends Controller {
                     . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=1 ";
             $fotoP = $em->createQuery($dqlfoto)->getArrayResult();
 
-               
+
             return $this->render('abgpersona/panelAjustes.html.twig', array(
-                         'abgPersona' => $result_persona,
+                        'abgPersona' => $result_persona,
                         'usuario' => $idPersona,
                         'TipoPago' => $TipoPago,
                         'abgFoto' => $result_foto,
@@ -732,23 +735,23 @@ class AbgPersonaController extends Controller {
 
             /*   $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
               $idPersona = $RepositorioPersona[0]->getRhPersona()->getId(); */
-/*
-            $dql_persona = "SELECT  p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo,p.codigo as codigo "
-                    . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
-            $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+            /*
+              $dql_persona = "SELECT  p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo,p.codigo as codigo "
+              . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
+              $result_persona = $em->createQuery($dql_persona)->getArrayResult();
 
-            //Este es la consulta que carga la foto del panel de ajuste de
-            $dqlfoto = "SELECT fot.src as src "
-                    . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . "  and fot.tipoFoto=1";
-            $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+              //Este es la consulta que carga la foto del panel de ajuste de
+              $dqlfoto = "SELECT fot.src as src "
+              . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . "  and fot.tipoFoto=1";
+              $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
 
 
-            return $this->render('abgpersona/panelAjustes.html.twig', array(
-                        'abgPersona' => $result_persona,
-                        'usuario' => $username,
-                        'active' => 'ajuste',
-                        'AbgFoto' => $result_foto,
-            ));*/
+              return $this->render('abgpersona/panelAjustes.html.twig', array(
+              'abgPersona' => $result_persona,
+              'usuario' => $username,
+              'active' => 'ajuste',
+              'AbgFoto' => $result_foto,
+              )); */
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
@@ -766,7 +769,7 @@ class AbgPersonaController extends Controller {
     public function EditPersonaAction() {
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
-        $idPersona = $this->container->get('security.context')->getToken()->getUser()->getId();
+                $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
         //$request->get('hPersona')
         try {
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($idPersona);
@@ -860,7 +863,7 @@ class AbgPersonaController extends Controller {
             $em = $this->getDoctrine()->getManager();
 
             //  $idPersona = 93;
-            $idPersona = $this->container->get('security.context')->getToken()->getUser()->getId();
+             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
                     . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
@@ -895,7 +898,7 @@ class AbgPersonaController extends Controller {
 
 
             //  $idPersona = 93;
-            $idPersona = $this->container->get('security.context')->getToken()->getUser()->getId();
+                   $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $dql_persona = "SELECT  p.id AS id, p.descripcion AS  descripcion,"
                     . " p.direccion AS direccion "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
@@ -923,7 +926,7 @@ class AbgPersonaController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $Url = new AbgUrlPersonalizada();
             $request = $this->getRequest();
-            $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
+                $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
 
             if (($request->get('url') != null)) {
                 $urlReg = $em->getRepository("DGAbgSistemaBundle:AbgUrlPersonalizada");
@@ -967,7 +970,7 @@ class AbgPersonaController extends Controller {
             $SitioWeb = new AbgSitioWeb();
             $request = $this->getRequest();
 
-            $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
+         $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
 
             if (($request->get('sitio') != null)) {
                 $urlReg = $em->getRepository("DGAbgSistemaBundle:AbgSitioWeb");
@@ -1233,6 +1236,20 @@ class AbgPersonaController extends Controller {
                     $em->persist($Experiencia);
                     $em->flush();
                     $IdExperiencia = $Experiencia->getId();
+
+                    if ($Experiencia->getFechaFin() == null) {
+                        try {
+                            $AbgPersonaEmpresa = new AbgPersonaEmpresa();
+                            $Empresa = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($idEmpresa);
+                            $AbgPersonaEmpresa->setAbgPersona($Persona);
+                            $AbgPersonaEmpresa->setCtlEmpresa($Empresa);
+                            $em->persist($AbgPersonaEmpresa);
+                            $em->flush();
+                        } catch (\Exception $e) {
+                            $data['error'] = $e->getMessage(); //"Falla al Registrar ";
+                            return new Response(json_encode($data));
+                        }
+                    }
                     $data['msj'] = "Experiencia registrada";
                 }
             } else {
@@ -2067,7 +2084,7 @@ class AbgPersonaController extends Controller {
 
             /*    $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
               $idPersona = $RepositorioPersona[0]->getRhPersona()->getId(); */
-            $idPersona = $this->container->get('security.context')->getToken()->getUser()->getId();
+               $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
                     . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;

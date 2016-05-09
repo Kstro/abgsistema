@@ -5,8 +5,6 @@
         <div class="pull-left image">
             {% if abgFoto %} 
                 <img src="{{asset('') }}{{ abgFoto[0].src}}" class="img-circle" alt="User Image"  class="img-responsive" alt="Imagen responsive"/>
-
-
             {% endif %}
         </div>
         <div class="pull-left info">
@@ -38,20 +36,15 @@
             <a href="#">
                 <i class="fa fa-credit-card"></i>
                 <span>Subscripcion</span>
-                <i class="fa fa-angle-left pull-right"></i>
+            
             </a>
-            <ul class="treeview-menu">
-                <li><a href="../charts/chartjs.html"><i class="fa fa-circle-o"></i> ChartJS</a></li>
-                <li><a href="../charts/morris.html"><i class="fa fa-circle-o"></i> Morris</a></li>
-                <li><a href="../charts/flot.html"><i class="fa fa-circle-o"></i> Flot</a></li>
-                <li><a href="../charts/inline.html"><i class="fa fa-circle-o"></i> Inline charts</a></li>
-            </ul>
+            
         </li>
         <li class="treeview">
             <a href="{{ path('verificar_abg') }}">
                 <i class="fa fa-certificate"></i>
                 <span>Verificarme como abogado</span>
-                <i class="fa fa-angle-left pull-right"></i>
+              
             </a>
           
         </li>
@@ -65,12 +58,9 @@
         <li class="treeview">
             <a href="#">
                 <i class="fa fa-rss"></i> <span>Blog Communitario</span>
-                <i class="fa fa-angle-left pull-right"></i>
+              
             </a>
-            <ul class="treeview-menu">
-                <li><a href="../tables/simple.html"><i class="fa fa-circle-o"></i> Simple tables</a></li>
-                <li><a href="../tables/data.html"><i class="fa fa-circle-o"></i> Data tables</a></li>
-            </ul>
+          
         </li>
         <li>
             <a href="../calendar.html">
@@ -80,7 +70,7 @@
         </li>
         <li>
             <a href="{{path('abgfacturacion_index')}}">
-                <i class="fa fa-user"></i> <span>Facturacion</span> 
+                <i class="fa  fa-newspaper-o"></i> <span>Facturación</span> 
             </a>
         </li>
         <li class="treeview">
