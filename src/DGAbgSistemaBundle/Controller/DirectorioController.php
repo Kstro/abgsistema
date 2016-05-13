@@ -29,10 +29,16 @@ class DirectorioController extends Controller
     { 
        $em = $this->getDoctrine()->getManager();
 
-        $ctlCiudads = $em->getRepository('DGAbgSistemaBundle:CtlCiudad')->findAll();
-
+        $ctlCiudads = $em->getRepository('DGAbgSistemaBundle:CtlEstado')->findAll();
+        $dql = "SELECT c FROM DGAbgSistemaBundle:CtlEstado c "
+                . "INNER JOIN c.ctlPais p WHERE p.estado=1";
+        
+        $ctlCiudads = $em->createQuery($dql)
+                   //->setParameter('id',$id)
+                   ->getResult();
+        
         return $this->render('directorio/directorio.html.twig', array(
-            'ctlCiudads' => $ctlCiudads,
+            'deptos' => $ctlCiudads,
         ));
     }
 
