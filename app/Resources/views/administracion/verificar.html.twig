@@ -1,0 +1,122 @@
+{% block js_extend %}
+
+
+{% endblock%}
+{% block navegacion_Y_body %}
+
+    {% block navegacion %}
+
+    {% endblock %}
+    {% block cuerpo %}
+        <div id="divContenido" style="min-height:175px;">
+            {%if datosP|default is not empty %}
+                {% for datos in datosP %}
+                    <input type="hidden" id="hPersona"  value="{{datos.id}}">
+                    <div class ="item-directorio">
+                        <div class ="row">
+                            <div class ="col-xs-2 ">
+                                <img src ="{{asset('')}}{{fotoPerfil[0].src}}" style ="width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
+                            </div>
+                            <div class="col-xs-6"><div class ="row"><div class="col-xs-6"> 
+                                        <p style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class ="sans"><strong>{{datos.nombre}}</strong>&nbsp;<i class="fa  fa-paperclip"></i></p>
+                                        <p style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">{{datos.tituloProfesional}}</p></div></div>
+
+                                <div class ="row"  style="margin-top: 10px;"><div class="col-sm-4" >
+                                        <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Telefonos </strong></p >
+                                        <p style ="font-size: 11px; margin-bottom: 0px;"> + 503 {{datos.movil}}</br>+ 503 {{datos.Tfijo}}</p>
+                                    </div>
+                                    <div class="col-sm-4 " >
+                                        <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Email </strong></p>
+                                        <p style ="font-size: 11px; margin-bottom: 0px;">{{datos.correo}}</p>
+                                    </div>
+                                    <div class="col-sm-4 ">
+                                        <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"> <strong> Sitio Web </strong></p>
+                                        <p style="font-size: 11px; margin-bottom: 0px;"><a href = "" target = "_blank"></a></p>
+
+                                    </div></div>
+                                <div class="row"><div class = "col-sm-12" style="margin-top: -0px;">
+                                        <span style ="font-size: 11px;"><a href=""> Ver perfill </a></span>
+                                        <span style ="color: #777777; margin-left: 5px; margin-right: 5px;"> | </span>
+                                        <span style ="font-size: 11px;"><a href="">Contactar</a></span></div></div></div>
+
+                            <div class="col-xs-4" >
+                                <div class="row">
+                                    <div class="col-xs-12 "><div class="bloque-ocultar ">
+                                            <div class="clearfix"></div>
+                                            <div class="bloque-ocultar ">
+                                                <p class="text-center" style ="color: #4444444;"><strong>Verificado</strong>&nbsp;</p>
+                                                <div class="onoffswitch" style="margin-left: auto; margin-right: auto;" >
+                                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox  myonoffswitch" id="myonoffswitch" 
+                                                           {%if(datos.verificado==1)%}checked{%endif%}>
+                                                    <label class="onoffswitch-label" for="myonoffswitch">
+                                                        <span class="onoffswitch-inner"></span>
+                                                        <span class="onoffswitch-switch"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div></div>
+                        </div>
+                    </div>
+
+                {%endfor%}
+            {%endif%}
+        </div>
+        <div class ="item-directorio">
+            <img src="{{asset('')}}{{carnet}}" style="width: 100%;max-height:55%;" class="img-responsive" >
+        </div>
+
+        <div class="row">
+            <br>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary btn-md btn-flat" id="btnLista"><i class="fa fa-list" > &nbsp;Lista de Abogados</i></button> 
+                </div>
+            </div>
+        </div>
+    {% endblock%}
+    <script type="text/javascript">
+   $(document).on('click', '#btnLista', function () {
+                 $("#divLista").show()
+                 $("#divVerificar").hide()
+         });
+   
+        $(document).on('click', '.myonoffswitch', function () {
+            var estado;
+            if ($('.myonoffswitch').is(":checked")) {
+                estado = 1;
+            } else {
+                estado = 0;
+            }
+            $.ajax({
+                type: 'POST',
+                async: false,
+                dataType: 'json',
+                data: {estado: estado, hPersona: $('input#hPersona').val(), n: 4},
+                url: Routing.generate('edit_persona'),
+                success: function (data)
+                {
+                    if (data.msj !== false)
+                    {
+                        Lobibox.notify("success", {
+                            size: 'mini',
+                            msg: "<p>" + data.msj + "</p>"
+                        });
+                    } else
+                    {
+                        Lobibox.notify("warning", {
+                            size: 'mini',
+                            msg: "<p>" + data.error + "</p>"
+                        });
+                    }
+                },
+                error: function (xhr, status)
+                {
+                    alert('Disculpe, existió un problema');
+                }
+            });
+        });
+
+    </script>
+{% endblock%}

@@ -1,11 +1,11 @@
 {% extends ':Layout:layout3.html.twig' %}
 {% block js_extend %}
-    <!-- x-editable (bootstrap version) -->
+
               <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
     <link href="{{ asset('Resources/src/css/bootstrap-editable.css')}}" rel="stylesheet"/>
     <script src="{{asset('Resources/src/js/bootstrap-editable.min.js')}}"></script>
    
-  <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
+
     <link href="{{ asset('Resources/src/css/address.css')}}" rel="stylesheet"/>
 
     <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
@@ -22,6 +22,8 @@
 
     <script src="{{ asset('Resources/AdminLTE-2.3.0/dist/js/app.js') }}" type="text/javascript"></script>
     <script src="{{ asset('Resources/jQuery-Mask/src/jquery.mask.js') }}"></script>
+       <link rel="stylesheet" href="{{ asset('Resources/zebra/css/bootstrap.css') }}">
+            <script type="text/javascript" src="{{ asset('Resources/zebra/js/zebra_datepicker.js')}}" ></script>
 <style>
         .modal-backdrop {
             z-index: -1 !important;;
@@ -51,6 +53,9 @@
     </section>
     <!-- Main content -->
     <section >
+         {#% if (is_granted('ROLE_ADMIN'))%}
+              {% embed ':administracion:perfil.html.twig' %}{% endembed %}
+          {% endif %#}  
     {% embed ':abgpersona:perfil.html.twig' %}{% endembed %}
 </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
@@ -62,7 +67,7 @@
     <strong>Copyright &copy; 2016 <a href="#">Monkey Systems</a>.</strong> Todos los derechos reservados.
 </footer>
 <aside class="control-sidebar control-sidebar-dark">
-{% embed ':Layout:barra_ajustes.html.twig' %}{% endembed %}
+<!-- Ajuste -->
 </aside>
 <div class="control-sidebar-bg"></div>
 

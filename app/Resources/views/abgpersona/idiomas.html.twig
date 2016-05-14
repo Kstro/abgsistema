@@ -6,7 +6,7 @@
 <link href="{{asset('Resources/jquery-validation-1.15.0/demo/css/screen.css')}}" rel="stylesheet">
 <script src="{{ asset('Resources/jquery-validation-1.15.0/dist/jquery.validate.js')}}"></script>
 <script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
- <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
+<link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
 <script type="text/javascript">
     $(document).ready(function () {
 
@@ -51,32 +51,34 @@
 
             {% for datosIR in IdiomaRegistrado %}
 
-                <div class="form-group " >
-                    <div class="row" id="divIdioma{{datosIR.idPi}}">
-  <div class="col-sm-12">
-                        <div class="col-sm-4">
-                            <select id="SIdioma{{datosIR.idPi}}" name="SIdioma{{datosIR.idPi}}" class="form-control input-sm newIdioma" data-rule-required="true">
-                                <option value="">Select...</option>
-                                {% for datos in idioma %}
-                                    <option value="{{datos.id}}" {%if(datos.id==datosIR.idIdioma)%}selected{%endif%}>{{datos.nombre}}</option>
-                                {%endfor%}
+                <p>
+                <div class="row" id="divIdioma{{datosIR.idPi}}">
 
-                            </select>
-                        </div>
-                                
-                        <div class="col-sm-4"  >
-                            <select id="Snivel{{datosIR.idPi}}" name="Snivel{{datosIR.idPi}}" class="form-control input-sm newIdioma" data-rule-required="true">
-                                <option value="">Select...</option>
-                                <option value="Avanzado" {%if(datosIR.nivel=='Avanzado')%}selected{%endif%}>Avanzado</option>
-                                <option value="Basico" {%if(datosIR.nivel=='Basico')%}selected{%endif%}>Basico</option>
-                                <option value="Intermedio" {%if(datosIR.nivel=='Intermedio')%}selected{%endif%}>Intermedio</option>
-                                <option value="Navito" {%if(datosIR.nivel=='Navito')%}selected{%endif%}>Navito</option>
-                            </select> 
-                        </div>
-                        <a onClick="RemoveIdioma({{datosIR.idPi}})"><i class="fa fa-remove" style="color: #999999;" data-toggle="tooltip" data-placement="left" title="Remover" ></i></a>
+                    <div class="col-sm-4">
+
+                        <select style="width: 100%;" id="SIdioma{{datosIR.idPi}}" name="SIdioma{{datosIR.idPi}}" class="form-control input-sm newIdioma" data-rule-required="true">
+                            <option value="">Select...</option>
+                            {% for datos in idioma %}
+                                <option value="{{datos.id}}" {%if(datos.id==datosIR.idIdioma)%}selected{%endif%}>{{datos.nombre}}</option>
+                            {%endfor%}
+
+                        </select>
+
                     </div>
+
+                    <div class="col-sm-4"  >
+
+                        <select style="width: 100%;" id="Snivel{{datosIR.idPi}}" name="Snivel{{datosIR.idPi}}" class="form-control input-sm newIdioma" data-rule-required="true">
+                            <option value="">Select...</option>
+                            <option value="Avanzado" {%if(datosIR.nivel=='Avanzado')%}selected{%endif%}>Avanzado</option>
+                            <option value="Basico" {%if(datosIR.nivel=='Basico')%}selected{%endif%}>Basico</option>
+                            <option value="Intermedio" {%if(datosIR.nivel=='Intermedio')%}selected{%endif%}>Intermedio</option>
+                            <option value="Navito" {%if(datosIR.nivel=='Navito')%}selected{%endif%}>Navito</option>
+                        </select>
                     </div>
-                </div>
+                    <a onClick="RemoveIdioma({{datosIR.idPi}})"><i class="fa fa-remove  pull-left" style="color: #999999;" data-toggle="tooltip" data-placement="left" title="Remover" ></i></a>
+                       </div>
+                </p>
                 <script type="text/javascript">
                     $(document).ready(function () {
 
@@ -151,7 +153,8 @@
 
             var div;
             Idioma = [];
-            div = '<div class="form-group "><div class="row" id="divIdioma' + $("#divContenedor div").length + '">';
+            div = '<p><div class="row" id="divIdioma' + $("#divContenedor div").length + '">';
+
             div += '<div class="col-sm-4">';
             div += '<select id="SIdioma' + $("#divContenedor div").length + '" name="SIdioma' + $("#divContenedor div").length + '" class="form-control input-sm newIdioma" data-rule-required="true">';
 
@@ -171,7 +174,7 @@
                 div += '<option value="Navito">Navito</option>';
                 div += '</select></div>';
                 div += '<a onClick="RemoveIdioma(' + $("#divContenedor div").length + ')"><i class="fa fa-remove" style="color: #999999;" data-toggle="tooltip" data-placement="left" title="Remover" ></i></a>';
-                div += '</div></div>';
+                div += '</div></p>';
 
                 $("#divIdioma").after(div);
                 $('.newIdioma').select2();
@@ -185,4 +188,4 @@
     </script>
 </form>
 
-                
+

@@ -1,0 +1,333 @@
+{% extends ':Layout:layout3.html.twig' %}
+{% block js_extend %}
+    <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
+    <!--  Select  2-->
+    <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
+    <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
+    <script src="{{ asset('Resources/AdminLTE-2.3.0/dist/js/app.js') }}" type="text/javascript"></script>
+
+
+    <!-- x-editable (bootstrap version) -->
+    <link href="//fonts.googleapis.com/css?family=Ubuntu:300,400,700" rel="stylesheet">
+
+    <link href="{{ asset('Resources/src/css/bootstrap-editable.css')}}" rel="stylesheet"/>
+    <script src="{{asset('Resources/src/js/bootstrap-editable.min.js')}}"></script>
+    <link href="{{ asset('Resources/src/css/address.css')}}" rel="stylesheet"/>
+    <script src="{{asset('Resources/src/js/address.js')}}"></script>
+    <script src="{{ asset('Resources/src/js/main_perfil.js')}}"></script>
+    <script src="{{ asset('Resources/js/url/urlpersonalizada.js')}}"></script>
+    <script src="{{ asset('Resources/CodigoQr/jquery.qrcode-0.12.0.js')}}"></script>
+    <script src="{{ asset('Resources/js/codigoQR/codigoqr.js')}}"></script>
+    <script src="{{ asset('Resources/js/badge/badge.js')}}"></script>
+
+
+    <script src="{{ asset('Resources/js/contrasenha/contra.js')}}"></script>
+    <script type = "text/javascript" >
+        $(document).on('ready', function () {
+
+            $('.main-sidebar .main-header ').css("display", "none");
+            $('.sidebar-toggle').css("display", "none");
+            $('.main-header').css("display", "none");
+        });
+
+    </script> 
+{% endblock %} 
+{% block cuerpo %}
+
+    {% for datos in abgPersona %}
+
+        <div class="row" style=" padding: 10px; background-color:#ecf0f5;">
+            <div class=" col-md-9">
+
+                {% for datos in ctlEmpresa %}
+                    <div class="box box-widget btn-flat">
+
+                        <div class="box-body">
+                            <input type="hidden" id=""  value="{{ctlEmpresaId }}" name="empresaId">
+                            <div class="cover" id="" >
+                                <div style="width: 100%; max-width: 100%; background-color: {{ datos.color }}; height: 400px; " id="">
+                                </div> 
+                            </div>
+                            <form id="frmEmpresaConFoto" role="form" enctype="multipart/form-data" method="POST">
+                                <input type="hidden" id=""  value="{{ctlEmpresaId }}" name="empresaId">
+                                {% if abgFoto %}    
+                                    <div class="profile" style="background-color: black; max-height:200px; max-width: 200px; border-color: white;" >
+
+                                        <div>
+
+                                            <center>
+                                                <img id="prev" src="{{ asset('') }}{{ abgFoto[0].src}}" style="height:194px; width:195px;  "/>
+                                            </center>
+                                        </div>    
+                                    </div>
+                                {% else %}
+                                    <div class="profile" style="background-color: blanchedalmond;" >
+                                    </div>    
+                                {% endif %}
+                            </form> 
+                            <!-- TITULO DE EMPRESA -->
+                            <div style="margin-top: -55px; margin-bottom: 5px;">
+                                <p class="text-right sans" style="font-size: 20px; margin-right: 10px; margin-bottom: 0px; z-index: 555;"><strong>
+
+                                        <a  data-type="text" data-placement="right" data-title="Telefono movil" style="color: inherit; text-decoration: none;">
+                                            {% if datos.nombreEmpresa %}
+                                                {{datos.nombreEmpresa}} 
+                                            {% else %}
+                                                Nombre de la empresa                                                           
+                                            {% endif %}   
+                                        </a>
+                                    </strong>
+                                </p>
+                                <p class="text-right sans" style="font-size: 12px; color: #777777; margin-right: 10px; z-index: 555; margin-bottom: 0px;">
+                                    <a  data-type="text" data-placement="right" data-title="Telefono movil" style="color: inherit; text-decoration: none;">
+                                        {% if datos.movil %}
+                                            {{" +503 "~datos.movil~" |"}}
+
+                                        {% else %}
+                                            + 503 numero de telefono |                                                          
+                                        {% endif %}  
+                                        {% if datos.correoEmpresa %}
+                                            {{datos.correoEmpresa~"| "}} 
+                                        {% else %}
+                                            correo@ejemplo.com |                                                  
+                                        {% endif %}
+
+
+                                        {% if datos.sitioWeb %}
+                                            {{datos.sitioWeb}} 
+                                        {% else %}
+                                            www.ejemplo.com                                                    
+                                        {% endif %}
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>        
+
+
+
+
+                    <div class="box box-widget">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">DATOS DE CONTACTO</h3>
+                        </div>
+                        <div class="box-body">
+                            <!-- Contenido Aqui -->
+                            <div class="row">
+                                <div class="col-sm-3 col-xs-12">
+                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono(s)</strong></p>
+                                    <p style="font-size: 11px; margin-bottom: 0px;">
+                                        503+
+                                        <a data-type="text" data-placement="right" data-title="Telefono movil" style="color: inherit; text-decoration: none;">
+                                            {% if datos.movil %}
+                                                {{datos.movil}} 
+                                            {% else %}
+                                                Movil                                                                
+                                            {% endif %}   
+                                        </a>
+                                        <br>
+                                        503+
+                                        <a  data-type="text" data-placement="right" data-title="Telefono fijo" style="color: inherit; text-decoration: none;">
+                                            {% if datos.telefono %}
+                                                {{datos.telefono}} 
+                                            {% else %}
+                                                Oficina                                                              
+                                            {% endif %}  
+                                        </a>
+                                    </p>
+                                </div>
+                                <div class="col-sm-3 col-xs-12">
+                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email(s)</strong></p>
+                                    <p style="font-size: 11px; margin-bottom: 0px;">
+                                        <a  id="" data-type="text" data-placement="right" data-title="Correo Electronico" style="color: inherit; text-decoration: none;">
+
+                                            {% if datos.correoEmpresa %}
+                                                {{datos.correoEmpresa}} 
+                                            {% else %}
+                                                Correo                                                                
+                                            {% endif %}    
+                                        </a>
+                                    </p>
+
+                                </div>
+                                <div class="col-sm-3 col-xs-12">
+                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Oficina central</strong></p>
+                                    <p style="font-size: 11px; margin-bottom: 0px;">
+                                        <a  id="" data-type="text" data-placement="right" data-title="Direccion oficina central" style="color: inherit; text-decoration: none;">
+
+                                            {% if datos.direccion %}
+                                                {{datos.direccion}} 
+                                            {% else %}
+                                                Direccion                                                              
+                                            {% endif %}  
+                                        </a>
+                                    </p>
+                                </div>
+                                <div class="col-sm-3 col-xs-12">
+                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Fecha fundada</strong></p>
+                                    <p style="font-size: 11px; margin-bottom: 0px;">
+                                        <a  id="" data-type="text" data-placement="right" data-title="Año de fundacion" style="color: inherit; text-decoration: none;">
+
+                                            {% if datos.fechaFundacion %}
+                                                {{datos.fechaFundacion}} 
+                                            {% else %}
+                                                Fecha de fundacion                                                              
+                                            {% endif %}  
+                                        </a>
+                                    </p>
+                                </div>      
+
+
+
+                                <div class="col-sm-3 col-xs-12">
+                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
+                                    <p style="font-size: 11px; margin-bottom: 0px;">
+                                        <a  id="" data-type="text" data-placement="right" data-title="Sitio web" style="color: inherit; text-decoration: none;">
+
+                                            {% if datos.sitioWeb %}
+                                                {{datos.sitioWeb}} 
+                                            {% else %}
+                                                SitioWeb                                                              
+                                            {% endif %}  
+                                        </a>
+                                    </p>
+
+                                </div>
+                           
+
+                            {% if tipoEmpresa is not empty %}
+                                {% for valor in tipoEmpresa %}
+                                    <div class="col-sm-3 col-xs-12">
+                                        <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Tipo de Empresa</strong></p>
+                                        <p style="font-size: 11px; margin-bottom: 0px;">
+                                            <a id="" data-type="text" data-placement="right" data-title="Sitio web" style="color: inherit; text-decoration: none;">
+                                                {% if valor.tipoEmpresa is not empty %}
+                                                    {{ valor.tipoEmpresa}}
+                                                {% else %}
+                                                    Tipo de empresa
+                                                {% endif %}   
+                                            </a>
+                                        </p>
+
+
+                                    </div>        
+                              
+
+                            {% endfor %}
+                        {% else %}
+                            <div class="col-sm-3 col-xs-12">
+                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Tipo de Empresa</strong></p>
+
+                                <a href="#" id="tipoEmpresa" data-pk="1" data-type="select" data-title="Select status" style="font-size: 11px; margin-bottom: 0px;">
+
+                                    Tipo de empresa
+
+                                </a>
+                            </div>        
+
+                        {% endif %}        
+                    </div>  
+                </div>   
+         </div>   
+
+                {% if (empleados | default is not empty)%}
+                    <div class="box box-widget">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">ABOGADOS TRABAJANDO EN NUESTRO BUFETE</h3>
+                        </div>
+                        <div class="box-body">
+
+                            {% for data in empleados %}
+                                {% for datas in url %}
+                                    {% if data.idPersona==datas.idpersonaUrl %}
+                                        <div class="item-directorio">
+                                            <div class="row">
+                                                <div class="col-xs-2 col-sm-3 col-md-3 col-lg-2">
+                                                    <img src="{{asset('')}}{{ data.src}}" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
+                                                </div>
+                                                <div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10">
+                                                    <p style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>{{ data.nombres~" "~data.apellido }}</strong></p>
+                                                    <p style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">Puesto dentro de la empresa</p>
+                                                    <div class="row" style="margin-top: 2px; margin-bottom: 15px;">
+                                                        <div class="col-sm-4 col-xs-12">
+                                                            <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono</strong></p>
+                                                            <p style="font-size: 11px; margin-bottom: 0px;">+503 {{data.telefonoMovil}}</p>
+                                                        </div>
+                                                        <div class="col-sm-4 col-xs-12">
+                                                            <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p>
+                                                            <p style="font-size: 11px; margin-bottom: 0px;">{{ data.correoelectronico }}</p>
+                                                        </div>
+                                                        <div class="col-sm-4 col-xs-12">
+                                                            <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
+                                                            <p style="font-size: 11px; margin-bottom: 0px;"><a href="{{ data.sitioWeb }}" target="_blank">{{ data.sitioWeb }}</a></p>
+                                                        </div>
+                                                        <div class="col-sm-12">
+                                                            <span style="color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;"><strong>Especialidades:</strong> </span>
+                                                            <span style="font-size: 11px;">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span>
+                                                        </div>
+                                                        <div class="col-sm-12" style="margin-top: -0px;">
+                                                            <span style='font-size: 11px;'><a href="{{path('busquedaPerfil', {url:datas.url})}}">Ver perfill</a></span>
+                                                            <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+                                                            <span style='font-size: 11px;'><a href="{{path('contacto')}}?correo=+{{data.correoelectronico}}">Contactar</a></span>
+                                                            <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+                                                            <span style='font-size: 11px;'><a href="{{path('recomendacion')}}?correo=+{{data.correoelectronico}}">Recomendar</a></span>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+                    </div> 
+                {% endif %}
+                <!-- ESPECIALIDADES -->
+
+                {%if RegistroEspecialida| default is not empty %}
+                    <div class="box box-widget">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">ESPECIALIDADES</h3>
+                        </div>
+                        <div class="box-body" style=" padding: 15px;">
+                            {%set n = 0%}
+                            {% for datos in RegistroEspecialida %}
+                                {%set n =n +1%}
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-12" style="margin-top: .5em; margin-bottom: .5em;">
+                                            <strong>{{datos.nombre| upper }}</strong><p class="sans" >
+                                            <p style="text-align:justify;">{{datos.descripcion}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {%endfor%}
+                        </div>
+                    </div>
+                {%endif%}
+                 {% endfor %} 
+            </div>
+
+
+
+
+            <div class="col-md-3" >
+                <div class="box box-widget">
+                    <div class="box-body" style="padding:5px;">
+                    {% embed ':Layout:publicida.html.twig' %}{% endembed %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+
+    </script>
+
+{%endfor%}
+{% endblock %}
+

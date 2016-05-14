@@ -144,13 +144,13 @@
 
                     <form id="frmEmpresaConFoto" role="form" enctype="multipart/form-data" method="POST">
                         <input type="hidden" id="empresaId"  value="{{ctlEmpresaId }}" name="empresaId">
-                        {% if abgFoto %}    
+                        {% if abgFotoEmp %}    
                             <div class="profile" style="background-color: black; max-height:200px; max-width: 200px; border-color: white;" >
 
                                 <div>
 
                                     <center>
-                                        <img id="prev" src="{{ asset('') }}{{ abgFoto[0].src}}" style="height:194px; width:195px;  " />
+                                        <img id="prev" src="{{ asset('') }}{{ abgFotoEmp[0].src}}" style="height:194px; width:195px;  " />
                                     </center>
 
 
@@ -179,7 +179,7 @@
                                     </span>
                                 </a>  
                                 <span style="color: #4444444; margin-left: 10px;">
-                                    <a href="#" id="txtNombreEmpresa" data-type="text" data-placement="top" data-title="Nombre de la empresa" class="text-capitalize" e-maxlength="45">
+                                    <a href="#" id="txtNombreEmpresa" data-type="text"   data-placement="left" data-title="Nombre de la empresa" class="text-capitalize" e-maxlength="45">
                                         {% if datos.nombreEmpresa %}
                                             {{datos.nombreEmpresa}} 
                                         {% else %}
@@ -386,7 +386,7 @@
                                         </div>
                                         <div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10">
                                             <p style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>{{ data.nombres~" "~data.apellido }}</strong></p>
-                                            <p style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">Puesto dentro de la empresa</p>
+                                            <p style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">{{data.tituloProfesional}}</p>
                                             <div class="row" style="margin-top: 2px; margin-bottom: 15px;">
                                                 <div class="col-sm-4 col-xs-12">
                                                     <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono</strong></p>
@@ -398,7 +398,7 @@
                                                 </div>
                                                 <div class="col-sm-4 col-xs-12">
                                                     <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
-                                                    <p style="font-size: 11px; margin-bottom: 0px;"><a href="{{ data.sitioWeb }}" target="_blank">{{ data.sitioWeb }}</a></p>
+                                                    <p style="font-size: 11px; margin-bottom: 0px;"><a href="{{ data.sitioWeb }}" target="_blank">{{data.sitioWeb }}</a></p>
                                                 </div>
                                                 {#<div class="col-sm-12">
                                                         <span style="color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;"><strong>Especialidades:</strong> </span>
@@ -422,8 +422,6 @@
                     {% endfor %}
 
                 {% else %}
-
-
 
                     <label for="listarEmpleados" style="font-size: small;">
                         Listar empleados
@@ -658,7 +656,7 @@
 
                             <div class="image-editor" >
                                 <center>
-                                    <div class="cropit-preview" style="z-index: 3; background-image:url({{ asset('') }}{{ abgFoto[0].src}}) ; border-color:white; " ></div>
+                                    <div class="cropit-preview" style="z-index: 3; background-image:url({{ asset('') }}{{ abgFotoEmp[0].src}}) ; border-color:white; " ></div>
                                 </center>
                                 <div class="image-upload" >
                                     <label for="input" >

@@ -1,8 +1,11 @@
 <!-- para validar -->
 
+<link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
+
+<script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>   
+
 <link href="{{asset('Resources/jquery-validation-1.15.0/demo/css/screen.css')}}" rel="stylesheet">
 <script src="{{ asset('Resources/jquery-validation-1.15.0/dist/jquery.validate.js')}}"></script>
-<script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -50,7 +53,6 @@
         }
 
     });
-
 </script>
 
 <form role="form" id="fEdu" >
@@ -76,7 +78,7 @@
             <div class="form-group">
                 <label for="ejemplo_password_1">Disciplina academica</label>
                 <select id="Sdisciplina" name="Sdisciplina" class="form-control input-sm empresa"  data-rule-required="true">
-                    <option value="default" selected>Select an option...</option>
+                    <option value="default" selected>Seleccione una opcion</option>
                     {% for datosD in disciplina %}
                         <option value="{{datosD.id}}" {%if(datosD.id==datos.idDis)%}selected{%endif%}>{{datosD.nombre}}</option>
                     {%endfor%}
@@ -173,5 +175,14 @@
 </form>
 
 <script type="text/javascript">
+      $(document).ready(function () {
     $('#Sdisciplina').select2();
+     });
+      function formatRepoSelection(data) {
+        if (data.nombre) {
+            return data.nombre;
+        } else {
+            return "Seleccione una opción";
+        }
+    }
     </script>

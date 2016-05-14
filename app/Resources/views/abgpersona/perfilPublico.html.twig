@@ -1,223 +1,207 @@
-{% block descripcion_y_acciones %}
-
-    {% block descripcion %}
-
-    {% endblock%}
-    {% block acciones %}
-
-
-    {% endblock %}
-
-{% endblock %}
+{% extends ':Layout:layout3.html.twig' %}
 {% block js_extend %}
-    <!--script src="{#{ asset('Resources/select2/dist/js/select2.min_1.js') }#}"></script-->
-    <script src="{{ asset('Resources/js/editarPerfilPublico.js')}}"></script>
-    <script type="text/javascript">
-        //$('#SEmpresa').select2();
-        $("#btnEditarperfil").click(function () {
-            $("#verPerfil").empty();
-            $("#verPerfil").hide();
-            $("#editarPerfil").show();
+    <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
+    <!--  Select  2-->
+    <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
+    <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
+    <script src="{{ asset('Resources/AdminLTE-2.3.0/dist/js/app.js') }}" type="text/javascript"></script>
+
+
+    <!-- x-editable (bootstrap version) -->
+    <link href="//fonts.googleapis.com/css?family=Ubuntu:300,400,700" rel="stylesheet">
+
+    <link href="{{ asset('Resources/src/css/bootstrap-editable.css')}}" rel="stylesheet"/>
+    <script src="{{asset('Resources/src/js/bootstrap-editable.min.js')}}"></script>
+    <link href="{{ asset('Resources/src/css/address.css')}}" rel="stylesheet"/>
+    <script src="{{asset('Resources/src/js/address.js')}}"></script>
+    <script src="{{ asset('Resources/src/js/main_perfil.js')}}"></script>
+    <script src="{{ asset('Resources/js/url/urlpersonalizada.js')}}"></script>
+    <script src="{{ asset('Resources/CodigoQr/jquery.qrcode-0.12.0.js')}}"></script>
+    <script src="{{ asset('Resources/js/codigoQR/codigoqr.js')}}"></script>
+    <script src="{{ asset('Resources/js/badge/badge.js')}}"></script>
+
+
+    <script src="{{ asset('Resources/js/contrasenha/contra.js')}}"></script>
+    <script type = "text/javascript" >
+        $(document).on('ready', function () {
+
+            $('.main-sidebar .main-header ').css("display", "none");
+            $('.sidebar-toggle').css("display", "none");
+            $('.main-header').css("display", "none");
         });
 
-
-    </script>
-
-    <style type="text/css">
-        .divinfo {
-            border-radius:10px; 
-            /* position: absolute;
-            z-index: 999;
-            width: 200px;
-            height: 100px;
-           display: none;
-            background-color: #fff;
-            border: 3px solid #ebebeb;
-            padding: 10px;*/
-        }
-
-
-    </style>
-
-
+    </script> 
 {% endblock %} 
+{% block cuerpo %}
 
-{% block navegacion_Y_body %}
+    {% for datos in abgPersona %}
+     
+        <div class="row" style=" padding: 10px; background-color:#ecf0f5;">
+            <div class=" col-md-9">
+                <section >
+                    <!-- Main content -->
 
-    {% block navegacion %}
 
-    {% endblock %}
-
-
-    {% block cuerpo %}
-
-        {%set cumplimiento=10%}
-
-        {% for datos in abgPersona %}
-            <div class="row" style=" margin-left:15px; margin-right:15px;">
-                <div class="box box-widget" >
-                    <div class="box-body" >
-                        <div class="row ">
-                            <div class="col-sm-3 col-xs-3">
-                                <div style="margin-top:0;margin-left:0;" style="height:200px;width:200px; ">
-                                    <center>
-                                        <img src="{{asset('')}}{{abgFoto[0].src}}"  class="img-responsive" alt="Imagen responsive" />
-                                    </center>              
-                                </div>     
-                            <!-- img src=" {#{asset('Resources/src/img/profile.png')}#}" style="margin-top: 10px; margin-left: 10px; width: 200px; height: 200px; margin-bottom: 10px;" /-->
-                            </div>
-
-                            <div class="col-sm-6" >
-
-                                <div class="row" >
-                                    <div class="col-xs-10" style="padding-right: 0;">
-                                        <p style="margin-top: 10px; font-size: 23px; margin-left: 10px; margin-bottom: 0px;" class="sans">
-                                            <strong>
-                                                {{datos.nombre~' '~datos.apellido}}
-                                            </strong>
-                                            {%if(datos.verificado==1)%}
-                                                <img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
-                                        {%endif%}         </div></div>
-                                <div class="row" >
-                                    <div class="col-xs-12" style="padding-right: 0;">
-                                        <p style="color: #777777; margin-left: 11px; margin-top: -3px; margin-bottom: 0px;" class="sansli">
-
-                                            {%if datos.tprofesional|default is not empty %} {{datos.tprofesional}}
-                                            {%else%}
-                                                Título Profesional
-                                            {%endif%}
-                                        </p>
-                                    </div>
+                    <div class="box box-widget" >
+                        <div class="box-body" >
+                            <div class="row ">
+                                <div class="col-sm-3 col-xs-3">
+                                    <div style="margin-top:0;margin-left:0;" style="height:200px;width:200px; ">
+                                        <center>
+                                            <img src="{{asset('')}}{{abgFoto[0].src}}"  class="img-responsive" alt="Imagen responsive" />
+                                        </center>              
+                                    </div>     
+                                <!-- img src=" {#{asset('Resources/src/img/profile.png')}#}" style="margin-top: 10px; margin-left: 10px; width: 200px; height: 200px; margin-bottom: 10px;" /-->
                                 </div>
 
-                                <div class="row" >
-                                    <div class="col-xs-12" style="padding-right: 0;">
+                                <div class="col-sm-6" >
 
-                                        {%if ciuda|default is not empty %}
+                                    <div class="row" >
+                                        <div class="col-xs-10" style="padding-right: 0;">
+                                            <p style="margin-top: 10px; font-size: 23px; margin-left: 10px; margin-bottom: 0px;" class="sans">
+                                                <strong>
+                                                    {{datos.nombre~' '~datos.apellido}}
+                                                </strong>
+                                                {%if(datos.verificado==1)%}
+                                                    <img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
+                                            {%endif%}         </div></div>
+                                    <div class="row" >
+                                        <div class="col-xs-12" style="padding-right: 0;">
+                                            <p style="color: #777777; margin-left: 11px; margin-top: -3px; margin-bottom: 0px;" class="sansli">
 
-                                            <div  style="display:block;" id="divMunicipiox">
-                                                <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">
-                                                    {% for datos in ciuda %}
-                                                        <b> {{datos.estado}} </b> | {{datos.nombre}} 
+                                                {%if datos.tprofesional|default is not empty %} {{datos.tprofesional}}
+                                                {%else%}
+                                                    Título Profesional
+                                                {%endif%}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" >
+                                        <div class="col-xs-12" style="padding-right: 0;">
+
+                                            {%if ciuda|default is not empty %}
+
+                                                <div  style="display:block;" id="divMunicipiox">
+                                                    <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">
+                                                        {% for datos in ciuda %}
+                                                            <b> {{datos.estado}} </b> | {{datos.nombre}} 
+                                                        {%endfor%}
+
+                                                    </p>
+                                                </div>
+
+                                            {%else%}
+                                                <div id="divMunicipio">
+                                                    <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">
+                                                        <b>Departament</b> | Municipiio
+
+                                                    </p>
+                                                </div>
+                                            {%endif%}
+
+                                        </div>
+                                    </div>
+                                    <!-- ESPECIALIDAD(ES) -->
+                                    <div class="row" >
+                                        <div class="col-xs-4" style="padding-right: 0;">
+                                            <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Especialidades</span>
+                                        </div>
+                                        <div class="col-xs-8" style="padding-left: 0;" >
+                                            <span style="font-size:13px;">
+
+                                                {%if RegistroEspecialida|default is not empty %}
+                                                    {%set esp=""%}
+                                                    {% for datos in RegistroEspecialida %}
+                                                        {%set esp=datos.nombre~", "~esp%}
                                                     {%endfor%}
+                                                    {{esp|slice(0,-2)}}
+                                                {%else%}
+                                                    Especialidades
+                                                {%endif%}
 
-                                                </p>
-                                            </div>
-
-                                        {%else%}
-                                            <div id="divMunicipio">
-                                                <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">
-                                                    <b>Departament</b> | Municipiio
-
-                                                </p>
-                                            </div>
-                                        {%endif%}
-
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- ESPECIALIDAD(ES) -->
-                                <div class="row" >
-                                    <div class="col-xs-4" style="padding-right: 0;">
-                                        <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Especialidades</span>
-                                    </div>
-                                    <div class="col-xs-8" style="padding-left: 0;" >
-                                        <span style="font-size:13px;">
+                                    <!-- TRABAJO(S) ACTUAL -->
+                                    <div class="row" >
+                                        <div class="col-xs-4" style="padding-right: 0;">
+                                            <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Actual</span>
+                                        </div>
+                                        <div class="col-xs-8" style="padding-left: 0;">
+                                            <span style="font-size:13px;">
+                                                {%if RegistradaExperiencia|default is not empty %}
+                                                    {% for datos in RegistradaExperiencia %}
+                                                        {%if (datos.dias is null)%}
+                                                            <a href="#Experiencia"  >{{datos.empresa}}</a>
+                                                        {%else%}
 
-                                            {%if RegistroEspecialida|default is not empty %}
-                                                {%set esp=""%}
-                                                {% for datos in RegistroEspecialida %}
-                                                    {%set esp=datos.nombre~", "~esp%}
-                                                {%endfor%}
-                                                {{esp|slice(0,-2)}}
-                                            {%else%}
-                                                Especialidades
-                                            {%endif%}
-
-                                        </span>
-                                    </div>
-                                </div>
-                                <!-- TRABAJO(S) ACTUAL -->
-                                <div class="row" >
-                                    <div class="col-xs-4" style="padding-right: 0;">
-                                        <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Actual</span>
-                                    </div>
-                                    <div class="col-xs-8" style="padding-left: 0;">
-                                        <span style="font-size:13px;">
-                                            {%if RegistradaExperiencia|default is not empty %}
-                                                {% for datos in RegistradaExperiencia %}
-                                                    {%if (datos.dias is null)%}
-                                                        <a href="#Experiencia"  >{{datos.empresa}}</a>
-                                                    {%else%}
-
-                                                    {%endif%}   
-                                                {%endfor%}
-                                            {%else%}
-                                                <a href="#Experiencia"  >Puesto</a> 
-                                            {%endif%}
-
-                                        </span>
-                                    </div>
-                                </div>
-                                <!-- EDUCACION MAS RECIENTE -->
-                                <div class="row">
-                                    <div class="col-xs-4" style="padding-right: 0;">
-                                        <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Educación</span>
-                                    </div>
-                                    <div class="col-xs-8" style="padding-left: 0;">
-                                        <span style="font-size:13px;">
-                                            <a href="#divEducacion">
-                                                {%if Edu|default is not empty %}
-                                                    {% for datos in Edu %}
-                                                        {%if(datos.anio=='')%} {{datos.institucion}}
-                                                        {%endif%}
+                                                        {%endif%}   
                                                     {%endfor%}
                                                 {%else%}
-                                                    Educación
+                                                    <a href="#Experiencia"  >Puesto</a> 
                                                 {%endif%}
-                                            </a>
-                                        </span>
+
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <!-- EDUCACION MAS RECIENTE -->
+                                    <div class="row">
+                                        <div class="col-xs-4" style="padding-right: 0;">
+                                            <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Educación</span>
+                                        </div>
+                                        <div class="col-xs-8" style="padding-left: 0;">
+                                            <span style="font-size:13px;">
+                                                <a href="#divEducacion">
+                                                    {%if Edu|default is not empty %}
+                                                        {% for datos in Edu %}
+                                                            {%if(datos.anio=='')%} {{datos.institucion}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%else%}
+                                                        Educación
+                                                    {%endif%}
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <!-- EDUCACION MAS RECIENTE -->
+                                    <div class="row">
+                                        <div class="col-xs-4" style="padding-right: 0;">
+                                            <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Sitio Web</span>
+                                        </div>
+                                        <div class="col-xs-8" style="padding-left: 0;">
+                                            <span style="font-size:13px;">
+
+                                                {%if sitio|default is not empty %}
+                                                    {% for datos in sitio %}
+                                                        {{datos.nombre}} 
+                                                    {%endfor%}
+                                                {%else%}
+                                                    Sitio web
+                                                {%endif%}
+
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-2" style="padding-right: 0;margin-top:25px;">
+                                            <p class="pull-right">
+
+                                            </p>
+                                            <span style="color: #4444444; margin-left: 10px;" >
+                                                <i class=" btn btn-flat btnperfil fa fa-pencil" id="btnEditarperfil">&nbsp;Editar perfil</i></span>
+                                        </div>
+
                                     </div>
                                 </div>
-                                <!-- EDUCACION MAS RECIENTE -->
-                                <div class="row">
-                                    <div class="col-xs-4" style="padding-right: 0;">
-                                        <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Sitio Web</span>
-                                    </div>
-                                    <div class="col-xs-8" style="padding-left: 0;">
-                                        <span style="font-size:13px;">
 
-                                            {%if sitio|default is not empty %}
-                                                {% for datos in sitio %}
-                                                    {{datos.nombre}} 
-                                                {%endfor%}
-                                            {%else%}
-                                                Sitio web
-                                            {%endif%}
-
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-2" style="padding-right: 0;margin-top:25px;">
-                                        <p class="pull-right">
-
-                                        </p>
-                                        <span style="color: #4444444; margin-left: 10px;" >
-                                            <i class=" btn btn-flat btnperfil fa fa-pencil" id="btnEditarperfil">&nbsp;Editar perfil</i></span>
-                                    </div>
-
-                                </div>
                             </div>
-
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row"  style="margin:0px;">
-                <div class="col-md-12">
-                    <!-- FIN PRIMERA BLOQUE CON FOTO DE PERFIL -->
 
-                    <!-- INFORMACION DE CONTACTO -->
+                    </div>
+
                     <div class="box box-widget">
                         <div class="box-header with-border">
                             <h3 class="box-title">DATOS DE CONTACTO</h3>
@@ -350,6 +334,8 @@
                                     <div class="row " id="Exp{{datos.id}}">
                                         <div class="col-xs-1" >
                                             {%if (datos.src is null)%}
+                                                 <img style="max-width:50px;max-height:50px;" src="{{asset('Resources/src/img/empresa/empresa.png') }}">
+                                     
                                             {%else%}
                                                 <img style="max-width:50px;max-height:50px;" src="{{asset('')}}{{datos.src}}">
                                             {%endif%}
@@ -492,16 +478,26 @@
                             </div>
                         </div>
                     {%endif%}
-                </div>
             </div>
-            <div style="height: 10px;"></div>
-            <script type="text/javascript">
-                $(function () {
-                    $('[data-toggle="tooltip"]').tooltip()
-                })
 
-            </script>
 
-        {%endfor%}
-    {% endblock %}
+        </section>
+ 
+        <div class="col-md-3" >
+          <div class="box box-widget">
+          <div class="box-body" style="padding:5px;">
+        {% embed ':Layout:publicida.html.twig' %}{% endembed %}
+    </div>
+</div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+</script>
+
+{%endfor%}
 {% endblock %}
+

@@ -344,99 +344,88 @@
 
                         </div>   
                     </div>  
-                    {% if (empleados |default is not empty)%}
-                        <div class="box box-widget">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">ABOGADOS TRABAJANDO EN NUESTRO BUFETE</h3>
-                            </div>
-                            <div class="box-body">
+              
+                {% if (empleados | default is not empty)%}
+                    <div class="box box-widget">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">ABOGADOS TRABAJANDO EN NUESTRO BUFETE</h3>
+                        </div>
+                        <div class="box-body">
 
-                                {% for data in empleados %}
-                                    {% for datas in url %}
-                                        {% if data.idPersona==datas.idpersonaUrl %}
-                                            <div class="item-directorio">
-                                                <div class="row">
-                                                    <div class="col-xs-2 col-sm-3 col-md-3 col-lg-2">
-                                                        <img src="{{asset('')}}{{ data.src}}" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
-                                                    </div>
-                                                    <div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10">
-                                                        <p style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>{{ data.nombres~" "~data.apellido }}</strong></p>
-                                                        <p style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">Puesto dentro de la empresa</p>
-                                                        <div class="row" style="margin-top: 2px; margin-bottom: 15px;">
-                                                            <div class="col-sm-4 col-xs-12">
-                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono</strong></p>
-                                                                <p style="font-size: 11px; margin-bottom: 0px;">+503 {{data.telefonoMovil}}</p>
-                                                            </div>
-                                                            <div class="col-sm-4 col-xs-12">
-                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p>
-                                                                <p style="font-size: 11px; margin-bottom: 0px;">{{ data.correoelectronico }}</p>
-                                                            </div>
-                                                            <div class="col-sm-4 col-xs-12">
-                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
-                                                                <p style="font-size: 11px; margin-bottom: 0px;"><a href="{{ data.sitioWeb }}" target="_blank">{{ data.sitioWeb }}</a></p>
-                                                            </div>
-                                                            <div class="col-sm-12">
-                                                                <span style="color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;"><strong>Especialidades:</strong> </span>
-                                                                <span style="font-size: 11px;">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span>
-                                                            </div>
-                                                            <div class="col-sm-12" style="margin-top: -0px;">
-                                                                <span style='font-size: 11px;'><a href="{{path('busquedaPerfil', {url:datas.url})}}">Ver perfill</a></span>
-                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
-                                                                <span style='font-size: 11px;'><a href="{{path('contacto')}}?correo=+{{data.correoelectronico}}">Contactar</a></span>
-                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
-                                                                <span style='font-size: 11px;'><a href="{{path('recomendacion')}}?correo=+{{data.correoelectronico}}">Recomendar</a></span>
+                            {% for data in empleados %}
+                                {% for datas in url %}
+                                    {% if data.idPersona==datas.idpersonaUrl %}
+                                        <div class="item-directorio">
+                                            <div class="row">
+                                                <div class="col-xs-2 col-sm-3 col-md-3 col-lg-2">
+                                                    <img src="{{asset('')}}{{ data.src}}" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
+                                                </div>
+                                                <div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10">
+                                                    <p style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>{{ data.nombres~" "~data.apellido }}</strong></p>
+                                                    <p style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">Puesto dentro de la empresa</p>
+                                                    <div class="row" style="margin-top: 2px; margin-bottom: 15px;">
+                                                        <div class="col-sm-4 col-xs-12">
+                                                            <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono</strong></p>
+                                                            <p style="font-size: 11px; margin-bottom: 0px;">+503 {{data.telefonoMovil}}</p>
+                                                        </div>
+                                                        <div class="col-sm-4 col-xs-12">
+                                                            <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p>
+                                                            <p style="font-size: 11px; margin-bottom: 0px;">{{ data.correoelectronico }}</p>
+                                                        </div>
+                                                        <div class="col-sm-4 col-xs-12">
+                                                            <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
+                                                            <p style="font-size: 11px; margin-bottom: 0px;"><a href="{{ data.sitioWeb }}" target="_blank">{{ data.sitioWeb }}</a></p>
+                                                        </div>
+                                                        <div class="col-sm-12">
+                                                            <span style="color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;"><strong>Especialidades:</strong> </span>
+                                                            <span style="font-size: 11px;">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span>
+                                                        </div>
+                                                        <div class="col-sm-12" style="margin-top: -0px;">
+                                                            <span style='font-size: 11px;'><a href="{{path('busquedaPerfil', {url:datas.url})}}">Ver perfill</a></span>
+                                                            <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+                                                            <span style='font-size: 11px;'><a href="{{path('contacto')}}?correo=+{{data.correoelectronico}}">Contactar</a></span>
+                                                            <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
+                                                            <span style='font-size: 11px;'><a href="{{path('recomendacion')}}?correo=+{{data.correoelectronico}}">Recomendar</a></span>
 
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div> 
-                                        {% endif %}
-                                    {% endfor %}
+                                            </div>
+                                        </div> 
+                                    {% endif %}
                                 {% endfor %}
-                            </div>
-                        </div> 
-                    {% endif %}
-                    <!-- ESPECIALIDADES -->
-                   
-                            {%if RegistroEspecialida|default is not empty %}
-                                 <div class="box box-widget">
+                            {% endfor %}
+                        </div>
+                    </div> 
+                {% endif %}
+                <!-- ESPECIALIDADES -->
+
+                {%if RegistroEspecialida| default is not empty %}
+                    <div class="box box-widget">
                         <div class="box-header with-border">
                             <h3 class="box-title">ESPECIALIDADES</h3>
                         </div>
                         <div class="box-body">
-                                {%set n = 0%}
-                                {% for datos in RegistroEspecialida %}
-                                    {%set n =n +1%}
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-xs-12" style="margin-top: .5em; margin-bottom: .5em;">
-                                                <strong>
-                                                    {%if(datos.nombre| upper=='DERECHO LABORAL')%}
-                                                        <img src="{{asset('Resources/src/img/especialidades/dlaboral.png')}}" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado">
-
-                                                    {%endif%}
-                                                    <img src="{{asset('Resources/src/img/especialidades/dlaboral.png')}}" style="width:100%; margin-bottom: 8px;"  data-placement="right" >
-
-                                                    {#{datos.nombre| upper }#}</strong><p class="sans" >
-                                                <p style="text-align:justify;">{{datos.descripcion}}</p>
-                                            </div>   
-                                            {%if ((n>0)and (n % 3== 0))%}
-
-                                                <div class="clearfix"></div>
-
-                                            {%endif%}  
+                            {%set n = 0%}
+                            {% for datos in RegistroEspecialida %}
+                                {%set n =n +1%}
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-12" style="margin-top: .5em; margin-bottom: .5em;">
+                                            <strong>{{datos.nombre| upper }}</strong><p class="sans" >
+                                            <p style="text-align:justify;">{{datos.descripcion}}</p>
                                         </div>
                                     </div>
-                                {%endfor%}
-                                     </div>
+                                </div>
+                            {%endfor%}
+                        </div>
                     </div>
-                            {%endif%}
-                   
-                </div>
+                {%endif%}
+
+
             </div>
-                        
-                        
+
+
             <div class="col-md-3" >
                 <div class="bloque-main" style="padding: 5px;">
                     <div style="width:300px;overflow:hidden;height:450px;max-width:100%;" >
