@@ -41,6 +41,20 @@ class AbgFacturacion
      * @ORM\Column(name="servicio", type="string", length=60, nullable=false)
      */
     private $servicio;
+    
+      /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion", type="string", length=255, nullable=false)
+     */
+    private $descripcion;
+    
+     /**
+     * @var integer
+     *
+     * @ORM\Column(name="plazo", type="integer", nullable=false)
+     */
+    private $plazo;
 
     /**
      * @var \AbgPersona
@@ -82,6 +96,12 @@ class AbgFacturacion
      */
     private $ctlPromociones;
 
+        /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_user", type="integer", nullable=false)
+     */
+    private $idUser;
 
 
     /**
@@ -162,7 +182,73 @@ class AbgFacturacion
     {
         return $this->servicio;
     }
+        /**
+     * Set servicio
+     *
+     * @param string $descripcion
+     * @return AbgFacturacion
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
 
+        return $this;
+    }
+
+    /**
+     * Get descripcion
+     *
+     * @return string 
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+   /**
+     * Set plazo
+     *
+     * @param float $plazo
+     * @return AbgFacturacion
+     */
+    public function setPlazo($plazo)
+    {
+        $this->plazo = $plazo;
+
+        return $this;
+    }
+    /**
+     * Get plazo
+     *
+     * @return integer 
+     */
+    public function getPlazo()
+    {
+        return $this->plazo;
+    }
+    
+    
+     /**
+     * Set idUser
+     *
+     * @param float $idUser
+     * @return AbgFacturacion
+     */
+    public function setIdUser($idUser)
+    {
+        $this->idUser = $idUser;
+
+        return $this;
+    }
+    /**
+     * Get idUser
+     *
+     * @return integer 
+     */
+    public function getIdUser()
+    {
+        return $this->idUser;
+    }
+    
     /**
      * Set abgPersona
      *

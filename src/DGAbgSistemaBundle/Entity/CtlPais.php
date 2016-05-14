@@ -34,6 +34,13 @@ class CtlPais
      * @ORM\Column(name="area", type="integer", nullable=false)
      */
     private $area;
+    
+     /**
+     * @var integer
+     *
+     * @ORM\Column(name="estado", type="integer", nullable=false)
+     */
+    private $estado;
 
 
 
@@ -92,4 +99,43 @@ class CtlPais
     {
         return $this->area;
     }
+    
+    
+     /**
+     * Set estado
+     *
+     * @param integer $estado
+     * @return CtlPais
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return integer 
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

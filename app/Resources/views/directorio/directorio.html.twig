@@ -464,6 +464,7 @@ else{ // Maximum length not reached so update the value of my_text counter
         
         function buscar(busqueda,inicio,longitud,paginaActual){
             $('#filtro').children().html(busqueda);
+            var cadenaPaginas="";
             if(busqueda!=""){
                     
                     $.ajax({
@@ -511,7 +512,7 @@ else{ // Maximum length not reached so update the value of my_text counter
                                         var busquedaFoto = data.data[i].foto;
                                         //var sitioWeb = data.data[i].sitioWeb;
                                         //var busquedaSitioWeb = "#busquedaSitioWeb"+(i+1);
-                                        var busquedaSitioWeb = data.data[i].sitioWeb;;
+                                        var busquedaSitioWeb = data.data[i].sitioweb;;
                                         
                                         
                                         if(busquedaFoto==null){
@@ -527,31 +528,38 @@ else{ // Maximum length not reached so update the value of my_text counter
                                         }
                                         
                                         if(busquedaSitioWeb==null){
-                                            busquedaSitioWeb="-";
+                                            busquedaSitioWeb="";
                                         }
 
-
+                                        //console.log(data);
 {#                                      $(busquedaNombre).children().html(data.data[i].nombres +' ' + data.data[i].apellido);#}
                                         //$(busquedaCargo).children().html(data.data[i].nombres +' ' + data.data[i].cargo);
                                         var telefonos = "";
-                                        if(data.data[i].telefonoFijo === null ){
+                                        if(data.data[i].telefono_fijo === null ||data.data[i].telefono_fijo==='' ){
                                             //data.data[i].telefonoFijo="";
-                                            telefonos = "";
-                                        }
-                                        if(data.data[i].telefonoMovil === null ){
-                                            //data.data[i].telefonoMovil="";
-                                            telefonos = "";
-                                        }
-                                        else{
-                                            if(data.data[i].telefonoFijo === null){
-                                                telefonos = data.data[i].telefonoMovil;
+                                            if(data.data[i].telefono_movil === null || data.data[i].telefono_movil==='' ){
+                                                telefonos = "-";
                                             }
                                             else{
-                                                telefonos = ", "+data.data[i].telefonoMovil;
+                                                telefonos = "+503 "+data.data[i].telefono_movil;
                                             }
                                         }
+                                        else{
+                                            telefonos = "+503 "+data.data[i].telefono_fijo;
+                                            if(data.data[i].telefono_movil === null || data.data[i].telefono_movil==='' ){
+                                                telefonos += "";
+                                            }
+                                            else{
+                                                telefonos += ", +503 "+data.data[i].telefono_movil;
+                                            }
+                                            
+                                        }
+                                              
+                                        
+                                        
+                                        
 
-
+{#                                            console.log(data.data[i].telefono_fijo);#}
 {#                                      $(busquedaTelefono).html(telefonos);#}
 {#                                      $(busquedaCorreo).html(data.data[i].correoelectronico);#}
                                         //$(busquedaSitioWeb).children().html(data.data[i].nombres +' ' + data.data[i].apellido);
@@ -575,24 +583,25 @@ else{ // Maximum length not reached so update the value of my_text counter
                                         //console.log(especialidades);
 
 
-                                        console.log(data.data[i].foto);
+                                        //console.log(data.data[i].foto);
                                         
                                         
                                         {#$(busquedaEspecialidades).html(especialidades);
                                         $(busquedaSitioWeb).children().html(data.data[i].sitioweb);#}
                                         //console.log(data.data[i].fotoPerfil);
+                                        
                                         cadena = '<div class=\"item-directorio-nexo\" style=\"width: 100%;\"> <div class=\"clearfix\"></div><div class=\"row\">\n\
                                         <div class=\"col-xs-2 col-sm-3 col-md-3 col-lg-2\"><img id=\"busquedaImagen'+(i+1)+'\" src=\"{{asset('')}}'+data.data[i].foto+'\" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">\n\
                                         </div><div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10"><p id=\"busquedaNombre'+(i+1)+'\" style=\"margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;\" class=\"sans\"><strong>'+busquedaNombre+'</strong></p>\n\
                                         <p id=\"busquedaCargo'+(i+1)+'\" style=\"color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;\" class=\"sans\">'+busquedaCargo+'</p>\n\
-                                        <div class=\"row\" style=\"margin-top: 2px; margin-bottom: 15px;\"><div class=\"col-sm-4 col-xs-12\"><p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Telefono</strong></p><p id=\"busquedaTelefono1\" style=\"font-size: 11px; margin-bottom: 0px;\">+503 '+telefonos+' </p>\n\
+                                        <div class=\"row\" style=\"margin-top: 2px; margin-bottom: 15px;\"><div class=\"col-sm-4 col-xs-12\"><p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Telefono</strong></p><p id=\"busquedaTelefono1\" style=\"font-size: 11px; margin-bottom: 0px;\">'+telefonos+' </p>\n\
                                         </div><div class=\"col-sm-4 col-xs-12\"><p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p><p id="busquedaCorreo'+(i+1)+'" style="font-size: 11px; margin-bottom: 0px;">'+busquedaCorreo+'</p></div>\n\
                                         <div class=\"col-sm-4 col-xs-12\"><p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Sitio Web</strong></p>\n\
-                                        <p id=\"busquedaSitioWeb'+(i+1)+'\" style=\"font-size: 11px; margin-bottom: 0px;\"><a href=\"'+busquedaSitioWeb+'\" target=\"_blank\">'+busquedaSitioWeb+'</a></p></div>\n\
+                                        <p id=\"busquedaSitioWeb'+(i+1)+'\" style=\"font-size: 11px; margin-bottom: 0px;\"><a href=\"http://'+busquedaSitioWeb+'\" target=\"_blank\">'+busquedaSitioWeb+'</a></p></div>\n\
                                         <div class=\"col-sm-12\"><span style=\"color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;\"><strong>Especialidades:</strong> </span>\n\
                                         <span id=\"busquedaEspecialidades'+(i+1)+'\" style=\"font-size: 11px;\">'+especialidades+'</span>\n\
-                                        </div><div class=\"col-sm-12\" style=\"margin-top: -0px;\"><span style=\"font-size: 11px;\"><a href=\"#\">Ver perfil</a></span>\n\
-                                        <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"#\">Contactar</a></span>\n\
+                                        </div><div class=\"col-sm-12\" style=\"margin-top: -0px;\"><span style=\"font-size: 11px;\"><a href=\"../'+data.data[i].url+'\">Ver perfil</a></span>\n\
+                                        <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"{{path('contacto')}}?correo='+busquedaCorreo+'\">Contactar</a></span>\n\
                                         <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"#\">Recomendar</a></span></div></div></div></div></div>';
                                         $(busquedaImagen).attr('src', "{{asset('')}}"+data.data[i].foto);
                                         $(busquedaImagen).load();
@@ -601,9 +610,10 @@ else{ // Maximum length not reached so update the value of my_text counter
                                         
                                         $('#busquedaVacia').hide();
                                         
-                                        //console.log(data.pages);
+                                        console.log(data.pages);
                                         numPages=data.pages;
-                                        var cadenaPaginas = '<li class="anterior" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-left\"></i></li>';
+                                        cadenaPaginas = '';
+                                        cadenaPaginas = '<li class="anterior" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-left\"></i></li>';
                                         for(k=1;k<=data.pages;k++){
                                             if(k==paginaActual){
                                                 cadenaPaginas+='<li class="paginas" id="'+k+'" style=\"display: inline; padding: 7px;\"><strong>'+k+'</strong></li>';
@@ -620,6 +630,7 @@ else{ // Maximum length not reached so update the value of my_text counter
                                     }//fin for
                                 }//fin if
                                 else{
+                                    $('.numeroPaginas').html(cadenaPaginas);
                                     console.log('datosvacios');
                                     $('#paginas').html(cadenaPaginas);
                                     console.log(data.numRegistros);

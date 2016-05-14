@@ -7,10 +7,10 @@ imports:
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: en
-    photo.perfil: %kernel.root_dir%/../web/Photos/perfil/
-    photo.perfil.temporal: %kernel.root_dir%/../web/Photos/perfil/temporal/
-    photo.entrada: %kernel.root_dir%/../web/Photos/entrada/
+     locale: en
+     photo.verificacion: %kernel.root_dir%/../web/Photos/verificacion/
+     photo.perfil: %kernel.root_dir%/../web/Photos/Perfil/
+     photo.perfil.temporal: %kernel.root_dir%/../web/Photos/Perfil/temporal/
 
 framework:
     #esi:             ~
@@ -80,3 +80,6 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+
+    

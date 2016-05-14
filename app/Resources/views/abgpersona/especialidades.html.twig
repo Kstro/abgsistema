@@ -1,6 +1,5 @@
 <script type="text/javascript">
     $(document).ready(function () {
-
         $("#cancel").click(function () {
             $("#contenido").show();
             $("#div01").remove();
@@ -9,6 +8,9 @@
 <form role="form" id="fEspecialida" >
     {%set n = 0%}
     {%if especialidadesS|default is not empty %}
+        <script type="text/javascript">
+           fil();
+        </script>
         {% for datos in especialidadesS %}
             {%set n =n +1%}
             <div class="form-group">
@@ -20,19 +22,17 @@
                                         <input type="checkbox" checked class="{{datos.id}} Especialida" name="{{datos.id}}" id="{{datos.id}}" value="{{datos.id}}" 
                                                onclick="fil({{datos.id}})"/>&nbsp;{{datos.nombre| upper }}</p></strong>  
                                 <div id="div{{datos.id}}" style="display:block;">
-                                    <textarea class="form-control  input-sm" rows="3" name="txt{{datos.id}}" id="txt{{datos.id}}" placeholder="Descripción de la especialida">{{datos.descripcion}}</textarea>
+                                    <textarea class="form-control  input-sm" rows="3" name="txt{{datos.id}}" id="txt{{datos.id}}" placeholder="DescripciÃ³n de la especialida">{{datos.descripcion}}</textarea>
                                 </div>
                             {%endif%}
                         {%else%}
                             <strong><p class="sans" >
                                     <input type="checkbox" class="{{datos.id}} Especialida" name="{{datos.id}}" id="{{datos.id}}" value="{{datos.id}}" 
                                            onclick="fil({{datos.id}})"/>&nbsp;{{datos.nombre| upper }}</p></strong>  
-                            <div id="div{{datos.id}}" style="display:none;"><textarea class="form-control  input-sm" rows="3" name="txt{{datos.id}}" id="txt{{datos.id}}" placeholder="Descripción de la especialida"></textarea>
+                            <div id="div{{datos.id}}" style="display:none;"><textarea class="form-control  input-sm" rows="3" name="txt{{datos.id}}" id="txt{{datos.id}}" placeholder="DescripciÃ³n de la especialida"></textarea>
                             </div>
                         {%endif%}
                     </div>
-
-
                     {%if ((n>0)and (n % 3== 0))%}
                         <div class="clearfix"></div>
                     {%endif%}  
@@ -58,7 +58,7 @@
                             <strong><p class="sans" >
                                     <input type="checkbox" class="{{datos.id}} Especialida" name="{{datos.id}}" id="{{datos.id}}" value="{{datos.id}}" 
                                            onclick="fil({{datos.id}})"/>&nbsp;{{datos.nombre| upper }}</p></strong>  
-                            <div id="div{{datos.id}}" style="display:none;"><textarea class="form-control  input-sm" rows="3" name="txt{{datos.id}}" id="txt{{datos.id}}" placeholder="Descripción de la especialida"></textarea>
+                            <div id="div{{datos.id}}" style="display:none;"><textarea class="form-control  input-sm" rows="3" name="txt{{datos.id}}" id="txt{{datos.id}}" placeholder="DescripciÃ³n de la especialida"></textarea>
                             </div> 
                         </div>   
                         {%if ((n>0)and (n % 3== 0))%}
@@ -69,8 +69,6 @@
                     </div>
                 </div>
             {%endfor%}
-
-
             <div class="clearfix"></div>
             <div class="row">
                 <div class="col-sm-12">
@@ -78,11 +76,8 @@
                         <button type="button" class="btn btn-primary btn-sm"  onclick="addEspecialida()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
                     </div>
                 </div>
-            </div>
-
-        {#%else%#}       
-
+            </div>  
+        {%endif%} 
     {%endif%} 
-{%endif%} 
 </form>
 

@@ -1,0 +1,147 @@
+{% extends ':Layout:layout2.html.twig' %}
+
+{% block descripcion_y_acciones %}
+
+
+    
+        {% block descripcion %}
+            
+        {% endblock%}
+        {% block acciones %}
+            
+        {% endblock %}
+
+
+{% endblock %}
+{% block js_extend %}
+
+            
+          
+            <script>
+            $(document).ready(function() {
+                $("#solicitud").hide();
+                
+                
+                
+            });
+                
+            var email;
+             $("#enviar").click(function () {
+                    
+              email= $('#email').val();
+                    $.ajax({
+                        type: 'POST',
+                        async: false,
+                        dataType: 'json',
+                        data: {email:email },
+                        url: Routing.generate('validar_correoR'),
+                        success: function (data)
+                        {
+                            
+                            
+                            if(data.valido==1){
+                                $("#solicitud").show();
+                               email= $('#email').val();               
+                                $("#reset-psw-form").submit();
+                                 Lobibox.notify("succes", {
+                                                                            size: 'mini',
+                                                                            msg: 'Dentro de unos segundos, recibiras un mensaje de modificacion de contraseña...'
+                                                                        });
+  
+                            }else{
+                                  Lobibox.notify("error", {
+                                                                            size: 'mini',
+                                                                            msg: 'Correo electronico no valido.'
+                                                                        });
+                            }
+                              
+                        },
+                        error: function (xhr, status)
+                        {
+                             Lobibox.notify("danger", {
+                                                    size: 'mini',
+                                                    msg: 'Lo sentimos, ocurrio un error dentro del sistema, intentelo mas tarde.'
+                                                });
+
+                        }
+                });
+                   
+                   
+                   
+                   
+            });
+            </script>    
+            
+           
+      
+  {% endblock %} 
+
+        {% block navegacion_Y_body %}
+  
+        {% block navegacion %}
+            
+        {% endblock %}
+        {% block cuerpo %}
+    
+                                                    
+                        <section id="pr-contact" class="pr-main">
+                          <div class="container" style="height: 540px">
+                              <div class="row">
+                                  <div class="acc-title lg">
+                                      <div class="col-md-12 pull-left">
+                                          <h3 class="" style="color:black;"><center>Reestablecer tu contraseña</center></h3>
+                                      </div>
+                                  </div>
+                              </div>    
+                              <div class="clearfix"></div>
+                              <div class="row">
+                                  <form id="reset-psw-form" action="{{ path('admin_forgot_passw') }}" method="POST">
+                                      <div class="col-md-4 col-md-offset-4 pull-center well text-justify" style="margin-top: 50px; background-color: bisque;">
+                                          <div class="row">
+                                              <div class="col-md-12">
+                                                  <p><center>
+                                                      Ingresa tu correo electronico con el que te logeaste para poder enviarte una nueva contraseña
+                                                  </center>
+                                                  </p>
+                                              </div>
+                                          </div>
+                                          <div class="row">
+                                              <div class="col-md-12">
+                                                  {#<input type="text" name="email" class="form-control">#}
+                                                  <div class="input-group input-group-in">
+                                                      <span class="input-group-addon" id="semail"><i class="fa fa-at"></i></span>
+                                                      <input type="email" class="form-control" name="email" id="email" required>
+                                                  </div>
+                                              </div>
+
+                                          </div> 
+                                          <div class="row" style="margin-top: 10px; margin-bottom: 10px">
+                                              <div class="col-md-12">
+                                                  <input type="button" name="enviar" id="enviar" class="form-control btn btn-primary" value="Reset password" style="color: black;"> 
+                                              </div>
+                                          </div> 
+                                            <div class="row" style="margin-top: 10px; margin-bottom: 10px">
+                                                <div class="col-md-12" id="solicitud">
+                                                   
+                                                    Espere un momento, enviando solicitud de cambio de contraseña.
+                                                
+                                                    <img src='{{ asset('Resources/icons/transfer.gif') }}' style="width: 25px; height: 25px; margin-right:70px;" >
+                                                </div> 
+                                            </div> 
+                                      </div>
+
+                                  </form>    
+                              </div>
+                                                  
+                          </div>
+                                                                   
+                      </section>
+                    
+                                               
+                         
+                   
+  
+     
+{% endblock %}
+{% endblock %}
+

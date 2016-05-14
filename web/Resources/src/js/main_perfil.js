@@ -11,13 +11,27 @@ jQuery(function ($) {
 });
 
 $(document).on('click', "#txtUnpoco", function (e) {
+
     $('.input-large').css("width", "490px");
     $('.input-large').css("height", "85px");
     $('.input-large').css("resize", "auto");
-/*
-    $('.popover').css("width", "60%");
-    $('.popover').css("height", "8%");
-    $('.popover').css("resize", "auto");*/
+    /*
+     $('.popover').css("width", "60%");
+     $('.popover').css("height", "8%");
+     $('.popover').css("resize", "auto");*/
+});
+
+$(document).on('click', "#txtMunicipio", function (e) {
+    
+   
+
+});
+
+$(document).on('click', "#txtNombres", function (e) {
+    $('.popover-content').css("width", "350px");
+    $('.popover-content').css("height", "85px");
+    $('.popover-content').css("resize", "auto");
+
 });
 
 $(document).ready(function () {
@@ -42,19 +56,37 @@ $(document).ready(function () {
     //a = datacheck.slice(0, -2);
     // a=datacheck.slice(0,-2);
     // console.log(eval(datacheck.slice(0,-2)));
-
-    $('#txtMovil').editable({
+    $('#txtTituloProfesional').editable({
         validate: function (value) {
             if (value === "")
                 return 'requerido';
         }
 
     });
+
+
+    $('#txtMovil').editable({
+         validate: function (value) {
+            if (value === "")
+                return 'requerido';
+        },
+         type: 'text',
+         name: 'zip',
+         tpl:'   <input type="text" id ="zipiddemo" class="form-control    input-sm" style="padding-right: 24px;">'
+            }).on('shown',function(){
+    $("input#zipiddemo").mask("0000-0000");
+       
+    });
     $('#txtOficina').editable({
         validate: function (value) {
             if (value === "")
                 return 'requerido';
-        }
+        },
+        type: 'text',
+         name: 'zip',
+         tpl:'   <input type="text" id ="zipiddemo" class="form-control    input-sm" style="padding-right: 24px;">'
+            }).on('shown',function(){
+    $("input#zipiddemo").mask("0000-0000");
 
     });
     $('#txtDireccion').editable({
@@ -78,7 +110,7 @@ $(document).ready(function () {
         }
 
     });
-    $('#txtUrlPersonalizada').editable(
+    $('#sitioweb2').editable(
             {
                 validate: function (value) {
                     if (value === "")
@@ -101,8 +133,15 @@ $(document).ready(function () {
             SDepartamento: "Moscow",
             sEstado: "Lenina"
         }
+     
     });
-    $('#txtNombres').editable();
+  
+    $('#txtNombres').editable({
+        validate: function (value) {
+            if (value === "")
+                return 'requerido';
+        }
+    });
     $('#txtUnpoco').editable({
         row: 4,
         validate: function (value) {
@@ -110,10 +149,7 @@ $(document).ready(function () {
                 return 'requerido';
         }
 
-
     });
-
-
 
     $('#txtNombres').on('save', function (e, params) {
 
@@ -139,6 +175,30 @@ $(document).ready(function () {
             });
         }
     });
+
+    $('#txtTituloProfesional').on('save', function (e, params) {
+        if ((params.newValue["txtTituloProfesional"] === ""))
+        {
+        } else
+        {
+            $.ajax({
+                type: 'POST',
+                async: false,
+                dataType: 'json',
+                data: {tituloProfesional: params.newValue, hPersona: $('input#hPersona').val(), n: 3},
+                url: Routing.generate('edit_persona'),
+                success: function (data)
+                {
+               
+                },
+                error: function (xhr, status)
+                {
+                    alert('Disculpe, existió un problema');
+                }
+            });
+        }
+    });
+
     $('#checkEspecialida').editable({
         source: eval(arrayEspecialidad),
         display: function (value, sourceData) {
@@ -186,17 +246,18 @@ $(document).ready(function () {
      
      });*/
 
-    $('#txtUrlPersonalizada').on('save', function (e, params) {
+    $('#sitioweb2').on('save', function (e, params) {
         //  $('#txtUrlPersonalizada').editable('validate');
         $.ajax({
             type: 'POST',
             async: false,
             dataType: 'json',
-            data: {url: params.newValue, hPersona: $('input#hPersona').val()},
-            url: Routing.generate('url_persona'),
+            data: {sitio: params.newValue, hPersona: $('input#hPersona').val()},
+            url: Routing.generate('sitio'),
             success: function (data)
             {
-
+     $('#sitioweb').editable('setValue', params.newValue);
+                            
             },
             error: function (xhr, status)
             {
@@ -227,7 +288,7 @@ $(document).ready(function () {
                 alert('Disculpe, existió un problema');
             }
         });
-
+     
     });
 
     $('#sitioweb').on('save', function (e, params) {
@@ -240,7 +301,7 @@ $(document).ready(function () {
             url: Routing.generate('sitio'),
             success: function (data)
             {
-                //$('#sitioweb').editable('setValue', data.sitio);
+                    $('#sitioweb2').editable('setValue', params.newValue);
             },
             error: function (xhr, status)
             {

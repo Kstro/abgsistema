@@ -1,0 +1,59 @@
+
+<link href="{{asset('Resources/jquery-validation-1.15.0/demo/css/screen.css')}}" rel="stylesheet">
+<script src="{{ asset('Resources/jquery-validation-1.15.0/dist/jquery.validate.js')}}"></script>
+<!-- Texarea-->
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#funpoco").validate({
+            messages: {
+                 txtUnpoco1: {
+                    required: 'Requerido!'
+                }
+            }
+        });
+
+        $("#cancel").click(function () {
+            $("#conetenedorUnpoco").show();
+          
+            $("#div002").remove();
+        });
+    });
+</script>
+
+<form role="form" id="funpoco" >
+    {%if result_persona|default is not empty %}
+
+        {% for datos in result_persona %}
+
+            <input type="hidden" name="hidOrg" id="hidOrg" value="">
+           <div class="form-group">
+               
+                <div class="row">
+                    <div class="col-sm-12">
+                       <textarea class="form-control  input-sm" rows="3" name="txtUnpoco1" id="txtUnpoco1" placeholder="Sobre mi" data-rule-required="true">{{datos.descripcion}}</textarea>
+                    </div>
+                  
+                </div>
+         
+           
+                </div>
+            
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-sm"  onclick="editSobremi()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        {%endfor%}
+
+
+
+    {%endif%}
+</form>
+
+
+
+
+

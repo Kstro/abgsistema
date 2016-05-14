@@ -1,0 +1,91 @@
+<html>
+    <head>
+        {% block head %}
+            {% block meta %}
+                <meta charset="utf-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <meta name="robots" content="noindex">
+            {% endblock%}
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <title>Directorio| Abg</title>
+            <!-- Tell the browser to be responsive to screen width -->
+            <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+            <!-- Bootstrap 3.3.5 -->
+            <link rel="stylesheet" href="{{asset('Resources/AdminLTE-2.3.0/bootstrap/css/bootstrap.min.css')}}">
+            <!-- Font Awesome -->
+            <link rel="stylesheet" href="{{asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css')}}">
+      
+            <!-- AdminLTE Skins. Choose a skin from the css/skins
+                 folder instead of downloading all of them to reduce the load. -->
+
+            <link rel="stylesheet" href="{{asset('Resources/AdminLTE-2.3.0/dist/css/skins/_all-skins.min.css')}}">
+            <!-- fosjsrouting -->
+            <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+            <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+            <!-- Stylesheet de Bootstrap -->
+
+            <link href="{{asset('Resources/src/css/bootstrap.css')}}" rel="stylesheet">
+            <!-- Stylesheet Personales -->
+            <link href="{{asset('Resources/src/css/style.css')}}" rel="stylesheet">
+
+            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+            <!-- Favicon (Icono Pequeño) -->
+            <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+            <link rel="icon" href="favicon.png" type="image/x-icon">
+
+           
+            <script src="{{ asset('Resources/src/js/jquery-2.0.3.min.js')}}"></script>
+            <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script> 
+             <script src="{{ asset('Resources/js/editarPerfilPublico.js')}}"></script>
+            {% block css %}
+               
+
+            {% endblock%}
+        {% endblock%}
+    </head>
+    <!-- ADD THE CLASS layout-boxed TO GET A BOXED LAYOUT -->
+    <body class="hold-transition skin-blue layout-boxed sidebar-mini">
+        {% block body %}
+            <!-- Site wrapper -->
+            <div class="wrapper ">
+                 {% block cuerpo %}
+
+                {% endblock cuerpo %}
+
+</div><!-- ./wrapper -->
+
+<!-- jQuery 2.1.4 -->
+
+<!--script  src="{#{asset('Resources/AdminLTE-2.3.0/plugins/jQuery/jQuery-2.1.4.min.js')}#}"></script-->
+<!-- Bootstrap 3.3.5 -->
+
+<script  src="{{asset('Resources/AdminLTE-2.3.0/bootstrap/js/bootstrap.min.js')}}"></script>
+<!-- SlimScroll -->
+
+<script  src="{{asset('Resources/AdminLTE-2.3.0/plugins/slimScroll/jquery.slimscroll.min.js')}}"></script>
+<!-- FastClick -->
+
+<script  src="{{asset('Resources/AdminLTE-2.3.0/plugins/fastclick/fastclick.min.js')}}"></script>
+<!-- AdminLTE App -->
+
+<!-- script  src="{#{asset('Resources/AdminLTE-2.3.0/dist/js/app.min.js')}#}"></script-->
+
+<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script> 
+<script src="{{ asset('Resources/js/persona.js')}}"></script>
+ 
+
+{% endblock%}
+ {%block js_template %}
+
+        {% block js_extend %}
+
+
+        {% endblock %}
+
+
+    {% endblock %}
+
+</body>
+</html>

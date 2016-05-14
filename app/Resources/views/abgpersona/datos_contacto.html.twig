@@ -1,113 +1,99 @@
-
+<link href="{{asset('Resources/jquery-validation-1.15.0/demo/css/screen.css')}}" rel="stylesheet">
+<script src="{{ asset('Resources/jquery-validation-1.15.0/dist/jquery.validate.js')}}"></script>
 <script type="text/javascript">
 
     $(document).ready(function () {
+         $("#txtFijo").mask("0000-0000");
+          $("#txtMovil").mask("0000-0000");
+        $("#fdatosContacto").validate({
+         
+            messages: {
+                txtDirecion: {
+                    required: 'Requerido!'
+                },
+                 txtFijo: {
+                    required: 'Requerido!'
+                },
+                txtMovil: {
+                    required: 'Requerido!'
+                },
+                 txtEmail: {
+                    required: 'Requerido!'
+                }
+            }
+        });
 
-       
         $("#cancel").click(function () {
-            $("#Org"+editEdu).show();
+            $("#datosContacto").show();
+          
             $("#div001").remove();
         });
-        
-       
 
-   });
+
+
+    });
 </script>
 
-<form role="form" id="fOrg" >
-    {%if Organizacion|default is not empty %}
+<form role="form" id="fdatosContacto" >
+    {%if result_persona|default is not empty %}
 
-        {% for datos in Organizacion %}
-            
-        <input type="hidden" name="hidOrg" id="hidOrg" value="{{datos.id}}">
-        <div class="form-group">
-            <label for="nombreEmpleado">Organización</label>
-             <input type="text" class="form-control  input-sm"  id="txtOrg" name="txtOrg" 
-                   placeholder="Nombre de la organización" value="{{datos.nombre}}"> 
+        {% for datos in result_persona %}
 
-
-        </div>
-        <div class="form-group">
-            <label for="ejemplo_password_1">Puesto desempeñado </label>
-            <input type="text" class="form-control  input-sm"  id="txtPuestoOrg" name="txtPuestoOrg" 
-                   placeholder="Nombre del puesto desempeñado" value="{{datos.puesto}}">
-        </div>
-      
-        <div class="form-group ">
-            <label for="Fecha_inicio">Periodo</label>
-             <div class="row">
-                <div class="col-sm-2">
-                    <input type="text" class="form-control txtFechaIni  input-sm" 
-                           placeholder="Fecha inicio"  id="txtFechIniOrg" name="txtFechIniOrg"  value="{{datos.fechaIn}}">
-                </div>
-                    <div class="col-sm-2"  id="fechafin" >
-                        <input type="text" class="form-control txtFechaFin  input-sm" 
-                               placeholder="Fecha fin"  id="txtFechFinOrg" name="txtFechFinOrg"  value="{{datos.fechaFin}}">
+            <input type="hidden" name="hidOrg" id="hidOrg" value="">
+            <div class="form-group ">
+                <label for="Fecha_inicio">Telefono(s)</label>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" 
+                               placeholder="Oficina"  id="txtFijo" name="txtFijo" value="{{datos.Tfijo}}" data-rule-required="true">
                     </div>
-            </div>
-        </div>
-        <!--div class="form-group">
-            <div class="row">
-                <div class="col-sm-6">   
-                    <input type="checkbox"  name="checkActual" id="checkActual" />&nbsp;Estudiando actualmente. </div>
-            </div>
-        </div -->  <div class="form-group">
-            <label for="ejemplo_password_1">Función del puesto</label>
-            <textarea class="form-control  input-sm" rows="3" name="txtDescripcion" id="txtDescripcion" placeholder="Descripción del puesto">{{datos.descripcion}}</textarea>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <button type="button" class="btn btn-primary btn-sm"  onclick="addOrganizacion()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" 
+                               placeholder="Movil"  id="txtMovil" name="txtMovil" value="{{datos.movil}}">
+                    </div>
                 </div>
             </div>
-        </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <label for="ejemplo_password_1">Email(s) </label>
+                        <input type="text" class="form-control  input-sm"  id="txtEmail" name="txtEmail" 
+                               placeholder="Email" value="{{datos.correo}}" data-rule-required="true" data-rule-email="true" data-msg-required="Please enter your email address" data-msg-email="Please enter a valid email address">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <label for="ejemplo_password_1">Dirección </label>
+                        <input type="text" class="form-control  input-sm"  id="txtDirecion" name="txtDirecion" 
+                               placeholder="Recidencia" value="{{datos.direccion}}" data-rule-required="true">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <label for="ejemplo_password_1">Sitio web</label>
+                        <input type="text" class="form-control  input-sm"  id="txtsitio" name="txtsitio" 
+                               placeholder="Sitio web" value="{%if sitio|default is not empty %}{% for datos in sitio %}{{datos.nombre}}{%endfor%}
+                                            {%endif%}">
+                                           
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-sm"  onclick="editDatosContacto()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                    </div>
+                </div>
+            </div>
         {%endfor%}
-    {%else%}
-
-        <input type="hidden" name="hidOrg" id="hidOrg" value="">
-        <div class="form-group">
-            <label for="nombreEmpleado">Organización</label>
-             <input type="text" class="form-control  input-sm"  id="txtOrg" name="txtOrg" 
-                   placeholder="Nombre de la organización"> 
 
 
-        </div>
-        <div class="form-group">
-            <label for="ejemplo_password_1">Puesto desempeñado </label>
-            <input type="text" class="form-control  input-sm"  id="txtPuestoOrg" name="txtPuestoOrg" 
-                   placeholder="Nombre del puesto desempeñado">
-        </div>
-      
-        <div class="form-group ">
-            <label for="Fecha_inicio">Periodo</label>
-             <div class="row">
-                <div class="col-sm-2">
-                    <input type="text" class="form-control txtFechaIni  input-sm" 
-                           placeholder="Fecha inicio"  id="txtFechIniOrg" name="txtFechIniOrg">
-                </div>
-                    <div class="col-sm-2"  id="fechafin" >
-                        <input type="text" class="form-control txtFechaFin  input-sm" 
-                               placeholder="Fecha fin"  id="txtFechFinOrg" name="txtFechFinOrg">
-                    </div>
-            </div>
-        </div>
-        <!--div class="form-group">
-            <div class="row">
-                <div class="col-sm-6">   
-                    <input type="checkbox"  name="checkActual" id="checkActual" />&nbsp;Estudiando actualmente. </div>
-            </div>
-        </div -->  <div class="form-group">
-            <label for="ejemplo_password_1">Función del puesto</label>
-            <textarea class="form-control  input-sm" rows="3" name="txtDescripcion" id="txtDescripcion" placeholder="Descripción del puesto"></textarea>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <button type="button" class="btn btn-primary btn-sm"  onclick="addOrganizacion()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
-                </div>
-            </div>
-        </div>
+
     {%endif%}
 </form>
 

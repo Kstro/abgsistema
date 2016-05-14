@@ -1,18 +1,42 @@
-<!-- Calendar -->
-<link rel="stylesheet" href="{{ asset('Resources/zebra/css/bootstrap.css') }}">
-<script type="text/javascript" src="{{ asset('Resources/zebra/js/zebra_datepicker.js')}}" ></script>
+<!-- para validar -->
+
+<link href="{{asset('Resources/jquery-validation-1.15.0/demo/css/screen.css')}}" rel="stylesheet">
+<script src="{{ asset('Resources/jquery-validation-1.15.0/dist/jquery.validate.js')}}"></script>
+<script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
 <script type="text/javascript">
 
     $(document).ready(function () {
+        $.validator.addMethod("valueNotEquals", function (value, element, arg) {
+            return arg !== value;
+        }, "Value must not equal arg.");
 
- 
-       
+        $("#fEdu").validate({
+            rules: {
+                Sdisciplina: {valueNotEquals: "default"}
+            },
+            messages: {
+                txtCentro: {
+                    required: 'Requerido!'
+                },
+                txtTitulo: {
+                    required: 'Requerido!'
+                },
+                Sdisciplina: {
+                    valueNotEquals: "Please select an item!"
+                },
+                txtAnioIni: {
+                    required: 'Requerido!'
+                }
+            }
+        });
+
+
         $("#cancel").click(function () {
-            $("#"+editEdu).show();
+            $("#" + editEdu).show();
             $("#div2").remove();
         });
-        
-         $('#Sdisciplina').select2();
+
+        $('#Sdisciplina').select2();
 
     });
 
@@ -36,81 +60,82 @@
 
             <input type="hidden" name="hidEdu" id="hidEdu" value="{{datos.idEs}}">
 
-        
-        <div class="form-group">
-            <label for="nombreEmpleado">Centros de estudios</label>
-             <input type="text" class="form-control  input-sm"  id="txtCentro" name="txtCentro" 
-                   placeholder="Centros de estudios" value="{{datos.institucion}}"> 
+
+            <div class="form-group">
+                <label for="nombreEmpleado">Centro de estudios</label>
+                <input type="text" class="form-control  input-sm"  id="txtCentro" name="txtCentro" 
+                       placeholder="Centros de estudios" value="{{datos.institucion}}"  data-rule-required="true"> 
 
 
-        </div>
-        <div class="form-group">
-            <label for="ejemplo_password_1">Títulacion</label>
-            <input type="text" class="form-control  input-sm"  id="txtTitulo" name="txtTitulo" 
-                   placeholder="Nombre del puesto "  value="{{datos.titulo}}">
-        </div>
-        <div class="form-group">
-            <label for="ejemplo_password_1">Disciplina academica</label>
-          <select id="Sdisciplina" name="Sdisciplina" class="form-control input-sm empresa">
-                <option value="0" selected>Select an option...</option>
-                 {% for datosD in disciplina %}
-                       <option value="{{datosD.id}}" {%if(datosD.id==datos.idDis)%}selected{%endif%}>{{datosD.nombre}}</option>
-                 {%endfor%}
-            </select> 
-        </div>
+            </div>
+            <div class="form-group">
+                <label for="ejemplo_password_1">Titulación</label>
+                <input type="text" class="form-control  input-sm"  id="txtTitulo" name="txtTitulo" 
+                       placeholder="Nombre del Titulo    "  value="{{datos.titulo}}"  data-rule-required="true">
+            </div>
+            <div class="form-group">
+                <label for="ejemplo_password_1">Disciplina academica</label>
+                <select id="Sdisciplina" name="Sdisciplina" class="form-control input-sm empresa"  data-rule-required="true">
+                    <option value="default" selected>Select an option...</option>
+                    {% for datosD in disciplina %}
+                        <option value="{{datosD.id}}" {%if(datosD.id==datos.idDis)%}selected{%endif%}>{{datosD.nombre}}</option>
+                    {%endfor%}
+                </select> 
+            </div>
 
 
-        <div class="form-group ">
-            <label for="Fecha_inicio">Periodo de estudio</label>
-            <div class="row">
-                <div class="col-sm-2">
-                    <input type="number" min="1975" max="2016" class="form-control input-sm" id="txtAnioIni" name="txtAnioIni"  placeholder="Año inicio" value="{{datos.anioIni}}">
-                </div>
-                <div  id="fechafin">
-                    <div class="col-sm-2"  >
-                         <input type="number" min="1975" max="2016" class="form-control input-sm" 
-                                    placeholder="Año fin" id="txtAnioFin" name="txtAnioFin" value="{{datos.anio}}">
+            <div class="form-group ">
+                <label for="Fecha_inicio">Periodo de estudio</label>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <input type="number" min="1975" max="2016" class="form-control input-sm" id="txtAnioIni" name="txtAnioIni"  placeholder="Año inicio" value="{{datos.anioIni}}"
+                                data-rule-required="true" >
+                    </div>
+                    <div  id="fechafin">
+                        <div class="col-sm-2"  >
+                            <input type="number" min="1975" max="2016" class="form-control input-sm" 
+                                   placeholder="Año fin" id="txtAnioFin" name="txtAnioFin" value="{{datos.anio}}">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="row">
-                <div class="col-sm-6">   
-                    <input type="checkbox"  name="checkActual" id="checkActual" />&nbsp;Estudiando actualmente. </div>
-            </div>
-        </div>
-   
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <button type="button" class="btn btn-primary btn-sm"  onclick="addEdu()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-6">   
+                        <input type="checkbox"  name="checkActual" id="checkActual" />&nbsp;Estudiando actualmente. </div>
                 </div>
             </div>
-        </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-sm"  onclick="addEdu()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                    </div>
+                </div>
+            </div>
         {%endfor%}
     {%else%}
 
         <input type="hidden" name="hidEdu" id="hidEdu" value="">
         <div class="form-group">
-            <label for="nombreEmpleado">Centros de estudios</label>
-             <input type="text" class="form-control  input-sm"  id="txtCentro" name="txtCentro" 
-                   placeholder="Centros de estudios"> 
+            <label for="nombreEmpleado">Centro de estudios</label>
+            <input type="text" class="form-control  input-sm"  id="txtCentro" name="txtCentro" 
+                   placeholder="Centros de estudios" data-rule-required="true"> 
 
 
         </div>
         <div class="form-group">
-            <label for="ejemplo_password_1">Títulacion</label>
+            <label for="ejemplo_password_1">Titulación</label>
             <input type="text" class="form-control  input-sm"  id="txtTitulo" name="txtTitulo" 
-                   placeholder="Nombre del puesto ">
+                   placeholder="Nombre del Titulo " data-rule-required="true">
         </div>
         <div class="form-group">
             <label for="ejemplo_password_1">Disciplina academica</label>
-          <select id="Sdisciplina" name="Sdisciplina" class="form-control input-sm empresa">
-                <option value="0" selected>Select an option...</option>
-                 {% for datos in disciplina %}
-                       <option value="{{datos.id}}" selected>{{datos.nombre}}</option>
-                 {%endfor%}
+            <select id="Sdisciplina" name="Sdisciplina" class="form-control input-sm empresa" data-rule-required="true">
+                <option value="default" selected>Select an option...</option>
+                {% for datos in disciplina %}
+                    <option value="{{datos.id}}">{{datos.nombre}}</option>
+                {%endfor%}
             </select> 
         </div>
 
@@ -119,12 +144,13 @@
             <label for="Fecha_inicio">Periodo de estudio</label>
             <div class="row">
                 <div class="col-sm-2">
-                    <input type="number" min="1975" max="2016" class="form-control input-sm" id="txtAnioIni" name="txtAnioIni"  placeholder="Año inicio" >
+                    <input type="number" min="1975" max="2016" class="form-control input-sm" id="txtAnioIni" name="txtAnioIni"  placeholder="Año inicio"
+                           data-rule-required="true">
                 </div>
                 <div  id="fechafin">
                     <div class="col-sm-2"  >
-                         <input type="number" min="1975" max="2016" class="form-control input-sm" 
-                                    placeholder="Año fin" id="txtAnioFin" name="txtAnioFin" >
+                        <input type="number" min="1975" max="2016" class="form-control input-sm" 
+                               placeholder="Año fin" id="txtAnioFin" name="txtAnioFin" >
                     </div>
                 </div>
             </div>
@@ -135,14 +161,17 @@
                     <input type="checkbox"  name="checkActual" id="checkActual" />&nbsp;Estudiando actualmente. </div>
             </div>
         </div>
-       
+
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group">
-                    <button type="button" class="btn btn-primary btn-sm"  onclick="addEdu()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                    <button type="submit" class="btn btn-primary btn-sm"  onclick="addEdu()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
                 </div>
             </div>
         </div>
     {%endif%}
 </form>
 
+<script type="text/javascript">
+    $('#Sdisciplina').select2();
+    </script>

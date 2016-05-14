@@ -169,7 +169,12 @@ class CtlEmpresa
      */
     private $listaEmpleado;
     
-    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="url_permiso", type="integer", nullable=false)
+     */
+    private $urlPermiso;
     
 
     /**
@@ -671,6 +676,31 @@ class CtlEmpresa
     }
 
     
+    
+     
+    /**
+     * Set urlPermiso
+     *
+     * @param integer $urlPermiso
+     * @return CtlEmpresa
+     */
+    public function setUrlPermiso($urlPermiso)
+    {
+        $this->urlPermiso = $urlPermiso;
+
+        return $this;
+    }
+
+    /**
+     * Get urlPermiso
+     *
+     * @return integer
+     */
+    public function getUrlPermiso()
+    {
+        return $this->urlPermiso;
+    }
+
     
     
     
