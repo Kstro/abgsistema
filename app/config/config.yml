@@ -11,6 +11,7 @@ parameters:
      photo.verificacion: %kernel.root_dir%/../web/Photos/verificacion/
      photo.perfil: %kernel.root_dir%/../web/Photos/Perfil/
      photo.perfil.temporal: %kernel.root_dir%/../web/Photos/Perfil/temporal/
+     photo.entrada.temporal: %kernel.root_dir%/../web/Photos/entrada/
 
 framework:
     #esi:             ~

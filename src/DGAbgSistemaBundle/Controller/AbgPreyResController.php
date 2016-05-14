@@ -56,8 +56,10 @@ class AbgPreyResController extends Controller{
      */
     public function envioPreguntaAction(Request $request) {
         
-        $username = $this->container->get('security.context')->getToken()->getUser();
-        $personaId = $username->getRhPersona();
+//        $username = $this->container->get('security.context')->getToken()->getUser();
+        //var_dump($username);
+        //die();
+//       $personaId = $username->getRhPersona();
         //$idabg = $username->getRhPersona()->getId();
         
         $fechapregunta = date('Y-m-d');  
@@ -75,7 +77,7 @@ class AbgPreyResController extends Controller{
         $abgPregunta->setEstado("1");
         $abgPregunta->setCorreoelectronico($email);
         $abgPregunta->setFechaPregunta($fechapregunta);
-        $abgPregunta->setCtlUsuario($username);
+//      $abgPregunta->setCtlUsuario($username);
         
         
         $em = $this->getDoctrine()->getManager();
