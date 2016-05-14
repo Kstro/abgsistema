@@ -5,11 +5,15 @@
         <group>
             <file>file:/C:/Servers/xampp/htdocs/abgsistema/src/DGAbgSistemaBundle/Entity/AbgPersonaEspecialida.php</file>
             <file>file:/C:/Servers/xampp/htdocs/abgsistema/src/DGAbgSistemaBundle/Controller/CtlEmpresaController.php</file>
+            <file>file:/C:/Servers/xampp/htdocs/abgsistema/src/DGAbgSistemaBundle/Entity/CtlEstado.php</file>
             <file>file:/C:/Servers/xampp/htdocs/abgsistema/src/DGAbgSistemaBundle/Entity/AbgPersona.php</file>
+            <file>file:/C:/Servers/xampp/htdocs/abgsistema/.gitignore</file>
             <file>file:/C:/Servers/xampp/htdocs/abgsistema/app/Resources/views/directorio/listado_directorio.html.twig</file>
             <file>file:/C:/Servers/xampp/htdocs/abgsistema/app/Resources/views/directorio/directorio.html.twig</file>
             <file>file:/C:/Servers/xampp/htdocs/abgsistema/src/DGAbgSistemaBundle/Entity/CtlEmpresa.php</file>
             <file>file:/C:/Servers/xampp/htdocs/abgsistema/app/config/parameters.yml</file>
+            <file>file:/C:/Servers/xampp/htdocs/abgsistema/app/Resources/views/abgpersona/perfil.html.twig</file>
+            <file>file:/C:/Servers/xampp/htdocs/abgsistema/src/DGAbgSistemaBundle/Entity/CtlCiudad.php</file>
             <file>file:/C:/Servers/xampp/htdocs/abgsistema/src/DGAbgSistemaBundle/Controller/DirectorioController.php</file>
         </group>
     </open-files>
