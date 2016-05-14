@@ -30,10 +30,24 @@ class AbgEntradaController extends Controller {
         //  $abgPersonas = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->findAll();
         
         $em = $this->getDoctrine()->getManager();
+        
+        $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+          $username = $this->container->get('security.context')->getToken()->getUser();
+        $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
+                . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.tituloProfesional AS tprofesional, p.verificado As verificado "
+                . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
+        $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+
+       $dqlfoto = "SELECT fot.src as src "
+                    . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
+            $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
 
         $ctlCategoriasBlog = $em->getRepository('DGAbgSistemaBundle:CtlCategoriaBlog')->findAll();
         
         return $this->render('blog/index.html.twig', array(
+                            'abgPersona' => $result_persona,
+                            'abgFoto' => $result_foto,
+                            'usuario' => $username,
                            'ctlCategoriasBlog' => $ctlCategoriasBlog,
         ));
     }
