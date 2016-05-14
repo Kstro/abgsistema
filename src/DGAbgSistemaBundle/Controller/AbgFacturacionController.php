@@ -34,9 +34,7 @@ class AbgFacturacionController extends Controller {
         $Curso = "";
         try {
 
-            /*    $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
-              $idPersona = $RepositorioPersona[0]->getRhPersona()->getId(); */
-            $idPersona = $this->container->get('security.context')->getToken()->getUser()->getId();
+                      $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
                     . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.tituloProfesional AS tprofesional "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;

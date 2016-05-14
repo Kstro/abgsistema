@@ -42,12 +42,28 @@ class AbgEntrada
      */
     private $contenido;
 
+    
     /**
-     * @var integer
+     * @var \CtlUsuario
      *
-     * @ORM\Column(name="abg_categoria_entrada_id", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="CtlUsuario")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="ctl_usuario_id", referencedColumnName="id")
+     * })
+     */
+    private $ctlUsuario;
+    
+    
+     /**
+     * @var \CtlCategoriaBlog
+     *
+     * @ORM\ManyToOne(targetEntity="CtlCategoriaBlog")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="abg_categoria_entrada_id", referencedColumnName="id")
+     * })
      */
     private $abgCategoriaEntradaId;
+    
 
     /**
      * @var \CtlSubespecialidad
@@ -69,8 +85,6 @@ class AbgEntrada
      */
     private $ctlUsuario;
 
-
-
     /**
      * Get id
      *
@@ -80,7 +94,7 @@ class AbgEntrada
     {
         return $this->id;
     }
-
+    
     /**
      * Set tituloEntrada
      *

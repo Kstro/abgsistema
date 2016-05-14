@@ -1,0 +1,66 @@
+{% extends ':Layout:layout2.html.twig' %}
+
+{% block descripcion_y_acciones %}
+
+
+    {% block descripcion %}
+
+    {% endblock%}
+    {% block acciones %}
+
+    {% endblock %}
+
+{% endblock %}
+{% block js_extend %}
+   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="src/js/bootstrap.js"></script>
+    <script type="text/javascript">
+            $(function () {
+              $('[data-toggle="tooltip"]').tooltip()
+            })
+    </script>
+{% endblock %} 
+
+{% block navegacion_Y_body %}
+
+    {% block navegacion %}
+    {% endblock %}
+    {% block cuerpo %}
+        
+        <div class="container" style="padding: 40px 0px; background-color: #f6f6f6;">
+		<div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <p class="text-center" style="font-size: 25px;">{{pregunta.pregunta}}</p>
+                            {#<hr>#}
+                            {#<img class="img-thumbnail" src="http://placehold.it/400x500" style="max-width: 12%; width: 12%; margin-left: 10px; margin-right: 10px;">Juan Perez#}
+                            
+                            <hr>
+                            <img class="img-thumbnail" src="http://placehold.it/400x500" style="max-width: 12%; width: 12%; margin-left: 10px; margin-right: 10px;">Juan Perez
+                            <p style="font-size: 20px; margin-left: 5px;">Respuesta:</p>
+                            <p style="margin-left:5px;">
+                                {% if pregunta.respuesta == false %}
+                                    Aun sin responder
+                                {% else %}
+                                    {{pregunta.respuesta}}
+                                {% endif %}
+                                
+                                
+                            </p>
+                        </div>                        
+                    </div>
+                    <div class="col-md-3"></div>
+                  
+		</div> {#Fin del row#}
+	</div>
+	<div style="height: 10px;"></div>
+	
+    {% endblock %}
+    
+    {% block js_template %}
+                        
+    {% endblock js_template %}
+{% endblock %}

@@ -22,9 +22,9 @@ class SecuredController extends Controller
 {
 
     /**
-     * @Route("/login", name="abogado_login")
+     * @Route("/login", name="abogado_login" , options={"expose"=true})
      * @Template()
-     */
+     */ 
     public function loginAction(Request $request)
     {
         $session = $request->getSession();

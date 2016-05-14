@@ -794,7 +794,7 @@ $(function editarFoto() {
                         size: 'mini',
                         msg: 'Datos modificados con exito'
                     });
-                    $("#prev").attr('src', "/abgsistema/web/" + data.direccion);
+                    $("#prev").attr('src', "/" + data.direccion);
                     $("#gif").hide();
                     $(".close").click();
 

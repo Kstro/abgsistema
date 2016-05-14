@@ -27,7 +27,7 @@ security:
             form_login:
                 login_path: /secured/login
                 check_path: /secured/login_check
-                default_target_path: /admin/empresa
+                default_target_path: /abgpersona/admin/perfil
                 #always_use_default_target_path: true 
                 failure_path:      /secured/login
                 #use_referer:         true

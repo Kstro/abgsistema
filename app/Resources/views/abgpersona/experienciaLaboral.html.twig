@@ -7,7 +7,7 @@
 <link href="{{asset('Resources/jquery-validation-1.15.0/demo/css/screen.css')}}" rel="stylesheet">
 <script src="{{ asset('Resources/jquery-validation-1.15.0/dist/jquery.validate.js')}}"></script>
 <script src="{{ asset('Resources/select2/dist/js/select2.min_1.js') }}"></script>
- <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
+
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -161,8 +161,8 @@
         <input type="hidden" name="hidExp" id="hidExp" value="">
         <div class="form-group" >
             <label for="nombreEmpleado">Nombre de la Empresa</label>
-            <div  class="form-group" id="cambioEmpresa">
-                <select id="ScambioEmpresa" name="ScambioEmpresa" class="form-control input-sm empresa" data-rule-required="true" data-rule-select="true">
+            <div  class="form-group " id="cambioEmpresa">
+                <select id="ScambioEmpresa" name="ScambioEmpresa" class="form-control  empresa input-sm" data-rule-required="true" data-rule-select="true">
 
 
                 </select> 
@@ -285,7 +285,7 @@
         if (data.nombre) {
             return data.nombre;
         } else {
-            return "Select an option";
+            return "Seleccione una opción";
         }
     }
 

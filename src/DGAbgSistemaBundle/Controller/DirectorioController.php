@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use DGAbgSistemaBundle\Entity\CtlCiudad;
 use DGAbgSistemaBundle\Entity\Persona;
+use DGAbgSistemaBundle\Entity\AbgPregunta;
 use DGAbgSistemaBundle\Form\CtlCiudadType;
 
 /**
@@ -29,10 +30,16 @@ class DirectorioController extends Controller
     { 
        $em = $this->getDoctrine()->getManager();
 
-        $ctlCiudads = $em->getRepository('DGAbgSistemaBundle:CtlCiudad')->findAll();
-
+        $ctlCiudads = $em->getRepository('DGAbgSistemaBundle:CtlEstado')->findAll();
+        $dql = "SELECT c FROM DGAbgSistemaBundle:CtlEstado c "
+                . "INNER JOIN c.ctlPais p WHERE p.estado=1";
+        
+        $ctlCiudads = $em->createQuery($dql)
+                   //->setParameter('id',$id)
+                   ->getResult();
+        
         return $this->render('directorio/directorio.html.twig', array(
-            'ctlCiudads' => $ctlCiudads,
+            'deptos' => $ctlCiudads,
         ));
     }
 
@@ -87,8 +94,8 @@ class DirectorioController extends Controller
         $stmt->execute();
         $reg['data'] = $stmt->fetchAll();
         //var_dump($reg);
-        $sql = "SELECT COUNT(*) as total FROM directorio WHERE CONCAT(upper(nombres),' ',upper(apellido)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
-
+        
+        $sql = "SELECT COUNT(*) as total FROM directorio WHERE CONCAT(upper(nombres),' ',apellido) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
         $em = $this->getDoctrine()->getManager();
         $stmt = $em->getConnection()->prepare($sql);
         $stmt->execute();
@@ -253,8 +260,7 @@ class DirectorioController extends Controller
         }
         
         
-        //var_dump($reg['data']);
-        //die();
+            
         $response->setData($reg);    
         return $response; 
         //return new Response(json_encode($reg));

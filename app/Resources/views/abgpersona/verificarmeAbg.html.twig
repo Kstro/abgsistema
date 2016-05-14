@@ -35,6 +35,7 @@
                         var datos;
                         if (data.msj !== false) {
                             $.each($(data.datosP), function (indice, val) {
+                                console.log(data.foto);
                                 datos = '<div class ="item-directorio">';
                                 datos += '<div class ="row">';
                                 datos += '<div class ="col-xs-2 ">';
@@ -99,6 +100,7 @@
         </script>
 
         <div class="row" style=" margin-left:0px; margin-right:0px;">
+            <input type="hidden" id="hPersona"  value="{{datos.id}}">
             <section class="col-lg-12 connectedSortable ui-sortable">
                 <div class="box box-primary">
                     <div class="box-header ui-sortable-handle" style="cursor: move;">
@@ -195,7 +197,7 @@
                         type: 'POST',
                         async: false,
                         dataType: 'json',
-                        data: {estado: estado, hPersona: $('input#hPersona').val(), n: 4},
+                        data: {estado: estado, hPersona: $("#Sabogado").val(), n: 4},
                         url: Routing.generate('edit_persona'),
                         success: function (data)
                         {

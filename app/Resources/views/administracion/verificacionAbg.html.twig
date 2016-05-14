@@ -1,0 +1,286 @@
+{% block js_extend %}
+    <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
+    <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
+
+
+    <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
+    <script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
+
+{% endblock%}
+{% block navegacion_Y_body %}
+
+    {% block navegacion %}
+
+    {% endblock %}
+    {% block cuerpo %}
+
+        <script type="text/javascript">
+
+
+            function vericarAbg(val) {
+                $.ajax({
+                    type: "GET",
+                    url: Routing.generate('verificar'),
+                    data: {abg: val},
+                    success: function (data)
+                    {
+                        $("#divVerificar").empty();
+                        $("#divVerificar").append(data);
+                        $("#divVerificar").show()
+                        $("#divLista").hide()
+
+                    },
+                    error: function (errors)
+                    {
+                    }
+                });
+            }
+
+            function Noverificar(val, ban) {
+                $.ajax({
+                    type: "GET",
+                    url: Routing.generate('verificar'),
+                    data: {abg: val, ban: ban},
+                    success: function (data)
+                    {
+                        $("#contNoVerificado").empty();
+                        $("#contNoVerificado").append(data);
+                        $("#contNoVerificado").show();
+                        $("#contVerificados").hide();
+                    },
+                    error: function (errors)
+                    {
+                    }
+                });
+            }
+            function AbgVerificados()
+            {
+                $.ajax({
+                    type: "GET",
+                    url: Routing.generate('verificados'),
+                    success: function (data)
+                    {
+                        $("#contVerificados").empty();
+                        $("#contVerificados").append(data);
+
+                    },
+                    error: function (errors)
+                    {
+                    }
+                });
+            }
+            function consultarAbg()
+            {
+                $.ajax({
+                    type: 'GET',
+                    async: false,
+                    dataType: 'json',
+                    url: Routing.generate('cons_abg'),
+                    data: {abg: $('#Sabogado').val()},
+                    success: function (data)
+                    {
+                        $("#divVerificar").empty(datos);
+                        var datos;
+                        //if (data.msj == "undefined") {
+                            $.each($(data.datosP), function (indice, val) {
+
+                                datos = '<div class ="item-directorio">';
+                                datos += '<div class ="row">';
+                                datos += '<div class ="col-xs-2 ">';
+                                datos += '<img src ="/' + data.foto + '" style ="width: 100%; height:135px;margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">';
+                                datos += '</div>';
+                                datos += '<div class="col-xs-6"><div class ="row"><div class="col-xs-6">';
+                                datos += '<p style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class ="sans"><strong>' + val.nombre + " " + val.apellido + '</strong></p>';
+                                datos += '<p style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">' + val.tituloProfesional + '</p></div></div>';
+
+                                datos += '<div class ="row"  style="margin-top: 10px;"><div class="col-sm-4" >';
+                                datos += '<p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Telefonos </strong></p >';
+                                datos += '<p style ="font-size: 11px; margin-bottom: 0px;"> + 503 ' + val.movil + "</br>+ 503 " + val.Tfijo + '</p>';
+                                datos += '</div>';
+                                datos += '<div class="col-sm-4 " >';
+                                datos += '<p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Email </strong></p>';
+                                datos += '<p style ="font-size: 11px; margin-bottom: 0px;">' + val.correo + '</p>';
+                                datos += '</div>';
+                                datos += '<div class="col-sm-4 ">';
+                                datos += '<p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"> <strong> Sitio Web </strong></p>';
+                                datos += '<p style="font-size: 11px; margin-bottom: 0px;"><a href = "" target = "_blank">' + data.sitioweb + '</a></p>';
+
+                                datos += '</div></div>';
+                                datos += '<div class="row"><div class = "col-sm-12" style="margin-top: -0px;">';
+                                datos += '<span style ="font-size: 11px;"><a href=""> Ver perfill </a></span>';
+                                datos += '<span style ="color: #777777; margin-left: 5px; margin-right: 5px;"> | </span>';
+                                datos += '<span style ="font-size: 11px;"><a href="">Contactar</a></span></div></div></div>';
+
+                                datos += '<div class="col-xs-4" >';
+                                datos += '<div class="row"><div class="col-xs-12 "><div class="bloque-ocultar ">';
+                                datos += '<div class="clearfix"></div>';
+                                datos += '<div class="bloque-ocultar ">';
+                                datos += '<p class="text-center" >Verificar&nbsp;<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="Oculte su perfil mientras lo actualize. Mida el nivel de completacion con el icono de abajo."></i></p>';
+                                datos += '<div class="onoffswitch" style="margin-left: auto; margin-right: auto;">';
+                                datos += '<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox  myonoffswitch" id="myonoffswitch" ';
+                                if (val.verificado === 1) {
+                                    datos += 'checked>';
+                                } else {
+                                    datos += '>';
+                                }
+                                datos += '<label class="onoffswitch-label" for="myonoffswitch">';
+                                datos += '<span class="onoffswitch-inner"></span>';
+                                datos += '<span class="onoffswitch-switch"></span>';
+                                datos += '</label>';
+                                datos += '</div>';
+                                datos += '</div>';
+                                datos += '  </div></div></div></div>';
+                                datos += ' </div>';
+
+
+                            });
+                            $("#divVerificar").append(datos);
+                              $("#divVerificar").show();
+                   //     }
+                    },
+                    error: function (errors)
+                    {
+
+                    }
+                }
+                );
+            }
+
+        </script>
+        <div class="row" style=" margin-left:0px; margin-right:0px;">
+            <section class="col-lg-12 connectedSortable ui-sortable">
+                <div class="nav-tabs-custom" style="cursor: move;">
+                    <ul class="nav nav-tabs  ui-sortable-handle">
+                        <li class="active"><a href="#revenue-chart" data-toggle="tab">Verificar Abogado</a></li>
+                        <li><a href="#divVerificados" data-toggle="tab" onClick="AbgVerificados()">Abogados verificados</a></li>
+                        <li class="pull-left header">
+                    </ul>
+                    <div class="tab-content no-padding">
+
+                        <div class="chart tab-pane active" id="revenue-chart" >
+                            <br>
+                            <div style=" padding: 15px;" >
+                                <form action="#" method="post">
+
+                                    <div id="divLista" style="min-height:175px;">
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <div class="col-md-5">
+                                                    <label for="nombreEmpleado">Cliente </label>
+                                                    <select id="Sabogado" name="Sabogado" class="form-control" onChange="consultarAbg()">
+                                                        <option value="0" >Seleccione un cliente</option>
+                                                    </select>
+                                                </div>
+                                            </div>   </div>
+                                            {%if solicitVerificacion|default is not empty %}
+                                            <div class="form-group table-responsive mailbox-messages" id="contenedor">
+                                                <table id="tabla" class="table table-hover table-striped" style="font-size:13px;" >
+                                                    <thead>
+                                                    <br>
+                                                    </thead>
+                                                    <tbody style="min-height: 350px;">
+                                                        {% for datos in solicitVerificacion %}
+                                                            <tr style=" font-size: 15px" onClick="vericarAbg({{datos.id}})">
+                                                                <td ><a href="#" >{{datos.nombre}}</a></td>
+                                                                <td align="center"> </strong>&nbsp;<i class="fa  fa-paperclip fa-lg text-aqua"></i></td>
+                                                                <td align="center">  <div class="bloque-ocultar ">
+                                                                        <img src="{{ asset('Resources/src/img/verified.png') }}" disabled="disabled" style="width: 15px; height: 15px; -webkit-filter: grayscale(80%);" id="botonModalP" title="Cambiar foto de perfil" >
+                                                                        </td>
+                                                                        </tr>
+                                                                    {%endfor%}
+                                                                    </tbody>
+                                                                    </table> 
+                                                                </div>
+                                                            {%endif%}
+                                                            </div>
+                                                            <div id="divVerificar" style="min-height:175px; display: none;">
+                                                               
+                                                            </div>
+                                                             </form>
+                                                            </div>
+
+                                                            </div>
+                                                            <div class="chart tab-pane" id="divVerificados" style=" padding: 15px;" >
+                                                                <div class="row">
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-5">
+                                                                            <label for="nombreEmpleado">Lista de Abogados verificados</label>
+
+                                                                        </div>
+                                                                    </div>   </div>
+                                                                <div class="form-group table-responsive mailbox-messages" id="contVerificados">
+
+                                                                </div>
+                                                                <div  id="contNoVerificado">
+
+                                                                </div>
+                                                            </div>
+                                                            </div>
+                                                            </div>
+                                                            </section>
+                                                            </div>
+                                                            <!-- ####################################################### -->
+                                                            <script type="text/javascript">
+                                                                $(document).on('ready', function () {
+                                                                    $('#Sabogado').select2({
+                                                                        ajax: {
+                                                                            url: Routing.generate('abogados'),
+                                                                            dataType: 'json',
+                                                                            delay: 250,
+                                                                            data: function (params) {
+                                                                                return {
+                                                                                    q: params.term,
+                                                                                    page: params.page
+                                                                                };
+                                                                            },
+                                                                            processResults: function (data, params) {
+
+                                                                                var select2Data = $.map(data.data, function (obj) {
+                                                                                    obj.id = obj.idAbg;
+                                                                                    obj.text = obj.nombre;
+                                                                                    return obj;
+                                                                                });
+                                                                                return {
+                                                                                    results: select2Data
+                                                                                };
+                                                                            },
+                                                                            cache: true
+                                                                        },
+                                                                        escapeMarkup: function (markup) {
+                                                                            return markup;
+                                                                        },
+                                                                        minimumInputLength: 1,
+                                                                        templateResult: formatRepo,
+                                                                        templateSelection: formatRepoSelection
+                                                                    });
+                                                                });
+                                                                function formatRepo(data) {
+                                                                    if (data.nombre) {
+
+                                                                        var markup = "<div class='select2-result-repository clearfix'>" +
+                                                                                "<div class='select2-result-repository__meta'>" +
+                                                                                "<div class='select2-result-repository__title'>" + data.nombre + "</div>" +
+                                                                                "</div></div>";
+                                                                    } else {
+                                                                        markup = "Seleccione un cliente ";
+                                                                    }
+
+                                                                    return markup;
+                                                                }
+
+                                                                function formatRepoSelection(data) {
+                                                                    if (data.nombre) {
+                                                                        return data.nombre;
+                                                                    } else {
+                                                                        return "Seleccione un cliente";
+                                                                    }
+                                                                }
+
+                                                            </script>
+                                                        {% endblock%}
+
+                                                    {% endblock%}
+
