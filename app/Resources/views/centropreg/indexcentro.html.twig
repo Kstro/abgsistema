@@ -1,0 +1,489 @@
+{% extends ':Layout:layout2.html.twig' %}
+
+{% block descripcion_y_acciones %}
+
+
+    {% block descripcion %}
+
+    {% endblock%}
+    {% block acciones %}
+
+    {% endblock %}
+
+{% endblock %}
+{% block js_extend %}
+   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="src/js/bootstrap.js"></script>
+    <script type="text/javascript">
+            $(function () {
+              $('[data-toggle="tooltip"]').tooltip()
+            })
+    </script>
+{% endblock %} 
+
+{% block navegacion_Y_body %}
+
+    {% block navegacion %}
+    {% endblock %}
+    {% block cuerpo %}
+        
+        <div class="container" style="padding: 40px 0px; background-color: #f6f6f6;">
+		<div class="row">
+                    
+                    <form class="navbar-form" role="search" action="{{ path('preg_deta') }}" method="POST">
+                        <p class="text-center" style="font-size: 25px;">CENTRO DE PREGUNTAS</p>
+                        <div class="col-md-2"></div>
+                        <div class="col-md-7"><p class="text-center" style="font-size: 15px;">HAGA SU PREGUNTA AL MAS GRANDE GRUPO SELECTO DE ABOGADOS</p></div>
+                        <div class="col-md-4"></div>
+                        <div class="clearfix"></div>
+                                                
+                        <div class="col-md-2"></div>
+                        <div class="col-md-7 text-center">
+                            <div class="form-group">
+                                <textarea id="" name="pregunta" class="form-control textarea" maxlength="140" placeholder="Haga su pregunta aqui ..." style="max-width: 400px; min-width: 400px; width: 400px; max-height: 150px; min-height: 150px; height: 150px;" required></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-3 pull-left"><ul class="pull-left"><li>700 abogados</li><li>Gratis</li></ul> </div>
+                        <div class="clearfix"></div>
+                                                
+                        <div class="col-md-2"></div>
+                        <div class="col-md-7 text-center"><button type="submit" class="btn btn-default" style="margin-top: 10px;">Enviar Pregunta </button></div>                        
+                        <div class="col-md-3"></div>
+                        <div class="clearfix"></div>
+                        <hr style="border: 1px solid #262626; width: 100%;">                                                
+                    </form>
+                        <div class="col-md-8 text-justify"> {#Inicio lista de preguntas#}
+                            <p class="text-center" style="margin: 10px 25px; font-size: 20px;">LISTA DE PREGUNTAS</p>
+                            {#{% for preguntas in preguntas %}
+                                <li>{{ preguntas.pregunta }} </br>
+                                    <div style="margin-left: 15px; font-size: 12px; font-weight: bold;">Fecha de la pregunta: {{ preguntas.fechapregunta }}</div>
+                                </li>
+                            {% endfor %} #}  
+                            
+                            <div class="item-directorio" style="margin-top: 5px !important; padding: 10px;">
+                                <form class="form-inline">
+                                    <input id="searchBox" maxlength="140" class="searchbox" style="width: 90%;" placeholder="Buscar..." oninvalid="this.setCustomValidity('Porfavor ingrese el nombre de un Abogado, Bufete, Firma o Problema Legal')" required> </input>
+                                    <button id="searchButton" type="submit" class="searchbotondir">Buscar</button>
+                                    <input type="hidden" value="0" id="inicioInput">
+                                </form>
+                            </div>
+                            <div class="item-directorio-nexo" style="height: 40px;">
+                                <p id="mostrando" class="pull-left" style="font-size: 12px; margin-bottom: 0px; padding: 10px;">
+                                    Mostrando los resultado para '<label id="filtro"><strong>Familiar</strong></label>'.
+                                </p>
+                                <p class="pull-right" style="font-size: 12px; margin-bottom: 0px; padding: 10px;">
+                                    Mostrando <label class="filtroRegistros"></label> resultados de <label class="totalRegistros"></label>
+                                </p>
+                            </div>
+                            <div id="registros"></div>
+
+                            <div id="busquedaVacia" style="display:none;border-bottom-color: #000">
+                                No se encontraron registros...
+                            </div>
+                            <!-- Fin de Items -->
+                            <!-- PAGINACION -->
+                            <div class="item-directorio-nexo">
+                                <div class="row">
+                                    <div class="col-md-7" style="padding-top: 9px;">
+                                        <ul class="numeroPaginas" style="list-style: none; display: inline; padding-left: 10px !important; color: #777777;">
+
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <p class="text-right" style="font-size: 12px; margin-bottom: 0px; padding: 10px;">
+                                            Mostrando <label class="filtroRegistros"></label> resultados de <label class="totalRegistros"></label>
+                                        </p>
+                                    </div>	
+                                </div>
+                            </div>
+
+                            <div style="height: 20px;"></div>
+                                                                                                               
+                        </div>  {#Fin lista de preguntas#}
+                        <div class="col-md-4 text-justify"> {#Inicio de top abogados activos#}
+                            <p class="text-center" style="margin: 10px 25px; font-size: 20px;">TOP 10 USUARIOS ACTIVOS</p>
+                            <ol class="text-center" style="">
+                                <li>Lic. Juan Perez</li>
+                                <li>Lic. Juan Perez</li>
+                                <li>Lic. Juan Perez</li>
+                                <li>Lic. Juan Perez</li>
+                                <li>Lic. Juan Perez</li>
+                                <li>Lic. Juan Perez</li>
+                                <li>Lic. Juan Perez</li>
+                                <li>Lic. Juan Perez</li>
+                                <li>Lic. Juan Perez</li>
+                                <li>Lic. Juan Perez</li>                                                                
+                            </ol>
+                        </div> {#Inicio de top abogados activos#}
+                        
+                        
+                        
+		</div> {#Fin del row#}
+	</div>
+	<div style="height: 10px;"></div>
+	
+    {% endblock %}
+    
+    {% block js_template %}
+        <script>
+        $(document).ready(function(){
+            var inicio = $('#inicioInput').val(); //numero de registros que se van a mostrar
+            var busqueda=$('#searchBox').val();
+            var longitud = 10; //numero de registros que se van a mostrar
+            var paginaActual = 1; //primer registro a mostrar
+            var numPages = 0;
+            //var contenidoOriginal = $('#registros').html();
+            buscar(busqueda,inicio,longitud,paginaActual);
+            $(document).on('click','#searchButton', function(){
+                inicio   = $('#inicioInput').val(); //numero de registros que se van a mostrar
+                busqueda =$('#searchBox').val();
+                longitud = 10; //numero de registros que se van a mostrar
+                paginaActual = 1; //numero de registros que se van a mostrar
+                //contenidoOriginal = $('#registros').html();
+                buscar(busqueda,inicio,longitud,paginaActual);
+                //$('#registros').html('');
+                //var url = Routing.generate('busqueda_data');
+                return false;
+            });        
+        
+            {#            $('#datatables1').DataTable({ 
+                                {#searching:true,
+                                order:[[1,"asc"]],
+                                "processing": true,
+                                "pageLength": 10,
+                                "serverSide": true,
+                                "dom":'tip',
+                                "ajax": {
+                                    "url": '{{path('busqueda_data')}}',
+                                    "type": 'GET'
+                                },
+                                "columns": [
+                                    { "data": "datos" }
+                                ],
+                                "columnDefs": [
+                                       { "orderable": false, "targets": 0 }
+
+                                       { "orderable": false, "targets": 5 },
+                                       { "orderable": false, "targets": 6 }
+                           
+                           
+                           
+                                ],
+                                "language": {
+                                "info": "Mostrando página _PAGE_ de _PAGES_",
+                                "infoEmpty": "",
+                                "emptyTable": "No se encontraron registros",
+                                "paginate": { 
+                                    "next": ">",
+                                    "previous": "<"
+                                },
+                                "processing": "Procesando petición...",
+                                "search": "Buscar registros:",
+                                "lengthMenu": "Mostrar _MENU_ registros"
+                            }, 
+                    
+                    });#}
+                
+            $(document).on('click','.paginas', function(){
+                paginaActual = $(this).attr('id');
+                console.log("Página actual enviada: "+paginaActual);
+                buscar(busqueda,inicio,longitud,paginaActual);
+            });
+            
+            $(document).on('click','.siguiente', function(){
+                if(paginaActual!=numPages){
+                    paginaActual++;
+                    console.log("Página actual enviada: "+paginaActual);
+                    buscar(busqueda,inicio,longitud,paginaActual);
+                }
+            });
+            
+            $(document).on('click','.anterior', function(){
+                //console.log(paginaActual);
+                if(paginaActual!=1){
+                    paginaActual--;
+                    console.log("Página actual enviada: "+paginaActual);
+                    buscar(busqueda,inicio,longitud,paginaActual);
+                }
+            });
+                
+        });
+        
+        function buscar(busqueda,inicio,longitud,paginaActual){
+            //console.log(llamada);
+                        
+            if(busqueda){
+                $('#mostrando').show();
+                $('#filtro').children().html(busqueda);                
+            }else{                                
+                $('#mostrando').hide();                
+            }
+            
+            if(busqueda!=""){
+                    
+                    $.ajax({
+                        data:{inicio:inicio,longitud: longitud, paginaActual:paginaActual,busqueda:busqueda},
+                        url:"{{path('busqueda_pregunta')}}",
+                        type: "post",
+                        success: function (data) {
+                                //inicio = data.inicio++;
+            {#                                console.log(data.data.length);#}
+                                $('#registros').html('');
+                                $('#filtro').children().html();
+                                
+                                
+                                //console.log(data);
+                                console.log("num registros: "+data.numRegistros);
+                                console.log("filtro registros: "+data.filtroRegistros);
+                                $('.totalRegistros').html(data.numRegistros);
+                                $('.filtroRegistros').html(data.filtroRegistros);
+                                
+                                if(data.data.length>0){
+                                    $('#inicioInput').val((parseInt($('#inicioInput').val())+1));
+                                    //console.log(data.inicio);
+                                    //console.log(data.data.length);
+                                    var cadena = "";
+                                    for(i=0;i<data.data.length;i++){
+                                                                                                                                                                            
+                                        //var busquedaNombre = data.data[i].nombres +' ' + data.data[i].apellido;
+                                        var busquedaCargo = "";
+                                        
+                                        var telefonos = "";
+                                        var busquedaPregunta = data.data[i].pregunta;
+                                        var busquedaRespuesta = data.data[i].respuesta;
+                                        //var sitioWeb = data.data[i].sitioWeb;
+                                        //var busquedaSitioWeb = "#busquedaSitioWeb"+(i+1);
+                                        var busquedaDetalle = data.data[i].detalle;
+                                        var busquedaFechapregunta = data.data[i].fechapregunta;
+                                        
+                                        console.log(data.data[i].id);
+                                        
+                                        if(busquedaPregunta==null){
+                                            busquedaPregunta="";
+                                        }
+                                        
+                                        if(busquedaRespuesta==null){
+                                            busquedaRespuesta="";
+                                        }
+                                        
+                                        if(busquedaDetalle==null){
+                                            busquedaDetalle="-";
+                                        }
+                                        
+                                        if(busquedaFechapregunta==null){
+                                            busquedaFechapregunta="-";
+                                        }
+                                                                
+                                        {#var especialidades = "";
+                                        if(data.data[i].especialidades!=='undefined'){
+                                                                        for (j = 0; j < data.data[i].especialidades.length; j++) {
+                                                                            if (j == 0) {
+                                                                                especialidades += data.data[i].especialidades[j].nombreEspecialidad;
+                                                                            }
+                                                                            else {
+                                                                                especialidades += ", " + data.data[i].especialidades[j].nombreEspecialidad;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    else {
+                                                                        especialidades = "N/A";
+                                                                    }
+                                                                    //console.log(data.data[i].especialidades);
+                                                                    //console.log(especialidades);
+
+                                                                    console.log(data.data[i].foto);#}
+                                                                   cadena = '<div class="bloque-main">';
+                                                                   cadena += '<div class="row">';                             
+                                                                   cadena += '<li><a href="{{path('respuesta_centro')}}?id='+data.data[i].id+'" style="text-decoration:none;">'+busquedaPregunta+'</a></br>';
+                                                                   cadena += '<div style="margin-left: 15px; font-size: 12px; font-weight: bold;">Fecha de la pregunta:'+busquedaFechapregunta+'</div>';
+                                                                   cadena += '</li>';
+                                                                   cadena += '</div>';
+                                                                   cadena += '</div>';
+                                                                               
+                                                                    $('#registros').show();
+                                                                    $('#registros').append(cadena);
+
+                                                                    $('#busquedaVacia').hide();
+
+                                                                    //console.log(data.pages);
+                                                                    numPages = data.pages;
+                                                                    var cadenaPaginas = '<li class="anterior" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-left\"></i></li>';
+                                                                    for (k = 1; k <= data.pages; k++) {
+                                                                        if (k == paginaActual) {
+                                                                            cadenaPaginas += '<li class="paginas" id="' + k + '" style=\"display: inline; padding: 7px;\"><strong>' + k + '</strong></li>';
+                                                                        }
+                                                                        else {
+                                                                            cadenaPaginas += '<li class="paginas" id="' + k + '" style=\"display: inline; padding: 7px;\">' + k + '</li>';
+                                                                        }
+
+                                                                    }
+
+                                                                    cadenaPaginas += '<li class="siguiente" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-right\"></i></li>';
+                                                                    $('.numeroPaginas').html(cadenaPaginas);
+                                                                    //$('#registros').html('prueba');
+                                                                }//fin for
+                                                            }//fin if
+                                                            else {
+                                                                console.log('datosvacios');
+                                                                $('#paginas').html(cadenaPaginas);
+                                                                console.log(data.numRegistros);
+                                                                console.log(data.filtroRegistros);
+                                                                $('.totalRegistros').html(data.numRegistros);
+                                                                $('.filtroRegistros').html(data.filtroRegistros);
+                                                                $('#registros').hide();
+                                                                $('#busquedaVacia').show();
+
+                                                            }
+                                                            console.log("pagina actual: " + data.paginaActual);
+                                                            console.log("Inicio de registro: " + data.inicioRegistro);
+                                                        },
+                                                        error: function (data) {
+                                                            //Lobibox.notify("error", {
+                                                            //    size: 'mini',
+                                                            //    msg: 'Los datos no fueron ingresados, intente más tarde. Si el error persiste pongase en contacto con el administrador del sistema.'
+                                                            //});
+                                                            //$('#registros').append(contenidoOriginal);
+                                                        }
+                                                    });
+                                                }//FIN IF VACIOOOOOOOOOOO
+                                                else{//CUANDO NO ESTA VACIO
+                                                    
+                    
+                                                $.ajax({
+                                                    data:{inicio:inicio,longitud: longitud, paginaActual:paginaActual,busqueda:busqueda},
+                                                    url:"{{path('busquedavacia_pregunta')}}",
+                                                    type: "post",
+                                                    success: function (data) {
+                                                            //inicio = data.inicio++;
+                                                                    {#                                console.log(data.data.length);#}
+                                                            $('#registros').html('');
+                                                            $('#filtro').children().html();
+
+
+                                                            //console.log(data);
+                                                            console.log("num registros: "+data.numRegistros);
+                                                            console.log("filtro registros: "+data.filtroRegistros);
+                                                            $('.totalRegistros').html(data.numRegistros);
+                                                            $('.filtroRegistros').html(data.filtroRegistros);
+
+                                                            if(data.data.length>0){
+                                                                $('#inicioInput').val((parseInt($('#inicioInput').val())+1));
+                                                                //console.log(data.inicio);
+                                                                //console.log(data.data.length);
+                                                                var cadena = "";
+                                                                for(i=0;i<data.data.length;i++){
+
+                                                                    //var busquedaNombre = data.data[i].nombres +' ' + data.data[i].apellido;
+                                                                    var busquedaCargo = "";
+
+                                                                    var telefonos = "";
+                                                                    var busquedaPregunta = data.data[i].pregunta;
+                                                                    var busquedaRespuesta = data.data[i].respuesta;
+                                                                    //var sitioWeb = data.data[i].sitioWeb;
+                                                                    //var busquedaSitioWeb = "#busquedaSitioWeb"+(i+1);
+                                                                    var busquedaDetalle = data.data[i].detalle;
+                                                                    var busquedaFechapregunta = data.data[i].fechapregunta;
+
+                                                                    //console.log(data.data[i].id);
+                                                                    if(busquedaPregunta==null){
+                                                                        busquedaPregunta="";
+                                                                    }
+
+                                                                    if(busquedaRespuesta==null){
+                                                                        busquedaRespuesta="";
+                                                                    }
+
+                                                                    if(busquedaDetalle==null){
+                                                                        busquedaDetalle="-";
+                                                                    }
+
+                                                                    if(busquedaFechapregunta==null){
+                                                                        busquedaFechapregunta="-";
+                                                                    }
+
+                                                                    {#var especialidades = "";
+                                                                    if(data.data[i].especialidades!=='undefined'){
+                                                                                                    for (j = 0; j < data.data[i].especialidades.length; j++) {
+                                                                                                        if (j == 0) {
+                                                                                                            especialidades += data.data[i].especialidades[j].nombreEspecialidad;
+                                                                                                        }
+                                                                                                        else {
+                                                                                                            especialidades += ", " + data.data[i].especialidades[j].nombreEspecialidad;
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                                else {
+                                                                                                    especialidades = "N/A";
+                                                                                                }
+                                                                                                //console.log(data.data[i].especialidades);
+                                                                                                //console.log(especialidades);
+
+                                                                                                console.log(data.data[i].foto);#}
+                                                                                               cadena = '<div class="bloque-main">';
+                                                                                               cadena += '<div class="row">';                             
+                                                                                               cadena += '<li><a href="{{path('respuesta_centro')}}?id='+data.data[i].id+'" style="text-decoration:none;">'+busquedaPregunta+'</a></br>';
+                                                                                               cadena += '<div style="margin-left: 15px; font-size: 12px; font-weight: bold;">Fecha de la pregunta:'+busquedaFechapregunta+'</div>';
+                                                                                               cadena += '</li>';
+                                                                                               cadena += '</div>';
+                                                                                               cadena += '</div>';
+
+                                                                                                $('#registros').show();
+                                                                                                $('#registros').append(cadena);
+
+                                                                                                $('#busquedaVacia').hide();
+
+                                                                                                //console.log(data.pages);
+                                                                                                numPages = data.pages;
+                                                                                                var cadenaPaginas = '<li class="anterior" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-left\"></i></li>';
+                                                                                                for (k = 1; k <= data.pages; k++) {
+                                                                                                    if (k == paginaActual) {
+                                                                                                        cadenaPaginas += '<li class="paginas" id="' + k + '" style=\"display: inline; padding: 7px;\"><strong>' + k + '</strong></li>';
+                                                                                                    }
+                                                                                                    else {
+                                                                                                        cadenaPaginas += '<li class="paginas" id="' + k + '" style=\"display: inline; padding: 7px;\">' + k + '</li>';
+                                                                                                    }
+
+                                                                                                }
+
+                                                                                                cadenaPaginas += '<li class="siguiente" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-right\"></i></li>';
+                                                                                                $('.numeroPaginas').html(cadenaPaginas);
+                                                                                                //$('#registros').html('prueba');
+                                                                                            }//fin for
+                                                                                        }//fin if
+                                                                                        else {
+                                                                                            console.log('datosvacios');
+                                                                                            $('#paginas').html(cadenaPaginas);
+                                                                                            console.log(data.numRegistros);
+                                                                                            console.log(data.filtroRegistros);
+                                                                                            $('.totalRegistros').html(data.numRegistros);
+                                                                                            $('.filtroRegistros').html(data.filtroRegistros);
+                                                                                            $('#registros').hide();
+                                                                                            $('#busquedaVacia').show();
+
+                                                                                        }
+                                                                                        console.log("pagina actual: " + data.paginaActual);
+                                                                                        console.log("Inicio de registro: " + data.inicioRegistro);
+                                                                                    },
+                                                                                    error: function (data) {
+                                                                                        //Lobibox.notify("error", {
+                                                                                        //    size: 'mini',
+                                                                                        //    msg: 'Los datos no fueron ingresados, intente más tarde. Si el error persiste pongase en contacto con el administrador del sistema.'
+                                                                                        //});
+                                                                                        //$('#registros').append(contenidoOriginal);
+                                                                                    }
+                                                                                });
+                                                    
+                                                    
+                                                }//FIN DEL ELSE
+                                            }
+                                                {#else {
+                                                    $('#registros').hide();
+                                                    $('#busquedaVacia').show();
+                                                }#}                                                                                                                         
+        </script>
+        
+        
+    {% endblock js_template %}
+{% endblock %}

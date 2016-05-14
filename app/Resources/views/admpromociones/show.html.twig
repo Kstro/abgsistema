@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>AdmPromociones</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ admPromocione.id }}</td>
+            </tr>
+            <tr>
+                <th>Fechainicio</th>
+                <td>{% if admPromocione.fechaInicio %}{{ admPromocione.fechaInicio|date('d-m-Y') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Fechafin</th>
+                <td>{% if admPromocione.fechaFin %}{{ admPromocione.fechaFin|date('d-m-Y') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Monto ($)</th>
+                <td>{{ admPromocione.monto }}</td>
+            </tr>
+            <tr>
+                <th>Descuento</th>
+                <td>{{ admPromocione.descuento }}</td>
+            </tr>
+            <tr>
+                <th>Posicion</th>
+                <td>{{ admPromocione.posicion }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_promociones_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('admin_promociones_edit', { 'id': admPromocione.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

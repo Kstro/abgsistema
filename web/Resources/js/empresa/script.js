@@ -50,7 +50,7 @@ $(document).ready(function () {
 
                             if (data.estado == true) {
 
-                                var url = Routing.generate('admin_abg', {username: data.username});
+                                var url = Routing.generate('abogado_login');
                                 window.open(url, "_self");
 
                                 Lobibox.notify("success", {
@@ -794,7 +794,7 @@ $(function editarFoto() {
                         size: 'mini',
                         msg: 'Datos modificados con exito'
                     });
-                    $("#prev").attr('src', "/abgsistema/web/" + data.direccion);
+                    $("#prev").attr('src', "/" + data.direccion);
                     $("#gif").hide();
                     $(".close").click();
 

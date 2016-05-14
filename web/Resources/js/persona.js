@@ -470,7 +470,8 @@ function editSobremi() {
                         success: function (data)
                         {
                             if (data.msj !== false) {
-                                $('#txtUnpoco').editable('setValue', $("#txtUnpoco1").val());
+                                $('#txtunpoco').text($("#txtUnpoco1").val());
+                
                                 $("#div002").remove();
                                 $("#conetenedorUnpoco").show();
                                 Lobibox.notify("success", {

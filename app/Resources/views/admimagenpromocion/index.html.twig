@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>AdmImagenPromocion list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Imagen</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for admImagenPromocion in admImagenPromocions %}
+            <tr>
+                <td><a href="{{ path('admin_imagenpromocion_show', { 'id': admImagenPromocion.id }) }}">{{ admImagenPromocion.id }}</a></td>
+                <td>{{ admImagenPromocion.imagen }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_imagenpromocion_show', { 'id': admImagenPromocion.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_imagenpromocion_edit', { 'id': admImagenPromocion.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_imagenpromocion_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

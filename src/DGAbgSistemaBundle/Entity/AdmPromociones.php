@@ -3,6 +3,7 @@
 namespace DGAbgSistemaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * AdmPromociones
@@ -24,14 +25,14 @@ class AdmPromociones
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_inicio", type="date", nullable=false)
+     * @ORM\Column(name="fecha_inicio", type="date", nullable=true)
      */
     private $fechaInicio;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_fin", type="date", nullable=false)
+     * @ORM\Column(name="fecha_fin", type="date", nullable=true)
      */
     private $fechaFin;
 
@@ -49,6 +50,20 @@ class AdmPromociones
      */
     private $descuento;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="posicion", type="integer", nullable=true)
+     */
+    private $posicion;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="estado", type="boolean", nullable=false)
+     */
+    private $estado;
+    
     /**
      * @var \CtlProdServicioAdmin
      *
@@ -164,6 +179,52 @@ class AdmPromociones
     }
 
     /**
+     * Set plazo
+     *
+     * @param float $posicion
+     * @return AdmPromociones
+     */
+    public function setPosicion($posicion)
+    {
+        $this->posicion = $posicion;
+
+        return $this;
+    }
+    
+    /**
+     * Get plazo
+     *
+     * @return integer 
+     */
+    public function getPosicion()
+    {
+        return $this->posicion;
+    }
+    
+    /**
+     * Set estado
+     *
+     * @param boolean $estado
+     * @return AdmPromociones
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return boolean 
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+    
+    /**
      * Set ctlProdServicioAdmin
      *
      * @param \DGAbgSistemaBundle\Entity\CtlProdServicioAdmin $ctlProdServicioAdmin
@@ -184,5 +245,39 @@ class AdmPromociones
     public function getCtlProdServicioAdmin()
     {
         return $this->ctlProdServicioAdmin;
+    }
+    
+     /**
+     * @ORM\OneToMany(targetEntity="AdmImagenPromocion", mappedBy="promocion", cascade={"persist", "remove"})
+     */
+    protected $placas;
+    
+    public function __construct()
+    {
+        $this->placas = new ArrayCollection();
+    }           
+    
+    public function getPlacas()
+    {
+        return $this->placas;
+    }
+    
+    public function setPlacas(\Doctrine\Common\Collections\Collection $placas)
+    {
+        $this->placas = $placas;
+        
+        foreach ($placas as $placa) {
+            $placa->setPromocion($this);
+        }
+    }
+    
+    public function removePlaca(AdmImagenPromocion $placa)
+    {
+        $this->placas->removeElement($placa);
+    }
+    
+    public function __toString() 
+    {
+        return $this->descuento.'%';
     }
 }

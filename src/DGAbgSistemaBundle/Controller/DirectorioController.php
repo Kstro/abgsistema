@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use DGAbgSistemaBundle\Entity\CtlCiudad;
 use DGAbgSistemaBundle\Entity\Persona;
+use DGAbgSistemaBundle\Entity\AbgPregunta;
 use DGAbgSistemaBundle\Form\CtlCiudadType;
 
 /**
@@ -321,8 +322,7 @@ class DirectorioController extends Controller
         }
         
         
-        //var_dump($reg['data']);
-        //die();
+            
         $response->setData($reg);    
         return $response; 
         //return new Response(json_encode($reg));

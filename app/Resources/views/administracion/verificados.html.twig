@@ -1,0 +1,25 @@
+
+
+{%if verificados|default is not empty %}
+
+    <div class="form-group table-responsive mailbox-messages" id="contenedor">
+        <table id="tabla" class="table table-hover table-striped" style="font-size:13px;" >
+            <thead>
+            <br>
+            </thead>
+            <tbody style="min-height: 350px;">
+                {% for datos in verificados %}
+                    <tr style=" font-size: 15px" onClick="Noverificar({{datos.id}},{{val}})">
+                        <td ><a href="#" >{{datos.nombre}}</a></td>
+                        <td align="center"> </strong>&nbsp;<i class="fa  fa-paperclip fa-lg text-aqua"></i></td>
+                        <td align="center">  <div class="bloque-ocultar ">
+                                <img src="{{ asset('Resources/src/img/verified.png') }}"  style="width: 15px; height: 15px; " id="botonModalP" title="Cambiar foto de perfil" >
+                                </td>
+                                </tr>
+                            {%endfor%}
+                            </tbody>
+                            </table> 
+                        </div>
+                    {%endif%}
+
+

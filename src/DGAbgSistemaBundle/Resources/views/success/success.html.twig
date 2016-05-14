@@ -1,0 +1,130 @@
+{% extends ':Layout:layout2.html.twig' %}
+
+{% block descripcion_y_acciones %}
+
+
+    {% block descripcion %}
+
+    {% endblock%}
+    {% block acciones %}
+
+    {% endblock %}
+
+
+{% endblock %}
+{% block js_extend %}
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script type="text/javascript">
+        tinymce.init({
+    selector: 'textarea',
+    height: 500,
+    plugins: ['advlist autolink lists link image charmap print preview anchor','searchreplace visualblocks code fullscreen','insertdatetime media table contextmenu paste code'],
+             toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+             content_css: ['//fast.fonts.net/cssapi/e6dc9b99-64fe-4292-ad98-6974f93cd2a2.css','//www.tinymce.com/css/codepen.min.css']
+         });
+    </script>
+    <script>
+        function mostrarImagen(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#img_destino').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#file").change(function () {
+            mostrarImagen(this);
+        });
+    </script>
+
+<script>    
+    //Este es el codigo que me permite enviar la imagen con todo!!
+
+        $(document).on("submit","#endatos",function(e) {
+                alert("asdasd");
+                e.preventDefault();
+                //información del formulario
+                var frm = new FormData($(this)[0]);
+                //console.log(frm);      
+                {#if (flag != false) {#}
+                        if (1 == 1) {
+                    console.log('aqui llega');
+             $.ajax({ 
+                    data:frm,
+                    url:Routing.generate('ingresar_entrada'),
+                    {#url: {{path('ingresar_entrada')}},   #}             
+                    type: 'POST',
+                   //necesario para subir archivos via ajax
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+
+                    //una vez finalizado correctamente
+
+                    success: function(data){
+                        //console.log(data);
+                        data = jQuery.parseJSON(data);//convirtiendo datos
+                        
+                        alert("Los datos fueron ingresados correctamente");
+                        var url = Routing.generate('admin_success');
+                        window.open(url, '_self');
+                        
+                        //return $this->redirect($this->generateUrl('entrada_index'));
+                        
+                    }
+                });
+
+                }else{
+                    var mensaje = "Los Datos no pueden ser Guardados. Formato de imagen no admitido";
+                    GetAlert("Error",mensaje,"../recursos/imagenes/error.png",4000);
+                }	
+        });
+</script>
+ 
+{% endblock %} 
+
+{% block navegacion_Y_body %}
+
+    {% block navegacion %}
+
+    {% endblock %}
+    {% block cuerpo %}
+        <div class="row">
+            <div class="text-center" style="margin-top: 40px;">
+                <h3>¡¡¡¡¡Felicidades has creado una nueva entrada en el blog comunitario!!!!!</h3>
+            </div>
+            <div class="text-center" >
+                <img src="{{ asset('Resources/imagenes/success.jpg')}}" style="width: 100%; height: 60%;">
+            </div>
+            
+
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    
+                    <div class="box-body">
+                        <form role="form" id="endatos">
+
+                                                                                                                                       
+                        </form>
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer">
+
+                        <!-- Boton Ingreso -->
+                        <div class="text-center">
+                            {#<a class="btn btn-primary btn-sm insertar" type="submit" id="enfiarf" style="margin-bottom: 15px;">Abrir cuenta</a>#}
+                            {#<button type="submit" class="btn btn-default">Default</button>#}
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- /input-group -->
+            </div>
+        </div> 
+    {% endblock %}
+{% endblock %}

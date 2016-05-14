@@ -98,11 +98,4 @@ class AbgPersonaEmpresa {
     {
         return $this->ctlEmpresa;
     }
-    
-    
-    
-    
-    
-    
-    
 }

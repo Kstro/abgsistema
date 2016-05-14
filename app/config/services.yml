@@ -9,7 +9,7 @@ services:
         arguments: ["@mailer",""]
      envio_correoRe:
         class: DGAbgSistemaBundle\Services\EmailServiceRe
-        arguments: ["@mailer",""]   
+        arguments: ["@mailer",""]
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]

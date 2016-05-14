@@ -583,6 +583,7 @@ class AbgPersona
     {
         return $this->tituloProfesional;
     }
+    
      public function __toString() {
             return $this->nombres;
         }
