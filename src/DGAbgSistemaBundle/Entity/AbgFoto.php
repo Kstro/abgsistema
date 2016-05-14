@@ -57,6 +57,16 @@ class AbgFoto
     private $fechaExpiracion;
 
     /**
+     * @var \AdmPromociones
+     *
+     * @ORM\ManyToOne(targetEntity="AdmPromociones", inversedBy="placas")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="promocion", referencedColumnName="id")
+     * })
+     */
+    private $promocion;
+    
+    /**
      * @var \CtlEmpresa
      *
      * @ORM\ManyToOne(targetEntity="CtlEmpresa")
@@ -203,6 +213,30 @@ class AbgFoto
         return $this->fechaExpiracion;
     }
 
+     /**
+     * Set promocion
+     *
+     * @param \DGAbgSistemaBundle\Entity\AdmPromociones $admPromociones
+     *
+     * @return AbgFoto
+     */
+    public function setPromocion(\DGAbgSistemaBundle\Entity\AdmPromociones $admPromociones = null)
+    {
+        $this->promocion = $admPromociones;
+
+        return $this;
+    }
+
+    /**
+     * Get promocion
+     *
+     * @return \DGAbgSistemaBundle\Entity\AdmPromociones
+     */
+    public function getPromocion()
+    {
+        return $this->promocion;
+    }
+    
     /**
      * Set ctlEmpresa
      *

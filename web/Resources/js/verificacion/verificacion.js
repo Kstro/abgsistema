@@ -1,19 +1,13 @@
 $(document).ready(function() {
-    
-    
 var flag=true;
 var Extension="";
  $("#enviarImagenV").hide();
  $("#prevVerificacion").hide();
  $("#cancelarImagenV").hide();
 
-
 $(document).on("change","#imagenV",function()
     {
-        
          readURL(this);
-         
-         
         //obtenemos un array con los datos del archivo
         var file = $(this)[0].files[0];
         //obtenemos el nombre del archivo
@@ -62,19 +56,16 @@ $(document).on("click","#enviarImagenV",function() {
              dataType: 'json',
             url:Routing.generate('verficacionAbogado'),
             type: 'POST',
-           //necesario para subir archivos via ajax
             cache: false,
             contentType: false,
             processData: false,
-           
-       
                 success: function(data){
 
                     if (data.estado == true) {
 
                          Lobibox.notify("success", {
                                         size: 'mini',
-                                        msg: 'Carnet de verificacion subido con exito' });
+                                        msg: '<p>Su solicitud de verificación se ha enviado.</p>' });
                     }else{
                         Lobibox.notify("error", {
                                         size: 'mini',
