@@ -1,0 +1,59 @@
+{% extends ':Layout:layout2.html.twig' %}
+
+{% block descripcion_y_acciones %}
+
+
+    {% block descripcion %}
+
+    {% endblock%}
+    {% block acciones %}
+
+    {% endblock %}
+
+{% endblock %}
+{% block js_extend %}
+   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="src/js/bootstrap.js"></script>
+    <script type="text/javascript">
+            $(function () {
+              $('[data-toggle="tooltip"]').tooltip()
+            })
+    </script>
+{% endblock %} 
+
+{% block navegacion_Y_body %}
+
+    {% block navegacion %}
+    {% endblock %}
+    {% block cuerpo %}
+        
+        <div class="container" style="padding: 40px 0px; background-color: #f6f6f6;">
+		<div class="row">
+                    
+                    <form class="navbar-form" role="search" action="{{ path('preg_deta') }}" method="POST">
+                        <p class="text-center" style="font-size: 15px;">HAGA SU PREGUNTA AL MAS GRANDE GRUPO SELECTO DE ABOGADOS</p>
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8 text-center">
+                            <div class="form-group">
+                                <textarea id="" name="pregunta" class="form-control textarea" maxlength="140" placeholder="Haga su pregunta aqui ..." style="max-width: 400px; min-width: 400px; width: 400px; max-height: 150px; min-height: 150px; height: 150px;" required></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-2"></div>
+                        <div class="clearfix"></div>
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8 text-center"><button type="submit" class="btn btn-default" style="margin-top: 10px;">Enviar Pregunta </button></div>                        
+                        <div class="col-md-2"></div>
+                    </form>
+                        
+                    
+		</div>
+	</div>
+	<div style="height: 10px;"></div>
+	
+    {% endblock %}
+    
+    {% block js_template %}
+    {% endblock js_template %}
+{% endblock %}
