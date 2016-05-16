@@ -495,6 +495,7 @@ else{ // Maximum length not reached so update the value of my_text counter
                         {#console.log(data[0].id);#}
                         var item='';
                         $('#filtrarMunicipio').html('');
+                        
                         {#console.log(data.length);#}
                             item+='<option selected value=\"0\">Todos...</option>';
                             $('#filtrarMunicipio').append(item);
@@ -504,6 +505,7 @@ else{ // Maximum length not reached so update the value of my_text counter
                             {#console.log(item);#}
                             $('#filtrarMunicipio').append(item);
                         }
+                        $('#filtrarMunicipio').select2();
                     },
                     error: function (data) {
 
@@ -584,6 +586,9 @@ else{ // Maximum length not reached so update the value of my_text counter
                                         
                                         if(busquedaCargo==null){
                                             busquedaCargo="";
+                                        }
+                                        else{
+                                            busquedaCargo = data.data[i].puesto;
                                         }
                                         
                                         if(busquedaCorreo==null){
