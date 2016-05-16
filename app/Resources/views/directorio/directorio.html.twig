@@ -738,7 +738,6 @@ else{ // Maximum length not reached so update the value of my_text counter
                                                 else{
                                                     cadenaPaginas+='<li class="paginas" id="'+k+'" style=\"display: inline; padding: 7px;\">'+k+'</li>';   
                                                 }
-
                                             }
                                         }
                                         
@@ -832,10 +831,10 @@ else{ // Maximum length not reached so update the value of my_text counter
                                 console.log("Inicio de registro: "+data.inicioRegistro);#}
                             },
                         error: function (data) {
-                                Lobibox.notify("error", {
+                                {#Lobibox.notify("error", {
                                     size: 'mini',
                                     msg: 'Los datos no fueron ingresados, intente más tarde. Si el error persiste pongase en contacto con el administrador del sistema.'
-                                });
+                                });#}
                                 $('#registros').append(contenidoOriginal);
                             }
                         });
