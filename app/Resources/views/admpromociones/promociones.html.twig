@@ -28,14 +28,15 @@
             <div class="box box-widget">
                 <div class="box-body">
                     <div class="page-header">
-                        <h2>Espacios publicitarios</h2>
+                        <h2>Facturación</h2>
                     </div>
                     
                     <div class="nav-tabs-custom" style="cursor: move;">
                         {# Aquí se colocan los nombres de cada sección (tabs) #}    
                         <ul class="nav nav-tabs  ui-sortable-handle">
                             <li class="active"><a data-toggle="tab" href="#listado-promociones">Listado</a></li>
-                            <li><a data-toggle="tab" href="#registros">Registro</a></li>
+                            <li><a data-toggle="tab" href="#registros">Registro de pago</a></li>
+                            <li><a data-toggle="tab" href="#consulta-pago">Consulta de pagos</a></li>
                         </ul>
                         {# Aquí se encuentran las secciones de las tabs #}    
                         <div class="tab-content no-padding">
@@ -46,25 +47,23 @@
                                         <thead>
                                             <tr>
                                                 <th class="text-center">ID de cliente</th>
-                                                {#<th>Fecha de inicio</th>
-                                                <th>Fecha de fin</th>#}
-                                                <th class="text-center">Plazo</th>
-                                                <th class="text-center">Ubicación</th>
+                                                <th class="text-center">Fecha de transacción</th>
+                                                <th class="text-center">Tipo de pago</th>
                                                 <th class="text-center">Monto ($)</th>
-                                                <th class="text-center">Descuento</th>
+                                                <th class="text-center">Cantidad de días</th>
+                                                {#<th class="text-center">Ubicación</th>#}
                                                 <th class="text-center">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                         {% for admPromocione in admPromociones %}
                                             <tr>
-                                                <td><a href="{{ path('admin_promociones_show', { 'id': admPromocione.id }) }}">{{ admPromocione.id }}</a></td>
-                                                {#<td>{% if admPromocione.fechaInicio %}{{ admPromocione.fechaInicio|date('d-m-Y') }}{% endif %}</td>
-                                                <td>{% if admPromocione.fechaFin %}{{ admPromocione.fechaFin|date('d-m-Y') }}{% endif %}</td>#}
-                                                <td>{{ admPromocione.posicion }}</td>
-                                                <td>{{ admPromocione.posicion }}</td>
-                                                <td>{{ admPromocione.monto }}</td>
-                                                <td>{{ admPromocione.descuento }}</td>
+                                                <td class="text-center"><a href="{{ path('admin_promociones_show', { 'id': admPromocione.id }) }}">{{ admPromocione.codigo }}</a></td>
+                                                <td class="text-center">{{ admPromocione.fechaPago|date('d/m/Y') }}</td>
+                                                <td class="text-center">{{ admPromocione.tipoPago }}</td>
+                                                <td class="text-right">{{ admPromocione.monto|number_format(2, '.', ',') }}</td>
+                                                <td class="text-center">{{ admPromocione.plazo }}</td>
+                                                {#<td class="text-center">Posición {{ admPromocione.posicion }}</td>#}
                                                 <td>
                                                     <ul>
                                                         <li>
@@ -188,6 +187,9 @@
                                     </form>
                                     <div class="row" style="margin-top: 18px;"></div>          
                                 </div>
+                            </div>
+                            <div class="chart tab-pane" id="consulta-pago" style=" padding: 15px;" >
+                                {% embed ':abgfacturacion:ConsultaFacturacion.html.twig' %}{% endembed %}
                             </div>
                         </div>
                     </div>        
