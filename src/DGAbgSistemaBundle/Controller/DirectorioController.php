@@ -58,6 +58,9 @@ class DirectorioController extends Controller
         $longitud = $request->get('longitud');
         $paginaActual = $request->get('paginaActual');
         $busqueda = $request->get('busqueda');
+        $deptoId = $request->get('deptoId');
+        $munId = $request->get('munId');
+        
 //        $inicioRegistro = ($paginaActual*10)-10;
         $inicioRegistro = ($longitud * ($paginaActual - 1));
                           
@@ -86,21 +89,71 @@ class DirectorioController extends Controller
             $reg['numRegistros']= 0;
             
         
-        
-        $sql = "SELECT * FROM directorio WHERE CONCAT(upper(nombres),' ',upper(apellido)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT ".$inicioRegistro.",".$longitud;
-        //echo $sql;
-        $em = $this->getDoctrine()->getManager();
-        $stmt = $em->getConnection()->prepare($sql);
-        $stmt->execute();
-        $reg['data'] = $stmt->fetchAll();
-        //var_dump($reg);
-        
-        $sql = "SELECT COUNT(*) as total FROM directorio WHERE CONCAT(upper(nombres),' ',apellido) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
-        $em = $this->getDoctrine()->getManager();
-        $stmt = $em->getConnection()->prepare($sql);
-        $stmt->execute();
-        $totales = $stmt->fetchAll();
-        $reg['numRegistros'] = $totales[0]['total'];
+            if($deptoId==0 && $munId==0){
+    //            echo "sin filtro";
+                $sql = "SELECT * FROM directorio WHERE CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT ".$inicioRegistro.",".$longitud;
+    //            $sql = "SELECT estado,ciudad,url,nombres,apellido,correoelectronico,telefono_fijo,telefono_movil,tipo,id,foto,group_concat(sub) FROM directorio WHERE CONCAT(upper(nombres),' ',upper(apellido),' ', upper(sub)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT ".$inicioRegistro.",".$longitud;
+                //echo $sql;
+                $em = $this->getDoctrine()->getManager();
+                $stmt = $em->getConnection()->prepare($sql);
+                $stmt->execute();
+                $reg['data'] = $stmt->fetchAll();
+                //var_dump($reg);
+    //            $sql = "SELECT COUNT(*) as total FROM directorio WHERE CONCAT(upper(nombres),' ',upper(apellido)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
+                $sql = "SELECT COUNT(*) as total FROM directorio WHERE CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
+
+                $em = $this->getDoctrine()->getManager();
+                $stmt = $em->getConnection()->prepare($sql);
+                $stmt->execute();
+                $totales = $stmt->fetchAll();
+                $reg['numRegistros'] = $totales[0]['total'];
+    //            $reg['numRegistros'] = intval($reg['data']);
+            }
+            else{
+                if($deptoId!=0){
+    //                echo "busqueda depto";
+                    $sql = "SELECT * FROM directorio WHERE estado=".$deptoId." AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT ".$inicioRegistro.",".$longitud;
+    //                $sql = "SELECT estado,ciudad,url,nombres,apellido,correoelectronico,telefono_fijo,telefono_movil,tipo,id,foto,GROUP_concat(sub) FROM directorio WHERE estado=".$deptoId." AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT ".$inicioRegistro.",".$longitud;
+                    //echo $sql;
+                    $em = $this->getDoctrine()->getManager();
+                    $stmt = $em->getConnection()->prepare($sql);
+                    $stmt->execute();
+                    $reg['data'] = $stmt->fetchAll();
+                    //var_dump($reg);
+    //                $sql = "SELECT COUNT(*) as total FROM directorio WHERE estado=".$deptoId." AND CONCAT(upper(nombres),' ',upper(apellido)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
+                    $sql = "SELECT COUNT(*) as total FROM directorio WHERE estado=".$deptoId." AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
+
+                    $em = $this->getDoctrine()->getManager();
+                    $stmt = $em->getConnection()->prepare($sql);
+                    $stmt->execute();
+                    $totales = $stmt->fetchAll();
+                    $reg['numRegistros'] = $totales[0]['total'];
+                }
+                if($munId!=0){
+    //                echo "busqueda mun";
+                    $sql = "SELECT * FROM directorio WHERE estado=".$deptoId." AND ciudad=".$munId." AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT ".$inicioRegistro.",".$longitud;
+    //                $sql = "SELECT estado,ciudad,url,nombres,apellido,correoelectronico,telefono_fijo,telefono_movil,tipo,id,foto,GROUP_concat(sub) FROM directorio WHERE estado=".$deptoId." AND ciudad=".$munId." AND CONCAT(upper(nombres),' ',upper(apellido),' ', upper(sub)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT ".$inicioRegistro.",".$longitud;
+                    //echo $sql;
+                    $em = $this->getDoctrine()->getManager();
+                    $stmt = $em->getConnection()->prepare($sql);
+                    $stmt->execute();
+                    $reg['data'] = $stmt->fetchAll();
+                    //var_dump($reg);
+    //                $sql = "SELECT COUNT(*) as total FROM directorio WHERE estado=".$deptoId." AND ciudad=".$munId." AND CONCAT(upper(nombres),' ',upper(apellido)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
+                    $sql = "SELECT COUNT(*) as total FROM directorio WHERE estado=".$deptoId." AND ciudad=".$munId." AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
+
+                    $em = $this->getDoctrine()->getManager();
+                    $stmt = $em->getConnection()->prepare($sql);
+                    $stmt->execute();
+                    $totales = $stmt->fetchAll();
+                    $reg['numRegistros'] = $totales[0]['total'];
+                }
+            }
+//        echo "\n número de registros: ".$reg['numRegistros']."\n";
+//        if(count($reg['data']==0)){
+//            $sql="SELECT estado.id AS estado,per.ctl_ciudad_id AS ciudad,urlp.url AS url,per.nombres AS nombres,per.apellido AS apellido,per.correoelectronico AS correoelectronico,per.telefono_fijo AS telefono_fijo,per.telefono_movil AS telefono_movil,'1' AS tipo,per.id AS id,fo.src AS foto FROM abg_persona per left outer join abg_persona_especialidad peresp on peresp.abg_persona_id = per.id join ctl_especialidad esp on esp.id=peresp.ctl_especialidad_id join ctl_subespecialidad subesp on subesp.abg_especialidad_id = esp.id join marvinvi_abg.abg_foto fo on((per.id = fo.abg_persona_id)) join marvinvi_abg.abg_url_personalizada urlp on((urlp.abg_persona_id = per.id)) left join marvinvi_abg.ctl_ciudad ciudad on((ciudad.id = per.ctl_ciudad_id)) left join marvinvi_abg.ctl_estado estado on((estado.id = ciudad.ctl_estado_id)) where ((fo.tipo_foto = 1) and (urlp.estado = 1) and (per.estado = 1)) order by per.id ASC";
+//            
+//        }
         //var_dump($reg);
     
             //El tipo perfil es para saber si es empresa o abogado
@@ -171,9 +224,14 @@ class DirectorioController extends Controller
             
             
 //            $reg['numRegistros']= count($reg3['data']);
+            if($reg['numRegistros']>10){
+                $reg['pages']=floor(($reg['numRegistros']/10))+1;
+            }
+            else{
+                $reg['pages']=1;
+            }
             
-            $reg['pages']=floor(($reg['numRegistros']/10))+1;
-            
+//            echo "\n número de páginas: ".$reg['pages']."\n";
 //            $k = 0;
 //            var_dump($reg['data']);
 //            foreach($reg['data'] as $i =>$row){
@@ -200,47 +258,56 @@ class DirectorioController extends Controller
             
             if(count($reg['data'])!=0){
                 $reg['data'][$i]['especialidades']=array();
+//                echo "totales: ".count($reg['data']);
                 foreach($reg['data'] as $i =>$row){
-                    //var_dump($row);
-                    $reg['data'][$i]['especialidades']=array();
-                    //var_dump($reg['data']);
-                    $dql = "SELECT esp.nombreEspecialidad FROM DGAbgSistemaBundle:AbgPersonaEspecialida subper "
-                        
-                        . "JOIN subper.ctlEspecialidad esp "
-                        . "JOIN subper.abgPersona per WHERE per.id=:idPersona";
-                    $em = $this->getDoctrine()->getManager();
-                    $especialidades = $em->createQuery($dql)
-                           ->setParameter('idPersona',$row['id'])
-                           ->getResult();
-
-                    foreach($especialidades as $row2){
-                        array_push($esp,$row2);
-                    }
-                    if(count($especialidades)==0){
-                        //array_push($row['especidalidades'], 'N/A');
-                        $reg['data'][$i]['especialidades']['nombreEspecialidad'] = "N/A";
-                    }
-                    else{
-                        //array_push($reg['data'][$i]['especialidades'], $esp);
-                        $reg['data'][$i]['especialidades']=$esp;
-                    }
-
-//                    $dql = "SELECT foto.src FROM DGAbgSistemaBundle:AbgFoto foto "
-//                            . "JOIN foto.abgPersona per "
-//                            . "WHERE per.id=:idPersona AND foto.tipoFoto=1";
-//                    $em = $this->getDoctrine()->getManager();
-//                    $foto = $em->createQuery($dql)
-//                           ->setParameter('idPersona',$row['id'])
-//                           ->getResult();
-                   //var_dump($foto);
-                   //die();
-//                    if(count($foto)!=0){
-//                        $reg['data'][$i]['fotoPerfil']=$foto[0]['src'];
+                    //var_dump($reg['data'][intval($i)+1]);
+//                    echo "-".$i;
+//                    
+//                    if($reg['data'][$i]['id']==$reg['data'][intval($i)+1]['id'] && $i<(count($reg['data'])-1)){
+//                        echo "sdcd";
+//                        unset ($reg['data'][$i]);
 //                    }
-                   //var_dump($reg['data']);
-                   //die();
+//                    else{
+                        $reg['data'][$i]['especialidades']=array();
+                        //var_dump($reg['data']);
+                        $dql = "SELECT esp.nombreEspecialidad FROM DGAbgSistemaBundle:AbgPersonaEspecialida subper "
 
-                    $i++;
+                            . "JOIN subper.ctlEspecialidad esp "
+                            . "JOIN subper.abgPersona per WHERE per.id=:idPersona";
+                        $em = $this->getDoctrine()->getManager();
+                        $especialidades = $em->createQuery($dql)
+                               ->setParameter('idPersona',$row['id'])
+                               ->getResult();
+
+                        foreach($especialidades as $row2){
+                            array_push($esp,$row2);
+                        }
+                        if(count($especialidades)==0){
+                            //array_push($row['especidalidades'], 'N/A');
+                            $reg['data'][$i]['especialidades']['nombreEspecialidad'] = "N/A";
+                        }
+                        else{
+                            //array_push($reg['data'][$i]['especialidades'], $esp);
+                            $reg['data'][$i]['especialidades']=$esp;
+                        }
+
+    //                    $dql = "SELECT foto.src FROM DGAbgSistemaBundle:AbgFoto foto "
+    //                            . "JOIN foto.abgPersona per "
+    //                            . "WHERE per.id=:idPersona AND foto.tipoFoto=1";
+    //                    $em = $this->getDoctrine()->getManager();
+    //                    $foto = $em->createQuery($dql)
+    //                           ->setParameter('idPersona',$row['id'])
+    //                           ->getResult();
+                       //var_dump($foto);
+                       //die();
+    //                    if(count($foto)!=0){
+    //                        $reg['data'][$i]['fotoPerfil']=$foto[0]['src'];
+    //                    }
+                       //var_dump($reg['data']);
+                       //die();
+
+                        $i++;
+//                    }
                 }
             }
             
@@ -264,6 +331,38 @@ class DirectorioController extends Controller
         $response->setData($reg);    
         return $response; 
         //return new Response(json_encode($reg));
+    }
+    
+    
+    
+    
+    /**
+     * 
+     *
+     * @Route("/busqueda/municipios/registros", name="busqueda_mun")
+     */
+    public function municipiosBusquedaAction(Request $request)
+    {
+        
+        
+        $deptoId = $request->get('deptoId');
+        $munId = $request->get('munId');
+        
+        
+                          
+        $response = new JsonResponse();
+
+        $em = $this->getDoctrine()->getEntityManager();
+        //$municipios['regs'] = $em->getRepository('DGAbgSistemaBundle:CtlCiudad')->findBy(array('ctlEstado'=>intval($deptoId)));
+//        $dql
+        $dql = "SELECT c.id as id,c.nombreCiudad as nombre FROM DGAbgSistemaBundle:CtlCiudad c "
+                        . "JOIN c.ctlEstado est WHERE est.id=:deptoId";
+        $municipios = $em->createQuery($dql)
+                           ->setParameter('deptoId',$deptoId)
+                           ->getResult();
+        $response->setData($municipios);
+        return $response; 
+        
     }
     
     

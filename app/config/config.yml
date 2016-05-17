@@ -12,6 +12,7 @@ parameters:
      photo.perfil: %kernel.root_dir%/../web/Photos/Perfil/
      photo.perfil.temporal: %kernel.root_dir%/../web/Photos/Perfil/temporal/
      photo.entrada.temporal: %kernel.root_dir%/../web/Photos/entrada/
+     photo.publicidad: %kernel.root_dir%/../web/Photos/publicidad/
 
 framework:
     #esi:             ~

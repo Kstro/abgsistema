@@ -12,6 +12,13 @@ use DGAbgSistemaBundle\Entity\AdmPromociones;
 use DGAbgSistemaBundle\Form\AdmPromocionesType;
 use Doctrine\ORM\Query\ResultSetMapping;
 
+include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify.php';
+include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Exception.php';
+include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/ResultMeta.php';
+include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Result.php';
+include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Source.php';
+include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Client.php';
+
 /**
  * AdmPromociones controller.
  *
@@ -28,15 +35,25 @@ class AdmPromocionesController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $admPromociones = $em->getRepository('DGAbgSistemaBundle:AdmPromociones')->findAll();
-        $tipoPago = $em->getRepository('DGAbgSistemaBundle:CtlTipoPago')->findAll();
+        //$admPromociones = $em->getRepository('DGAbgSistemaBundle:AdmPromociones')->findAll();
         
-        $idPersona = $this->container->get('security.context')->getToken()->getUser()->getId();
+        $dql = "Select prom.id, prom.posicion, prom.monto, abo.codigo, fac.plazo, tip.tipoPago, fac.fechaPago"
+                            . " From DGAbgSistemaBundle:AbgFacturacion fac"
+                            . " Join fac.ctlPromociones prom"
+                            . " Join fac.abgPersona abo"
+                            . " Join fac.abgTipoPago tip";
+        
+        $admPromociones = $em->createQuery($dql)->getArrayResult();
+                    
+        $tipoPago = $em->getRepository('DGAbgSistemaBundle:CtlTipoPago')->findAll();
+
+        $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+
         $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
-                        . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado "
+                        . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.tituloProfesional AS tprofesional, p.verificado As verificado "
                         . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
         $result_persona = $em->createQuery($dql_persona)->getArrayResult();
-
+        
         $dql_tipoPago = "SELECT p.id as id, p.tipoPago As nombre FROM DGAbgSistemaBundle:CtlTipoPago p ORDER BY p.tipoPago ASC";
         $TipoPago = $em->createQuery($dql_tipoPago)->getArrayResult();
 
@@ -167,6 +184,7 @@ class AdmPromocionesController extends Controller
     {
         $isAjax = $this->get('Request')->isXMLhttpRequest();
         if($isAjax){
+            $request = $this->getRequest();
             $em = $this->getDoctrine()->getManager();
             
             $id = $this->get('request')->request->get('abogado');
@@ -211,6 +229,61 @@ class AdmPromocionesController extends Controller
             
             $em->persist($facturacion);
             $em->flush();
+            
+            $pathTemporal = $this->container->getParameter('photo.perfil.temporal');
+            $horaFecha = date('Y-m-d His');
+            $nombreTemporal = $horaFecha;
+            $nombreTemporal = str_replace(" ", "", $nombreTemporal);
+            
+            define('UPLOAD_DIR', $pathTemporal);
+            $anuncioImg = $request->get('imagen');
+            $anuncioImg = str_replace('data:image/png;base64,', '', $anuncioImg);
+            $anuncioImg = str_replace(' ', '_', $anuncioImg);
+            $data = base64_decode($anuncioImg);
+            $file = UPLOAD_DIR . $nombreTemporal . '.png';
+            $success = file_put_contents($file, $data);
+            $nombreTemporal = $nombreTemporal . '.png';
+
+            if ($success) {
+                if ($nombreTemporal != null) {
+                    //Direccion fisica del la imagen  
+                    $path = $this->container->getParameter('photo.publicidad');
+                    var_dump($path);
+                    //$path = "Photos/Perfil/E";
+                    $nombreArchivo = $nombreTemporal;
+                    $nombreBASE = $path . $nombreArchivo;
+                    $nombreSERVER = $nombreArchivo;
+                    //var_dump($pathTemporal . $nombreSERVER);
+                    //die();
+                    //Codigo para poder redimensionar la  imagenes que se suben
+//                    \Tinify\setKey("H9jR26ywRdh6J3Es7TXAPjIRAz5xuQHZ");
+//
+//                    $source = \Tinify\fromFile($pathTemporal . $nombreSERVER);
+//                    
+//                    $resized = $source->resize(array(
+//                        "method" => "cover",
+//                        "width" => 300,
+//                        "height" => 300
+//                    ));
+                    
+//                    $resultado = $resized->toFile($path . $nombreSERVER);
+                    $numero = unlink($pathTemporal . $nombreSERVER);
+                    $resultado=1;
+                    if ($resultado) {
+                        $imagen = new \DGAbgSistemaBundle\Entity\AbgFoto();
+                        
+                        $imagen->setPromocion($promocion);
+                        $imagen->setSrc($nombreBASE);
+                        $imagen->setAbgPersona(null);
+                        $imagen->setCtlEmpresa(null);
+                        $imagen->setTipoFoto(2);
+                        $imagen->setFechaRegistro(new \DateTime ('now'));
+                        $imagen->setFechaExpiracion($fechafin);
+                        $imagen->setEstado(1);
+                        
+                    }
+                }
+            }
             
             $response = new JsonResponse();
             $response->setData(array(
