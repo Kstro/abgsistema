@@ -1,43 +1,39 @@
-{% block descripcion_y_acciones %}
 
-    {% block descripcion %}
-    {% endblock%}
-    {% block acciones %}
-    {% endblock %}
-
-{% endblock %}
 {% block js_extend %}
 {% endblock %} 
 
 {% block navegacion_Y_body %}
 
-    {% block navegacion %}
-    {% endblock %}
-    
     {% block cuerpo %}
-       
-        <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-8">
-                <p class="text-center" style="font-size: 20px; margin-top: 50px">LISTA DE PREGUNTAS</p>
-                <div >                    
-                    <ol>
-                    {% for preguntas in preguntas %}
-                        
-                        <div class="row">
-                            <div class="col-md-9" style="margin-top: 5px;">
-                                <li>{{ preguntas.pregunta }}</li>                                
-                            </div>
-                                <div class="col-md-3" style="margin-top: 5px;"><a href="{{path('admin_respanel_centro')}}?id={{preguntas.idpreg}}" style="text-decoration: none;">Responder</a></div>
-                        </div>
-                        <div class="clearfix"></div>    
-                    {% endfor %}
-                    </ol>
+  <div class="row" style=" margin-left:15px; margin-right:15px; ">
+        <div class="box box-widget">
+            <div class="box-header with-border">
+                <h3 class="box-title">LISTA DE PREGUNTAS </h3>
+            </div>
+            <div class="box-body">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <div >
+                        <ol>
+                            {% for preguntas in preguntas %}
+
+                                <div class="row">
+                                    <div class="col-md-9" style="margin-top: 5px;">
+                                        <li>{{ preguntas.pregunta }}</li>                                
+                                    </div>
+                                    <div class="col-md-3" style="margin-top: 5px;"><a href="{{path('admin_respanel_centro')}}?id={{preguntas.idpreg}}" style="text-decoration: none;">Responder</a></div>
+                                </div>
+                                <div class="clearfix"></div>    
+                            {% endfor %}
+                        </ol>
+                    </div>
                 </div>
-            </div>            
-            <div class="col-md-2"></div>
+                <div class="col-md-2"></div>
+            </div>
+                </div>
         </div>
-            
-        
+
+
+
     {% endblock %}
 {% endblock %}
