@@ -1630,10 +1630,10 @@ class CtlEmpresaController extends Controller {
                         . " AND url.estado=1";
 
                 $result_url = $em->createQuery($dqlUrl)->getArrayResult();
-                $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
-                $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo "
-                        . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
-                $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+//                $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+//                $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo "
+//                        . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
+//                $result_persona = $em->createQuery($dql_persona)->getArrayResult();
 
                 return $this->render('ctlempresa/perfilPublico.html.twig', array(
                             'ctlEmpresa' => $result_empresa,
@@ -1643,8 +1643,7 @@ class CtlEmpresaController extends Controller {
                             'tipoEmpresa' => $registro_tipoempresa,
                             'visitas' => $valor,
                             'RegistroEspecialida' => $result_especialida,
-                            'url' => $result_url,
-                            'abgPersona' => $result_persona
+                            'url' => $result_url
                 ));
             } else {
 // perfil persona
