@@ -682,7 +682,7 @@ else{ // Maximum length not reached so update the value of my_text counter
                                         numPages=data.pages;
                                         cadenaPaginas = '';
                                         cadenaPaginas = '<li class="anterior" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-left\"></i></li>';
-{#                                        for(k=1;k<=data.pages;k++){#}
+                                        {#for(k=1;k<=data.pages;k++){#}
                                         {#console.log("data pages: "+data.pages);#}
                                         {#console.log(paginaActual);#}
                                         
@@ -738,7 +738,6 @@ else{ // Maximum length not reached so update the value of my_text counter
                                                 else{
                                                     cadenaPaginas+='<li class="paginas" id="'+k+'" style=\"display: inline; padding: 7px;\">'+k+'</li>';   
                                                 }
-
                                             }
                                         }
                                         
@@ -831,10 +830,10 @@ else{ // Maximum length not reached so update the value of my_text counter
                                 {#console.log("pagina actual: "+data.paginaActual);
                                 console.log("Inicio de registro: "+data.inicioRegistro);#}
                             },
-                        error: function (data) {
+                            error: function (data) {
                                 Lobibox.notify("error", {
                                     size: 'mini',
-                                    msg: 'Los datos no fueron ingresados, intente más tarde. Si el error persiste pongase en contacto con el administrador del sistema.'
+                                    msg: 'Ocurrió un error, intente de nuevo!'
                                 });
                                 $('#registros').append(contenidoOriginal);
                             }
