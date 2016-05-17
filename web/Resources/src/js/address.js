@@ -162,9 +162,10 @@
         input2value: function () {
 
             return {
-                sEstado: this.$input.filter('[name="sEstado"]').val(),
+                   SDepartamento: this.$input.filter('[name="SDepartamento"]').val(),
+                sEstado: this.$input.filter('[name="sEstado"]').val()
                 //sEstado: 'Ciudad',
-                SDepartamento: 'hola'
+             
 
             };
         },

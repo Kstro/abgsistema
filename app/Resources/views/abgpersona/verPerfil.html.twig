@@ -146,7 +146,7 @@
                                             {%if RegistradaExperiencia|default is not empty %}
                                                 {% for datos in RegistradaExperiencia %}
                                                     {%if (datos.dias is null)%}
-                                                        <a href="#Experiencia"  >{{datos.empresa}}</a>
+                                                        <a href="{{path('busquedaPerfil', {url:datos.url})}}">{{datos.empresa}}</a>
                                                     {%else%}
 
                                                     {%endif%}   
@@ -227,55 +227,50 @@
                         <div class="box-body">
 
                             <div class="row">
-                                <div class="col-sm-3 col-xs-12">
-                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono(s)</strong></p>
-                                    <p style="font-size: 11px; margin-bottom: 0px;">
-                                        +503  
-                                        {%if datos.movil|default is not empty %}{{datos.movil}}
-                                        {%else%}
+                                {%if datos.movil|default is not empty or datos.Tfijo|default is not empty%}
+                                    <div class="col-sm-3 col-xs-12">
+                                        <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono(s)</strong></p>
+                                        <p style="font-size: 11px; margin-bottom: 0px;">
+                                           
+                                            {%if datos.movil|default is not empty %}
+                                                 +503   
+                                                 {{datos.movil}}
+                                            {%else%}
 
-                                        {%endif%}
-                                        </br>+503 
-                                        {%if datos.Tfijo|default is not empty %}
-                                            {{datos.Tfijo}}
-                                        {%else%}
+                                            {%endif%}
+                                          
+                                            {%if datos.Tfijo|default is not empty %}
+                                                  </br>+503 {{datos.Tfijo}}
 
-                                        {%endif %}
-                                        </a></p>
-                                </div>
-                                <div class="col-sm-3 col-xs-12">
-                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email(s)</strong></p>
-                                    <p style="font-size: 11px; margin-bottom: 0px;">
-
-                                        {%if datos.correo|default is not empty %}
+                                            {%endif %}
+                                            </a></p>
+                                    </div>
+                                {%endif %}
+                                {%if datos.correo|default is not empty %}
+                                    <div class="col-sm-3 col-xs-12">
+                                        <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email(s)</strong></p>
+                                        <p style="font-size: 11px; margin-bottom: 0px;">
                                             {{datos.correo}}
-                                        {%endif %}
-                                    </p>
-                                </div>
-                                <div class="col-sm-3 col-xs-12">
-                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Dirección</strong></p>
-                                    <p style="font-size: 11px; margin-bottom: 0px;">
-
-                                        {%if datos.direccion|default is not empty %}
+                                        </p>
+                                    </div>
+                                {%endif %}
+                                {%if datos.direccion|default is not empty %}
+                                    <div class="col-sm-3 col-xs-12">
+                                        <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Dirección</strong></p>
+                                        <p style="font-size: 11px; margin-bottom: 0px;">
                                             {{datos.direccion}}
-                                        {%else%}
-                                            Dirección
-                                        {%endif%}
-                                    </p>
-                                </div>
-                                <div class="col-sm-3 col-xs-12">
-                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio web</strong></p>
-                                    <p style="font-size: 11px; margin-bottom: 0px;">
-
-                                        {%if sitio|default is not empty %}
+                                        </p>
+                                    </div>
+                                {%endif%}
+                                {%if sitio|default is not empty %}
+                                    <div class="col-sm-3 col-xs-12">
+                                        <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio web</strong></p>
+                                        <p style="font-size: 11px; margin-bottom: 0px;">
                                             {% for datos in sitio %}
                                                 {{datos.nombre}} 
                                             {%endfor%}
-                                        {%else%}
-                                            Sitio web
-                                        {%endif%}
-
-                                </div>
+                                    </div>
+                                {%endif%}
                             </div>
                         </div>
                         <!-- /.box-body -->
@@ -291,9 +286,9 @@
                             <div class="box-header with-border">
                                 <h3 class="box-title">UN POCO SOBRE MI</h3>
                             </div>
-                            <div class="box-body">
-                                <p class="text-justify">
-                                    {{datos.descripcion}}</p>
+                            <div class="box-body" style="margin: 10px;">
+                                <p class="text-justify" >
+                                    {{datos.descripcion|raw}}</p>
                             </div>
                         </div>
                     {%endif%}
@@ -350,14 +345,17 @@
                                     <div class="row " id="Exp{{datos.id}}">
                                         <div class="col-xs-1" >
                                             {%if (datos.src is null)%}
-                                                 <img style="max-width:50px;max-height:50px;" src="{{asset('Resources/src/img/empresa/empresa.png') }}">
-                                     
+
+                                                <img style="max-width:50px;max-height:50px;" src="{{asset('Resources/src/img/empresa/empresa.png') }}">
                                             {%else%}
-                                                <img style="max-width:50px;max-height:50px;" src="{{asset('')}}{{datos.src}}">
+                                                <a href="{{path('busquedaPerfil', {url:datos.url})}}">
+                                                    <img style="max-width:50px;max-height:50px;" src="{{asset('')}}{{datos.src}}">
+                                                </a>
                                             {%endif%}
                                         </div>
                                         <div class="col-xs-11">
-                                            <span style="font-size: 15px;">{{datos.empresa}}</span> 
+                                            <a href="{{path('busquedaPerfil', {url:datos.url})}}">
+                                                <span style="font-size: 15px;">{{datos.empresa}}</span> </a>
                                             <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i>
                                             </br>
                                             <span style="font-size: 13px;">{{datos.puesto}}</br> 

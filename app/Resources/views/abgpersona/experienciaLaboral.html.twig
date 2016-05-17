@@ -1,4 +1,5 @@
 <!-- Calendar -->
+  <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('Resources/zebra/css/bootstrap.css') }}">
 <script type="text/javascript" src="{{ asset('Resources/zebra/js/zebra_datepicker.js')}}" ></script>
 
@@ -12,7 +13,6 @@
 
     $(document).ready(function () {
 
-
         $("#fExperiencia").validate({
             messages: {
                 txthubicacion: {
@@ -22,6 +22,7 @@
                     required: 'Requerido!'
                 },
                 txtEditEmpresa: {required: 'Requerido!'}
+                
             }
         });
 

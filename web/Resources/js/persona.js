@@ -8,6 +8,30 @@ var EspecialidaSelect = [];
 var datos = "", datosMostrados = "";
 
 $(document).on('ready', function () {
+    $.ajax({
+        type: "GET",
+        url: Routing.generate('departamento'),
+        async: false,
+        dataType: 'json',
+        success: function (data)
+        {
+            $("#divD").empty();
+            estado = '<p><div class="col-sm-12"> ';
+            estado += '<select  width:100%; class="form-control input-sm select2"  name="sEstado" id="sEstado" onChange=ciudad()>';
+            estado += '<option value="0">Seleccione Deptamento</option>';
+            $.each(data.depto, function (indice, val) {
+                estado += '<option value="' + val.id + '">' + val.nombre + '</option>';
+            });
+            estado += ' </select></div></p>';
+
+            $("#divD").append(estado);
+              
+        },
+        error: function (errors)
+        {
+
+        }
+    });
 
     $("#btnExtracto").click(function () {
 
@@ -332,14 +356,14 @@ function removeExperiencia(val)
             {
                 Lobibox.notify("success", {
                     size: 'mini',
-                    msg: "<p>"+data.msj+"</p>"
+                    msg: "<p>" + data.msj + "</p>"
                 });
                 $("#Exp" + val).remove();
             } else
             {
                 Lobibox.notify("warning", {
                     size: 'mini',
-                    msg: "<p>"+data.error+"</p>"
+                    msg: "<p>" + data.error + "</p>"
                 });
             }
 
@@ -439,7 +463,7 @@ function editDatosContacto() {
                                 $("#datosContacto").show();
                                 Lobibox.notify("success", {
                                     size: 'mini',
-                                    msg: "<p>"+data.msj+"</p>"
+                                    msg: "<p>" + data.msj + "</p>"
                                 });
                             }
                         }
@@ -469,14 +493,15 @@ function editSobremi() {
                         data: {hPersona: $('input#hPersona').val(), descripcion: $("#txtUnpoco1").val(), n: 10},
                         success: function (data)
                         {
+                            $('#txtunpoco').empty();
                             if (data.msj !== false) {
-                                $('#txtunpoco').text($("#txtUnpoco1").val());
-                
+                                $('#txtunpoco').html($("#txtUnpoco1").val());
+
                                 $("#div002").remove();
                                 $("#conetenedorUnpoco").show();
                                 Lobibox.notify("success", {
                                     size: 'mini',
-                                 msg: "<p>"+data.msj+"</p>"
+                                    msg: "<p>" + data.msj + "</p>"
                                 });
                             }
                         }
@@ -540,13 +565,13 @@ function addEspecialida()
                     $("#contenido").append(boton);
                     Lobibox.notify("success", {
                         size: 'mini',
-                        msg: "<p>"+data.msj+"</p>"
+                        msg: "<p>" + data.msj + "</p>"
                     });
 
                 } else {
                     Lobibox.notify("warning", {
                         size: 'mini',
-                        msg: "<p>"+data.error+"</p>"
+                        msg: "<p>" + data.error + "</p>"
                     });
                 }
 
@@ -569,8 +594,17 @@ function addEspecialida()
 
 function addExperiencia()
 {
+    if ($('#txtEditEmpresa').is(':hidden'))
+    {
+        $('#txtEditEmpresa').val("");
+    }
+     if ($('#ScambioEmpresa').is(':hidden'))
+    {
+        $('#ScambioEmpresa').select2();
+    }
+    
 
-    if ($("#txtpuesto").val() !== "" && $("#txthubicacion").val() !== "" && $("#txtFechaIni").val() !== "" && ($("#txtEditEmpresa").val() !== "" || $("#ScambioEmpresa").val() !== ""))
+    if ($("#txtpuesto").val() !== "" && $("#txthubicacion").val() !== "" && $("#txtFechaIni").val() !== "" && ($("#txtEditEmpresa").val() !== "" || $("#ScambioEmpresa").val() !==null))
     {
 
         $("#fExperiencia").submit(
@@ -599,14 +633,29 @@ function addExperiencia()
                                     datos = '<div class="row" id="Exp' + val.id + '">';
                                     datos += '<div class="col-xs-1">';
                                     if (val.src !== null)
+                                    {datos +='<a href="'+Routing.generate('busquedaPerfil', {url:val.url})+'">';
+                                        datos += '<img src="/' + val.src + '" style="max-width:50px;max-height:50px;"></a>';
+                                    }
+                                    else
                                     {
-                                        datos += '<img src="/' + val.src + '" style="max-width:50px;max-height:50px;">';
+                                         datos += '<img src="/Resources/src/img/empresa/empresa.png" style="max-width:50px;max-height:50px;">';
                                     }
                                     datos += '</div>';
                                     datos += '<div class="col-xs-11">';
-                                    datos += '<span style="font-size: 15px;">' + val.empresa + '&nbsp;</span>';
-                                    datos += '&nbsp;<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
-                                    datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
+                                    if (val.url !== null)
+                                    {
+                                         datos +='<a href="'+Routing.generate('busquedaPerfil', {url:val.url})+'">';
+                                         datos += '<span style="font-size: 15px;">' + val.empresa + '&nbsp;</span></a>';
+                                          datos += '&nbsp;<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
+                                         datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i>';
+                                    } 
+                                    else
+                                    {
+                                           datos += '<span style="font-size: 15px;">' + val.empresa + '&nbsp;</span>';
+                                    }
+                                    
+                                   
+                                    datos += '</br>';
                                     datos += '<span style="font-size: 13px;">' + val.puesto + ' </br>';
 
                                     if (val.dias === null) {
@@ -632,15 +681,25 @@ function addExperiencia()
                                 }
                                 );
                                 $("#consultas").append(datos);
+                                if(data.val!=null && data.val==1)
+                                {
+                                     Lobibox.notify("success", {
+                                    size: 'mini',
+                                    msg: "<p>" + data.msj + "</p>"
+                                });
+                                }
+                                else
+                                {
                                 Lobibox.notify("success", {
                                     size: 'mini',
-                                   msg: "<p>"+data.msj+"</p>"
+                                    msg: "<p>" + data.msj + "</p>"
                                 });
                                 $("#div1").remove();
+                            }
                             } else {
                                 Lobibox.notify("warning", {
                                     size: 'mini',
-                                    msg: "<p>"+data.error+"</p>"
+                                    msg: "<p>" + data.error + "</p>"
                                 });
                             }
                         }
@@ -677,12 +736,12 @@ function addEdu() {
                                 $.each($(data.Edu), function (indice, val) {
                                     $("#Edu" + val.idEs).remove();
                                     datos = '<div class="row" id="Edu' + val.idEs + '">';
-                                    datos += '<div class="col-xs-11">';
+                                    datos += '<div class="col-xs-11" id="hfd">';
                                     datos += '<span style="font-size: 15px;">' + val.institucion + '&nbsp;</span>';
                                     datos += '<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
                                     datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
                                     datos += '<span style="font-size: 13px;">' + val.disciplina + ' | ' + val.titulo + ' </br>' + val.anioIni + ' - ' + val.anio + '</span>';
-                                    datos += '<p style = "width: 90%; margin-top: 5px;text-align:justify;">';
+                                    datos += '<p style="width: 90%;margin-left:10px;text-align:justify;">';
                                     datos += '<script type="text/javascript">';
                                     datos += '$("#Edu' + val.idEs + '").hover(';
                                     datos += 'function(){';
@@ -699,13 +758,13 @@ function addEdu() {
                                 $("#consultaEducacion").append(datos);
                                 Lobibox.notify("success", {
                                     size: 'mini',
-                                    msg: "<p>"+data.msj+"</p>"
+                                    msg: "<p>" + data.msj + "</p>"
                                 });
                                 $("#div2").remove();
                             } else {
                                 Lobibox.notify("warning", {
                                     size: 'mini',
-                                    msg: "<p>"+data.error+"</p>"
+                                    msg: "<p>" + data.error + "</p>"
                                 });
                             }
                         }
@@ -733,7 +792,7 @@ function removeEdu(val)
             {
                 Lobibox.notify("success", {
                     size: 'mini',
-                    msg: "<p>"+data.msj+"</p>"
+                    msg: "<p>" + data.msj + "</p>"
                 });
 
                 $("#Edu" + val).remove();
@@ -741,7 +800,7 @@ function removeEdu(val)
             {
                 Lobibox.notify("warning", {
                     size: 'mini',
-                    msg: "<p>"+data.error+"</p>"
+                    msg: "<p>" + data.error + "</p>"
                 });
             }
 
@@ -796,13 +855,13 @@ function addOrganizacion() {
                                 $("#consultaOrg").append(datos);
                                 Lobibox.notify("success", {
                                     size: 'mini',
-                                    msg: "<p>"+data.msj+"</p>"
+                                    msg: "<p>" + data.msj + "</p>"
                                 });
                                 $("#div5").remove();
                             } else {
                                 Lobibox.notify("warning", {
                                     size: 'mini',
-                                    msg: "<p>"+data.error+"</p>"
+                                    msg: "<p>" + data.error + "</p>"
                                 });
 
 
@@ -832,7 +891,7 @@ function removeOrg(val)
             {
                 Lobibox.notify("success", {
                     size: 'mini',
-                   msg: "<p>"+data.msj+"</p>"
+                    msg: "<p>" + data.msj + "</p>"
                 });
 
                 $("#Org" + val).remove();
@@ -840,7 +899,7 @@ function removeOrg(val)
             {
                 Lobibox.notify("warning", {
                     size: 'mini',
-                   msg: "<p>"+data.error+"</p>"
+                    msg: "<p>" + data.error + "</p>"
                 });
             }
 
@@ -940,13 +999,13 @@ function addCertificacion() {
                                 $("#consultaCertificacion").append(datos);
                                 Lobibox.notify("success", {
                                     size: 'mini',
-                                    msg: "<p>"+data.msj+"</p>"
+                                    msg: "<p>" + data.msj + "</p>"
                                 });
                                 $("#div6").remove();
                             } else {
                                 Lobibox.notify("warning", {
                                     size: 'mini',
-                                   msg: "<p>"+data.error+"</p>"
+                                    msg: "<p>" + data.error + "</p>"
                                 });
                             }
 
@@ -975,7 +1034,7 @@ function removeCertificacion(val)
             {
                 Lobibox.notify("success", {
                     size: 'mini',
-                    msg: "<p>"+data.msj+"</p>"
+                    msg: "<p>" + data.msj + "</p>"
                 });
 
                 $("#Cert" + val).remove();
@@ -983,7 +1042,7 @@ function removeCertificacion(val)
             {
                 Lobibox.notify("warning", {
                     size: 'mini',
-                    msg: "<p>"+data.error+"</p>"
+                    msg: "<p>" + data.error + "</p>"
                 });
             }
 
@@ -1057,13 +1116,13 @@ function addCurso() {
                                 $("#consultaCurso").append(datos);
                                 Lobibox.notify("success", {
                                     size: 'mini',
-                                    msg: "<p>"+data.msj+"</p>"
+                                    msg: "<p>" + data.msj + "</p>"
                                 });
                                 $("#div7").remove();
                             } else {
                                 Lobibox.notify("warning", {
                                     size: 'mini',
-                                    msg: "<p>"+data.error+"</p>"
+                                    msg: "<p>" + data.error + "</p>"
                                 });
                             }
                         }
@@ -1091,7 +1150,7 @@ function removeSeminario(val)
             {
                 Lobibox.notify("success", {
                     size: 'mini',
-                   msg: "<p>"+data.msj+"</p>"
+                    msg: "<p>" + data.msj + "</p>"
                 });
                 Fsobremi
 
@@ -1100,7 +1159,7 @@ function removeSeminario(val)
             {
                 Lobibox.notify("warning", {
                     size: 'mini',
-                    msg: "<p>"+data.error+"</p>"
+                    msg: "<p>" + data.error + "</p>"
                 });
             }
 
@@ -1181,14 +1240,14 @@ function addIdiomas() {
 
                                 Lobibox.notify("success", {
                                     size: 'mini',
-                                    msg: "<p>"+data.msj+"</p>"
+                                    msg: "<p>" + data.msj + "</p>"
                                 });
                                 $("#div3").remove();
 
                             } else {
                                 Lobibox.notify("warning", {
                                     size: 'mini',
-                                    msg: "<p>"+data.error+"</p>"
+                                    msg: "<p>" + data.error + "</p>"
                                 });
                             }
 
@@ -1233,6 +1292,36 @@ function editCurso(val)
 
         }
     });
+}
+
+function ciudad()
+{
+    var ciudad;
+    $.ajax({
+        type: "GET",
+        url: Routing.generate('ciudad'),
+        async: false,
+        dataType: 'json',
+        data: {estado: $("#sEstado").val()},
+        success: function (data)
+        {
+            $("#divC").empty();
+            ciudad = '<p><div class="col-sm-12"> ';
+            ciudad += ' <select class="form-control input-sm select3"  name="sCiuda" id="sCiuda" >';
+            ciudad += '<option value="0">Seleccione ciudad</option>';
+            $.each(data.ciudad, function (indice, val) {
+                ciudad += '<option value="' + val.id + '">' + val.nombre + '</option>';
+            });
+            ciudad += ' </select></div></p>';
+            $("#divC").append(ciudad);
+            $('.select3').select2();
+        },
+        error: function (errors)
+        {
+
+        }
+    });
+
 }
 /*
  function departamentoEmpresa()
@@ -1308,4 +1397,4 @@ function editCurso(val)
  }
  
  */
-      
+

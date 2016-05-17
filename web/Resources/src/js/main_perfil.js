@@ -1,32 +1,23 @@
 
 var arrayEspecialidad = [];
-
-jQuery(function ($) {
-    /*$("#txtdui").mask("99999999-9");
-     $("#txtnit").mask("9999-999999-999-9");
-     $("#txtfijo").mask("9999-9999");*/
-
-
-
-});
-
-$(document).on('click', "#txtUnpoco", function (e) {
-
-    $('.input-large').css("width", "490px");
-    $('.input-large').css("height", "85px");
-    $('.input-large').css("resize", "auto");
-    /*
-     $('.popover').css("width", "60%");
-     $('.popover').css("height", "8%");
-     $('.popover').css("resize", "auto");*/
-});
-
-$(document).on('click', "#txtMunicipio", function (e) {
-    
-   
-
-});
-
+/*
+ $(document).on('click', "#txtUnpoco", function (e) {
+ 
+ $('.input-large').css("width", "490px");
+ $('.input-large').css("height", "85px");
+ $('.input-large').css("resize", "auto");
+ 
+ $('.popover').css("width", "60%");
+ $('.popover').css("height", "8%");
+ $('.popover').css("resize", "auto");
+ });*/
+/*
+ $(document).on('click', "#txtMunicipio", function (e) {
+ 
+ 
+ 
+ });
+ */
 $(document).on('click', "#txtNombres", function (e) {
     $('.popover-content').css("width", "350px");
     $('.popover-content').css("height", "85px");
@@ -66,16 +57,16 @@ $(document).ready(function () {
 
 
     $('#txtMovil').editable({
-         validate: function (value) {
+        validate: function (value) {
             if (value === "")
                 return 'requerido';
         },
-         type: 'text',
-         name: 'zip',
-         tpl:'   <input type="text" id ="zipiddemo" class="form-control    input-sm" style="padding-right: 24px;">'
-            }).on('shown',function(){
-    $("input#zipiddemo").mask("0000-0000");
-       
+        type: 'text',
+        name: 'zip',
+        tpl: '   <input type="text" id ="zipiddemo" class="form-control    input-sm" style="padding-right: 24px;">'
+    }).on('shown', function () {
+        $("input#zipiddemo").mask("0000-0000");
+
     });
     $('#txtOficina').editable({
         validate: function (value) {
@@ -83,10 +74,10 @@ $(document).ready(function () {
                 return 'requerido';
         },
         type: 'text',
-         name: 'zip',
-         tpl:'   <input type="text" id ="zipiddemo" class="form-control    input-sm" style="padding-right: 24px;">'
-            }).on('shown',function(){
-    $("input#zipiddemo").mask("0000-0000");
+        name: 'zip',
+        tpl: '   <input type="text" id ="zipiddemo" class="form-control    input-sm" style="padding-right: 24px;">'
+    }).on('shown', function () {
+        $("input#zipiddemo").mask("0000-0000");
 
     });
     $('#txtDireccion').editable({
@@ -126,6 +117,7 @@ $(document).ready(function () {
                 }
 
             });
+            /*
     $('#txtMunicipio').editable({
         // url: '/post',
         title: 'Departamento ',
@@ -133,9 +125,9 @@ $(document).ready(function () {
             SDepartamento: "Moscow",
             sEstado: "Lenina"
         }
-     
-    });
-  
+
+    });*/
+
     $('#txtNombres').editable({
         validate: function (value) {
             if (value === "")
@@ -189,7 +181,7 @@ $(document).ready(function () {
                 url: Routing.generate('edit_persona'),
                 success: function (data)
                 {
-               
+
                 },
                 error: function (xhr, status)
                 {
@@ -256,8 +248,8 @@ $(document).ready(function () {
             url: Routing.generate('sitio'),
             success: function (data)
             {
-     $('#sitioweb').editable('setValue', params.newValue);
-                            
+                $('#sitioweb').editable('setValue', params.newValue);
+
             },
             error: function (xhr, status)
             {
@@ -266,7 +258,7 @@ $(document).ready(function () {
         });
 
     });
-
+/*
     $('#txtMunicipio').on('save', function (e, params) {
 
         $.ajax({
@@ -277,19 +269,30 @@ $(document).ready(function () {
             url: Routing.generate('edit_persona'),
             success: function (data)
             {
+//$("#txtMunicipio").text($("#sCiuda").val());
 
                 $("#divMunicipiox").empty();
+                $("#txtMunicipio").remove();
                 var datos;
-                datos = '<p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli"><a href="#" id="txtMunicipio" data-type="address" data-pk="1" data-title="Departamento, municipio" data-placement="right" class="editable editable-click" ><b>' + data.dept + '</b> |' + data.ciu + '</a></p>';
+                datos = '<p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">';
+                datos += '<a href="#" id="txtMunicipio" data-type="address" data-pk="1" data-title="Departamento, municipio" data-placement="right" class="editable editable-click" ><b>' + data.dept + '</b> |' + data.ciu + '</a></p>';
                 $("#divMunicipiox").append(datos);
+
+                $('#txtMunicipio').editable({
+                    title: 'Departamento ',
+                    value: {
+                        SDepartamento: "Moscow",
+                        sEstado: $("#sCiuda").val()
+                    }
+                });
             },
             error: function (xhr, status)
             {
                 alert('Disculpe, existió un problema');
             }
         });
-     
-    });
+
+    });*/
 
     $('#sitioweb').on('save', function (e, params) {
 
@@ -301,7 +304,7 @@ $(document).ready(function () {
             url: Routing.generate('sitio'),
             success: function (data)
             {
-                    $('#sitioweb2').editable('setValue', params.newValue);
+                $('#sitioweb2').editable('setValue', params.newValue);
             },
             error: function (xhr, status)
             {

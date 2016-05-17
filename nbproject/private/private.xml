@@ -3,35 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/sw_abogados/src/DGAbgSistemaBundle/Entity/CtlTipoPago.php</file>
-            <file>file:/C:/xampp/htdocs/sw_abogados/src/DGAbgSistemaBundle/Controller/CtlEmpresaController.php</file>
-            <file>file:/C:/xampp/htdocs/sw_abogados/src/DGAbgSistemaBundle/Entity/AdmImagenPromocion.php</file>
-            <file>file:/C:/xampp/htdocs/sw_abogados/app/Resources/views/abgpersona/perfil.html.twig</file>
-            <file>file:/C:/xampp/htdocs/sw_abogados/app/Resources/views/admpromociones/promociones.html.twig</file>
-            <file>file:/C:/xampp/htdocs/sw_abogados/src/DGAbgSistemaBundle/Controller/AbgPersonaController.php</file>
-            <file>file:/C:/xampp/htdocs/sw_abogados/src/DGAbgSistemaBundle/Entity/AbgFoto.php</file>
-            <file>file:/C:/xampp/htdocs/sw_abogados/src/DGAbgSistemaBundle/Form/AdmPromocionesType.php</file>
-            <file>file:/C:/xampp/htdocs/sw_abogados/src/DGAbgSistemaBundle/Entity/AdmPromociones.php</file>
-            <file>file:/C:/xampp/htdocs/sw_abogados/src/DGAbgSistemaBundle/Controller/AdmPromocionesController.php</file>
-        </group>
-    </open-files>
-</project-private>
-<?xml version="1.0" encoding="UTF-8"?>
-<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
+            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/perfilPublico.html.twig</file>
             <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/perfil.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/ctlempresa/perfilPublico.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/Layout/encabezado.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Entity/AbgSitioWeb.php</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/web/Resources/js/empresa/script.js</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/ctlempresa/gestionempresa.html.twig</file>
+            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/sobreMi.html.twig</file>
             <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/web/Resources/js/persona.js</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/ctlempresa/perfilEmpresa.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/CtlEmpresaController.php</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/Layout/barra_lateral_admin.html.twig</file>
+            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/experienciaLaboral.html.twig</file>
+            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/panelAdministrativoAbg.html.twig</file>
+            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/verPerfil.html.twig</file>
             <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/Layout/layout3.html.twig</file>
+            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/administracion/perfil.html.twig</file>
             <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/AbgPersonaController.php</file>
         </group>
     </open-files>
