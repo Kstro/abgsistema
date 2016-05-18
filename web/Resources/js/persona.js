@@ -479,11 +479,7 @@ function editDatosContacto() {
 }
 
 function editSobremi() {
-
-    if ($("#txtUnpoco1").val() !== "")
-    {
-        $("#funpoco").submit(
-                function (event) {
+  tinymce.remove('.txtUnpoco1');
 
                     $.ajax({
                         type: 'POST',
@@ -511,9 +507,7 @@ function editSobremi() {
 
                         }
                     });
-                    event.preventDefault();
-                });
-    }
+    
 }
 function addEspecialida()
 {
@@ -737,11 +731,9 @@ function addEdu() {
                                     $("#Edu" + val.idEs).remove();
                                     datos = '<div class="row" id="Edu' + val.idEs + '">';
                                     datos += '<div class="col-xs-11" id="hfd">';
-                                    datos += '<span style="font-size: 15px;">' + val.institucion + '&nbsp;</span>';
-                                    datos += '<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
-                                    datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
+                                    datos += '<span style="font-size: 15px;">' + val.institucion + '&nbsp;</span></br>';
                                     datos += '<span style="font-size: 13px;">' + val.disciplina + ' | ' + val.titulo + ' </br>' + val.anioIni + ' - ' + val.anio + '</span>';
-                                    datos += '<p style="width: 90%;margin-left:10px;text-align:justify;">';
+                                    datos += '<p style="width: 90%;margin-left:10px;">';
                                     datos += '<script type="text/javascript">';
                                     datos += '$("#Edu' + val.idEs + '").hover(';
                                     datos += 'function(){';
@@ -834,9 +826,7 @@ function addOrganizacion() {
                                     $("#Org" + val.id).remove();
                                     datos = '<div class="row" id="Org' + val.id + '">';
                                     datos += '<div class="col-xs-11">';
-                                    datos += '<span style="font-size: 16px;">&nbsp;' + val.nombre + '&nbsp;</span>';
-                                    datos += '<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
-                                    datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
+                                    datos += '<span style="font-size: 16px;">&nbsp;' + val.nombre + '&nbsp;</span></br>';
                                     datos += '<span style="font-size: 13px;">' + val.puesto + ' </br>' + val.fechaIn + ' - ' + val.fechaFin + '</span>';
                                     datos += '<p style = "width: 100%; margin-top: 5px;text-align:justify;">' + val.descripcion;
                                     datos += '<script type="text/javascript">';
@@ -978,9 +968,7 @@ function addCertificacion() {
                                     $("#Cert" + val.id).remove();
                                     datos = '<div class="row" id="Cert' + val.id + '">';
                                     datos += '<div class="col-xs-11">';
-                                    datos += '<span style="font-size: 15px;">' + val.institucion + '&nbsp;</span>';
-                                    datos += '<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
-                                    datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
+                                    datos += '<span style="font-size: 15px;">' + val.institucion + '&nbsp;</span></br>';
                                     datos += '<span style="font-size: 13px;">' + val.nombre + '</br>' + val.fechaIn + ' - ' + val.fechaFin + '</span>';
                                     datos += '<p style = "width: 90%; margin-top: 5px;text-align:justify;">';
                                     datos += '<script type="text/javascript">';
@@ -1095,9 +1083,7 @@ function addCurso() {
                                     $("#CM" + val.id).remove();
                                     datos = '<div class="row" id="CM' + val.id + '">';
                                     datos += '<div class="col-xs-11">';
-                                    datos += '<span style="font-size: 15px;">' + val.institucion + '&nbsp;</span>';
-                                    datos += '<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
-                                    datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i></br>';
+                                    datos += '<span style="font-size: 15px;">' + val.institucion + '&nbsp;</span></br>';
                                     datos += '<span style="font-size: 13px;">' + val.nombre + '</br>' + val.fechaIn + ' - ' + val.fechaFin + '</span>';
                                     datos += '<p style = "width: 90%; margin-top: 5px;text-align:justify;">' + val.descripcion;
                                     datos += '<script type="text/javascript">';

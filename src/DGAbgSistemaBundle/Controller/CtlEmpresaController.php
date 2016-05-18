@@ -85,7 +85,7 @@ class CtlEmpresaController extends Controller {
             //Listar los empleados de la empresa
             $sqlEmpEmp = "SELECT per.id as idPersona, per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, "
                     . " per.telefono_fijo as telefonoFijo, per.telefono_movil as telefonoMovil, per.titulo_profesional AS tituloProfesional, "
-                    . " per.id, fot.src, sw.nombre AS sitioWeb "
+                    . " per.id, fot.src, sw.nombre AS sitioWeb, per.verificado AS verificado "
                     . "FROM marvinvi_abg.abg_foto fot "
                     . "JOIN marvinvi_abg.abg_persona per "
                     . " ON fot.abg_persona_id=per.id AND fot.tipo_foto=0 AND fot.tipo_foto <> 5 "
@@ -248,15 +248,20 @@ class CtlEmpresaController extends Controller {
 
         if ($lista) {
             //Listar los empleados de la empresa
-            $dql = "SELECT per.id as idPersona,per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, per.telefonoFijo as telefonoFijo, per.telefonoMovil as telefonoMovil, "
-                    . " '' as sitioWeb, per.id, fot.src "
-                    . "FROM DGAbgSistemaBundle:AbgFoto fot "
-                    . "JOIN fot.abgPersona per "
-                    . "JOIN per.ctlEmpresa emp "
-                    . " WHERE emp.id =" . $ctlEmpresaId." AND fot.tipoFoto=0"
-                    . " ORDER BY per.nombres ASC";
-
-            $registro_empleados = $em->createQuery($dql)->setMaxResults(20)->getArrayResult();
+      $sqlEmpEmp = "SELECT per.id as idPersona, per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, "
+                    . " per.telefono_fijo as telefonoFijo, per.telefono_movil as telefonoMovil, per.titulo_profesional AS tituloProfesional, "
+                    . " per.id, fot.src, sw.nombre AS sitioWeb, per.verificado AS verificado "
+                    . "FROM marvinvi_abg.abg_foto fot "
+                    . "JOIN marvinvi_abg.abg_persona per "
+                    . " ON fot.abg_persona_id=per.id AND fot.tipo_foto=0 AND fot.tipo_foto <> 5 "
+                    . "JOIN marvinvi_abg.abg_persona_empresa emp "
+                    . "ON  emp.ctl_empresa_id=". $ctlEmpresaId
+                    . " LEFT JOIN marvinvi_abg.abg_sitio_web sw "
+                    . " ON per.id=sw.abg_persona_id "
+                    . " GROUP BY  per.id ORDER BY per.nombres ASC";
+         $stm = $this->container->get('database_connection')->prepare($sqlEmpEmp);
+            $stm->execute();
+           $registro_empleados = $stm->fetchAll();
         } else {
 
             $registro_empleados = null;
@@ -351,7 +356,7 @@ class CtlEmpresaController extends Controller {
             $abgPersona->setApellido($apellidoAbogado);
             $abgPersona->setCorreoelectronico($correoUsuario);
             $abgPersona->setFechaIngreso(new \DateTime("now"));
-            $abgPersona->setEstado('1');
+            $abgPersona->setEstado(0);
             $abgPersona->setCodigo($codigo);
             $abgPersona->setVerificado(0);
             $em->persist($abgPersona);
@@ -1592,15 +1597,22 @@ class CtlEmpresaController extends Controller {
 
                 if ($lista) {
                     //Listar los empleados de la empresa
-                    $dql = "SELECT per.id as idPersona,per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, per.telefonoFijo as telefonoFijo, per.telefonoMovil as telefonoMovil, "
-                            . " '' as sitioWeb, per.id, fot.src "
-                            . "FROM DGAbgSistemaBundle:AbgFoto fot "
-                            . "JOIN fot.abgPersona per "
-                            . "JOIN per.ctlEmpresa emp "
-                            . "WHERE emp.id =" . $ctlEmpresaId." AND fot.tipoFoto=0"
-                            . " ORDER BY per.nombres ASC";
+                          $sqlEmpEmp = "SELECT per.id as idPersona, per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, "
+                    . " per.telefono_fijo as telefonoFijo, per.telefono_movil as telefonoMovil, per.titulo_profesional AS tituloProfesional, "
+                    . " per.id, fot.src, sw.nombre AS sitioWeb, per.verificado AS verificado "
+                    . "FROM marvinvi_abg.abg_foto fot "
+                    . "JOIN marvinvi_abg.abg_persona per "
+                    . " ON fot.abg_persona_id=per.id AND fot.tipo_foto=0 AND fot.tipo_foto <> 5 "
+                    . "JOIN marvinvi_abg.abg_persona_empresa emp "
+                    . "ON  emp.ctl_empresa_id=". $ctlEmpresaId
+                    . " LEFT JOIN marvinvi_abg.abg_sitio_web sw "
+                    . " ON per.id=sw.abg_persona_id "
+                    . " GROUP BY  per.id ORDER BY per.nombres ASC";
+         $stm = $this->container->get('database_connection')->prepare($sqlEmpEmp);
+            $stm->execute();
+           $registro_empleados = $stm->fetchAll();
 
-                    $registro_empleados = $em->createQuery($dql)->getArrayResult();
+          
                 } else {
 
                     $registro_empleados = null;

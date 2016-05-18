@@ -117,14 +117,14 @@
                         {% endif %}
                         <span class="hidden-xs">{{datos.nombre~' '~datos.apellido}}</span>
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" >
                         <!-- User image -->
                  <li class="user-header">
                         {% if abgFoto %} 
                             <img src="{{asset('') }}{{ abgFoto[0].src}}" style="width: 90px; height: 90px; margin-bottom: 0px;" class="img-circle" alt="User Image" />
 
                         {% endif %}
-                        <p>
+                        <p >
                             {{datos.nombre~' '~datos.apellido}}
                             <small>{%if datos.correo|default is not empty %}
                                 {{datos.correo}}
@@ -136,10 +136,10 @@
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="{{ path('perfil')}}" class="btn btn-flat btnperfil btn-sm">Perfil</a>
+                                    <a href="{{ path('perfil')}}" class="btn btn-flat btnsesion ">Perfil</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="{{ path('abogado_logout')}}"  style=" text-decoration:none;" class="btn btn-flat btnperfil btn-sm"> 
+                                    <a href="{{ path('abogado_logout')}}"  style=" text-decoration:none;" class="btn btn-flat btnsesion "> 
                                         Cerrar sesión
                                     </a>
 

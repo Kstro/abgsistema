@@ -411,9 +411,7 @@ class AbgPersonaController extends Controller {
             $stm = $this->container->get('database_connection')->prepare($sqlRol);
             $stm->execute();
             $RolUser = $stm->fetchAll();
-            /*
-              var_dump($RolUser[0]['rol']);
-              exit(); */
+          
 
             $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
                     . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.tituloProfesional AS tprofesional, p.verificado As verificado "
@@ -799,7 +797,7 @@ class AbgPersonaController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
-        //$request->get('hPersona')
+     
         try {
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($idPersona);
             switch ($request->get('n')) {
@@ -1393,8 +1391,7 @@ class AbgPersonaController extends Controller {
             $request = $this->getRequest();
 
             $Experiencia = $em->getRepository("DGAbgSistemaBundle:AbgExperienciaLaboral")->find(intval($request->get('experiencia')));
-            /*  var_dump($Experiencia);
-              exit(); */
+        
             $em->remove($Experiencia);
             $em->flush();
             $data['msj'] = "Experiencia eliminada";
@@ -2275,8 +2272,7 @@ class AbgPersonaController extends Controller {
                     . " FROM  DGAbgSistemaBundle:AbgUrlPersonalizada u "
                     . " JOIN DGAbgSistemaBundle:AbgPersona p WHERE p.id=u.abgPersona AND u.abgPersona=" . $idPersona;
             $url = $em->createQuery($dql_url)->getArrayResult();
-            /*   var_dump( $result_foto[0]['src']);
-              exit(); */
+          
             $data['datosP'] = $result_persona;
             $data['especialida'] = $sitio;
             //  $data['sitioweb'] = $sitio[0]['nombre'];

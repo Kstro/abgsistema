@@ -76,7 +76,7 @@
                                                 {{datos.nombre~' '~datos.apellido}}
                                             </strong>
                                             {%if(datos.verificado==1)%}
-                                                <img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
+                                                <img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 0px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
                                         {%endif%}         </div></div>
                                 <div class="row" >
                                     <div class="col-xs-12" style="padding-right: 0;">
@@ -354,10 +354,14 @@
                                             {%endif%}
                                         </div>
                                         <div class="col-xs-11">
-                                            <a href="{{path('busquedaPerfil', {url:datos.url})}}">
-                                                <span style="font-size: 15px;">{{datos.empresa}}</span> </a>
-                                            <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i>
-                                            </br>
+                                            {%if datos.url|default is not empty %} 
+                                                            <a href="{{path('busquedaPerfil', {url:datos.url})}}"><span style="font-size: 16px;">{{datos.empresa}}</span>
+                                                                <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i>
+                                                            </a>
+                                                        {%else%}
+                                                            <span style="font-size: 16px;">{{datos.empresa}}</span>
+
+                                                        {%endif%}  </br>
                                             <span style="font-size: 13px;">{{datos.puesto}}</br> 
                                                 {%if (datos.dias is null)%}
                                                     {{datos.fechaIn}} - Actualmente
@@ -386,8 +390,7 @@
                                     <div class="row " id="Edu{{datos.idEs}}">
                                         <div class="col-xs-11">
                                             <span style="font-size: 16px;">{{datos.institucion}}</span> 
-                                            <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i>
-                                            </br>
+                                              </br>
                                             <span style="font-size: 13px;">{{datos.disciplina~' | '~datos.titulo}}</br> {{datos.anioIni}} - {%if datos.anio|default is not empty %}{{datos.anio}}{%else%}Actualmente{%endif%}</span>
                                             <p style="width: 90%; margin-top: 5px;text-align:justify;">
 
@@ -432,8 +435,7 @@
                                     <div class="row " id="Org{{datos.id}}" >
                                         <div class="col-xs-11">
                                             <span style="font-size: 16px;">{{datos.nombre}}</span> 
-                                            <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i>
-                                            </br>
+                                              </br>
                                             <span style="font-size: 13px;">{{datos.puesto}}</br> {{datos.fechaIn}} - {{datos.fechaFin}}</span>
                                             <p style="width: 100%; margin-top: 5px;text-align:justify;">{{datos.descripcion}}
                                             </p>
@@ -456,8 +458,7 @@
                                     <div class="row " id="Cert{{datos.id}}">
                                         <div class="col-xs-11">
                                             <span style="font-size: 16px;">{{datos.institucion}}</span> 
-                                            <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i>
-                                            </br>
+                                               </br>
                                             <span style="font-size: 13px;">{{datos.nombre}}</br> {{datos.fechaIn}} - {{datos.fechaFin}}</span>
                                             <p style="width: 100%; margin-top: 5px;text-align:justify;">
                                             </p>
@@ -480,8 +481,7 @@
                                     <div class="row " id="CM{{datos.id}}">
                                         <div class="col-xs-11">
                                             <span style="font-size: 16px;">{{datos.institucion}}</span> 
-                                            <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i>
-                                            </br>
+                                               </br>
                                             <span style="font-size: 13px;">{{datos.nombre}}</br> {{datos.fechaIn}} - {{datos.fechaFin}}</span>
                                             <p style="width: 90%; margin-top: 5px;text-align:justify;">{{datos.descripcion}}
                                             </p>
