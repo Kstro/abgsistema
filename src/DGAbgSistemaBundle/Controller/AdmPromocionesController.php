@@ -37,11 +37,12 @@ class AdmPromocionesController extends Controller
         $em = $this->getDoctrine()->getManager();
         //$admPromociones = $em->getRepository('DGAbgSistemaBundle:AdmPromociones')->findAll();
         
-        $dql = "Select prom.id, prom.posicion, prom.monto, abo.codigo, fac.plazo, tip.tipoPago, fac.fechaPago"
+        $dql = "Select fac.id, fac.monto, abo.codigo, fac.plazo, tip.tipoPago, fac.fechaPago, fac.servicio"
                             . " From DGAbgSistemaBundle:AbgFacturacion fac"
-                            . " Join fac.ctlPromociones prom"
+                            //. " Join fac.ctlPromociones prom"
                             . " Join fac.abgPersona abo"
                             . " Join fac.abgTipoPago tip";
+                            //. " Order by fac.fechaPago DESC";
         
         $admPromociones = $em->createQuery($dql)->getArrayResult();
                     
@@ -185,38 +186,105 @@ class AdmPromocionesController extends Controller
         $isAjax = $this->get('Request')->isXMLhttpRequest();
         if($isAjax){
             $request = $this->getRequest();
+            $parameters = $request->request->all();
+            $nombreArchivo = '';
             $em = $this->getDoctrine()->getManager();
             
-            $id = $this->get('request')->request->get('abogado');
-            $monto = $this->get('request')->request->get('monto');
-            $tipopagoId = $this->get('request')->request->get('tipopago');
-            $posicion = $this->get('request')->request->get('posicion');
-            $plazo = $this->get('request')->request->get('plazo');
-            $descuento = $this->get('request')->request->get('descuento');
-            $descripcion = $this->get('request')->request->get('descripcion');
+//            $id = $this->get('request')->request->get('abogado');
+//            $monto = $this->get('request')->request->get('monto');
+//            $tipopagoId = $this->get('request')->request->get('tipopago');
+//            $servicio = $this->get('request')->request->get('tiposervicio');
+//            $posicion = $this->get('request')->request->get('posicion');
+//            $plazo = $this->get('request')->request->get('plazo');
+//            $descuento = $this->get('request')->request->get('descuento');
+//            $descripcion = $this->get('request')->request->get('descripcion');
+//            $referencia = $this->get('request')->request->get('referencia');
+            
+            $id = $parameters['espaciop']['abogado'];
+            $monto = $parameters['espaciop']['costo'];
+            $tipopagoId = $parameters['espaciop']['tipopago'];
+            $servicio = $parameters['espaciop']['tiposervicio'];
+            $plazo = $parameters['espaciop']['plazo'];
+            $descripcion = $parameters['espaciop']['descripcion'];
+            
+            if(isset($parameters['espaciop']['posicion'])){
+                $posicion = $parameters['espaciop']['posicion'];
+            }
+            
+            if(isset($parameters['espaciop']['posicion'])){
+                $referencia = $parameters['espaciop']['referencia'];
+            } else {
+                $referencia = null;
+            }
             
             $abogado = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->find($id);
             $tipopago = $em->getRepository('DGAbgSistemaBundle:CtlTipoPago')->find($tipopagoId);
             $fecha = new \DateTime('now');
             
-            $promocion = new AdmPromociones();
-            $promocion->setMonto($monto);
-            $promocion->setPosicion($posicion);
-            $promocion->setDescuento($descuento);
-            $promocion->setCtlProdServicioAdmin(null);
-            $promocion->setEstado(1);
-            $promocion->setFechaInicio($fecha);
+            if($servicio == 'Espacio publicitario'){
+                $descuento = $parameters['espaciop']['descuento'];
+                $nombreimagen2=" ";
+                
+                $promocion = new AdmPromociones();
+                $promocion->setMonto($monto);
+                $promocion->setPosicion($posicion);
+                $promocion->setDescuento($descuento);
+                $promocion->setCtlProdServicioAdmin(null);
+                $promocion->setEstado(1);
+                $promocion->setFechaInicio(new \DateTime ('now'));
+
+                $fechafin = $fecha->add(new \DateInterval('P'.$plazo.'D'));
+                $promocion->setFechaFin($fechafin);
+
+                $em->persist($promocion);
+                $em->flush();
+                
+                $path1 = $this->container->getParameter('photo.publicidad');
+                $nombreimagen=$_FILES['file']['name'];    
+
+                $tipo = $_FILES['file']['type'];
+                $extension= explode('/',$tipo);
+                $nombreimagen2.=".".$extension[1];
             
-            $fechafin = $fecha->add(new \DateInterval('P'.$plazo.'D'));
-            $promocion->setFechaFin($fechafin);
+                if ($nombreimagen != null){
+                    $path = "Photos/publicidad/";
+                    $fecha = date('Y-m-d His');
+                    $fec = explode(' ',$fecha);
+                    $nombreArchivo = "publicidad-".trim($fec[0]).trim($fec[1]).$nombreimagen2;
+
+                    $nombreBASE=$path.$nombreArchivo;
+                    $nombreBASE=str_replace(" ","", $nombreBASE);
+                    $nombreSERVER =str_replace(" ","", $nombreArchivo);
+                    //$imagen->setFoto($nombreSERVER);
+                    $resultado = move_uploaded_file($_FILES["file"]["tmp_name"], $path1.$nombreSERVER);    
+                    //n$umero = unlink($path2 . $nombreSERVER);
+                    
+                    $imagen = new \DGAbgSistemaBundle\Entity\AbgFoto();
+                    $imagen->setPromocion($promocion);
+                    $imagen->setSrc($nombreBASE);
+                    $imagen->setAbgPersona(null);
+                    $imagen->setCtlEmpresa(null);
+                    $imagen->setTipoFoto(2);
+                    $imagen->setFechaRegistro(new \DateTime ('now'));
+                    $imagen->setFechaExpiracion($fechafin);
+                    $imagen->setEstado(1);
+
+                    $em->persist($imagen);
+                    $em->flush();
+                }
+            }
+                
             
-            $em->persist($promocion);
-            $em->flush();
-            
+                
             $facturacion = new \DGAbgSistemaBundle\Entity\AbgFacturacion();
             $usuario= $this->get('security.token_storage')->getToken()->getUser();
             
-            $facturacion->setCtlPromociones($promocion);
+            if($servicio == 'Espacio publicitario'){
+                $facturacion->setCtlPromociones($promocion);
+            } else {
+                $facturacion->setCtlPromociones(null);
+            }
+            
             $facturacion->setAbgTipoPago($tipopago);
             $facturacion->setAbgPersona($abogado);
             $facturacion->setFechaPago(new \DateTime ('now'));
@@ -224,70 +292,19 @@ class AdmPromocionesController extends Controller
             $facturacion->setPlazo($plazo);
             $facturacion->setDescripcion($descripcion);
             $facturacion->setIdUser($usuario->getId());
-            $facturacion->setServicio('Espacio publicitario');
+            $facturacion->setServicio($servicio);
             $facturacion->setCtlEmpresa(null);
+            $facturacion->setReferencia($referencia);
             
             $em->persist($facturacion);
             $em->flush();
             
-            $pathTemporal = $this->container->getParameter('photo.perfil.temporal');
-            $horaFecha = date('Y-m-d His');
-            $nombreTemporal = $horaFecha;
-            $nombreTemporal = str_replace(" ", "", $nombreTemporal);
             
-            define('UPLOAD_DIR', $pathTemporal);
-            $anuncioImg = $request->get('imagen');
-            $anuncioImg = str_replace('data:image/png;base64,', '', $anuncioImg);
-            $anuncioImg = str_replace(' ', '_', $anuncioImg);
-            $data = base64_decode($anuncioImg);
-            $file = UPLOAD_DIR . $nombreTemporal . '.png';
-            $success = file_put_contents($file, $data);
-            $nombreTemporal = $nombreTemporal . '.png';
-
-            if ($success) {
-                if ($nombreTemporal != null) {
-                    //Direccion fisica del la imagen  
-                    $path = $this->container->getParameter('photo.publicidad');
-                    var_dump($path);
-                    //$path = "Photos/Perfil/E";
-                    $nombreArchivo = $nombreTemporal;
-                    $nombreBASE = $path . $nombreArchivo;
-                    $nombreSERVER = $nombreArchivo;
-                    //var_dump($pathTemporal . $nombreSERVER);
-                    //die();
-                    //Codigo para poder redimensionar la  imagenes que se suben
-//                    \Tinify\setKey("H9jR26ywRdh6J3Es7TXAPjIRAz5xuQHZ");
-//
-//                    $source = \Tinify\fromFile($pathTemporal . $nombreSERVER);
-//                    
-//                    $resized = $source->resize(array(
-//                        "method" => "cover",
-//                        "width" => 300,
-//                        "height" => 300
-//                    ));
-                    
-//                    $resultado = $resized->toFile($path . $nombreSERVER);
-                    $numero = unlink($pathTemporal . $nombreSERVER);
-                    $resultado=1;
-                    if ($resultado) {
-                        $imagen = new \DGAbgSistemaBundle\Entity\AbgFoto();
-                        
-                        $imagen->setPromocion($promocion);
-                        $imagen->setSrc($nombreBASE);
-                        $imagen->setAbgPersona(null);
-                        $imagen->setCtlEmpresa(null);
-                        $imagen->setTipoFoto(2);
-                        $imagen->setFechaRegistro(new \DateTime ('now'));
-                        $imagen->setFechaExpiracion($fechafin);
-                        $imagen->setEstado(1);
-                        
-                    }
-                }
-            }
             
             $response = new JsonResponse();
             $response->setData(array(
-                                  'exito'       => '1',
+                                  'exito'   => '1',
+                                  'imagen'  => $nombreSERVER,
                                ));  
             
             return $response; 

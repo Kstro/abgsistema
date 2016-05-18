@@ -34,20 +34,49 @@
                     <div class="nav-tabs-custom" style="cursor: move;">
                         {# Aquí se colocan los nombres de cada sección (tabs) #}    
                         <ul class="nav nav-tabs  ui-sortable-handle">
-                            <li class="active"><a data-toggle="tab" href="#listado-promociones">Listado</a></li>
+                            <li class="active"><a data-toggle="tab" href="#listado-promociones">Consulta de pagos</a></li>
                             <li><a data-toggle="tab" href="#registros">Registro de pago</a></li>
-                            <li><a data-toggle="tab" href="#consulta-pago">Consulta de pagos</a></li>
+                            {#<li><a data-toggle="tab" href="#consulta-pago">Consulta de pagos</a></li>#}
                         </ul>
                         {# Aquí se encuentran las secciones de las tabs #}    
                         <div class="tab-content no-padding">
                             {# Sección en donde se muestran todos los anuncios que se le han vendido #}
                             <div class="chart tab-pane active" id="listado-promociones" >
+                                <form id="fConsultaFactura">
+                                    <div class="form-column col-sm-12" style=" padding: 20px;">
+                                        <div class="form-group">
+                                            <div class="row"  >
+                                                <div class="col-sm-4"  >
+                                                    <select id="busqueda-abogado" name="Sabogado" class="form-control input-sm " data-rule-required="true" style=" width: 100%;">
+                                                        <option value="0" >Seleccione un cliente</option>
+                                                    </select> 
+
+                                                </div>
+                                                <div class="col-sm-2"  >
+                                                    <input type="text"  name="txtFechaInicio" class="form-control input-sm txtFechaIni" data-rule-required="true" 
+                                                           style=" width: 100%;" id="txtFechaInicio"   placeholder="Fecha inicio">
+                                                </div>
+                                                <div class="col-sm-2"  >
+                                                    <input type="text"  name="txtFechaFin" id="txtFechaFin" class="form-control input-sm txtFechaFin " data-rule-required="true" 
+                                                           style=" width: 100%;"   placeholder="Fecha fin">
+                                                </div>
+                                                <div class="col-sm-1"  >
+
+                                                    <a class="btn btn-sm btn-info btn-flat pull-left" id="btnbuscar"><i class="fa  fa-search"></i>&nbsp;Buscar</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form> 
+                                <br>
+                                
                                 <div style="margin-top: 30px; margin-left: 5px;">
                                     <table class="listados table table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <th class="text-center">ID de cliente</th>
+                                                <th class="text-center">Id de cliente</th>
                                                 <th class="text-center">Fecha de transacción</th>
+                                                <th class="text-center">Tipo de servicio</th>
                                                 <th class="text-center">Tipo de pago</th>
                                                 <th class="text-center">Monto ($)</th>
                                                 <th class="text-center">Cantidad de días</th>
@@ -60,6 +89,7 @@
                                             <tr>
                                                 <td class="text-center"><a href="{{ path('admin_promociones_show', { 'id': admPromocione.id }) }}">{{ admPromocione.codigo }}</a></td>
                                                 <td class="text-center">{{ admPromocione.fechaPago|date('d/m/Y') }}</td>
+                                                <td class="text-center">{{ admPromocione.servicio }}</td>
                                                 <td class="text-center">{{ admPromocione.tipoPago }}</td>
                                                 <td class="text-right">{{ admPromocione.monto|number_format(2, '.', ',') }}</td>
                                                 <td class="text-center">{{ admPromocione.plazo }}</td>
@@ -84,7 +114,7 @@
                             {# Sección en donde se registra el anuncio publicitario #}
                             <div class="chart tab-pane" id="registros" style=" padding: 15px;" >
                                 <div style="margin-top: 30px; margin-left: 10px;">
-                                    <form id="formulario-espacios-publicitarios" method="POST" enctype="multipart/form-data">
+                                    <form id="formulario-facturacion" method="POST" enctype="multipart/form-data">
                                         <div class="row" style="margin-top: 30px;">
                                             <div class="col-md-5">
                                                 {# Area en donde se selecciona  el abogado que esta solicitando el espacio publicitario #}  
@@ -104,6 +134,62 @@
                                                 </div>
                                             </div> 
                                             <div class="col-md-3">
+                                                {# Area en donde se ingresa  el descuento por el espacio publicitario #}
+                                                <div id="descuento">
+                                                    <label>Descuento (%)</label>
+                                                    <input type="text" name="espaciop[descuento]" id="espaciop_descuento" class="form-control" style="width: 100%" placeholder="%">     
+                                                </div>
+                                            </div>    
+                                        </div>
+                                        <div class="row" style="margin-top: 30px;">
+                                            <div class="col-md-3">
+                                                {# Area en donde se selecciona  el abogado que esta solicitando el espacio publicitario #}  
+                                                <div id="tipo-servicio">
+                                                    <label>* Tipo de servicio</label>
+                                                    <select id="espaciop_tiposervicio" name="espaciop[tiposervicio]" class="espacio_tipo_servicio" style="width: 100%">
+                                                        <option value="0" disabled selected>Seleccione un tipo de servicio ...</option>
+                                                        <option value="Trial">Trial</option>
+                                                        <option value="Personal">Personal</option>
+                                                        <option value="Empresarial">Empresarial</option>
+                                                        <option value="Espacio publicitario">Espacio publicitario</option>
+                                                    </select>  
+                                                
+                                                </div>
+                                            </div>
+                                            <div id="servicio-promocion" style="display: none">    
+                                                <div class="col-md-3">
+                                                    {# Area en donde se selecciona  el abogado que esta solicitando el espacio publicitario #}  
+                                                    <div id="posicion-imagen">
+                                                        <label>* Ubicación de anuncio</label>
+                                                        <select id="espaciop_posicion" name="espaciop[posicion]" class="espacio_posicion" style="width: 100%">
+                                                            <option value="0" disabled selected>Seleccione una ubicación ...</option>
+                                                            <option value="1">Posición 1</option>
+                                                            <option value="2">Posición 2</option>
+                                                            <option value="3">Posición 3</option>
+                                                            <option value="4">Posición 4</option>
+                                                        </select>  
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4" id="imagen">
+                                                    <div id="imagen-anuncio">        
+                                                        <label>* Imagen de anuncio publicitario</label>
+                                                        <input id="file-input" type="file" name="file">
+                                                        {#<input type="hidden" id="idSesion" name="idSesion" class="form-control input-sm"/>#}
+                                                    </div>
+                                                </div>
+                                            </div>        
+                                        </div>            
+                                        <div class="row" style="margin-top: 30px;">
+                                            <div class="col-md-3">
+                                                {# Area en donde se ingresa  el numero de dias que estara en el espacio publicitario #}
+                                                <div id="plazo">
+                                                    <label>* Plazo</label>
+                                                    <input type="text" name="espaciop[plazo]" id="espaciop_plazo" class="form-control" style="width: 100%" placeholder="# de días">     
+                                                </div>
+                                            </div>   
+                                            <div class="col-md-4">
                                                 {# Area en donde se selecciona  el tipo de pago en que cancelara el abogado #}  
                                                 <div id="tipo-pago">
                                                     <label>* Tipo de pago</label>
@@ -115,56 +201,32 @@
                                                     </select>  
                                                 
                                                 </div>
-                                            </div>    
-                                        </div>
-                                        <div class="row" style="margin-top: 30px;">
-                                            <div class="col-md-3">
-                                                {# Area en donde se selecciona  el abogado que esta solicitando el espacio publicitario #}  
-                                                <div id="posicion-imagen">
-                                                    <label>* Ubicación de anuncio</label>
-                                                    <select id="espaciop_posicion" name="espaciop[posicion]" class="espacio_posicion" style="width: 100%">
-                                                        <option value="0" disabled selected>Seleccione una ubicación ...</option>
-                                                        <option value="1">Posición 1</option>
-                                                        <option value="2">Posición 2</option>
-                                                        <option value="3">Posición 3</option>
-                                                        <option value="4">Posición 4</option>
-                                                    </select>  
-                                                
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
+                                            </div>  
+                                            <div class="col-md-4">
                                                 {# Area en donde se ingresa  el numero de dias que estara en el espacio publicitario #}
-                                                <div id="plazo">
-                                                    <label>* Plazo</label>
-                                                    <input type="text" name="espaciop[plazo]" id="espaciop_plazo" class="form-control" style="width: 100%" placeholder="# de días">     
+                                                <div id="referencia" style="display: none;">
+                                                    <label>* Referencia</label>
+                                                    <input type="text" name="espaciop[referencia]" id="espaciop_referencia" class="form-control" style="width: 100%" placeholder="Referencia">     
                                                 </div>
-                                            </div>     
-                                            <div class="col-md-4" id="imagen">
-                                                <div id="imagen-anuncio">        
-                                                    <label>* Imagen de anuncio publicitario</label>
-                                                    <input id="file-input" required type="file" name="file">
-                                                    {#<input type="hidden" id="idSesion" name="idSesion" class="form-control input-sm"/>#}
-                                                </div>
-                                            </div>    
+                                            </div>  
                                         </div>     
+                                        
                                         <div class="row" style="margin-top: 30px;">
-                                            <div class="col-md-3">
-                                                {# Area en donde se ingresa  el descuento por el espacio publicitario #}
-                                                <div id="descuento">
-                                                    <label>Descuento (%)</label>
-                                                    <input type="text" name="espaciop[descuento]" id="espaciop_descuento" class="form-control" style="width: 100%" placeholder="%">     
-                                                </div>
-                                            </div>
-                                            <div id="vventa-descripcion" class="col-md-8 col-sm-8" style="margin-bottom: 10px;">
-                                                <div id="venta-descripcion-label" style="margin-left: 30px;">
+                                            
+                                            <div id="vventa-descripcion" class="col-md-9 col-sm-9" style="margin-bottom: 10px;">
+                                                <div id="venta-descripcion-label">
                                                     <label>Descripción</label>
                                                 </div> 
                                                 <div class="clearfix"></div>
-                                                <div id="descripcion" style="margin-left: 30px;">
+                                                <div id="descripcion">
                                                     <textarea rows="2" cols="100" name="espaciop[descripcion]" id="espaciop_descripcion" class="form-control"></textarea> 
                                                 </div>     
-                                            </div>    
+                                            </div>  
+                                            
                                         </div>  
+                                        <div class="row" style="margin-top: 30px;">                                            
+                                            <div id="marco-imagen" class="col-md-offset-1 col-sm-offset-1 col-md-9 col-sm-9" style="margin-bottom: 10px;"></div>                                              
+                                        </div>        
                                         <div class="row">
                                             <div class="col-md-12 col-sm-12" style="margin-top: 30px; margin-bottom: 10px;" id="registrar-venta">
                                                 <hr>
@@ -256,13 +318,47 @@
                 }
             });
             
+            $('#busqueda-abogado').select2({
+                ajax: {
+                    url: "{{path('busqueda_abogado_select')}}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term, 
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data, params) {
+                        var select2Data = $.map(data.data, function (obj) {
+                            obj.id = obj.abogadoid;
+                            obj.text = obj.codigo + ' - ' + obj.nombres + ' ' + obj.apelllido;
+
+                            return obj;
+                        });
+
+                        return {
+                            results: select2Data
+                        };
+                    },
+                    cache: true
+                },
+                escapeMarkup: function (markup) { return markup; }, 
+                minimumInputLength: 1,
+                templateResult: formatRepo, 
+                templateSelection: formatRepoSelection,
+                formatInputTooShort: function () {
+                    return "Enter 1 Character";
+                }
+            });
             
             $('#espaciop_tipopago').select2();
             $('#espaciop_posicion').select2();
+            $('#espaciop_tiposervicio').select2();
 
             $('.listados').DataTable({ 
                 searching:true,
-                "order":[[0, "desc"],[1,"desc"]],
+                "order":[[1,"desc"]],
                 "columnDefs": [                               
                        { "orderable": false, "targets": 2 }
                     ],
@@ -281,6 +377,28 @@
 
             }); 
             
+            $(document).on("change", "#espaciop_tipopago", function(){
+                var tipopago = $('#espaciop_tipopago').val();
+                var referencia = document.getElementById('referencia');
+                    
+                if (tipopago == 2 || tipopago == 3){
+                    referencia.style.display = 'block';
+                } else {
+                    referencia.style.display = 'none';
+                }
+            });
+            
+            $(document).on("change", "#espaciop_tiposervicio", function(){
+                var tiposervicio = $('#espaciop_tiposervicio').val();
+                var promocion = document.getElementById('servicio-promocion');
+                    
+                if (tiposervicio == 'Espacio publicitario'){
+                    promocion.style.display = 'block';
+                } else {
+                    promocion.style.display = 'none';
+                }
+            });
+            
             // Al momento de hacer click en Registrar un anuncio publicitario de un abogado
             $(document).on("click", "#registro-venta", function(){
                 var abogado = $('#espaciop_abogado').val();
@@ -288,20 +406,11 @@
                 var tipopago = $('#espaciop_tipopago').val();
                 var posicion = $('#espaciop_posicion').val();
                 var plazo = $('#espaciop_plazo').val();
-                var imagen = $('#file-input').val();
                 var descuento = $('#espaciop_descuento').val();
                 var descripcion = $('#espaciop_descripcion').val();
-                
-                var data = {
-                    abogado: abogado,
-                    monto: monto,
-                    tipopago: tipopago,
-                    posicion: posicion,
-                    plazo: plazo, 
-                    imagen: imagen,
-                    descuento: descuento,
-                    descripcion: descripcion
-                };
+                var tiposervicio = $('#espaciop_tiposervicio').val();
+                var referencia = $('#espaciop_referencia').val();
+                var data = new FormData(document.getElementById("formulario-facturacion"));
                 
                 $.ajax({
                     type: 'POST',
@@ -309,12 +418,25 @@
                     dataType: 'json',
                     data: data,
                     url: Routing.generate('admin_registro_anuncio_publicitario'),
+                    cache: false,
+                    contentType: false,
+                    processData: false,
                     success: function (response)
                     {
+                        var draw = '';
                         var editVenta = document.getElementById('modificar-venta');
-                    
+                        
                         editVenta.style.display = 'block';
                         $('#registrar-venta').hide();
+                        
+                        if(tiposervicio == 'Espacio publicitario'){
+                            console.log(response.imagen);
+                            {#if(posicion == 2 || posicion == 3){
+                                $('#marco-imagen').html('<img src=\"{{ asset('Photos/publicidad/')}}'+response.imagen+'\" style=\"width: 100%; max-width: 100%;margin-bottom: 5px;  border: 1px solid #DCDCDC;\" class=\"img-responsive\" alt=\"Imagen responsive\">');
+                            } else {#}
+                                $('#marco-imagen').html('<img src=\"{{ asset('Photos/publicidad/')}}'+response.imagen+'\" style=\"width: 100%; max-width: 100%;margin-bottom: 5px;  border: 1px solid #DCDCDC;\" class=\"img-responsive\" alt=\"Imagen responsive\">');
+                            {# }#}
+                        }
                         
                         Lobibox.notify("success", {
                             size: 'mini',

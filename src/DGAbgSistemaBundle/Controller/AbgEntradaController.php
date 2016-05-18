@@ -83,7 +83,7 @@ class AbgEntradaController extends Controller {
             $nombreimagen2.=".".$extension[1];
             
 
-            
+            $user = $this->container->get('security.context')->getToken()->getUser();
             
             $tituloEntrada = $_POST["titulo"];
             $contenidoEntrada = $_POST["contenido"];
@@ -99,7 +99,8 @@ class AbgEntradaController extends Controller {
             $abgEntrada->setFecha($fecha);
             $abgEntrada->setContenido($contenidoEntrada);
             $abgEntrada->setAbgCategoriaEntradaId($CatBlog);
-            $abgEntrada->setAbgCategoriaEntradaId;
+            $abgEntrada->setCtlUsuario($user);
+//            $abgEntrada->setAbgCategoriaEntradaId;
             
             $abgImagenBlog->setSrc($nombreimagen);
             $abgImagenBlog->setAbgEntrada($abgEntrada);

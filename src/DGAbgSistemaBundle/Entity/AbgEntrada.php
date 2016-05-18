@@ -76,16 +76,6 @@ class AbgEntrada
     private $abgSubespecialidad;
 
     /**
-     * @var \CtlUsuario
-     *
-     * @ORM\ManyToOne(targetEntity="CtlUsuario")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="ctl_usuario_id", referencedColumnName="id")
-     * })
-     */
-    private $ctlUsuario;
-
-    /**
      * Get id
      *
      * @return integer 
