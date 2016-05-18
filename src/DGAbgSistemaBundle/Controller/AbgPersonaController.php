@@ -624,11 +624,14 @@ class AbgPersonaController extends Controller {
 
 
             $sql = "SELECT  el.id AS id, el.puesto AS puesto, el.compania AS empresa, el.funcion AS funcion,"
-                    . "f.src AS src, DATEDIFF(el.fecha_fin,el.facha_inicio) AS dias, date_format(el.facha_inicio, '%M %Y') As fechaIn, date_format(el.fecha_fin, '%M %Y') As fechaFin, el.ubicacion AS hubicacion "
+                    . "f.src AS src, DATEDIFF(el.fecha_fin,el.facha_inicio) AS dias, date_format(el.facha_inicio, '%M %Y') As fechaIn, "
+                    . " date_format(el.fecha_fin, '%M %Y') As fechaFin, el.ubicacion AS hubicacion, urle.url AS url "
                     . " FROM  marvinvi_abg.abg_experiencia_laboral el "
                     . " JOIN marvinvi_abg.abg_persona p on p.id=el.abg_persona_id AND el.abg_persona_id=" . $idPersona
                     . " left JOIN marvinvi_abg.ctl_empresa em on em.id=el.ctl_empresa_id "
-                    . " left JOIN marvinvi_abg.abg_foto AS f on f.ctl_empresa_id=em.id GROUP by el.id,el.abg_persona_id,em.id"
+                    . " left JOIN marvinvi_abg.abg_foto AS f on f.ctl_empresa_id=em.id "
+                    . " left JOIN marvinvi_abg.abg_url_personalizada urle ON em.id=urle.ctl_empresa_id"
+                    . " GROUP by el.id,el.abg_persona_id,em.id"
                     . " ORDER BY el.facha_inicio Desc";
             $stm = $this->container->get('database_connection')->prepare($sql);
             $stm->execute();
@@ -1218,6 +1221,7 @@ class AbgPersonaController extends Controller {
 
 
             $idEmpresa = "";
+            $IdExperiencia = "";
             if ($request->get('tipo') == "1") {
                 $idEmpresa = $Empresa->find(intval($request->get('empresa')));
                 $nombre = $Empresa->find(intval($request->get('empresa')))->getNombreEmpresa();
@@ -1246,6 +1250,7 @@ class AbgPersonaController extends Controller {
                         $id = $row['id'];
                     }
                     $data['msj'] = "Actualmente Trabaja en " . $compania;
+                    $data['val'] = 1;
                 } else {
 
                     $Experiencia = new AbgExperienciaLaboral();
@@ -1324,6 +1329,7 @@ class AbgPersonaController extends Controller {
                             $compania = $row['compania'];
                         }
                         $data['msj'] = "Actualmente Trabaja en " . $compania;
+                        $data['val'] = 1;
                     } else {
 
                         $Experiencia = $em->getRepository("DGAbgSistemaBundle:AbgExperienciaLaboral")->find($datos['hidExp']);
@@ -1342,8 +1348,9 @@ class AbgPersonaController extends Controller {
                         }
                         if ($request->get('tipo') == "1") {
                             $Experiencia->setCtlEmpresa($idEmpresa);
+                        } else {
+                            $Experiencia->setCtlEmpresa(null);
                         }
-
                         $em->merge($Experiencia);
                         $em->flush();
                         $IdExperiencia = $Experiencia->getId();
@@ -1355,18 +1362,20 @@ class AbgPersonaController extends Controller {
 
             $ObjetoUrl = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgUrlPersonalizada')->findByCtlEmpresa($idEmpresa);
 
-            $sql = "SELECT  el.id AS id, el.puesto AS puesto, el.compania AS empresa, el.funcion AS funcion, em.id idEmp, "
-                    . " f.src AS src, DATEDIFF(el.fecha_fin,el.facha_inicio) AS dias, date_format(el.facha_inicio, '%M %Y') As fechaIn, date_format(el.fecha_fin, '%M %Y') As fechaFin, "
-                    . " el.ubicacion AS hubicacion "
-                    . " FROM  marvinvi_abg.abg_experiencia_laboral el "
-                    . " JOIN marvinvi_abg.abg_persona p on p.id=el.abg_persona_id AND el.id=" . $IdExperiencia
-                    . " left JOIN marvinvi_abg.ctl_empresa em on em.id=el.ctl_empresa_id "
-                    . " left JOIN marvinvi_abg.abg_foto AS f on f.ctl_empresa_id=em.id GROUP by el.id,el.abg_persona_id,em.id";
-            $stm = $this->container->get('database_connection')->prepare($sql);
-            $stm->execute();
-            $data['Exp'] = $stm->fetchAll();
-
-
+            if ($IdExperiencia != "") {
+                $sql = "SELECT  el.id AS id, el.puesto AS puesto, el.compania AS empresa, el.funcion AS funcion, em.id idEmp, "
+                        . " f.src AS src, DATEDIFF(el.fecha_fin,el.facha_inicio) AS dias, date_format(el.facha_inicio, '%M %Y') As fechaIn, date_format(el.fecha_fin, '%M %Y') As fechaFin, "
+                        . " el.ubicacion AS hubicacion, urle.url AS url "
+                        . " FROM  marvinvi_abg.abg_experiencia_laboral el "
+                        . " JOIN marvinvi_abg.abg_persona p on p.id=el.abg_persona_id AND el.id=" . $IdExperiencia
+                        . " left JOIN marvinvi_abg.ctl_empresa em on em.id=el.ctl_empresa_id "
+                        . " left JOIN marvinvi_abg.abg_foto AS f on f.ctl_empresa_id=em.id "
+                        . " left JOIN marvinvi_abg.abg_url_personalizada urle ON em.id=urle.ctl_empresa_id "
+                        . " GROUP by el.id,el.abg_persona_id,em.id";
+                $stm = $this->container->get('database_connection')->prepare($sql);
+                $stm->execute();
+                $data['Exp'] = $stm->fetchAll();
+            }
             return new Response(json_encode($data));
         } catch (\Exception $e) {
             $data['error'] = $e->getMessage(); //"Falla al Registrar ";
@@ -1409,7 +1418,8 @@ class AbgPersonaController extends Controller {
         $dql = "SELECT e.id AS idEmp, e.nombreEmpresa AS nombre, f.src AS src "
                 . "FROM DGAbgSistemaBundle:CtlEmpresa e "
                 . " JOIN DGAbgSistemaBundle:AbgFoto f "
-                . "WHERE e.id=f.ctlEmpresa AND upper(e.nombreEmpresa) LIKE upper(:busqueda) "
+                . "WHERE e.id=f.ctlEmpresa AND e.urlPermiso=1 "
+                . " AND upper(e.nombreEmpresa) LIKE upper(:busqueda) "
                 . "ORDER BY e.nombreEmpresa ASC ";
 
         $array = $em->createQuery($dql)
@@ -1419,8 +1429,8 @@ class AbgPersonaController extends Controller {
         if (count($array > 0)) {
             $data['data'] = $array;
         }/* else {
-            $data['data'] = array('id' => 0, 'nombre' => '<a onclick="CambioEmp()"> Nueva empresa</a>');
-        }*/
+          $data['data'] = array('id' => 0, 'nombre' => '<a onclick="CambioEmp()"> Nueva empresa</a>');
+          } */
         return new Response(json_encode($data));
     }
 

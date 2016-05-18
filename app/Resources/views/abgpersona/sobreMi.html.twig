@@ -1,23 +1,22 @@
+ 
 
-<link href="{{asset('Resources/jquery-validation-1.15.0/demo/css/screen.css')}}" rel="stylesheet">
-<script src="{{ asset('Resources/jquery-validation-1.15.0/dist/jquery.validate.js')}}"></script>
+<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+  <script>tinymce.init({ selector:'.txtUnpoco1' });</script>
 <!-- Texarea-->
+ 
 
 <script type="text/javascript">
+      
+       
     $(document).ready(function () {
-        $("#funpoco").validate({
-            messages: {
-                 txtUnpoco1: {
-                    required: 'Requerido!'
-                }
-            }
-        });
-
         $("#cancel").click(function () {
             $("#conetenedorUnpoco").show();
-          
+
             $("#div002").remove();
         });
+     
+                         
+          
     });
 </script>
 
@@ -27,18 +26,19 @@
         {% for datos in result_persona %}
 
             <input type="hidden" name="hidOrg" id="hidOrg" value="">
-           <div class="form-group">
-               
+            <div class="form-group">
+
                 <div class="row">
+
                     <div class="col-sm-12">
-                       <textarea class="form-control  input-sm" rows="3" name="txtUnpoco1" id="txtUnpoco1" placeholder="Sobre mi" data-rule-required="true">{{datos.descripcion}}</textarea>
+                        <textarea class="form-control  input-sm txtUnpoco1" rows="3" name="txtUnpoco1" id="txtUnpoco1" placeholder="Sobre mi" data-rule-required="true">{{datos.descripcion}}</textarea>
                     </div>
-                  
+
                 </div>
-         
-           
-                </div>
-            
+
+
+            </div>
+
             <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group">
@@ -47,13 +47,7 @@
                 </div>
             </div>
         {%endfor%}
-
-
+     
 
     {%endif%}
 </form>
-
-
-
-
-

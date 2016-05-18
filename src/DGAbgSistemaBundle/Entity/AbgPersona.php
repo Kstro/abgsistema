@@ -94,7 +94,7 @@ class AbgPersona
     /**
      * @var string
      *
-     * @ORM\Column(name="descripcion", type="string", length=255, nullable=true)
+     * @ORM\Column(name="descripcion", type="string", nullable=true)
      */
     private $descripcion;
 

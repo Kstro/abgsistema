@@ -1,19 +1,16 @@
 {% extends ':Layout:layout3.html.twig' %}
 {% block js_extend %}
-
+    
               <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
     <link href="{{ asset('Resources/src/css/bootstrap-editable.css')}}" rel="stylesheet"/>
     <script src="{{asset('Resources/src/js/bootstrap-editable.min.js')}}"></script>
    
 
-    <link href="{{ asset('Resources/src/css/address.css')}}" rel="stylesheet"/>
+    {#<link href="{{ asset('Resources/src/css/address.css')}}" rel="stylesheet"/>#}
 
     <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
-
-    
-    <script src="{{ asset('Resources/src/js/main_perfil.js')}}"></script>
     <script src="{{asset('Resources/src/js/nombre.js')}}"></script>
-    <script src="{{asset('Resources/src/js/address.js')}}"></script>
+   {# <script src="{{asset('Resources/src/js/address.js')}}"></script>#}
     <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
     <!-- Progresbar-->
     <script src="{{ asset('Resources/Bar_jQuery/radial-progress-bar.js')}}"></script>
@@ -24,6 +21,9 @@
     <script src="{{ asset('Resources/jQuery-Mask/src/jquery.mask.js') }}"></script>
        <link rel="stylesheet" href="{{ asset('Resources/zebra/css/bootstrap.css') }}">
             <script type="text/javascript" src="{{ asset('Resources/zebra/js/zebra_datepicker.js')}}" ></script>
+           {#   <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
+            <script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>#}
+      
 <style>
         .modal-backdrop {
             z-index: -1 !important;;
@@ -36,6 +36,7 @@
         }).radialProgress("to", {'perc':{{cumplimiento}}, 'time': 10000});
       
     </script>
+    
 {% endblock %} 
 {% block cuerpo %}
     {% for datos in abgPersona %}

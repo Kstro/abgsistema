@@ -23,7 +23,6 @@ $(function(){
 **/
 (function ($) {
     "use strict";
-    
     var Addnombres = function (options) {
         this.init('addnombres', options, Addnombres.defaults);
     };
@@ -34,9 +33,8 @@ $(function(){
     $.extend(Addnombres.prototype, {
         /**
         Renders input from tpl
-
-        @method render() 
-        **/        
+        @method render()
+        **/
         render: function() {
            this.$input = this.$tpl.find('input');
         },
