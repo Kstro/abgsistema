@@ -38,14 +38,21 @@ class AbgFacturacion
     /**
      * @var string
      *
-     * @ORM\Column(name="servicio", type="string", length=60, nullable=false)
+     * @ORM\Column(name="servicio", type="string", length=100, nullable=false)
      */
     private $servicio;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="referencia", type="string", length=200, nullable=true)
+     */
+    private $referencia;
     
       /**
      * @var string
      *
-     * @ORM\Column(name="descripcion", type="string", length=255, nullable=false)
+     * @ORM\Column(name="descripcion", type="string", length=1500, nullable=false)
      */
     private $descripcion;
     
@@ -182,6 +189,30 @@ class AbgFacturacion
     {
         return $this->servicio;
     }
+    
+    /**
+     * Set referencia
+     *
+     * @param string $referencia
+     * @return AbgFacturacion
+     */
+    public function setReferencia($referencia)
+    {
+        $this->referencia = $referencia;
+
+        return $this;
+    }
+
+    /**
+     * Get referencia
+     *
+     * @return string 
+     */
+    public function getReferencia()
+    {
+        return $this->referencia;
+    }
+    
         /**
      * Set servicio
      *
