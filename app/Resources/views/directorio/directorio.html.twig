@@ -647,9 +647,14 @@ else{ // Maximum length not reached so update the value of my_text counter
                                         else{
                                             especialidades = "N/A";
                                         }
+                                        var verificado ='';
+                                        if(data.data[i].verificado==1){
+                                            verificado = '<img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 0px;margin-left:1px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>';
+                                        }
+                                        
                                         //console.log(data.data[i].especialidades);
                                         //console.log(especialidades);
-
+                                        
 
                                         //console.log(data.data[i].foto);
                                         
@@ -660,7 +665,7 @@ else{ // Maximum length not reached so update the value of my_text counter
                                         
                                         cadena = '<div class=\"item-directorio-nexo\" style=\"width: 100%;\"> <div class=\"clearfix\"></div><div class=\"row\">\n\
                                         <div class=\"col-xs-2 col-sm-3 col-md-3 col-lg-2\"><img id=\"busquedaImagen'+(i+1)+'\" src=\"{{asset('')}}'+data.data[i].foto+'\" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">\n\
-                                        </div><div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10"><p id=\"busquedaNombre'+(i+1)+'\" style=\"margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;\" class=\"sans\"><strong>'+busquedaNombre+'</strong></p>\n\
+                                        </div><div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10"><p id=\"busquedaNombre'+(i+1)+'\" style=\"margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;\" class=\"sans\"><strong>'+busquedaNombre+'</strong>'+verificado+'</p>\n\
                                         <p id=\"busquedaCargo'+(i+1)+'\" style=\"color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;\" class=\"sans\">'+busquedaCargo+'</p>\n\
                                         <div class=\"row\" style=\"margin-top: 2px; margin-bottom: 15px;\"><div class=\"col-sm-4 col-xs-12\"><p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Telefono</strong></p><p id=\"busquedaTelefono1\" style=\"font-size: 11px; margin-bottom: 0px;\">'+telefonos+' </p>\n\
                                         </div><div class=\"col-sm-4 col-xs-12\"><p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p><p id="busquedaCorreo'+(i+1)+'" style="font-size: 11px; margin-bottom: 0px;">'+busquedaCorreo+'</p></div>\n\
