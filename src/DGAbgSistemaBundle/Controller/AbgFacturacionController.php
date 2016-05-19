@@ -74,6 +74,84 @@ class AbgFacturacionController extends Controller {
                     'abgFacturacions' => $abgFacturacions,
         ));
     }
+    
+    /**
+     * 
+     *
+     * @Route("/facturacion/data", name="admin_facturacion_data")
+     */
+    public function dataFacturacionAction(Request $request)
+    {
+        
+        $entity = new AbgFacturacion();
+       
+        $start = $request->query->get('start');
+        $draw = $request->query->get('draw');
+        $longitud = $request->query->get('length');
+        $busqueda = $request->query->get('search');
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $facturacionTotal = $em->getRepository('DGAbgSistemaBundle:AbgFacturacion')->findAll();
+        
+        $facturacion['draw']=$draw++;  
+        $facturacion['recordsTotal'] = count($facturacionTotal);
+        $facturacion['recordsFiltered']= count($facturacionTotal);
+        $facturacion['data']= array();
+        
+        $busqueda['value'] = str_replace(' ', '%', $busqueda['value']);
+        if($busqueda['value']!=''){
+                    $dql = "Select fac.id, fac.monto, abo.codigo, fac.plazo, tip.tipoPago, fac.servicio, CONCAT('<a class=\"link_facturacion\" id=\"',fac.id,'\">Ver detalles</a>') as link"
+                            . " From DGAbgSistemaBundle:AbgFacturacion fac"
+                            . " Join fac.abgPersona abo"
+                            . " Join fac.abgTipoPago tip";
+
+                    $facturacion['data'] = $em->createQuery($dql)
+                                              ->setFirstResult($start)
+                                              ->setMaxResults($longitud)
+                                              ->getResult();  
+            
+            
+//                    $dql = "SELECT CONCAT('<a class=\"link_expediente\" id=\"',exp.numero,'\">',exp.numero,'</a>') as expediente, pac.id as id,per.nombres,per.apellidos,pac.dui,per.telefono,per.email,pac.lugarTrabajo,DATE_FORMAT(pac.fechaNacimiento,'%d-%m-%Y') as fechaNacimiento, '<a ><i style=\"cursor:pointer;\"  class=\"infoPaciente fa fa-info-circle\"></i></a>' as link FROM DGPlusbelleBundle:Paciente pac "
+//                        . "JOIN pac.persona per JOIN pac.expediente exp "
+//                        . "WHERE CONCAT(upper(per.nombres),upper(per.apellidos)) LIKE upper(:busqueda) "
+//                        . "ORDER BY per.nombres ASC ";
+//                    $facturacion['data'] = $em->createQuery($dql)
+//                            ->setParameters(array('busqueda'=>"%".$busqueda['value']."%"))
+//                            ->getResult();
+                    
+                    $facturacion['recordsFiltered']= count($facturacion['data']);
+                    
+//                    $dql = "SELECT CONCAT('<a class=\"link_expediente\" id=\"',exp.numero,'\">',exp.numero,'</a>') as expediente, pac.id as id,per.nombres,per.apellidos,pac.dui,per.telefono,per.email,pac.lugarTrabajo,DATE_FORMAT(pac.fechaNacimiento,'%d-%m-%Y') as fechaNacimiento, CONCAT('<a ><i id=\"',pac.id,'\" style=\"cursor:pointer;\"  class=\"infoPaciente fa fa-info-circle\"></i></a>') as link FROM DGPlusbelleBundle:Paciente pac "
+//                        . "JOIN pac.persona per JOIN pac.expediente exp "
+//                        . "WHERE CONCAT(upper(per.nombres),upper(per.apellidos)) LIKE upper(:busqueda) "
+//                        . "ORDER BY per.nombres ASC ";
+//                    $facturacion['data'] = $em->createQuery($dql)
+//                            ->setParameters(array('busqueda'=>"%".$busqueda['value']."%"))
+//                            ->setFirstResult($start)
+//                            ->setMaxResults($longitud)
+//                            ->getResult();
+        }
+        else{
+//            $dql = "SELECT CONCAT('<a class=\"link_expediente\" id=\"',exp.numero,'\">',exp.numero,'</a>') as expediente,pac.id as id,per.nombres,per.apellidos,pac.dui,per.telefono,per.email,pac.lugarTrabajo,DATE_FORMAT(pac.fechaNacimiento,'%d-%m-%Y') as fechaNacimiento, CONCAT('<a ><i id=\"',pac.id,'\" style=\"cursor:pointer;\"  class=\"infoPaciente fa fa-info-circle\"></i></a>') as link FROM DGPlusbelleBundle:Paciente pac "
+//                . "JOIN pac.persona per JOIN pac.expediente exp ORDER BY per.nombres ASC ";
+//            $facturacion['data'] = $em->createQuery($dql)
+//                    ->setFirstResult($start)
+//                    ->setMaxResults($longitud)
+//                    ->getResult();
+            
+            $dql = "Select fac.id, fac.monto, abo.codigo, fac.plazo, tip.tipoPago, fac.servicio, CONCAT('<a class=\"link_facturacion\" id=\"',fac.id,'\">Ver detalles</a>') as link"
+                    . " From DGAbgSistemaBundle:AbgFacturacion fac"
+                    . " Join fac.abgPersona abo"
+                    . " Join fac.abgTipoPago tip";
+
+            $facturacion['data'] = $em->createQuery($dql)
+                                      ->setFirstResult($start)
+                                      ->setMaxResults($longitud)
+                                      ->getResult();                                          
+        } 
+        
+        return new Response(json_encode($facturacion));
+    }
 
     /**
      * Creates a new AbgFacturacion entity.

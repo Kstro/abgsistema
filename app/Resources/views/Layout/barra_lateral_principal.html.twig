@@ -69,7 +69,7 @@
               
             </a>
         </li>
-         <li class="treeview">
+         {#<li class="treeview">
             <a href="#">
                 <i class="fa fa-cloud"></i> <span>Otros servicios</span>
                 <i class="fa fa-angle-left pull-right"></i>
@@ -79,8 +79,8 @@
                 <li><a href="../examples/profile.html"><i class="fa fa-circle-o"></i> Profile</a></li>
 
             </ul>
-        </li>
-        <li class="treeview">
+        </li>#}
+        {#<li class="treeview">
             <a href="#">
                 <i class="fa fa-question-circle"></i> <span>Ayuda</span>
                 <i class="fa fa-angle-left pull-right"></i>
@@ -102,7 +102,7 @@
                 </li>
                 <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
             </ul>
-        </li>
+        </li>#}
           {% endif %}  
         {% if (is_granted('ROLE_ADMIN'))%}
              <li>
@@ -121,7 +121,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{path('abgfacturacion_index')}}">
+                <a href="{{path('admin_promociones_index')}}">
                     <i class="fa  fa-newspaper-o"></i> <span>Facturación</span> 
                 </a>
             </li>
