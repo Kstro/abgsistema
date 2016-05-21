@@ -85,20 +85,20 @@ class CtlEmpresaController extends Controller {
             //Listar los empleados de la empresa
             $sqlEmpEmp = "SELECT per.id as idPersona, per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, "
                     . " per.telefono_fijo as telefonoFijo, per.telefono_movil as telefonoMovil, per.titulo_profesional AS tituloProfesional, "
-                    . " per.id, fot.src, sw.nombre AS sitioWeb, per.verificado AS verificado "
+                    . " per.id, fot.src, sw.nombre AS sitioWeb, per.verificado AS verificado, exp.puesto AS puesto "
                     . "FROM marvinvi_abg.abg_foto fot "
                     . "JOIN marvinvi_abg.abg_persona per "
                     . " ON fot.abg_persona_id=per.id AND fot.tipo_foto=0 AND fot.tipo_foto <> 5 "
                     . "JOIN marvinvi_abg.abg_persona_empresa emp "
-                    . "ON  emp.ctl_empresa_id=". $ctlEmpresaId
+                    . "ON  emp.ctl_empresa_id=" . $ctlEmpresaId
+                    . " JOIN marvinvi_abg.abg_experiencia_laboral exp "
+                    . " ON exp.ctl_empresa_id=" . $ctlEmpresaId
                     . " LEFT JOIN marvinvi_abg.abg_sitio_web sw "
                     . " ON per.id=sw.abg_persona_id "
                     . " GROUP BY  per.id ORDER BY per.nombres ASC";
-         $stm = $this->container->get('database_connection')->prepare($sqlEmpEmp);
+            $stm = $this->container->get('database_connection')->prepare($sqlEmpEmp);
             $stm->execute();
-           $registro_empleados = $stm->fetchAll();
-
-          
+            $registro_empleados = $stm->fetchAll();
         } else {
 
             $registro_empleados = null;
@@ -248,20 +248,22 @@ class CtlEmpresaController extends Controller {
 
         if ($lista) {
             //Listar los empleados de la empresa
-      $sqlEmpEmp = "SELECT per.id as idPersona, per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, "
+            $sqlEmpEmp = "SELECT per.id as idPersona, per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, "
                     . " per.telefono_fijo as telefonoFijo, per.telefono_movil as telefonoMovil, per.titulo_profesional AS tituloProfesional, "
-                    . " per.id, fot.src, sw.nombre AS sitioWeb, per.verificado AS verificado "
+                    . " per.id, fot.src, sw.nombre AS sitioWeb, per.verificado AS verificado, exp.puesto AS puesto "
                     . "FROM marvinvi_abg.abg_foto fot "
                     . "JOIN marvinvi_abg.abg_persona per "
                     . " ON fot.abg_persona_id=per.id AND fot.tipo_foto=0 AND fot.tipo_foto <> 5 "
                     . "JOIN marvinvi_abg.abg_persona_empresa emp "
-                    . "ON  emp.ctl_empresa_id=". $ctlEmpresaId
+                    . "ON  emp.ctl_empresa_id=" . $ctlEmpresaId
+                    . " JOIN marvinvi_abg.abg_experiencia_laboral exp "
+                    . " ON exp.ctl_empresa_id=" . $ctlEmpresaId
                     . " LEFT JOIN marvinvi_abg.abg_sitio_web sw "
                     . " ON per.id=sw.abg_persona_id "
                     . " GROUP BY  per.id ORDER BY per.nombres ASC";
-         $stm = $this->container->get('database_connection')->prepare($sqlEmpEmp);
+            $stm = $this->container->get('database_connection')->prepare($sqlEmpEmp);
             $stm->execute();
-           $registro_empleados = $stm->fetchAll();
+            $registro_empleados = $stm->fetchAll();
         } else {
 
             $registro_empleados = null;
@@ -1597,22 +1599,28 @@ class CtlEmpresaController extends Controller {
 
                 if ($lista) {
                     //Listar los empleados de la empresa
-                          $sqlEmpEmp = "SELECT per.id as idPersona, per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, "
+                    $sqlEmpEmp = "SELECT  emp.ctl_empresa_id, per.id as idPersona, per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, "
                     . " per.telefono_fijo as telefonoFijo, per.telefono_movil as telefonoMovil, per.titulo_profesional AS tituloProfesional, "
-                    . " per.id, fot.src, sw.nombre AS sitioWeb, per.verificado AS verificado "
-                    . "FROM marvinvi_abg.abg_foto fot "
-                    . "JOIN marvinvi_abg.abg_persona per "
-                    . " ON fot.abg_persona_id=per.id AND fot.tipo_foto=0 AND fot.tipo_foto <> 5 "
-                    . "JOIN marvinvi_abg.abg_persona_empresa emp "
-                    . "ON  emp.ctl_empresa_id=". $ctlEmpresaId
-                    . " LEFT JOIN marvinvi_abg.abg_sitio_web sw "
-                    . " ON per.id=sw.abg_persona_id "
-                    . " GROUP BY  per.id ORDER BY per.nombres ASC";
-         $stm = $this->container->get('database_connection')->prepare($sqlEmpEmp);
-            $stm->execute();
-           $registro_empleados = $stm->fetchAll();
-
-          
+                            . " per.id, fot.src, sw.nombre AS sitioWeb, per.verificado AS verificado, exp.puesto AS puesto, "
+                            . " pesp.ctl_especialidad_id,GROUP_CONCAT(distinct (esp.nombre_especialidad)) AS especialida "
+                            . " FROM marvinvi_abg.abg_foto fot "
+                            . "JOIN marvinvi_abg.abg_persona per "
+                            . "ON fot.abg_persona_id=per.id AND fot.tipo_foto=0 AND fot.tipo_foto <> 5 "
+                            . " JOIN marvinvi_abg.abg_persona_empresa emp "
+                            . " ON  emp.ctl_empresa_id=" . $ctlEmpresaId . " AND emp.abg_persona_id=per.id "
+                            . "JOIN marvinvi_abg.abg_experiencia_laboral exp "
+                            . " ON exp.ctl_empresa_id=" . $ctlEmpresaId
+                            . " LEFT JOIN marvinvi_abg.abg_sitio_web sw "
+                            . " ON per.id = sw.abg_persona_id "
+                            . " LEFT JOIN marvinvi_abg.abg_persona_especialidad pesp "
+                            . "ON pesp.abg_persona_id = per.id "
+                            . "LEFT JOIN marvinvi_abg.ctl_especialidad esp "
+                            . "ON pesp.ctl_especialidad_id = esp.id AND esp.id = pesp.ctl_especialidad_id "
+                            . " GROUP BY pesp.abg_persona_id "
+                            . " ORDER  BY per.nombres ASC";
+                    $stm = $this->container->get('database_connection')->prepare($sqlEmpEmp);
+                    $stm->execute();
+                    $registro_empleados = $stm->fetchAll();
                 } else {
 
                     $registro_empleados = null;
@@ -1843,47 +1851,86 @@ class CtlEmpresaController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($idPersona);
+            $carnet = $em->getRepository("DGAbgSistemaBundle:AbgFoto")->findBy(array('abgPersona' => $idPersona, 'tipoFoto' => 5));
+
 
             $nombreimagen2 = "";
+            if (count($carnet) == 0) {
+                $path2 = $this->container->getParameter('photo.verificacion');
 
-            $path2 = $this->container->getParameter('photo.verificacion');
+                $nombreimagen = $_FILES['imagen']['name'];
 
-            $nombreimagen = $_FILES['imagen']['name'];
+                $tipo = $_FILES['imagen']['type'];
+                $extension = explode('/', $tipo);
+                $nombreimagen2.="." . $extension[1];
+                $fecha = date('Y-m-dHis');
+                $nombreArchivo = $nombreimagen . "-" . $fecha . $nombreimagen2;
+                $nombreSERVER = str_replace(" ", "", $nombreArchivo);
 
-            $tipo = $_FILES['imagen']['type'];
-            $extension = explode('/', $tipo);
-            $nombreimagen2.="." . $extension[1];
-            $fecha = date('Y-m-dHis');
-            $nombreArchivo = $nombreimagen . "-" . $fecha . $nombreimagen2;
-            $nombreSERVER = str_replace(" ", "", $nombreArchivo);
+                $resultados = move_uploaded_file($_FILES["imagen"]["tmp_name"], $path2 . $nombreSERVER);
 
-            $resultados = move_uploaded_file($_FILES["imagen"]["tmp_name"], $path2 . $nombreSERVER);
+                if ($resultados) {
 
+                    // registar solicitud de verificacion
+                    $AbgFoto = new AbgFoto();
 
-            if ($resultados) {
+                    $path = "Photos/verificacion/";
+                    $nombreBASE = $path . $nombreArchivo;
 
-                // registar solicitud de verificacion
-                $AbgFoto = new AbgFoto();
+                    $AbgFoto->setAbgPersona($Persona);
+                    $AbgFoto->setTipoFoto(5);
+                    $AbgFoto->setCtlEmpresa(null);
 
-                $path = "Photos/verificacion/";
-                $nombreBASE = $path . $nombreArchivo;
+                    $AbgFoto->setSrc($nombreBASE);
+                    $AbgFoto->setFechaRegistro(new \DateTime("now"));
+                    $AbgFoto->setFechaExpiracion(null);
+                    $AbgFoto->setEstado(0);
+                    $em->persist($AbgFoto);
+                    $em->flush();
 
-                $AbgFoto->setAbgPersona($Persona);
-                $AbgFoto->setTipoFoto(5);
-                $AbgFoto->setCtlEmpresa(null);
-
-                $AbgFoto->setSrc($nombreBASE);
-                $AbgFoto->setFechaRegistro(new \DateTime("now"));
-                $AbgFoto->setFechaExpiracion(null);
-                $AbgFoto->setEstado(0);
-                $em->persist($AbgFoto);
-                $em->flush();
-
-                $data['estado'] = true;
+                    $data['estado'] = true;
+                } else {
+                    $data['estado'] = false;
+                }
             } else {
-                $data['estado'] = false;
-            }
 
+                $AbgFoto = $em->getRepository("DGAbgSistemaBundle:AbgFoto")->find($carnet[0]->getIdargFoto());
+
+                $path2 = $this->container->getParameter('photo.verificacion');
+
+                $nombreimagen = $_FILES['imagen']['name'];
+
+                $tipo = $_FILES['imagen']['type'];
+                $extension = explode('/', $tipo);
+                $nombreimagen2.="." . $extension[1];
+                $fecha = date('Y-m-dHis');
+                $nombreArchivo = $nombreimagen . "-" . $fecha . $nombreimagen2;
+                $nombreSERVER = str_replace(" ", "", $nombreArchivo);
+
+                $resultados = move_uploaded_file($_FILES["imagen"]["tmp_name"], $path2 . $nombreSERVER);
+
+                if ($resultados) {
+
+                    // registar solicitud de verificacion
+
+                    $path = "Photos/verificacion/";
+                    $nombreBASE = $path . $nombreArchivo;
+
+
+                    $AbgFoto->setCtlEmpresa(null);
+
+                    $AbgFoto->setSrc($nombreBASE);
+                    $AbgFoto->setFechaRegistro(new \DateTime("now"));
+                    $AbgFoto->setFechaExpiracion(null);
+                    $AbgFoto->setEstado(0);
+                    $em->persist($AbgFoto);
+                    $em->flush();
+
+                    $data['estado'] = true;
+                } else {
+                    $data['estado'] = false;
+                }
+            }
             return new Response(json_encode($data));
         } catch (\Exception $e) {
             $data['error'] = $e->getMessage(); //"Falla al Registrar ";

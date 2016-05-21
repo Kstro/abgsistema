@@ -1,78 +1,55 @@
-{% extends ':Layout:layout2.html.twig' %}
 
-{% block descripcion_y_acciones %}
-
-
-    {% block descripcion %}
-
-    {% endblock%}
-    {% block acciones %}
-
-    {% endblock %}
-
-{% endblock %}
 {% block js_extend %}
-   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="src/js/bootstrap.js"></script>
-    <script type="text/javascript">
-            $(function () {
-              $('[data-toggle="tooltip"]').tooltip()
-            })
-    </script>
+    <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
+    <link rel="stylesheet" href="{{asset('Resources/AdminLTE-2.3.0/bootstrap/css/bootstrap.min.css')}}">
+
 {% endblock %} 
-
-{% block navegacion_Y_body %}
-
-    {% block navegacion %}
-    {% endblock %}
-    {% block cuerpo %}
-        
-        <div class="container" style="padding: 40px 0px; background-color: #f6f6f6;">
-		<div class="row">
-                    <div class="col-md-3"></div>
-                    <div class="col-md-6">
-                        <form class="navbar-form" role="search" action="{% if pregunta.estado == 1 %}{{ path('envio_respuesta_panel') }} {% else %}{{ path('pregunta') }} {% endif %}" method="POST">
-                            <input name="idpreg" class="hidden" type="text" value="{{pregunta.id}}">                            
-                            <div class="panel panel-default">
-                                <p class="text-center" style="font-size: 25px;">{{pregunta.pregunta}}</p>
-                                {#<hr>#}
-                                {#<img class="img-thumbnail" src="http://placehold.it/400x500" style="max-width: 12%; width: 12%; margin-left: 10px; margin-right: 10px;">Juan Perez#}
-
-                                <hr>
-                                <img class="img-thumbnail" src="{{ asset(srcfoto)}}" style="max-width: 12%; width: 12%; margin-left: 10px; margin-right: 10px;">{{nombres}} {{apellidos}}
-                                <p style="font-size: 20px; margin-left: 5px;">Respuesta:</p>
-                                <p style="margin-left:5px;">
-                                    {% if pregunta.estado == 1 %}
-                                        Aun sin responder, puedes responderlo ahora!!!!!
-                                        <div class="form-group" style="margin-left: 10px;">
-                                            <textarea id="" name="respuesta" class="form-control textarea" maxlength="140" placeholder="Agregue su respuesta aqui..." style="max-width: 515px; min-width: 515px; width: 515px; max-height: 150px; min-height: 150px; height: 150px;" required></textarea>
-                                        </div>
-                                    {% else %}
-                                        {{pregunta.respuesta}}
-                                        <hr>
-                                        <p style="margin-left: 5px;">Lamentamos informarte que la pregunta ya fue respondida, pero puedes estar atento a nuevas preguntas</p>
-                                    {% endif %}                                                                
-                                </p>                                
-                                {% if pregunta.estado == 1 %}
-                                    <div class="text-center" style="margin-bottom: 15px;"><button type="submit" class="btn btn-primary" style="margin-top: 10px;">Enviar Respuesta</button></div>                        
-                                {%else %}
-                                    <div class="text-center" style="margin-bottom: 15px;"><button type="submit" class="btn btn-primary" style="margin-top: 10px;">Regresar al Panel</button></div>                        
-                                {% endif %}
-                                
+{% block cuerpo %}
+    <form action="{% if pregunta.estado == 1 %}{{ path('envio_respuesta_panel') }} {% else %}{{ path('pregunta') }} {% endif %}" method="POST">
+        <div class="row" style="margin-left:10px; margin-right: 10px;">
+            <div class="form-group">
+                <h3 class="box-title">RESPONDER PREGUNTA </h3>
+                <br>
+                <input name="idpreg" class="hidden" type="text" value="{{pregunta.id}}">         
+                <div class="col-md-12">
+            
+                            <div class="direct-chat-msg direct-chat direct-chat-primary">
+                                <div class="direct-chat-info clearfix">
+                                    <span class="direct-chat-name pull-left">Anonimo</span>
+                                    <span class="direct-chat-timestamp pull-right">fecha</span>
+                                </div>
+                                <!-- /.direct-chat-info -->
+                                <img alt="message user image" src="{{asset('Photos/defecto/defecto.png') }}" class="direct-chat-img"><!-- /.direct-chat-img -->
+                                <div class="direct-chat-text ">
+                                    {{pregunta.pregunta}}
+                                </div>
+                                <!-- /.direct-chat-text -->
                             </div>
-                        </form>   
-                    </div>
-                    <div class="col-md-3"></div>
-                  
-		</div> {#Fin del row#}
-	</div>
-	<div style="height: 10px;"></div>
-	
-    {% endblock %}
-    
-    {% block js_template %}
+
+                            <p style="font-size:15px; margin-left: 5px;">Respuesta:</p>
+                            <p style="margin-left:5px;">
+                                {% if pregunta.estado == 1 %}
+                                    Aun sin responder, puedes responderlo ahora!!!!!
+                                <div class="form-group" style="margin-left: 5px;">
+                                    <textarea id="" name="respuesta" class="form-control textarea" placeholder="Agregue su respuesta aqui..." style="max-width: 100%; min-width: 515px; width:100%; max-height: 150px; min-height: 150px; height: 150px;" required></textarea>
+                                </div>
+                            {% else %}
+                                {{pregunta.respuesta}}
+                                <hr>
+                                <p style="margin-left: 5px;">Lamentamos informarte que la pregunta ya fue respondida, pero puedes estar atento a nuevas preguntas</p>
+                            {% endif %}                                                                
+
                         
-    {% endblock js_template %}
+                    
+                    {% if pregunta.estado == 1 %}
+                        <button type="submit" class="btn btn-primary btn-sm btn-flat">Enviar Respuesta</button>                     
+
+                    {% endif %}
+                    <button type="button" class="btn btn-default btn-sm btn-flat" onClick="NoResponder()" >Regresar al Panel</button>     
+                </div>
+            </div>
+    </form> 
+
+
 {% endblock %}
+

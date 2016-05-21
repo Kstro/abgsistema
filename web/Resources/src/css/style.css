@@ -455,6 +455,53 @@ a.prob:focus {
         right: 0px; 
     }
 /*    ON OFF SWITCH*/
+/*ON/OFF SWITCH2*/
+    .onoffswitch2 {
+        position: relative; width: 64px;
+        -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+    }
+    .onoffswitch-checkbox2 {
+        display: none;
+    }
+    .onoffswitch-label2 {
+        display: block; overflow: hidden; cursor: pointer;
+        border: 2px solid #999999; border-radius: 20px;
+    }
+    .onoffswitch-inner2 {
+        display: block; width: 200%; margin-left: -100%;
+        transition: margin 0.3s ease-in 0s;
+    }
+    .onoffswitch-inner2:before, .onoffswitch-inner2:after {
+        display: block; float: left; width: 50%; height: 25px; padding: 0; line-height: 25px;
+        font-size: 12px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+        box-sizing: border-box;
+    }
+    .onoffswitch-inner2:before {
+        content: "ON";
+        padding-left: 9px;
+        background-color: #4B71A3; color: #FFFFFF;
+    }
+    .onoffswitch-inner2:after {
+        content: "OFF";
+        padding-right: 9px;
+        background-color: #EEEEEE; color: #999999;
+        text-align: right;
+    }
+    .onoffswitch-switch2 {
+        display: block; width: 18px; margin: 3.5px;
+        background: #FFFFFF;
+        position: absolute; top: 0; bottom: 0;
+        right: 35px;
+        border: 2px solid #999999; border-radius: 20px;
+        transition: all 0.3s ease-in 0s; 
+    }
+    .onoffswitch-checkbox2:checked + .onoffswitch-label2 .onoffswitch-inner2 {
+        margin-left: 0;
+    }
+    .onoffswitch-checkbox2:checked + .onoffswitch-label2 .onoffswitch-switch2 {
+        right: 0px; 
+    }
+/*    ON OFF SWITCH2*/
 
 /*NAVIGATION ADMIN PANEL*/
 

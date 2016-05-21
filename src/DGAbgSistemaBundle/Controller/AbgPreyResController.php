@@ -101,7 +101,7 @@ class AbgPreyResController extends Controller{
         $sql = "SELECT * FROM abg_pregunta ,
                               ctl_usuario ,
                               abg_persona
-                              WHERE abg_pregunta.ctl_usuario_id=ctl_usuario.id AND ctl_usuario.rh_persona_id=abg_persona.id AND abg_pregunta.abg_subespecialidad_id =1";
+                              WHERE abg_pregunta.ctl_usuario_id=ctl_usuario.id AND ctl_usuario.rh_persona_id=abg_persona.id AND abg_pregunta.ctl_especialidad=".$especialidad;
         $em = $this->getDoctrine()->getManager();
         $stmt = $em->getConnection()->prepare($sql);
         $stmt->execute();

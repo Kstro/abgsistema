@@ -64,11 +64,11 @@ class AbgPregunta
     private $fechapregunta;
 
     /**
-     * @var \CtlUsuario
+     * @var \CtlEspecialidad
      *
      * @ORM\ManyToOne(targetEntity="CtlEspecialidad")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="abg_subespecialidad_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="ctl_especialidad", referencedColumnName="id")
      * })
      */
     private $abgEspecialidad;

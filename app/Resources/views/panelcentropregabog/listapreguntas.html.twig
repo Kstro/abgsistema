@@ -1,39 +1,168 @@
 
 {% block js_extend %}
+    <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
+    <script type="text/javascript">
+
+
+        function responder(val) {
+            $.ajax({
+                type: "GET",
+                url: Routing.generate('admin_respanel_centro'),
+                data: {id: val},
+                success: function (data)
+                {
+                    $("#contenedor").hide()
+                    $("#divRespuesta").empty();
+                    $("#divRespuesta").append(data);
+                    $("#divRespuesta").show()
+                },
+                error: function (errors)
+                {
+                }
+            });
+        }
+
+        function NoResponder() {
+            $("#divRespuesta").hide()
+            $("#contenedor").show()
+        }
+        function RegresaRespuestas()
+        {
+            $("#divRespregunta").hide()
+            $("#Tablacontenedor").show()
+        }
+        function verRespust(val) {
+            $.ajax({
+                type: 'GET',
+                async: false,
+                dataType: 'json',
+                url: Routing.generate('pregunta_resp'),
+                data: {id: val},
+                success: function (data)
+                {
+                    $("#Tablacontenedor").hide();
+                    $("#divRespregunta").empty();
+                    var datos;
+
+                    $.each($(data.Respreguntas), function (indice, val) {
+                        datos = '<div class="row direct-chat direct-chat-primary" style="margin-left:10px; margin-right: 10px;">';
+                        datos += '<div class="form-group">';
+                        datos += '<h4 >RESPUESTA</h4>';
+                        datos += '<div class="item-directorio" style="padding: 15px;">'
+                        datos += '<div class="direct-chat-msg">';
+                        datos += '<div class="direct-chat-info clearfix">';
+                        datos += '<span class="direct-chat-name pull-left">Anonimo</span>';
+                        datos += '<span class="direct-chat-timestamp pull-right">' + val.fecha + '</span>';
+                        datos += '</div>';
+                        datos += '<img alt="message user image" src="/Photos/defecto/defecto.png" class="direct-chat-img">';
+                        datos += '<div class="direct-chat-text">' + val.pregunta + '</div>';
+                        datos += '</div>';
+
+                        datos += '<div class="direct-chat-msg right " >';
+                        datos += '<div class="direct-chat-info clearfix">';
+                        datos += '<span class="direct-chat-name pull-right">Tú</span>';
+                        datos += '<span class="direct-chat-timestamp pull-left">' + val.fecha + '</span>';
+                        datos += '</div>';
+
+                        datos += '<img alt="message user image" src="/' + data.foto + '" class="direct-chat-img ">';
+                        datos += '<div class="direct-chat-text ">' + val.respuesta + '</div>';
+                        datos += '</div></div><br>';
+                        datos += '<button type="button" class="btn btn-default btn-sm btn-flat" onClick="RegresaRespuestas()" >Regresar al Panel</button>';
+
+                    });
+                    $("#divRespregunta").show()
+                    $("#divRespregunta").append(datos);
+
+                },
+                error: function (errors)
+                {
+                }
+            });
+        }
+
+        function Respregut()
+        {
+            $.ajax({
+                type: 'GET',
+                async: false,
+                dataType: 'json',
+                url: Routing.generate('preguntas_resps'),
+                success: function (data)
+                {
+                    var datos;
+                    $("#idtbody").empty();
+                    $.each($(data.Respreguntas), function (indice, val) {
+                        datos = '<tr>';
+                        datos += '<td style="width:80%;">' + val.pregunta + '</td>';
+                        datos += '<td style="width:10%;">&nbsp;' + val.fecha + '</td>';
+                        datos += '<td style="width:10%;"><a  style="text-decoration: none;" onClick="verRespust(' + val.idpreg + ')">&nbsp; Ver </a></td>';
+                        datos += '</tr>';
+                        $("#idtbody").append(datos);
+                    });
+                },
+                error: function (errors)
+                {
+                }
+            });
+        }
+    </script>
+
 {% endblock %} 
+{% block cuerpo %}
+    <div class="row" style=" margin-left:0px; margin-right:0px;">
+        <section class="col-lg-12 connectedSortable ui-sortable"> 
+            <div class="nav-tabs-custom" style="cursor: move;">
+                <ul class="nav nav-tabs  ui-sortable-handle">
+                    <li class="active"><a href="#listaPreguntas" data-toggle="tab">Lista de preguntas</a></li>
+                    <li><a href="#resPregunta" data-toggle="tab"  onClick="Respregut()">Preguntas respondidas</a></li>
+                    <li class="pull-left header">
+                </ul>
+                <div class="tab-content no-padding">
+                    <div class="chart tab-pane active" id="listaPreguntas" style=" padding: 15px;">
 
-{% block navegacion_Y_body %}
+                        {% if (preguntas | default is not empty)%}
+                            <div class="form-group table-responsive mailbox-messages" id="contenedor">
+                                <br>
+                                <table id="tabla" class="table table-hover table-striped" style="font-size:13px;" >
+                                    <thead>
+                                    </thead>
+                                    <tbody id="body">
 
-    {% block cuerpo %}
-  <div class="row" style=" margin-left:15px; margin-right:15px; ">
-        <div class="box box-widget">
-            <div class="box-header with-border">
-                <h3 class="box-title">LISTA DE PREGUNTAS </h3>
-            </div>
-            <div class="box-body">
-                <div class="col-md-2"></div>
-                <div class="col-md-8">
-                    <div >
-                        <ol>
-                            {% for preguntas in preguntas %}
+                                        {% for preguntas in preguntas %}
+                                            <tr>
+                                                <td>{{ preguntas.pregunta }}</td>  
+                                                <td>{{ preguntas.fecha}}</td>
 
-                                <div class="row">
-                                    <div class="col-md-9" style="margin-top: 5px;">
-                                        <li>{{ preguntas.pregunta }}</li>                                
-                                    </div>
-                                    <div class="col-md-3" style="margin-top: 5px;"><a href="{{path('admin_respanel_centro')}}?id={{preguntas.idpreg}}" style="text-decoration: none;">Responder</a></div>
-                                </div>
-                                <div class="clearfix"></div>    
-                            {% endfor %}
-                        </ol>
+                                                <td><a  style="text-decoration: none;" onClick="responder({{preguntas.idpreg}})">Responder</a></td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table> 
+                            </div>
+                        {%else%}
+                            <div>No hay entradas de preguntas</div>
+                        {% endif %}
+                        <div id="divRespuesta">
+
+                        </div>
+                    </div>
+                    <div class="chart tab-pane" id="resPregunta" style=" padding: 15px;" >
+
+                        <div class="form-group table-responsive mailbox-messages" id="Tablacontenedor">
+                            <br>
+                            <table id="tabla" class="table table-hover table-striped" style="font-size:13px;" >
+                                <thead>
+                                </thead>
+                                <tbody id="idtbody">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="divRespregunta">
+
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-2"></div>
             </div>
-                </div>
-        </div>
-
-
-
-    {% endblock %}
+        </section>
+    </div>
 {% endblock %}

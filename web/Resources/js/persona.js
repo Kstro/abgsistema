@@ -6,6 +6,7 @@ var Nidioma, Idioma = [];
 var DatosIdiomas = [];
 var EspecialidaSelect = [];
 var datos = "", datosMostrados = "";
+var persaEmpresa=0;
 
 $(document).on('ready', function () {
     $.ajax({
@@ -343,6 +344,7 @@ function editExperiencia(val)
 }
 function removeExperiencia(val)
 {
+  
     var div, divn;
     $.ajax({
         type: "GET",
@@ -596,12 +598,13 @@ function addExperiencia()
     {
         $('#ScambioEmpresa').select2();
     }
-    
+    console.log(persaEmpresa);
 
     if ($("#txtpuesto").val() !== "" && $("#txthubicacion").val() !== "" && $("#txtFechaIni").val() !== "" && ($("#txtEditEmpresa").val() !== "" || $("#ScambioEmpresa").val() !==null))
     {
-
-        $("#fExperiencia").submit(
+if(persaEmpresa==0)
+{
+      $("#fExperiencia").submit(
                 function (event) {
 
                     var empresa, tipo;
@@ -613,6 +616,8 @@ function addExperiencia()
                         tipo = 0;
                     }
                     var datos;
+   
+         
                     $.ajax({
                         type: 'POST',
                         async: false,
@@ -647,8 +652,6 @@ function addExperiencia()
                                     {
                                            datos += '<span style="font-size: 15px;">' + val.empresa + '&nbsp;</span>';
                                     }
-                                    
-                                   
                                     datos += '</br>';
                                     datos += '<span style="font-size: 13px;">' + val.puesto + ' </br>';
 
@@ -677,6 +680,8 @@ function addExperiencia()
                                 $("#consultas").append(datos);
                                 if(data.val!=null && data.val==1)
                                 {
+                                     console.log("ya trabaja");
+                                     persaEmpresa=data.val;
                                      Lobibox.notify("success", {
                                     size: 'mini',
                                     msg: "<p>" + data.msj + "</p>"
@@ -684,6 +689,7 @@ function addExperiencia()
                                 }
                                 else
                                 {
+                                   
                                 Lobibox.notify("success", {
                                     size: 'mini',
                                     msg: "<p>" + data.msj + "</p>"
@@ -704,8 +710,10 @@ function addExperiencia()
                         }
                     }
                     );
-                    event.preventDefault();
-                });
+                   event.preventDefault();
+                   return false;
+               });
+               }
     }
 
 }
