@@ -75,6 +75,14 @@
                                                 <th>Monto a cancelar</th>
                                                 <td>$ {{ (admPromocione.monto - ((admPromocione.monto * admPromocione.descuento)/100))|number_format(2, '.', ',') }}</td>
                                             </tr>
+                                            <tr>
+                                                <th>Fecha de pago</th>
+                                                <td>{% if admPromocione.fechaPago %}
+                                                        {{ admPromocione.fechaPago|date('d/m/Y') }}
+                                                    {% endif %}                                                    
+                                                </td>
+                                            </tr>
+                                                
                                             {% if admPromocione.ctlPromociones %}
                                                 <tr>
                                                     <th>Periodo de  suscripción</th>

@@ -45,23 +45,45 @@
                                 <form id="fConsultaFactura">
                                     <div class="form-column col-sm-12" style=" padding: 20px;">
                                         <div class="form-group">
-                                            <div class="row"  >
+                                            <div class="row" style="margin-right: 2px;">
                                                 <div class="col-sm-4"  >
+                                                    <label>Ingrese id de cliente:</label>
                                                     <select id="busqueda-abogado" name="Sabogado" class="form-control input-sm " data-rule-required="true" style=" width: 100%;">
                                                         <option value="0" >Seleccione un cliente</option>
                                                     </select> 
 
                                                 </div>
-                                                <div class="col-sm-2"  >
-                                                    <input type="text"  name="txtFechaInicio" class="form-control input-sm txtFechaIni" data-rule-required="true" 
-                                                           style=" width: 100%;" id="txtFechaInicio"   placeholder="Fecha inicio">
-                                                </div>
-                                                <div class="col-sm-2"  >
-                                                    <input type="text"  name="txtFechaFin" id="txtFechaFin" class="form-control input-sm txtFechaFin " data-rule-required="true" 
-                                                           style=" width: 100%;"   placeholder="Fecha fin">
-                                                </div>
-                                                <div class="col-sm-1"  >
+                                                <div class="col-md-3">
+                                                {# Area en donde se selecciona  el abogado que esta solicitando el espacio publicitario #}  
+                                                    <div id="tipos-servicios">
+                                                        <label>Tipo de servicio:</label>
+                                                        <select id="busqueda_tiposervicio" name="busqueda[tiposervicio]" class="espacio_tipo_servicio" style="width: 100%">
+                                                            <option value="0" disabled selected>Seleccione un tipo de servicio ...</option>
+                                                            <option value="Trial">Trial</option>
+                                                            <option value="Personal">Personal</option>
+                                                            <option value="Empresarial">Empresarial</option>
+                                                            <option value="Espacio publicitario">Espacio publicitario</option>
+                                                        </select>  
 
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <label>Seleccioone periodo de busqueda:</label>
+                                                        </div>
+                                                        <div class="col-sm-6"  >
+                                                            <input type="text"  name="txtFechaInicio" class="form-control input-sm txtFechaIni" data-rule-required="true" 
+                                                                   style=" width: 100%;" id="txtFechaInicio"   placeholder="Fecha inicio">
+                                                        </div>
+                                                        <div class="col-sm-6"  >
+                                                            <input type="text"  name="txtFechaFin" id="txtFechaFin" class="form-control input-sm txtFechaFin " data-rule-required="true" 
+                                                                   style=" width: 100%;"   placeholder="Fecha fin">
+                                                        </div>
+                                                    </div>
+                                                </div>   
+                                                <div class="col-sm-1"  >
+                                                    <label style="color: #FFF;">Buscar</label>
                                                     <a class="btn btn-sm btn-info btn-flat pull-left" id="btnbuscar"><i class="fa  fa-search"></i>&nbsp;Buscar</a>
                                                 </div>
                                             </div>
@@ -276,6 +298,8 @@
         }
 
         $(document).ready(function(){
+            $('#DataTables_Table_0_filter').hide();
+            
             $('#espaciop_abogado').select2({
                 ajax: {
                     url: "{{path('busqueda_abogado_select')}}",
@@ -347,6 +371,7 @@
             $('#espaciop_tipopago').select2();
             $('#espaciop_posicion').select2();
             $('#espaciop_tiposervicio').select2();
+            $('#busqueda_tiposervicio').select2();
 
             {#$('.listados').DataTable({ 
                 searching:true,
@@ -450,9 +475,10 @@
                 return false;
             });
             
-            $('.listados').DataTable({ 
+            var table = $('.listados').DataTable({ 
                     //searching:true,
                     //"order":[[1,"desc"]],
+                    "dom": "tp",
                     "processing": false,
                     "serverSide": true,
                     "ajax": {
@@ -499,11 +525,16 @@
                 var busquedaFInicio = $('#txtFechaInicio').val();
                 var busquedaFFin = $('#txtFechaFin').val();
                 
-                console.log(busquedaAbogado);
-                console.log(busquedaFInicio);
-                console.log(busquedaFFin);
                 
                 
+                
+            });
+            
+            $(document).on("click", ".link_facturacion", function(){
+                var id =  $(this).attr("id");
+                
+                var url = Routing.generate('admin_promociones_show', { id:id});
+                window.open(url, "_self");                
             });
         });                
     </script>            

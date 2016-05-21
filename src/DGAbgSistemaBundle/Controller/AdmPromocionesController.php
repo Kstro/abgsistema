@@ -99,7 +99,7 @@ class AdmPromocionesController extends Controller
     /**
      * Finds and displays a AdmPromociones entity.
      *
-     * @Route("/{id}", name="admin_promociones_show")
+     * @Route("/{id}", name="admin_promociones_show", options={"expose"=true})
      * @Method("GET")
      */
     public function showAction(\DGAbgSistemaBundle\Entity\AbgFacturacion $admPromocione)
@@ -115,10 +115,11 @@ class AdmPromocionesController extends Controller
         $result_persona = $em->createQuery($dql_persona)->getArrayResult();
         
         if($admPromocione->getCtlPromociones() != NULL){
-            $abgFoto = $em->getRepository("DGAbgSistemaBundle:AbgFoto")->findBy(array('promocion' => $admPromocione->getCtlPromociones()));
+            $abgFoto = $em->getRepository("DGAbgSistemaBundle:AbgFoto")->findBy(array('promocion' => $admPromocione->getCtlPromociones()->getId()));
         } else {
             $abgFoto = NULL;
         }
+        //var_dump($admPromocione->getCtlPromociones());
         
         $dql_tipoPago = "SELECT p.id as id, p.tipoPago As nombre FROM DGAbgSistemaBundle:CtlTipoPago p ORDER BY p.tipoPago ASC";
         $TipoPago = $em->createQuery($dql_tipoPago)->getArrayResult();
@@ -571,4 +572,64 @@ class AdmPromocionesController extends Controller
         
         return new Response(json_encode($abogado));
     }
+    
+    /**
+    * Ajax utilizado para buscar anuncios publicitarios
+    *  
+    * @Route("/busqueda/publicidad/abogados", name="admin_busqueda_anuncio_publicitario", options={"expose"=true})
+    */
+    public function busquedaromocionAction()
+    {
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+        if($isAjax){
+            $em = $this->getDoctrine()->getEntityManager();
+            
+            $i = 0;
+            $recuperados = array();
+            $prom = array();
+            
+            $dql = "Select fot.idargFoto, fot.src"
+                    . " From DGAbgSistemaBundle:AbgFoto fot"
+                    . " Join fot.promocion pro"
+                    . " WHERE pro.posicion = 1"
+                    . " ORDER BY fot.idargFoto DESC ";
+            
+            $promotions = $em->createQuery($dql)
+                              ->getResult();  
+            
+            if(!empty($promotions)){
+                $max = count($promotions);
+                
+                if($max > 10){
+                    while ($i < 10){
+                        $random = rand(1, ($max - 1));
+                        
+                        if (!in_array($random, $recuperados)) {
+                            $recuperados[$i] = $random;
+                            $prom[$i]['idargFoto'] = $promotions[$random]['idargFoto'];
+                            $prom[$i]['src'] = $promotions[$random]['src'];
+                            $i++;
+                        }    
+                    }
+                } else {
+                    foreach ($promotions as $key => $value) {
+                        $prom[$key]['idargFoto'] = $value['idargFoto'];
+                        $prom[$key]['src'] = $value['src'];
+                    }
+                }
+            } else {
+                $prom = NULL;
+            }
+            
+            $response = new JsonResponse();
+            $response->setData(array(
+                                  'exito'   => '1',
+                                  'data'    => $prom
+                               ));  
+            
+            return $response; 
+        } else {    
+            return new Response('0');              
+        } 
+   }
 }
