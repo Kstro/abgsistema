@@ -50,12 +50,12 @@
                                             <div class="clearfix"></div>
                                             <div class="bloque-ocultar ">
                                                 <p class="text-center" style ="color: #4444444;"><strong>Verificado</strong>&nbsp;</p>
-                                                <div class="onoffswitch" style="margin-left: auto; margin-right: auto;" >
-                                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox  myonoffswitch" id="myonoffswitch" 
+                                                <div class="onoffswitch2" style="margin-left: auto; margin-right: auto;" >
+                                                    <input type="checkbox" name="onoffswitch2" class="onoffswitch-checkbox2  myonoffswitch2" id="myonoffswitch2" 
                                                            {%if(datos.verificado==1)%}checked{%endif%}>
-                                                    <label class="onoffswitch-label" for="myonoffswitch">
-                                                        <span class="onoffswitch-inner"></span>
-                                                        <span class="onoffswitch-switch"></span>
+                                                    <label class="onoffswitch-label2" for="myonoffswitch2">
+                                                        <span class="onoffswitch-inner2"></span>
+                                                        <span class="onoffswitch-switch2"></span>
                                                     </label>
                                                 </div>
                                             </div>
@@ -82,14 +82,14 @@
         </div>
     {% endblock%}
     <script type="text/javascript">
-   $(document).on('click', '#btnListaVerificados', function () {
-               $("#contVerificados").show();
-                 $("#contNoVerificado").hide()
-         });
-   
-        $(document).on('click', '.myonoffswitch', function () {
+        $(document).on('click', '#btnListaVerificados', function () {
+            $("#contVerificados").show();
+            $("#contNoVerificado").hide()
+        });
+
+        $(document).on('click', '.myonoffswitch2', function () {
             var estado;
-            if ($('.myonoffswitch').is(":checked")) {
+            if ($('.myonoffswitch2').is(":checked")) {
                 estado = 1;
             } else {
                 estado = 0;
@@ -108,6 +108,9 @@
                             size: 'mini',
                             msg: "<p>" + data.msj + "</p>"
                         });
+                        AbgVerificados();
+                        $("#contVerificados").show();
+                        $("#contNoVerificado").hide();
                     } else
                     {
                         Lobibox.notify("warning", {

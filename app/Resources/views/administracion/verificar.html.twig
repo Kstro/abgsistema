@@ -77,11 +77,11 @@
         </div>
     {% endblock%}
     <script type="text/javascript">
-   $(document).on('click', '#btnLista', function () {
-                 $("#divLista").show()
-                 $("#divVerificar").hide()
-         });
-   
+        $(document).on('click', '#btnLista', function () {
+            $("#divLista").show()
+            $("#divVerificar").hide()
+        });
+
         $(document).on('click', '.myonoffswitch', function () {
             var estado;
             if ($('.myonoffswitch').is(":checked")) {
@@ -103,6 +103,9 @@
                             size: 'mini',
                             msg: "<p>" + data.msj + "</p>"
                         });
+                        $("#divLista").show()
+                        $("#divVerificar").hide()
+                        AbgVerificar();
                     } else
                     {
                         Lobibox.notify("warning", {

@@ -1,18 +1,16 @@
 <!-- Calendar -->
-  <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
+<link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('Resources/zebra/css/bootstrap.css') }}">
 <script type="text/javascript" src="{{ asset('Resources/zebra/js/zebra_datepicker.js')}}" ></script>
-
-<!-- para validar -->
 
 <link href="{{asset('Resources/jquery-validation-1.15.0/demo/css/screen.css')}}" rel="stylesheet">
 <script src="{{ asset('Resources/jquery-validation-1.15.0/dist/jquery.validate.js')}}"></script>
 <script src="{{ asset('Resources/select2/dist/js/select2.min_1.js') }}"></script>
 
 <script type="text/javascript">
-
     $(document).ready(function () {
-
+        
+          
         $("#fExperiencia").validate({
             messages: {
                 txthubicacion: {
@@ -22,7 +20,6 @@
                     required: 'Requerido!'
                 },
                 txtEditEmpresa: {required: 'Requerido!'}
-                
             }
         });
 
@@ -49,46 +46,87 @@
             $("#" + editExp).show();
             $("#div1").remove();
         });
-
-
     });
 
     $('#checkActual').change(function () {
         if ($('#checkActual').is(":checked")) {
-
             $('#fechafin').hide();
-            $('#txtFechaFin').val(null);
+            $('#txtFechaFin').val(null);   $('#txtFechaFin').val(null);
         } else {
             $('#fechafin').show();
         }
-
     });
 
     function CambioEmp()
     {
 
-
         document.getElementById('cambioEmpresa').style.display = 'block';
         document.getElementById('EditEmpresa').style.display = 'none';
+        $('#ScambioEmpresa').select2({
+            ajax: {
+                url: Routing.generate('empresas'),
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term,
+                        page: params.page
+                    };
+                },
+                processResults: function (data, params) {
 
+                    var select2Data = $.map(data.data, function (obj) {
+                        obj.id = obj.idEmp;
+                        obj.text = obj.nombre;
+
+                        return obj;
+                    });
+
+                    return {
+                        results: select2Data
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) {
+                return markup;
+            },
+            minimumInputLength: 1,
+            templateResult: formatRepo,
+            templateSelection: formatRepoSelection
+        });
     }
     function EditEmp()
     {
+
+        $('#txtEditEmpresa').val($('.select2-search__field').val());
+        if ($("#EditEmpresa").is(":visible"))
+        {
+        } else
+        {
+            if ($('#pNomEmpresa').text() != "")
+            {
+                $('#txtEditEmpresa').val($('#pNomEmpresa').text());
+            }
+        }
         $('#ScambioEmpresa').select2();
         document.getElementById('cambioEmpresa').style.display = 'none';
         document.getElementById('EditEmpresa').style.display = 'block';
     }
-
-
-
-
-
-
 </script>
 
 <form role="form" id="fExperiencia" >
     {%if Experiencia|default is not empty %}
-
+<script type="text/javascript">
+    $(document).ready(function () {
+        
+            {%if fechaFin|default is not empty %}
+                    {%else%}
+                       $('#fechafin').css("display","none");
+                   $('#txtFechaFin').val(null);
+        {% endif  %}
+              });
+            </script>
         {% for datos in Experiencia %}
 
             <input type="hidden" name="hidExp" id="hidExp" value="{{datos.id}}">
@@ -97,10 +135,10 @@
 
                 <label for="nombreEmpleado">Nombre de la Empresa</label>
 
-                <p style="font-size:14px;">{{datos.empresa}}&nbsp;&nbsp;<a style="font-size:11px;" onclick="CambioEmp()">Cambiar empresa  |</a> <a style="font-size:11px;" onclick="EditEmp()">Editar nombre que se muestra</a> </p>
+                <p style="font-size:14px;" ><label id="pNomEmpresa">{{datos.empresa}}</label>&nbsp;&nbsp;<a style="font-size:11px;" onclick="CambioEmp()">Cambiar empresa  |</a> <a style="font-size:11px;" onclick="EditEmp()">Editar nombre que se muestra</a> </p>
 
                 <div style="width: 100%;" class="form-group" id="cambioEmpresa">
-                    <select id="ScambioEmpresa" name="ScambioEmpresa" class="form-control input-sm empresa" data-rule-required="true">
+                    <select style="width: 100%;"  id="ScambioEmpresa" name="ScambioEmpresa" class="form-control input-sm empresa" data-rule-required="true">
                         <option value="0" selected>Select an option...</option>
 
                     </select> 
@@ -113,7 +151,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="ejemplo_password_1">Título</label>
+                <label for="ejemplo_password_1">Título </label>
                 <input type="text" class="form-control  input-sm"  id="txtpuesto" name="txtpuesto" 
                        placeholder="Nombre del puesto " value="{{datos.puesto}}"  data-rule-required="true">
             </div>
@@ -131,163 +169,172 @@
                         <input type="text" class="form-control txtFechaIni  input-sm"
                                placeholder="Fecha inicio de labor"  id="txtFechaIni" name="txtFechaIni" value="{{datos.fechaIn}}" data-rule-required="true">
                     </div>
-                    <div  id="fechafin">
+                    {%if(datos.fechaFin|default is not empty)%}
+                         <div  id="fechafin">
                         <div class="col-sm-4"  >
                             <input type="text" class="form-control txtFechaFin  input-sm" 
                                    placeholder="Fecha fin de labor"  id="txtFechaFin" name="txtFechaFin" value="{{datos.fechaFin}}" data-rule-required="true">
                         </div>
                     </div>
+              {%else%}
+                    <div  id="fechafin" style=" display: none">
+                        <div class="col-sm-4"  >
+                            <input type="text" class="form-control txtFechaFin  input-sm" 
+                                   placeholder="Fecha fin de labor"  id="txtFechaFin" name="txtFechaFin" value="{{datos.fechaFin}}" data-rule-required="true">
+                        </div>
+                    </div>
+                        {%endif%}
                 </div>
             </div>
             <div class="form-group">
                 <div class="row">
                     <div class="col-sm-6">   
-                        <input type="checkbox"  name="checkActual" id="checkActual" data-rule-required="true"/>&nbsp;Trabajo aquí actualmente. </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="ejemplo_password_1">Funcion del puesto </label>
-                <textarea class="form-control  input-sm" rows="3" name="txtfuncion" id="txtfuncion" placeholder="Funcion desempeñada" data-rule-required="true">{{datos.funcion}}</textarea>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-sm"  onclick="addExperiencia()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                        <input type="checkbox"  name="checkActual" id="checkActual" {%if(datos.fechaFin|default is not empty)%}{%else%}checked 
+                               {%endif%} />&nbsp;Trabajo aquí actualmente. </div>
                     </div>
                 </div>
-            </div>
-        {%endfor%}
-    {%else%}
-
-        <input type="hidden" name="hidExp" id="hidExp" value="">
-        <div class="form-group" >
-            <label for="nombreEmpleado">Nombre de la Empresa</label>
-            <div  class="form-group " id="cambioEmpresa">
-                <select id="ScambioEmpresa" name="ScambioEmpresa" class="form-control  empresa input-sm" data-rule-required="true" data-rule-select="true">
-
-
-                </select> 
-            </div>
-
-            <div style="display:none;" id="EditEmpresa">
-
-                <input type="text" class="form-control  input-sm"  id="txtEditEmpresa" name="txtEditEmpresa" 
-                       placeholder="Nombre del puesto " data-rule-required="true"> 
-            </div>
-
-        </div>
-        <div class="form-group">
-            <label for="ejemplo_password_1">Título</label>
-            <input type="text" class="form-control  input-sm"  id="txtpuesto" name="txtpuesto" 
-                   placeholder="Nombre del puesto " data-rule-required="true">
-        </div>
-        <div class="form-group">
-            <label for="ejemplo_password_1">Ubicación</label>
-            <input type="text" class="form-control  input-sm" id="txthubicacion" 
-                   placeholder="Ubicación" name="txthubicacion" data-rule-required="true" >
-        </div>
-
-
-        <div class="form-group ">
-            <label for="Fecha_inicio">Periodo </label>
-            <div class="row">
-                <div class="col-sm-4">
-                    <input type="text" class="form-control txtFechaIni  input-sm" 
-                           placeholder="Fecha inicio de labor"  id="txtFechaIni" name="txtFechaIni" data-rule-required="true">
-                </div>
-                <div  id="fechafin">
-                    <div class="col-sm-4"  >
-                        <input type="text" class="form-control txtFechaFin  input-sm" 
-                               placeholder="Fecha fin de labor"  id="txtFechaFin" name="txtFechaFin">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="row">
-                <div class="col-sm-6">   
-                    <input type="checkbox"  name="checkActual" id="checkActual" />&nbsp;Trabajo aquí actualmente. </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="ejemplo_password_1">Funcion del puesto</label>
-            <textarea class="form-control  input-sm" rows="3" name="txtfuncion" id="txtfuncion" placeholder="Funcion desempeñada"></textarea>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-sm" onClick="addExperiencia()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                    <label for="ejemplo_password_1">Funcion del puesto </label>
+                    <textarea class="form-control  input-sm" rows="3" name="txtfuncion" id="txtfuncion" placeholder="Funcion desempeñada" data-rule-required="true">{{datos.funcion}}</textarea>
                 </div>
-            </div>
-        </div>
-    {%endif%}
-</form>
-<script type="text/javascript">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-sm"  onclick="addExperiencia()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+                {%endfor%}
+                    {%else%}
+
+                        <input type="hidden" name="hidExp" id="hidExp" value="">
+                        <div class="form-group" >
+                            <label for="nombreEmpleado">Nombre de la Empresa</label>
+                            <div  class="form-group " id="cambioEmpresa">
+                                <select id="ScambioEmpresa" name="ScambioEmpresa" class="form-control  empresa input-sm" data-rule-required="true" data-rule-select="true">
 
 
-    $('#ScambioEmpresa').select2({
-        ajax: {
-            url: Routing.generate('empresas'),
-            dataType: 'json',
-            delay: 250,
-            data: function (params) {
-                return {
-                    q: params.term,
-                    page: params.page
-                };
-            },
-            processResults: function (data, params) {
+                                </select> 
+                            </div>
 
-                var select2Data = $.map(data.data, function (obj) {
-                    obj.id = obj.idEmp;
-                    obj.text = obj.nombre;
+                            <div style="display:none;" id="EditEmpresa">
 
-                    return obj;
-                });
+                                <input type="text" class="form-control  input-sm"  id="txtEditEmpresa" name="txtEditEmpresa" 
+                                       placeholder="Nombre del puesto " data-rule-required="true"> 
+                            </div>
 
-                return {
-                    results: select2Data
-                };
-            },
-            cache: true
-        },
-        escapeMarkup: function (markup) {
-            return markup;
-        },
-        minimumInputLength: 1,
-        templateResult: formatRepo,
-        templateSelection: formatRepoSelection
-    });
-    if (actExp === 1)
-    {
-        document.getElementById('cambioEmpresa').style.display = 'none';
-    }
+                        </div>
+                        <div class="form-group">
+                            <label for="ejemplo_password_1">Título</label>
+                            <input type="text" class="form-control  input-sm"  id="txtpuesto" name="txtpuesto" 
+                                   placeholder="Nombre del puesto " data-rule-required="true">
+                        </div>
+                        <div class="form-group">
+                            <label for="ejemplo_password_1">Ubicación</label>
+                            <input type="text" class="form-control  input-sm" id="txthubicacion" 
+                                   placeholder="Ubicación" name="txthubicacion" data-rule-required="true" >
+                        </div>
 
-    function formatRepo(data) {
-        if (data.nombre) {
-            //    var img = '/abgsistema/web/' + data.src;
 
-            var markup = "<div class='select2-result-repository clearfix'>" +
-                    "<div class='select2-result-repository__avatar'><img style='max-width:25px;max-height:25px;' src='{{asset('')}}" + data.src + "'/></div>" +
-                    "<div class='select2-result-repository__meta'>" +
-                    "<div class='select2-result-repository__title'>" + data.nombre + "</div>" +
-                    "</div></div>";
-        } else {
-            markup = "<div class='select2-result-repository clearfix'>" +
-                    "<div class='select2-result-repository__meta'>" +
-                    "<div class='select2-result-repository__title'><a onclick='CambioEmp()'>+ Nueva empresa</a></div>" +
-                    "</div></div>";
-        }
+                        <div class="form-group ">
+                            <label for="Fecha_inicio">Periodo </label>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control txtFechaIni  input-sm" 
+                                           placeholder="Fecha inicio de labor"  id="txtFechaIni" name="txtFechaIni" data-rule-required="true">
+                                </div>
+                                <div  id="fechafin">
+                                    <div class="col-sm-4"  >
+                                        <input type="text" class="form-control txtFechaFin  input-sm" 
+                                               placeholder="Fecha fin de labor"  id="txtFechaFin" name="txtFechaFin">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-6">   
+                                    <input type="checkbox"  name="checkActual" id="checkActual" />&nbsp;Trabajo aquí actualmente. </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ejemplo_password_1">Funcion del puesto</label>
+                            <textarea class="form-control  input-sm" rows="3" name="txtfuncion" id="txtfuncion" placeholder="Funcion desempeñada"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-sm" onClick="addExperiencia()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                        {%endif%}
+                        </form>
+                        <script type="text/javascript">
 
-        return markup;
-    }
+                            $('#ScambioEmpresa').select2({
+                                ajax: {
+                                    url: Routing.generate('empresas'),
+                                    dataType: 'json',
+                                    delay: 250,
+                                    data: function (params) {
+                                        return {
+                                            q: params.term,
+                                            page: params.page
+                                        };
+                                    },
+                                    processResults: function (data, params) {
 
-    function formatRepoSelection(data) {
-        if (data.nombre) {
-            return data.nombre;
-        } else {
-            return "Seleccione una opción";
-        }
-    }
+                                        var select2Data = $.map(data.data, function (obj) {
+                                            obj.id = obj.idEmp;
+                                            obj.text = obj.nombre;
 
-</script>
+                                            return obj;
+                                        });
+
+                                        return {
+                                            results: select2Data
+                                        };
+                                    },
+                                    cache: true
+                                },
+                                escapeMarkup: function (markup) {
+                                    return markup;
+                                },
+                                minimumInputLength: 1,
+                                templateResult: formatRepo,
+                                templateSelection: formatRepoSelection
+                            });
+                            if (actExp === 1)
+                            {
+                                document.getElementById('cambioEmpresa').style.display = 'none';
+                            }
+
+                            function formatRepo(data) {
+                                if (data.nombre) {
+                                    //    var img = '/abgsistema/web/' + data.src;
+
+                                    var markup = "<div class='select2-result-repository clearfix'>" +
+                                            "<div class='select2-result-repository__avatar'><img style='max-width:25px;max-height:25px;' src='{{asset('')}}" + data.src + "'/></div>" +
+                                            "<div class='select2-result-repository__meta'>" +
+                                            "<div class='select2-result-repository__title'>" + data.nombre + "</div>" +
+                                            "</div></div>";
+                                } else {
+                                    markup = "<div class='select2-result-repository clearfix'>" +
+                                            "<div class='select2-result-repository__meta'>" +
+                                            "<div class='select2-result-repository__title'><a onclick='CambioEmp()'>+ Nueva empresa</a></div>" +
+                                            "</div></div>";
+                                }
+
+                                return markup;
+                            }
+
+                            function formatRepoSelection(data) {
+                                if (data.nombre) {
+                                    return data.nombre;
+                                } else {
+                                    return "Seleccione una opción";
+                                }
+                            }
+
+                        </script>
