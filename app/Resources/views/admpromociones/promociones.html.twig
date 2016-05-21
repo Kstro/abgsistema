@@ -75,7 +75,7 @@
                                         <thead>
                                             <tr>
                                                 <th class="text-center">Id de cliente</th>
-                                                <th class="text-center">Fecha de transacción</th>
+                                                {#<th class="text-center">Fecha de transacción</th>#}
                                                 <th class="text-center">Tipo de servicio</th>
                                                 <th class="text-center">Tipo de pago</th>
                                                 <th class="text-center">Monto ($)</th>
@@ -84,29 +84,21 @@
                                                 <th class="text-center">Acciones</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        {#<tbody>
                                         {% for admPromocione in admPromociones %}
                                             <tr>
-                                                <td class="text-center"><a href="{{ path('admin_promociones_show', { 'id': admPromocione.id }) }}">{{ admPromocione.codigo }}</a></td>
+                                                <td class="text-center">{{ admPromocione.codigo }}</td>
                                                 <td class="text-center">{{ admPromocione.fechaPago|date('d/m/Y') }}</td>
                                                 <td class="text-center">{{ admPromocione.servicio }}</td>
                                                 <td class="text-center">{{ admPromocione.tipoPago }}</td>
                                                 <td class="text-right">{{ admPromocione.monto|number_format(2, '.', ',') }}</td>
                                                 <td class="text-center">{{ admPromocione.plazo }}</td>
-                                                {#<td class="text-center">Posición {{ admPromocione.posicion }}</td>#}
                                                 <td>
-                                                    <ul>
-                                                        <li>
-                                                            <a href="{{ path('admin_promociones_show', { 'id': admPromocione.id }) }}">mostrar</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="{{ path('admin_promociones_edit', { 'id': admPromocione.id }) }}">editar</a>
-                                                        </li>
-                                                    </ul>
+                                                    <a href="{{ path('admin_promociones_show', { 'id': admPromocione.id }) }}">Ver detalles</a>
                                                 </td>
                                             </tr>
                                         {% endfor %}
-                                        </tbody>
+                                        </tbody>#}
                                     </table>
                                 </div>
                                 <div class="row" style="margin-top: 50px;"></div>          
@@ -356,7 +348,7 @@
             $('#espaciop_posicion').select2();
             $('#espaciop_tiposervicio').select2();
 
-            $('.listados').DataTable({ 
+            {#$('.listados').DataTable({ 
                 searching:true,
                 "order":[[1,"desc"]],
                 "columnDefs": [                               
@@ -375,7 +367,7 @@
                     "lengthMenu": "Mostrar _MENU_  registros"
                 },          
 
-            }); 
+            }); #}
             
             $(document).on("change", "#espaciop_tipopago", function(){
                 var tipopago = $('#espaciop_tipopago').val();
@@ -456,6 +448,62 @@
                 });
                 
                 return false;
+            });
+            
+            $('.listados').DataTable({ 
+                    //searching:true,
+                    //"order":[[1,"desc"]],
+                    "processing": false,
+                    "serverSide": true,
+                    "ajax": {
+                        "url": '{{path('admin_facturacion_data')}}',
+                        "type": 'GET'
+                    },
+                    "columns": [
+                        { "data": "codigo" },                       
+//                        { "data": "fechaPago" },
+                        { "data": "servicio" },
+                        { "data": "tipoPago" },
+                        { "data": "monto" },
+                        { "data": "plazo" },
+                        { "data": "link" }
+                    ],
+                    "columnDefs": [
+                           { "orderable": false, "targets": 0 },
+                           { "orderable": false, "targets": 2 },
+                           { "orderable": false, "targets": 3 },
+                           { "orderable": false, "targets": 4 },
+                           { "orderable": false, "targets": 5 }
+                           //{ "orderable": false, "targets": 6 }
+                           
+                           
+                           //{ "orderData": [ 2, 3, 4 ], "targets": 2 }
+                    ],
+                    "language": {
+                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                    "infoEmpty": "",
+                    "emptyTable": "No se encontraron registros",
+                    "paginate": { 
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    },
+                    "processing": "Procesando petición...",
+                    "search": "Buscar registros:",
+                    "lengthMenu": "Mostrar _MENU_ registros"
+                }, 
+                    
+            });
+        
+            $(document).on("click", "#btnbuscar", function(){
+                var busquedaAbogado = $('#busqueda-abogado').val();
+                var busquedaFInicio = $('#txtFechaInicio').val();
+                var busquedaFFin = $('#txtFechaFin').val();
+                
+                console.log(busquedaAbogado);
+                console.log(busquedaFInicio);
+                console.log(busquedaFFin);
+                
+                
             });
         });                
     </script>            

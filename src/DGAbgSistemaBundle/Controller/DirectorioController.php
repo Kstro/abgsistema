@@ -268,20 +268,23 @@ class DirectorioController extends Controller
 //                        unset ($reg['data'][$i]);
 //                    }
 //                    else{
+//                        echo $row['id'];
+                        $esp = array();
                         $reg['data'][$i]['especialidades']=array();
                         //var_dump($reg['data']);
                         $dql = "SELECT esp.nombreEspecialidad FROM DGAbgSistemaBundle:AbgPersonaEspecialida subper "
 
                             . "JOIN subper.ctlEspecialidad esp "
-                            . "JOIN subper.abgPersona per WHERE per.id=:idPersona";
+                            . "JOIN subper.abgPersona per WHERE subper.abgPersona=:idPersona";
                         $em = $this->getDoctrine()->getManager();
                         $especialidades = $em->createQuery($dql)
                                ->setParameter('idPersona',$row['id'])
                                ->getResult();
-
+                        
                         foreach($especialidades as $row2){
                             array_push($esp,$row2);
                         }
+                        //var_dump($esp);
                         if(count($especialidades)==0){
                             //array_push($row['especidalidades'], 'N/A');
                             $reg['data'][$i]['especialidades']['nombreEspecialidad'] = "N/A";
