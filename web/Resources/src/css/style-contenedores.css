@@ -47,7 +47,7 @@
     color:#fff ;
 
     border-radius:0px;
-
+box-shadow: 3px 3px 2px #888888;
     
 }
 .btnperfil {
@@ -55,4 +55,18 @@
     color: #505050;
     border-radius:0px;
 
+}
+.btnsesion:hover {
+    background:#00c0ef !important;
+    color:#fff ;
+border:none;
+    border-radius:0px;
+
+    
+}
+.btnsesion {
+    background:#F0F0F0;
+    color: #505050;
+    border-radius:0px;
+border: 1px solid #e0e0e0;
 }

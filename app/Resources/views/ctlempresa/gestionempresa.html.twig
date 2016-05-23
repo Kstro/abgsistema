@@ -385,7 +385,11 @@
                                             <img src="{{asset('')}}{{ data.src}}" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
                                         </div>
                                         <div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10">
-                                            <p style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>{{ data.nombres~" "~data.apellido }}</strong></p>
+                                            <p style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>{{ data.nombres~" "~data.apellido }}</strong>
+                                            {%if(data.verificado==1)%}
+                                            <img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 0px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado">
+                                        {%endif%}
+                                            </p>
                                             <p style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">{{data.tituloProfesional}}</p>
                                             <div class="row" style="margin-top: 2px; margin-bottom: 15px;">
                                                 <div class="col-sm-4 col-xs-12">

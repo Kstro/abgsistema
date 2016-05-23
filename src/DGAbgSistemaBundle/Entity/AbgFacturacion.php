@@ -64,6 +64,13 @@ class AbgFacturacion
     private $plazo;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="descuento", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $descuento;
+    
+    /**
      * @var \AbgPersona
      *
      * @ORM\ManyToOne(targetEntity="AbgPersona")
@@ -257,6 +264,28 @@ class AbgFacturacion
         return $this->plazo;
     }
     
+    /**
+     * Set descuento
+     *
+     * @param float $descuento
+     * @return AbgFacturacion
+     */
+    public function setDescuento($descuento)
+    {
+        $this->descuento = $descuento;
+
+        return $this;
+    }
+
+    /**
+     * Get descuento
+     *
+     * @return float 
+     */
+    public function getDescuento()
+    {
+        return $this->descuento;
+    }
     
      /**
      * Set idUser

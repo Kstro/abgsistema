@@ -25,7 +25,7 @@ class AbgPanelCentroRespuestaController extends Controller {
     /**
      * Respuesta
      *
-     * @Route("/respuestapanel", name="admin_respanel_centro")
+     * @Route("/respuestapanel", name="admin_respanel_centro", options={"expose"=true})
      * @Method("GET")
      */
     public function respuestacentroAction(Request $request) {
@@ -51,7 +51,7 @@ class AbgPanelCentroRespuestaController extends Controller {
     /**
      * Respuesta Abogado
      *
-     * @Route("/enviorespuestapanel", name="envio_respuesta_panel")
+     * @Route("/enviorespuestapanel", name="envio_respuesta_panel" )
      * @Method("POST")
      */
     public function enviorespuestapanelAction(Request $request) {
@@ -70,16 +70,13 @@ class AbgPanelCentroRespuestaController extends Controller {
         $abgPregunta->setCtlUsuario($username);
         $abgPregunta->setRespuesta($respuesta);
         $abgPregunta->setEstado(0);
-        //var_dump($abgPregunta);
-        //die();
 
         $em->merge($abgPregunta);
         $em->flush();
 
+        //      return $this->render('panelcentropregabog/respuestaenviadasuccess.html.twig');
 
-        //var_dump($parameters);
-        //die();
-        return $this->render('panelcentropregabog/respuestaenviadasuccess.html.twig');
+        return $this->redirect($this->generateUrl('panel_list_pregunta'));
     }
 
     /**
@@ -111,9 +108,9 @@ class AbgPanelCentroRespuestaController extends Controller {
                 . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
         $result_persona = $em->createQuery($dql_persona)->getArrayResult();
 
-       $dqlfoto = "SELECT fot.src as src "
-                    . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
-            $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+        $dqlfoto = "SELECT fot.src as src "
+                . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
+        $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
 
         $dql_ciudad = "SELECT c.nombreCiudad As nombre, es.nombreEstado estado"
                 . " FROM DGAbgSistemaBundle:AbgPersona p "
@@ -128,22 +125,96 @@ class AbgPanelCentroRespuestaController extends Controller {
         $username = $this->container->get('security.context')->getToken()->getUser();
         $personaId = $username->getRhPersona();
         $idabg = $username->getRhPersona()->getId();
-        //var_dump($idabg);
-        //die();
+
         $sql = "SELECT COUNT(*) as total FROM abg_pregunta, ctl_usuario WHERE abg_pregunta.estado=1 AND ctl_usuario_id=ctl_usuario.id AND ctl_usuario.rh_persona_id =" . $idabg;
         $em = $this->getDoctrine()->getManager();
         $stmt = $em->getConnection()->prepare($sql);
         $stmt->execute();
         $totsincont = $stmt->fetchAll();
-        //var_dump($totsincont[0]['total']);
-        //die();
-        $sql = "SELECT preg.id as idpreg, preg.pregunta FROM abg_pregunta preg, ctl_usuario WHERE preg.estado=1 AND ctl_usuario_id=ctl_usuario.id AND ctl_usuario.rh_persona_id =" . $idabg;
+
+        $sql = "SELECT preg.id as idpreg, preg.pregunta,  preg.fechapregunta AS fecha "
+                . " FROM abg_pregunta preg "
+                . " JOIN ctl_especialidad esp "
+                . " ON esp.id=preg.ctl_especialidad "
+                . " JOIN abg_persona_especialidad pe "
+                . " ON pe.ctl_especialidad_id=esp.id AND pe.abg_persona_id=" . $idPersona
+                . " WHERE preg.estado=1"
+                . " ORDER BY  preg.fechapregunta DESC ";
         $em = $this->getDoctrine()->getManager();
         $stmt = $em->getConnection()->prepare($sql);
         $stmt->execute();
         $preguntas = $stmt->fetchAll();
 
+
+
         return $this->render('panelcentropregabog/panelistpreguntas.html.twig', array('abgPersona' => $result_persona, 'abgFoto' => $result_foto, 'ciuda' => $result_ciuda, 'usuario' => $username, 'preguntas' => $preguntas, 'totsincont' => $totsincont[0]['total']));
+    }
+
+    /**
+     * Preguntas respondidas.
+     *
+     * @Route("/preguntas_resps", name="preguntas_resps", options={"expose"=true})
+     * @Method({"GET", "POST"})
+     * 
+     */
+    public function PreguntasRespsAction() {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+
+            $sql = "SELECT preg.id as idpreg, preg.pregunta,  preg.fechapregunta AS fecha "
+                    . " FROM abg_pregunta preg "
+                    . " JOIN ctl_especialidad esp "
+                    . " ON esp.id=preg.ctl_especialidad "
+                    . " JOIN abg_persona_especialidad pe "
+                    . " ON pe.ctl_especialidad_id=esp.id AND pe.abg_persona_id=" . $idPersona
+                    . " WHERE preg.estado=0"
+                    . " ORDER BY  preg.fechapregunta DESC ";
+            $em = $this->getDoctrine()->getManager();
+            $stmt = $em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $data['Respreguntas'] = $stmt->fetchAll();
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+            $data['error'] = $e->getMessage();
+            return new Response(json_encode($data));
+        }
+    }
+/**
+     * Pregunta y respuesta.
+     *
+     * @Route("/pregunta_resp", name="pregunta_resp", options={"expose"=true})
+     * @Method({"GET", "POST"})
+     * 
+     */
+    public function PreguntaRespAction() {
+        try {
+            $em = $this->getDoctrine()->getManager();
+                        $request = $this->getRequest();
+            $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+            
+               $dqlfoto = "SELECT fot.src as src "
+                    . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
+            $foto= $em->createQuery($dqlfoto)->getArrayResult();
+            $data['foto']=$foto[0]['src'];
+
+            $sql = "SELECT preg.id as idpreg, preg.pregunta,  preg.fechapregunta AS fecha, preg.respuesta AS respuesta "
+                    . " FROM abg_pregunta preg "
+                    . " JOIN ctl_especialidad esp "
+                    . " ON esp.id=preg.ctl_especialidad "
+                    . " JOIN abg_persona_especialidad pe "
+                    . " ON pe.ctl_especialidad_id=esp.id AND preg.id=".$request->get('id')." AND pe.abg_persona_id=" . $idPersona
+                    . " WHERE preg.estado=0"
+                    . " ORDER BY  preg.fechapregunta DESC ";
+            $em = $this->getDoctrine()->getManager();
+            $stmt = $em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $data['Respreguntas'] = $stmt->fetchAll();
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+            $data['error'] = $e->getMessage();
+            return new Response(json_encode($data));
+        }
     }
 
 }

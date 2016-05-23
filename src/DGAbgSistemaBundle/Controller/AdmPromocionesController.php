@@ -39,12 +39,11 @@ class AdmPromocionesController extends Controller
         
         $dql = "Select fac.id, fac.monto, abo.codigo, fac.plazo, tip.tipoPago, fac.fechaPago, fac.servicio"
                             . " From DGAbgSistemaBundle:AbgFacturacion fac"
-                            //. " Join fac.ctlPromociones prom"
                             . " Join fac.abgPersona abo"
                             . " Join fac.abgTipoPago tip";
-                            //. " Order by fac.fechaPago DESC";
+                            
         
-        $admPromociones = $em->createQuery($dql)->getArrayResult();
+        //$admPromociones = $em->createQuery($dql)->getArrayResult();
                     
         $tipoPago = $em->getRepository('DGAbgSistemaBundle:CtlTipoPago')->findAll();
 
@@ -67,7 +66,7 @@ class AdmPromocionesController extends Controller
             'TipoPago'   => $TipoPago,
             'abgFoto'    => $result_foto,
             'tipoPago'   => $tipoPago,  
-            'admPromociones' => $admPromociones,
+            //'admPromociones' => $admPromociones,
         ));
     }
 
@@ -100,16 +99,44 @@ class AdmPromocionesController extends Controller
     /**
      * Finds and displays a AdmPromociones entity.
      *
-     * @Route("/{id}", name="admin_promociones_show")
+     * @Route("/{id}", name="admin_promociones_show", options={"expose"=true})
      * @Method("GET")
      */
-    public function showAction(AdmPromociones $admPromocione)
+    public function showAction(\DGAbgSistemaBundle\Entity\AbgFacturacion $admPromocione)
     {
-        $deleteForm = $this->createDeleteForm($admPromocione);
+        $em = $this->getDoctrine()->getManager();
+        
+        $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
 
+        $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
+                        . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.tituloProfesional AS tprofesional, p.verificado As verificado "
+                        . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
+        
+        $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+        
+        if($admPromocione->getCtlPromociones() != NULL){
+            $abgFoto = $em->getRepository("DGAbgSistemaBundle:AbgFoto")->findBy(array('promocion' => $admPromocione->getCtlPromociones()->getId()));
+        } else {
+            $abgFoto = NULL;
+        }
+        //var_dump($admPromocione->getCtlPromociones());
+        
+        $dql_tipoPago = "SELECT p.id as id, p.tipoPago As nombre FROM DGAbgSistemaBundle:CtlTipoPago p ORDER BY p.tipoPago ASC";
+        $TipoPago = $em->createQuery($dql_tipoPago)->getArrayResult();
+
+        $dqlfoto = "SELECT fot.src as src FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
+        $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+        
+        $tipoPago = $em->getRepository('DGAbgSistemaBundle:CtlTipoPago')->findAll();
+        
         return $this->render('admpromociones/show.html.twig', array(
+            'abgPersona'    => $result_persona,
+            'usuario'       => $idPersona,
+            'TipoPago'      => $TipoPago,
+            'tipoPago'      => $tipoPago, 
+            'abgFoto'       => $result_foto,
             'admPromocione' => $admPromocione,
-            'delete_form' => $deleteForm->createView(),
+            'publicidad'    => $abgFoto
         ));
     }
 
@@ -206,7 +233,9 @@ class AdmPromocionesController extends Controller
             $servicio = $parameters['espaciop']['tiposervicio'];
             $plazo = $parameters['espaciop']['plazo'];
             $descripcion = $parameters['espaciop']['descripcion'];
-            
+            $descuento = $parameters['espaciop']['descuento'];
+            $nombreSERVER = "";
+                    
             if(isset($parameters['espaciop']['posicion'])){
                 $posicion = $parameters['espaciop']['posicion'];
             }
@@ -222,7 +251,6 @@ class AdmPromocionesController extends Controller
             $fecha = new \DateTime('now');
             
             if($servicio == 'Espacio publicitario'){
-                $descuento = $parameters['espaciop']['descuento'];
                 $nombreimagen2=" ";
                 
                 $promocion = new AdmPromociones();
@@ -239,7 +267,8 @@ class AdmPromocionesController extends Controller
                 $em->persist($promocion);
                 $em->flush();
                 
-                $path1 = $this->container->getParameter('photo.publicidad');
+                //$path1 = $this->container->getParameter('photo.publicidad');
+                $path1 = $this->container->getParameter('photo.perfil');
                 $nombreimagen=$_FILES['file']['name'];    
 
                 $tipo = $_FILES['file']['type'];
@@ -247,7 +276,7 @@ class AdmPromocionesController extends Controller
                 $nombreimagen2.=".".$extension[1];
             
                 if ($nombreimagen != null){
-                    $path = "Photos/publicidad/";
+                    $path = "Photos/Perfil/";
                     $fecha = date('Y-m-d His');
                     $fec = explode(' ',$fecha);
                     $nombreArchivo = "publicidad-".trim($fec[0]).trim($fec[1]).$nombreimagen2;
@@ -295,6 +324,7 @@ class AdmPromocionesController extends Controller
             $facturacion->setServicio($servicio);
             $facturacion->setCtlEmpresa(null);
             $facturacion->setReferencia($referencia);
+            $facturacion->setDescuento($descuento);
             
             $em->persist($facturacion);
             $em->flush();
@@ -313,6 +343,212 @@ class AdmPromocionesController extends Controller
         } 
    }
     
+    /**
+    * Ajax utilizado para registrar un nuevo anuncio publicitario
+    *  
+    * @Route("/editar/transacion/set", name="admin_edicion_anuncio_publicitario", options={"expose"=true})
+    */
+    public function editarTransacionAction()
+    {
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+        if($isAjax){
+            $request = $this->getRequest();
+            $parameters = $request->request->all();
+            $nombreArchivo = '';
+            
+            $em = $this->getDoctrine()->getManager();
+            
+//            $id = $this->get('request')->request->get('abogado');
+//            $monto = $this->get('request')->request->get('monto');
+//            $tipopagoId = $this->get('request')->request->get('tipopago');
+//            $servicio = $this->get('request')->request->get('tiposervicio');
+//            $posicion = $this->get('request')->request->get('posicion');
+//            $plazo = $this->get('request')->request->get('plazo');
+//            $descuento = $this->get('request')->request->get('descuento');
+//            $descripcion = $this->get('request')->request->get('descripcion');
+//            $referencia = $this->get('request')->request->get('referencia');
+            $facturacionId = $parameters['facturacionId'];
+            $monto = $parameters['espaciop']['costo'];
+            $tipopagoId = $parameters['espaciop']['tipopago'];
+            $servicio = $parameters['espaciop']['tiposervicio'];
+            $plazo = $parameters['espaciop']['plazo'];
+            $descripcion = $parameters['espaciop']['descripcion'];
+            $descuento = $parameters['espaciop']['descuento'];
+            $nombreSERVER = "";
+            
+            $facturacion = $em->getRepository('DGAbgSistemaBundle:AbgFacturacion')->find($facturacionId);
+            
+            if(isset($parameters['espaciop']['abogado'])){
+                $id = $parameters['espaciop']['abogado'];
+            } else {
+                $id = $facturacion->getAbgPersona()->getId();
+            }
+            
+            if(isset($parameters['espaciop']['posicion'])){
+                $posicion = $parameters['espaciop']['posicion'];
+            }
+            
+            if(isset($parameters['espaciop']['posicion'])){
+                $referencia = $parameters['espaciop']['referencia'];
+            } else {
+                $referencia = null;
+            }
+            
+            $usuario= $this->get('security.token_storage')->getToken()->getUser();
+            $abogado = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->find($id);
+            $tipopago = $em->getRepository('DGAbgSistemaBundle:CtlTipoPago')->find($tipopagoId);
+            $fecha = new \DateTime('now');
+            
+            if($facturacion->getCtlPromociones() == NULL){
+                if($servicio == 'Espacio publicitario'){
+                    $nombreimagen2=" ";
+
+                    $promocion = new AdmPromociones();
+                    $promocion->setMonto($monto);
+                    $promocion->setPosicion($posicion);
+                    $promocion->setDescuento($descuento);
+                    $promocion->setCtlProdServicioAdmin(null);
+                    $promocion->setEstado(1);
+                    $promocion->setFechaInicio(new \DateTime ('now'));
+
+                    $fechafin = $fecha->add(new \DateInterval('P'.$plazo.'D'));
+                    $promocion->setFechaFin($fechafin);
+
+                    $em->persist($promocion);
+                    $em->flush();
+
+                    //$path1 = $this->container->getParameter('photo.publicidad');
+                    $path1 = $this->container->getParameter('photo.perfil');
+                    $nombreimagen=$_FILES['file']['name'];    
+
+                    $tipo = $_FILES['file']['type'];
+                    $extension= explode('/',$tipo);
+                    $nombreimagen2.=".".$extension[1];
+
+                    if ($nombreimagen != null){
+                        $path = "Photos/Perfil/";
+                        $fecha = date('Y-m-d His');
+                        $fec = explode(' ',$fecha);
+                        $nombreArchivo = "publicidad-".trim($fec[0]).trim($fec[1]).$nombreimagen2;
+
+                        $nombreBASE=$path.$nombreArchivo;
+                        $nombreBASE=str_replace(" ","", $nombreBASE);
+                        $nombreSERVER =str_replace(" ","", $nombreArchivo);
+                        //$imagen->setFoto($nombreSERVER);
+                        $resultado = move_uploaded_file($_FILES["file"]["tmp_name"], $path1.$nombreSERVER);    
+                        //n$umero = unlink($path2 . $nombreSERVER);
+
+                        $imagen = new \DGAbgSistemaBundle\Entity\AbgFoto();
+                        $imagen->setPromocion($promocion);
+                        $imagen->setSrc($nombreBASE);
+                        $imagen->setAbgPersona(null);
+                        $imagen->setCtlEmpresa(null);
+                        $imagen->setTipoFoto(2);
+                        $imagen->setFechaRegistro(new \DateTime ('now'));
+                        $imagen->setFechaExpiracion($fechafin);
+                        $imagen->setEstado(1);
+
+                        $em->persist($imagen);
+                        $em->flush();
+                    }
+                }
+
+//                if($servicio == 'Espacio publicitario'){
+//                    $facturacion->setCtlPromociones($promocion);
+//                } else {
+//                    $facturacion->setCtlPromociones(null);
+//                }
+            } else {
+                $nombreimagen2=" ";
+                $promocion = $em->getRepository('DGAbgSistemaBundle:AdmPromociones')->find($facturacion->getCtlPromociones()->getId());
+                
+                $promocion->setMonto($monto);
+                $promocion->setPosicion($posicion);
+                $promocion->setDescuento($descuento);
+                $promocion->setCtlProdServicioAdmin(null);
+                $promocion->setEstado(1);
+                //$promocion->setFechaInicio(new \DateTime ('now'));
+
+                $fechafin = $fecha->add(new \DateInterval('P'.$plazo.'D'));
+                $promocion->setFechaFin($fechafin);
+
+                $em->merge($promocion);
+                $em->flush();
+                
+                $imagenProm = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findOneBy(array('promocion' => $promocion));
+                $em->remove($imagenProm);
+                $em->flush();
+                
+                $path1 = $this->container->getParameter('photo.perfil');
+                $nombreimagen=$_FILES['file']['name'];    
+
+                $tipo = $_FILES['file']['type'];
+                $extension= explode('/',$tipo);
+                $nombreimagen2.=".".$extension[1];
+
+                if ($nombreimagen != null){
+                    $path = "Photos/Perfil/";
+                    $fecha = date('Y-m-d His');
+                    $fec = explode(' ',$fecha);
+                    $nombreArchivo = "publicidad-".trim($fec[0]).trim($fec[1]).$nombreimagen2;
+
+                    $nombreBASE=$path.$nombreArchivo;
+                    $nombreBASE=str_replace(" ","", $nombreBASE);
+                    $nombreSERVER =str_replace(" ","", $nombreArchivo);
+                    //$imagen->setFoto($nombreSERVER);
+                    $resultado = move_uploaded_file($_FILES["file"]["tmp_name"], $path1.$nombreSERVER);    
+                    //n$umero = unlink($path2 . $nombreSERVER);
+
+                    $imagen = new \DGAbgSistemaBundle\Entity\AbgFoto();
+                    $imagen->setPromocion($promocion);
+                    $imagen->setSrc($nombreBASE);
+                    $imagen->setAbgPersona(null);
+                    $imagen->setCtlEmpresa(null);
+                    $imagen->setTipoFoto(2);
+                    $imagen->setFechaRegistro(new \DateTime ('now'));
+                    $imagen->setFechaExpiracion($fechafin);
+                    $imagen->setEstado(1);
+
+                    $em->persist($imagen);
+                    $em->flush();
+                }                                
+            }
+            
+            if($servicio == 'Espacio publicitario'){
+                $facturacion->setCtlPromociones($promocion);
+            } else {
+                $facturacion->setCtlPromociones(null);
+            }
+            
+            $facturacion->setAbgTipoPago($tipopago);
+            $facturacion->setAbgPersona($abogado);
+            //  $facturacion->setFechaPago(new \DateTime ('now'));
+            $facturacion->setMonto($monto);
+            $facturacion->setPlazo($plazo);
+            $facturacion->setDescripcion($descripcion);
+            $facturacion->setIdUser($usuario->getId());
+            $facturacion->setServicio($servicio);
+            $facturacion->setCtlEmpresa(null);
+            $facturacion->setReferencia($referencia);
+            $facturacion->setDescuento($descuento);
+            
+            $em->merge($facturacion);
+            $em->flush();
+            
+            
+            
+            $response = new JsonResponse();
+            $response->setData(array(
+                                  'exito'   => '1',
+                                  'imagen'  => $nombreSERVER,
+                               ));  
+            
+            return $response; 
+        } else {    
+            return new Response('0');              
+        }
+    }    
+   
     /**
     * Ajax utilizado para buscar informacion de abogados
     *  
@@ -336,4 +572,64 @@ class AdmPromocionesController extends Controller
         
         return new Response(json_encode($abogado));
     }
+    
+    /**
+    * Ajax utilizado para buscar anuncios publicitarios
+    *  
+    * @Route("/busqueda/publicidad/abogados", name="admin_busqueda_anuncio_publicitario", options={"expose"=true})
+    */
+    public function busquedaromocionAction()
+    {
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+        if($isAjax){
+            $em = $this->getDoctrine()->getEntityManager();
+            
+            $i = 0;
+            $recuperados = array();
+            $prom = array();
+            
+            $dql = "Select fot.idargFoto, fot.src"
+                    . " From DGAbgSistemaBundle:AbgFoto fot"
+                    . " Join fot.promocion pro"
+                    . " WHERE pro.posicion = 1"
+                    . " ORDER BY fot.idargFoto DESC ";
+            
+            $promotions = $em->createQuery($dql)
+                              ->getResult();  
+            
+            if(!empty($promotions)){
+                $max = count($promotions);
+                
+                if($max > 10){
+                    while ($i < 10){
+                        $random = rand(1, ($max - 1));
+                        
+                        if (!in_array($random, $recuperados)) {
+                            $recuperados[$i] = $random;
+                            $prom[$i]['idargFoto'] = $promotions[$random]['idargFoto'];
+                            $prom[$i]['src'] = $promotions[$random]['src'];
+                            $i++;
+                        }    
+                    }
+                } else {
+                    foreach ($promotions as $key => $value) {
+                        $prom[$key]['idargFoto'] = $value['idargFoto'];
+                        $prom[$key]['src'] = $value['src'];
+                    }
+                }
+            } else {
+                $prom = NULL;
+            }
+            
+            $response = new JsonResponse();
+            $response->setData(array(
+                                  'exito'   => '1',
+                                  'data'    => $prom
+                               ));  
+            
+            return $response; 
+        } else {    
+            return new Response('0');              
+        } 
+   }
 }

@@ -1,4 +1,28 @@
 {% extends ':Layout:layout3.html.twig' %}
+{% block css %}
+    {{parent()}}
+
+    <style>
+        .pos4 {
+            position: fixed;
+            bottom: 0px;
+            margin-right: auto;
+            margin-left: auto;
+            width: 850px;
+        }
+        
+        .contenedor-perfil{
+            height: 100%;
+            position: relative;
+        }
+        
+        .contenedor-perfil .pos4{
+            position: relative;
+  bottom: 0px; 
+  left: 0px;
+        }
+    </style>
+{% endblock css %}
 {% block js_extend %}
     <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
     <!--  Select  2-->
@@ -24,22 +48,121 @@
 
     <script src="{{ asset('Resources/js/contrasenha/contra.js')}}"></script>
     <script type = "text/javascript" >
+        var imagenes = new Array();
+        var imagenes2 = new Array();
+        var imagenes3 = new Array();
+        var imagenes4 = new Array();
+        
+        var contador = 1;
+        var contador2 = 1;
+        var contador3 = 1;
+        var contador4 = 1;
+        
+        var lon = 0;
+        var lon2 = 0;
+        var lon3 = 0;
+        var lon4 = 0;
+        
+        {% for pro in prom1 %}
+            imagenes.push("{{ pro.src }}");
+        {% endfor %}
+        
+        lon = imagenes.length;
+        
+        {% for pro in prom2 %}
+            imagenes2.push("{{ pro.src }}");
+        {% endfor %}
+        
+        lon2 = imagenes2.length;
+        
+        {% for pro in prom3 %}
+            imagenes3.push("{{ pro.src }}");
+        {% endfor %}
+        
+        lon3 = imagenes3.length;
+        
+        {#{% for pro in prom4 %}
+            imagenes4.push("{{ pro.src }}");
+        {% endfor %}
+        
+        lon4 = imagenes4.length;#}
+        
+        
         $(document).on('ready', function () {
-
             $('.main-sidebar .main-header ').css("display", "none");
             $('.sidebar-toggle').css("display", "none");
             $('.main-header').css("display", "none");
+            
+            setInterval(cambia, 4000);
         });
 
+        function cambia() {
+            console.log('cont: '+contador);
+                console.log('lon: '+lon);
+            if(contador >= lon){
+                contador = 0;
+            }
+            
+            if(lon > 0){
+                document.getElementById("fotocambia").src = '../' + imagenes[contador];
+                contador++;
+                console.log(imagenes[contador]);
+                console.log(contador);
+                console.log(lon);
+            } else {
+                document.getElementById("fotocambia").src = '/Resources/src/img/banner1.png';
+            }
+            
+            
+            if(contador2 >= lon2){
+                contador2 = 0;
+            }
+            
+            if(lon2 > 0){
+                document.getElementById("fotocambia2").src = '../' + imagenes2[contador2];
+                contador2++;
+             } else {
+                document.getElementById("fotocambia2").src = '/Resources/src/img/banner2.png';
+            }
+            
+            if(contador3 >= lon3){
+                contador3 = 0;
+            }
+            
+            if(lon3 > 0){
+                document.getElementById("fotocambia3").src = '../' + imagenes3[contador3];
+                contador3++;
+            } else {
+                document.getElementById("fotocambia3").src = '/Resources/src/img/banner2.png';
+            }
+            
+            {#if(contador4 >= lon4){
+                contador4 = 0;
+            }
+            
+            if(lon4 > 0){
+                document.getElementById("fotocambia4").src = '../' + imagenes4[contador4];
+                contador4++;
+            } else {
+                document.getElementById("fotocambia4").src = '/Resources/src/img/banner1.png';
+            }#}
+        }
     </script> 
 {% endblock %} 
-{% block cuerpo %}
 
+{% block cuerpo %}
+{% embed ':Layout:head.html.twig' %}{% endembed %}
    {# {% for datos in abgPersona %}#}
 
-        <div class="row" style=" padding: 10px; background-color:#ecf0f5;">
+        <div class="row contenedor-perfil" style=" padding: 10px; background-color:#ecf0f5;">
             <div class=" col-md-9">
-
+                <div class="box box-widget">
+                    <div class="box-body " style=" padding: 5px;"> 
+                        <div class="pos1">
+                            <img src="{{asset('')}}{{ prom1[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia">
+                        </div>
+                    </div>
+                </div>
                 {% for datos in ctlEmpresa %}
                     <div class="box box-widget btn-flat">
 
@@ -247,24 +370,36 @@
                                                     <img src="{{asset('')}}{{ data.src}}" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
                                                 </div>
                                                 <div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10">
-                                                    <p style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>{{ data.nombres~" "~data.apellido }}</strong></p>
-                                                    <p style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">Puesto dentro de la empresa</p>
+                                                    <p style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>{{ data.nombres~" "~data.apellido }}</strong>
+                                                    {%if(data.verificado==1)%}
+                                            <img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 0px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
+                                        {%endif%}</p>
+                                                    <p style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">{{data.puesto}}</p>
                                                     <div class="row" style="margin-top: 2px; margin-bottom: 15px;">
+                                                       {% if (data.telefonoMovil | default is not empty or data.telefonoMovil | default is not empty)%}
                                                         <div class="col-sm-4 col-xs-12">
                                                             <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono</strong></p>
-                                                            <p style="font-size: 11px; margin-bottom: 0px;">+503 {{data.telefonoMovil}}</p>
+                                                            <p style="font-size: 11px; margin-bottom: 0px;">
+                                                                {% if (data.telefonoMovil | default is not empty)%}+503 {{data.telefonoMovil}} {% endif %}
+                                                                <br>{% if (data.telefonoFijo | default is not empty)%}+503 {{data.telefonoFijo}}{% endif %}</p>
                                                         </div>
+                                                         {% endif %}
+                                                         {% if (data.correoelectronico | default is not empty)%}
                                                         <div class="col-sm-4 col-xs-12">
                                                             <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p>
                                                             <p style="font-size: 11px; margin-bottom: 0px;">{{ data.correoelectronico }}</p>
                                                         </div>
+                                                          {% endif %}
+                                                          
+                                                            {% if (data.sitioWeb | default is not empty)%}
                                                         <div class="col-sm-4 col-xs-12">
                                                             <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
-                                                            <p style="font-size: 11px; margin-bottom: 0px;"><a href="{{ data.sitioWeb }}" target="_blank">{{ data.sitioWeb }}</a></p>
+                                                            <p style="font-size: 11px; margin-bottom: 0px;"><a href="{{ data.sitioWeb }}" target="_blank">{{data.sitioWeb }}</a></p>
                                                         </div>
+                                                          {% endif %}
                                                         <div class="col-sm-12">
                                                             <span style="color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;"><strong>Especialidades:</strong> </span>
-                                                            <span style="font-size: 11px;">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span>
+                                                            <span style="font-size: 11px;">{{data.especialida}}</span>
                                                         </div>
                                                         <div class="col-sm-12" style="margin-top: -0px;">
                                                             <span style='font-size: 11px;'><a href="{{path('busquedaPerfil', {url:datas.url})}}">Ver perfill</a></span>
@@ -308,24 +443,38 @@
                     </div>
                 {%endif%}
                  {% endfor %} 
+                     <div class="box box-widget pos4" style="display:none;">
+                  
+                        <div class="box-body " style=" padding: 5px;"> 
+                            <div class="hidden-md hidden-sm hidden-xs">
+                              {#<img src="{{asset('')}}{{ prom4[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia4" >#}
+                          </div>
+                        </div>
+                    </div>
+                 
             </div>
 
 
 
 
             <div class="col-md-3" >
-                <div class="box box-widget">
-                    <div class="box-body" style="padding:5px;">
-                    {% embed ':Layout:publicida.html.twig' %}{% endembed %}
+                <div class="bloque-main pos2" style="padding: 5px;">
+                    <img src="{{asset('')}}{{ prom2[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
                 </div>
+                <div class="bloque-nexo pos3" style="padding: 5px;">
+                    <img src="{{asset('')}}{{ prom3[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia3">
+                </div>
+                {#<div class="box box-widget">
+                        <div class="box-body" style="padding:5px;">
+                        {% embed ':Layout:publicida.html.twig' %}{% endembed %}
+                    </div>
+                </div>#}
             </div>
-        </div>
     </div>
     <script type="text/javascript">
         $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
-
+            $('[data-toggle="tooltip"]').tooltip();
+        });                
     </script>
 
 {#{%endfor%}#}
