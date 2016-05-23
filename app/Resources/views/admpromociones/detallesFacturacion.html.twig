@@ -30,12 +30,19 @@
                     <div class="page-header">
                         <h2>Detalles</h2>
                     </div>
-                    
-                    <ul>
+                    <div class="col-md-12" style="margin-bottom: 10px;">
+                        <a href="{{ path('admin_promociones_index') }}" class="button">
+                            <button class="btn btn-default pull-right">Regresar</button>
+                        </a>
+                        {% if admPromocione.servicio == 'Espacio publicitario' %}
+                            <button id="cancelar" class="btn btn-default pull-right" style="margin-right: 2px;">Cancelar suscripción</button>
+                        {% endif %}    
+                    </div>
+                    {#<ul>
                         <li>
                             <a href="{{ path('admin_promociones_index') }}" class="button">Regresar</a>
                         </li>                        
-                    </ul>
+                    </ul>#}
                     <div class="nav-tabs-custom" style="cursor: move;">
                         {# Aquí se colocan los nombres de cada sección (tabs) #}    
                         <ul class="nav nav-tabs  ui-sortable-handle">
@@ -368,6 +375,57 @@
                 });
                 
                 return false;
+            });
+            
+            $(document).on("click", "#cancelar", function(){
+                Lobibox.confirm({
+                    title: 'Cancelar suscripcion',
+                    msg: "¿Esta seguro que desea cancelar suscripcion?",
+                    buttons: {
+                            'cancel': {
+                                text: 'Cancelar'
+                            },
+                            'ok': {
+                                text: 'Aceptar'
+                            }
+                        },
+                    callback: function(lobibox, type){
+                        if (type === 'ok'){
+                            var id = '{{ admPromocione.id }}';
+                            
+                            var data = {
+                              id: id  
+                            };
+                            
+                            $.ajax({
+                                type: 'POST',
+                                async: false,
+                                dataType: 'json',
+                                data: data,
+                                url: Routing.generate('admin_cancelar_anuncio_publicitario'),
+                                success: function (response)
+                                {
+                                    Lobibox.notify("success", {
+                                        size: 'mini',
+                                        msg: 'Se ha cancelado suscripcion con exito'
+                                    });
+
+                                    return false;
+                                },
+                                error: function (xhr, status){
+                                    Lobibox.notify("danger", {
+                                        size: 'mini',
+                                        msg: 'Lo sentimos, ocurrio un error'
+                                    });
+
+                                    return false;
+                                }
+                            });
+                        }
+                        
+                    }
+                });
+                
             });
         });  
     </script>

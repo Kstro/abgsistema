@@ -548,6 +548,39 @@ class AdmPromocionesController extends Controller
             return new Response('0');              
         }
     }    
+    
+    /**
+    * Ajax utilizado para registrar un nuevo anuncio publicitario
+    *  
+    * @Route("/cancelar/suscripcion/set", name="admin_cancelar_anuncio_publicitario", options={"expose"=true})
+    */
+    public function cancelarSuscripcionAction()
+    {
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+        if($isAjax){
+            $request = $this->getRequest();
+            $parameters = $request->request->all();
+            
+            $em = $this->getDoctrine()->getManager();
+            
+            $id = $this->get('request')->request->get('id');
+            $facturacion = $em->getRepository('DGAbgSistemaBundle:AbgFacturacion')->find($id);
+            $promocion = $em->getRepository('DGAbgSistemaBundle:AdmPromociones')->find($facturacion->getCtlPromociones()->getId());
+            $promocion->setEstado(0);
+            
+            $em->merge($promocion);
+            $em->flush();
+            
+            $response = new JsonResponse();
+            $response->setData(array(
+                                  'exito'   => '1',
+                               ));  
+            
+            return $response; 
+        } else {    
+            return new Response('0');              
+        }
+    }    
    
     /**
     * Ajax utilizado para buscar informacion de abogados
