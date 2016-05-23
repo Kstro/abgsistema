@@ -1587,6 +1587,11 @@ class CtlEmpresaController extends Controller {
 
             $persona = $ObjetoUrl[0]->getAbgPersona();
             $empresa = $ObjetoUrl[0]->getCtlEmpresa();
+            
+            $prom = $this->busquedaPublicidad(1);
+            $prom2 = $this->busquedaPublicidad(2);
+            $prom3 = $this->busquedaPublicidad(3);
+            //$prom4 = $this->busquedaPublicidad(4);
 
             if ($empresa != null) {
 
@@ -1685,7 +1690,11 @@ class CtlEmpresaController extends Controller {
                             'tipoEmpresa' => $registro_tipoempresa,
                             'visitas' => $valor,
                             'RegistroEspecialida' => $result_especialida,
-                            'url' => $result_url
+                            'url' => $result_url,
+                            'prom1'   => $prom,
+                            'prom2'   => $prom2,
+                            'prom3'   => $prom3,
+                            //'prom4'   => $prom4
                 ));
             } else {
 // perfil persona
@@ -1815,7 +1824,11 @@ class CtlEmpresaController extends Controller {
                                 'sitio' => $sitio,
                                 'ciuda' => $result_ciuda,
                                 'url' => $url,
-                                'abgFoto' => $result_foto
+                                'abgFoto' => $result_foto,
+                                'prom1'   => $prom,
+                                'prom2'   => $prom2,
+                                'prom3'   => $prom3,
+                                //'prom4'   => $prom4
                     ));
                 } catch (\Exception $e) {
                     $data['msj'] = $e->getMessage();
@@ -1827,6 +1840,47 @@ class CtlEmpresaController extends Controller {
         }
     }
 
+    private function busquedaPublicidad($posicion) {
+       $em = $this->getDoctrine()->getManager();
+
+        $i = 0;
+        $recuperados = array();
+        $prom = array();
+
+        $dql = "Select fot.idargFoto, fot.src From DGAbgSistemaBundle:AbgFoto fot Join fot.promocion pro"
+                . " WHERE pro.posicion = :posicion ORDER BY fot.idargFoto DESC ";
+
+        $promotions = $em->createQuery($dql)
+                          ->setParameter('posicion',$posicion)
+                          ->getResult();  
+        
+        if(!empty($promotions)){
+            $max = count($promotions);
+
+            if($max > 20){
+                while ($i < 20){
+                    $random = rand(1, ($max - 1));
+
+                    if (!in_array($random, $recuperados)) {
+                        $recuperados[$i] = $random;
+                        $prom[$i]['idargFoto'] = $promotions[$random]['idargFoto'];
+                        $prom[$i]['src'] = $promotions[$random]['src'];
+                        $i++;
+                    }    
+                }
+            } else {
+                foreach ($promotions as $key => $value) {
+                    $prom[$key]['idargFoto'] = $value['idargFoto'];
+                    $prom[$key]['src'] = $value['src'];
+                }
+            }
+        } else {
+            $prom = NULL;
+        }
+        
+        return $prom; 
+    }
+    
     /**
      * @Route("/admin/verificacion/{username}", name="verificacion", options={"expose"=true})
      * @Method("GET")

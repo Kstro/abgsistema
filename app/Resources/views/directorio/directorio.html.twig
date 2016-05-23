@@ -11,6 +11,14 @@
         .paginas,.anterior,.siguiente{
             cursor: pointer;
         }
+        
+        .pos4 {
+            position: fixed;
+            bottom: 0px;
+            margin-right: auto;
+            margin-left: auto;
+            width: 850px;
+        }
     </style>
 {#        <link rel="stylesheet" href="{{ asset('Resources/datatable/css/datatable.css') }}">#}
 {% endblock css %}
@@ -21,8 +29,9 @@
 		<div class="row" id="registrosBusqueda">
 			<!-- LADO IZQUIERDO -->
 			<div class="col-md-9">
-				<div class="bloque-main" style="padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px; margin-top: 20px;">
-				<img src="{{asset('Resources/src/img/banner1.png')}}" style="width: 100%; max-width: 100%;">
+				<div class="bloque-main pos1" style="padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px; margin-top: 30px;">
+                                    {#<img src="{{asset('Resources/src/img/banner1.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia">#}
+                                    <img src="{{asset('')}}{{ prom1[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia">
 				</div>
 				<div class="item-directorio" style="margin-top: 5px !important; padding: 10px;">
                                     <form class="form-inline">
@@ -44,7 +53,7 @@
                                                 </select>
                                             {#</div>
                                             <div class="col-md-2">#}
-                                                <button id="searchButton" type="submit" class="searchbotondir" {#style="width:100%;"#}>Buscar</button>
+                                                <button id="searchButton" style="height: 30px;" type="submit" class="searchbotondir input-group btn btn-xs" {#style="width:100%;"#}>Buscar</button>
                                             {#</div>
                                         </div>#}
                                       
@@ -52,12 +61,12 @@
                                     </form>
 				</div>
 				<div class="item-directorio-nexo" style="height: 40px;">
-					<p class="pull-left" style="font-size: 12px; margin-bottom: 0px; padding: 10px;">
-                                            Mostrando los resultado para '<label id="filtro"><strong>Familiar</strong></label>'.
-					</p>
-					<p class="numRegistros pull-right" style="font-size: 12px; margin-bottom: 0px; padding: 10px;">
-						Mostrando <label class="filtroRegistros"></label> resultados de <label class="totalRegistros"></label>
-					</p>
+                                    <p class="pull-left" style="font-size: 12px; margin-bottom: 0px; padding: 10px;">
+                                        Mostrando los resultado para '<label id="filtro"><strong>Familiar</strong></label>'.
+                                    </p>
+                                    <p class="numRegistros pull-right" style="font-size: 12px; margin-bottom: 0px; padding: 10px;">
+                                            Mostrando <label class="filtroRegistros"></label> resultados de <label class="totalRegistros"></label>
+                                    </p>
 				</div>
 				<!-- item 1 -->
 								
@@ -153,8 +162,8 @@
                                         </td>
                                     </tr>
                                     
-                                    
-                                    
+                                     
+                                   
                                     
                                     <tr>
                                         <td style="width: 100%">
@@ -353,21 +362,23 @@
 
 
 				<div style="height: 20px;"></div>
-
+                                <div class="bloque-main pos4 hidden-md hidden-sm hidden-xs" style="padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px; margin-top: 20px;">
+                                    {#<img src="{{asset('Resources/src/img/banner1.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia4">#}
+                                    <img src="{{asset('')}}{{ prom4[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia4">
+				</div>
 			</div> <!-- END COL-MD-9 -->
 
 			<!-- LADO DERECHO -->
 			<div class="col-md-3" style="margin-top: 10px;">
-                            <div class="bloque-main" style="padding: 5px;">
-                                <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;">
+                            <div class="bloque-main pos2" style="padding: 5px;">
+                                {#<img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia2">#}
+                                <img src="{{asset('')}}{{ prom2[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
                             </div>
-                            <div class="bloque-nexo" style="padding: 5px;">
-                                <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;">
+                            <div class="bloque-nexo pos3" style="padding: 5px;">
+                                {#<img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia3">#}
+                                <img src="{{asset('')}}{{ prom3[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia3">
                             </div>
-                            <div class="bloque-nexo" style="padding: 5px;">
-                                <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;">
-                            </div>
-			</div>
+                        </div>
 		</div>
 		</div>
 	
@@ -399,13 +410,56 @@ else{ // Maximum length not reached so update the value of my_text counter
     <script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
 {#    <script src="{{ asset('Resources/datatable/dataTable.js') }}"></script>#}
     <script src="{{ asset('Resources/datatable/js/datatable.js') }}"></script>
+    {#<script src="{{ asset('Resources/js/generadorPublicidad.js') }}"></script>#}
+    
     <script>
+        var imagenes = new Array();
+        var imagenes2 = new Array();
+        var imagenes3 = new Array();
+        var imagenes4 = new Array();
+        
+        var contador = 1;
+        var contador2 = 1;
+        var contador3 = 1;
+        var contador4 = 1;
+        
+        var lon = 0;
+        var lon2 = 0;
+        var lon3 = 0;
+        var lon4 = 0;
+        
+        {% for pro in prom1 %}
+            imagenes.push("{{ pro.src }}");
+        {% endfor %}
+        
+        lon = imagenes.length;
+        
+        {% for pro in prom2 %}
+            imagenes2.push("{{ pro.src }}");
+        {% endfor %}
+        
+        lon2 = imagenes2.length;
+        
+        {% for pro in prom3 %}
+            imagenes3.push("{{ pro.src }}");
+        {% endfor %}
+        
+        lon3 = imagenes3.length;
+        
+        {% for pro in prom4 %}
+            imagenes4.push("{{ pro.src }}");
+        {% endfor %}
+        
+        lon4 = imagenes4.length;
+        
         $(document).ready(function(){
+            
             var inicio = $('#inicioInput').val(); //numero de registros que se van a mostrar
             var busqueda=$('#searchBox').val();
             var longitud = 10; //numero de registros que se van a mostrar
             var paginaActual = 1; //primer registro a mostrar
             var numPages = 0;
+            
             //var contenidoOriginal = $('#registros').html();
             buscar(busqueda,inicio,longitud,paginaActual);
             $(document).on('click','#searchButton', function(){
@@ -421,6 +475,7 @@ else{ // Maximum length not reached so update the value of my_text counter
             });        
             $('#filtrarDepartamento').select2();
             $('#filtrarMunicipio').select2();
+            
             
 {#            $('#datatables1').DataTable({ 
                     {#searching:true,
@@ -514,7 +569,10 @@ else{ // Maximum length not reached so update the value of my_text counter
                 
             });
             
-                
+            
+            
+            
+            setInterval(cambia, 4000);  
         });
         
         function buscar(busqueda,inicio,longitud,paginaActual){
@@ -848,10 +906,71 @@ else{ // Maximum length not reached so update the value of my_text counter
                         $('#registros').hide();
                         $('#busquedaVacia').show();
                     }
+        }     
+        
+        function cambia() {
+            console.log('cont: '+contador);
+                console.log('lon: '+lon);
+            if(contador >= lon){
+                contador = 0;
+            }
+            
+            if(lon > 0){
+                document.getElementById("fotocambia").src = '../../' + imagenes[contador];
+                contador++;
+                console.log(imagenes[contador]);
+                console.log(contador);
+                console.log(lon);
+            } else {
+                document.getElementById("fotocambia").src = '/Resources/src/img/banner1.png';
+            }
+            
+            
+            if(contador2 >= lon2){
+                contador2 = 0;
+            }
+            
+            if(lon2 > 0){
+                document.getElementById("fotocambia2").src = '../../' + imagenes2[contador2];
+                contador2++;
+             } else {
+                document.getElementById("fotocambia2").src = '/Resources/src/img/banner2.png';
+            }
+            
+            if(contador3 >= lon3){
+                contador3 = 0;
+            }
+            
+            if(lon3 > 0){
+                document.getElementById("fotocambia3").src = '../../' + imagenes3[contador3];
+                contador3++;
+            } else {
+                document.getElementById("fotocambia3").src = '/Resources/src/img/banner2.png';
+            }
+            
+            if(contador4 >= lon4){
+                contador4 = 0;
+            }
+            
+            if(lon4 > 0){
+                document.getElementById("fotocambia4").src = '../../' + imagenes4[contador4];
+                contador4++;
+            } else {
+                document.getElementById("fotocambia4").src = '/Resources/src/img/banner1.png';
+            }
+        }
+        
+        function inicio() {
+            setInterval(cambia(), 10000);
         }
     </script>
-    
-    
+    <SCRIPT LANGUAGE="JavaScript">
+        
+
+        
+
+        
+    </script>
     
     
 {% endblock js_template %}
