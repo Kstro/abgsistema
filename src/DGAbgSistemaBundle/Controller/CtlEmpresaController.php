@@ -329,9 +329,10 @@ class CtlEmpresaController extends Controller {
      */
     public function RegistrarUsuarioAction(Request $request) {
 
-
+        $request = $this->getRequest();
 
         $isAjax = $this->get('Request')->isXMLhttpRequest();
+        
         if ($isAjax) {
 
 
@@ -344,6 +345,26 @@ class CtlEmpresaController extends Controller {
             $ctlUsuario = new CtlUsuario();
             $abgFoto = new AbgFoto();
 
+        /*    if ($request->get('id')) {
+                $contrasenha =$request->get('id');
+                 $nombreAbogado =$request->get('nombre');
+                $apellidoAbogado =$request->get('apellido');
+                $correoUsuario =$request->get('email');
+               
+              
+                
+            } else {*/
+                $nombreAbogado = $frm->txtnombre;
+                $apellidoAbogado = $frm->txtapellido;
+                $correoUsuario = $frm->correoEmpresa;
+                $contrasenha = $frm->contrasenha;
+           /* }
+            
+              $user= $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($correoUsuario);
+              var_dump(empty($user));
+        exit();*/
+   
+            
 
 
             $nombreAbogado = $frm->txtnombre;
@@ -504,6 +525,7 @@ class CtlEmpresaController extends Controller {
             return new Response(json_encode($data));
         }
     }
+    
 
     /**
      * @Route("/validar_correo/", name="validar_correo", options={"expose"=true})
@@ -1600,7 +1622,7 @@ class CtlEmpresaController extends Controller {
                 if ($lista) {
                     //Listar los empleados de la empresa
                     $sqlEmpEmp = "SELECT  emp.ctl_empresa_id, per.id as idPersona, per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, "
-                    . " per.telefono_fijo as telefonoFijo, per.telefono_movil as telefonoMovil, per.titulo_profesional AS tituloProfesional, "
+                            . " per.telefono_fijo as telefonoFijo, per.telefono_movil as telefonoMovil, per.titulo_profesional AS tituloProfesional, "
                             . " per.id, fot.src, sw.nombre AS sitioWeb, per.verificado AS verificado, exp.puesto AS puesto, "
                             . " pesp.ctl_especialidad_id,GROUP_CONCAT(distinct (esp.nombre_especialidad)) AS especialida "
                             . " FROM marvinvi_abg.abg_foto fot "

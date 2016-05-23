@@ -183,14 +183,16 @@ class AbgPanelCentroRespuestaController extends Controller {
 /**
      * Pregunta y respuesta.
      *
-     * @Route("/pregunta_resp", name="pregunta_resp", options={"expose"=true})
-     * @Method({"GET", "POST"})
+     * @Route("/pregunta_resp_abg", name="pregunta_resp_abg", options={"expose"=true})
+     * @Method({"GET"})
      * 
      */
-    public function PreguntaRespAction() {
+    public function PreguntaRespAbgAction() {
         try {
             $em = $this->getDoctrine()->getManager();
                         $request = $this->getRequest();
+                        $user= $this->container->get('security.context')->getToken()->getUser()->getId();
+                      
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             
                $dqlfoto = "SELECT fot.src as src "
@@ -198,13 +200,14 @@ class AbgPanelCentroRespuestaController extends Controller {
             $foto= $em->createQuery($dqlfoto)->getArrayResult();
             $data['foto']=$foto[0]['src'];
 
+            
             $sql = "SELECT preg.id as idpreg, preg.pregunta,  preg.fechapregunta AS fecha, preg.respuesta AS respuesta "
                     . " FROM abg_pregunta preg "
                     . " JOIN ctl_especialidad esp "
-                    . " ON esp.id=preg.ctl_especialidad "
+                    . " ON esp.id=preg.ctl_especialidad AND preg.ctl_usuario_id=" . $user
                     . " JOIN abg_persona_especialidad pe "
-                    . " ON pe.ctl_especialidad_id=esp.id AND preg.id=".$request->get('id')." AND pe.abg_persona_id=" . $idPersona
-                    . " WHERE preg.estado=0"
+                    . " ON pe.ctl_especialidad_id=esp.id "
+                    . " WHERE preg.estado=1"
                     . " ORDER BY  preg.fechapregunta DESC ";
             $em = $this->getDoctrine()->getManager();
             $stmt = $em->getConnection()->prepare($sql);
