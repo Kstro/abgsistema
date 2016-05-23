@@ -1848,11 +1848,15 @@ class CtlEmpresaController extends Controller {
         $prom = array();
 
         $dql = "Select fot.idargFoto, fot.src From DGAbgSistemaBundle:AbgFoto fot Join fot.promocion pro"
-                . " WHERE pro.posicion = :posicion ORDER BY fot.idargFoto DESC ";
+                . " WHERE pro.posicion = :posicion  and pro.estado = 1 and fot.fechaExpiracion > :fecha"
+                . " ORDER BY fot.idargFoto DESC ";
 
+        $fecha = new \DateTime ('now');
+        
         $promotions = $em->createQuery($dql)
                           ->setParameter('posicion',$posicion)
-                          ->getResult();  
+                          ->setParameter('fecha', $fecha)
+                          ->getResult();   
         
         if(!empty($promotions)){
             $max = count($promotions);

@@ -128,7 +128,12 @@ class AbgFacturacionController extends Controller {
         }
         
         if($fechaini != "" && $fechafin != ""){
-            $sql.="and fac.fecha_pago >= '$fechaini' and fac.fecha_pago <= '$fechafin' ";
+            $inicio = explode("-", $fechaini);
+            $fin = explode("-", $fechafin);
+            $fi = $inicio[2]."-".$inicio[1]."-".$inicio[0];
+            $ff = $fin[2]."-".$fin[1]."-".$fin[0];
+            
+            $sql.="and fac.fecha_pago >= '$fi' and fac.fecha_pago <= '$ff' ";
         }
 
         $sql.= "ORDER BY fac.fecha_pago DESC "
@@ -169,7 +174,12 @@ class AbgFacturacionController extends Controller {
         }
         
         if($fechaini != "" && $fechafin != ""){
-            $sql2.="and fac.fecha_pago >= '$fechaini' and fac.fecha_pago <= '$fechafin' ";
+            $inicio = explode("-", $fechaini);
+            $fin = explode("-", $fechafin);
+            $fi = $inicio[2]."-".$inicio[1]."-".$inicio[0];
+            $ff = $fin[2]."-".$fin[1]."-".$fin[0];
+            
+            $sql2.="and fac.fecha_pago >= '$fi' and fac.fecha_pago <= '$ff' ";
         }
 
         $rsm2->addScalarResult('facturacion','facturacion');

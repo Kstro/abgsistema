@@ -35,7 +35,9 @@
                             <button class="btn btn-default pull-right">Regresar</button>
                         </a>
                         {% if admPromocione.servicio == 'Espacio publicitario' %}
-                            <button id="cancelar" class="btn btn-default pull-right" style="margin-right: 2px;">Cancelar suscripción</button>
+                            {% if admPromocione.ctlPromociones.estado == 1 %}
+                                <button id="cancelar" class="btn btn-default pull-right" style="margin-right: 2px;">Cancelar suscripción</button>
+                            {% endif %}    
                         {% endif %}    
                     </div>
                     {#<ul>
@@ -405,6 +407,8 @@
                                 url: Routing.generate('admin_cancelar_anuncio_publicitario'),
                                 success: function (response)
                                 {
+                                    $('#cancelar').hide();
+                                    
                                     Lobibox.notify("success", {
                                         size: 'mini',
                                         msg: 'Se ha cancelado suscripcion con exito'
