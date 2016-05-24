@@ -8,6 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use DGAbgSistemaBundle\Entity\AbgFacturacion;
 use Symfony\Component\HttpFoundation\Response;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 use DGAbgSistemaBundle\Form\AbgFacturacionType;
 
 /**
@@ -78,77 +80,122 @@ class AbgFacturacionController extends Controller {
     /**
      * 
      *
-     * @Route("/facturacion/data", name="admin_facturacion_data")
+     * @Route("/facturacion/data", name="admin_facturacion_data", options={"expose"=true})
      */
     public function dataFacturacionAction(Request $request)
     {
-        
-        $entity = new AbgFacturacion();
-       
+        $em = $this->getDoctrine()->getEntityManager();
         $start = $request->query->get('start');
         $draw = $request->query->get('draw');
         $longitud = $request->query->get('length');
         $busqueda = $request->query->get('search');
         
-        $em = $this->getDoctrine()->getEntityManager();
-        $facturacionTotal = $em->getRepository('DGAbgSistemaBundle:AbgFacturacion')->findAll();
+        $abogado = $request->query->get('param1');
+        $servicio = $request->query->get('param2');
+        $fechaini = $request->query->get('param3');
+        $fechafin = $request->query->get('param4');
         
+//        var_dump($abogado);
+//        var_dump($servicio);
+//        var_dump($fechaini);
+//        var_dump($fechafin);
+        
+        $facturacionTotal = $em->getRepository('DGAbgSistemaBundle:AbgFacturacion')->findAll();
         $facturacion['draw']=$draw++;  
-        $facturacion['recordsTotal'] = count($facturacionTotal);
-        $facturacion['recordsFiltered']= count($facturacionTotal);
         $facturacion['data']= array();
         
         $busqueda['value'] = str_replace(' ', '%', $busqueda['value']);
-        if($busqueda['value']!=''){
-                    $dql = "Select fac.id, fac.monto, abo.codigo, fac.plazo, tip.tipoPago, fac.servicio, CONCAT('<a class=\"link_facturacion\" id=\"',fac.id,'\">Ver detalles</a>') as link"
-                            . " From DGAbgSistemaBundle:AbgFacturacion fac"
-                            . " Join fac.abgPersona abo"
-                            . " Join fac.abgTipoPago tip";
+        $rsm = new ResultSetMapping();
 
-                    $facturacion['data'] = $em->createQuery($dql)
-                                              ->setFirstResult($start)
-                                              ->setMaxResults($longitud)
-                                              ->getResult();  
-            
-            
-//                    $dql = "SELECT CONCAT('<a class=\"link_expediente\" id=\"',exp.numero,'\">',exp.numero,'</a>') as expediente, pac.id as id,per.nombres,per.apellidos,pac.dui,per.telefono,per.email,pac.lugarTrabajo,DATE_FORMAT(pac.fechaNacimiento,'%d-%m-%Y') as fechaNacimiento, '<a ><i style=\"cursor:pointer;\"  class=\"infoPaciente fa fa-info-circle\"></i></a>' as link FROM DGPlusbelleBundle:Paciente pac "
-//                        . "JOIN pac.persona per JOIN pac.expediente exp "
-//                        . "WHERE CONCAT(upper(per.nombres),upper(per.apellidos)) LIKE upper(:busqueda) "
-//                        . "ORDER BY per.nombres ASC ";
-//                    $facturacion['data'] = $em->createQuery($dql)
-//                            ->setParameters(array('busqueda'=>"%".$busqueda['value']."%"))
-//                            ->getResult();
-                    
-                    $facturacion['recordsFiltered']= count($facturacion['data']);
-                    
-//                    $dql = "SELECT CONCAT('<a class=\"link_expediente\" id=\"',exp.numero,'\">',exp.numero,'</a>') as expediente, pac.id as id,per.nombres,per.apellidos,pac.dui,per.telefono,per.email,pac.lugarTrabajo,DATE_FORMAT(pac.fechaNacimiento,'%d-%m-%Y') as fechaNacimiento, CONCAT('<a ><i id=\"',pac.id,'\" style=\"cursor:pointer;\"  class=\"infoPaciente fa fa-info-circle\"></i></a>') as link FROM DGPlusbelleBundle:Paciente pac "
-//                        . "JOIN pac.persona per JOIN pac.expediente exp "
-//                        . "WHERE CONCAT(upper(per.nombres),upper(per.apellidos)) LIKE upper(:busqueda) "
-//                        . "ORDER BY per.nombres ASC ";
-//                    $facturacion['data'] = $em->createQuery($dql)
-//                            ->setParameters(array('busqueda'=>"%".$busqueda['value']."%"))
-//                            ->setFirstResult($start)
-//                            ->setMaxResults($longitud)
-//                            ->getResult();
+        $sql = "SELECT fac.id as facturacion, "
+                . "concat_ws(fac.monto, '<div class=\"text-right\">', '</div>') as monto, "
+                . "concat_ws(DATE_FORMAT(fac.fecha_pago,'%d-%m-%Y'), '<div class=\"text-center\">', '</div>') as fecha_pago, "
+                . "concat_ws(abo.codigo, '<div class=\"text-center\">', '</div>') as codigo, "
+                . "concat_ws(fac.plazo, '<div class=\"text-center\">', '</div>') as plazo, "
+                . "concat_ws(tip.tipo_pago, '<div class=\"text-center\">', '</div>') as tipo_pago, "
+                . "concat_ws(fac.servicio, '<div class=\"text-center\">', '</div>') as servicio, "
+                . "concat_ws(fac.id, '<a class=\"link_facturacion\" id=\"', '\">Ver detalles</a>') as link "
+                . "FROM abg_facturacion fac inner join abg_persona abo on fac.abg_persona_id = abo.id "
+                . "inner join ctl_tipo_pago tip on fac.abg_tipo_pago_id = tip.id "
+                . "WHERE 1 = 1 ";
+
+        if($abogado != 'null'){
+            $sql.="and fac.abg_persona_id = '$abogado' ";
         }
-        else{
-//            $dql = "SELECT CONCAT('<a class=\"link_expediente\" id=\"',exp.numero,'\">',exp.numero,'</a>') as expediente,pac.id as id,per.nombres,per.apellidos,pac.dui,per.telefono,per.email,pac.lugarTrabajo,DATE_FORMAT(pac.fechaNacimiento,'%d-%m-%Y') as fechaNacimiento, CONCAT('<a ><i id=\"',pac.id,'\" style=\"cursor:pointer;\"  class=\"infoPaciente fa fa-info-circle\"></i></a>') as link FROM DGPlusbelleBundle:Paciente pac "
-//                . "JOIN pac.persona per JOIN pac.expediente exp ORDER BY per.nombres ASC ";
-//            $facturacion['data'] = $em->createQuery($dql)
-//                    ->setFirstResult($start)
-//                    ->setMaxResults($longitud)
-//                    ->getResult();
+        
+        if($servicio != 'null'){
+            $sql.="and fac.servicio = '$servicio' ";
+        }
+        
+        if($fechaini != "" && $fechafin != ""){
+            $inicio = explode("-", $fechaini);
+            $fin = explode("-", $fechafin);
+            $fi = $inicio[2]."-".$inicio[1]."-".$inicio[0];
+            $ff = $fin[2]."-".$fin[1]."-".$fin[0];
             
-            $dql = "Select fac.id, fac.monto, abo.codigo, fac.plazo, tip.tipoPago, fac.servicio, CONCAT('<a class=\"link_facturacion\" id=\"',fac.id,'\">Ver detalles</a>') as link"
-                    . " From DGAbgSistemaBundle:AbgFacturacion fac"
-                    . " Join fac.abgPersona abo"
-                    . " Join fac.abgTipoPago tip";
+            $sql.="and fac.fecha_pago >= '$fi' and fac.fecha_pago <= '$ff' ";
+        }
 
-            $facturacion['data'] = $em->createQuery($dql)
-                                      ->setFirstResult($start)
-                                      ->setMaxResults($longitud)
-                                      ->getResult();                                          
-        } 
+        $sql.= "ORDER BY fac.fecha_pago DESC "
+                . "LIMIT $start, $longitud ";
+        //echo $sql;
+        $rsm->addScalarResult('facturacion','facturacion');
+        $rsm->addScalarResult('monto','monto');
+        $rsm->addScalarResult('fecha_pago','fecha_pago');
+        $rsm->addScalarResult('codigo','codigo');
+        $rsm->addScalarResult('plazo','plazo');
+        $rsm->addScalarResult('tipo_pago','tipo_pago');
+        $rsm->addScalarResult('servicio','servicio');
+        $rsm->addScalarResult('link','link');
+
+        $facturacion['data'] = $em->createNativeQuery($sql, $rsm)
+                                  ->getResult();
+        
+        $rsm2 = new ResultSetMapping();
+
+        $sql2 = "SELECT fac.id as facturacion, "
+                . "concat_ws(fac.monto, '<div class=\"text-right\">', '</div>') as monto, "
+                . "concat_ws(DATE_FORMAT(fac.fecha_pago,'%d-%m-%Y'), '<div class=\"text-center\">', '</div>') as fecha_pago, "
+                . "concat_ws(abo.codigo, '<div class=\"text-center\">', '</div>') as codigo, "
+                . "concat_ws(fac.plazo, '<div class=\"text-center\">', '</div>') as plazo, "
+                . "concat_ws(tip.tipo_pago, '<div class=\"text-center\">', '</div>') as tipo_pago, "
+                . "concat_ws(fac.servicio, '<div class=\"text-center\">', '</div>') as servicio, "
+                . "concat_ws(fac.id, '<a class=\"link_facturacion\" id=\"', '\">Ver detalles</a>') as link "
+                . "FROM abg_facturacion fac inner join abg_persona abo on fac.abg_persona_id = abo.id "
+                . "inner join ctl_tipo_pago tip on fac.abg_tipo_pago_id = tip.id "
+                . "WHERE 1 = 1 ";
+
+        if($abogado != 'null'){
+            $sql2.="and fac.abg_persona_id = '$abogado' ";
+        }
+        
+        if($servicio != 'null'){
+            $sql2.="and fac.servicio = '$servicio' ";
+        }
+        
+        if($fechaini != "" && $fechafin != ""){
+            $inicio = explode("-", $fechaini);
+            $fin = explode("-", $fechafin);
+            $fi = $inicio[2]."-".$inicio[1]."-".$inicio[0];
+            $ff = $fin[2]."-".$fin[1]."-".$fin[0];
+            
+            $sql2.="and fac.fecha_pago >= '$fi' and fac.fecha_pago <= '$ff' ";
+        }
+
+        $rsm2->addScalarResult('facturacion','facturacion');
+        $rsm2->addScalarResult('monto','monto');
+        $rsm2->addScalarResult('fecha_pago','fecha_pago');
+        $rsm2->addScalarResult('codigo','codigo');
+        $rsm2->addScalarResult('plazo','plazo');
+        $rsm2->addScalarResult('tipo_pago','tipo_pago');
+        $rsm2->addScalarResult('servicio','servicio');
+        $rsm2->addScalarResult('link','link');
+
+        $facturaciototal = $em->createNativeQuery($sql2, $rsm2)
+                                  ->getResult();
+        
+        $facturacion['recordsTotal'] = count($facturaciototal);
+        $facturacion['recordsFiltered']= count($facturaciototal);
         
         return new Response(json_encode($facturacion));
     }
