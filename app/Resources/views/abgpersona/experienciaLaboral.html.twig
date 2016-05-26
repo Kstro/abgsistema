@@ -130,7 +130,7 @@
         {% for datos in Experiencia %}
 
             <input type="hidden" name="hidExp" id="hidExp" value="{{datos.id}}">
-
+            <input type="hidden" name="hidEmp" id="hidEmp" value="{{datos.idEmp}}">
             <div class="form-group">
 
                 <label for="nombreEmpleado">Nombre de la Empresa</label>
@@ -208,6 +208,7 @@
                     {%else%}
 
                         <input type="hidden" name="hidExp" id="hidExp" value="">
+                         <input type="hidden" name="hidEmp" id="hidEmp" value="">
                         <div class="form-group" >
                             <label for="nombreEmpleado">Nombre de la Empresa</label>
                             <div  class="form-group " id="cambioEmpresa">
