@@ -49,7 +49,7 @@
                                                 <div class="col-sm-4"  >
                                                     <label>Ingrese id de cliente:</label>
                                                     <select id="busqueda-abogado" name="Sabogado" class="form-control input-sm " data-rule-required="true" style=" width: 100%;">
-                                                        <option value="0" >Seleccione un cliente</option>
+                                                        <option value="0" disabled selected>Seleccione un abogado ...</option>
                                                     </select> 
 
                                                 </div>
@@ -97,7 +97,7 @@
                                         <thead>
                                             <tr>
                                                 <th class="text-center">Id de cliente</th>
-                                                {#<th class="text-center">Fecha de transacción</th>#}
+                                                <th class="text-center">Fecha de transacción</th>
                                                 <th class="text-center">Tipo de servicio</th>
                                                 <th class="text-center">Tipo de pago</th>
                                                 <th class="text-center">Monto ($)</th>
@@ -129,6 +129,13 @@
                             <div class="chart tab-pane" id="registros" style=" padding: 15px;" >
                                 <div style="margin-top: 30px; margin-left: 10px;">
                                     <form id="formulario-facturacion" method="POST" enctype="multipart/form-data">
+                                        <div class="row" style="margin-top: 10px; margin-right: 10px; display: none;" id="cont-error">
+                                            <div class="alert alert-danger" role="alert">
+                                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                                <span class="sr-only">Error:</span>
+                                                <span id="error"></span>
+                                            </div>
+                                        </div>
                                         <div class="row" style="margin-top: 30px;">
                                             <div class="col-md-5">
                                                 {# Area en donde se selecciona  el abogado que esta solicitando el espacio publicitario #}  
@@ -427,53 +434,89 @@
                 var descripcion = $('#espaciop_descripcion').val();
                 var tiposervicio = $('#espaciop_tiposervicio').val();
                 var referencia = $('#espaciop_referencia').val();
+                var archivo = $('#file-input').val();
                 var data = new FormData(document.getElementById("formulario-facturacion"));
+                var error = document.getElementById('cont-error');
                 
-                $.ajax({
-                    type: 'POST',
-                    async: false,
-                    dataType: 'json',
-                    data: data,
-                    url: Routing.generate('admin_registro_anuncio_publicitario'),
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    success: function (response)
-                    {
-                        var draw = '';
-                        var editVenta = document.getElementById('modificar-venta');
-                        
-                        editVenta.style.display = 'block';
-                        $('#registrar-venta').hide();
-                        
-                        if(tiposervicio == 'Espacio publicitario'){
-                            console.log(response.imagen);
-                            {#if(posicion == 2 || posicion == 3){
-                                $('#marco-imagen').html('<img src=\"{{ asset('Photos/publicidad/')}}'+response.imagen+'\" style=\"width: 100%; max-width: 100%;margin-bottom: 5px;  border: 1px solid #DCDCDC;\" class=\"img-responsive\" alt=\"Imagen responsive\">');
-                            } else {#}
-                                $('#marco-imagen').html('<img src=\"{{ asset('Photos/publicidad/')}}'+response.imagen+'\" style=\"width: 100%; max-width: 100%;margin-bottom: 5px;  border: 1px solid #DCDCDC;\" class=\"img-responsive\" alt=\"Imagen responsive\">');
-                            {# }#}
+                if(abogado != null){
+                    if(monto.length > 0){
+                        if(tiposervicio != null){
+                            if(plazo.length > 0){
+                                if(tipopago != null){
+                                    if((tiposervicio == 'Espacio publicitario' && posicion != null) || tiposervicio != 'Espacio publicitario'){
+                                        error.style.display = 'none';
+                                    
+                                        $.ajax({
+                                            type: 'POST',
+                                            async: false,
+                                            dataType: 'json',
+                                            data: data,
+                                            url: Routing.generate('admin_registro_anuncio_publicitario'),
+                                            cache: false,
+                                            contentType: false,
+                                            processData: false,
+                                            success: function (response)
+                                            {
+                                                table.ajax.reload();
+                                                $('#espaciop_abogado').val('').change();
+                                                $('#espaciop_monto').val('');
+                                                $('#espaciop_tipopago').val('').change();
+                                                $('#espaciop_posicion').val('').change();
+                                                $('#espaciop_plazo').val('');
+                                                $('#espaciop_descuento').val('');
+                                                $('#espaciop_descripcion').val('');
+                                                $('#espaciop_tiposervicio').val('').change();
+                                                $('#espaciop_referencia').val('');
+                                                
+                                                {#if(tiposervicio == 'Espacio publicitario'){
+                                                    $('#marco-imagen').html('<img src=\"{{ asset('Photos/Perfil/')}}'+response.imagen+'\" style=\"width: 100%; max-width: 100%;margin-bottom: 5px;  border: 1px solid #DCDCDC;\" class=\"img-responsive\" alt=\"Imagen responsive\">');
+
+                                                }#}
+
+                                                Lobibox.notify("success", {
+                                                    size: 'mini',
+                                                    msg: 'Datos registrados con exito'
+                                                });
+
+                                                return false;
+                                            },
+                                            error: function (xhr, status){
+                                                Lobibox.notify("danger", {
+                                                    size: 'mini',
+                                                    msg: 'Lo sentimos, ocurrio un error'
+                                                });
+
+                                                return false;
+                                            }
+                                        });
+                                        } else {
+                                            $('#error').html('Debe seleccionar una ubicacion de anuncio.');
+                                            error.style.display = 'block';
+                                        } 
+                                    } else {
+                                        $('#error').html('Debe seleccionar un tipo de pago.');
+                                        error.style.display = 'block';
+                                    } 
+                                } else {
+                                    $('#error').html('Debe ingresar el numero de dias.');
+                                    error.style.display = 'block';
+                                }
+                            } else {
+                                $('#error').html('Debe seleccionar un tipo de servicio.');
+                                error.style.display = 'block';
+                            }   
+                        } else {
+                            $('#error').html('Debe ingresar el monto.');
+                            error.style.display = 'block';
                         }
-                        
-                        Lobibox.notify("success", {
-                            size: 'mini',
-                            msg: 'Datos registrados con exito'
-                        });
-                        
-                        return false;
-                    },
-                    error: function (xhr, status){
-                        Lobibox.notify("danger", {
-                            size: 'mini',
-                            msg: 'Lo sentimos, ocurrio un error'
-                        });
-                        
-                        return false;
-                    }
-                });
-                
+                } else {
+                    $('#error').html('Debe seleccionar un abogado.');
+                    error.style.display = 'block';
+                }
                 return false;
             });
+            
+            var url = Routing.generate('admin_facturacion_data')+"?param1="+$('#busqueda-abogado').val()+"&param2="+$('#busqueda_tiposervicio').val()+"&param3="+$('#txtFechaInicio').val()+"&param4="+$('#txtFechaFin').val();
             
             var table = $('.listados').DataTable({ 
                     //searching:true,
@@ -482,14 +525,15 @@
                     "processing": false,
                     "serverSide": true,
                     "ajax": {
-                        "url": '{{path('admin_facturacion_data')}}',
+                        "url": url,
+                        {#"url": '{{path('admin_facturacion_data')}}',#}
                         "type": 'GET'
                     },
                     "columns": [
                         { "data": "codigo" },                       
-//                        { "data": "fechaPago" },
+                        { "data": "fecha_pago" },
                         { "data": "servicio" },
-                        { "data": "tipoPago" },
+                        { "data": "tipo_pago" },
                         { "data": "monto" },
                         { "data": "plazo" },
                         { "data": "link" }
@@ -499,8 +543,8 @@
                            { "orderable": false, "targets": 2 },
                            { "orderable": false, "targets": 3 },
                            { "orderable": false, "targets": 4 },
-                           { "orderable": false, "targets": 5 }
-                           //{ "orderable": false, "targets": 6 }
+                           { "orderable": false, "targets": 5 },
+                           { "orderable": false, "targets": 6 }
                            
                            
                            //{ "orderData": [ 2, 3, 4 ], "targets": 2 }
@@ -524,8 +568,17 @@
                 var busquedaAbogado = $('#busqueda-abogado').val();
                 var busquedaFInicio = $('#txtFechaInicio').val();
                 var busquedaFFin = $('#txtFechaFin').val();
+                var servicio = $('#busqueda_tiposervicio').val();
+                
+                console.log(busquedaAbogado);
+                console.log(busquedaFInicio);
+                console.log(busquedaFFin);
+                console.log(servicio);
+                
+                url = Routing.generate('admin_facturacion_data')+"?param1="+$('#busqueda-abogado').val()+"&param2="+$('#busqueda_tiposervicio').val()+"&param3="+$('#txtFechaInicio').val()+"&param4="+$('#txtFechaFin').val();
                 
                 
+                table.ajax.url(url).load();
                 
                 
             });
