@@ -38,8 +38,8 @@ class AbgPanelCentroRespuestaController extends Controller {
 
         $username = $this->container->get('security.context')->getToken()->getUser();
         $personaId = $username->getRhPersona();
-        $abgfoto = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->find($personaId);
-
+        $abgfoto = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findOneBy(array('abgPersona'=>$personaId));
+        
         $srcfoto = $abgfoto->getSrc();
 
 

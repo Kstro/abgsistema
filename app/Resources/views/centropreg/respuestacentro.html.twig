@@ -1,4 +1,4 @@
-{% extends ':Layout:layout2.html.twig' %}
+{% extends ':Layout:layout3.html.twig' %}
 
 {% block descripcion_y_acciones %}
 
@@ -12,6 +12,9 @@
 
 {% endblock %}
 {% block js_extend %}
+    <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
+    
    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

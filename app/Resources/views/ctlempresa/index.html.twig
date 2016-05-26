@@ -15,7 +15,6 @@
 
 {% endblock %}
 {% block js_extend %}
-
             <script src = "{{ asset('Resources/js/tipoempresa/tipoempresa.js') }}"  type = "text/javascript" ></script>
             <script src = "{{ asset('Resources/js/empresa/script.js') }}"  type = "text/javascript" ></script>
             <script src = "{{ asset('Resources/js/empresa/function.js') }}"  type = "text/javascript" ></script>    
@@ -23,71 +22,59 @@
             <script src = "{{ asset('Resources/vContra/strength.js') }}"  type = "text/javascript" ></script>
             <script src = "{{ asset('Resources/vContra/js.js') }}"  type = "text/javascript" ></script> 
                        
-            
-           {# <link rel="stylesheet" media="screen" type="text/css" href="{{ asset('Resources/colorpicker/css/colorpicker.css') }}" />
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+            <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+            <link rel="stylesheet" href="{{asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css')}}">
+            <link rel="stylesheet" href="{{asset('Resources/AdminLTE-2.3.0/plugins/iCheck/square/blue.css')}}">
+           
+            {# <link rel="stylesheet" media="screen" type="text/css" href="{{ asset('Resources/colorpicker/css/colorpicker.css') }}" />
             <script type="text/javascript" src="{{ asset('Resources/colorpicker/js/colorpicker.js') }}"></script>#}
             
-           
-      
-  {% endblock %} 
-
-        {% block navegacion_Y_body %}
-  
-        {% block navegacion %}
-            
-        {% endblock %}
-        {% block cuerpo %}
-    <div class="row">
-        <h1 style="color: black;">Registro de abogados</h1>
-             
-    <form id="frmEmpresaUsuarioPersona" role="form" enctype="multipart/form-data" method="POST">
-    
-        <div class="col-md-12">
-            <div class="box-header with-border">
-              <h3 class="box-title text-success">Ingreso de datos generales</h3>
+ {% endblock %} 
+ {% block navegacion_Y_body %}
+    {% block navegacion %}{% endblock %}
+    {% block cuerpo %}
+        <div class="row">
+            <div class="col-md-12">
+                <h2 style="color: black;" class="text-center">Registro de abogados</h2>
             </div>
-        </div>
-        <div class="clearfix"></div>
-    <div class="col-md-5">
-          <!-- general form elements -->
-            <div class="box box-primary">
-            
-        
-
-            
-                                        <div class="form-group">
-                                             <label for="nombreEmpleado">Nombre</label>
-                                             <input type="text" required class="form-control" id="txtnombre" name="txtnombre" placeholder="Nombres">
-                                         </div>
-                                         <div class="form-group">
-                                             <label for="ejemplo_password_1">Apellido</label>
-                                             <input type="text" required class="form-control"  id="txtapellido" name="txtapellido" 
-                                                    placeholder="Apellidos">
-                                         </div>
-
-                <div class="form-group">
-                     <label for="correoEmpresa">Correo electronico :</label>
-                     <input type="email" class="form-control" id="correoEmpresa" name="correoEmpresa" required placeholder="ejemplo@ejemplo.com">
+            <form id="frmEmpresaUsuarioPersona" role="form" enctype="multipart/form-data" method="POST">
+                <div class="clearfix"></div>
+                <div class="col-md-12" style="margin-top: -35px;">
+                      <!-- general form elements -->
+                        <div class="login-box">
+                            <div class="login-box-body" style="box-shadow: 3px 3px 2px #888888;">
+                                <p class="login-box-msg text-success" style="font-size: 1.17em;">Ingreso de datos generales</p>
+                                <div class="form-group has-feedback">
+                                     <label for="nombreEmpleado">Nombres</label>
+                                     <input type="text" required class="form-control" id="txtnombre" name="txtnombre" placeholder="Nombres">
+                                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                 </div>
+                                 <div class="form-group has-feedback">
+                                     <label for="ejemplo_password_1">Apellidos</label>
+                                     <input type="text" required class="form-control"  id="txtapellido" name="txtapellido" placeholder="Apellidos">
+                                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                </div>
+                                <div class="form-group has-feedback">
+                                     <label for="correoEmpresa">Correo electronico :</label>
+                                     <input type="email" class="form-control" id="correoEmpresa" name="correoEmpresa" required placeholder="ejemplo@ejemplo.com">
+                                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                                </div>
+                                <div class="form-group has-feedback">
+                                     <label for="correoEmpresa">Contraseña:</label>
+                                     <input type="password" required class="form-control" id="contrasenha" name="contrasenha" placeholder="Contraseña">
+                                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-flat" >Registrarme</button>
+                                    <a href="{{ path('abogado_login') }}" class="button">
+                                        <button class="btn btn-social btn-facebook btn-flat" style="background-color: #3a5795; color: #FFFFFF"><i class="fa fa-facebook"></i> Conectar con Facebook</button>
+                                    </a>
+                                </div>
+                            </div>
+                      </div>
                 </div>
-                <div class="form-group">
-                     <label for="correoEmpresa">Contraseña:</label>
-                     <input type="password" required class="form-control" id="contrasenha" name="contrasenha">
-                </div>
-                
-                
-                <div class="form-group">
-                 <button class="btn btn-primary" >Registrarme</button>
-                </div>
-                
-
-           
-          </div>
-          
-    </div>
-        
-   </form>  
-            
-
-    </div> 
-{% endblock %}
+           </form>  
+        </div> 
+    {% endblock %}
 {% endblock %}

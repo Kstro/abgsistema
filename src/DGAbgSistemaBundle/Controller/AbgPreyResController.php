@@ -35,16 +35,22 @@ class AbgPreyResController extends Controller{
      * Esta funcion recibe el contenido de la pregunta en la interfaz inicial
      *
      * @Route("/preg_det", name="preg_deta", options={"expose"=true})
-     * @Method("POST")
+     * @Method("GET")
      * @Template()
      */
     public function preguntaDetalleAction(Request $request) {
                
         $parameters = $request->request->all();
-        $pregunta =  $parameters['pregunta'];
+        //$pregunta =  $parameters['pregunta'];
+        
+        $prom = $this->busquedaPublicidad(1);
+        $prom2 = $this->busquedaPublicidad(2);
+        $prom3 = $this->busquedaPublicidad(3);
+        $prom4 = $this->busquedaPublicidad(4);
+        $pregunta = '';
         $em = $this->getDoctrine()->getManager();
         $ctlespecialidad = $em->getRepository('DGAbgSistemaBundle:CtlEspecialidad')->findAll();
-        return $this->render('preyres/pregunta_detalle.html.twig', array('pregunta'=>$pregunta, 'ctlEspecialidad'=>$ctlespecialidad));
+        return $this->render('preyres/pregunta_detalle.html.twig', array('pregunta'=>$pregunta, 'prom1'=> $prom, 'prom2'=> $prom2, 'prom3'=> $prom3, 'prom4'=> $prom4, 'ctlEspecialidad'=>$ctlespecialidad));
     }
     
     /**
@@ -145,6 +151,51 @@ class AbgPreyResController extends Controller{
 //                                        </table>
 //                                    ");
         return $this->render('enviopregsuccess/success.html.twig');
+    }
+    
+    private function busquedaPublicidad($posicion) {
+       $em = $this->getDoctrine()->getManager();
+
+        $i = 0;
+        $recuperados = array();
+        $prom = array();
+
+        $dql = "Select fot.idargFoto, fot.src From DGAbgSistemaBundle:AbgFoto fot Join fot.promocion pro"
+                . " WHERE pro.posicion = :posicion  and pro.estado = 1 and fot.fechaExpiracion > :fecha"
+                . " ORDER BY fot.idargFoto DESC ";
+
+        $fecha = new \DateTime ('now');
+        
+        $promotions = $em->createQuery($dql)
+                          ->setParameter('posicion',$posicion)
+                          ->setParameter('fecha', $fecha)
+                          ->getResult();  
+        
+        if(!empty($promotions)){
+            $max = count($promotions);
+
+            if($max > 20){
+                while ($i < 20){
+                    $random = rand(1, ($max - 1));
+
+                    if (!in_array($random, $recuperados)) {
+                        $recuperados[$i] = $random;
+                        $prom[$i]['idargFoto'] = $promotions[$random]['idargFoto'];
+                        $prom[$i]['src'] = $promotions[$random]['src'];
+                        $i++;
+                    }    
+                }
+            } else {
+                foreach ($promotions as $key => $value) {
+                    $prom[$key]['idargFoto'] = $value['idargFoto'];
+                    $prom[$key]['src'] = $value['src'];
+                }
+            }
+        } else {
+            $prom = NULL;
+        }
+        
+        return $prom; 
     }
 
 }

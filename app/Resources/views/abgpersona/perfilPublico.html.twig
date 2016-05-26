@@ -109,7 +109,7 @@
                 console.log(contador);
                 console.log(lon);
             } else {
-                document.getElementById("fotocambia").src = '/Resources/src/img/banner1.png';
+                document.getElementById("fotocambia").src = '{{asset('Resources/src/img/banner1.png')}}';
             }
             
             
@@ -121,7 +121,7 @@
                 document.getElementById("fotocambia2").src = '../' + imagenes2[contador2];
                 contador2++;
              } else {
-                document.getElementById("fotocambia2").src = '/Resources/src/img/banner2.png';
+                document.getElementById("fotocambia2").src = '{{asset('Resources/src/img/banner.png')}}';
             }
             
             if(contador3 >= lon3){
@@ -132,7 +132,7 @@
                 document.getElementById("fotocambia3").src = '../' + imagenes3[contador3];
                 contador3++;
             } else {
-                document.getElementById("fotocambia3").src = '/Resources/src/img/banner2.png';
+                document.getElementById("fotocambia3").src = '{{asset('Resources/src/img/banner.png')}}';
             }
             
             {#if(contador4 >= lon4){
@@ -143,7 +143,7 @@
                 document.getElementById("fotocambia4").src = '../' + imagenes4[contador4];
                 contador4++;
             } else {
-                document.getElementById("fotocambia4").src = '/Resources/src/img/banner1.png';
+                document.getElementById("fotocambia4").src = '{{asset('Resources/src/img/banner1.png')}}';
             }#}
         }
     </script> 
@@ -157,7 +157,12 @@
                 <div class="box box-widget">
                     <div class="box-body " style=" padding: 5px;"> 
                         <div class="pos1">
-                            <img src="{{asset('')}}{{ prom1[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia">
+                            {% if prom1 is null%}
+                                <img src="{{asset('Resources/src/img/banner1.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia">
+                            {% else %}
+                                 <img src="{{asset('')}}{{ prom1[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia">
+                            {% endif %}
+                            
                         </div>
                     </div>
                 </div>
@@ -616,10 +621,20 @@
 
         <div class="col-md-3" >
             <div class="bloque-main pos2" style="padding: 5px;">
-                <img src="{{asset('')}}{{ prom2[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
+                {% if prom2 is null%}
+                    <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
+                {% else %}
+                     <img src="{{asset('')}}{{ prom2[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
+                {% endif %}
+                
             </div>
             <div class="bloque-nexo pos3" style="padding: 5px;">
-                <img src="{{asset('')}}{{ prom3[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia3">
+                {% if prom3 is null%}
+                    <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia3">
+                {% else %}
+                     <img src="{{asset('')}}{{ prom3[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia3">
+                {% endif %}
+                
             </div>
                 {#<div class="box box-widget">
                     <div class="box-body" style="padding:5px;">
