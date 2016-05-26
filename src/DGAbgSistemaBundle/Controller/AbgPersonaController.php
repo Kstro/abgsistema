@@ -2,25 +2,27 @@
 
 namespace DGAbgSistemaBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use DGAbgSistemaBundle\Entity\AbgPersona;
-use DGAbgSistemaBundle\Entity\CtlUsuario;
-use DGAbgSistemaBundle\Entity\AbgSitioWeb;
-use DGAbgSistemaBundle\Entity\AbgExperienciaLaboral;
-use DGAbgSistemaBundle\Entity\AbgPersonaSubespecialidad;
-use DGAbgSistemaBundle\Entity\AbgEstudio;
+use DateTime;
 use DGAbgSistemaBundle\Entity\AbgCertificacion;
-use DGAbgSistemaBundle\Entity\Seminario;
+use DGAbgSistemaBundle\Entity\AbgEstudio;
+use DGAbgSistemaBundle\Entity\AbgExperienciaLaboral;
 use DGAbgSistemaBundle\Entity\AbgOrganizacion;
-use DGAbgSistemaBundle\Entity\AbgUrlPersonalizada;
+use DGAbgSistemaBundle\Entity\AbgPersona;
+use DGAbgSistemaBundle\Entity\AbgPersonaEmpresa;
 use DGAbgSistemaBundle\Entity\AbgPersonaEspecialida;
 use DGAbgSistemaBundle\Entity\AbgPersonaIdioma;
-use DGAbgSistemaBundle\Entity\AbgPersonaEmpresa;
+use DGAbgSistemaBundle\Entity\AbgSitioWeb;
+use DGAbgSistemaBundle\Entity\AbgUrlPersonalizada;
+use DGAbgSistemaBundle\Entity\CtlUsuario;
+use DGAbgSistemaBundle\Entity\Seminario;
+use Exception;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use DGAbgSistemaBundle\Form\AbgPersonaType;
+use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 
 /**
  * AbgPersona controller.
@@ -137,7 +139,7 @@ class AbgPersonaController extends Controller {
      *
      * @param AbgPersona $abgPersona The AbgPersona entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
     private function createDeleteForm(AbgPersona $abgPersona) {
         return $this->createFormBuilder()
@@ -164,7 +166,7 @@ class AbgPersonaController extends Controller {
             $abgPersona->setNombres($datos['txtnombre']);
             $abgPersona->setApellido($datos['txtapellido']);
             $abgPersona->setCorreoelectronico($datos['txtEmail']);
-            $abgPersona->setFechaIngreso(new \DateTime("now"));
+            $abgPersona->setFechaIngreso(new DateTime("now"));
             $abgPersona->setEstado('1');
             $em->persist($abgPersona);
             $em->flush();
@@ -188,7 +190,7 @@ class AbgPersonaController extends Controller {
             $data['username'] = $ctlUsuario->getUsername();
 
             return new Response(json_encode($data));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
             $em->getConnection()->rollback();
@@ -200,7 +202,7 @@ class AbgPersonaController extends Controller {
 
     private function setSecurePassword(&$entity, $contrasenia) {
         $entity->setSalt(md5(time()));
-        $encoder = new \Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder('sha512', true, 10);
+        $encoder = new MessageDigestPasswordEncoder('sha512', true, 10);
         $password = $encoder->encodePassword($contrasenia, $entity->getSalt());
         $entity->setPassword($password);
     }
@@ -396,7 +398,7 @@ class AbgPersonaController extends Controller {
                         'NNotificaciones' => $NNotificaciones[0][1],
                             // 'ru'=>$RolUser[0]['id']
             ));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
 
@@ -539,7 +541,7 @@ class AbgPersonaController extends Controller {
                         'url' => $url,
                         'abgFoto' => $result_foto
             ));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage();
             return new Response(json_encode($data));
         }
@@ -600,7 +602,7 @@ class AbgPersonaController extends Controller {
               'active' => 'ajuste',
               'AbgFoto' => $result_foto,
               )); */
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
             $em->getConnection()->rollback();
@@ -700,7 +702,7 @@ class AbgPersonaController extends Controller {
             $em->flush();
 
             return new Response(json_encode($data));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -731,7 +733,7 @@ class AbgPersonaController extends Controller {
                         'result_persona' => $result_persona,
                         'sitio' => $sitio,
             ));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
 
@@ -761,7 +763,7 @@ class AbgPersonaController extends Controller {
             return $this->render('abgpersona/sobreMi.html.twig', array(
                         'result_persona' => $result_persona,
             ));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
 
@@ -807,7 +809,7 @@ class AbgPersonaController extends Controller {
 
 
             return new Response(json_encode($data));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -850,7 +852,7 @@ class AbgPersonaController extends Controller {
             }
 
             return new Response(json_encode($data));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -869,7 +871,7 @@ class AbgPersonaController extends Controller {
             $data['depto'] = $em->createQuery($dql_departamento)->getArrayResult();
 
             return new Response(json_encode($data));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -888,7 +890,7 @@ class AbgPersonaController extends Controller {
             $data['ciudad'] = $em->createQuery($dql_departamento)->getArrayResult();
 
             return new Response(json_encode($data));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -932,7 +934,7 @@ class AbgPersonaController extends Controller {
                         'abgEspecialida' => $result_especialida,
                         'especialidadesS' => $subEspecialidadesSeleccionadas,
             ));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -986,7 +988,7 @@ class AbgPersonaController extends Controller {
 
 
             return new Response(json_encode($data));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['error'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -1022,7 +1024,7 @@ class AbgPersonaController extends Controller {
                         'Experiencia' => $Experiencia,
                         'fechaFin' => $fechaFin
             ));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -1040,6 +1042,7 @@ class AbgPersonaController extends Controller {
 
             parse_str($request->get('dato'), $datos);
 
+
             $Empresa = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa");
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
 
@@ -1047,7 +1050,10 @@ class AbgPersonaController extends Controller {
             $IdExperiencia = "";
             if ($request->get('tipo') == "1") {
                 $idEmpresa = $Empresa->find(intval($request->get('empresa')));
-                $nombre = $Empresa->find(intval($request->get('empresa')))->getNombreEmpresa();
+
+                if ($idEmpresa !== null) {
+                    $nombre = $Empresa->find(intval($request->get('empresa'))); //->getNombreEmpresa();
+                }
             } else {
 
                 $nombre = $request->get('empresa');
@@ -1063,6 +1069,7 @@ class AbgPersonaController extends Controller {
                     . " AND el.abgPersona=" . $request->get('hPersona');
             $dqlPersonaExp = $em->createQuery($ExpPersona);
             $resulExp = $dqlPersonaExp->getResult();
+
 
             $idEXp = "";
             if ((($datos['hidExp'] == ""))) {
@@ -1104,54 +1111,161 @@ class AbgPersonaController extends Controller {
                         try {
                             $AbgPersonaEmpresa = new AbgPersonaEmpresa();
                             $Empresa = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($idEmpresa);
-                            $AbgPersonaEmpresa->setAbgPersona($Persona);
-                            $AbgPersonaEmpresa->setCtlEmpresa($Empresa);
-                            $em->persist($AbgPersonaEmpresa);
-                            $em->flush();
-                        } catch (\Exception $e) {
+
+                            if ($Empresa) {
+                                $AbgPersonaEmpresa->setAbgPersona($Persona);
+                                $AbgPersonaEmpresa->setCtlEmpresa($Empresa);
+                                $em->persist($AbgPersonaEmpresa);
+                                $em->flush();
+                            }
+                        } catch (Exception $e) {
                             $data['error'] = $e->getMessage(); //"Falla al Registrar ";
                             return new Response(json_encode($data));
                         }
                     }
                     $data['msj'] = "Experiencia registrada";
                 }
-            } else {
+            }// Actualizar 
+            else {
 
                 foreach ($resulExp as $row) {
 
                     $compania = $row['compania'];
                     $idEXp = $row['id'];
                 }
-
-                if ($idEXp == $datos['hidExp']) {
-
+                if ($idEXp == $datos['hidExp']) { // hay experiencia registrada para una empresa registrada en el directorio y actualmente trabajando
                     $Experiencia = $em->getRepository("DGAbgSistemaBundle:AbgExperienciaLaboral")->find($datos['hidExp']);
-
                     if ($nombre != "") {
                         $Experiencia->setCompania($nombre);
                     }
 
                     $Experiencia->setFachaInicio($fechaIni);
-
                     $Experiencia->setFuncion($datos['txtfuncion']);
                     $Experiencia->setPuesto($datos['txtpuesto']);
                     $Experiencia->setUbicacion($datos['txthubicacion']);
                     if (($datos['txtFechaFin']) == "") {
+
                         $fechaFin = null;
                         $Experiencia->setFechaFin($fechaFin);
+                        if ($request->get('tipo') == "1") {
+
+                            // var_dump($Empresa->find(intval($request->get('empresa'))));
+                            /*  var_dump($datos['hidEmp'] . "<85>-- empre " . $datos['txtFechaFin'] . " --" . $request->get('tipo') . "---" . $nombre);
+                              exit(); */
+                            $Experiencia->setCompania($idEmpresa->getNombreEmpresa());
+                            $Experiencia->setCtlEmpresa($idEmpresa);
+                            // Inserta en persona_empresa si la fecha final es null
+                            $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                            $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                            $stm->execute();
+
+                            $sqlEdu = "INSERT INTO marvinvi_abg.abg_persona_empresa (abg_persona_id,ctl_empresa_id) "
+                                    . " VALUES (" . $idPersona . "," . intval($request->get('empresa')) . ")";
+                            $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                            $stm->execute();
+                        } elseif ($request->get('tipo') == "0" && $datos['hidEmp'] !== "" && $request->get('empresa') == "") {
+
+                            // elimina de la tabla persona_empresa porq la nueva empresa no esta registrada en el directorio de abogados 
+                            // y actualiza personaExperiencia CtlEmpresa null porq la nueva empresa no esta registrada
+                            /*       var_dump($Empresa->find(intval($request->get('empresa'))));
+                              var_dump($datos['hidEmp'] . "<86>-- empre " . $datos['txtFechaFin'] . " --" . $request->get('tipo') . "---" . $nombre);
+                              exit(); */
+                            //    $Experiencia->setCtlEmpresa(null);
+
+                            $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                            $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                            $stm->execute();
+                            $sqlEdu = "INSERT INTO marvinvi_abg.abg_persona_empresa (abg_persona_id,ctl_empresa_id) "
+                                    . " VALUES (" . $idPersona . "," . intval($datos['hidEmp']) . ")";
+                            $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                            $stm->execute();
+                        } elseif ($request->get('tipo') == "0" && $datos['hidEmp'] !== "" && $request->get('empresa') !== "") {
+
+
+                            $fechaFin = null;
+                            $Experiencia->setFechaFin($fechaFin);
+                            $Experiencia->setCtlEmpresa(null);
+                            $Experiencia->setCompania($request->get('empresa'));
+
+                            $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                            $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                            $stm->execute();
+                        } else {
+
+
+                            /*
+                              var_dump($Empresa->find(intval($request->get('empresa'))));
+                              var_dump($datos['hidEmp'] . "<87>-- empre " . $datos['txtFechaFin'] . " --" . $request->get('tipo') . "---" . $nombre);
+                              exit(); */
+                            $fechaFin = null;
+                            $Experiencia->setFechaFin($fechaFin);
+                            $Experiencia->setCtlEmpresa(null);
+
+                            $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                            $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                            $stm->execute();
+                        }
                     } else {
-                        $fechaFin = date_create($datos['txtFechaFin']);
-                        $Experiencia->setFechaFin($fechaFin);
-                    }
-                    if ($request->get('tipo') == "1") {
-                        $Experiencia->setCtlEmpresa($idEmpresa);
+
+                        if ($datos['hidEmp'] !== "" && $request->get('tipo') == '0') {
+
+
+                            $fechaFin = date_create($datos['txtFechaFin']);
+                            $Experiencia->setFechaFin($fechaFin);
+
+                            /*  var_dump($nombre. "hsxh");
+                              var_dump($datos['hidEmp'] . "<8 gggg>-- empre " . $datos['txtFechaFin'] . " --" . $request->get('tipo') . "---" . $nombre);
+                              exit(); */
+
+                            $Empre = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($datos['hidEmp']);
+                            if ($datos['hidEmp'] == "" && $request->get('empresa') !== "") {
+                                $Experiencia->setCtlEmpresa(null);
+                            }
+
+                            $nombrempresa = $Empresa->find($datos['hidEmp'])->getnombreEmpresa();
+                            $Experiencia->setCompania($nombrempresa);
+
+                            $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                            $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                            $stm->execute();
+                        } elseif ($request->get('tipo') == '1') {
+
+                            $nombrempresa = $Empresa->find($request->get('empresa'))->getnombreEmpresa();
+                            $idEmpresaComp = $Empresa->find(intval($request->get('empresa')));
+
+                            $fechaFin = date_create($datos['txtFechaFin']);
+                            $Experiencia->setFechaFin($fechaFin);
+                            $Experiencia->setCompania($nombrempresa);
+                            $Experiencia->setCtlEmpresa($idEmpresaComp);
+
+                            $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                            $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                            $stm->execute();
+                        }
+                        if ($datos['hidEmp'] == "" && $request->get('tipo') == '0') {
+
+                            if ($request->get('empresa') != "") {
+                                $Experiencia->setCompania($request->get('empresa'));
+                            }
+                            $fechaFin = date_create($datos['txtFechaFin']);
+                            $Experiencia->setFechaFin($fechaFin);
+                        }
                     }
 
+
+                    /* var_dump($Empresa->find(intval($request->get('empresa'))));
+                      var_dump($datos['hidEmp'] . "<8>-- empre " . $datos['txtFechaFin'] . " --" . $request->get('tipo') . "---" . $nombre);
+                      exit(); */
                     $em->merge($Experiencia);
                     $em->flush();
+
                     $IdExperiencia = $Experiencia->getId();
                     $data['msj'] = "Experiencia actualizada";
-                } else {
+                }
+
+                // si hay experiencia registrada pero la empresa no esta registrada como bufete
+                else {
+
                     if ((count($resulExp) > 0) && ($datos['txtFechaFin'] == "")) {
                         foreach ($resulExp as $row) {
 
@@ -1171,24 +1285,140 @@ class AbgPersonaController extends Controller {
                         $Experiencia->setPuesto($datos['txtpuesto']);
                         $Experiencia->setUbicacion($datos['txthubicacion']);
                         if (($datos['txtFechaFin']) == "") {
+
                             $fechaFin = null;
                             $Experiencia->setFechaFin($fechaFin);
+                            //  $Experiencia->setFechaFin($fechaFin);
+
+                            if ($request->get('tipo') == "1") {
+
+                                /*     var_dump(intval($datos['hidEmp']) . " empresa");
+                                  var_dump($Empresa->find(intval($request->get('empresa')))->getId());
+                                  exit(); */
+                                $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                                $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                                $stm->execute();
+
+                                if ($request->get('empresa') !== "") {
+                                    $idEmpresa = $Empresa->find(intval($request->get('empresa')));
+                                    $Experiencia->setCtlEmpresa($idEmpresa);
+                                    $Experiencia->setCompania($Empresa->find(intval($request->get('empresa')))->getNombreEmpresa());
+                                    $sqlEdu = "INSERT INTO marvinvi_abg.abg_persona_empresa (abg_persona_id,ctl_empresa_id) "
+                                            . " VALUES (" . $idPersona . "," . $Empresa->find(intval($request->get('empresa')))->getId() . ")";
+                                    $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                                    $stm->execute();
+                                }
+                            } elseif ($request->get('tipo') == "0" && $datos['hidEmp'] !== "") {
+
+                           /*     var_dump("hhhhhhhh");
+                                exit();*/
+                                $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                                $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                                $stm->execute();
+                                if ($request->get('empresa') !== "") {
+                                     $Experiencia->setCompania($request->get('empresa'));
+                                   $Experiencia->setCtlEmpresa(null);
+                                } else {
+                                        $Emp = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($datos['hidEmp']);
+                                    $sqlEdu = "INSERT INTO marvinvi_abg.abg_persona_empresa (abg_persona_id,ctl_empresa_id) "
+                                            . " VALUES (" . $idPersona . "," . intval($datos['hidEmp']) . ")";
+                                    $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                                    $stm->execute();
+                                   $Experiencia->setCtlEmpresa($Emp);
+                                }
+                            
+                                $fechaFin = null;
+                                $Experiencia->setFechaFin($fechaFin);
+                             
+                            } elseif ($request->get('tipo') == "0" && $datos['hidEmp'] !== "" && $request->get('empresa') !== "") {
+
+                                $Experiencia->setCompania($request->get('empresa'));
+                                $fechaFin = null;
+                                $Experiencia->setFechaFin($fechaFin);
+                                $Experiencia->setCtlEmpresa(null);
+                                $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                                $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                                $stm->execute();
+                            }
                         } else {
+
                             $fechaFin = date_create($datos['txtFechaFin']);
-                            $Experiencia->setFechaFin($fechaFin);
+                            if ($request->get('tipo') == "1") {
+
+                                //    var_dump($Empresa->find(intval($request->get('empresa'))));
+
+                                $IdCTLEMPRESA = $Empresa->find(intval($request->get('empresa')));
+
+                                /*     var_dump($IdCTLEMPRESA);
+                                  exit(); */
+                                if ($request->get('empresa') !== "") {
+                                    $Experiencia->setCompania($Empresa->find(intval($request->get('empresa')))->getnombreEmpresa());
+                                }
+                                $Experiencia->setCtlEmpresa($IdCTLEMPRESA);
+
+                                // var_dump($Empresa->find(intval($request->get('empresa'))));
+                                /*        var_dump($datos['hidEmp']);
+                                  exit(); */
+
+
+                                $Experiencia->setFechaFin($fechaFin);
+
+                                $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                                $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                                $stm->execute();
+                                /*
+                                  $sqlEdu = "INSERT INTO marvinvi_abg.abg_persona_empresa (abg_persona_id,ctl_empresa_id) "
+                                  . " VALUES (" . $idPersona . "," . $Empresa->find(intval($request->get('empresa')))->getId() . ")";
+                                  $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                                  $stm->execute(); */
+                            } elseif ($request->get('tipo') == "0" && $datos['hidEmp'] !== "" && $datos['txtFechaFin'] == "") {
+
+                                $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                                $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                                $stm->execute();
+                                //   $Experiencia->setCtlEmpresa(null);
+                            } elseif ($request->get('tipo') == "0" && $datos['hidEmp'] !== "" && $datos['txtFechaFin'] !== "" && $request->get('empresa') !== "") {
+
+                                $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                                $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                                $stm->execute();
+                                $Experiencia->setCtlEmpresa(null);
+                                $Experiencia->setFechaFin($fechaFin);
+                                $Experiencia->setCompania($request->get('empresa'));
+                            } elseif ($request->get('tipo') == "0" && $datos['hidEmp'] !== "" && $datos['txtFechaFin'] !== "" && $request->get('empresa') == "") {
+
+                                $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                                $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                                $stm->execute();
+                            } elseif ($request->get('tipo') == "0" && $datos['hidEmp'] == "" && $datos['txtFechaFin'] !== "" && $request->get('empresa') == "") {
+
+                                $Experiencia->setCtlEmpresa(null);
+                                $Experiencia->setFechaFin($fechaFin);
+                                $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                                $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                                $stm->execute();
+                            } elseif ($request->get('tipo') == "0" && $datos['hidEmp'] == "" && $datos['txtFechaFin'] !== "" && $request->get('empresa') !== "") {
+
+                                $Experiencia->setCompania($request->get('empresa'));
+                                $Experiencia->setCtlEmpresa(null);
+                                $Experiencia->setFechaFin($fechaFin);
+                                $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                                $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                                $stm->execute();
+                            }
+
+                            /* var_dump(intval($datos['hidEmp']). " ultimo");
+                              var_dump( $idEmpresa = $Empresa->find(intval($request->get('empresa')))->getId());
+                              exit(); */
                         }
-                        if ($request->get('tipo') == "1") {
-                            $Experiencia->setCtlEmpresa($idEmpresa);
-                        } else {
-                            $Experiencia->setCtlEmpresa(null);
-                        }
-                        $em->merge($Experiencia);
-                        $em->flush();
-                        $IdExperiencia = $Experiencia->getId();
-                        $data['msj'] = "Experiencia actualizada";
                     }
+                    $em->merge($Experiencia);
+                    $em->flush();
+                    $IdExperiencia = $Experiencia->getId();
+                    $data['msj'] = "Experiencia actualizada";
                 }
             }
+
 
 
             $ObjetoUrl = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgUrlPersonalizada')->findByCtlEmpresa($idEmpresa);
@@ -1208,7 +1438,7 @@ class AbgPersonaController extends Controller {
                 $data['Exp'] = $stm->fetchAll();
             }
             return new Response(json_encode($data));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['error'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -1225,7 +1455,7 @@ class AbgPersonaController extends Controller {
             $request = $this->getRequest();
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $Experiencia = $em->getRepository("DGAbgSistemaBundle:AbgExperienciaLaboral")->find(intval($request->get('experiencia')));
-            if (! empty($Experiencia->getCtlEmpresa())) {
+            if (!empty($Experiencia->getCtlEmpresa())) {
                 $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona
                         . "  AND ctl_empresa_id=" . $Experiencia->getCtlEmpresa()->getId();
                 $stm = $this->container->get('database_connection')->prepare($sqlEdu);
@@ -1236,7 +1466,7 @@ class AbgPersonaController extends Controller {
             $data['msj'] = "Experiencia eliminada";
 
             return new Response(json_encode($data));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['error'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -1302,7 +1532,7 @@ class AbgPersonaController extends Controller {
                         'disciplina' => $disciplina,
                         'Educacion' => $Educacion,
             ));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -1325,7 +1555,7 @@ class AbgPersonaController extends Controller {
             $data['msj'] = "Educación eliminada";
 
             return new Response(json_encode($data));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['error'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -1390,7 +1620,7 @@ class AbgPersonaController extends Controller {
             $data['Edu'] = $stm->fetchAll();
 
             return new Response(json_encode($data));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['error'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -1420,7 +1650,7 @@ class AbgPersonaController extends Controller {
             return $this->render('abgpersona/certificacion.html.twig', array(
                         'Certificacion' => $Certificacion,
             ));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -1499,7 +1729,7 @@ class AbgPersonaController extends Controller {
             $data['Cert'] = $stm->fetchAll();
 
             return new Response(json_encode($data));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['error'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -1522,7 +1752,7 @@ class AbgPersonaController extends Controller {
             $data['msj'] = "Certificación eliminada";
 
             return new Response(json_encode($data));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['error'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -1552,7 +1782,7 @@ class AbgPersonaController extends Controller {
             return $this->render('abgpersona/cursos_seminarios.html.twig', array(
                         'Curso' => $Curso,
             ));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -1621,7 +1851,7 @@ class AbgPersonaController extends Controller {
             $data['Curso'] = $stm->fetchAll();
 
             return new Response(json_encode($data));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['error'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -1644,7 +1874,7 @@ class AbgPersonaController extends Controller {
             $data['msj'] = "Seminario eliminado";
 
             return new Response(json_encode($data));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['error'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -1673,7 +1903,7 @@ class AbgPersonaController extends Controller {
             return $this->render('abgpersona/organizacion.html.twig', array(
                         'Organizacion' => $Organizacion,
             ));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -1744,7 +1974,7 @@ class AbgPersonaController extends Controller {
             $data['Organizacion'] = $stm->fetchAll();
 
             return new Response(json_encode($data));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['error'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -1767,7 +1997,7 @@ class AbgPersonaController extends Controller {
             $data['msj'] = "Organización eliminada";
 
             return new Response(json_encode($data));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['error'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -1801,7 +2031,7 @@ class AbgPersonaController extends Controller {
                         'IdiomaRegistrado' => $IdiomaRegistrado,
                         'idioma' => $idioma,
             ));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -1859,7 +2089,7 @@ class AbgPersonaController extends Controller {
             $data['Idiomas'] = $stm->fetchAll();
 
             return new Response(json_encode($data));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['error'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -1900,7 +2130,7 @@ class AbgPersonaController extends Controller {
             $data['data'] = $em->createQuery($dql)->getArrayResult();
 
             return new Response(json_encode($data));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -1975,7 +2205,7 @@ class AbgPersonaController extends Controller {
             $em->flush();
 
             return new Response(json_encode($data));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -2064,7 +2294,7 @@ class AbgPersonaController extends Controller {
                     ));
                     break;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -2092,7 +2322,7 @@ class AbgPersonaController extends Controller {
             $data['solverificado'] = $stm->fetchAll();
 
             return new Response(json_encode($data));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -2145,7 +2375,7 @@ class AbgPersonaController extends Controller {
 
 
             return new Response(json_encode($data));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -2196,7 +2426,7 @@ class AbgPersonaController extends Controller {
                             'fotoPerfil' => $fotoPerfil
                 ));
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage();
             return new Response(json_encode($data));
         }
@@ -2223,7 +2453,7 @@ class AbgPersonaController extends Controller {
                         'verificados' => $verificados,
                         'val' => 1
             ));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage();
             return new Response(json_encode($data));
         }
@@ -2283,7 +2513,7 @@ class AbgPersonaController extends Controller {
                         'abgFoto' => $result_foto,
                         'suscripcion' => $suscripcion
             ));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
 
