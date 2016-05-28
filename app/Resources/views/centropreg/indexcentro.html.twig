@@ -240,14 +240,14 @@
                                                     <div class="col-xs-2 text-center" style="border-right: 2px solid #f0f0f5; font-size: 27px;">
                                                         <div id="sparkline-1">{{ key + 1 }}</div>
                                                     </div>
-                                                    <a href="{{ path('busquedaPerfil', {url: row.url}) }}">  
-                                                        <div class="col-xs-10" style="border-right: 1px solid #f4f4f4">
-                                                            <div id="sparkline-2">
-                                                                <img src="{{asset('') }}{{ row.src}}" style="width: 40px; height: 40px; margin-bottom: 0px;" class="img-circle" alt="User Image" />
-                                                                {{ nombres[0] }} {{ apellidos[0] }}
-                                                            </div>
+                                                    {#<a href="{{ path('busquedaPerfil', {url: row.url}) }}">  #}
+                                                    <div class="col-xs-10" style="border-right: 1px solid #f4f4f4">
+                                                        <div id="sparkline-2">
+                                                            {#<img src="{{asset('') }}{{ row.src}}" style="width: 40px; height: 40px; margin-bottom: 0px;" class="img-circle" alt="User Image" />#}
+                                                            <div>{{ nombres[0] }} {{ apellidos[0] }}</div>
+                                                            <a href="{{ path('busquedaPerfil', {url: row.url}) }}">Ver perfil</a> | <a href="{{ path('busquedaPerfil', {url: row.url}) }}">{{ row.totalrespuestas }} {% if row.totalrespuestas > 1 %}respuestas{% else %}respuesta{% endif %}</a>
                                                         </div>
-                                                    </a>  
+                                                    </div> 
                                                 </div>
                                             </p>
                                         {% else %}

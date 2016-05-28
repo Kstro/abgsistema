@@ -30,11 +30,12 @@
         }
     </style>
     <script type="text/javascript">
-        jQuery("#example1").radialProgress("init", {
-            'size': 100,
-            'fill': 5
-        }).radialProgress("to", {'perc':{{cumplimiento}}, 'time': 10000});
-      
+        {% if (is_granted('ROLE_USER'))%}
+            jQuery("#example1").radialProgress("init", {
+                'size': 100,
+                'fill': 5
+            }).radialProgress("to", {'perc':{{cumplimiento}}, 'time': 10000});
+        {% endif %}  
     </script>
     
 {% endblock %} 
@@ -51,14 +52,18 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
+        {% if (is_granted('ROLE_ADMIN'))%}
+              <h1 style="color: #262626">Inicio</h1>
+        {% endif %}  
     </section>
     <!-- Main content -->
-    <section >
-         {#% if (is_granted('ROLE_ADMIN'))%}
+    <section {% if (is_granted('ROLE_ADMIN'))%}class="content"{% endif %}>
+        {% if (is_granted('ROLE_USER'))%}
+              {% embed ':abgpersona:perfil.html.twig' %}{% endembed %}
+        {% elseif (is_granted('ROLE_ADMIN'))%}
               {% embed ':administracion:perfil.html.twig' %}{% endembed %}
-          {% endif %#}  
-    {% embed ':abgpersona:perfil.html.twig' %}{% endembed %}
-</section><!-- /.content -->
+        {% endif %}  
+    </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
 
 <footer class="main-footer">

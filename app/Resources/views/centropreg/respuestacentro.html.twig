@@ -14,6 +14,7 @@
 {% block js_extend %}
     <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
+    <link rel="stylesheet" href="{{asset('Resources/AdminLTE-2.3.0/bootstrap/css/bootstrap.min.css')}}">
     
    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -21,8 +22,8 @@
     <script src="src/js/bootstrap.js"></script>
     <script type="text/javascript">
             $(function () {
-              $('[data-toggle="tooltip"]').tooltip()
-            })
+              $('[data-toggle="tooltip"]').tooltip();
+            });
     </script>
 {% endblock %} 
 
@@ -31,39 +32,247 @@
     {% block navegacion %}
     {% endblock %}
     {% block cuerpo %}
-        
-        <div class="container" style="padding: 40px 0px; background-color: #f6f6f6;">
-		<div class="row">
-                    <div class="col-md-3"></div>
-                    <div class="col-md-6">
-                        <div class="panel panel-default">
-                            <p class="text-center" style="font-size: 25px;">{{pregunta.pregunta}}</p>
-                            {#<hr>#}
-                            {#<img class="img-thumbnail" src="http://placehold.it/400x500" style="max-width: 12%; width: 12%; margin-left: 10px; margin-right: 10px;">Juan Perez#}
-                            
-                            <hr>
-                            <img class="img-thumbnail" src="http://placehold.it/400x500" style="max-width: 12%; width: 12%; margin-left: 10px; margin-right: 10px;">Juan Perez
-                            <p style="font-size: 20px; margin-left: 5px;">Respuesta:</p>
-                            <p style="margin-left:5px;">
-                                {% if pregunta.respuesta == false %}
-                                    Aun sin responder
-                                {% else %}
-                                    {{pregunta.respuesta}}
-                                {% endif %}
-                                
-                                
-                            </p>
-                        </div>                        
+        {% embed ':Layout:head.html.twig' %}{% endembed %}
+        <div class="row contenedor-perfil" style=" padding: 10px; background-color:#ecf0f5;">                    
+            <div class="col-md-9">
+                <div class="box box-widget">
+                    <div class="box-body " style=" padding: 5px;"> 
+                        <div class="pos1">
+                            {% if prom1 is null%}
+                                <img src="{{asset('Resources/src/img/banner1.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia">
+                            {% else %}
+                                 <img src="{{asset('')}}{{ prom1[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia">
+                            {% endif %}
+
+                        </div>
                     </div>
-                    <div class="col-md-3"></div>
+                </div>
+                <div class="box box-widget">
+                    <div class="box-body " style=" padding: 5px;"> 
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Pregunta</h3>
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <p class="" style="font-size: 20px;">{{pregunta.pregunta}}</p>
+                        </div>
+                        <div class="attachment">
+                            <div class="col-md-11" style="margin-left: 20px;">
+                                <p class="text-justify" >{{pregunta.detalle}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box box-widget">
+                    <div class="box-body " style=" padding: 5px;"> 
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Respuesta</h3>
+                            </div>
+                            <div style="margin-top: 10px; margin-left: 5px;">
+                            {#<p style="margin-left:5px;">#}
+                                {% if pregunta.respuesta == false %}
+                                    <div style="padding: 10px;">
+                                        <div class="direct-chat-msg direct-chat direct-chat-primary" style="margin-bottom: 15px;">
+                                            <div class="direct-chat-info clearfix">
+                                                <span class="direct-chat-name pull-left"></span>
+                                            </div>
+                                            <img src="{{asset('Photos/defecto/defecto.png') }}" style="width: 40px; height: 40px; margin-bottom: 0px;" class="direct-chat-img img-circle" alt="User Image" />                             
+                                            <div style="margin-top: 8px;" class="direct-chat-text">
+                                                Aun sin responder
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div style="padding: 10px;">
+                                        <div class="direct-chat-msg direct-chat direct-chat-primary" style="margin-bottom: 15px;">
+                                            <div class="direct-chat-info clearfix">
+                                                <span class="direct-chat-name pull-left">{{ pregunta.ctlUsuario.rhPersona.nombres }} {{ pregunta.ctlUsuario.rhPersona.apellido }}</span>
+                                            </div>
+                                            <img src="{{asset('') }}{{ foto.src }}" style="width: 45px; height: 45px; margin-bottom: 0px;" class="direct-chat-img img-circle img-bordered-sm" alt="User Image" />                             
+                                            <div style="margin-top: 8px;" class="direct-chat-text">
+                                                {{pregunta.respuesta}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            {#</p>#}
+                       {# </div>   #}   
+                    </div>
+                </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a href="{{ path('pregunta_index') }}" class="button">
+                                <button class="btn btn-bitbucket btn-flat pull-left">Regresar a centro de preguntas</button>
+                            </a>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-md-3">
+                <div class="box box-widget">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">TOP 10 USUARIOS ACTIVOS</h3>
+                    </div>
+                    <div class="box-body">                                    
+                        <div class="list-group">
+                            {% for key, row in top %}
+                                {% set nombres = row.nombres|split(' ') %}
+                                {% set apellidos = row.apellidos|split(' ') %}
+                                <p>
+                                    <div class="row">
+                                        <div class="col-xs-2 text-center" style="border-right: 2px solid #f0f0f5; font-size: 27px;">
+                                            <div id="sparkline-1">{{ key + 1 }}</div>
+                                        </div>
+                                        {#<a href="{{ path('busquedaPerfil', {url: row.url}) }}">  #}
+                                                    <div class="col-xs-10" style="border-right: 1px solid #f4f4f4">
+                                                        <div id="sparkline-2">
+                                                            {#<img src="{{asset('') }}{{ row.src}}" style="width: 40px; height: 40px; margin-bottom: 0px;" class="img-circle" alt="User Image" />#}
+                                                            <div>{{ nombres[0] }} {{ apellidos[0] }}</div>
+                                                            <a href="{{ path('busquedaPerfil', {url: row.url}) }}">Ver perfil</a> | <a href="{{ path('busquedaPerfil', {url: row.url}) }}">{{ row.totalrespuestas }} {% if row.totalrespuestas > 1 %}respuestas{% else %}respuesta{% endif %}</a>
+                                                        </div>
+                                                    </div>
+                                    </div>
+                                </p>
+                            {% else %}
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div id="sparkline-2">
+                                            <span>Ningún usuario ha respondido</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}                                    
+                        </div>               
+                    </div> {#Inicio de top abogados activos#}
+                </div>
+                <div class="row" style="margin-top: 6px;">
+                    <div class="col-md-12">
+                        <div class="box box-widget">
+                        <div class="box-body">
+                            {% if prom2 is null%}
+                                <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
+                            {% else %}
+                                 <img src="{{asset('')}}{{ prom2[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
+                            {% endif %}
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box box-widget">
+                        <div class="box-body">
+                            {% if prom3 is null%}
+                                <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia3">
+                            {% else %}
+                                 <img src="{{asset('')}}{{ prom3[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia3">
+                            {% endif %}
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
                   
-		</div> {#Fin del row#}
-	</div>
-	<div style="height: 10px;"></div>
-	
-    {% endblock %}
-    
+        </div> {#Fin del row#}	
+	<div style="height: 10px;"></div>	
+    {% endblock %}    
     {% block js_template %}
-                        
+        <script type="text/javascript">
+            var imagenes = new Array();
+            var imagenes2 = new Array();
+            var imagenes3 = new Array();
+            var imagenes4 = new Array();
+
+            var contador = 1;
+            var contador2 = 1;
+            var contador3 = 1;
+            var contador4 = 1;
+
+            var lon = 0;
+            var lon2 = 0;
+            var lon3 = 0;
+            var lon4 = 0;
+
+            {% for pro in prom1 %}
+                imagenes.push("{{ pro.src }}");
+            {% endfor %}
+
+            lon = imagenes.length;
+
+            {% for pro in prom2 %}
+                imagenes2.push("{{ pro.src }}");
+            {% endfor %}
+
+            lon2 = imagenes2.length;
+
+            {% for pro in prom3 %}
+                imagenes3.push("{{ pro.src }}");
+            {% endfor %}
+
+            lon3 = imagenes3.length;
+
+            {% for pro in prom4 %}
+                imagenes4.push("{{ pro.src }}");
+            {% endfor %}
+
+            lon4 = imagenes4.length;
+            
+            $(document).ready(function(){
+                setInterval(cambia, 4000);
+                
+            });
+            
+            function cambia() {
+                console.log('cont: '+contador);
+                console.log('lon: '+lon);
+                
+                if(contador >= lon){
+                    contador = 0;
+                }
+
+                if(lon > 0){
+                    document.getElementById("fotocambia").src = '../../' + imagenes[contador];
+                    contador++;
+                    console.log(imagenes[contador]);
+                    console.log(contador);
+                    console.log(lon);
+                } else {
+                    document.getElementById("fotocambia").src = '{{asset('Resources/src/img/banner1.png')}}';
+                }
+
+
+                if(contador2 >= lon2){
+                    contador2 = 0;
+                }
+
+                if(lon2 > 0){
+                    document.getElementById("fotocambia2").src = '../../' + imagenes2[contador2];
+                    contador2++;
+                 } else {
+                    document.getElementById("fotocambia2").src = '{{asset('Resources/src/img/banner.png')}}';
+                }
+
+                if(contador3 >= lon3){
+                    contador3 = 0;
+                }
+
+                if(lon3 > 0){
+                    document.getElementById("fotocambia3").src = '../../' + imagenes3[contador3];
+                    contador3++;
+                } else {
+                    document.getElementById("fotocambia3").src = '{{asset('Resources/src/img/banner.png')}}';
+                }
+
+                if(contador4 >= lon4){
+                    contador4 = 0;
+                }
+
+                if(lon4 > 0){
+                    document.getElementById("fotocambia4").src = '../../' + imagenes4[contador4];
+                    contador4++;
+                } else {
+                    document.getElementById("fotocambia4").src = '{{asset('Resources/src/img/banner1.png')}}';
+                }
+            }
+        </script>
     {% endblock js_template %}
 {% endblock %}
