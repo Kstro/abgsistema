@@ -156,302 +156,206 @@
         <!-- PRIMERA BLOQUE CON FOTO DE PERFIL -->
         <div id="verPerfil"> </div>
         <div id="editarPerfil"> 
-            <div class="row" style=" margin-left:15px; margin-right:15px; ">
-                <div class="box box-widget">
-
-                    <div class="box-body">
-                        <div class="col-sm-3" >
-                            <div class="row" >
-                                <input type="hidden" id="hPersona"  value="{{datos.id}}">
-                                <form id="frmPersonaConFoto" role="form" enctype="multipart/form-data" method="POST">
-                                    {% if abgFoto %}   
-                                        <div class="col-sm-3 col-xs-3" >
-                                            <img src="{{ asset('Resources/icons/photo.png') }}" style="width: 25px; height: 25px; margin-left: 10px; margin-top:10px; position: absolute; " id="botonModalP" title="Cambiar foto de perfil" >
-                                            <div style="margin-top:5px;margin-left: -5px;" >
-                                                <center>
-                                                    <img id="prevP" src="{{ asset('') }}{{abgFoto[0].src}}"  style="max-height:200px; max-width:200px; " class="img-responsive" alt="Imagen responsive"/>
-                                                </center>              
-                                            </div>     
-                                        </div>
-                                    {%endif%}                
-                                </form> 
-                                {# Termina la parte agregada#}
-                            </div>        
+                <div class="row" style="">
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-aqua"><i class="fa fa-users" style="margin-top: 15px;"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Nuevos abogados en la </span>
+                                <span class="info-box-text">ultima semana</span>
+                                <span class="info-box-number">{{ totalAbogados.total }}</span>
+                            </div>
                         </div>
-                        <div class="col-sm-6" >
-                            <div class="row" >
-                                <div class="col-xs-10" style="padding-right: 0;">
-                                    <p style="margin-top: 10px; font-size: 23px; margin-left: 10px; margin-bottom: 0px;" class="sans">
-                                        <strong>  
-                                            <a href="#" id="txtNombres" data-type="addnombres" data-pk="1" data-title="Nombre" data-placement="right" class="editable editable-click" > {{datos.nombre~' '~datos.apellido}}
-                                            </a>
-                                        </strong>
-                                        {%if(datos.verificado==1)%}
-                                            <img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 0px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
-                                        {%endif%}
-                                </div></div>
-                            <div class="row" >
-                                <div class="col-xs-10" style="padding-right: 0;">
-                                    <p style="color: #777777; margin-left: 11px; margin-top: -3px; margin-bottom: 0px;" class="sansli">
-
-
-                                        <a href="#" id="txtTituloProfesional" data-type="text" data-pk="1" data-title="Nombre" data-placement="right" class="editable editable-click" title="Título Profesional">
-                                            {%if datos.tprofesional|default is not empty %} {{datos.tprofesional}}
-                                            {%else%}
-                                                Título Profesional
-                                            {%endif%}
-                                        </a>
-
-
-                                    </p>
-                                </div>
+                    </div>
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-yellow"><i class="fa fa-tasks" style="margin-top: 15px;"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Nuevos blogs en la ultima</span>
+                                <span class="info-box-text">semana</span>
+                                <span class="info-box-number">{{ totalBlogs.total }}</span>
                             </div>
-                            <div class="row" >
-                                <div class="col-xs-10" style="padding-right: 0;">
+                        </div>
+                    </div>                  
+                    <div class="clearfix visible-sm-block"></div>
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-green"><i class="fa fa-question" style="margin-top: 15px;"></i></span>
 
-                                    {%if ciuda|default is not empty %}
-
-                                        <div  style="display:block;" id="divMunicipiox">
-                                            <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">
-                                                <a href="#" id="txtMunicipio" data-type="address" data-pk="1" data-title="Departamento | municipio" data-placement="right" class="editable editable-click" >
-                                                    {% for datos in ciuda %}
-                                                        <b> {{datos.estado}} </b> | {{datos.nombre}} 
-                                                    {%endfor%}
-                                                </a>
-                                            </p>
-                                        </div>
-                                    {%else%}
-                                        <div id="divMunicipiox">
-                                            <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">
-                                                <a href="#" id="txtMunicipio" data-type="address" data-pk="1" data-title="Departamento | municipio" data-placement="right" class="editable editable-click" >
-                                                    <b>Departament</b> | Municipiio
-                                                </a>
-                                            </p>
-                                        </div>
-                                    {%endif%}
-
-                                </div>
-                            </div>
-                            <!-- ESPECIALIDAD(ES) -->
-                            <div class="row" >
-                                <div class="col-xs-3" style="padding-right: 0;">
-                                    <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Especialidades</span>
-                                </div>
-                                <div class="col-xs-9" style="padding-left: 0;" >
-                                    <span style="font-size:13px;">
-                                        <a href="#Especialidades"  >
-                                            {%if RegistroEspecialida|default is not empty %}
-                                                {%set esp=""%}
-                                                {% for datos in RegistroEspecialida %}
-                                                    {%set esp=datos.nombre~", "~esp%}
-                                                {%endfor%}
-                                                {{esp|slice(0,-2)}}
-                                            {%else%}
-                                                Añadir especialidades
-                                            {%endif%}
-                                        </a>
-                                    </span>
-                                </div>
-                            </div>
-                            <!-- TRABAJO(S) ACTUAL -->
-                            <div class="row" >
-                                <div class="col-xs-3" style="padding-right: 0;">
-                                    <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Actual</span>
-                                </div>
-                                <div class="col-xs-9" style="padding-left: 0;">
-                                    <span style="font-size:13px;">
-                                        {%if RegistradaExperiencia|default is not empty %}
-                                            {% for datos in RegistradaExperiencia %}
-                                                {%if (datos.dias is null)%}
-                                                    <a href="#Experiencia"  >{{datos.empresa}}</a>
-                                                {%else%}
-
-                                                {%endif%}   
-                                            {%endfor%}
-                                        {%else%}
-                                            <a href="#Experiencia"  >Añadir experiencia</a> 
-                                        {%endif%}
-
-                                    </span>
-                                </div>
-                            </div>
-                            <!-- EDUCACION MAS RECIENTE -->
-                            <div class="row">
-                                <div class="col-xs-3" style="padding-right: 0;">
-                                    <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Educación</span>
-                                </div>
-                                <div class="col-xs-9" style="padding-left: 0;">
-                                    <span style="font-size:13px;">
-                                        <a href="#divEducacion">
-                                            {%if Edu|default is not empty %}
-                                                {% for datos in Edu %}
-                                                    {%if(datos.anio=='')%} {{datos.institucion}}
-
-                                                    {%endif%}
-                                                {%endfor%}
-                                            {%else%}
-                                                Añadir educación
-                                            {%endif%}
-
-                                        </a>
-                                    </span>
-                                </div>
-                            </div>
-                            <!-- EDUCACION MAS RECIENTE -->
-                            <div class="row">
-                                <div class="col-xs-3" style="padding-right: 0;">
-                                    <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Sitio Web</span>
-                                </div>
-                                <div class="col-xs-9" style="padding-left: 0;">
-                                    <span style="font-size:13px;">
-                                        <a href="#" id="sitioweb" data-type="text" data-placement="right" data-pk="1"  data-title="Sitio web">
-                                            {%if sitio|default is not empty %}
-                                                {% for datos in sitio %}
-                                                    {{datos.nombre}} 
-                                                {%endfor%}
-                                            {%else%}
-                                                Sitio web
-                                            {%endif%}
-                                        </a>
-                                    </span>
-                                </div>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Preguntas realizadas en la</span>
+                                <span class="info-box-text">ultima semana</span>
+                                <span class="info-box-number">{{ totalPreguntas.total }}</span>
                             </div>
                         </div>
                     </div> 
-                </div>  
-                   <div class="box box-widget">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">DATOS DE CONTACTO</h3>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="box box-warning">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Ultimos miembros registrados</h3>
 
-                            <div class="box-tools pull-right">
-
-                                <button type="button" class="btn btn-box-tool"  id="btnDatosContacto">
-                                    <i class="fa fa-cog pull-right"></i></button>
-
-                            </div>
-                        </div>
-                        <div class="box-body">
-
-
-                            <div class="row " id="datosContacto" style="padding-left: 10px; padding-right: 15px;">
-                                <div class="col-sm-3 col-xs-12">
-                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono(s)</strong></p>
-                                    <p style="font-size: 11px; margin-bottom: 0px;">
-                                        +503  
-                                        <a href="#" id="txtMovil" data-type="text" data-placement="right" data-title="Telefono movil"> {%if datos.movil|default is not empty %}{{datos.movil}}
-                                            {%else%}
-                                                Movil
-                                                {%endif%}</a>
-                                                </br>+503 <a href="#" id="txtOficina" data-type="text" data-placement="right" data-title="Telefono de Oficina">
-                                                    {%if datos.Tfijo|default is not empty %}
-                                                        {{datos.Tfijo}}
-                                                    {%else%}
-                                                        Oficina
-                                                    {%endif %}
-                                                </a></p>
-                                        </div>
-                                        <div class="col-sm-3 col-xs-12">
-                                            <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email(s)</strong></p>
-                                            <p style="font-size: 11px; margin-bottom: 0px;">
-                                                <a href="#" id="txtCorreo" data-type="text" data-placement="right" data-pk="1"  data-title="Sitio web">
-                                                    {%if datos.correo|default is not empty %}
-                                                        {{datos.correo}}
-                                                    {%endif %}
-                                                </a></p>
-                                        </div>
-                                        <div class="col-sm-3 col-xs-12">
-                                            <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Dirección</strong></p>
-                                            <p style="font-size: 11px; margin-bottom: 0px;">
-                                                <a href="#" id="txtDireccion" data-type="text" data-placement="right" data-title="Dirección">
-                                                    {%if datos.direccion|default is not empty %}
-                                                        {{datos.direccion}}
-                                                    {%else%}
-                                                        Dirección
-                                                    {%endif%}</a>
-                                            </p>
-                                        </div>
-                                        <div class="col-sm-3 col-xs-12">
-                                            <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio web</strong></p>
-                                            <p style="font-size: 11px; margin-bottom: 0px;">
-                                                <a href="#" id="sitioweb2" data-type="text" data-placement="left" data-title="Sitio">
-                                                    {%if sitio|default is not empty %}
-                                                        {% for datos in sitio %}
-                                                            {{datos.nombre}} 
-                                                        {%endfor%}
-                                                    {%else%}
-                                                        Sitio web
-                                                    {%endif%}
-                                                </a>
-                                        </div>
-
-                                    </div>
-                                    <!-- Fin -->
+                                <div class="box-tools pull-right">
+                                    <span class="label label-warning" style="margin-top: 7px;">{{ usuarios|length }} nuevos abogados</span>
+                                    {#<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                                    </button>#}
                                 </div>
                             </div>
-            </div>
+                            <div class="box-body no-padding">
+                                <ul class="users-list clearfix">
+                                    {% for row in usuarios %}
+                                        {% set nombres = row.nombres|split(' ') %}
+                                        {% set apellidos = row.apellidos|split(' ') %}
+                                        <li>
+                                            <img src="{{asset('')}}{{row.src}}" alt="User Image">
+                                            <a class="users-list-name" href="#">{{ nombres[0] }} {{ apellidos[0] }}</a>
+                                            <span class="users-list-date">
+                                                {{ row.fecha|date('d/m/Y') }} 
+                                            </span>                                            
+                                        </li>   
+                                    {% else %}
+                                        <li><span class="users-list-date">No hay abogados</span></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                          <div class="box-footer text-center">
+                            <a href="javascript:void(0)" class="uppercase">Ver listado de abogados</a>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="box box-danger">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Ultimas empresas registradas</h3>                                
+                            </div>
+                            <div class="box-body no-padding">
+                                <ul class="products-list product-list-in-box">
+                                    <li class="item">
+                                      <div class="product-img">
+                                        <img src="{{asset('Resources/src/img/empresa/empresa.png')}}" alt="Product Image">
+                                      </div>
+                                      <div class="product-info">
+                                        <a href="javascript:void(0)" class="product-title">Samsung TV
+                                          </a>
+                                            <span class="product-description">
+                                              Samsung 32" 1080p 60Hz LED Smart HDTV.
+                                            </span>
+                                      </div>
+                                    </li>
+                                    <li class="item">
+                                      <div class="product-img">
+                                        <img src="{{asset('Resources/src/img/empresa/empresa.png')}}" alt="Product Image">
+                                      </div>
+                                      <div class="product-info">
+                                        <a href="javascript:void(0)" class="product-title">Bicycle</a>
+                                          <span class="product-description">
+                                              26" Mongoose Dolomite Men's 7-speed, Navy Blue.
+                                            </span>
+                                      </div>
+                                    </li>
+                                    <li class="item">
+                                      <div class="product-img">
+                                        <img src="{{asset('Resources/src/img/empresa/empresa.png')}}" alt="Product Image">
+                                      </div>
+                                      <div class="product-info">
+                                        <a href="javascript:void(0)" class="product-title">Xbox One </a>
+                                            <span class="product-description">
+                                              Xbox One Console Bundle with Halo Master Chief Collection.
+                                            </span>
+                                      </div>
+                                    </li>
+                                    <li class="item">
+                                      <div class="product-img">
+                                        <img src="{{asset('Resources/src/img/empresa/empresa.png')}}" alt="Product Image">
+                                      </div>
+                                      <div class="product-info">
+                                        <a href="javascript:void(0)" class="product-title">PlayStation 4</a>
+                                            <span class="product-description">
+                                              PlayStation 4 500GB Console (PS4)
+                                            </span>
+                                      </div>
+                                    </li>
+                                    <li class="item">
+                                      <div class="product-img">
+                                        <img src="{{asset('Resources/src/img/empresa/empresa.png')}}" alt="Product Image">
+                                      </div>
+                                      <div class="product-info">
+                                        <a href="javascript:void(0)" class="product-title">Samsung TV
+                                          </a>
+                                            <span class="product-description">
+                                              Samsung 32" 1080p 60Hz LED Smart HDTV.
+                                            </span>
+                                      </div>
+                                    </li>
+                                    <li class="item">
+                                      <div class="product-img">
+                                        <img src="{{asset('Resources/src/img/empresa/empresa.png')}}" alt="Product Image">
+                                      </div>
+                                      <div class="product-info">
+                                        <a href="javascript:void(0)" class="product-title">Bicycle</a>
+                                          <span class="product-description">
+                                              26" Mongoose Dolomite Men's 7-speed, Navy Blue.
+                                            </span>
+                                      </div>
+                                    </li>
+                                    <li class="item">
+                                      <div class="product-img">
+                                        <img src="{{asset('Resources/src/img/empresa/empresa.png')}}" alt="Product Image">
+                                      </div>
+                                      <div class="product-info">
+                                        <a href="javascript:void(0)" class="product-title">Xbox One </a>
+                                            <span class="product-description">
+                                              Xbox One Console Bundle with Halo Master Chief Collection.
+                                            </span>
+                                      </div>
+                                    </li>
+                                    <li class="item">
+                                      <div class="product-img">
+                                        <img src="{{asset('Resources/src/img/empresa/empresa.png')}}" alt="Product Image">
+                                      </div>
+                                      <div class="product-info">
+                                        <a href="javascript:void(0)" class="product-title">PlayStation 4</a>
+                                            <span class="product-description">
+                                              PlayStation 4 500GB Console (PS4)
+                                            </span>
+                                      </div>
+                                    </li>
+                                    <li class="item">
+                                      <div class="product-img">
+                                        <img src="{{asset('Resources/src/img/empresa/empresa.png')}}" alt="Product Image">
+                                      </div>
+                                      <div class="product-info">
+                                        <a href="javascript:void(0)" class="product-title">Xbox One </a>
+                                            <span class="product-description">
+                                              Xbox One Console Bundle with Halo Master Chief Collection.
+                                            </span>
+                                      </div>
+                                    </li>
+                                    <li class="item">
+                                      <div class="product-img">
+                                        <img src="{{asset('Resources/src/img/empresa/empresa.png')}}" alt="Product Image">
+                                      </div>
+                                      <div class="product-info">
+                                        <a href="javascript:void(0)" class="product-title">PlayStation 4</a>
+                                            <span class="product-description">
+                                              PlayStation 4 500GB Console (PS4)
+                                            </span>
+                                      </div>
+                                    </li>
+                                </ul>
+                            </div>
+                          
+                        </div>
+                    </div>
+                </div>
         </div>
         <script type="text/javascript">
             $(function () {
-                $('[data-toggle="tooltip"]').tooltip()
-            })
-
-
+                $('[data-toggle="tooltip"]').tooltip();
+            });
         </script>
-
     {% endblock %}
 {% endblock %}
-
-
-
-<div class="modal fade modal" id="idModalFotoP" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header " Style="height:45px;">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                <span class="robo" style="font-size: 20px; ">Editar foto de perfil</span>
-            </div>
-            <div class="modal-body" id="mbodyExperiencia" >
-
-                <form action="#" id="frmEmpresaConFoto" role="form" enctype="multipart/form-data" method="POST">
-                    {% if abgFoto %}
-
-
-                        <div class="image-editor" >
-                            <center>
-                                <div class="cropit-preview" style="z-index: 3; background-image:url({{ asset('') }}{{ abgFoto[0].src}}) ; border-color:white; " ></div>
-                            </center>
-                            <div class="image-upload" >
-                                <label for="input" >
-                                    <img src="{{ asset('Resources/icons/photo.png') }}" style="width: 25px; height: 25px; margin-left: 40px; margin-top:-200px;; position: relative; z-index: 3; " title="Click para seleccionar una imagen" >
-                                </label>
-
-                                <input type="file" class="cropit-image-input" id="input">      
-
-                            </div>
-                            <center>    
-                                <div class="image-size-label" id="labelid">
-                                    Dimension de imagen
-                                </div>
-                                <input type="range" class="cropit-image-zoom-input" style="width: 140px;" id="idrange">
-                                <input type="hidden" name="image-data" class="hidden-image-data" />
-                                <input type="hidden" name="user" value="{{ usuario }}" id="usuario">
-                                <input type="hidden" id="hPersonaModal"  value="{{datos.id}}" name="personaId">
-                            </center>
-
-                        </div>
-
-
-                    {% endif %}
-
-            </div>
-            <div class="modal-footer" id="botomExperiencia" >
-                <img src='{{ asset('Resources/icons/transfer.gif') }}' style="width: 25px; height: 25px; margin-right:70px; " id="gif">
-
-                <button type="submit" id="cmd" class="btn btn-success">Cortar y Guardar</button>
-            </div>
-
-        </div>
-    </div>
-</form>  
-</div>
-

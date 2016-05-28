@@ -73,9 +73,84 @@ class AbgCentroPreguntasController extends Controller {
         $id = $request->get('id');
         $em = $this->getDoctrine()->getManager();
         $pregunta = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->find($id);
-        //var_dump($pregunta);
-        //die();
-        return $this->render('centropreg/respuestacentro.html.twig', array('pregunta'=>$pregunta));
+        
+        if($pregunta->getRespuesta() != ''){
+            $foto = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findOneBy(array("abgPersona" => $pregunta->getCtlUsuario()->getRhPersona()));
+        } else {
+            $foto = null;
+        }
+            
+        $rsm = new ResultSetMapping();
+        
+        $sql = "select per.nombres as nombres, per.apellido as apellidos, foto.src as src, uper.url as url, count(pre.respuesta) as totalrespuestas
+                from abg_pregunta pre inner join ctl_usuario usu on pre.ctl_usuario_id = usu.id
+                inner join abg_persona per on usu.rh_persona_id = per.id
+                inner join abg_foto foto on foto.abg_persona_id = per.id
+                inner join abg_url_personalizada uper on uper.abg_persona_id = per.id
+                group by per.nombres, per.apellido, foto.src, uper.url
+                order by count(pre.respuesta) desc
+                limit 0, 10";
+        
+        $rsm->addScalarResult('nombres','nombres');
+        $rsm->addScalarResult('apellidos','apellidos');
+        $rsm->addScalarResult('src','src');
+        $rsm->addScalarResult('url','url');
+        $rsm->addScalarResult('totalrespuestas','totalrespuestas');
+        
+        $topUsuarios = $em->createNativeQuery($sql, $rsm)
+                                  ->getResult();
+        
+        $prom = $this->busquedaPublicidad(1);
+        $prom2 = $this->busquedaPublicidad(2);
+        $prom3 = $this->busquedaPublicidad(3);
+        $prom4 = $this->busquedaPublicidad(4);
+        
+        return $this->render('centropreg/respuestacentro.html.twig', array('foto'=> $foto, 'prom1'=> $prom, 'prom2'=> $prom2, 'prom3'=> $prom3, 'prom4'=> $prom4, 'pregunta'=>$pregunta, 'top'=>$topUsuarios));
+    }
+    
+    /**
+     * Respuesta
+     *
+     * @Route("/respuestas", name="respuesta_centro")
+     * @Method("GET")
+     */
+    public function respuestasPersonaAction(Request $request) {
+        $id = $request->get('id');
+        $em = $this->getDoctrine()->getManager();
+        $pregunta = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->find($id);
+        
+        if($pregunta->getRespuesta() != ''){
+            $foto = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findOneBy(array("abgPersona" => $pregunta->getCtlUsuario()->getRhPersona()));
+        } else {
+            $foto = null;
+        }
+            
+        $rsm = new ResultSetMapping();
+        
+        $sql = "select per.nombres as nombres, per.apellido as apellidos, foto.src as src, uper.url as url, count(pre.respuesta) as totalrespuestas
+                from abg_pregunta pre inner join ctl_usuario usu on pre.ctl_usuario_id = usu.id
+                inner join abg_persona per on usu.rh_persona_id = per.id
+                inner join abg_foto foto on foto.abg_persona_id = per.id
+                inner join abg_url_personalizada uper on uper.abg_persona_id = per.id
+                group by per.nombres, per.apellido, foto.src, uper.url
+                order by count(pre.respuesta) desc
+                limit 0, 10";
+        
+        $rsm->addScalarResult('nombres','nombres');
+        $rsm->addScalarResult('apellidos','apellidos');
+        $rsm->addScalarResult('src','src');
+        $rsm->addScalarResult('url','url');
+        $rsm->addScalarResult('totalrespuestas','totalrespuestas');
+        
+        $topUsuarios = $em->createNativeQuery($sql, $rsm)
+                                  ->getResult();
+        
+        $prom = $this->busquedaPublicidad(1);
+        $prom2 = $this->busquedaPublicidad(2);
+        $prom3 = $this->busquedaPublicidad(3);
+        $prom4 = $this->busquedaPublicidad(4);
+        
+        return $this->render('centropreg/respuestacentro.html.twig', array('foto'=> $foto, 'prom1'=> $prom, 'prom2'=> $prom2, 'prom3'=> $prom3, 'prom4'=> $prom4, 'pregunta'=>$pregunta, 'top'=>$topUsuarios));
     }
          
     /**

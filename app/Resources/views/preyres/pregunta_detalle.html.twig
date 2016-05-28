@@ -34,7 +34,7 @@
     {% block cuerpo %}
         {% embed ':Layout:head.html.twig' %}{% endembed %}
         {#<div class="container" style="padding: 20px 0px; background-color: #f6f6f6;">#}
-		<div class="row contenedor-perfil" style=" padding: 10px; background-color:#ecf0f5; height: 100%;">
+		<div class="row contenedor-perfil" style=" padding: 10px; background-color:#ecf0f5; ">
                     <div class="col-md-9"> {#Inicio lista de preguntas#}  
                         <div class="box box-widget">
                             <div class="box-body " style=" padding: 5px;"> 
@@ -57,7 +57,7 @@
                                     <p class="" style="font-size: 15px;">Haga su pregunta al más grande grupo selecto de abogados</p>
                                     <div class="col-md-12 text-center">
                                         <div class="form-group">
-                                            <textarea id="" name="pregunta" class="form-control textarea" maxlength="140" placeholder="Haga su pregunta aqui ..." {#style="max-width: 400px; min-width: 400px; width: 400px; max-height: 150px; min-height: 150px; height: 150px;"#}>{{pregunta}}</textarea>
+                                            <textarea id="" name="pregunta" class="form-control textarea" maxlength="250" placeholder="Haga su pregunta aqui ..." {#style="max-width: 400px; min-width: 400px; width: 400px; max-height: 150px; min-height: 150px; height: 150px;"#}>{{pregunta}}</textarea>
                                         </div>
                                     </div>
                                     
@@ -66,7 +66,7 @@
                                         <p class="" style="font-size: 15px;">Diganos más sobre su pregunta</p>
                                         <div class="col-md-12 text-center">
                                             <div class="form-group">
-                                                <textarea id="" name="detalle" class="form-control textarea" maxlength="140" placeholder="Describe a más detalle su pregunta ..." {#style="max-width: 400px; min-width: 400px; width: 400px; max-height: 150px; min-height: 150px; height: 150px;"#}></textarea>
+                                                <textarea id="" name="detalle" class="form-control textarea" maxlength="250" placeholder="Describe a más detalle su pregunta ..." {#style="max-width: 400px; min-width: 400px; width: 400px; max-height: 150px; min-height: 150px; height: 150px;"#}></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -114,7 +114,7 @@
                                 </div>
                                 <div class="box-footer">
                                     <div class="col-md-12">
-                                        <button type="submit" class="btn btn-primary btn-flat " style="margin-top: 10px;">Enviar Pregunta </button>
+                                        <button type="submit" class="btn btn-bitbucket btn-flat " style="margin-top: 10px;">Enviar Pregunta </button>
                                         <a href="{{ path('pregunta_index') }}" class="button">
                                             <button class="btn btn-default btn-flat pull-right" style="margin-top: 10px;">Regresar</button>
                                         </a>
@@ -125,6 +125,43 @@
                         </form>                                
                     </div>
                     <div class="col-md-3">
+                        <div class="box box-widget">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">TOP 10 USUARIOS ACTIVOS</h3>
+                            </div>
+                            <div class="box-body">                                    
+                                <div class="list-group">
+                                    {% for key, row in top %}
+                                        {% set nombres = row.nombres|split(' ') %}
+                                        {% set apellidos = row.apellidos|split(' ') %}
+                                        <p>
+                                            <div class="row">
+                                                <div class="col-xs-2 text-center" style="border-right: 2px solid #f0f0f5; font-size: 30px;">
+                                                    <div id="sparkline-1">{{ key + 1 }}</div>
+                                                </div>
+                                                {#<a href="{{ path('busquedaPerfil', {url: row.url}) }}">  #}
+                                                    <div class="col-xs-10" style="border-right: 1px solid #f4f4f4">
+                                                        <div id="sparkline-2">
+                                                            {#<img src="{{asset('') }}{{ row.src}}" style="width: 40px; height: 40px; margin-bottom: 0px;" class="img-circle" alt="User Image" />#}
+                                                            <div>{{ nombres[0] }} {{ apellidos[0] }}</div>
+                                                            <a href="{{ path('busquedaPerfil', {url: row.url}) }}">Ver perfil</a> | <a href="{{ path('busquedaPerfil', {url: row.url}) }}">{{ row.totalrespuestas }} {% if row.totalrespuestas > 1 %}respuestas{% else %}respuesta{% endif %}</a>
+                                                        </div>
+                                                    </div>
+                                                  
+                                            </div>
+                                        </p>
+                                    {% else %}
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div id="sparkline-2">
+                                                    <span>Ningún usuario ha respondido</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}                                    
+                                </div>               
+                            </div> {#Inicio de top abogados activos#}
+                        </div>
                         <div class="row" style="margin-top: 6px;">
                             <div class="col-md-12">
                                 <div class="box box-widget">
@@ -211,6 +248,11 @@
                 $('#categoria').select2();
                 
                 setInterval(cambia, 4000);
+                
+                // Al momento de hacer click en Registrar un anuncio publicitario de un abogado
+                $(document).on("click", "#registro-venta", function(){
+                    
+                });
             });
             
             function cambia() {
