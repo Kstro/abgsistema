@@ -27,6 +27,7 @@
 {% endblock %} 
 {% block cuerpo %}
     <script>
+        
         window.fbAsyncInit = function () {
             FB.init({
                 appId: '619394621542298',
@@ -38,47 +39,47 @@
 
             FB.getLoginStatus(function (response) {
                 if (response.status === 'connected') {
-                          FB.api('/me', {"fields": "email,first_name,last_name,id,gender"}, function (response) 
-            {
-                $.ajax({
-                    data: {id: response.id,  email: response.email},
-                    url: Routing.generate('validar_correo'),
-                    type: 'POST',
-                    dataType: 'json',
-                    success: function (data) {
-                        if (data == true) {
-                            $.ajax({
-                                data: {id: response.id,nombre: response.first_name,apellido: response.last_name,email: response.email
-                                },
-                                url: Routing.generate('ingresar_usuarioEmpresa'),
-                                type: 'POST',
-                                dataType: 'json',
-                                success: function (data) {
-                                    if (data.estado == true) {
-                                        var url = Routing.generate('perfil');
-                                        window.open(url, "_self");
-                                        Lobibox.notify("success", {
-                                            size: 'mini',
-                                            msg: 'Registro exitoso, espere un momento'
-                                        });
-                                    } else {
-                                        Lobibox.notify("error", {
-                                            size: 'mini',
-                                            msg: 'Error al ingresar los datos'
-                                        });
-                                    }
-                                }
-                            });
-                        } else { 
+                    FB.api('/me', {"fields": "email,first_name,last_name,id,gender"}, function (response)
+                    {
+                        $.ajax({
+                            data: {id: response.id, email: response.email},
+                            url: Routing.generate('validar_correo'),
+                            type: 'POST',
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data == true) {
+                                    $.ajax({
+                                        data: {id: response.id, nombre: response.first_name, apellido: response.last_name, email: response.email
+                                        },
+                                        url: Routing.generate('ingresar_usuarioEmpresa'),
+                                        type: 'POST',
+                                        dataType: 'json',
+                                        success: function (data) {
+                                            if (data.estado == true) {
+                                                var url = Routing.generate('perfil');
+                                                window.open(url, "_self");
+                                                Lobibox.notify("success", {
+                                                    size: 'mini',
+                                                    msg: 'Registro exitoso, espere un momento'
+                                                });
+                                            } else {
+                                                Lobibox.notify("error", {
+                                                    size: 'mini',
+                                                    msg: 'Error al ingresar los datos'
+                                                });
+                                            }
+                                        }
+                                    });
+                                } else {
 
-                            $("#username").val(response.email);
-                            $("#contrasenha").val(response.id);
-                            $("#frmLogin").submit();
-                        }
-                    }
-                });
-            });
-             //
+                                    $("#username").val(response.email);
+                                    $("#contrasenha").val(response.id);
+                                    $("#frmLogin").submit();
+                                }
+                            }
+                        });
+                    });
+                    //
                 } else {
                     FB.login();
                 }
@@ -97,17 +98,17 @@
         }(document, 'script', 'facebook-jssdk'));
 
         function iniciaAPI() {
-            FB.api('/me', {"fields": "email,first_name,last_name,id,gender"}, function (response) 
+            FB.api('/me', {"fields": "email,first_name,last_name,id,gender"}, function (response)
             {
                 $.ajax({
-                    data: {id: response.id,  email: response.email},
+                    data: {id: response.id, email: response.email},
                     url: Routing.generate('validar_correo'),
                     type: 'POST',
                     dataType: 'json',
                     success: function (data) {
                         if (data == true) {
                             $.ajax({
-                                data: {id: response.id,nombre: response.first_name,apellido: response.last_name,email: response.email
+                                data: {id: response.id, nombre: response.first_name, apellido: response.last_name, email: response.email
                                 },
                                 url: Routing.generate('ingresar_usuarioEmpresa'),
                                 type: 'POST',
@@ -129,13 +130,14 @@
                                 }
                             });
                         } else {
-                            
-                             $("#frmLogin").submit();
+
+                            $("#frmLogin").submit();
                         }
                     }
                 });
             });
         }
+                
     </script>
 
     <div class="login-box">
@@ -163,22 +165,19 @@
                         </div>
                     </div><!-- /.col -->
                     <div class="col-xs-5">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">Iniciar sesión</button>
+                        <button type="submit" class="btn btn-primary btn-block btn-flat" ><b>Iniciar sesión</b></button>
                     </div><!-- /.col -->
                 </div>
             </form>
             <div class="social-auth-links text-center">
                 <p>- OR -</p>
-                <fb:login-button scope="public_profile,email" onClick="checkLoginState();" class=" btn-flat" >Sign in using Facebook 
-                </fb:login-button>
-
+                {#  <fb:login-button scope="public_profile,email" onClick="checkLoginState();" class=" btn-flat" >Sign in using Facebook
+                  </fb:login-button>#}
+                <div class="fb-login-button btn-flat" style=" width:220px;" data-max-rows="2" data-size="large" data-show-faces="false" data-auto-logout-link="false">Iniciar sesión </div>
+	
             </div><!-- /.social-auth-links -->
-            <div
-                class="fb-like"
-                data-share="true"
-                data-width="450"
-                data-show-faces="true">
-            </div>
+
+
 
             {% block alert -%}
                 {% if error %}
@@ -199,13 +198,13 @@
     <!-- iCheck -->
     <script src="{{asset('Resources/AdminLTE-2.3.0/plugins/iCheck/icheck.min.js')}}"></script>
     <script>
-                    $(function () {
-                        $('input').iCheck({
-                            checkboxClass: 'icheckbox_square-blue',
-                            radioClass: 'iradio_square-blue',
-                            increaseArea: '20%' // optional
-                        });
-                    });
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
+        });
     </script>
     <script>
         /*

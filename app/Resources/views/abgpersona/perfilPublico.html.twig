@@ -159,7 +159,7 @@
 
         <div class="row" style=" padding: 10px; background-color:#ecf0f5;">
             <div class=" col-md-9" style="padding-right:0px;">
-                <div class="box box-widget">
+              {#  <div class="box box-widget">
                     <div class="box-body " style=" padding: 5px;"> 
                         <div class="pos1">
                             {% if prom1 is null%}
@@ -170,7 +170,7 @@
                             
                         </div>
                     </div>
-                </div>
+                </div> #}
                
                     <!-- Main content -->
 
@@ -618,7 +618,18 @@
                       </div>
                     </div>
                 </div>
-                    
+                    <div class="box box-widget">
+                    <div class="box-body " style=" padding: 5px;"> 
+                        <div class="pos1">
+                            {% if prom1 is null%}
+                                <img src="{{asset('Resources/src/img/banner1.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia">
+                            {% else %}
+                                 <img src="{{asset('')}}{{ prom1[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia">
+                            {% endif %}
+                            
+                        </div>
+                    </div>
+                </div> 
             </div>
 
 

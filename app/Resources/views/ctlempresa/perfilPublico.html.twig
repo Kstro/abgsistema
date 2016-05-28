@@ -153,7 +153,7 @@
 
         <div class="row contenedor-perfil" style=" padding: 10px; background-color:#ecf0f5;">
             <div class=" col-md-9">
-                <div class="box box-widget">
+             {#   <div class="box box-widget">
                     <div class="box-body " style=" padding: 5px;"> 
                         <div class="pos1">
                             {% if prom1 is null%}
@@ -164,7 +164,7 @@
                            
                         </div>
                     </div>
-                </div>
+                </div>#}
                 {% for datos in ctlEmpresa %}
                     <div class="box box-widget btn-flat">
 
@@ -460,11 +460,11 @@
 
 
             <div class="col-md-3" >
-                
-                <div class="bloque-main" style="padding: 5px;">
-                    <div style="width:300px;overflow:hidden;height:450px;max-width:100%;" >
+                {% for datos in ctlEmpresa %} 
+                <div class="bloque-main" style="padding: 5px; margin-bottom: 15PX;  background-color: #000035;">
+                    <div style="width:300px;overflow:hidden;height:450px;max-width:100%; color: #fff" >
                         {#  Aqui empieza el mapa de geolocalizacion    #}
-                        {% for datos in ctlEmpresa %} 
+                        
                             <center>
                                 <div>
                                     <h4>Numero de visitas {% if  visitas  %}<small class="label bg-blue ">{{ visitas}}</small>{% else %}<small class="label pull-right bg-blue ">{{0}}</small> {% endif %}</h4>
@@ -479,7 +479,7 @@
                                 <label class="col-sm-2 control-label">Direccion:</label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="us3-address" />
+                                    <input type="text" class="form-control " id="us3-address" />
                                 </div>
                                 <div class="col-sm-2">
                                     <input type="button" class="btn btn-success" id="guardarCambios" value="Guardar Cambios">
@@ -543,10 +543,10 @@
                                 });
                             </script>
                         </div> 
-                    {% endfor %}
+                    
                     <div class="clearfix"></div>
             </div>
-
+{% endfor %}
                 <div class="bloque-main pos2" style="padding: 5px;">
                     {% if prom2 is null%}
                         <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
