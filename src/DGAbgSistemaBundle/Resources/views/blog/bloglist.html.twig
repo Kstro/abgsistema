@@ -8,6 +8,8 @@
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
+        
+       
     </script>
 {% endblock %} 
 {% block cuerpo %}
@@ -31,9 +33,9 @@
 <div class="row" style=" padding: 10px; background-color:#ecf0f5; ">
     <div class="col-md-9" style="padding-right:0px;">
 
-        <div class="box box-widget">
-
-            <div class="box-body no-padding" >
+        <div class="panel panel-primary">
+  <div class="panel-heading">ENTRADAS<i class="fa  fa-caret-down pull-right " id="iver" onClick="bntCategorias()"></i><i class="fa   fa-caret-up pull-right " id="inver" style=" display: none;" onClick="bntCategorias()"></i></div>
+            <div class="panel-body no-padding" >
                 <div id="bloquemain">
                 </div>                                
                 <div id="registros" class="table-hover">
@@ -55,11 +57,10 @@
         </div>  </div>
     <!-- end col md 9 -->
     <div class="col-md-3" style="padding-left:10px;">
-        <div class="box box-widget " style="border-radius:3px; margin-bottom:5px;">
-            <div class="box-header with-border">
-                <h3 class="box-title" >CATEGORIAS</h3>
-            </div>
-            <div class="box-body" style="margin-left: 10px;">
+        <div class="panel panel-primary" style="border-radius:3px; margin-bottom:5px;margin-bottom: 15px; display:none;" id="divCategorias">
+         
+            <div class="panel-heading">CATEGORIAS</div>
+            <div class="panel-body" style="margin-left: 10px;">
                 <ul class="products-list product-list-in-box">
                     {% for ctlCategoriasBlog in ctlCategoriasBlog %}
                         <li class="item"><a href="#" id="cb" class="{{ctlCategoriasBlog.id}}"  
@@ -69,7 +70,7 @@
             </div>
         </div>
         <!-- Publicida -->
-        <div class="bloque-main pos2 no-margin" style="padding: 5px;border-radius:3px; ">
+      <div class="bloque-main pos2 no-margin" style="padding: 5px;border-radius:3px; ">
             {% if prom2 is null%}
                 <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
             {% else %}
@@ -95,6 +96,26 @@
     {#<script src="{{ asset('Resources/datatable/dataTable.js') }}"></script>#}
     <script src="{{ asset('Resources/datatable/js/datatable.js') }}"></script>
     <script>
+        
+         function bntCategorias()
+        {
+            if( $('#divCategorias').is(":visible"))
+            {
+                    $("#iver").css("display","block");
+                  $("#divCategorias").css("display","none");
+                  
+                  $("#inver").css("display","none");
+            }
+            else
+            {
+            $("#divCategorias").css("display","block");
+              $("#iver").css("display","none");
+            $("#inver").css("display","block");
+            
+       
+            
+        }
+        }
         $(document).ready(function () {
             var inicio = $('#inicioInput').val(); //numero de registros que se van a mostrar
             var busqueda = $('#searchBox').val();
@@ -190,8 +211,8 @@
                                 cadena2 += '<img src="{{ asset('Photos/entrada/')}}' + src + '" class="blogimage" style="max-width: 100%;  width: 500px; height: 146px;">';
                                 cadena2 += '</div>';
                                 cadena2 += '<div class="col-md-8">';
-                                cadena2 += '<p class="text-left" style="font-size: 16px; color: #555555; margin-bottom: 0px;">';
-                                cadena2 += '<strong>' + busquedaTitulo + '</strong>';
+                                cadena2 += '<p class="text-left " style="font-size: 16px; color: #337ab7; margin-bottom: 0px;">';
+                                cadena2 += '<strong>' + busquedaTitulo.toUpperCase()+ '</strong>';
                                 cadena2 += '</p>';
                                 cadena2 += '<p class="text-left sans" style="margin-bottom: 0px; font-size: 12px;">Por: ' + busquedaNombre + ' ' + busquedaApellido + ' | ' + busquedaFecha + ' | ' + busquedaCategoria + '</p>';
                                 cadena2 += '<div style="height: 83px;">';
@@ -221,8 +242,8 @@
                                 cadena += '<img src="{{ asset('Photos/entrada/')}}' + src + '" class="blogimage" style="max-width: 100%;  width: 500px; height: 146px;">';
                                 cadena += '</div>';
                                 cadena += '<div class="col-md-8">';
-                                cadena += '<p class="text-left" style="font-size: 16px; color: #555555; margin-bottom: 0px;">';
-                                cadena += '<strong>' + busquedaTitulo + '</strong>';
+                                cadena += '<p class="text-left" style="font-size: 16px; color: #337ab7; margin-bottom: 0px;">';
+                                cadena += '<strong>' + busquedaTitulo.toUpperCase() + '</strong>';
                                 cadena += '</p>';
                                 cadena += '<p class="text-left sans" style="margin-bottom: 0px; font-size: 12px;">Por: ' + busquedaNombre + ' ' + busquedaApellido + ' | ' + busquedaFecha + ' | ' + busquedaCategoria + '</p>';
                                 cadena += '<div style="height: 83px;">';
@@ -414,8 +435,8 @@
                                     cadena2 += '<img src="{{ asset('Photos/entrada/')}}' + src + '" class="blogimage" style="max-width: 100%;  width: 500px; height: 146px;">';
                                     cadena2 += '</div>';
                                     cadena2 += '<div class="col-md-8">';
-                                    cadena2 += '<p class="text-left" style="font-size: 16px; color: #555555; margin-bottom: 0px;">';
-                                    cadena2 += '<strong>' + busquedaTitulo + '</strong>';
+                                    cadena2 += '<p class="text-left" style="font-size: 16px; color: #337ab7; margin-bottom: 0px;">';
+                                    cadena2 += '<strong>' + busquedaTitulo.toUpperCase() + '</strong>';
                                     cadena2 += '</p>';
                                     cadena2 += '<p class="text-left sans" style="margin-bottom: 0px; font-size: 12px;">Por: ' + busquedaNombre + ' ' + busquedaApellido + ' | ' + busquedaFecha + ' | ' + busquedaCategoria + '</p>';
                                     cadena2 += '<div style="height: 83px;">';
@@ -441,8 +462,8 @@
                                     cadena += '<img src="{{ asset('Photos/entrada/')}}' + src + '" class="blogimage" style="max-width: 100%;  width: 500px; height: 146px;">';
                                     cadena += '</div>';
                                     cadena += '<div class="col-md-8">';
-                                    cadena += '<p class="text-left" style="font-size: 16px; color: #555555; margin-bottom: 0px;">';
-                                    cadena += '<strong>' + busquedaTitulo + '</strong>';
+                                    cadena += '<p class="text-left" style="font-size: 16px; color: #337ab7; margin-bottom: 0px;">';
+                                    cadena += '<strong>' + busquedaTitulo.toUpperCase() + '</strong>';
                                     cadena += '</p>';
                                     cadena += '<p class="text-left sans" style="margin-bottom: 0px; font-size: 12px;">Por: ' + busquedaNombre + ' ' + busquedaApellido + ' | ' + busquedaFecha + ' | ' + busquedaCategoria + '</p>';
                                     cadena += '<div style="height: 83px;">';
