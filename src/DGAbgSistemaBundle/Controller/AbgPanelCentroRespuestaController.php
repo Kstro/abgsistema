@@ -161,11 +161,13 @@ class AbgPanelCentroRespuestaController extends Controller {
         try {
             $em = $this->getDoctrine()->getManager();
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
-
+$idUser=$this->container->get('security.context')->getToken()->getUser()->getId();
+            
+                      
             $sql = "SELECT preg.id as idpreg, preg.pregunta,  preg.fechapregunta AS fecha "
                     . " FROM abg_pregunta preg "
                     . " JOIN ctl_especialidad esp "
-                    . " ON esp.id=preg.ctl_especialidad "
+                    . " ON esp.id=preg.ctl_especialidad AND preg.ctl_usuario_id=". $idUser
                     . " JOIN abg_persona_especialidad pe "
                     . " ON pe.ctl_especialidad_id=esp.id AND pe.abg_persona_id=" . $idPersona
                     . " WHERE preg.estado=0"
@@ -192,7 +194,7 @@ class AbgPanelCentroRespuestaController extends Controller {
             $em = $this->getDoctrine()->getManager();
                         $request = $this->getRequest();
                         $user= $this->container->get('security.context')->getToken()->getUser()->getId();
-                      
+                   
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             
                $dqlfoto = "SELECT fot.src as src "
@@ -207,7 +209,7 @@ class AbgPanelCentroRespuestaController extends Controller {
                     . " ON esp.id=preg.ctl_especialidad AND preg.ctl_usuario_id=" . $user
                     . " JOIN abg_persona_especialidad pe "
                     . " ON pe.ctl_especialidad_id=esp.id "
-                    . " WHERE preg.estado=1"
+                    . " WHERE preg.estado=0"
                     . " ORDER BY  preg.fechapregunta DESC ";
             $em = $this->getDoctrine()->getManager();
             $stmt = $em->getConnection()->prepare($sql);
