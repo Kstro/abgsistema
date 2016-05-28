@@ -28,7 +28,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 /**
  * AbgPersona controller.
  *
- * @Route("/abgpersona")
+ * @Route("admin/abgpersona")
  */
 class AbgPersonaController extends Controller {
 
@@ -209,7 +209,7 @@ class AbgPersonaController extends Controller {
     }
 
     /**
-     * @Route("/admin/perfil/", name="perfil", options={"expose"=true})
+     * @Route("/perfil/", name="perfil", options={"expose"=true})
      * @Method("GET")
      */
     public function PerfilAction() {
@@ -619,7 +619,7 @@ class AbgPersonaController extends Controller {
     }
 
     /**
-     * @Route("/admin/ajustes/{username}", name="ajustes", options={"expose"=true})
+     * @Route("/ajustes/{username}", name="ajustes", options={"expose"=true})
      * @Method("GET")
      */
     public function AjustesAction($username) {
@@ -1119,16 +1119,7 @@ class AbgPersonaController extends Controller {
 
             $idEmpresa = "";
             $IdExperiencia = "";
-            if ($request->get('tipo') == "1") {
-                $idEmpresa = $Empresa->find(intval($request->get('empresa')));
-
-                if ($idEmpresa !== null) {
-                    $nombre = $Empresa->find(intval($request->get('empresa'))); //->getNombreEmpresa();
-                }
-            } else {
-
-                $nombre = $request->get('empresa');
-            }
+  
 
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
 
@@ -1141,10 +1132,19 @@ class AbgPersonaController extends Controller {
             $dqlPersonaExp = $em->createQuery($ExpPersona);
             $resulExp = $dqlPersonaExp->getResult();
 
-
+          
             $idEXp = "";
-            if ((($datos['hidExp'] == ""))) {
+            if ($datos['hidExp'] == "") {
+          if ($request->get('tipo') == "1") {
+                $idEmpresa = $Empresa->find(intval($request->get('empresa')));
 
+                if ($idEmpresa !== null) {
+                    $nombre = $Empresa->find(intval($request->get('empresa')))->getNombreEmpresa();
+                }
+            } else {
+
+                $nombre = $request->get('empresa');
+            }
                 if ((count($resulExp) > 0) && ($datos['txtFechaFin'] == "")) {
                     foreach ($resulExp as $row) {
                         //  $fechaFin = $row['fecha_fin'];
@@ -1164,6 +1164,7 @@ class AbgPersonaController extends Controller {
                     $Experiencia->setFuncion($datos['txtfuncion']);
                     $Experiencia->setPuesto($datos['txtpuesto']);
                     $Experiencia->setUbicacion($datos['txthubicacion']);
+           
                     if (($datos['txtFechaFin']) != "") {
                         $fechaFin = date_create($datos['txtFechaFin']);
                         $Experiencia->setFechaFin($fechaFin);
@@ -1172,7 +1173,10 @@ class AbgPersonaController extends Controller {
                         $Experiencia->setFechaFin($fechaFin);
                     }
                     if ($idEmpresa != null) {
-                        $Experiencia->setCtlEmpresa($idEmpresa);
+                  
+                     $Empresa = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($idEmpresa->getId());
+                        $Experiencia->setCtlEmpresa($Empresa);
+                    
                     }
                     $em->persist($Experiencia);
                     $em->flush();
@@ -1181,8 +1185,8 @@ class AbgPersonaController extends Controller {
                     if ($Experiencia->getFechaFin() == null) {
                         try {
                             $AbgPersonaEmpresa = new AbgPersonaEmpresa();
-                            $Empresa = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($idEmpresa);
-
+                            $Empresa = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($idEmpresa->getId());
+                            
                             if ($Empresa) {
                                 $AbgPersonaEmpresa->setAbgPersona($Persona);
                                 $AbgPersonaEmpresa->setCtlEmpresa($Empresa);
@@ -1196,8 +1200,19 @@ class AbgPersonaController extends Controller {
                     }
                     $data['msj'] = "Experiencia registrada";
                 }
+                
             }// Actualizar 
             else {
+                        if ($request->get('tipo') == "1") {
+                $idEmpresa = $Empresa->find(intval($request->get('empresa')));
+
+                if ($idEmpresa !== null) {
+                    $nombre = $Empresa->find(intval($request->get('empresa')));//->getNombreEmpresa();
+                }
+            } else {
+
+                $nombre = $request->get('empresa');
+            }
 
                 foreach ($resulExp as $row) {
 

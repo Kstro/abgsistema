@@ -65,7 +65,7 @@ $(document).on('ready', function () {
         } else {
             estado = 0;
         }
-        console.log(estado);
+  
         $.ajax({
             type: 'POST',
             async: false,

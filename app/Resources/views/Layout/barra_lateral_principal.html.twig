@@ -118,9 +118,11 @@
                 <a href="{{ path('verificar_abg') }}">
                     <i class="fa fa-certificate"></i>
                     <span>Verificar  abogado</span>
-                     <small class="label pull-right bg-red ">{%if NNotificaciones|default is not empty %}
+                  {#%if NNotificaciones|default is not empty %}
+                         <small class="label pull-right bg-red ">
                         {%if (NNotificaciones|number_format!=0)%} {{NNotificaciones|number_format}} {%endif%}
-                        {%endif%}</small>
+                        </small>
+                        {%endif%#}
                 </a>
             </li>
             <li>

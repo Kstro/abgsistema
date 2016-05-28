@@ -65,7 +65,7 @@
                         datos += '</div>';
 
                         datos += '<img alt="message user image" src="/' + data.foto + '" class="direct-chat-img ">';
-                        datos += '<div class="direct-chat-text ">' + val.respuesta + '</div>';
+                        datos += '<div class="direct-chat-text text-justify">' + val.respuesta + '</div>';
                         datos += '</div></div><br>';
                         datos += '<button type="button" class="btn btn-default btn-sm btn-flat" onClick="RegresaRespuestas()" >Regresar al Panel</button>';
 
@@ -115,7 +115,7 @@
                 <ul class="nav nav-tabs  ui-sortable-handle">
                     <li class="active"><a href="#listaPreguntas" data-toggle="tab">Lista de preguntas</a></li>
                     <li><a href="#resPregunta" data-toggle="tab"  onClick="Respregut()">Preguntas respondidas</a></li>
-                    <li class="pull-left header">
+                    <li class="pull-left header ">
                 </ul>
                 <div class="tab-content no-padding">
                     <div class="chart tab-pane active" id="listaPreguntas" style=" padding: 15px;">

@@ -290,15 +290,15 @@ a.prob:focus {
 }
 
 .bloque-main {
- border: 1px solid #e0e0e0; background-color: #ffffff; border-radius: 2px; padding: 20px;
+ border: 1px solid #efeded; background-color: #ffffff; border-radius: 2px; padding: 20px;
 }
 
 .bloque-nexo {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  border-left: 1px solid #e0e0e0; 
-  border-right: 1px solid #e0e0e0; 
-  border-bottom: 1px solid #e0e0e0; 
+  border-left: 1px solid #efeded; 
+  border-right: 1px solid #efeded; 
+  border-bottom: 1px solid #efeded; 
   background-color: #ffffff; 
   padding: 20px;
   border-bottom-left-radius: 2px;

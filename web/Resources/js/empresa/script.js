@@ -34,9 +34,6 @@ $(document).ready(function () {
             success: function (data) {
                 console.log(data);
                 data = jQuery.parseJSON(data);
-
-
-
                 if (data == true) {
                     //Ajax de insersion de datos               
                     $.ajax({
@@ -47,7 +44,6 @@ $(document).ready(function () {
                         type: 'POST',
                         dataType: 'json',
                         success: function (data) {
-
                             if (data.estado == true) {
                                 var url = Routing.generate('perfil');
                                 //var url = Routing.generate('abogado_login');
@@ -57,8 +53,6 @@ $(document).ready(function () {
                                     size: 'mini',
                                     msg: 'Registro exitoso, espere un momento'
                                 });
-
-
                             } else {
 
                                 Lobibox.notify("error", {
@@ -68,13 +62,7 @@ $(document).ready(function () {
                             }
                         }
                     });
-
-
-
-
                 } else {
-
-
                     Lobibox.notify("error", {
                         size: 'mini',
                         msg: 'Correo ya existente, intenete con otro.'

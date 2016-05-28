@@ -1,58 +1,48 @@
-{% extends ':Layout:layout2.html.twig' %}
+{% extends ':Layout:layout3.html.twig' %}
 
-{% block descripcion_y_acciones %}
-
-
-    {% block descripcion %}
-
-    {% endblock%}
-    {% block acciones %}
-
-    {% endblock %}
-
-{% endblock %}
 {% block js_extend %}
-   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
+
     <script src="src/js/bootstrap.js"></script>
     <script type="text/javascript">
-            $(function () {
-              $('[data-toggle="tooltip"]').tooltip()
-            })
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
     </script>
 {% endblock %} 
+{% block cuerpo %}
 
-{% block navegacion_Y_body %}
+{% embed ':Layout:head.html.twig' %}{% endembed %}
+<div class="row" style=" padding: 10px; background-color:#ecf0f5; padding-bottom:0px;">
+    <div class="col-md-12">
+        <div class="box box-widget no-margin">
+            <div class="box-body" style=" padding: 5px;"> 
+                <div class="pos1">
+                    {% if prom1 is null%}
+                        <img src="{{asset('Resources/src/img/banner1.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia">
+                    {% else %}
+                        <img src="{{asset('')}}{{ prom1[0].src}}" style="width: 100%; max-width: 100%;height: 220px;" id="fotocambia">
+                    {% endif %}
 
-    {% block navegacion %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" style=" padding: 10px; background-color:#ecf0f5; ">
 
-    {% endblock %}
-    {% block cuerpo %}
-        
-        <div class="container" style="padding: 20px 0px; background-color: #f6f6f6;">
-		<div class="row">
-			<div class="col-md-3">
-				<div class="bloque-main" style="padding: 10px; margin-top: 20px;">
-				<ul style="list-style: none; padding: 0; margin-bottom: 0px;">
-					<p class="sans text-uppercase" style="font-size: 12px; margin-bottom: 0px;"><strong>CATEGORIAS</strong></p>                                        
-                                        {% for ctlCategoriasBlog in ctlCategoriasBlog %}
-                                            <a id="cb" class="{{ctlCategoriasBlog.id}}"  style="text-decoration: none;"><li>{{ ctlCategoriasBlog.nombreCategoria }}</li></a>
-                                        {% endfor %}
-                                        
-                                        {#<li style="padding-top: 5px; padding-left: 8px;">Juridico</li>
-					<li style="padding-top: 5px; padding-left: 8px;">Familiar</li>
-					<li style="padding-top: 5px; padding-left: 8px;">Casos de Divorcio</li>
-					<li style="padding-top: 5px; padding-left: 8px;">No se que</li>#}
-				</ul>
-				</div>
-			</div>
-			<div class="col-md-6" style="padding-right: 0px; padding-left: 0px;">
-				<div class="bloque-main" style="padding: 10px; margin-top: 20px;">
-				<a href="{{path('admin_bloglist')}}">Regresar</a>
-				<img src="{{ asset('Photos/entrada/')}}{{detalleblog.src}}" style="max-width: 100%; width: 950px; height: 243px;">
-				<p class="sans" style="font-size: 1.5em; margin-top: 10px; padding-left: 10px;">{{detalleblog.titulo}}</p>
-				<p class="sans" style="font-size: 13px; padding-left: 10px;">{{detalleblog.fecha|date("d M Y", "America/El_Salvador")|replace({
+    <div class="col-md-9" style="padding-right:0px;">
+        <div class="box box-widget">
+
+            <div class="box-body" >
+   
+                    
+                    <img src="{{ asset('Photos/entrada/')}}{{detalleblog.src}}" style="max-width: 100%; width: 950px; height: 243px;">
+                    <a href="{{path('bloglist')}}" class=" pull-right">Regresar</a>
+                    <br>
+                    <p class="sans" style="font-size: 1.5em; margin-top: 10px; padding-left: 10px;">{{detalleblog.titulo}}</p>
+                    <p class="sans" style="font-size: 13px; padding-left: 10px;">{{detalleblog.fecha|date("d M Y", "America/El_Salvador")|replace({
                                                                                                     'Jan'  : 'enero',
                                                                                                     'Feb'  : 'febrero',
                                                                                                     'Mar'  : 'marzo',
@@ -66,327 +56,283 @@
                                                                                                     'Nov'  : 'noviembre',
                                                                                                     'Dec'  : 'diciembre',
                                                                                             })      
-                                    }} | Escrito por: {{ detalleblog.nombres }} {{ detalleblog.apellidos }} | {{detalleblog.catblognombre}}</p>
-                                <p class="sans text-justify" style="font-size: 13px; font-weight: 300; padding-left: 10px; padding-right: 10px;">
-                                    {{detalleblog.contenido | raw }}
-                                </p>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="bloque-main" style="padding: 10px; margin-top: 20px; display: none;">
-					<div class="mainblog">
-					    <div class="coverblog">
-					    	<div style="width: 100%; max-width: 100%; background-color: #f6f6f6; height: 110px;">
-					    	</div>
-					    </div>
-					    <div class="profileblog">
-					        <img src="{{ asset('Resources/imagenes/1.jpg')}}" class="img-thumbnail" />
-					    </div>
-					    <!-- TITULO DE EMPRESA -->
-					    <div style="margin-top: 5px; margin-bottom: 5px;">
-					    	<p class="text-center sans" style="font-size: 15px; color: #777777; margin-bottom: 0px;">
-					    		Marvin Jose Vigil Martinez
-					    	</p>
-					    	<p class="text-center sans" style="font-size: 12px; color: #777777; z-index: 555; margin-bottom: 0px;">+ 503 2512 - 6247 | info@monkey-systems.com| www.monkey-systems.com </p>
-							</div>
-					</div>
-				</div>
-                                <div class="bloque-main pos2" style="padding: 5px;">
-                                    {% if prom2 is null%}
-                                        <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
-                                    {% else %}
-                                         <img src="{{asset('')}}{{ prom2[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
-                                    {% endif %}
+                        }} | Escrito por: {{ detalleblog.nombres }} {{ detalleblog.apellidos }} | {{detalleblog.catblognombre}}</p>
+                    
+                    <p class="sans text-justify" style="font-size: 13px; font-weight: 300; padding-left: 10px; padding-right: 10px;">
+                        {{detalleblog.contenido | raw }}
+                    </p>
+  
+            </div>
+        </div>
+    </div>
+                    
+    <div class="col-md-3" style="padding-left:10px;">
+      {#  <div class="box box-widget " style="border-radius:3px; margin-bottom:5px;">
+            <div class="box-header with-border">
+                <h3 class="box-title" >CATEGORIAS</h3>
+            </div>
+            <div class="box-body" style="margin-left: 10px;">
+                <ul class="products-list product-list-in-box">
+                    {% for ctlCategoriasBlog in ctlCategoriasBlog %}
+                        <li class="item"><a href="#" id="cb" class="{{ctlCategoriasBlog.id}}"  
+                                            style="text-decoration: none;">{{ ctlCategoriasBlog.nombreCategoria }}</a></li>
+                        {% endfor %}
+                </ul>
+            </div>
+        </div>
+                #}
+        <!-- Publicida -->
+        <div class="bloque-main pos2 no-margin" style="padding: 5px;border-radius:3px; ">
+            {% if prom2 is null%}
+                <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
+            {% else %}
+                <img src="{{asset('')}}{{ prom2[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
+            {% endif %}
 
-                                </div>
-                                <div class="bloque-nexo pos3" style="padding: 5px;">
-                                    {% if prom3 is null%}
-                                        <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia3">
-                                    {% else %}
-                                         <img src="{{asset('')}}{{ prom3[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia3">
-                                    {% endif %}
+        </div>
+        <div class="bloque-nexo pos3" style="padding: 5px;border-radius:3px; margin-top:5px;">
+            {% if prom3 is null%}
+                <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia3">
+            {% else %}
+                <img src="{{asset('')}}{{ prom3[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia3">
+            {% endif %}
 
-                                </div>
-				<!-- <img src="src/img/1.jpg" style="width: 100%; max-width: 100%; margin-top: 50px;" class="img-thumbnail">
-				<p class="sans text-left" style="font-size: 13px; margin-bottom: 0px;">Joaqiun Ernesto Aguilar Chicas</p>
-				<p class="sans text-left" style="font-size: 13px; font-weight: 300;">Directo en Arias y Asociados Bufete Juridico</p> -->
-			</div>
-		</div>
-	</div>
+        </div>
+    </div>
+</div>
 
-	<div style="height: 10px;"></div>
-	
-    {% endblock %}
-    
-    {% block js_template %}
-        {#Aqui va para la parte de las categorias#}
-        <script>
-                var imagenes2 = new Array();
-                var imagenes3 = new Array();
 
-                var contador2 = 1;
-                var contador3 = 1;
+{% endblock %}
 
-                var lon2 = 0;
-                var lon3 = 0;
+{% block js_template %}
+    {#Aqui va para la parte de las categorias#}
+    <script>
+        var imagenes2 = new Array();
+        var imagenes3 = new Array();
 
-                {% for pro in prom2 %}
-                    imagenes2.push("{{ pro.src }}");
-                {% endfor %}
+        var contador2 = 1;
+        var contador3 = 1;
 
-                lon2 = imagenes2.length;
+        var lon2 = 0;
+        var lon3 = 0;
 
-                {% for pro in prom3 %}
-                    imagenes3.push("{{ pro.src }}");
-                {% endfor %}
+        {% for pro in prom2 %}
+            imagenes2.push("{{ pro.src }}");
+        {% endfor %}
 
-                lon3 = imagenes3.length;
-            
-                $(document).ready(function(){
-                    $(document).on('click','#cb', function(){
-                        var idcat = $(this).attr('class');              
-                        var inicio = $('#inicioInput').val(); //numero de registros que se van a mostrar
-                        var busqueda=$('#searchBox').val();
-                        var longitud = 10; //numero de registros que se van a mostrar
-                        var paginaActual = 1; //primer registro a mostrar
-                        var numPages = 0;
-                        //var contenidoOriginal = $('#registros').html();
-                        buscarxcat(inicio,longitud,paginaActual,idcat);
-                    });
-                            
-                $(document).on('click','.paginas', function(){
+            lon2 = imagenes2.length;
+
+        {% for pro in prom3 %}
+            imagenes3.push("{{ pro.src }}");
+        {% endfor %}
+
+            lon3 = imagenes3.length;
+
+            $(document).ready(function () {
+                $(document).on('click', '#cb', function () {
+                    var idcat = $(this).attr('class');
+                    var inicio = $('#inicioInput').val(); //numero de registros que se van a mostrar
+                    var busqueda = $('#searchBox').val();
+                    var longitud = 10; //numero de registros que se van a mostrar
+                    var paginaActual = 1; //primer registro a mostrar
+                    var numPages = 0;
+
+                    buscarxcat(inicio, longitud, paginaActual, idcat);
+                });
+
+                $(document).on('click', '.paginas', function () {
                     paginaActual = $(this).attr('id');
-                    console.log("Página actual enviada: "+paginaActual);
-                    buscar(inicio,longitud,paginaActual);
+                    console.log("Página actual enviada: " + paginaActual);
+                    buscar(inicio, longitud, paginaActual);
                 });
-            
-                $(document).on('click','.siguiente', function(){
-                    if(paginaActual!=numPages){
+
+                $(document).on('click', '.siguiente', function () {
+                    if (paginaActual != numPages) {
                         paginaActual++;
-                        console.log("Página actual enviada: "+paginaActual);
-                        buscar(inicio,longitud,paginaActual);
+                        console.log("Página actual enviada: " + paginaActual);
+                        buscar(inicio, longitud, paginaActual);
                     }
                 });
-            
-                $(document).on('click','.anterior', function(){
-                    //console.log(paginaActual);
-                    if(paginaActual!=1){
+
+                $(document).on('click', '.anterior', function () {
+
+                    if (paginaActual != 1) {
                         paginaActual--;
-                        console.log("Página actual enviada: "+paginaActual);
-                        buscar(inicio,longitud,paginaActual);
+                        console.log("Página actual enviada: " + paginaActual);
+                        buscar(inicio, longitud, paginaActual);
                     }
                 });
-                
+
                 setInterval(cambia, 4000);
             });
-        
+
             function cambia() {
-                if(contador2 >= lon2){
+                if (contador2 >= lon2) {
                     contador2 = 0;
                 }
 
-                if(lon2 > 0){
+                if (lon2 > 0) {
                     document.getElementById("fotocambia2").src = '../../../' + imagenes2[contador2];
                     contador2++;
-                 } else {
+                } else {
                     document.getElementById("fotocambia2").src = '{{asset('Resources/src/img/banner.png')}}';
                 }
 
-                if(contador3 >= lon3){
+                if (contador3 >= lon3) {
                     contador3 = 0;
                 }
 
-                if(lon3 > 0){
+                if (lon3 > 0) {
                     document.getElementById("fotocambia3").src = '../../../' + imagenes3[contador3];
                     contador3++;
                 } else {
                     document.getElementById("fotocambia3").src = '{{asset('Resources/src/img/banner.png')}}';
-                }                
+                }
             }
-        
-            function buscarxcat(inicio,longitud,paginaActual,idcat){
-                //$('#filtro').children().html(busqueda);
-                //if(busqueda!=""){
-            
-                //alert("asdasdasd");
-                    
-                        $.ajax({
-                            data:{inicio:inicio, longitud: longitud, paginaActual:paginaActual, idcat:idcat},
-                            url:"{{path('lista_entrada_xcat')}}",
-                            type: "post",
-                            success: function (data) {
-                                    alert("sdadas");
-                                    console.log(data.data.length);
-                                    //inicio = data.inicio++;
-            {#console.log(data.data.length);#}
-                                    //alert("sadsadasdas");
-                                    $('#registros').html('');
-                                    //$('#filtro').children().html();
-                                
-                                 
-                                    //console.log(data);
-                                    //console.log("num registros: "+data.numRegistros);
-                                    //console.log("filtro registros: "+data.filtroRegistros);
-                                    $('.totalRegistros').html(data.numRegistros);
-                                    $('.filtroRegistros').html(data.filtroRegistros);
-                                                
-                                    //console.log(data);
-                                    //console.log("asdasdsad");
-                                
-                                    //alert(data.length);
-                                    if(data.data.length>0){
-                                        //$('#inicioInput').val((parseInt($('#inicioInput').val())+1));//
-                                        //console.log(data.inicio);
-                                        //console.log(data.data.length);
-                                    
-                                        var cadena = "";
-                                         var cadena2 = "";
-                                   
-                                        //console.log(data.data.length);
-                                        for(i=0;i<data.data.length;i++){
-                                          //$.each( data.data , funtion(key, value){                                                                                                              
-                                            var identrada = data.data[i].identrada;
-                                            var busquedaTitulo = data.data[i].titulo ;
-                                            var busquedaFecha = data.data[i].fecha;
-                                            var busquedaCategoria = data.data[i].catblognombre;
-                                            var busquedaContenido = data.data[i].contenido;
-                                            var src = data.data[i].src;
-                                            //console.log(busquedaTitulo);
-                                            //console.log("titulo: "+data.data[i].titulo);
-                                        
-                                            if(busquedaTitulo==null){
-                                                busquedaTitulo="";
-                                            }
-                                        
-                                            if(busquedaFecha==null){
-                                                busquedaFecha="";
-                                            }
-                                        
-                                            if(busquedaContenido==null){
-                                                busquedaContenido="-";
-                                            }
-                                        
-                                            if(src==null){
-                                                src="-";
-                                            }
 
-                                    if (identrada == null) {
-                                        identrada = "-";
-                                    }
+            function buscarxcat(inicio, longitud, paginaActual, idcat) {
 
-                                    if (busquedaCategoria == null) {
-                                        busquedaCategoria = "-";
-                                    }
+                $.ajax({
+                    data: {inicio: inicio, longitud: longitud, paginaActual: paginaActual, idcat: idcat},
+                    url: "{{path('lista_entrada_xcat')}}",
+                    type: "post",
+                    success: function (data) {
+                        alert("sdadas");
 
-                                    //alert(i);
-                                    if (i === 0) {
-                                        var contenido = busquedaContenido.substr(0, 30);//Esto es 
+                        $('#registros').html('');
 
-                                        cadena2 = '<div class="bloque-main">';
-                                        cadena2 += '<div class="row">';
-                                        cadena2 += '<div class="col-md-4">';
-                                        cadena2 += '<img src="{{ asset('Photos/entrada/')}}' + src + '" class="blogimage" style="max-width: 100%;  width: 500px; height: 146px;">';
-                                        cadena2 += '</div>';
-                                        cadena2 += '<div class="col-md-8">';
-                                        cadena2 += '<p class="text-left" style="font-size: 16px; color: #555555; margin-bottom: 0px;">';
-                                        cadena2 += '<strong>' + busquedaTitulo + '</strong>';
-                                        cadena2 += '</p>';
-                                        cadena2 += '<p class="text-left sans" style="margin-bottom: 0px; font-size: 12px;">Por: Marvin Jose Vigil | ' + busquedaFecha + ' | ' + busquedaCategoria + '</p>';
-                                        cadena2 += '<div style="height: 83px;">';
-                                        cadena2 += '<p class="text-left sans" style="font-weight: 300; font-size: 12px; color: #888888; margin-bottom: 0px;">';
-                                        cadena2 += contenido;
-                                        cadena2 += '</p>';
-                                        cadena2 += '</div>';
-                                        cadena2 += '<p class="text-right" style="margin-bottom: 0px;">';
-                                        cadena2 += '<a href="{{path('admin_blog')}}?id=' + identrada + '"><button class="btn btn-default btn-xs">Leer mas</button></a>';
-                                        cadena2 += '</p>';
-                                        cadena2 += '</div>';
-                                        cadena2 += '</div>';
-                                        cadena2 += '</div>';
+                        $('.totalRegistros').html(data.numRegistros);
+                        $('.filtroRegistros').html(data.filtroRegistros);
 
-                                        $('#registros').show();
-                                        $('#registros').append(cadena2);
+                        if (data.data.length > 0) {
 
+                            var cadena = "";
+                            var cadena2 = "";
+
+                            for (i = 0; i < data.data.length; i++) {
+
+                                var identrada = data.data[i].identrada;
+                                var busquedaTitulo = data.data[i].titulo;
+                                var busquedaFecha = data.data[i].fecha;
+                                var busquedaCategoria = data.data[i].catblognombre;
+                                var busquedaContenido = data.data[i].contenido;
+                                var src = data.data[i].src;
+
+                                if (busquedaTitulo == null) {
+                                    busquedaTitulo = "";
+                                }
+
+                                if (busquedaFecha == null) {
+                                    busquedaFecha = "";
+                                }
+
+                                if (busquedaContenido == null) {
+                                    busquedaContenido = "-";
+                                }
+
+                                if (src == null) {
+                                    src = "-";
+                                }
+
+                                if (identrada == null) {
+                                    identrada = "-";
+                                }
+
+                                if (busquedaCategoria == null) {
+                                    busquedaCategoria = "-";
+                                }
+
+                                if (i === 0) {
+                                    var contenido = busquedaContenido.substr(0, 30);//Esto es 
+
+                                    cadena2 = '<div class="bloque-main">';
+                                    cadena2 += '<div class="row">';
+                                    cadena2 += '<div class="col-md-4">';
+                                    cadena2 += '<img src="{{ asset('Photos/entrada/')}}' + src + '" class="blogimage" style="max-width: 100%;  width: 500px; height: 146px;">';
+                                    cadena2 += '</div>';
+                                    cadena2 += '<div class="col-md-8">';
+                                    cadena2 += '<p class="text-left" style="font-size: 16px; color: #555555; margin-bottom: 0px;">';
+                                    cadena2 += '<strong>' + busquedaTitulo + '</strong>';
+                                    cadena2 += '</p>';
+                                    cadena2 += '<p class="text-left sans" style="margin-bottom: 0px; font-size: 12px;">Por: Marvin Jose Vigil | ' + busquedaFecha + ' | ' + busquedaCategoria + '</p>';
+                                    cadena2 += '<div style="height: 83px;">';
+                                    cadena2 += '<p class="text-left sans" style="font-weight: 300; font-size: 12px; color: #888888; margin-bottom: 0px;">';
+                                    cadena2 += contenido;
+                                    cadena2 += '</p>';
+                                    cadena2 += '</div>';
+                                    cadena2 += '<p class="text-right" style="margin-bottom: 0px;">';
+                                    cadena2 += '<a href="{{path('blog')}}?id=' + identrada + '"><button class="btn btn-default btn-xs">Leer mas</button></a>';
+                                    cadena2 += '</p>';
+                                    cadena2 += '</div>';
+                                    cadena2 += '</div>';
+                                    cadena2 += '</div>';
+
+                                    $('#registros').show();
+                                    $('#registros').append(cadena2);
+
+                                } else {
+                                    var contenido = busquedaContenido.substr(0, 30);//Esto es 
+                                    cadena = '<div class="bloque-nexo">';
+                                    cadena += '<div class="row">';
+                                    cadena += '<div class="col-md-4">';
+                                    cadena += '<img src="{{ asset('Photos/entrada/')}}' + src + '" class="blogimage" style="max-width: 100%;  width: 500px; height: 146px;">';
+                                    cadena += '</div>';
+                                    cadena += '<div class="col-md-8">';
+                                    cadena += '<p class="text-left" style="font-size: 16px; color: #555555; margin-bottom: 0px;">';
+                                    cadena += '<strong>' + busquedaTitulo + '</strong>';
+                                    cadena += '</p>';
+                                    cadena += '<p class="text-left sans" style="margin-bottom: 0px; font-size: 12px;">Por: Marvin Jose Vigil | ' + busquedaFecha + ' | ' + busquedaCategoria + '</p>';
+                                    cadena += '<div style="height: 83px;">';
+                                    cadena += '<p class="text-left sans" style="font-weight: 300; font-size: 12px; color: #888888; margin-bottom: 0px;">';
+                                    cadena += contenido;
+                                    cadena += '</p>';
+                                    cadena += '</div>';
+                                    cadena += '<p class="text-right" style="margin-bottom: 0px;">';
+                                    cadena += '<a href="{{path('blog')}}?id=' + identrada + '"><button class="btn btn-default btn-xs">Leer mas</button></a>';
+                                    cadena += '</p>';
+                                    cadena += '</div>';
+                                    cadena += '</div>';
+                                    cadena += '</div>';
+                                    $('#registros').show();
+                                    $('#registros').append(cadena);
+                                }//fin del else
+
+                                $('#busquedaVacia').hide();//                                       
+                                //console.log(data.pages);
+                                numPages = data.pages;
+                                var cadenaPaginas = '<li class="anterior" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-left\"></i></li>';
+                                for (k = 1; k <= data.pages; k++) {
+                                    if (k == paginaActual) {
+                                        cadenaPaginas += '<li class="paginas" id="' + k + '" style=\"display: inline; padding: 7px;\"><strong>' + k + '</strong></li>';
                                     } else {
-
-                                        //alert("if en uno");
-
-                                        var contenido = busquedaContenido.substr(0, 30);//Esto es 
-                                        //alert(contenido);
-                                        cadena = '<div class="bloque-nexo">';
-                                        cadena += '<div class="row">';
-                                        cadena += '<div class="col-md-4">';
-                                        cadena += '<img src="{{ asset('Photos/entrada/')}}' + src + '" class="blogimage" style="max-width: 100%;  width: 500px; height: 146px;">';
-                                        cadena += '</div>';
-                                        cadena += '<div class="col-md-8">';
-                                        cadena += '<p class="text-left" style="font-size: 16px; color: #555555; margin-bottom: 0px;">';
-                                        cadena += '<strong>' + busquedaTitulo + '</strong>';
-                                        cadena += '</p>';
-                                        cadena += '<p class="text-left sans" style="margin-bottom: 0px; font-size: 12px;">Por: Marvin Jose Vigil | ' + busquedaFecha + ' | ' + busquedaCategoria + '</p>';
-                                        cadena += '<div style="height: 83px;">';
-                                        cadena += '<p class="text-left sans" style="font-weight: 300; font-size: 12px; color: #888888; margin-bottom: 0px;">';
-                                        cadena += contenido;
-                                        cadena += '</p>';
-                                        cadena += '</div>';
-                                        cadena += '<p class="text-right" style="margin-bottom: 0px;">';
-                                        cadena += '<a href="{{path('admin_blog')}}?id=' + identrada + '"><button class="btn btn-default btn-xs">Leer mas</button></a>';
-                                        cadena += '</p>';
-                                        cadena += '</div>';
-                                        cadena += '</div>';
-                                        cadena += '</div>';
-
-
-                                        $('#registros').show();
-                                        $('#registros').append(cadena);
-                                    }//fin del else
-
-                                    $('#busquedaVacia').hide();//                                       
-                                    //console.log(data.pages);
-                                    numPages = data.pages;
-                                    var cadenaPaginas = '<li class="anterior" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-left\"></i></li>';
-                                    for (k = 1; k <= data.pages; k++) {
-                                        if (k == paginaActual) {
-                                            cadenaPaginas += '<li class="paginas" id="' + k + '" style=\"display: inline; padding: 7px;\"><strong>' + k + '</strong></li>';
-                                        }
-                                        else {
-                                            cadenaPaginas += '<li class="paginas" id="' + k + '" style=\"display: inline; padding: 7px;\">' + k + '</li>';
-                                        }
-
+                                        cadenaPaginas += '<li class="paginas" id="' + k + '" style=\"display: inline; padding: 7px;\">' + k + '</li>';
                                     }
+                                }
 
-                                    cadenaPaginas += '<li class="siguiente" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-right\"></i></li>';
-                                    $('.numeroPaginas').html(cadenaPaginas);
-                                    //$('#registros').html('prueba');
-                                }//fin for
-                            }//fin if
-                            else {
-                                //console.log('datosvacios');
-                                $('#paginas').html(cadenaPaginas);
-                                //console.log(data.numRegistros);
-                                //console.log(data.filtroRegistros);
-                                $('.totalRegistros').html(data.numRegistros);
-                                $('.filtroRegistros').html(data.filtroRegistros);
-                                $('#registros').hide();
-                                $('#busquedaVacia').show();
+                                cadenaPaginas += '<li class="siguiente" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-right\"></i></li>';
+                                $('.numeroPaginas').html(cadenaPaginas);
 
-                            }
-                            console.log("pagina actual: " + data.paginaActual);
-                            console.log("Inicio de registro: " + data.inicioRegistro);
-                        },
-                        error: function (data) {
-                            Lobibox.notify("error", {
-                                size: 'mini',
-                                msg: 'Los datos no fueron ingresados, intente más tarde. Si el error persiste pongase en contacto con el administrador del sistema.'
-                            });
-                            $('#registros').append(contenidoOriginal);
+                            }//fin for
+                        }//fin if
+                        else {
+                            //console.log('datosvacios');
+                            $('#paginas').html(cadenaPaginas);
+                            $('.totalRegistros').html(data.numRegistros);
+                            $('.filtroRegistros').html(data.filtroRegistros);
+                            $('#registros').hide();
+                            $('#busquedaVacia').show();
                         }
-                    });
-                    //}
-                    //else{
-                    //$('#registros').hide();
-                    //$('#busquedaVacia').show();
-                    //}
-                }//Fin funcion buscar()                       
-        </script> {#Fin de la parte para mostrar las categorias#} 
-    {% endblock js_template %}
-{% endblock %}
+                        console.log("pagina actual: " + data.paginaActual);
+                        console.log("Inicio de registro: " + data.inicioRegistro);
+                    },
+                    error: function (data) {
+                        Lobibox.notify("error", {
+                            size: 'mini',
+                            msg: 'Los datos no fueron ingresados, intente más tarde. Si el error persiste pongase en contacto con el administrador del sistema.'
+                        });
+                        $('#registros').append(contenidoOriginal);
+                    }
+                });
+            }//Fin funcion buscar()                       
+    </script> {#Fin de la parte para mostrar las categorias#} 
+{% endblock js_template %}
