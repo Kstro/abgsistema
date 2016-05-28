@@ -29,161 +29,12 @@ class DirectorioController extends Controller
     public function indexAction()
     { 
        $em = $this->getDoctrine()->getManager();
-
-//       $prom = array();
-//       $prom2 = array();
-//       $prom3 = array();
-//       $prom4 = array();
        
        $prom = $this->busquedaPublicidad(1);
        $prom2 = $this->busquedaPublicidad(2);
        $prom3 = $this->busquedaPublicidad(3);
        $prom4 = $this->busquedaPublicidad(4);
        
-//        $dql = "Select fot.idargFoto, fot.src"
-//                . " From DGAbgSistemaBundle:AbgFoto fot"
-//                . " Join fot.promocion pro"
-//                . " WHERE pro.posicion = 1"
-//                . " ORDER BY fot.idargFoto DESC ";
-//
-//        $promotions = $em->createQuery($dql)
-//                          ->getResult();  
-//                 // var_dump($promotions);
-//        
-//        if(!empty($promotions)){
-//            $max = count($promotions);
-//
-//            if($max > 10){
-//                while ($i < 10){
-//                    $random = rand(1, ($max - 1));
-//
-//                    if (!in_array($random, $recuperados)) {
-//                        $recuperados[$i] = $random;
-//                        $prom[$i]['idargFoto'] = $promotions[$random]['idargFoto'];
-//                        $prom[$i]['src'] = $promotions[$random]['src'];
-//                        $i++;
-//                    }    
-//                }
-//            } else {
-//                foreach ($promotions as $key => $value) {
-//                    $prom[$key]['idargFoto'] = $value['idargFoto'];
-//                    $prom[$key]['src'] = $value['src'];
-//                }
-//            }
-//        } else {
-//            $prom = NULL;
-//        }
-//        
-//        $recuperados2 = array();
-//        $prom2 = array();
-//
-//        $dql2 = "Select fot.idargFoto, fot.src"
-//                . " From DGAbgSistemaBundle:AbgFoto fot"
-//                . " Join fot.promocion pro"
-//                . " WHERE pro.posicion = 2"
-//                . " ORDER BY fot.idargFoto DESC ";
-//
-//        $promotions2 = $em->createQuery($dql2)
-//                          ->getResult();  
-//
-//        if(!empty($promotions2)){
-//            $max2 = count($promotions2);
-//            $i = 0;
-//            
-//            if($max2 > 10){
-//                while ($i < 10){
-//                    $random = rand(1, ($max2 - 1));
-//
-//                    if (!in_array($random, $recuperados2)) {
-//                        $recuperados2[$i] = $random;
-//                        $prom2[$i]['idargFoto'] = $promotions2[$random]['idargFoto'];
-//                        $prom2[$i]['src'] = $promotions2[$random]['src'];
-//                        $i++;
-//                    }    
-//                }
-//            } else {
-//                foreach ($promotions2 as $key => $value) {
-//                    $prom2[$key]['idargFoto'] = $value['idargFoto'];
-//                    $prom2[$key]['src'] = $value['src'];
-//                }
-//            }
-//        } else {
-//            $prom2 = NULL;
-//        }
-//        
-//        $recuperados3 = array();
-//        $prom3 = array();
-//
-//        $dql3 = "Select fot.idargFoto, fot.src"
-//                . " From DGAbgSistemaBundle:AbgFoto fot"
-//                . " Join fot.promocion pro"
-//                . " WHERE pro.posicion = 3"
-//                . " ORDER BY fot.idargFoto DESC ";
-//
-//        $promotions3 = $em->createQuery($dql3)
-//                          ->getResult();  
-//
-//        if(!empty($promotions3)){
-//            $max3 = count($promotions3);
-//            $i = 0;
-//            
-//            if($max3 > 10){
-//                while ($i < 10){
-//                    $random = rand(1, ($max3 - 1));
-//
-//                    if (!in_array($random, $recuperados3)) {
-//                        $recuperados3[$i] = $random;
-//                        $prom3[$i]['idargFoto'] = $promotions3[$random]['idargFoto'];
-//                        $prom3[$i]['src'] = $promotions3[$random]['src'];
-//                        $i++;
-//                    }    
-//                }
-//            } else {
-//                foreach ($promotions3 as $key => $value) {
-//                    $prom3[$key]['idargFoto'] = $value['idargFoto'];
-//                    $prom3[$key]['src'] = $value['src'];
-//                }
-//            }
-//        } else {
-//            $prom3 = NULL;
-//        }
-//        
-//        $recuperados4 = array();
-//        $prom4 = array();
-//
-//        $dql4 = "Select fot.idargFoto, fot.src"
-//                . " From DGAbgSistemaBundle:AbgFoto fot"
-//                . " Join fot.promocion pro"
-//                . " WHERE pro.posicion = 4"
-//                . " ORDER BY fot.idargFoto DESC ";
-//
-//        $promotions4 = $em->createQuery($dql4)
-//                          ->getResult();  
-//
-//        if(!empty($promotions4)){
-//            $max4 = count($promotions4);
-//            $i = 0;
-//            
-//            if($max4 > 10){
-//                while ($i < 10){
-//                    $random = rand(1, ($max4 - 1));
-//
-//                    if (!in_array($random, $recuperados4)) {
-//                        $recuperados4[$i] = $random;
-//                        $prom4[$i]['idargFoto'] = $promotions4[$random]['idargFoto'];
-//                        $prom4[$i]['src'] = $promotions4[$random]['src'];
-//                        $i++;
-//                    }    
-//                }
-//            } else {
-//                foreach ($promotions4 as $key => $value) {
-//                    $prom4[$key]['idargFoto'] = $value['idargFoto'];
-//                    $prom4[$key]['src'] = $value['src'];
-//                }
-//            }
-//        } else {
-//            $prom4 = NULL;
-//        }
         
         $ctlCiudads = $em->getRepository('DGAbgSistemaBundle:CtlEstado')->findAll();
         $dql = "SELECT c FROM DGAbgSistemaBundle:CtlEstado c "
@@ -201,9 +52,6 @@ class DirectorioController extends Controller
             'prom4'   => $prom4
         ));
     }
-
-    
-    
     
     /**
      * 
@@ -224,13 +72,7 @@ class DirectorioController extends Controller
         $inicioRegistro = ($longitud * ($paginaActual - 1));
                           
         $response = new JsonResponse();
-//        $start = $request->query->get('start');
-//        $draw = $request->query->get('draw');
-//        $longitud = $request->query->get('length');
-//        $busqueda = $request->query->get('search');
-        //var_dump($inicioRegistro);
-        //var_dump($longitud);
-        
+   
         $em = $this->getDoctrine()->getEntityManager();
         $abogadosTotal = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->findBy(array('estado'=>1));
         //$empresaTotal = $em->getRepository('DGAbgSistemaBundle:CtlEmpresa')->findBy(array('estado'=>1));

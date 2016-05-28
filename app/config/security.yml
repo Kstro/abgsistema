@@ -10,7 +10,7 @@ security:
             entity: { class: DGAbgSistemaBundle\Entity\CtlUsuario, property: username }
         
     firewalls:
-        #Firewalls para ingreso de la Plus belle
+        #Firewalls para ingreso al Sistema de Directorio de Abogados
         login_:
             pattern:  ^/secured/login$
             security: false

@@ -227,11 +227,9 @@ class AbgPersonaController extends Controller {
                 $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
                 $username = $this->container->get('security.context')->getToken()->getUser()->getId();
 
-
-
                 $sqlRol = "SELECT  r.id As id, r.rol As rol"
-                        . " FROM  marvinvi_abg.ctl_rol_usuario ru "
-                        . " JOIN marvinvi_abg.ctl_rol r ON r.id=ru.ctl_rol_id AND ru.ctl_usuario_id=" . $username;
+                        . " FROM  ctl_rol_usuario ru "
+                        . " JOIN ctl_rol r ON r.id=ru.ctl_rol_id AND ru.ctl_usuario_id=" . $username;
 
                 $stm = $this->container->get('database_connection')->prepare($sqlRol);
                 $stm->execute();
@@ -262,11 +260,11 @@ class AbgPersonaController extends Controller {
                 $sql = "SELECT  el.id AS id, el.puesto AS puesto, el.compania AS empresa, el.funcion AS funcion,"
                         . "f.src AS src, DATEDIFF(el.fecha_fin,el.facha_inicio) AS dias, date_format(el.facha_inicio, '%M %Y') As fechaIn, "
                         . " date_format(el.fecha_fin, '%M %Y') As fechaFin, el.ubicacion AS hubicacion, urle.url AS url "
-                        . " FROM  marvinvi_abg.abg_experiencia_laboral el "
-                        . " JOIN marvinvi_abg.abg_persona p on p.id=el.abg_persona_id AND el.abg_persona_id=" . $idPersona
-                        . " left JOIN marvinvi_abg.ctl_empresa em on em.id=el.ctl_empresa_id "
-                        . " left JOIN marvinvi_abg.abg_foto AS f on f.ctl_empresa_id=em.id "
-                        . " left JOIN marvinvi_abg.abg_url_personalizada urle ON em.id=urle.ctl_empresa_id"
+                        . " FROM  abg_experiencia_laboral el "
+                        . " JOIN abg_persona p on p.id=el.abg_persona_id AND el.abg_persona_id=" . $idPersona
+                        . " left JOIN ctl_empresa em on em.id=el.ctl_empresa_id "
+                        . " left JOIN abg_foto AS f on f.ctl_empresa_id=em.id "
+                        . " left JOIN abg_url_personalizada urle ON em.id=urle.ctl_empresa_id"
                         . " GROUP by el.id,el.abg_persona_id,em.id"
                         . " ORDER BY el.facha_inicio Desc";
                 $stm = $this->container->get('database_connection')->prepare($sql);
@@ -275,17 +273,17 @@ class AbgPersonaController extends Controller {
 
 
                 $sqlEdu = "SELECT e.id AS idEs, e.institucion AS institucion, e.titulo AS titulo, e.anio_inicio AS anioIni, e.anio_graduacion AS anio, tp.abg_titulocol AS disciplina "
-                        . " FROM marvinvi_abg.abg_estudio e "
-                        . " JOIN  marvinvi_abg.abg_persona p ON e.abg_persona_id=p.id AND e.abg_persona_id=" . $idPersona
-                        . " JOIN marvinvi_abg.ctl_titulo_profesional tp ON tp.id=e.abg_titulo_profesional_id";
+                        . " FROM abg_estudio e "
+                        . " JOIN  abg_persona p ON e.abg_persona_id=p.id AND e.abg_persona_id=" . $idPersona
+                        . " JOIN ctl_titulo_profesional tp ON tp.id=e.abg_titulo_profesional_id";
                 $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                 $stm->execute();
                 $Edu = $stm->fetchAll();
 
                 $sqlCert = "SELECT c.id AS id, c.certficacion_nombre AS nombre,c.institucion As institucion, "
                         . " date_format(c.fecha_inicio, '%M %Y') As fechaIn,date_format(c.fecha_fin, '%M %Y') AS fechaFin "
-                        . " FROM  marvinvi_abg.abg_certificacion c "
-                        . " JOIN marvinvi_abg.abg_persona p on p.id=c.abg_persona_id AND c.abg_persona_id=" . $idPersona
+                        . " FROM  abg_certificacion c "
+                        . " JOIN abg_persona p on p.id=c.abg_persona_id AND c.abg_persona_id=" . $idPersona
                         . " ORDER BY c.fecha_inicio";
                 $stm = $this->container->get('database_connection')->prepare($sqlCert);
                 $stm->execute();
@@ -293,8 +291,8 @@ class AbgPersonaController extends Controller {
 
                 $sqlCurso = "SELECT s.id AS id, s.nombre AS nombre,s.institucion As institucion, "
                         . " date_format(s.fecha_incio, '%M %Y') As fechaIn,date_format(s.fecha_fin, '%M %Y') AS fechaFin, s.descripcion AS descripcion "
-                        . " FROM  marvinvi_abg.seminario s "
-                        . " JOIN marvinvi_abg.abg_persona p on p.id=s.abg_persona_id AND s.abg_persona_id=" . $idPersona
+                        . " FROM  seminario s "
+                        . " JOIN abg_persona p on p.id=s.abg_persona_id AND s.abg_persona_id=" . $idPersona
                         . " ORDER BY s.fecha_incio";
                 $stm = $this->container->get('database_connection')->prepare($sqlCurso);
                 $stm->execute();
@@ -302,17 +300,17 @@ class AbgPersonaController extends Controller {
 
                 $sqlOrg = "SELECT org.id AS id, org.nombre AS nombre,org.puesto As puesto,org.descripcion AS descripcion, "
                         . " date_format(org.fecha_inicio, '%M %Y') As fechaIn,date_format(org.fecha_fin, '%M %Y') AS fechaFin"
-                        . " FROM  marvinvi_abg.abg_organizacion org "
-                        . " JOIN marvinvi_abg.abg_persona p on p.id=org.abg_persona_id AND org.abg_persona_id=" . $idPersona
+                        . " FROM  abg_organizacion org "
+                        . " JOIN abg_persona p on p.id=org.abg_persona_id AND org.abg_persona_id=" . $idPersona
                         . " ORDER BY org.fecha_inicio";
                 $stm = $this->container->get('database_connection')->prepare($sqlOrg);
                 $stm->execute();
                 $Organizacion = $stm->fetchAll();
 
                 $sqlEdu = "SELECT i.id As idIdioma,pi.id AS idPi,i.idioma As nombre, pi.nivel As nivel "
-                        . " FROM marvinvi_abg.abg_persona_idioma pi "
-                        . " join marvinvi_abg.ctl_idioma i on i.id=pi.ctl_idioma_id "
-                        . " join marvinvi_abg.abg_persona p on p.id=pi.abg_persona_id "
+                        . " FROM abg_persona_idioma pi "
+                        . " join ctl_idioma i on i.id=pi.ctl_idioma_id "
+                        . " join abg_persona p on p.id=pi.abg_persona_id "
                         . " AND p.id=" . $idPersona
                         . " order by i.idioma";
                 $stm = $this->container->get('database_connection')->prepare($sqlEdu);
@@ -421,7 +419,7 @@ class AbgPersonaController extends Controller {
                         . "inner join abg_persona per on usu.rh_persona_id = per.id "
                         . "inner join abg_foto foto on foto.abg_persona_id = per.id "
                         . "inner join abg_url_personalizada uper on uper.abg_persona_id = per.id "
-                        . "where per.fecha_ingreso > '".$nuevafecha."' and per.fecha_ingreso <= '".$fecha."'";
+                        . "where per.fecha_ingreso > '".$nuevafecha."' and per.fecha_ingreso <= '".$fecha."' and foto.estado = 1";
                 //var_dump($sql);
                 $rsm->addScalarResult('total','total');
                 
@@ -447,6 +445,7 @@ class AbgPersonaController extends Controller {
                         inner join abg_persona per on usu.rh_persona_id = per.id
                         inner join abg_foto foto on foto.abg_persona_id = per.id
                         inner join abg_url_personalizada uper on uper.abg_persona_id = per.id
+                        where foto.estado = 1
                         order by fecha_ingreso desc
                         limit 0, 12";
 
@@ -459,6 +458,23 @@ class AbgPersonaController extends Controller {
                 $usuarios = $em->createNativeQuery($sql4, $rsm4)
                                           ->getResult();
                 
+                $rsm5 = new ResultSetMapping();
+                
+                $sql5 = "select distinct emp.nombre_empresa as empresa, foto.src as src, uper.url as url
+                        from ctl_empresa emp 
+                        inner join abg_foto foto on foto.ctl_empresa_id = emp.id
+                        inner join abg_url_personalizada uper on uper.ctl_empresa_id = emp.id
+                        where foto.estado = 1 and emp.nombre_empresa <> 'Nombre de la empresa'
+                        order by emp.id desc
+                        limit 0, 8";
+                
+                $rsm5->addScalarResult('empresa','empresa');
+                $rsm5->addScalarResult('src','src');
+                $rsm5->addScalarResult('url','url');
+                
+                $empresas = $em->createNativeQuery($sql5, $rsm5)
+                                          ->getResult();
+                
                 return $this->render('abgpersona/panelAdministrativoAbg.html.twig', array(
                     'abgPersona' => $result_persona,
                     'abgFoto' => $result_foto,
@@ -466,6 +482,7 @@ class AbgPersonaController extends Controller {
                     'totalBlogs' => $totalBlogs,
                     'totalPreguntas' => $totalPreguntas,
                     'usuarios' => $usuarios,
+                    'empresas' => $empresas,
                 ));
             }    
                 
@@ -476,7 +493,263 @@ class AbgPersonaController extends Controller {
             // echo $e->getMessage();   
         }
     }
+    
+    //Busqueda de perfiles de la empresa en base a la URL
 
+    /**
+     * Lists all CtlEmpresa entities.
+     *
+     * @Route("/{url}", name="perfil_empresa_abogado", options={"expose"=true})
+     * @Method({"GET", "POST"})
+     */
+    public function perfilEmpresAbogadoAction($url) {
+
+        $em = $this->getDoctrine()->getManager();
+        $ObjetoUrl = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgUrlPersonalizada')->findByUrl($url);
+        if (!empty($ObjetoUrl)) {
+
+            $persona = $ObjetoUrl[0]->getAbgPersona();
+            $empresa = $ObjetoUrl[0]->getCtlEmpresa();
+
+            if ($empresa != null) {
+
+                //Completo los elementos de las visitas
+                $entity = $em->getRepository('DGAbgSistemaBundle:AbgVisitas')->findBy(array("ctlEmpresa" => $empresa->getId()));
+                $valor = $entity[0]->getVisita();
+
+                $ctlEmpresaId = $empresa->getId();
+                $contador = $valor + 1;
+                $entity[0]->setVisita($contador);
+                $em->merge($entity[0]);
+                $em->flush();
+
+                //Coleccion de datos de la empresa
+
+                $dqlempresa = "SELECT  e.nombreEmpresa AS nombreEmpresa, e.correoelectronico as correoEmpresa, e.direccion, e.sitioWeb,e.movil, e.telefono, e.color,e.cantidadEmpleados ,e.latitude, e.longitude ,"
+                        . "date_format(e.fechaFundacion, '%Y') As fechaFundacion"
+                        . " FROM DGAbgSistemaBundle:CtlEmpresa e WHERE e.id=" . $ctlEmpresaId;
+
+                $result_empresa = $em->createQuery($dqlempresa)->getArrayResult();
+
+                //Valor de la foto de la empresa
+
+                $dqlfoto = "SELECT fot.src as src "
+                        . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.ctlEmpresa=" . $ctlEmpresaId . " and fot.estado=1 and fot.tipoFoto=1";
+                $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+
+
+                //Array de si se lista o no dentro del perfil de la empresa
+                $RepositorioListaEmpresa = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlEmpresa')->find($ctlEmpresaId); //->getRhPersona();
+                $lista = $RepositorioListaEmpresa->getListaEmpleado();
+
+                if ($lista) {
+                    //Listar los empleados de la empresa
+                    $sqlEmpEmp = "SELECT  emp.ctl_empresa_id, per.id as idPersona, per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, "
+                            . " per.telefono_fijo as telefonoFijo, per.telefono_movil as telefonoMovil, per.titulo_profesional AS tituloProfesional, "
+                            . " per.id, fot.src, sw.nombre AS sitioWeb, per.verificado AS verificado, exp.puesto AS puesto, "
+                            . " pesp.ctl_especialidad_id,GROUP_CONCAT(distinct (esp.nombre_especialidad)) AS especialida "
+                            . " FROM marvinvi_abg.abg_foto fot "
+                            . "JOIN marvinvi_abg.abg_persona per "
+                            . "ON fot.abg_persona_id=per.id AND fot.tipo_foto=0 AND fot.tipo_foto <> 5 "
+                            . " JOIN marvinvi_abg.abg_persona_empresa emp "
+                            . " ON  emp.ctl_empresa_id=" . $ctlEmpresaId . " AND emp.abg_persona_id=per.id "
+                            . "JOIN marvinvi_abg.abg_experiencia_laboral exp "
+                            . " ON exp.ctl_empresa_id=" . $ctlEmpresaId
+                            . " LEFT JOIN marvinvi_abg.abg_sitio_web sw "
+                            . " ON per.id = sw.abg_persona_id "
+                            . " LEFT JOIN marvinvi_abg.abg_persona_especialidad pesp "
+                            . "ON pesp.abg_persona_id = per.id "
+                            . "LEFT JOIN marvinvi_abg.ctl_especialidad esp "
+                            . "ON pesp.ctl_especialidad_id = esp.id AND esp.id = pesp.ctl_especialidad_id "
+                            . " GROUP BY pesp.abg_persona_id "
+                            . " ORDER  BY per.nombres ASC";
+                    $stm = $this->container->get('database_connection')->prepare($sqlEmpEmp);
+                    $stm->execute();
+                    $registro_empleados = $stm->fetchAll();
+                } else {
+
+                    $registro_empleados = null;
+                }
+
+                //valor de los tipos de empresa  
+                $dqlTipoEmpresa = "SELECT tipo.tipoEmpresa as tipoEmpresa  "
+                        . "FROM DGAbgSistemaBundle:CtlEmpresa emp "
+                        . "JOIN emp.ctlTipoEmpresa tipo "
+                        . "WHERE emp.id =" . $ctlEmpresaId;
+
+                $registro_tipoempresa = $em->createQuery($dqlTipoEmpresa)->getResult();
+
+                //metodo que me retorna Especialidades
+                $dql_especialida = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre, pe.descripcion AS descripcion "
+                        . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
+                        . " JOIN DGAbgSistemaBundle:AbgPersonaEspecialida pe WHERE e.id=pe.ctlEspecialidad AND pe.ctlEmpresa=" . $ctlEmpresaId
+                        . " GROUP by e.id "
+                        . " ORDER BY e.nombreEspecialidad";
+                $result_especialida = $em->createQuery($dql_especialida)->getArrayResult();
+
+                //Selccion de las URL personalizadas de los abogados de las empresas
+                $dqlUrl = "SELECT per.id as idpersonaUrl, per.nombres, url.url  FROM DGAbgSistemaBundle:AbgUrlPersonalizada url "
+                        . "JOIN url.abgPersona per  "
+                        . "JOIN per.ctlEmpresa emp "
+                        . " WHERE emp.id=" . $ctlEmpresaId
+                        . " AND url.estado=1";
+
+                $result_url = $em->createQuery($dqlUrl)->getArrayResult();
+//                $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+//                $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo "
+//                        . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
+//                $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+
+                return $this->render('ctlempresa/perfilGeneral.html.twig', array(
+                            'ctlEmpresa' => $result_empresa,
+                            'abgFoto' => $result_foto,
+                            'ctlEmpresaId' => $ctlEmpresaId,
+                            'empleados' => $registro_empleados,
+                            'tipoEmpresa' => $registro_tipoempresa,
+                            'visitas' => $valor,
+                            'RegistroEspecialida' => $result_especialida,
+                            'url' => $result_url
+                ));
+            } else {
+// perfil persona
+                $em = $this->getDoctrine()->getManager();
+                $result_sub = "";
+                $result_especialida = "";
+                $Experiencia = "";
+                $Certificacion = "";
+                $Curso = "";
+
+                try {
+                    $idPersona = $ObjetoUrl[0]->getAbgPersona()->getId();
+                    $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
+                            . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado,  p.tituloProfesional AS tprofesional,"
+                            . " p.verificado As verificado "
+                            . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
+                    $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+
+
+
+                    $dql_ciudad = "SELECT c.nombreCiudad As nombre, es.nombreEstado estado"
+                            . " FROM DGAbgSistemaBundle:AbgPersona p "
+                            . " JOIN DGAbgSistemaBundle:CtlCiudad c WHERE p.ctlCiudad=c.id AND p.id=" . $idPersona
+                            . " JOIN DGAbgSistemaBundle:CtlEstado es WHERE es.id=c.ctlEstado ";
+                    $result_ciuda = $em->createQuery($dql_ciudad)->getArrayResult();
+
+                    $dql_especialida = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre, pe.descripcion AS descripcion "
+                            . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
+                            . " JOIN DGAbgSistemaBundle:AbgPersonaEspecialida pe WHERE e.id=pe.ctlEspecialidad AND pe.abgPersona=" . $idPersona
+                            . " GROUP by e.id "
+                            . " ORDER BY e.nombreEspecialidad";
+                    $result_especialida = $em->createQuery($dql_especialida)->getArrayResult();
+
+
+                    $sql = "SELECT  el.id AS id, el.puesto AS puesto, el.compania AS empresa, el.funcion AS funcion,"
+                            . "f.src AS src, DATEDIFF(el.fecha_fin,el.facha_inicio) AS dias, date_format(el.facha_inicio, '%M %Y') As fechaIn, "
+                            . " date_format(el.fecha_fin, '%M %Y') As fechaFin, el.ubicacion AS hubicacion, urle.url AS url "
+                            . " FROM  marvinvi_abg.abg_experiencia_laboral el "
+                            . " JOIN marvinvi_abg.abg_persona p on p.id=el.abg_persona_id AND el.abg_persona_id=" . $idPersona
+                            . " left JOIN marvinvi_abg.ctl_empresa em on em.id=el.ctl_empresa_id "
+                            . " left JOIN marvinvi_abg.abg_foto AS f on f.ctl_empresa_id=em.id"
+                            . " left JOIN marvinvi_abg.abg_url_personalizada urle ON em.id=urle.ctl_empresa_id "
+                            . " GROUP by el.id,el.abg_persona_id,em.id"
+                            . " ORDER BY el.facha_inicio Desc";
+                    $stm = $this->container->get('database_connection')->prepare($sql);
+                    $stm->execute();
+                    $Experiencia = $stm->fetchAll();
+
+                    $sqlEdu = "SELECT e.id AS idEs, e.institucion AS institucion, e.titulo AS titulo, e.anio_inicio AS anioIni, e.anio_graduacion AS anio, tp.abg_titulocol AS disciplina "
+                            . " FROM marvinvi_abg.abg_estudio e "
+                            . " JOIN  marvinvi_abg.abg_persona p ON e.abg_persona_id=p.id AND e.abg_persona_id=" . $idPersona
+                            . " JOIN marvinvi_abg.ctl_titulo_profesional tp ON tp.id=e.abg_titulo_profesional_id "
+                            . " ORDER BY e.anio_inicio Asc";
+                    $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                    $stm->execute();
+                    $Edu = $stm->fetchAll();
+
+                    $sqlCert = "SELECT c.id AS id, c.certficacion_nombre AS nombre,c.institucion As institucion, "
+                            . " date_format(c.fecha_inicio, '%M %Y') As fechaIn,date_format(c.fecha_fin, '%M %Y') AS fechaFin "
+                            . " FROM  marvinvi_abg.abg_certificacion c "
+                            . " JOIN marvinvi_abg.abg_persona p on p.id=c.abg_persona_id AND c.abg_persona_id=" . $idPersona
+                            . " ORDER BY c.fecha_inicio";
+                    $stm = $this->container->get('database_connection')->prepare($sqlCert);
+                    $stm->execute();
+                    $Certificacion = $stm->fetchAll();
+
+                    $sqlCurso = "SELECT s.id AS id, s.nombre AS nombre,s.institucion As institucion, "
+                            . " date_format(s.fecha_incio, '%M %Y') As fechaIn,date_format(s.fecha_fin, '%M %Y') AS fechaFin, s.descripcion AS descripcion "
+                            . " FROM  marvinvi_abg.seminario s "
+                            . " JOIN marvinvi_abg.abg_persona p on p.id=s.abg_persona_id AND s.abg_persona_id=" . $idPersona
+                            . " ORDER BY s.fecha_incio";
+                    $stm = $this->container->get('database_connection')->prepare($sqlCurso);
+                    $stm->execute();
+                    $Curso = $stm->fetchAll();
+
+                    $sqlOrg = "SELECT org.id AS id, org.nombre AS nombre,org.puesto As puesto,org.descripcion AS descripcion, "
+                            . " date_format(org.fecha_inicio, '%M %Y') As fechaIn,date_format(org.fecha_fin, '%M %Y') AS fechaFin"
+                            . " FROM  marvinvi_abg.abg_organizacion org "
+                            . " JOIN marvinvi_abg.abg_persona p on p.id=org.abg_persona_id AND org.abg_persona_id=" . $idPersona
+                            . " ORDER BY org.fecha_inicio";
+                    $stm = $this->container->get('database_connection')->prepare($sqlOrg);
+                    $stm->execute();
+                    $Organizacion = $stm->fetchAll();
+
+                    $sqlEdu = "SELECT i.id As idIdioma,pi.id AS idPi,i.idioma As nombre, pi.nivel As nivel "
+                            . " FROM marvinvi_abg.abg_persona_idioma pi "
+                            . " join marvinvi_abg.ctl_idioma i on i.id=pi.ctl_idioma_id "
+                            . " join marvinvi_abg.abg_persona p on p.id=pi.abg_persona_id "
+                            . " AND p.id=" . $idPersona
+                            . " order by i.idioma";
+                    $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                    $stm->execute();
+                    $Idiomas = $stm->fetchAll();
+
+                    $dql_sitio = "SELECT  w.id AS id, w.nombre AS nombre "
+                            . " FROM  DGAbgSistemaBundle:AbgSitioWeb w "
+                            . " JOIN DGAbgSistemaBundle:AbgPersona p WHERE p.id=w.abgPersona AND p.id=" . $idPersona;
+                    $sitio = $em->createQuery($dql_sitio)->getArrayResult();
+
+                    $dql_url = "SELECT  u.id AS id, u.url AS url "
+                            . " FROM  DGAbgSistemaBundle:AbgUrlPersonalizada u "
+                            . " JOIN DGAbgSistemaBundle:AbgPersona p WHERE p.id=u.abgPersona AND u.abgPersona=" . $idPersona;
+                    $url = $em->createQuery($dql_url)->getArrayResult();
+
+                    //Esta consulta  es la que jala el src de la foto dejela
+
+                    $dqlfoto = "SELECT fot.src as src, fot.estado As estado "
+                            . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
+                    $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+
+                    $dqlfoto = "SELECT fot.src as src, fot.estado As estado "
+                            . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=1 ";
+                    $fotoP = $em->createQuery($dqlfoto)->getArrayResult();
+
+
+                    return $this->render('abgpersona/perfilGeneral.html.twig', array(
+                                'abgPersona' => $result_persona,
+                                'active' => 'verperfil',
+                                'RegistrosubEsp' => $result_sub,
+                                'RegistroEspecialida' => $result_especialida,
+                                'RegistradaExperiencia' => $Experiencia,
+                                'Edu' => $Edu,
+                                'Certificacion' => $Certificacion,
+                                'Curso' => $Curso,
+                                'Organizacion' => $Organizacion,
+                                'Idiomas' => $Idiomas,
+                                'sitio' => $sitio,
+                                'ciuda' => $result_ciuda,
+                                'url' => $url,
+                                'abgFoto' => $result_foto
+                    ));
+                } catch (\Exception $e) {
+                    $data['msj'] = $e->getMessage();
+                    return new Response(json_encode($data));
+                }
+            }
+        } else {
+            var_dump("Lo sentimos mucho esa url no existe");
+        }
+    }
+    
     /**
      * @Route("/ver_perfil", name="ver_perfil", options={"expose"=true})
      * @Method("GET")
@@ -518,11 +791,11 @@ class AbgPersonaController extends Controller {
             $sql = "SELECT  el.id AS id, el.puesto AS puesto, el.compania AS empresa, el.funcion AS funcion,"
                     . "f.src AS src, DATEDIFF(el.fecha_fin,el.facha_inicio) AS dias, date_format(el.facha_inicio, '%M %Y') As fechaIn, "
                     . " date_format(el.fecha_fin, '%M %Y') As fechaFin, el.ubicacion AS hubicacion, urle.url AS url "
-                    . " FROM  marvinvi_abg.abg_experiencia_laboral el "
-                    . " JOIN marvinvi_abg.abg_persona p on p.id=el.abg_persona_id AND el.abg_persona_id=" . $idPersona
-                    . " left JOIN marvinvi_abg.ctl_empresa em on em.id=el.ctl_empresa_id "
-                    . " left JOIN marvinvi_abg.abg_foto AS f on f.ctl_empresa_id=em.id "
-                    . " left JOIN marvinvi_abg.abg_url_personalizada urle ON em.id=urle.ctl_empresa_id"
+                    . " FROM  abg_experiencia_laboral el "
+                    . " JOIN abg_persona p on p.id=el.abg_persona_id AND el.abg_persona_id=" . $idPersona
+                    . " left JOIN ctl_empresa em on em.id=el.ctl_empresa_id "
+                    . " left JOIN abg_foto AS f on f.ctl_empresa_id=em.id "
+                    . " left JOIN abg_url_personalizada urle ON em.id=urle.ctl_empresa_id"
                     . " GROUP by el.id,el.abg_persona_id,em.id"
                     . " ORDER BY el.facha_inicio Desc";
             $stm = $this->container->get('database_connection')->prepare($sql);
@@ -530,9 +803,9 @@ class AbgPersonaController extends Controller {
             $Experiencia = $stm->fetchAll();
 
             $sqlEdu = "SELECT e.id AS idEs, e.institucion AS institucion, e.titulo AS titulo, e.anio_inicio AS anioIni, e.anio_graduacion AS anio, tp.abg_titulocol AS disciplina "
-                    . " FROM marvinvi_abg.abg_estudio e "
-                    . " JOIN  marvinvi_abg.abg_persona p ON e.abg_persona_id=p.id AND e.abg_persona_id=" . $idPersona
-                    . " JOIN marvinvi_abg.ctl_titulo_profesional tp ON tp.id=e.abg_titulo_profesional_id "
+                    . " FROM abg_estudio e "
+                    . " JOIN  abg_persona p ON e.abg_persona_id=p.id AND e.abg_persona_id=" . $idPersona
+                    . " JOIN ctl_titulo_profesional tp ON tp.id=e.abg_titulo_profesional_id "
                     . " ORDER BY e.anio_inicio Asc";
             $stm = $this->container->get('database_connection')->prepare($sqlEdu);
             $stm->execute();
@@ -540,8 +813,8 @@ class AbgPersonaController extends Controller {
 
             $sqlCert = "SELECT c.id AS id, c.certficacion_nombre AS nombre,c.institucion As institucion, "
                     . " date_format(c.fecha_inicio, '%M %Y') As fechaIn,date_format(c.fecha_fin, '%M %Y') AS fechaFin "
-                    . " FROM  marvinvi_abg.abg_certificacion c "
-                    . " JOIN marvinvi_abg.abg_persona p on p.id=c.abg_persona_id AND c.abg_persona_id=" . $idPersona
+                    . " FROM  abg_certificacion c "
+                    . " JOIN abg_persona p on p.id=c.abg_persona_id AND c.abg_persona_id=" . $idPersona
                     . " ORDER BY c.fecha_inicio";
             $stm = $this->container->get('database_connection')->prepare($sqlCert);
             $stm->execute();
@@ -549,8 +822,8 @@ class AbgPersonaController extends Controller {
 
             $sqlCurso = "SELECT s.id AS id, s.nombre AS nombre,s.institucion As institucion, "
                     . " date_format(s.fecha_incio, '%M %Y') As fechaIn,date_format(s.fecha_fin, '%M %Y') AS fechaFin, s.descripcion AS descripcion "
-                    . " FROM  marvinvi_abg.seminario s "
-                    . " JOIN marvinvi_abg.abg_persona p on p.id=s.abg_persona_id AND s.abg_persona_id=" . $idPersona
+                    . " FROM  seminario s "
+                    . " JOIN abg_persona p on p.id=s.abg_persona_id AND s.abg_persona_id=" . $idPersona
                     . " ORDER BY s.fecha_incio";
             $stm = $this->container->get('database_connection')->prepare($sqlCurso);
             $stm->execute();
@@ -558,17 +831,17 @@ class AbgPersonaController extends Controller {
 
             $sqlOrg = "SELECT org.id AS id, org.nombre AS nombre,org.puesto As puesto,org.descripcion AS descripcion, "
                     . " date_format(org.fecha_inicio, '%M %Y') As fechaIn,date_format(org.fecha_fin, '%M %Y') AS fechaFin"
-                    . " FROM  marvinvi_abg.abg_organizacion org "
-                    . " JOIN marvinvi_abg.abg_persona p on p.id=org.abg_persona_id AND org.abg_persona_id=" . $idPersona
+                    . " FROM  abg_organizacion org "
+                    . " JOIN abg_persona p on p.id=org.abg_persona_id AND org.abg_persona_id=" . $idPersona
                     . " ORDER BY org.fecha_inicio";
             $stm = $this->container->get('database_connection')->prepare($sqlOrg);
             $stm->execute();
             $Organizacion = $stm->fetchAll();
 
             $sqlEdu = "SELECT i.id As idIdioma,pi.id AS idPi,i.idioma As nombre, pi.nivel As nivel "
-                    . " FROM marvinvi_abg.abg_persona_idioma pi "
-                    . " join marvinvi_abg.ctl_idioma i on i.id=pi.ctl_idioma_id "
-                    . " join marvinvi_abg.abg_persona p on p.id=pi.abg_persona_id "
+                    . " FROM abg_persona_idioma pi "
+                    . " join ctl_idioma i on i.id=pi.ctl_idioma_id "
+                    . " join abg_persona p on p.id=pi.abg_persona_id "
                     . " AND p.id=" . $idPersona
                     . " order by i.idioma";
             $stm = $this->container->get('database_connection')->prepare($sqlEdu);
@@ -986,8 +1259,8 @@ class AbgPersonaController extends Controller {
                 if (count($esp) > 0) {
 
                     $sql = "SELECT  e.id AS id, e.nombre_especialidad AS nombre, pe.descripcion AS descripcion, pe.id As idPE, pe.ctl_especialidad_id AS idEsp "
-                            . " FROM  marvinvi_abg.ctl_especialidad e "
-                            . " left JOIN marvinvi_abg.abg_persona_especialidad pe ON e.id=pe.ctl_especialidad_id AND pe.abg_persona_id=" . $request->get('hPersona')
+                            . " FROM  ctl_especialidad e "
+                            . " left JOIN abg_persona_especialidad pe ON e.id=pe.ctl_especialidad_id AND pe.abg_persona_id=" . $request->get('hPersona')
                             . " ORDER BY e.nombre_especialidad";
                     $stm = $this->container->get('database_connection')->prepare($sql);
                     $stm->execute();
@@ -1080,10 +1353,10 @@ class AbgPersonaController extends Controller {
                 $sql = "SELECT  el.id AS id, el.puesto AS puesto, el.compania AS empresa, el.funcion AS funcion, em.id idEmp, "
                         . " f.src AS src, date_format(el.facha_inicio, '%d-%m-%Y') As fechaIn, date_format(el.fecha_fin, '%d-%m-%Y') As fechaFin, "
                         . " el.ubicacion AS hubicacion "
-                        . " FROM  marvinvi_abg.abg_experiencia_laboral el "
-                        . " JOIN marvinvi_abg.abg_persona p on p.id=el.abg_persona_id AND  el.id=" . $request->get('experiencia')
-                        . " left JOIN marvinvi_abg.ctl_empresa em on em.id=el.ctl_empresa_id "
-                        . " left JOIN marvinvi_abg.abg_foto AS f on f.ctl_empresa_id=em.id GROUP by el.id,el.abg_persona_id,em.id";
+                        . " FROM  abg_experiencia_laboral el "
+                        . " JOIN abg_persona p on p.id=el.abg_persona_id AND  el.id=" . $request->get('experiencia')
+                        . " left JOIN ctl_empresa em on em.id=el.ctl_empresa_id "
+                        . " left JOIN abg_foto AS f on f.ctl_empresa_id=em.id GROUP by el.id,el.abg_persona_id,em.id";
                 $stm = $this->container->get('database_connection')->prepare($sql);
                 $stm->execute();
                 $Experiencia = $stm->fetchAll();
@@ -1241,11 +1514,11 @@ class AbgPersonaController extends Controller {
                             $Experiencia->setCompania($idEmpresa->getNombreEmpresa());
                             $Experiencia->setCtlEmpresa($idEmpresa);
                             // Inserta en persona_empresa si la fecha final es null
-                            $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                            $sqlEdu = "DELETE FROM abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
                             $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                             $stm->execute();
 
-                            $sqlEdu = "INSERT INTO marvinvi_abg.abg_persona_empresa (abg_persona_id,ctl_empresa_id) "
+                            $sqlEdu = "INSERT INTO abg_persona_empresa (abg_persona_id,ctl_empresa_id) "
                                     . " VALUES (" . $idPersona . "," . intval($request->get('empresa')) . ")";
                             $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                             $stm->execute();
@@ -1258,10 +1531,10 @@ class AbgPersonaController extends Controller {
                               exit(); */
                             //    $Experiencia->setCtlEmpresa(null);
 
-                            $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                            $sqlEdu = "DELETE FROM abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
                             $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                             $stm->execute();
-                            $sqlEdu = "INSERT INTO marvinvi_abg.abg_persona_empresa (abg_persona_id,ctl_empresa_id) "
+                            $sqlEdu = "INSERT INTO abg_persona_empresa (abg_persona_id,ctl_empresa_id) "
                                     . " VALUES (" . $idPersona . "," . intval($datos['hidEmp']) . ")";
                             $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                             $stm->execute();
@@ -1273,7 +1546,7 @@ class AbgPersonaController extends Controller {
                             $Experiencia->setCtlEmpresa(null);
                             $Experiencia->setCompania($request->get('empresa'));
 
-                            $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                            $sqlEdu = "DELETE FROM abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
                             $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                             $stm->execute();
                         } else {
@@ -1287,7 +1560,7 @@ class AbgPersonaController extends Controller {
                             $Experiencia->setFechaFin($fechaFin);
                             $Experiencia->setCtlEmpresa(null);
 
-                            $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                            $sqlEdu = "DELETE FROM abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
                             $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                             $stm->execute();
                         }
@@ -1381,7 +1654,7 @@ class AbgPersonaController extends Controller {
                                 /*     var_dump(intval($datos['hidEmp']) . " empresa");
                                   var_dump($Empresa->find(intval($request->get('empresa')))->getId());
                                   exit(); */
-                                $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                                $sqlEdu = "DELETE FROM abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
                                 $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                                 $stm->execute();
 
@@ -1389,7 +1662,7 @@ class AbgPersonaController extends Controller {
                                     $idEmpresa = $Empresa->find(intval($request->get('empresa')));
                                     $Experiencia->setCtlEmpresa($idEmpresa);
                                     $Experiencia->setCompania($Empresa->find(intval($request->get('empresa')))->getNombreEmpresa());
-                                    $sqlEdu = "INSERT INTO marvinvi_abg.abg_persona_empresa (abg_persona_id,ctl_empresa_id) "
+                                    $sqlEdu = "INSERT INTO abg_persona_empresa (abg_persona_id,ctl_empresa_id) "
                                             . " VALUES (" . $idPersona . "," . $Empresa->find(intval($request->get('empresa')))->getId() . ")";
                                     $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                                     $stm->execute();
@@ -1398,7 +1671,7 @@ class AbgPersonaController extends Controller {
 
                            /*     var_dump("hhhhhhhh");
                                 exit();*/
-                                $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                                $sqlEdu = "DELETE FROM abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
                                 $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                                 $stm->execute();
                                 if ($request->get('empresa') !== "") {
@@ -1406,7 +1679,7 @@ class AbgPersonaController extends Controller {
                                    $Experiencia->setCtlEmpresa(null);
                                 } else {
                                         $Emp = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($datos['hidEmp']);
-                                    $sqlEdu = "INSERT INTO marvinvi_abg.abg_persona_empresa (abg_persona_id,ctl_empresa_id) "
+                                    $sqlEdu = "INSERT INTO abg_persona_empresa (abg_persona_id,ctl_empresa_id) "
                                             . " VALUES (" . $idPersona . "," . intval($datos['hidEmp']) . ")";
                                     $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                                     $stm->execute();
@@ -1422,7 +1695,7 @@ class AbgPersonaController extends Controller {
                                 $fechaFin = null;
                                 $Experiencia->setFechaFin($fechaFin);
                                 $Experiencia->setCtlEmpresa(null);
-                                $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                                $sqlEdu = "DELETE FROM abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
                                 $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                                 $stm->execute();
                             }
