@@ -29,7 +29,7 @@ class AdmPromocionesController extends Controller
     /**
      * Lists all AdmPromociones entities.
      *
-     * @Route("/", name="admin_promociones_index")
+     * @Route("/", name="admin_promociones_index", options={"expose"=true})
      * @Method("GET")
      */
     public function indexAction()

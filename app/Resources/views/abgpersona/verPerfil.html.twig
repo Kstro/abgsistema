@@ -143,7 +143,8 @@
                                             <span style="font-size:13px;">
 
                                                 {% for datos in RegistradaExperiencia %}
-                                                    {%if (datos.dias is null)%}
+                                                
+                                                         {%if datos.url|default is not empty %}
                                                         <a href="{{path('busquedaPerfil', {url:datos.url})}}">{{datos.empresa}}</a>
                                                     {%else%}
 

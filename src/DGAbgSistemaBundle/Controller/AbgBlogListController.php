@@ -88,10 +88,12 @@ class AbgBlogListController extends Controller{
 //            $entradasTotal = count($reg['data']);
              
         $em = $this->getDoctrine()->getManager();            
-        $dql = "SELECT en.id as identrada, en.tituloEntrada as titulo, en.fecha as fecha, en.contenido as contenido, im.src as src, ctlblog.nombreCategoria as catblognombre "
+        $dql = "SELECT en.id as identrada, en.tituloEntrada as titulo, en.fecha as fecha, en.contenido as contenido, im.src as src, ctlblog.nombreCategoria as catblognombre, per.nombres as nombres, per.apellido as apellidos "
                 . "FROM DGAbgSistemaBundle:AbgImagenBlog im "
                 . "JOIN im.abgEntrada en "
                 . "JOIN en.abgCategoriaEntradaId ctlblog "
+                . "JOIN en.ctlUsuario us "
+                . "JOIN us.rhPersona per "
                 . "ORDER BY en.id DESC";
             
         $reg['data'] = $em->createQuery($dql)
@@ -178,10 +180,12 @@ class AbgBlogListController extends Controller{
 //            $entradasTotal = count($reg['data']);
         //if($idcatselect){
         $em = $this->getDoctrine()->getManager();
-        $dql = "SELECT en.id as identrada, en.tituloEntrada as titulo, en.fecha as fecha, en.contenido as contenido, im.src as src, ctlblog.id as idcat, ctlblog.nombreCategoria as catblognombre "
+        $dql = "SELECT en.id as identrada, en.tituloEntrada as titulo, en.fecha as fecha, en.contenido as contenido, im.src as src, ctlblog.id as idcat, ctlblog.nombreCategoria as catblognombre, per.nombres as nombres, per.apellido as apellidos "
                 . "FROM DGAbgSistemaBundle:AbgImagenBlog im "
                 . "JOIN im.abgEntrada en "
                 . "JOIN en.abgCategoriaEntradaId ctlblog "
+                . "JOIN en.ctlUsuario us "
+                . "JOIN us.rhPersona per "
                 . "WHERE ctlblog.id =:idcat "
                 . "ORDER BY en.id ASC";
         

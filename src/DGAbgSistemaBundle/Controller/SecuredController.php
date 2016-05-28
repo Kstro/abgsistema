@@ -13,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use DG\ImpresionBundle\Entity\Usuario;
 use DG\ImpresionBundle\Controller\UsuarioController;
 /**
@@ -267,7 +268,13 @@ class SecuredController extends Controller
         ));    
     }
       
-    
+    private function authenticateUser(\DGAbgSistemaBundle\Entity\CtlUsuario $user)
+    {
+        $providerKey = 'secured_area_'; // your firewall name
+        $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
+
+        $this->container->get('security.context')->setToken($token);
+    }
     
     
     

@@ -5,6 +5,7 @@ namespace DGAbgSistemaBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use DGAbgSistemaBundle\Entity\CtlEmpresa;
@@ -431,9 +432,10 @@ class CtlEmpresaController extends Controller {
             $em->persist($ctlUsuario);
             $em->flush();
 
-
+            // Autenticando al usuario que se acaba de registrar
+            $this->authenticateUser($ctlUsuario);
+            
             //Creo el registro de visitas de los perfiles publicos de empresa y persona
-
             $visitasE = new AbgVisitas();
             $visitasE->setAbgPersona(null);
             $visitasE->setCtlEmpresa($idEmpresa);
@@ -2044,4 +2046,11 @@ class CtlEmpresaController extends Controller {
         ));
     }
 
+    private function authenticateUser(CtlUsuario $user)
+    {
+        $providerKey = 'secured_area_'; 
+        $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
+
+        $this->container->get('security.context')->setToken($token);
+    }
 }

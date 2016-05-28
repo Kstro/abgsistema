@@ -1,4 +1,4 @@
-{% extends ':Layout:layout2.html.twig' %}
+{% extends ':Layout:layout3.html.twig' %}
 
 {% block descripcion_y_acciones %}
 
@@ -12,14 +12,18 @@
 
 {% endblock %}
 {% block js_extend %}
+   <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
+   <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
+   <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="src/js/bootstrap.js"></script>
     <script type="text/javascript">
-            $(function () {
-              $('[data-toggle="tooltip"]').tooltip()
-            })
+        $(function () {
+          $('[data-toggle="tooltip"]').tooltip();
+        });        
     </script>
 {% endblock %} 
 
@@ -28,79 +32,239 @@
     {% block navegacion %}
     {% endblock %}
     {% block cuerpo %}
-        
-        <div class="container" style="padding: 20px 0px; background-color: #f6f6f6;">
-		<div class="row">
-                    
-                    <form class="navbar-form" role="search" action="{{ path('envio_pregunta') }}" method="POST">
-                        <p class="text-center" style="font-size: 15px;">Si usted desea puede modificar su pregunta aqui</p>
-                        <div class="col-md-2"></div>
-                        <div class="col-md-8 text-center">
-                            <div class="form-group">
-                                <textarea id="" name="pregunta" class="form-control textarea" maxlength="140" placeholder="Haga su pregunta aqui ..." style="max-width: 400px; min-width: 400px; width: 400px; max-height: 150px; min-height: 150px; height: 150px;">{{pregunta}}</textarea>
+        {% embed ':Layout:head.html.twig' %}{% endembed %}
+        {#<div class="container" style="padding: 20px 0px; background-color: #f6f6f6;">#}
+		<div class="row contenedor-perfil" style=" padding: 10px; background-color:#ecf0f5; height: 100%;">
+                    <div class="col-md-9"> {#Inicio lista de preguntas#}  
+                        <div class="box box-widget">
+                            <div class="box-body " style=" padding: 5px;"> 
+                                <div class="pos1">
+                                    {% if prom1 is null%}
+                                        <img src="{{asset('Resources/src/img/banner1.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia">
+                                    {% else %}
+                                         <img src="{{asset('')}}{{ prom1[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia">
+                                    {% endif %}
+
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-2"></div>
-                        <div class="clearfix"></div>
-                        
-                        <p class="text-center" style="font-size: 15px;">Diganos mas sobre su pregunta</p>
-                        <div class="col-md-2"></div>
-                        <div class="col-md-8 text-center">
-                            <div class="form-group">
-                                <textarea id="" name="detalle" class="form-control textarea" maxlength="140" placeholder="Haga su pregunta aqui ..." style="max-width: 400px; min-width: 400px; width: 400px; max-height: 150px; min-height: 150px; height: 150px;"></textarea>
+                        <form {#class="navbar-form"#} role="search" action="{{ path('envio_pregunta') }}" method="POST">
+                            <div class="box box-widget">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Realice su pregunta</h3>
+                                </div>
+                                <div class="box-body">
+                                    <p class="" style="font-size: 15px;">Haga su pregunta al más grande grupo selecto de abogados</p>
+                                    <div class="col-md-12 text-center">
+                                        <div class="form-group">
+                                            <textarea id="" name="pregunta" class="form-control textarea" maxlength="140" placeholder="Haga su pregunta aqui ..." {#style="max-width: 400px; min-width: 400px; width: 400px; max-height: 150px; min-height: 150px; height: 150px;"#}>{{pregunta}}</textarea>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="clearfix"></div>
+                                    <div style="margin-top: 15px;">
+                                        <p class="" style="font-size: 15px;">Diganos más sobre su pregunta</p>
+                                        <div class="col-md-12 text-center">
+                                            <div class="form-group">
+                                                <textarea id="" name="detalle" class="form-control textarea" maxlength="140" placeholder="Describe a más detalle su pregunta ..." {#style="max-width: 400px; min-width: 400px; width: 400px; max-height: 150px; min-height: 150px; height: 150px;"#}></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div style="margin-top: 20px;">
+                                        <div class="col-md-6">
+                                            <div class="form-group" style="margin-top: 10px;">
+                                                <label for="nombreEmpleado">Especialidad de la pregunta</label>
+                                                <select required class="form-control" id="categoria" name="especialidad" placeholder=Especialidad">
+                                                    <option value="5" selected style="margin-bottom: 10px;">Seleccione una categoria</option>                           
+                                                    {% for ctlEspecialidad in ctlEspecialidad %}
+                                                        <option value="{{ ctlEspecialidad.id  }}">{{ctlEspecialidad.nombreEspecialidad }}</option>  
+                                                    {% endfor %}          
+                                                </select>    
+                                            </div>
+                                        </div>                        
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    {#<div style="margin-top: 15px;"></div>#}
+                                </div>
+                            {#</div>   
+                            <div class="box box-widget">#}
+                                <div class="box-body" style="margin-bottom: 20px;">
+                                    <div class="col-md-6">
+                                        {#<hr style="border: 1px solid #262626; width: 100%;">#}
+                                        <div class="form-group" style="margin-top: 10px;">                                
+                                            <label for="exampleInputEmail1">Escriba su correo</label> 
+                                            <input id="" name="email" type="email" class="form-control" placeholder="Ingrese su correo electrónico" required />
+                                        </div>
+                                    </div>                        
+                                    <div class="clearfix"></div>
+                                    <div style="margin-top: 20px;">
+                                        <div class="col-md-12 text-center">
+                                            <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" required> Dar click para enviar su pregunta. Al marcar esta casilla usted esta aceptando los terminos y condiciones de Abogados.com
+                                            </label>
+                                        </div>
+                                        </div>                        
+                                    </div>   
+                                    <div class="clearfix"></div>
+                                    {#<div style="margin-top: 20px;">
+                                        
+                                    </div>#}
+                                </div>
+                                <div class="box-footer">
+                                    <div class="col-md-12">
+                                        <button type="submit" class="btn btn-primary btn-flat " style="margin-top: 10px;">Enviar Pregunta </button>
+                                        <a href="{{ path('pregunta_index') }}" class="button">
+                                            <button class="btn btn-default btn-flat pull-right" style="margin-top: 10px;">Regresar</button>
+                                        </a>
+                                    </div>                        
+                                     
+                                </div>
+                            </div>
+                        </form>                                
+                    </div>
+                    <div class="col-md-3">
+                        <div class="row" style="margin-top: 6px;">
+                            <div class="col-md-12">
+                                <div class="box box-widget">
+                                <div class="box-body">
+                                    {#{% if prom1 is null%}
+                                        <img src="{{asset('Resources/src/img/banner1.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia">
+                                    {% else %}
+                                         <img src="{{asset('')}}{{ prom1[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia">
+                                    {% endif %}#}
+                                    
+                                    {% if prom2 is null%}
+                                        <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
+                                    {% else %}
+                                         <img src="{{asset('')}}{{ prom2[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
+                                    {% endif %}
+                                </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-2"></div>
-                        <div class="clearfix"></div>
                         
-                        <div class="col-md-2"></div>
-                        <div class="col-md-8 text-center">
-                            <div class="form-group" style="margin-top: 10px;">
-                                <label for="nombreEmpleado">Especialidad de la pregunta</label>
-                                <select required class="form-control" id="categoria" name="especialidad" placeholder=Especialidad">
-                                    <option value="5" selected style="margin-bottom: 10px;">Seleccione una categoria</option>                           
-                                    {% for ctlEspecialidad in ctlEspecialidad %}
-                                        <option value="{{ ctlEspecialidad.id  }}">{{ctlEspecialidad.nombreEspecialidad }}</option>  
-                                    {% endfor %}          
-                                </select>    
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="box box-widget">
+                                <div class="box-body">
+                                    {% if prom3 is null%}
+                                        <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia3">
+                                    {% else %}
+                                         <img src="{{asset('')}}{{ prom3[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia3">
+                                    {% endif %}
+                                </div>
+                                </div>
                             </div>
-                        </div>                        
-                        <div class="col-md-2"></div>
-                        <div class="clearfix"></div>
-                        
-                        <div class="col-md-2"></div>
-                        <div class="col-md-8 text-center">
-                            <hr style="border: 1px solid #262626; width: 100%;">
-                            <div class="form-group" style="margin-top: 10px;">                                
-                                <label for="exampleInputEmail1">Escriba su correo</label> 
-                                <input id="" name="email" type="email" class="form-control" placeholder="Email contacto" required />
-                            </div>
-                        </div>                        
-                        <div class="col-md-2"></div>
-                        <div class="clearfix"></div>
-                        
-                        <div class="col-md-2"></div>
-                        <div class="col-md-8 text-center">
-                            <div class="checkbox">
-                            <label>
-                                <input type="checkbox" required> Dar click para enviar su pregunta. Al marcar esta casilla usted esta aceptando los terminos y condiciones de Abogados.com
-                            </label>
                         </div>
-                        </div>                        
-                        <div class="col-md-2"></div>
-                        <div class="clearfix"></div>
-                                                               
-                        <div class="col-md-2"></div>
-                        <div class="col-md-8 text-center"><button type="submit" class="btn btn-primary" style="margin-top: 10px;">Enviar Pregunta </button></div>                        
-                        <div class="col-md-2"></div>
-                    </form>                                            
+                    </div>
 		</div>
-	</div>
+	{#</div>#}
 	<div style="height: 10px;"></div>
 	
     {% endblock %}
     
     
     {% block js_template %}
+        <script type="text/javascript">
+            var imagenes = new Array();
+            var imagenes2 = new Array();
+            var imagenes3 = new Array();
+            var imagenes4 = new Array();
+
+            var contador = 1;
+            var contador2 = 1;
+            var contador3 = 1;
+            var contador4 = 1;
+
+            var lon = 0;
+            var lon2 = 0;
+            var lon3 = 0;
+            var lon4 = 0;
+
+            {% for pro in prom1 %}
+                imagenes.push("{{ pro.src }}");
+            {% endfor %}
+
+            lon = imagenes.length;
+
+            {% for pro in prom2 %}
+                imagenes2.push("{{ pro.src }}");
+            {% endfor %}
+
+            lon2 = imagenes2.length;
+
+            {% for pro in prom3 %}
+                imagenes3.push("{{ pro.src }}");
+            {% endfor %}
+
+            lon3 = imagenes3.length;
+
+            {% for pro in prom4 %}
+                imagenes4.push("{{ pro.src }}");
+            {% endfor %}
+
+            lon4 = imagenes4.length;
+            
+            $(document).ready(function(){
+                $('#categoria').select2();
+                
+                setInterval(cambia, 4000);
+            });
+            
+            function cambia() {
+                console.log('cont: '+contador);
+                console.log('lon: '+lon);
+                
+                if(contador >= lon){
+                    contador = 0;
+                }
+
+                if(lon > 0){
+                    document.getElementById("fotocambia").src = '../../' + imagenes[contador];
+                    contador++;
+                    console.log(imagenes[contador]);
+                    console.log(contador);
+                    console.log(lon);
+                } else {
+                    document.getElementById("fotocambia").src = '{{asset('Resources/src/img/banner1.png')}}';
+                }
+
+
+                if(contador2 >= lon2){
+                    contador2 = 0;
+                }
+
+                if(lon2 > 0){
+                    document.getElementById("fotocambia2").src = '../../' + imagenes2[contador2];
+                    contador2++;
+                 } else {
+                    document.getElementById("fotocambia2").src = '{{asset('Resources/src/img/banner.png')}}';
+                }
+
+                if(contador3 >= lon3){
+                    contador3 = 0;
+                }
+
+                if(lon3 > 0){
+                    document.getElementById("fotocambia3").src = '../../' + imagenes3[contador3];
+                    contador3++;
+                } else {
+                    document.getElementById("fotocambia3").src = '{{asset('Resources/src/img/banner.png')}}';
+                }
+
+                if(contador4 >= lon4){
+                    contador4 = 0;
+                }
+
+                if(lon4 > 0){
+                    document.getElementById("fotocambia4").src = '../../' + imagenes4[contador4];
+                    contador4++;
+                } else {
+                    document.getElementById("fotocambia4").src = '{{asset('Resources/src/img/banner1.png')}}';
+                }
+            }
+        </script>
     {% endblock js_template %}
 {% endblock %}

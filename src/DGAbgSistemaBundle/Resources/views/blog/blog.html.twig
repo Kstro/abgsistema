@@ -66,14 +66,14 @@
                                                                                                     'Nov'  : 'noviembre',
                                                                                                     'Dec'  : 'diciembre',
                                                                                             })      
-                                    }} | Escrito por: Nombre de la persona | {{detalleblog.catblognombre}}</p>
+                                    }} | Escrito por: {{ detalleblog.nombres }} {{ detalleblog.apellidos }} | {{detalleblog.catblognombre}}</p>
                                 <p class="sans text-justify" style="font-size: 13px; font-weight: 300; padding-left: 10px; padding-right: 10px;">
                                     {{detalleblog.contenido | raw }}
                                 </p>
 				</div>
 			</div>
 			<div class="col-md-3">
-				<div class="bloque-main" style="padding: 10px; margin-top: 20px;">
+				<div class="bloque-main" style="padding: 10px; margin-top: 20px; display: none;">
 					<div class="mainblog">
 					    <div class="coverblog">
 					    	<div style="width: 100%; max-width: 100%; background-color: #f6f6f6; height: 110px;">
@@ -91,6 +91,22 @@
 							</div>
 					</div>
 				</div>
+                                <div class="bloque-main pos2" style="padding: 5px;">
+                                    {% if prom2 is null%}
+                                        <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
+                                    {% else %}
+                                         <img src="{{asset('')}}{{ prom2[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
+                                    {% endif %}
+
+                                </div>
+                                <div class="bloque-nexo pos3" style="padding: 5px;">
+                                    {% if prom3 is null%}
+                                        <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia3">
+                                    {% else %}
+                                         <img src="{{asset('')}}{{ prom3[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia3">
+                                    {% endif %}
+
+                                </div>
 				<!-- <img src="src/img/1.jpg" style="width: 100%; max-width: 100%; margin-top: 50px;" class="img-thumbnail">
 				<p class="sans text-left" style="font-size: 13px; margin-bottom: 0px;">Joaqiun Ernesto Aguilar Chicas</p>
 				<p class="sans text-left" style="font-size: 13px; font-weight: 300;">Directo en Arias y Asociados Bufete Juridico</p> -->
@@ -105,6 +121,27 @@
     {% block js_template %}
         {#Aqui va para la parte de las categorias#}
         <script>
+                var imagenes2 = new Array();
+                var imagenes3 = new Array();
+
+                var contador2 = 1;
+                var contador3 = 1;
+
+                var lon2 = 0;
+                var lon3 = 0;
+
+                {% for pro in prom2 %}
+                    imagenes2.push("{{ pro.src }}");
+                {% endfor %}
+
+                lon2 = imagenes2.length;
+
+                {% for pro in prom3 %}
+                    imagenes3.push("{{ pro.src }}");
+                {% endfor %}
+
+                lon3 = imagenes3.length;
+            
                 $(document).ready(function(){
                     $(document).on('click','#cb', function(){
                         var idcat = $(this).attr('class');              
@@ -140,7 +177,32 @@
                     }
                 });
                 
+                setInterval(cambia, 4000);
             });
+        
+            function cambia() {
+                if(contador2 >= lon2){
+                    contador2 = 0;
+                }
+
+                if(lon2 > 0){
+                    document.getElementById("fotocambia2").src = '../../../' + imagenes2[contador2];
+                    contador2++;
+                 } else {
+                    document.getElementById("fotocambia2").src = '{{asset('Resources/src/img/banner.png')}}';
+                }
+
+                if(contador3 >= lon3){
+                    contador3 = 0;
+                }
+
+                if(lon3 > 0){
+                    document.getElementById("fotocambia3").src = '../../../' + imagenes3[contador3];
+                    contador3++;
+                } else {
+                    document.getElementById("fotocambia3").src = '{{asset('Resources/src/img/banner.png')}}';
+                }                
+            }
         
             function buscarxcat(inicio,longitud,paginaActual,idcat){
                 //$('#filtro').children().html(busqueda);

@@ -49,8 +49,8 @@ $(document).ready(function () {
                         success: function (data) {
 
                             if (data.estado == true) {
-
-                                var url = Routing.generate('abogado_login');
+                                var url = Routing.generate('perfil');
+                                //var url = Routing.generate('abogado_login');
                                 window.open(url, "_self");
 
                                 Lobibox.notify("success", {

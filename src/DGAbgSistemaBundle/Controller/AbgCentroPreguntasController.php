@@ -14,6 +14,7 @@ use DGAbgSistemaBundle\Entity\AbgImagenBlog;
 use DGAbgSistemaBundle\Entity\AbgPregunta;
 use Symfony\Component\HttpFoundation\Response;
 use DGAbgSistemaBundle\Form\AbgPersonaType;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * AbgEntrada controller.
@@ -34,8 +35,32 @@ class AbgCentroPreguntasController extends Controller {
         
         $em = $this->getDoctrine()->getManager();
         $preguntas = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->findBy(array('estado' => 1), array('id' => 'DESC'), 10, 0);
-                
-        return $this->render('centropreg/indexcentro.html.twig', array('preguntas'=>$preguntas));
+        $rsm = new ResultSetMapping();
+        
+        $sql = "select per.nombres as nombres, per.apellido as apellidos, foto.src as src, uper.url as url, count(pre.respuesta) as totalrespuestas
+                from abg_pregunta pre inner join ctl_usuario usu on pre.ctl_usuario_id = usu.id
+                inner join abg_persona per on usu.rh_persona_id = per.id
+                inner join abg_foto foto on foto.abg_persona_id = per.id
+                inner join abg_url_personalizada uper on uper.abg_persona_id = per.id
+                group by per.nombres, per.apellido, foto.src, uper.url
+                order by count(pre.respuesta) desc
+                limit 0, 10";
+        
+        $rsm->addScalarResult('nombres','nombres');
+        $rsm->addScalarResult('apellidos','apellidos');
+        $rsm->addScalarResult('src','src');
+        $rsm->addScalarResult('url','url');
+        $rsm->addScalarResult('totalrespuestas','totalrespuestas');
+        
+        $topUsuarios = $em->createNativeQuery($sql, $rsm)
+                                  ->getResult();
+        
+        $prom = $this->busquedaPublicidad(1);
+        $prom2 = $this->busquedaPublicidad(2);
+        $prom3 = $this->busquedaPublicidad(3);
+        $prom4 = $this->busquedaPublicidad(4);
+        
+        return $this->render('centropreg/indexcentro.html.twig', array('prom1'=> $prom, 'prom2'=> $prom2, 'prom3'=> $prom3, 'prom4'=> $prom4, 'preguntas'=>$preguntas, 'top'=>$topUsuarios));
     }
         
     /**
@@ -191,6 +216,51 @@ class AbgCentroPreguntasController extends Controller {
         $response->setData($reg);
         return $response;
         //return new Response(json_encode($reg));
+    }
+    
+     private function busquedaPublicidad($posicion) {
+       $em = $this->getDoctrine()->getManager();
+
+        $i = 0;
+        $recuperados = array();
+        $prom = array();
+
+        $dql = "Select fot.idargFoto, fot.src From DGAbgSistemaBundle:AbgFoto fot Join fot.promocion pro"
+                . " WHERE pro.posicion = :posicion  and pro.estado = 1 and fot.fechaExpiracion > :fecha"
+                . " ORDER BY fot.idargFoto DESC ";
+
+        $fecha = new \DateTime ('now');
+        
+        $promotions = $em->createQuery($dql)
+                          ->setParameter('posicion',$posicion)
+                          ->setParameter('fecha', $fecha)
+                          ->getResult();  
+        
+        if(!empty($promotions)){
+            $max = count($promotions);
+
+            if($max > 20){
+                while ($i < 20){
+                    $random = rand(1, ($max - 1));
+
+                    if (!in_array($random, $recuperados)) {
+                        $recuperados[$i] = $random;
+                        $prom[$i]['idargFoto'] = $promotions[$random]['idargFoto'];
+                        $prom[$i]['src'] = $promotions[$random]['src'];
+                        $i++;
+                    }    
+                }
+            } else {
+                foreach ($promotions as $key => $value) {
+                    $prom[$key]['idargFoto'] = $value['idargFoto'];
+                    $prom[$key]['src'] = $value['src'];
+                }
+            }
+        } else {
+            $prom = NULL;
+        }
+        
+        return $prom; 
     }
 
 //Fin de la funcion databusqueda

@@ -514,6 +514,7 @@ function editSobremi() {
 }
 function addEspecialida()
 {
+    
 
     if (DataEspecialida.length > 0)
     {
@@ -681,7 +682,7 @@ if(persaEmpresa==0)
                                 $("#consultas").append(datos);
                                 if(data.val!=null && data.val==1)
                                 {
-                                     console.log("ya trabaja");
+                                   
                                      persaEmpresa=data.val;
                                      Lobibox.notify("success", {
                                     size: 'mini',
