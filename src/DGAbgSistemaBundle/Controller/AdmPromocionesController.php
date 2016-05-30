@@ -593,15 +593,32 @@ class AdmPromocionesController extends Controller
         $page = $request->query->get('page');
         
         $em = $this->getDoctrine()->getEntityManager();
-        $dql = "SELECT abo.id abogadoid, abo.nombres, abo.apellido, abo.codigo "
-                        . "FROM DGAbgSistemaBundle:AbgPersona abo "
-                        . "WHERE upper(abo.codigo) LIKE upper(:busqueda) "
-                        . "ORDER BY abo.codigo ASC ";
+//        $dql = "SELECT abo.id abogadoid, abo.nombres, abo.apellido, abo.codigo "
+//                        . "FROM DGAbgSistemaBundle:AbgPersona abo "
+//                        . "WHERE upper(abo.codigo) LIKE upper(:busqueda) "
+//                        . "ORDER BY abo.codigo ASC ";
+//        
+//        $abogado['data'] = $em->createQuery($dql)
+//                ->setParameters(array('busqueda'=>"%".$busqueda."%"))
+//                ->setMaxResults( 10 )
+//                ->getResult();
         
-        $abogado['data'] = $em->createQuery($dql)
-                ->setParameters(array('busqueda'=>"%".$busqueda."%"))
-                ->setMaxResults( 10 )
-                ->getResult();
+        $rsm = new ResultSetMapping();
+        $sql = "select abo.id abogadoid, abo.nombres as nombres, abo.apellido as apellido, ru.ctl_rol_id as rol, abo.codigo from ctl_rol_usuario ru 
+                inner join ctl_usuario usu on ru.ctl_usuario_id = usu.id
+                inner join abg_persona abo on usu.rh_persona_id = abo.id
+                where upper(abo.codigo) LIKE upper('%".$busqueda."%') and ru.ctl_rol_id = 2
+                order by abo.codigo asc
+                limit 0, 10";
+                
+        $rsm->addScalarResult('abogadoid','abogadoid');
+        $rsm->addScalarResult('nombres','nombres');
+        $rsm->addScalarResult('apellido','apellido');
+        $rsm->addScalarResult('rol','rol');
+        $rsm->addScalarResult('codigo','codigo');
+
+        $abogado['data'] = $em->createNativeQuery($sql, $rsm)
+                                  ->getResult();
         
         return new Response(json_encode($abogado));
     }

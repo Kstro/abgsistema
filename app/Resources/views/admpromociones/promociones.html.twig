@@ -42,6 +42,13 @@
                         <div class="tab-content no-padding">
                             {# Sección en donde se muestran todos los anuncios que se le han vendido #}
                             <div class="chart tab-pane active" id="listado-promociones" >
+                                <div class="row" style="margin-top: 10px; margin-right: 10px; display: none;" id="cont-error1">
+                                    <div class="alert alert-danger" role="alert">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        <span class="sr-only">Error:</span>
+                                        <span id="error1"></span>
+                                    </div>
+                                </div>
                                 <form id="fConsultaFactura">
                                     <div class="form-column col-sm-12" style=" padding: 20px;">
                                         <div class="form-group">
@@ -284,6 +291,7 @@
 {% block javascripts_step %}
    <script>
         function formatRepo (data) {
+            console.log(data);
             if(data.nombres){
                 var markup = "<div class='select2-result-repository clearfix'>" +
                              "<div class='select2-result-repository__meta'>" +
@@ -440,6 +448,7 @@
                 
                 if(abogado != null){
                     if(monto.length > 0){
+                        if(monto >= 0){
                         if(tiposervicio != null){
                             if(plazo.length > 0){
                                 if(tipopago != null){
@@ -501,8 +510,12 @@
                                     $('#error').html('Debe ingresar el numero de dias.');
                                     error.style.display = 'block';
                                 }
-                            } else {
+                                } else {
                                 $('#error').html('Debe seleccionar un tipo de servicio.');
+                                error.style.display = 'block';
+                            }  
+                            } else {
+                                $('#error').html('El monto debe ser un numero mayor o igual a 0.');
                                 error.style.display = 'block';
                             }   
                         } else {
@@ -570,17 +583,20 @@
                 var busquedaFFin = $('#txtFechaFin').val();
                 var servicio = $('#busqueda_tiposervicio').val();
                 
-                console.log(busquedaAbogado);
-                console.log(busquedaFInicio);
-                console.log(busquedaFFin);
-                console.log(servicio);
+                var fi = new Date(busquedaFInicio);
+                var ff = new Date(busquedaFFin);
                 
-                url = Routing.generate('admin_facturacion_data')+"?param1="+$('#busqueda-abogado').val()+"&param2="+$('#busqueda_tiposervicio').val()+"&param3="+$('#txtFechaInicio').val()+"&param4="+$('#txtFechaFin').val();
-                
-                
-                table.ajax.url(url).load();
-                
-                
+                if( (fi > ff) || (busquedaFInicio == '' && busquedaFFin =='')){
+                    var error1 = document.getElementById('cont-error1');
+                    error1.style.display = 'none';
+                    
+                    url = Routing.generate('admin_facturacion_data')+"?param1="+$('#busqueda-abogado').val()+"&param2="+$('#busqueda_tiposervicio').val()+"&param3="+$('#txtFechaInicio').val()+"&param4="+$('#txtFechaFin').val();
+                    table.ajax.url(url).load();
+                } else {
+                    var error1 = document.getElementById('cont-error1');
+                    $('#error1').html('La fecha de fin debe ser mayor a la fecha inicial.');
+                    error1.style.display = 'block';
+                }
             });
             
             $(document).on("click", ".link_facturacion", function(){

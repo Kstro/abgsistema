@@ -1,8 +1,11 @@
 $(document).ready(function() {
-    almomentoDelaCarga();
+    //almomentoDelaCarga();
     
     
      $(document).on("click","#idMostrarBadge",function() {
+         var codqr = document.getElementById('codigo_badge');
+        codqr.style.display = 'block';
+         
          var x =1;
          almomentodelclick();
           

@@ -2,7 +2,7 @@
 {% block js_extend %}
 
 <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/plugins/datatables/dataTables.bootstrap.css')}}">
-<script  src="{{asset('Resources/AdminLTE-2.3.0/bootstrap/js/bootstrap.min.js')}}"></script>
+{#<script  src="{{asset('Resources/AdminLTE-2.3.0/bootstrap/js/bootstrap.min.js')}}"></script>#}
 <script src="{{ asset('Resources/AdminLTE-2.3.0/plugins/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{ asset('Resources/AdminLTE-2.3.0/plugins/datatables/dataTables.bootstrap.min.js')}}"></script>
  
@@ -22,7 +22,20 @@
 </script>
 <script>
     $(function () {
-        $("#example1").DataTable();
+        $("#example1").DataTable({
+            "language": {
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "",
+                "emptyTable": "No se encontraron registros",
+                "paginate": { 
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+                "processing": "Procesando petición...",
+                "search": "Buscar:",
+                "lengthMenu": "Mostrar _MENU_ registros"
+            }, 
+        });
 
     });
 </script>
@@ -34,28 +47,28 @@
         </div>
         <div class="box-body">
             <div class="form-group table-responsive mailbox-messages">
-                <div class="row">
+                <div class="row" style="margin-top: 15px;">
                     <div class="col-sm-12">
                         <table id="example1" class="table table-hover table-striped table-bordered"  style="font-size:13px;" >
                             <thead>
                                 <tr role="row">
-                                    <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" style="width:2%;">ID</th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" style="width:8%;">FECHA</th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"  style="width:12%;">TIPO</th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"  style="width:12%;">CANTIDA DE DIAS</th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"  style="width:10%;">COSTO</th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"  style="width:56%;">DESCRIPCION</th>
+                                    <th class="sorting_asc  text-center" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" style="width:2%;">No.</th>
+                                    <th class="sorting text-center" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" style="width:10%;">FECHA</th>
+                                    <th class="sorting text-center" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"  style="width:14%;">TIPO DE SERVICIO</th>
+                                    <th class="sorting text-center" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"  style="width:12%;">CANTIDAD DE DIAS</th>
+                                    <th class="sorting text-center" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"  style="width:10%;">COSTO ($)</th>
+                                    <th class="sorting text-center" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"  style="width:52%;">DESCRIPCION</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {%if suscripcion|default is not empty %}
-                                    {% for datos in suscripcion %}
+                                    {% for key, datos in suscripcion %}
                                         <tr>
-                                            <td align="left">{{datos.idFact}}</td>
-                                            <td align="left">{{datos.fechaPago}}</td>
+                                            <td align="center">{{ key + 1 }}</td>
+                                            <td align="center">{{datos.fechaPago}}</td>
                                             <td align="left"> {{datos.servicio}}</td>
                                             <td align="center"> {{datos.plazo}}</td>
-                                            <td align="left">$ {{datos.monto}}</td>
+                                            <td class="text-right">$ {{ datos.monto|number_format(2, '.', ',') }}</td>
                                             <td align="justify">{{datos.descripcion}}&nbsp;</td>
                                         </tr>
                                     {%endfor%}
