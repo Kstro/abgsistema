@@ -499,7 +499,7 @@ class AbgPersonaController extends Controller {
     /**
      * Lists all CtlEmpresa entities.
      *
-     * @Route("/{url}", name="perfil_empresa_abogado", options={"expose"=true})
+     * @Route("/empresaab/{url}", name="perfil_empresa_abogado", options={"expose"=true})
      * @Method({"GET", "POST"})
      */
     public function perfilEmpresAbogadoAction($url) {

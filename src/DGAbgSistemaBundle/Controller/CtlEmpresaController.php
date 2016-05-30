@@ -1607,6 +1607,8 @@ class CtlEmpresaController extends Controller {
 
         $em = $this->getDoctrine()->getManager();
         $ObjetoUrl = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgUrlPersonalizada')->findByUrl($url);
+        var_dump($ObjetoUrl);
+        exit();
         if (!empty($ObjetoUrl)) {
 
             $persona = $ObjetoUrl[0]->getAbgPersona();
