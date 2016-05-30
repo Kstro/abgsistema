@@ -95,7 +95,7 @@ $(document).on('ready', function () {
                 //  data: {hPersona: $('input#hPersona').val()},
                 success: function (data)
                 {
-                    div = '<div class="nueva-Experiencia" id="div001"  style="background-color: #f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+                    div = '<div class="nueva-Experiencia" id="div001"  style="background-color: #FBFBFB;margin-bottom:-10px">' + data + '</div>';
                     $("#datosContacto").before(div);
                     $("#datosContacto").hide();
 
@@ -118,7 +118,7 @@ $(document).on('ready', function () {
                 url: Routing.generate('sobremi'),
                 success: function (data)
                 {
-                    div = '<div class="nueva-Experiencia" id="div002"  style="background-color: #f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+                    div = '<div class="nueva-Experiencia" id="div002"  style="background-color: #FBFBFB;margin-bottom:-10px;">' + data + '</div>';
                     $("#conetenedorUnpoco").hide();
                     $("#conetenedorUnpoco").before(div);
 
@@ -164,7 +164,7 @@ $(document).on('ready', function () {
                 success: function (data)
                 {
                     // $("#contenido").append(data);
-                    div = '<div class="nueva-Experiencia" id="div01"  style="background-color: #f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+                    div = '<div class="nueva-Experiencia" id="div01"  style="background-color: #FBFBFB;margin-bottom:10px;border-bottom:1px solid #F1EEEE">' + data + '</div>';
                     $("#contenido").before(div);
                 },
                 error: function (errors)
@@ -187,7 +187,7 @@ $(document).on('ready', function () {
                 success: function (data)
                 {
                     actExp = 0;
-                    div = '<div class="nueva-Experiencia" id="div1"  style="background-color: #f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+                    div = '<div class="nueva-Experiencia" id="div1"  style="background-color: #FBFBFB;margin-bottom:10px;border-bottom:1px solid #F1EEEE">' + data + '</div><br>';
                     $("#consultas").before(div);
 
                 },
@@ -211,7 +211,7 @@ $(document).on('ready', function () {
                 data: {hPersona: $('input#hPersona').val()},
                 success: function (data)
                 {
-                    div = '<div class="nueva-Experiencia" id="div2"  style="background-color:#f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+                    div = '<div class="nueva-Experiencia" id="div2"  style="background-color:#FBFBFB;margin-bottom:-30px;border-bottom:1px solid #F1EEEE">' + data + '</div><br><br>';
                     $("#consultaEducacion").before(div);
                 },
                 error: function (errors)
@@ -234,7 +234,7 @@ $(document).on('ready', function () {
                 data: {hPersona: $('input#hPersona').val()},
                 success: function (data)
                 {
-                    div = '<div class="nueva-Experiencia" id="div6"  style="background-color: #f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+                    div = '<div class="nueva-Experiencia" id="div6"  style="background-color: #FBFBFB;margin-bottom:-11px;border-bottom:1px solid #F1EEEE">' + data + '</div><br><br>';
                     $("#consultaCertificacion").before(div);
                 },
                 error: function (errors)
@@ -254,7 +254,7 @@ $(document).on('ready', function () {
                 data: {hPersona: $('input#hPersona').val()},
                 success: function (data)
                 {
-                    div = '<div class="nueva-Experiencia" id="div7"  style="background-color: #f4f4f4;  border-bottom: 0.5px solid #D3D3D3;">' + data + '</div>';
+                    div = '<div class="nueva-Experiencia" id="div7"  style="background-color: #FBFBFB;margin-bottom:10px;border-bottom:1px solid #F1EEEE">' + data + '</div>';
                     $("#consultaCurso").before(div);
                 },
                 error: function (errors)
@@ -274,7 +274,7 @@ $(document).on('ready', function () {
                 data: {hPersona: $('input#hPersona').val()},
                 success: function (data)
                 {
-                    div = '<div class="nueva-Experiencia" id="div5"  style="background-color: #f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+                    div = '<div class="nueva-Experiencia" id="div5"  style="background-color: #FBFBFB;margin-bottom:10px;border-bottom:1px solid #F1EEEE">' + data + '</div><br>';
                     $("#consultaOrg").before(div);
                 },
                 error: function (errors)
@@ -294,7 +294,7 @@ $(document).on('ready', function () {
                 data: {hPersona: $('input#hPersona').val()},
                 success: function (data)
                 {
-                    div = '<div class="nueva-Experiencia" id="div3"  style="background-color: #f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+                    div = '<div class="nueva-Experiencia" id="div3"  style="background-color: #FBFBFB;margin-bottom:-10px;border-bottom:1px solid #F1EEEE">' + data + '</div>';
                     $("#consultaIdiomas").hide();
                     $("#consultaIdiomas").before(div);
                 },
@@ -331,7 +331,7 @@ function editExperiencia(val)
         success: function (data)
         {
             actExp = 1;
-            div = '<div class="nueva-Experiencia" id="div1"  style="background-color: #f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+            div = '<div class="nueva-Experiencia" id="div1"  style="background-color: #FBFBFB;margin-bottom:10px;border-bottom:1px solid #F1EEEE">' + data + '</div><br>';
             $("#consultas").before(div);
             $("#" + val).hide();
             editExp = val;
@@ -628,6 +628,7 @@ if(persaEmpresa==0)
                         data: {hPersona: $('input#hPersona').val(), dato: $("#fExperiencia").serialize(), empresa: empresa, tipo: tipo},
                         success: function (data)
                         {
+                              $('div.experienc').children('br').remove();
                             if (data.msj !== false) {
                                 $.each($(data.Exp), function (indice, val) {
                                     $("#Exp" + val.id).remove();
@@ -723,7 +724,6 @@ if(persaEmpresa==0)
 function addEdu() {
     if ($("#txtCentro").val() !== "" && $("#txtTitulo").val() !== "" && $("#Sdisciplina").val() !== "" && $("#txtAnioIni").val() !== "")
     {
-
         var datos;
         $("#fEdu").submit(
                 function (event) {
@@ -735,7 +735,7 @@ function addEdu() {
                         data: {hPersona: $('input#hPersona').val(), dato: $("#fEdu").serialize()},
                         success: function (data)
                         {
-
+                             $('div.education').children('br').remove();
                             if (data.msj !== false) {
                                 $.each($(data.Edu), function (indice, val) {
                                     $("#Edu" + val.idEs).remove();
@@ -743,17 +743,18 @@ function addEdu() {
                                     datos += '<div class="col-xs-11" id="hfd">';
                                     datos += '<span style="font-size: 15px;">' + val.institucion + '&nbsp;</span></br>';
                                     datos += '<span style="font-size: 13px;">' + val.disciplina + ' | ' + val.titulo + ' </br>' + val.anioIni + ' - ' + val.anio + '</span>';
-                                    datos += '<p style="width: 90%;margin-left:10px;">';
+                                    
+                                    datos += '<div >';
                                     datos += '<script type="text/javascript">';
                                     datos += '$("#Edu' + val.idEs + '").hover(';
                                     datos += 'function(){';
-                                    datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
+                                    datos += '$(this).append($(\'<span style="width: 90%;margin:13px;margin-top:10px;margin-bottom:10px;"><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
                                     datos += 'onclick="editEducacion(' + val.idEs + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
                                     datos += 'onclick="removeEdu(' + val.idEs + ')">&nbsp;Eliminar</i></span>\'));';
                                     datos += '},function(){';
                                     datos += '$(this).find("span:last").remove();';
                                     datos += '});';
-                                    datos += '</script></p>';
+                                    datos += '</script></div>';
                                     datos += '</div>';
                                     datos += '</div>';
                                 });
@@ -830,25 +831,25 @@ function addOrganizacion() {
                         data: {hPersona: $('input#hPersona').val(), dato: $("#fOrg").serialize()},
                         success: function (data)
                         {
-
+                      $('div.organiz').children('br').remove();
                             if (data.msj !== false) {
                                 $.each($(data.Organizacion), function (indice, val) {
                                     $("#Org" + val.id).remove();
                                     datos = '<div class="row" id="Org' + val.id + '">';
-                                    datos += '<div class="col-xs-11">';
+                                    datos += '<div class="col-xs-12">';
                                     datos += '<span style="font-size: 16px;">&nbsp;' + val.nombre + '&nbsp;</span></br>';
                                     datos += '<span style="font-size: 13px;">' + val.puesto + ' </br>' + val.fechaIn + ' - ' + val.fechaFin + '</span>';
-                                    datos += '<p style = "width: 100%; margin-top: 5px;text-align:justify;">' + val.descripcion;
+                                    datos += '<p style = "width:100%; margin-top: 5px;text-align:justify;">' + val.descripcion+'</p>';
                                     datos += '<script type="text/javascript">';
                                     datos += '$("#Org' + val.id + '").hover(';
                                     datos += 'function(){';
-                                    datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
+                                    datos += '$(this).append($(\'<span style="margin-left:13px;"><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
                                     datos += 'onclick="editOrganizacion(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
                                     datos += 'onclick="removeOrg(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
                                     datos += '},function(){';
                                     datos += '$(this).find("span:last").remove();';
                                     datos += '});';
-                                    datos += '</script></p>';
+                                    datos += '</script>';
                                     datos += '</div>';
                                     datos += '</div>';
                                 });
@@ -919,7 +920,7 @@ function editOrganizacion(val)
         data: {organizacion: val},
         success: function (data)
         {
-            div = '<div class="nueva-Experiencia" id="div5"  style="background-color:#f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+            div = '<div class="nueva-Experiencia" id="div5"  style="background-color:#FBFBFB;margin-bottom:-38px;border-bottom:1px solid #F1EEEE;">' + data + '</div><br>';
             $("#consultaOrg").before(div);
             $("#Org" + val).hide();
             editEdu = val;
@@ -940,7 +941,7 @@ function editEducacion(val)
         data: {educacion: val},
         success: function (data)
         {
-            div = '<div class="nueva-Experiencia" id="div2"  style="background-color:#f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+            div = '<div class="nueva-Experiencia" id="div2"  style="background-color:#f4f4f4;margin-bottom:-28px;border-bottom:1px solid #F1EEEE">' + data + '</div><br><br>';
             $("#consultaEducacion").before(div);
             $("#Edu" + val).hide();
             editEdu = val;
@@ -971,7 +972,7 @@ function addCertificacion() {
                         data: {hPersona: $('input#hPersona').val(), dato: $("#fCerti").serialize()},
                         success: function (data)
                         {
-
+                               $('div.certif').children('br').remove();
                             if (data.msj !== false) {
 
                                 $.each($(data.Cert), function (indice, val) {
@@ -1060,7 +1061,7 @@ function editCertificacion(val)
         data: {certificacion: val},
         success: function (data)
         {
-            div = '<div class="nueva-Experiencia" id="div6"  style="background-color:#f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+            div = '<div class="nueva-Experiencia" id="div6"  style="background-color:#f4f4f4;margin-bottom:-30px;border-bottom:1px solid #F1EEEE">' + data + '</div><br><br>';
             $("#consultaCertificacion").before(div);
             $("#Cert" + val).hide();
             editEdu = val;
@@ -1221,16 +1222,16 @@ function addIdiomas() {
                                     datos += '</div>';
                                 });
                                 datos += '<div class="clearfix"></div>';
-                                datos += '<p><script type="text/javascript">';
+                                datos += '<script type="text/javascript">';
                                 datos += '$("#Idioma").hover(';
                                 datos += 'function(){';
-                                datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
+                                datos += '$(this).append($(\'<span style="margin-left:13px;"><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
                                 datos += 'onclick="editIdioma()"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
                                 datos += 'onclick="editIdioma()">&nbsp;Eliminar</i></span>\'));';
                                 datos += '},function(){';
                                 datos += '$(this).find("span:last").remove();';
                                 datos += '});';
-                                datos += '</script></p></div>';
+                                datos += '</script></div>';
                                 $("#consultaIdiomas").append(datos);
                                 $("#consultaIdiomas").show();
 
@@ -1278,7 +1279,7 @@ function editCurso(val)
         data: {curso: val},
         success: function (data)
         {
-            div = '<div class="nueva-Experiencia" id="div7"  style="background-color:#f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+            div = '<div class="nueva-Experiencia" id="div7"  style="background-color:#f4f4f4;margin-bottom:-48px;border-bottom:1px solid #F1EEEE">' + data + '</div><br>';
             $("#consultaCurso").before(div);
             $("#CM" + val).hide();
             editEdu = val;
@@ -1319,78 +1320,3 @@ function ciudad()
     });
 
 }
-/*
- function departamentoEmpresa()
- {
- var Dept;
- //  Datos de departamentos de la sucursal
- $("#divDepartamento").empty();
- $.ajax({
- async: false,
- dataType: 'json',
- data: {idSucursal: $("#SSucursal").prop('selectedIndex')},
- url: Routing.generate('datos_dep_suc'),
- success: function (data)
- {
- Dept = '<label for="ejemplo_archivo_1">Departamento</label>\
- <select class="form-control"  name="SDepartamento" id="SDepartamento" onChange="puestoDept()">';
- Dept += '<option value="0">Seleccione Tipo empleo --></option>';
- $.each(data.ArrayDep, function (indice, val) {
- Dept += '<option value="' + val.id + '">' + val.nombre + '</option>';
- });
- Dept += ' </select></div></div> ';
- $("#divDepartamento").append(Dept);
- }
- });
- }
- 
- function puestoDept()
- {
- var puesto;
- //  Datos de departamentos de la sucursal
- $("#divPuesto").empty();
- $.ajax({
- async: false,
- dataType: 'json',
- data: {idDepartamento: $("#SDepartamento").prop('selectedIndex')},
- url: Routing.generate('datos_puesto'),
- success: function (data)
- {
- puesto = '<label for="ejemplo_archivo_1">Puesto de trabajo</label>\
- <select class="form-control"  name="SPuesto" id="SPuesto">';
- puesto += '<option >Seleccione Tipo empleo</option>';
- $.each(data.ArrayDep, function (indice, val) {
- puesto += '<option value="' + val.id + '">' + val.nombre + '</option>';
- });
- puesto += ' </select></div></div> ';
- $("#divPuesto").append(puesto);
- }
- });
- }
- 
- function ciudad()
- {
- var Dataciudad;
- $("#divCiudad").empty();
- $.ajax({
- async: false,
- dataType: 'json',
- data: {idEstado: $("#sEstado").prop('selectedIndex')},
- url: Routing.generate('datos_ciudad'),
- success: function (data)
- {
- 
- Dataciudad = '<label for="ejemplo_archivo_1">Ciudad</label>\
- <select class="form-control"  name="sCiudad" id="sCiudad" >';
- $.each(data.ArrayCiudad, function (indice, val) {
- 
- Dataciudad += '<option value="' + val.id + '">' + val.nombre + '</option>';
- });
- Dataciudad += ' </select></div></div> ';
- }
- });
- $("#divCiudad").append(Dataciudad);
- }
- 
- */
-

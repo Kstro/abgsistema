@@ -150,21 +150,18 @@
 {% block cuerpo %}
 {% embed ':Layout:head.html.twig' %}{% endembed %}
    {# {% for datos in abgPersona %}#}
-
-        <div class="row contenedor-perfil" style=" padding: 10px; background-color:#ecf0f5;">
-            <div class=" col-md-9">
-             {#   <div class="box box-widget">
-                    <div class="box-body " style=" padding: 5px;"> 
-                        <div class="pos1">
-                            {% if prom1 is null%}
-                                <img src="{{asset('Resources/src/img/banner1.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia">
-                            {% else %}
-                                 <img src="{{asset('')}}{{ prom1[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia">
-                            {% endif %}
-                           
+     <div class="row" >
+        <div class="col-xs-12">
+                    <div class="mailbox-controls " style="margin-left: 5px;">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default btn-sm" onclick="javascript:history.go(-1)"><i class="fa fa-reply text-blue"></i></button>
+                            <button type="button" class="btn btn-default btn-sm" onclick="javascript:history.go(1)"><i class="fa fa-share text-blue"></i></button>
                         </div>
-                    </div>
-                </div>#}
+                    </div> 
+        </div>
+    </div>
+        <div class="row contenedor-perfil" style=" padding: 10px; background-color:#ecf0f5;">
+            <div class=" col-md-9" style="padding-right:0px;">
                 {% for datos in ctlEmpresa %}
                     <div class="box box-widget btn-flat">
 
@@ -446,20 +443,14 @@
                 {%endif%}
                  {% endfor %} 
                      <div class="box box-widget pos4" style="display:none;">
-                  
                         <div class="box-body " style=" padding: 5px;"> 
                             <div class="hidden-md hidden-sm hidden-xs">
                               {#<img src="{{asset('')}}{{ prom4[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia4" >#}
                           </div>
                         </div>
                     </div>
-                 
             </div>
-
-
-
-
-            <div class="col-md-3" >
+            <div class="col-md-3" style="padding-left:10px;">
                 {% for datos in ctlEmpresa %} 
                 <div class="bloque-main" style="padding: 5px; margin-bottom: 15PX;  background-color: #000035;">
                     <div style="width:300px;overflow:hidden;height:450px;max-width:100%; color: #fff" >
@@ -570,7 +561,20 @@
                 </div>#}
             </div>
     </div>
-            
+       <div class="row">
+        <div class=" col-xs-12">
+            <div class="box box-widget no-padding no-margin flat" >
+                <div class="box-body " style=" padding: 5px; margin-top: 10px;"> 
+                    <div class="mailbox-controls">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default btn-sm" onclick="javascript:history.go(-1)"><i class="fa fa-reply text-blue"></i></button>
+                            <button type="button" class="btn btn-default btn-sm" onclick="javascript:history.go(1)"><i class="fa fa-share text-blue"></i></button>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
     <script type="text/javascript">
         $(function () {
             $('[data-toggle="tooltip"]').tooltip();
