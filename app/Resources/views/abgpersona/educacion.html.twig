@@ -35,7 +35,8 @@
 
 
         $("#cancel").click(function () {
-            $("#" + editEdu).show();
+            $('div.education').children('br').remove();
+            $("#Edu" + editEdu).show();
             $("#div2").remove();
         });
 

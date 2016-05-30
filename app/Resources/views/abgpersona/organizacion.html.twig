@@ -45,6 +45,7 @@
 
 
         $("#cancel").click(function () {
+             $('div.organiza').children('br').remove();
             $("#Org" + editEdu).show();
             $("#div5").remove();
         });
@@ -72,7 +73,7 @@
     }
 </script>
 
-<form role="form" id="fOrg" >
+<form id="fOrg" >
     {%if Organizacion|default is not empty %}
 
         {% for datos in Organizacion %}

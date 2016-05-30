@@ -43,6 +43,7 @@
  
        
         $("#cancel").click(function () {
+            $('div.certif').children('br').remove();
             $("#Cert"+editEdu).show();
             $("#div6").remove();
         });

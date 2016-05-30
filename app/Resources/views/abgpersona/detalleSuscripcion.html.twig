@@ -2,10 +2,10 @@
 {% block js_extend %}
 
 <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/plugins/datatables/dataTables.bootstrap.css')}}">
-<script  src="{{asset('Resources/AdminLTE-2.3.0/bootstrap/js/bootstrap.min.js')}}"></script>
+{#<script  src="{{asset('Resources/AdminLTE-2.3.0/bootstrap/js/bootstrap.min.js')}}"></script>#}
 <script src="{{ asset('Resources/AdminLTE-2.3.0/plugins/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{ asset('Resources/AdminLTE-2.3.0/plugins/datatables/dataTables.bootstrap.min.js')}}"></script>
- 
+
 <script type="text/javascript">
     function vista(conten_grafica)
     {
@@ -23,7 +23,6 @@
 <script>
     $(function () {
         $("#example1").DataTable();
-
     });
 </script>
 {% endblock %} 
