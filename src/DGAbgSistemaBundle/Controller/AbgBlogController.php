@@ -11,14 +11,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 /**
  * Blog controller.
  *
- * @Route("/admin/blog")
+ * @Route("/blog")
  */
 class AbgBlogController extends Controller{
     
     /**
      * Presenta el detalle de un blog especifico.
      *
-     * @Route("/", name="admin_blog", options={"expose"=true})
+     * @Route("/", name="blog", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
@@ -45,13 +45,14 @@ class AbgBlogController extends Controller{
         
         $em = $this->getDoctrine()->getManager();
         $ctlCategoriasBlog = $em->getRepository('DGAbgSistemaBundle:CtlCategoriaBlog')->findAll();
-        
+                $prom = $this->busquedaPublicidad(1);
         $prom2 = $this->busquedaPublicidad(2);
         $prom3 = $this->busquedaPublicidad(3);
         //$reg['data'] = $em->createQuery($dql);        
 //        var_dump($parametros);
 //        die();
-        return $this->render('DGAbgSistemaBundle:blog:blog.html.twig', array('prom2'=> $prom2, 'prom3'=> $prom3,'detalleblog'=>$parametros, 'ctlCategoriasBlog'=>$ctlCategoriasBlog));     
+        return $this->render('DGAbgSistemaBundle:blog:blog.html.twig', 
+                array('prom1'=> $prom,'prom2'=> $prom2, 'prom3'=> $prom3,'detalleblog'=>$parametros, 'ctlCategoriasBlog'=>$ctlCategoriasBlog));     
     }
     
     private function busquedaPublicidad($posicion) {

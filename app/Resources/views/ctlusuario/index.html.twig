@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>CtlUsuario list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Salt</th>
+                <th>Estado</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ctlUsuario in ctlUsuarios %}
+            <tr>
+                <td><a href="{{ path('admin_usuario_show', { 'id': ctlUsuario.id }) }}">{{ ctlUsuario.id }}</a></td>
+                <td>{{ ctlUsuario.username }}</td>
+                <td>{{ ctlUsuario.password }}</td>
+                <td>{{ ctlUsuario.salt }}</td>
+                <td>{% if ctlUsuario.estado %}Yes{% else %}No{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_usuario_show', { 'id': ctlUsuario.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_usuario_edit', { 'id': ctlUsuario.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_usuario_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

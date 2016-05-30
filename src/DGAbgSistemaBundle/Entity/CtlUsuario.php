@@ -87,6 +87,16 @@ class CtlUsuario implements AdvancedUserInterface, \Serializable
    
     private $ctlRol;
     
+    
+        /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_facebook", type="integer", nullable=true)
+     */
+    private $idFacebook;
+    
+    
+    
     private $isEnabled;// = false; 
     
     
@@ -110,6 +120,29 @@ class CtlUsuario implements AdvancedUserInterface, \Serializable
         return $this->id;
     }
 
+    
+        /**
+     * Get idFacebook
+     *
+     * @return integer 
+     */
+    public function getIdFacebook()
+    {
+        return $this->idFacebook;
+    }
+
+    /**
+     * Set idFacebook
+     *
+     * @param integer $idFacebook
+     * @return CtlUsuario
+     */
+    public function setIdFacebook($idFacebook)
+    {
+        $this->idFacebook = $idFacebook;
+
+        return $this;
+    }
     /**
      * Set username
      *

@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use DGAbgSistemaBundle\Entity\AbgPregunta;
+use Doctrine\ORM\Query\ResultSetMapping;
 use DGAbgSistemaBundle\Entity\AbgSubespecialidad;
 use DGAbgSistemaBundle\Entity\CtlEspecialidad;
 
@@ -47,10 +48,32 @@ class AbgPreyResController extends Controller{
         $prom2 = $this->busquedaPublicidad(2);
         $prom3 = $this->busquedaPublicidad(3);
         $prom4 = $this->busquedaPublicidad(4);
-        $pregunta = '';
+        
+        $rsm = new ResultSetMapping();
+        
+        $sql = "select per.nombres as nombres, per.apellido as apellidos, foto.src as src, uper.url as url, count(pre.respuesta) as totalrespuestas
+                from abg_pregunta pre inner join ctl_usuario usu on pre.ctl_usuario_id = usu.id
+                inner join abg_persona per on usu.rh_persona_id = per.id
+                inner join abg_foto foto on foto.abg_persona_id = per.id
+                inner join abg_url_personalizada uper on uper.abg_persona_id = per.id
+                group by per.nombres, per.apellido, foto.src, uper.url
+                order by count(pre.respuesta) desc
+                limit 0, 10";
+        
+        $rsm->addScalarResult('nombres','nombres');
+        $rsm->addScalarResult('apellidos','apellidos');
+        $rsm->addScalarResult('src','src');
+        $rsm->addScalarResult('url','url');
+        $rsm->addScalarResult('totalrespuestas','totalrespuestas');
+        
         $em = $this->getDoctrine()->getManager();
+        $topUsuarios = $em->createNativeQuery($sql, $rsm)
+                                  ->getResult();
+        
+        $pregunta = '';
+        
         $ctlespecialidad = $em->getRepository('DGAbgSistemaBundle:CtlEspecialidad')->findAll();
-        return $this->render('preyres/pregunta_detalle.html.twig', array('pregunta'=>$pregunta, 'prom1'=> $prom, 'prom2'=> $prom2, 'prom3'=> $prom3, 'prom4'=> $prom4, 'ctlEspecialidad'=>$ctlespecialidad));
+        return $this->render('preyres/pregunta_detalle.html.twig', array('pregunta'=>$pregunta, 'prom1'=> $prom, 'prom2'=> $prom2, 'prom3'=> $prom3, 'prom4'=> $prom4, 'ctlEspecialidad'=>$ctlespecialidad, 'top'=>$topUsuarios));
     }
     
     /**

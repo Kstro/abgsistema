@@ -22,6 +22,11 @@
   left: 0px;
         }
     </style>
+         <script type = "text/javascript" >
+                $(document).on('ready', function () {
+                $('.wrapper').css("background-color", "#ecf0f5")
+            });
+            </script>
 {% endblock css %}
 {% block js_extend %}
     <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
@@ -153,8 +158,8 @@
     {% for datos in abgPersona %}
 
         <div class="row" style=" padding: 10px; background-color:#ecf0f5;">
-            <div class=" col-md-9">
-                <div class="box box-widget">
+            <div class=" col-md-9" style="padding-right:0px;">
+              {#  <div class="box box-widget">
                     <div class="box-body " style=" padding: 5px;"> 
                         <div class="pos1">
                             {% if prom1 is null%}
@@ -165,8 +170,8 @@
                             
                         </div>
                     </div>
-                </div>
-                <section >
+                </div> #}
+               
                     <!-- Main content -->
 
 
@@ -613,13 +618,24 @@
                       </div>
                     </div>
                 </div>
-                    
+                    <div class="box box-widget">
+                    <div class="box-body " style=" padding: 5px;"> 
+                        <div class="pos1">
+                            {% if prom1 is null%}
+                                <img src="{{asset('Resources/src/img/banner1.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia">
+                            {% else %}
+                                 <img src="{{asset('')}}{{ prom1[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia">
+                            {% endif %}
+                            
+                        </div>
+                    </div>
+                </div> 
             </div>
 
 
-        </section>
+   
 
-        <div class="col-md-3" >
+        <div class="col-md-3" style="padding-left:10px;">
             <div class="bloque-main pos2" style="padding: 5px;">
                 {% if prom2 is null%}
                     <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
