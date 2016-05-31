@@ -885,7 +885,7 @@ else{ // Maximum length not reached so update the value of my_text counter
             }
             
             if(lon > 0){
-                document.getElementById("fotocambia").src = '../../' + imagenes[contador];
+                document.getElementById("fotocambia").src = '{{asset('')}}' + imagenes[contador];
                 contador++;
                 console.log(imagenes[contador]);
                 console.log(contador);
@@ -900,7 +900,7 @@ else{ // Maximum length not reached so update the value of my_text counter
             }
             
             if(lon2 > 0){
-                document.getElementById("fotocambia2").src = '../../' + imagenes2[contador2];
+                document.getElementById("fotocambia2").src = '{{asset('')}}' + imagenes2[contador2];
                 contador2++;
              } else {
                 document.getElementById("fotocambia2").src = '{{asset('Resources/src/img/banner.png')}}';
@@ -911,7 +911,7 @@ else{ // Maximum length not reached so update the value of my_text counter
             }
             
             if(lon3 > 0){
-                document.getElementById("fotocambia3").src = '../../' + imagenes3[contador3];
+                document.getElementById("fotocambia3").src = '{{asset('')}}' + imagenes3[contador3];
                 contador3++;
             } else {
                 document.getElementById("fotocambia3").src = '{{asset('Resources/src/img/banner.png')}}';
@@ -922,7 +922,7 @@ else{ // Maximum length not reached so update the value of my_text counter
             }
             
             if(lon4 > 0){
-                document.getElementById("fotocambia4").src = '../../' + imagenes4[contador4];
+                document.getElementById("fotocambia4").src = '{{asset('')}}' + imagenes4[contador4];
                 contador4++;
             } else {
                 document.getElementById("fotocambia4").src = '{{asset('Resources/src/img/banner1.png')}}';

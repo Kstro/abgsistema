@@ -499,7 +499,7 @@ class AbgPersonaController extends Controller {
     /**
      * Lists all CtlEmpresa entities.
      *
-     * @Route("/{url}", name="perfil_empresa_abogado", options={"expose"=true})
+     * @Route("/empresaab/{url}", name="perfil_empresa_abogado", options={"expose"=true})
      * @Method({"GET", "POST"})
      */
     public function perfilEmpresAbogadoAction($url) {
@@ -1814,7 +1814,7 @@ class AbgPersonaController extends Controller {
             $request = $this->getRequest();
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $Experiencia = $em->getRepository("DGAbgSistemaBundle:AbgExperienciaLaboral")->find(intval($request->get('experiencia')));
-            if (!empty($Experiencia->getCtlEmpresa())) {
+            if ($Experiencia->getCtlEmpresa() != NULL) {
                 $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona
                         . "  AND ctl_empresa_id=" . $Experiencia->getCtlEmpresa()->getId();
                 $stm = $this->container->get('database_connection')->prepare($sqlEdu);

@@ -54,13 +54,10 @@ class CtlEmpresaController extends Controller {
      */
     public function EmpresaAction() {
         $username = $this->container->get('security.context')->getToken()->getUser();
-        //$establecimiento = $user->getIdEmpleado()->getIdEstablecimiento()->getId();
-        //var_dump($username);
-
-
+       
         $em = $this->getDoctrine()->getManager();
         $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username->getUsername()); //->getRhPersona();
-        //var_dump($RepositorioPersona);
+   
         $ctlEmpresaId = $username->getCtlEmpresa()->getId();
 
         //Coleccion de datos de la empresa
@@ -333,10 +330,7 @@ class CtlEmpresaController extends Controller {
         $request = $this->getRequest();
 
         $isAjax = $this->get('Request')->isXMLhttpRequest();
-
         if ($isAjax) {
-
-
             $em = $this->getDoctrine()->getManager();
             $datos = $this->get('request')->request->get('frm');
             $frm = json_decode($datos);
@@ -352,8 +346,7 @@ class CtlEmpresaController extends Controller {
                 $nombreAbogado = $request->get('nombre');
                 $apellidoAbogado = $request->get('apellido');
                 $correoUsuario = $request->get('email');
-                /*  var_dump($request->get('email')."id--".$request->get('id'));
-                  exit(); */
+      
             } else {
                 $nombreAbogado = $frm->txtnombre;
                 $apellidoAbogado = $frm->txtapellido;
@@ -362,15 +355,6 @@ class CtlEmpresaController extends Controller {
             }
 
             $user = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($correoUsuario);
-
-
-
-            /*
-
-              $nombreAbogado = $frm->txtnombre;
-              $apellidoAbogado = $frm->txtapellido;
-              $correoUsuario = $frm->correoEmpresa;
-              $contrasenha = $frm->contrasenha; */
 
             //Ingreso de una persona
 
@@ -386,7 +370,6 @@ class CtlEmpresaController extends Controller {
 
             $em->flush();
             $idPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgPersona')->find($abgPersona->getId());
-
 
             //Ingreso null de una empresa
 
@@ -416,7 +399,6 @@ class CtlEmpresaController extends Controller {
             $em->flush();
 
             $idEmpresa = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlEmpresa')->find($ctlEmpresa->getId());
-
 
             //Ingreso de un usuario
             $rol = $em->getRepository('DGAbgSistemaBundle:CtlRol')->find(2);
@@ -469,8 +451,6 @@ class CtlEmpresaController extends Controller {
             $urlPerE->setUrl($url);
             $em->persist($urlPerE);
             $em->flush();
-
-
 
             //Ingreso de la url del abogado
 
@@ -586,14 +566,11 @@ class CtlEmpresaController extends Controller {
                 $num = $rp + $re;
 
                 if ($num == 0) {
-
                     $data = true;
                 } else {
 
                     $data = false;
                 }
-
-               
             }
         }
          return new Response(json_encode($data));
@@ -626,20 +603,11 @@ class CtlEmpresaController extends Controller {
         $data = base64_decode($img);
         $file = UPLOAD_DIR . $nombreTemporal . '.png';
         $success = file_put_contents($file, $data);
-        /*    var_dump($request->get('imageDatas'));
-          var_dump($success);
-          exit(); */
+       
         $nombreTemporal = $nombreTemporal . '.png';
 
-
-
         if ($success) {
-
             $EmpresaId = $request->get("empresaId");
-
-
-
-
             if ($nombreTemporal != null) {
 
                 //Direccion fisica del la imagen  
@@ -696,8 +664,6 @@ class CtlEmpresaController extends Controller {
                             $datas['estado'] = true;
                         }
                     } else {
-
-
                         $entity = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("ctlEmpresa" => $idEmpresa, "tipoFoto" => 1));
                         $entity[0]->setSrc($nombreBASE);
                         $entity[0]->setFechaRegistro(new \DateTime("now"));
@@ -746,24 +712,17 @@ class CtlEmpresaController extends Controller {
         $request = $this->getRequest();
 
         try {
-
-
-
             $empresa = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($request->get('empresa'));
-
 
             switch ($request->get('n')) {
                 case 0:
-
                     $nombreEmpresa = ($request->get('nombreEmpresa'));
                     $empresa->setNombreEmpresa($nombreEmpresa);
                     $empresa->setUrlPermiso(1);
-
                     break;
                 case 1:
                     $numeroMovil = $request->get('movil');
                     $empresa->setMovil($numeroMovil);
-
                     break;
                 case 2:
                     $numeroFijo = $request->get('fijo');
@@ -791,8 +750,6 @@ class CtlEmpresaController extends Controller {
 
                 case 7:
                     $anhoFundacion = $request->get('anhoFundacion');
-
-
                     $sql = "select YEAR(NOW()) as num";
 
                     $stm = $this->container->get('database_connection')->prepare($sql);
@@ -801,8 +758,6 @@ class CtlEmpresaController extends Controller {
                     $numero = $anio[0]['num'];
 
                     if ($anhoFundacion <= $numero) {
-
-
                         $anhoFundacion = $anhoFundacion . "-12-31";
                         $empresa->setFechaFundacion(new \DateTime($anhoFundacion));
 
@@ -817,14 +772,12 @@ class CtlEmpresaController extends Controller {
                     $cantidadEmpleados = $request->get('cantidadEmpleados');
                     $empresa->setCantidadEmpleados($cantidadEmpleados);
                     break;
-
                 case 9:
                     $latitude = $request->get('latitudes');
                     $longitud = $request->get('longitudes');
 
                     $empresa->setLatitude($latitude);
                     $empresa->setLongitude($longitud);
-
                     break;
                 case 10:
                     $valor = $request->get('valor');
@@ -854,13 +807,10 @@ class CtlEmpresaController extends Controller {
         try {
             $request = $this->getRequest();
             $em = $this->getDoctrine()->getManager();
-            //$idPersona = $this->container->get('security.context')->getToken()->getUser()->getId();
-
 
             $Persona = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($request->get('empresaId'));
             $array = $request->get('DataEspecialida');
             parse_str($request->get('dato'), $datos);
-
 
             $RepositorioSubEsp = $em->getRepository("DGAbgSistemaBundle:AbgPersonaEspecialida");
             if (is_null($RepositorioSubEsp->findBy(array('ctlEmpresa' => $request->get('empresaId'))))) {
@@ -893,9 +843,6 @@ class CtlEmpresaController extends Controller {
                 $data['Esp'] = $em->createQuery($dql_especialida)->getArrayResult();
             }
 
-
-
-
             return new Response(json_encode($data));
         } catch (\Exception $e) {
             $data['error'] = $e->getMessage(); //"Falla al Registrar ";
@@ -912,9 +859,6 @@ class CtlEmpresaController extends Controller {
         $request = $this->getRequest();
 
         try {
-
-
-
             $empresa = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($request->get('idEmpresa'));
             $colorEmpresa = $request->get('colorEmpresa');
             $empresa->setColor($colorEmpresa);
@@ -924,7 +868,6 @@ class CtlEmpresaController extends Controller {
             $dato = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlEmpresa')->find($empresa);
             $colorBase = $dato->getColor();
             $data['color'] = $colorBase;
-
 
             return new Response(json_encode($data));
         } catch (\Exception $e) {
@@ -947,9 +890,7 @@ class CtlEmpresaController extends Controller {
             $valor = $request->get('exa');
             $dqlTipoEmpresa = "SELECT te.tipoEmpresa as nombre, te.id as id"
                     . " FROM DGAbgSistemaBundle:CtlTipoEmpresa te";
-
             $dato['valores'] = $em->createQuery($dqlTipoEmpresa)->getResult();
-
 
             return new Response(json_encode($dato));
         } catch (\Exception $e) {
@@ -966,7 +907,6 @@ class CtlEmpresaController extends Controller {
     public function IngresarFotoPersonaAction() {
         //data es el valor de retorno de ajax donde puedo ver los valores que trae dependiendo de las instrucciones que hace dentro del controlador
 
-
         $request = $this->getRequest();
         //data es el valor de retorno de ajax donde puedo ver los valores que trae dependiendo de las instrucciones que hace dentro del controlador
 
@@ -974,7 +914,6 @@ class CtlEmpresaController extends Controller {
         $horaFecha = date('Y-m-d His');
         $nombreTemporal = $horaFecha;
         $nombreTemporal = str_replace(" ", "", $nombreTemporal);
-
 
         define('UPLOAD_DIR', $path2);
         $img = $request->get('imageDatas');
@@ -986,13 +925,10 @@ class CtlEmpresaController extends Controller {
 
         $nombreTemporal = $nombreTemporal . '.png';
 
-
         if ($success) {
             $personaId = $request->get("personaId");
 
-
             if ($nombreTemporal != null) {
-
 
                 //Direccion fisica del la imagen  
                 $path1 = $this->container->getParameter('photo.perfil');
@@ -1014,10 +950,8 @@ class CtlEmpresaController extends Controller {
                     "height" => 300
                 ));
 
-
                 $resultado = $resized->toFile($path1 . "E" . $nombreSERVER);
                 $numero = unlink($path2 . $nombreSERVER);
-
 
                 if ($resultado) {
                     $abgPersona = new AbgPersona();
@@ -1025,9 +959,7 @@ class CtlEmpresaController extends Controller {
                     $em = $this->getDoctrine()->getManager();
                     $idPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgPersona')->find($personaId);
 
-
                     $src = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array("abgPersona" => $idPersona->getId(), "tipoFoto" => 0));
-
 
                     $direccion = $src[0]->getSrc();
 
@@ -1035,7 +967,6 @@ class CtlEmpresaController extends Controller {
                     $direccion = str_replace("Photos/Perfil/", "", $direccion);
 
                     if ($direccion != "" && $direccion != 'Photos/defecto/defecto.png') {
-
 
                         $eliminacionRegistroExixtente = unlink($path1 . $direccion);
 
@@ -1079,19 +1010,16 @@ class CtlEmpresaController extends Controller {
             }
         }
 
-
         return new Response(json_encode($datas));
     }
 
     public function generarCorrelativoEmpresa() {
-
 
         $em = $this->getDoctrine()->getManager();
         $dqlNumerocorrelativo = "SELECT COUNT(u.id) as numero FROM DGAbgSistemaBundle:AbgUrlPersonalizada u"
                 . " WHERE u.url like '%EMP%' ";
         $resultCorrelativo = $em->createQuery($dqlNumerocorrelativo)->getArrayResult();
         $numero_base = $resultCorrelativo[0]['numero'];
-
 
         $primerLetras = "EMP";
         $valor = "";
@@ -1125,7 +1053,6 @@ class CtlEmpresaController extends Controller {
                 . " WHERE u.url like '%AB%' ";
         $resultCorrelativo = $em->createQuery($dqlNumerocorrelativo)->getArrayResult();
         $numero_base = $resultCorrelativo[0]['numero'];
-
 
         $primerLetras = "AB";
         $valor = "";
@@ -1170,7 +1097,6 @@ class CtlEmpresaController extends Controller {
 
             $direccion = $request->get('url');
 
-
             $dqlEmp = "SELECT COUNT(u.id) AS res FROM DGAbgSistemaBundle:AbgUrlPersonalizada u WHERE"
                     . " u.url = :url ";
 
@@ -1178,10 +1104,7 @@ class CtlEmpresaController extends Controller {
                     ->setParameters(array('url' => $direccion))
                     ->getResult();
 
-
             $numero = $resultadoBusqueda[0]['res'];
-
-
 
             $dqlNumeroRegistrosExistentes = "SELECT COUNT(u.id) AS numR FROM DGAbgSistemaBundle:AbgUrlPersonalizada u WHERE"
                     . " u.abgPersona = :abgPersona ";
@@ -1191,7 +1114,6 @@ class CtlEmpresaController extends Controller {
                     ->getResult();
 
             $numR = $resultadoBusquedas[0]['numR'];
-
 
             //Evaluacion si  ya ingreso la cantidad de veces permitidas
 
@@ -1236,8 +1158,6 @@ class CtlEmpresaController extends Controller {
             $em->merge($entity[0]);
             $em->flush();
 
-
-
             $direccionUrl = $request->get('url');
             $urlPe = new AbgUrlPersonalizada();
             $urlPe->setCtlEmpresa(null);
@@ -1266,7 +1186,6 @@ class CtlEmpresaController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $username = $this->container->get('security.context')->getToken()->getUser();
 
-
             $ctlEmpresaId = $username->getCtlEmpresa();
 
             $valor = $ctlEmpresaId->getUrlPermiso();
@@ -1276,8 +1195,6 @@ class CtlEmpresaController extends Controller {
             } else {
                 $data['estado'] = false;
             }
-
-
             return new Response(json_encode($data));
         }
     }
@@ -1292,16 +1209,13 @@ class CtlEmpresaController extends Controller {
 
         if ($isAjax) {
 
-
             $em = $this->getDoctrine()->getManager();
             $username = $this->container->get('security.context')->getToken()->getUser();
 
 //            $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username->getUsername()); 
 
-
             $ctlEmpresaId = $username->getCtlEmpresa()->getId();
             $direccion = $request->get('url');
-
 
             $dqlEmp = "SELECT COUNT(u.id) AS res FROM DGAbgSistemaBundle:AbgUrlPersonalizada u WHERE"
                     . " u.url = :url ";
@@ -1312,8 +1226,6 @@ class CtlEmpresaController extends Controller {
 
 
             $numero = $resultadoBusqueda[0]['res'];
-
-
 
             $dqlNumeroRegistrosExistentes = "SELECT COUNT(u.id) AS numR FROM DGAbgSistemaBundle:AbgUrlPersonalizada u WHERE"
                     . " u.ctlEmpresa = :ctlEmpresa ";
@@ -1607,6 +1519,7 @@ class CtlEmpresaController extends Controller {
 
         $em = $this->getDoctrine()->getManager();
         $ObjetoUrl = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgUrlPersonalizada')->findByUrl($url);
+      
         if (!empty($ObjetoUrl)) {
 
             $persona = $ObjetoUrl[0]->getAbgPersona();

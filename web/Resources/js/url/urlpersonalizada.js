@@ -1,9 +1,9 @@
 $(document).ready(function() {
-    $("#cerarModificarionUrl").hide();
-    $("#urlform").hide();
-    $("#urlformE").hide();
-    $("#siPermiso").hide();
-    $("#noPermiso").hide();
+//    $("#cerarModificarionUrl").hide();
+//    $("#urlform").hide();
+//    $("#urlformE").hide();
+//    $("#siPermiso").hide();
+//    $("#noPermiso").hide();
     
       $("#cmdInsertarUrlEmp").prop('disabled', true);
       $("#UrlPersonalizadaEmp").prop('disabled', true);

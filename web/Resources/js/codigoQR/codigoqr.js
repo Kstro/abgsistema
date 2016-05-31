@@ -3,17 +3,20 @@ $(document).ready(function() {
 
     
     
-    $("#formQR").hide();
-    $("#exportarImagen").hide();
-    $("#carncelarQR").hide();
+//    $("#formQR").hide();
+//    $("#exportarImagen").hide();
+//    $("#carncelarQR").hide();
     
     
  });
     $(document).on("click","#idAqrContenedor",function() {
-            $("#idAqrContenedor").hide();
-            $("#carncelarQR").show();
-	    $("#formQR").show();
-         
+        var codqr = document.getElementById('mostrar_qr');
+        codqr.style.display = 'block';
+        
+        $("#idAqrContenedor").hide();
+        $("#carncelarQR").show();
+        $("#formQR").show();
+
          var x=1;
                  $.ajax({
                                     type: 'POST',

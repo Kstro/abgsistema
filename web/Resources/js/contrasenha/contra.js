@@ -1,10 +1,12 @@
 
 $(document).ready(function() {
-    $("#formPassword").hide();
-    $("#hideFormPassword").hide();
+//    $("#formPassword").hide();
+//    $("#hideFormPassword").hide();
     
     
      $(document).on("click","#showFormPassword",function() {
+        var codqr = document.getElementById('cambio_contrasenha_');
+        codqr.style.display = 'block';
          
         $("#formPassword").show();
         $("#showFormPassword").hide();
