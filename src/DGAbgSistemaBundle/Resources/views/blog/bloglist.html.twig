@@ -312,7 +312,78 @@
     </script> 
     {#Aqui va para la parte de las categorias#}
     <script>
+        var imagenes = new Array();
+        var imagenes2 = new Array();
+        var imagenes3 = new Array();
+        var imagenes4 = new Array();
+
+        var contador = 1;
+        var contador2 = 1;
+        var contador3 = 1;
+        var contador4 = 1;
+
+        var lon = 0;
+        var lon2 = 0;
+        var lon3 = 0;
+        var lon4 = 0;
+
+        {% for pro in prom1 %}
+            imagenes.push("{{ pro.src }}");
+        {% endfor %}
+
+        lon = imagenes.length;
+
+        {% for pro in prom2 %}
+            imagenes2.push("{{ pro.src }}");
+        {% endfor %}
+
+        lon2 = imagenes2.length;
+
+        {% for pro in prom3 %}
+            imagenes3.push("{{ pro.src }}");
+        {% endfor %}
+
+        lon3 = imagenes3.length;
+        
+        function cambia() {            
+            if(contador >= lon){
+                contador = 0;
+            }
+
+            if(lon > 0){
+                document.getElementById("fotocambia").src = '../../' + imagenes[contador];
+                contador++;                
+            } else {
+                document.getElementById("fotocambia").src = '{{asset('Resources/src/img/banner1.png')}}';
+            }
+
+
+            if(contador2 >= lon2){
+                contador2 = 0;
+            }
+
+            if(lon2 > 0){
+                document.getElementById("fotocambia2").src = '../../' + imagenes2[contador2];
+                contador2++;
+             } else {
+                document.getElementById("fotocambia2").src = '{{asset('Resources/src/img/banner.png')}}';
+            }
+
+            if(contador3 >= lon3){
+                contador3 = 0;
+            }
+
+            if(lon3 > 0){
+                document.getElementById("fotocambia3").src = '../../' + imagenes3[contador3];
+                contador3++;
+            } else {
+                document.getElementById("fotocambia3").src = '{{asset('Resources/src/img/banner.png')}}';
+            }
+        }
+        
         $(document).ready(function () {
+            setInterval(cambia, 4000);
+            
             $(document).on('click', '#cb', function () {
                 var idcat = $(this).attr('class');
                 var inicio = $('#inicioInput').val(); //numero de registros que se van a mostrar

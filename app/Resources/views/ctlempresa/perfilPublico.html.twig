@@ -101,7 +101,7 @@
             }
             
             if(lon > 0){
-                document.getElementById("fotocambia").src = '../' + imagenes[contador];
+                document.getElementById("fotocambia").src = '{{asset('')}}' + imagenes[contador];
                 contador++;
                 console.log(imagenes[contador]);
                 console.log(contador);
@@ -116,7 +116,7 @@
             }
             
             if(lon2 > 0){
-                document.getElementById("fotocambia2").src = '../' + imagenes2[contador2];
+                document.getElementById("fotocambia2").src = '{{asset('')}}' + imagenes2[contador2];
                 contador2++;
              } else {
                 document.getElementById("fotocambia2").src = '{{asset('Resources/src/img/banner.png')}}';
@@ -127,7 +127,7 @@
             }
             
             if(lon3 > 0){
-                document.getElementById("fotocambia3").src = '../' + imagenes3[contador3];
+                document.getElementById("fotocambia3").src = '{{asset('')}}' + imagenes3[contador3];
                 contador3++;
             } else {
                 document.getElementById("fotocambia3").src = '{{asset('Resources/src/img/banner.png')}}';
