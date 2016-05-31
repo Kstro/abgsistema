@@ -6,7 +6,7 @@
     <script src="src/js/bootstrap.js"></script>
     <script type="text/javascript">
         $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
+            $('[data-toggle="tooltip"]').tooltip();
         })
         
        
@@ -34,7 +34,8 @@
     <div class="col-md-9" style="padding-right:0px;">
 
         <div class="panel panel-primary">
-  <div class="panel-heading">ENTRADAS<i class="fa  fa-caret-down pull-right " id="iver" onClick="bntCategorias()"></i><i class="fa   fa-caret-up pull-right " id="inver" style=" display: none;" onClick="bntCategorias()"></i></div>
+            <div class="panel-heading">ENTRADAS<i class="fa  fa-caret-down pull-right " id="iver" onClick="bntCategorias()"></i><i class="fa   fa-caret-up pull-right " id="inver" style=" display: none;" onClick="bntCategorias()"></i>
+            </div>
             <div class="panel-body no-padding" >
                 <div id="bloquemain">
                 </div>                                
@@ -54,8 +55,9 @@
                     </div>
                 </div>
             </div>
-        </div>  </div>
-    <!-- end col md 9 -->
+        </div>
+    </div>
+<!-- end col md 9 -->
     <div class="col-md-3" style="padding-left:10px;">
         <div class="panel panel-primary" style="border-radius:3px; margin-bottom:5px;margin-bottom: 15px; display:none;" id="divCategorias">
          
@@ -70,7 +72,7 @@
             </div>
         </div>
         <!-- Publicida -->
-      <div class="bloque-main pos2 no-margin" style="padding: 5px;border-radius:3px; ">
+        <div class="bloque-main pos2 no-margin" style="padding: 5px;border-radius:3px; ">
             {% if prom2 is null%}
                 <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
             {% else %}

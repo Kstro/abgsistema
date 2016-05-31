@@ -23,19 +23,19 @@ class DirectorioController extends Controller
     /**
      * Lists all CtlCiudad entities.
      *
-     * @Route("/", name="directorio_index")
+     * @Route("/", name="directorio_index", options={"expose"=true}))
      * @Method("GET")
      */
     public function indexAction()
     { 
-       $em = $this->getDoctrine()->getManager();
-       
-       $prom = $this->busquedaPublicidad(1);
-       $prom2 = $this->busquedaPublicidad(2);
-       $prom3 = $this->busquedaPublicidad(3);
-       $prom4 = $this->busquedaPublicidad(4);
-       
-        
+        $em = $this->getDoctrine()->getManager();
+
+        $prom = $this->busquedaPublicidad(1);
+        $prom2 = $this->busquedaPublicidad(2);
+        $prom3 = $this->busquedaPublicidad(3);
+        $prom4 = $this->busquedaPublicidad(4);
+        $busqueda = $this->getRequest()->get('busqueda');
+        //var_dump($busqueda);
         $ctlCiudads = $em->getRepository('DGAbgSistemaBundle:CtlEstado')->findAll();
         $dql = "SELECT c FROM DGAbgSistemaBundle:CtlEstado c "
                 . "INNER JOIN c.ctlPais p WHERE p.estado=1";
@@ -49,7 +49,9 @@ class DirectorioController extends Controller
             'prom1'   => $prom,
             'prom2'   => $prom2,
             'prom3'   => $prom3,
-            'prom4'   => $prom4
+            'prom4'   => $prom4,
+            'busqueda' => $busqueda,
+            
         ));
     }
     
@@ -92,7 +94,7 @@ class DirectorioController extends Controller
         
             if($deptoId==0 && $munId==0){
     //            echo "sin filtro";
-                $sql = "SELECT * FROM directorio WHERE CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT ".$inicioRegistro.",".$longitud;
+                $sql = "SELECT * FROM directorio WHERE CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub),' ',upper(especialidad)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT ".$inicioRegistro.",".$longitud;
     //            $sql = "SELECT estado,ciudad,url,nombres,apellido,correoelectronico,telefono_fijo,telefono_movil,tipo,id,foto,group_concat(sub) FROM directorio WHERE CONCAT(upper(nombres),' ',upper(apellido),' ', upper(sub)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT ".$inicioRegistro.",".$longitud;
                 //echo $sql;
                 $em = $this->getDoctrine()->getManager();
@@ -101,7 +103,7 @@ class DirectorioController extends Controller
                 $reg['data'] = $stmt->fetchAll();
                 //var_dump($reg);
     //            $sql = "SELECT COUNT(*) as total FROM directorio WHERE CONCAT(upper(nombres),' ',upper(apellido)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
-                $sql = "SELECT COUNT(*) as total FROM directorio WHERE CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
+                $sql = "SELECT COUNT(*) as total FROM directorio WHERE CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub),' ',upper(especialidad) ) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
 
                 $em = $this->getDoctrine()->getManager();
                 $stmt = $em->getConnection()->prepare($sql);
@@ -113,7 +115,7 @@ class DirectorioController extends Controller
             else{
                 if($deptoId!=0){
     //                echo "busqueda depto";
-                    $sql = "SELECT * FROM directorio WHERE estado=".$deptoId." AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT ".$inicioRegistro.",".$longitud;
+                    $sql = "SELECT * FROM directorio WHERE estado=".$deptoId." AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub),' ',upper(especialidad)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT ".$inicioRegistro.",".$longitud;
     //                $sql = "SELECT estado,ciudad,url,nombres,apellido,correoelectronico,telefono_fijo,telefono_movil,tipo,id,foto,GROUP_concat(sub) FROM directorio WHERE estado=".$deptoId." AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT ".$inicioRegistro.",".$longitud;
                     //echo $sql;
                     $em = $this->getDoctrine()->getManager();
@@ -122,7 +124,7 @@ class DirectorioController extends Controller
                     $reg['data'] = $stmt->fetchAll();
                     //var_dump($reg);
     //                $sql = "SELECT COUNT(*) as total FROM directorio WHERE estado=".$deptoId." AND CONCAT(upper(nombres),' ',upper(apellido)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
-                    $sql = "SELECT COUNT(*) as total FROM directorio WHERE estado=".$deptoId." AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
+                    $sql = "SELECT COUNT(*) as total FROM directorio WHERE estado=".$deptoId." AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub),' ',upper(especialidad)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
 
                     $em = $this->getDoctrine()->getManager();
                     $stmt = $em->getConnection()->prepare($sql);
@@ -132,7 +134,7 @@ class DirectorioController extends Controller
                 }
                 if($munId!=0){
     //                echo "busqueda mun";
-                    $sql = "SELECT * FROM directorio WHERE estado=".$deptoId." AND ciudad=".$munId." AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT ".$inicioRegistro.",".$longitud;
+                    $sql = "SELECT * FROM directorio WHERE estado=".$deptoId." AND ciudad=".$munId." AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub),' ',upper(especialidad)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT ".$inicioRegistro.",".$longitud;
     //                $sql = "SELECT estado,ciudad,url,nombres,apellido,correoelectronico,telefono_fijo,telefono_movil,tipo,id,foto,GROUP_concat(sub) FROM directorio WHERE estado=".$deptoId." AND ciudad=".$munId." AND CONCAT(upper(nombres),' ',upper(apellido),' ', upper(sub)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT ".$inicioRegistro.",".$longitud;
                     //echo $sql;
                     $em = $this->getDoctrine()->getManager();
@@ -141,7 +143,7 @@ class DirectorioController extends Controller
                     $reg['data'] = $stmt->fetchAll();
                     //var_dump($reg);
     //                $sql = "SELECT COUNT(*) as total FROM directorio WHERE estado=".$deptoId." AND ciudad=".$munId." AND CONCAT(upper(nombres),' ',upper(apellido)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
-                    $sql = "SELECT COUNT(*) as total FROM directorio WHERE estado=".$deptoId." AND ciudad=".$munId." AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
+                    $sql = "SELECT COUNT(*) as total FROM directorio WHERE estado=".$deptoId." AND ciudad=".$munId." AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub),' ',upper(especialidad)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
 
                     $em = $this->getDoctrine()->getManager();
                     $stmt = $em->getConnection()->prepare($sql);

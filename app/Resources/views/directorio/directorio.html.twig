@@ -40,7 +40,7 @@
                                     <form class="form-inline">
                                         {#<div class="row">
                                             <div class="col-md-6">#}
-                                                <input id="searchBox" maxlength="140" class="searchbox" {#style="width: 100%;"#} placeholder="Buscar por asunto legal o nombre de abogado/firma" oninvalid="this.setCustomValidity('Porfavor ingrese el nombre de un Abogado, Bufete, Firma o Problema Legal')" required> </input>
+                                                <input value="{{busqueda}}" id="searchBox" maxlength="140" class="searchbox" {#style="width: 100%;"#} placeholder="Buscar por asunto legal o nombre de abogado/firma" oninvalid="this.setCustomValidity('Porfavor ingrese el nombre de un Abogado, Bufete, Firma o Problema Legal')" required> </input>
                                             {#</div>
                                             <div class="col-md-2">#}
                                                 <select id="filtrarDepartamento" style="width:20%;">
@@ -56,7 +56,7 @@
                                                 </select>
                                             {#</div>
                                             <div class="col-md-2">#}
-                                                <button id="searchButton" style="height: 30px;" type="submit" class="searchbotondir input-group btn btn-xs" {#style="width:100%;"#}>Buscar</button>
+                                                <button id="searchButton" type="submit" class="searchbotondir input-group btn btn-xs" style="height: 30px; color:#FFF; ">Buscar</button>
                                             {#</div>
                                         </div>#}
                                       
@@ -68,7 +68,7 @@
                                         Mostrando los resultado para '<label id="filtro"><strong>Familiar</strong></label>'.
                                     </p>
                                     <p class="numRegistros pull-right" style="font-size: 12px; margin-bottom: 0px; padding: 10px;">
-                                            Mostrando <label class="filtroRegistros"></label> resultados de <label class="totalRegistros"></label>
+                                        Mostrando <label class="filtroRegistros"></label> resultados de <label class="totalRegistros"></label>
                                     </p>
 				</div>
 				<!-- item 1 -->
@@ -168,50 +168,7 @@
                                      
                                    
                                     
-                                    <tr>
-                                        <td style="width: 100%">
-                                            <div class="item-directorio-nexo" style="width: 100%">
-                                                <div class="clearfix"></div>
-                                                <div class="row">
-                                                    <div class="col-xs-2 col-sm-3 col-md-3 col-lg-2">
-                                                        <img id="busquedaImagen6" src="{{asset('Resources/src/img/profile.png')}}" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
-                                                    </div>
-                                                    <div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10">
-                                                        <p id="busquedaNombre6" style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>Marvin Jose Vigil</strong></p>
-                                                        <p id="busquedaCargo6" style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">Director Ejecutivo en Digitality Garage</p>
-                                                        <div class="row" style="margin-top: 2px; margin-bottom: 15px;">
-                                                            <div class="col-sm-4 col-xs-12">
-                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono</strong></p>
-                                                                <p id="busquedaTelefono6" style="font-size: 11px; margin-bottom: 0px;">+503 77971933</p>
-                                                            </div>
-                                                            <div class="col-sm-4 col-xs-12">
-                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p>
-                                                                <p id="busquedaCorreo6" style="font-size: 11px; margin-bottom: 0px;">marvinvigil@gmail.com</p>
-                                                            </div>
-                                                            <div class="col-sm-4 col-xs-12">
-                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
-                                                                <p id="busquedaSitioWeb6" style="font-size: 11px; margin-bottom: 0px;"><a href="http://www.ariaslaw.com" target="_blank">www.ariaslaw.com</a></p>
-                                                            </div>
-                                                            <div class="col-sm-12">
-                                                                <span style="color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;"><strong>Especialidades:</strong> </span>
-                                                                <span id="busquedaEspecialidades6" style="font-size: 11px;">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span>
-                                                            </div>
-                                                            <div class="col-sm-12" style="margin-top: -0px;">
-                                                                <span style='font-size: 11px;'><a href="#">Ver perfil</a></span>
-                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
-                                                                <span style='font-size: 11px;'><a href="#">Contactar</a></span>
-                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
-                                                                <span style='font-size: 11px;'><a href="#">Recomendar</a></span>							
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                        
-                                    
-                                    
+                                   
                                     <tr>
                                         <td style="width: 100%">
                                             <div class="item-directorio-nexo" style="width: 100%">
@@ -348,9 +305,9 @@
                                 </div>
 				<!-- Fin de Items -->
 				<!-- PAGINACION -->
-				<div class="item-directorio-nexo">
+				<div class="item-directorio-nexo" style="margin-top:150px;">
 					<div class="row">
-						<div class="col-md-7" style="padding-top: 9px;">
+						<div class="col-md-7" style="padding-top: 9px;" >
 							<ul class="numeroPaginas" style="list-style: none; display: inline; padding-left: 10px !important; color: #777777;">
 								
 							</ul>

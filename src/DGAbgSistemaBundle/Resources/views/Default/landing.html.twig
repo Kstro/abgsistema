@@ -1,0 +1,247 @@
+<html>
+    <head>
+        {% block head %}
+            {% block meta %}
+                <meta charset="utf-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <meta name="robots" content="noindex">
+            {% endblock%}
+
+            <title>Directorio de Abogados de El Salvador | Primero y unico directorio de abogados de El Salvador | Abogados.com.sv</title>
+
+            {% block css %}
+
+                <link href="{{asset('Resources/src/css/bootstrap.css')}}" rel="stylesheet">
+                <!-- Stylesheet Personales -->
+{#                <link href="{{asset('Resources/src/css/style.css')}}" rel="stylesheet">#}
+                <link href="{{asset('Resources/src/css/style2.css')}}" rel="stylesheet">
+                <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+                
+                <style>
+                    
+                    .autocomplete-suggestions { border: 1px solid #999; background: #FFF; cursor: default; overflow: auto; -webkit-box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); -moz-box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); }
+                    .autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+                    .autocomplete-no-suggestion { padding: 2px 5px;}
+                    .autocomplete-selected { background: #F0F0F0; }
+                    .autocomplete-suggestions strong { font-weight: bold; color: #000; }
+                    .autocomplete-group { padding: 2px 5px; }
+                    .autocomplete-group strong { font-weight: bold; font-size: 16px; color: #000; display: block; border-bottom: 1px solid #000; }
+                </style>
+                {#<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>  #}
+                <!-- Favicon (Icono Pequeño) -->
+                <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+                <link rel="icon" href="favicon.png" type="image/x-icon">
+   
+                <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+                <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+                <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+                
+                {% block css_extend %}
+                    
+                {% endblock css_extend %}
+            {% endblock %}
+
+
+            <!-- fosjsrouting -->
+            
+            
+
+        {% endblock %}
+
+    </head>
+    <body style="background-color: #f6f6f6;">
+        {% block body %}
+        
+        
+        
+        <div class=" fb_reset" id="fb-root">
+            <div style="position: absolute; top: -10000px; height: 0px; width: 0px;">
+                <div>
+                    <iframe src="http://staticxx.facebook.com/connect/xd_arbiter.php?version=42#channel=fe786ab4d390f&amp;origin=http%3A%2F%2F192.168.0.17" style="border: medium none;" tabindex="-1" title="Facebook Cross Domain Communication Frame" aria-hidden="true" id="fb_xdm_frame_http" scrolling="no" allowfullscreen="true" allowtransparency="true" name="fb_xdm_frame_http" frameborder="0"></iframe><iframe src="https://staticxx.facebook.com/connect/xd_arbiter.php?version=42#channel=fe786ab4d390f&amp;origin=http%3A%2F%2F192.168.0.17" style="border: medium none;" tabindex="-1" title="Facebook Cross Domain Communication Frame" aria-hidden="true" id="fb_xdm_frame_https" scrolling="no" allowfullscreen="true" allowtransparency="true" name="fb_xdm_frame_https" frameborder="0">
+                        
+                    </iframe>
+                </div>
+            </div>
+            <div style="position: absolute; top: -10000px; height: 0px; width: 0px;">
+                <div></div>  
+            </div>
+        </div>
+        
+        <div class="container-fluid heromain banner">
+		
+		<!-- Barra de Navegacion -->
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4">
+					<img src="{{ asset('Resources/src/img/logowhite.png')}}" style="width: 300px; margin-top: 20px; max-width: 100%;">
+				</div> <!-- end md 4 -->
+				<div class="col-md-8">
+					<ul style="display:inline; list-style: none; color: #fff; font-weight: 700; margin-top: 50px;" class="pull-right text-uppercase">
+						<li style="display: inline; padding: 15px 15px;" class="sans">busco abogados</li>
+						<li style="display: inline; padding: 15px 15px;" class="sans">soy un abogado</li>
+						<!-- <li style="display: inline; padding: 15px 15px;" class="sans">contacto</li> -->
+					</ul>
+				</div> <!-- end md 8 -->
+			</div> <!-- end row -->
+		</div> <!-- End Barra de Navegacion -->
+
+		<div class="clearfix"></div>
+		
+		<!-- Barra Buscadora + Slogan -->
+		<div class="container">
+			<p class="text-center sans" style="font-weight: 700; color: #fff; margin-top: 95px; font-size: 35px; margin-bottom: 0px;">ENCUENTRE EL ABOGADO INDICADO</p>
+			<p class="text-center sans" style="font-size: 13px; font-weight: 300; color: #fff; margin-top:-5px; margin-bottom: 10px;">
+				El directorio más grande de abogados de El Salvador.
+			</p>
+			<div class="row">
+				<div class="col-md-6 col-md-offset-3">
+					{#<input name="abogados" placeholder="Buscar por problema legal, nombre de abogado o firma." class="search sans" type="text"> 
+					<input value="Buscar" class="submitsearch sans" type="submit">#}
+                                        
+                                        <input name="abogados" class="search sans" id="searchInput" type="text" value="" placeholder="Buscar problema legal, nombre de abogado o firma.">
+                                        {#<select name="abogados" class="search sans" class="submitsearch sans" id="search">#}
+                                            {#<option>Buscar problema legal, nombre de abogado o firma</option>#}
+                                        {#</select>#}
+{#                                        <input class="form-group sans" id="searchInput" type="text">#}
+                                        <input value="Buscar" class="submitsearch form-group" id="search fields" type="submit">
+				</div>
+			</div> <!-- end row -->
+			<!-- facebook -->
+			<div style="margin-left: auto; margin-right: auto; margin-top: 15px;" class="text-center">
+                            <div fb-iframe-plugin-query="action=like&amp;app_id=&amp;container_width=1140&amp;href=https%3A%2F%2Fbusiness.facebook.com%2FAbogadoscomsv-953460784737301%2F%3Fbusiness_id%3D925554047540608%26ref%3Dbookmarks&amp;layout=button_count&amp;locale=en_US&amp;sdk=joey&amp;share=false&amp;show_faces=false" fb-xfbml-state="rendered" class="fb-like fb_iframe_widget" data-href="https://business.facebook.com/Abogadoscomsv-953460784737301/?business_id=925554047540608&amp;ref=bookmarks" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"><span style="vertical-align: bottom; width: 80px; height: 20px;"><iframe class="" src="https://www.facebook.com/v2.6/plugins/like.php?action=like&amp;app_id=&amp;channel=http%3A%2F%2Fstaticxx.facebook.com%2Fconnect%2Fxd_arbiter.php%3Fversion%3D42%23cb%3Df273dcec0b62d42%26domain%3D192.168.0.17%26origin%3Dhttp%253A%252F%252F192.168.0.17%252Ffe786ab4d390f%26relation%3Dparent.parent&amp;container_width=1140&amp;href=https%3A%2F%2Fbusiness.facebook.com%2FAbogadoscomsv-953460784737301%2F%3Fbusiness_id%3D925554047540608%26ref%3Dbookmarks&amp;layout=button_count&amp;locale=en_US&amp;sdk=joey&amp;share=false&amp;show_faces=false" style="border: medium none; visibility: visible; width: 80px; height: 20px;" title="fb:like Facebook Social Plugin" scrolling="no" allowfullscreen="true" allowtransparency="true" name="f222036cbd75264" frameborder="0" height="1000px" width="1000px"></iframe></span></div>
+			</div>
+			</div> <!-- End Barra Buscadora + Slogan -->
+
+	</div>
+        
+        
+        
+        <div class="container" style="padding-top: 50px; padding-bottom: 50px;">
+            {% block cuerpo %}
+                <p class="sans text-center" style="font-size: 30px; margin-bottom: 0px;">Áreas de especialidad</p>
+                <p class="sans text-center" style="font-size: 13px; margin-bottom: 30px;">Haga click en una imagen para cargar una lista de abogados de esa especialidad legal.</p>
+                <div class="row">
+                    <div class="col-md-3" style="margin-top: 10px;">
+                        <a href="{{ path('directorio_index') }}?busqueda=Derecho familiar" >
+                            <p class="text-center">
+                                <img src="src/img/legal/team.png" style="width: 90px;">
+                            </p>
+                            <p class="text-center"><span class="sans" style="font-weight: 700;">Derecho de Familia</span></p>
+                            <p></p>
+                        </a>
+                    </div>
+                    <div class="col-md-3" style="margin-top: 10px;">
+                        <a href="{{ path('directorio_index') }}?busqueda=Derecho penal" >
+                            <p class="text-center">
+                                <img src="src/img/legal/handcuffs.png" style="width: 90px;">
+                                </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Penal</span></p>
+                            <p></p>
+                        </a>
+                    </div>
+                    <div class="col-md-3" style="margin-top: 10px;">
+                        <a href="{{ path('directorio_index') }}?busqueda=Derecho civil" >
+                            <p class="text-center">
+                                <img src="src/img/legal/people.png" style="width: 90px;">
+                                </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Civil</span></p>
+                            <p></p>
+                        </a>
+                    </div>
+                    <div class="col-md-3" style="margin-top: 10px;">
+                        <a href="{{ path('directorio_index') }}?busqueda=Derecho corporativo" >
+                            <p class="text-center">
+                                <img src="src/img/legal/office.png" style="width: 90px;">
+                                </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Corporativo</span></p>
+                            <p></p>
+                        </a>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-md-3" style="margin-top: 25px;">
+                        <a href="{{ path('directorio_index') }}?busqueda=Derecho mercantil" >
+                            <p class="text-center">
+                                <img src="src/img/legal/price-tag.png" style="width: 90px;">
+                                </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Mercantil</span></p>
+                            <p></p>
+                        </a>
+                    </div>
+                    <div class="col-md-3" style="margin-top: 25px;">
+                        <a href="{{ path('directorio_index') }}?busqueda=Derecho laboral" >
+                            <p class="text-center">
+                                <img src="src/img/legal/briefcase.png" style="width: 90px;">
+                                </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Laboral</span></p>
+                            <p></p>
+                        </a>
+                    </div>
+                    <div class="col-md-3" style="margin-top: 25px;">
+                        <a href="{{ path('directorio_index') }}?busqueda=Derecho administrativo" >
+                            <p class="text-center">
+                                <img src="src/img/legal/folder.png" style="width: 90px;">
+                                </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Administrativo</span></p>
+                            <p></p>
+                        </a>
+                    </div>
+                    <div class="col-md-3" style="margin-top: 25px;">
+                        <a href="{{ path('directorio_index') }}?busqueda=Derecho familiar" >
+                            <p class="text-center">
+                                <img src="src/img/legal/agenda.png" style="width: 90px;">
+                                </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Contencioso Adminsitrativo</span></p>
+                            <p></p>
+                        </a>    
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-md-3" style="margin-top: 25px;">
+                        <a href="{{ path('directorio_index') }}?busqueda=Derecho migratorio" >
+                            <p class="text-center">
+                                <img src="src/img/legal/aeroplane.png" style="width: 90px;">
+                                </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Migratorio</span></p>
+                            <p></p>
+                        </a>
+                    </div>
+                    <div class="col-md-3" style="margin-top: 25px;">
+                        <a href="{{ path('directorio_index') }}?busqueda=Derecho constitucional" >
+                            <p class="text-center">
+                                <img src="src/img/legal/notebook.png" style="width: 90px;">
+                                </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Constitucional</span></p>
+                            <p></p>
+                        </a>
+                    </div>
+                    <div class="col-md-3" style="margin-top: 25px;">
+                        <a href="{{ path('directorio_index') }}?busqueda=Derecho aduanero" >
+                            <p class="text-center">
+                                <img src="src/img/legal/truck.png" style="width: 90px;">
+                                </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Aduanero</span></p>
+                            <p></p>
+                        </a>
+                    </div>
+                    <div class="col-md-3" style="margin-top: 25px;">
+                        <a href="{{ path('directorio_index') }}?busqueda=Derecho internacional" >
+                            <p class="text-center">
+                                <img src="src/img/legal/worldwide.png" style="width: 90px;">
+                                </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Internacional</span></p>
+                            <p></p>
+                        </a>
+                    </div>
+                    
+                        
+                    
+                </div>
+            {% endblock cuerpo %}
+        </div>
+    {% endblock body %}
+    {%block js_template %}
+        
+        <script src="{{ asset('Resources/src/js/jquery-2.0.3.min.js')}}"></script>
+        <script src="{{ asset('Resources/autocomplete/jquery.autocomplete.js')}}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+        <script src="{{ asset('Resources/select2/dist/js/i18n/es.js')}}"></script>
+        <script src="{{ asset('Resources/js/busquedaLanding.js')}}"></script>
+        {% block js_extend %}
+            
+        {% endblock %}
+
+
+    {% endblock %}
+
+
+              
+
