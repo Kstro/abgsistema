@@ -53,6 +53,9 @@
                                             <div class="col-md-2">#}
                                                 <select id="filtrarMunicipio" style="width:20%;">
                                                     <option value="0">Todos...</option>
+                                                    {% for ciudad in ciudades %}
+                                                        <option value="{{ciudad.id}}">{{ciudad.nombreCiudad}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             {#</div>
                                             <div class="col-md-2">#}
@@ -661,15 +664,9 @@ else{ // Maximum length not reached so update the value of my_text counter
 
                                         //console.log(data.data[i].especialidades.length);
                                         var especialidades = "";
-                                        if(data.data[i].especialidades!=='undefined'){
-                                            for(j=0;j<data.data[i].especialidades.length;j++){
-                                                if(j==0){
-                                                    especialidades += data.data[i].especialidades[j].nombreEspecialidad;
-                                                }
-                                                else{
-                                                    especialidades +=", "+data.data[i].especialidades[j].nombreEspecialidad;
-                                                }
-                                            }
+                                        if(data.data[i].especialidad!=='undefined'){
+                                            especialidades += data.data[i].especialidad;
+                                            
                                         }
                                         else{
                                             especialidades = "N/A";

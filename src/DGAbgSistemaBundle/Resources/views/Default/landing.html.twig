@@ -27,6 +27,12 @@
                     .autocomplete-suggestions strong { font-weight: bold; color: #000; }
                     .autocomplete-group { padding: 2px 5px; }
                     .autocomplete-group strong { font-weight: bold; font-size: 16px; color: #000; display: block; border-bottom: 1px solid #000; }
+                    a{
+                        color:#333;
+                    }
+                    a:hover{
+                        text-decoration: none;
+                    }
                 </style>
                 {#<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>  #}
                 <!-- Favicon (Icono Pequeño) -->
@@ -40,7 +46,7 @@
                 {% block css_extend %}
                     
                 {% endblock css_extend %}
-            {% endblock %}
+            {% endblock css %}
 
 
             <!-- fosjsrouting -->
@@ -125,7 +131,7 @@
                     <div class="col-md-3" style="margin-top: 10px;">
                         <a href="{{ path('directorio_index') }}?busqueda=Derecho familiar" >
                             <p class="text-center">
-                                <img src="src/img/legal/team.png" style="width: 90px;">
+                                <img src="{{asset('Resources/src/img/legal/familia.png')}}" style="width: 90px;">
                             </p>
                             <p class="text-center"><span class="sans" style="font-weight: 700;">Derecho de Familia</span></p>
                             <p></p>
@@ -134,7 +140,7 @@
                     <div class="col-md-3" style="margin-top: 10px;">
                         <a href="{{ path('directorio_index') }}?busqueda=Derecho penal" >
                             <p class="text-center">
-                                <img src="src/img/legal/handcuffs.png" style="width: 90px;">
+                                <img src="{{asset('Resources/src/img/legal/penal.png')}}" style="width: 90px;">
                                 </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Penal</span></p>
                             <p></p>
                         </a>
@@ -142,7 +148,7 @@
                     <div class="col-md-3" style="margin-top: 10px;">
                         <a href="{{ path('directorio_index') }}?busqueda=Derecho civil" >
                             <p class="text-center">
-                                <img src="src/img/legal/people.png" style="width: 90px;">
+                                <img src="{{asset('Resources/src/img/legal/civil.png')}}" style="width: 90px;">
                                 </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Civil</span></p>
                             <p></p>
                         </a>
@@ -150,7 +156,7 @@
                     <div class="col-md-3" style="margin-top: 10px;">
                         <a href="{{ path('directorio_index') }}?busqueda=Derecho corporativo" >
                             <p class="text-center">
-                                <img src="src/img/legal/office.png" style="width: 90px;">
+                                <img src="{{asset('Resources/src/img/legal/corporativo.png')}}" style="width: 90px;">
                                 </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Corporativo</span></p>
                             <p></p>
                         </a>
@@ -159,7 +165,7 @@
                     <div class="col-md-3" style="margin-top: 25px;">
                         <a href="{{ path('directorio_index') }}?busqueda=Derecho mercantil" >
                             <p class="text-center">
-                                <img src="src/img/legal/price-tag.png" style="width: 90px;">
+                                <img src="{{asset('Resources/src/img/legal/mercantil.png')}}" style="width: 90px;">
                                 </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Mercantil</span></p>
                             <p></p>
                         </a>
@@ -167,7 +173,7 @@
                     <div class="col-md-3" style="margin-top: 25px;">
                         <a href="{{ path('directorio_index') }}?busqueda=Derecho laboral" >
                             <p class="text-center">
-                                <img src="src/img/legal/briefcase.png" style="width: 90px;">
+                                <img src="{{asset('Resources/src/img/legal/laboral.png')}}" style="width: 90px;">
                                 </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Laboral</span></p>
                             <p></p>
                         </a>
@@ -175,7 +181,7 @@
                     <div class="col-md-3" style="margin-top: 25px;">
                         <a href="{{ path('directorio_index') }}?busqueda=Derecho administrativo" >
                             <p class="text-center">
-                                <img src="src/img/legal/folder.png" style="width: 90px;">
+                                <img src="{{asset('Resources/src/img/legal/admin.png')}}" style="width: 90px;">
                                 </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Administrativo</span></p>
                             <p></p>
                         </a>
@@ -183,7 +189,7 @@
                     <div class="col-md-3" style="margin-top: 25px;">
                         <a href="{{ path('directorio_index') }}?busqueda=Derecho familiar" >
                             <p class="text-center">
-                                <img src="src/img/legal/agenda.png" style="width: 90px;">
+                                <img src="{{asset('Resources/src/img/legal/admi_conten.png')}}" style="width: 90px;">
                                 </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Contencioso Adminsitrativo</span></p>
                             <p></p>
                         </a>    
@@ -192,7 +198,7 @@
                     <div class="col-md-3" style="margin-top: 25px;">
                         <a href="{{ path('directorio_index') }}?busqueda=Derecho migratorio" >
                             <p class="text-center">
-                                <img src="src/img/legal/aeroplane.png" style="width: 90px;">
+                                <img src="{{asset('Resources/src/img/legal/migra.png')}}" style="width: 90px;">
                                 </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Migratorio</span></p>
                             <p></p>
                         </a>
@@ -200,7 +206,7 @@
                     <div class="col-md-3" style="margin-top: 25px;">
                         <a href="{{ path('directorio_index') }}?busqueda=Derecho constitucional" >
                             <p class="text-center">
-                                <img src="src/img/legal/notebook.png" style="width: 90px;">
+                                <img src="{{asset('Resources/src/img/legal/consti.png')}}" style="width: 90px;">
                                 </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Constitucional</span></p>
                             <p></p>
                         </a>
@@ -208,7 +214,7 @@
                     <div class="col-md-3" style="margin-top: 25px;">
                         <a href="{{ path('directorio_index') }}?busqueda=Derecho aduanero" >
                             <p class="text-center">
-                                <img src="src/img/legal/truck.png" style="width: 90px;">
+                                <img src="{{asset('Resources/src/img/legal/aduana.png')}}" style="width: 90px;">
                                 </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Aduanero</span></p>
                             <p></p>
                         </a>
@@ -216,7 +222,7 @@
                     <div class="col-md-3" style="margin-top: 25px;">
                         <a href="{{ path('directorio_index') }}?busqueda=Derecho internacional" >
                             <p class="text-center">
-                                <img src="src/img/legal/worldwide.png" style="width: 90px;">
+                                <img src="{{asset('Resources/src/img/legal/inter.png')}}" style="width: 90px;">
                                 </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Internacional</span></p>
                             <p></p>
                         </a>
