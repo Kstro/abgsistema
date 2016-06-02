@@ -375,7 +375,7 @@ class AbgPersonaController extends Controller {
 
                     $cumplimiento = $cumplimiento + 10;
                 }
-
+           
                 return $this->render('abgpersona/panelAdministrativoAbg.html.twig', array(
                             // return $this->render(':Layout:index.html.twig', array(
                             'abgPersona' => $result_persona,
@@ -1290,6 +1290,7 @@ class AbgPersonaController extends Controller {
      */
     public function SubespecialidaAction() {
         try {
+            
             $request = $this->getRequest();
             $em = $this->getDoctrine()->getManager();
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
