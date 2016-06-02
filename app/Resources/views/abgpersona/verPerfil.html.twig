@@ -12,28 +12,12 @@
 {% block js_extend %}
     <script src="{{ asset('Resources/js/editarPerfilPublico.js')}}"></script>
     <script type="text/javascript">
+        
         $("#btnEditarperfil").click(function () {
             $("#verPerfil").empty();
             $("#verPerfil").hide();
             $("#editarPerfil").show();
         });
-
-
-        var doc = new jsPDF();
-        var specialElementHandlers = {
-            '#editor': function (element, renderer) {
-                return true;
-            }
-        };
-
-        $('#cmd').click(function () {
-            doc.fromHTML($('#dviPerf').html(), 15, 15, {
-                'width': 170,
-                'elementHandlers': specialElementHandlers
-            });
-            doc.save('sample-file.pdf');
-        });
-
     </script>
     <style type="text/css">
         .divinfo {
