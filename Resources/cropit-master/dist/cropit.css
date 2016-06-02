@@ -1,0 +1,111 @@
+
+
+        .image­upload >input {
+
+        }
+
+
+
+        .modal­backdrop {
+
+            z­index: ­1 !important;
+            display: none;
+        }
+
+
+
+        .image­editor{
+
+            top: ­150px!important;;
+
+        }
+
+        .cropit­preview {
+
+            background­color: #f8f8f8;
+
+            background­size: cover;
+
+            border: 1px solid #ccc;
+
+            border­radius: 3px;
+
+            margin­top: 7px;
+
+            width: 200px;
+
+            height: 200px;
+
+        }
+
+        .cropit­preview­image­container {
+
+            cursor: move;
+
+            position: absolute;
+
+        }
+
+        .image­size­label {
+
+            margin­top: 10px;
+
+        }
+
+        .input {
+        
+        display: block;
+        
+        }
+
+        button[type="submit"] {
+
+            margin­top: 0px;
+
+        }
+
+        #result {
+
+            margin­top: 10px;
+
+            width: 900px;
+
+        }
+
+        #result­data {
+
+            display: block;
+
+            overflow: hidden;
+
+            white­space: nowrap;
+
+            text­overflow: ellipsis;
+
+            word­wrap: break­word;
+
+        }
+
+        .btnperfil:hover {
+
+            background:#00c0ef !important;
+
+            color:#fff ;
+
+            border­radius:0px;
+
+            box­shadow: 2px 2px 5px #999;
+
+        }
+
+        .btnperfil {
+
+            background:#F0F0F0;
+
+            color: #505050;
+
+            border­radius:0px;
+
+        }
+
+

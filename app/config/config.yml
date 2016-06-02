@@ -8,12 +8,12 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
      locale: en
-     photo.verificacion: %kernel.root_dir%/../web/Photos/verificacion/
-     photo.perfil: %kernel.root_dir%/../web/Photos/Perfil/
-     photo.perfil.temporal: %kernel.root_dir%/../web/Photos/Perfil/temporal/
-     photo.entrada.temporal: %kernel.root_dir%/../web/Photos/entrada/
-     photo.publicidad: %kernel.root_dir%/../web/Photos/publicidad/
-     photo.entrada: %kernel.root_dir%/../web/Photos/entrada/
+     photo.verificacion: %kernel.root_dir%/../Photos/verificacion/
+     photo.perfil: %kernel.root_dir%/../Photos/Perfil/
+     photo.perfil.temporal: %kernel.root_dir%/../Photos/Perfil/temporal/
+     photo.entrada.temporal: %kernel.root_dir%/../Photos/entrada/
+     photo.publicidad: %kernel.root_dir%/../Photos/publicidad/
+     photo.entrada: %kernel.root_dir%/../Photos/entrada/
 
 framework:
     #esi:             ~

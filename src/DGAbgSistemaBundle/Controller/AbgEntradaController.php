@@ -11,6 +11,7 @@ use DGAbgSistemaBundle\Entity\CtlUsuario;
 use DGAbgSistemaBundle\Entity\AbgImagenBlog;
 use Symfony\Component\HttpFoundation\Response;
 use DGAbgSistemaBundle\Form\AbgPersonaType;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * AbgEntrada controller.
@@ -22,7 +23,7 @@ class AbgEntradaController extends Controller {
     /**
      * Lists all AbgPersona entities.
      *
-     * @Route("/", name="entrada_index")
+     * @Route("/", name="entrada_index", options={"expose"=true})
      * @Method("GET")
      */
     public function indexAction() {
@@ -44,11 +45,28 @@ class AbgEntradaController extends Controller {
 
         $ctlCategoriasBlog = $em->getRepository('DGAbgSistemaBundle:CtlCategoriaBlog')->findAll();
         
+        $rsm = new ResultSetMapping();
+        $sql = "select en.id as id, en.titulo_entrada as blog, en.fecha as fecha, cat.nombre as nombre, usu.id as usuario
+                from abg_entrada en inner join ctl_categoria_blog cat on en.abg_categoria_entrada_id = cat.id
+                inner join ctl_usuario usu on en.ctl_usuario_id = usu.id
+                where usu.id =".$username->getId();
+        
+        $rsm->addScalarResult('id','id');
+        $rsm->addScalarResult('blog','blog');
+        $rsm->addScalarResult('fecha','fecha');
+        $rsm->addScalarResult('nombre','nombre');
+        $rsm->addScalarResult('usuario','usuario');
+
+        $blogsUsuario = $em->createNativeQuery($sql, $rsm)
+                                  ->getResult();
+        
+        
         return $this->render('blog/index.html.twig', array(
                             'abgPersona' => $result_persona,
                             'abgFoto' => $result_foto,
                             'usuario' => $username,
                            'ctlCategoriasBlog' => $ctlCategoriasBlog,
+                           'blogsUsuario' => $blogsUsuario
         ));
     }
   

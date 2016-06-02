@@ -20,12 +20,12 @@ use Symfony\Component\HttpFoundation\Response;
 use DGAbgSistemaBundle\Entity\AbgPersonaEspecialida;
 use DGAbgSistemaBundle\Resources\Tinypng\lib\lib\Tinify;
 
-include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify.php';
-include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Exception.php';
-include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/ResultMeta.php';
-include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Result.php';
-include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Source.php';
-include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Client.php';
+include_once 'src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify.php';
+include_once 'src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Exception.php';
+include_once 'src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/ResultMeta.php';
+include_once 'src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Result.php';
+include_once 'src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Source.php';
+include_once 'src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Client.php';
 
 /**
  * CtlEmpresa controller.

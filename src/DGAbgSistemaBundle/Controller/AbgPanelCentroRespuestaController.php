@@ -69,6 +69,7 @@ class AbgPanelCentroRespuestaController extends Controller {
         //Aqui se realizan las actualizaciones
         $abgPregunta->setCtlUsuario($username);
         $abgPregunta->setRespuesta($respuesta);
+        $abgPregunta->setFechaRespuesta(new \DateTime ('now'));
         $abgPregunta->setEstado(0);
 
         $em->merge($abgPregunta);
