@@ -4,7 +4,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-include_once '../src/DGAbgSistemaBundle/Resources/ipn/ipnlistener.php';
+include_once 'src/DGAbgSistemaBundle/Resources/ipn/ipnlistener.php';
 
 /**
  * CtlPais controller.

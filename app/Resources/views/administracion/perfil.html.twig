@@ -241,7 +241,9 @@
                                       <div class="product-info">
                                         {#<a href="javascript:void(0)" class="product-title">#}{{ row.empresa }}
                                           {#</a>#}
-                                            <span class="product-description"></span>
+                                          <span class="product-description">
+                                             Tipo de empresa: {% if row.tipoEmpresa != '' %}{{ row.tipoEmpresa }}{% else %}No registrado{% endif %} 
+                                          </span>
                                       </div>
                                     </li>
                                     {% endfor %}

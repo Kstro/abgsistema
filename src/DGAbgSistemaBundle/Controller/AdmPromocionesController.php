@@ -12,12 +12,12 @@ use DGAbgSistemaBundle\Entity\AdmPromociones;
 use DGAbgSistemaBundle\Form\AdmPromocionesType;
 use Doctrine\ORM\Query\ResultSetMapping;
 
-include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify.php';
-include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Exception.php';
-include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/ResultMeta.php';
-include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Result.php';
-include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Source.php';
-include_once '../src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Client.php';
+include_once 'src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify.php';
+include_once 'src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Exception.php';
+include_once 'src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/ResultMeta.php';
+include_once 'src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Result.php';
+include_once 'src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Source.php';
+include_once 'src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Client.php';
 
 /**
  * AdmPromociones controller.
@@ -592,7 +592,7 @@ class AdmPromocionesController extends Controller
         $busqueda = $request->query->get('q');
         $page = $request->query->get('page');
         
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 //        $dql = "SELECT abo.id abogadoid, abo.nombres, abo.apellido, abo.codigo "
 //                        . "FROM DGAbgSistemaBundle:AbgPersona abo "
 //                        . "WHERE upper(abo.codigo) LIKE upper(:busqueda) "

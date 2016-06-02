@@ -71,24 +71,26 @@ class AbgPanelCentroRespuestaController extends Controller {
         $pregunta= $abgPregunta->find($idpreg);
         $correo_anonimo= $abgPregunta->find($idpreg)->getCorreoelectronico();
         
-             $this->get('pregunta_respuesta')->sendEmail($correo_anonimo, "", "", "", "
-                                        <table style=\"width: 540px; margin: 0 auto;\">
-                                          <tr>
-                                            <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
-                                            <center>
-                                              <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
-                                            </center>                                                
-                                                <p>Hola ".$correo_anonimo." tu pregunta ha sido respondida</p>
-                                                <p>Haz click en el enlace y se el primero en contestar</p>
-                                                <a href='http://http://abg.localhost/app_dev.php/preguntascentro/respuestas?id=".$idpreg."'>Clik aqui para responder</a> 
-                                                
-                                            </td>
-                                            <td class=\"expander\"></td>
-                                          </tr>
-                                        </table>
-                                    ");     
+        $this->get('pregunta_respuesta')->sendEmail($correo_anonimo, "", "", "", "
+                    <table style=\"width: 540px; margin: 0 auto;\">
+                      <tr>
+                        <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
+                        <center>
+                          <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
+                        </center>                                                
+                            <p>Hola ".$correo_anonimo." tu pregunta ha sido respondida</p>
+                            <p>Haz click en el enlace y se el primero en contestar</p>
+                            <a href='http://http://abg.localhost/app_dev.php/preguntascentro/respuestas?id=".$idpreg."'>Clik aqui para responder</a> 
+
+                        </td>
+                        <td class=\"expander\"></td>
+                      </tr>
+                    </table>
+                "); 
+             
         $pregunta->setCtlUsuario($username);
         $pregunta->setRespuesta($respuesta);
+        $pregunta->setFechaRespuesta(new \DateTime ('now'));
         $pregunta->setEstado(0);
         $em->merge($pregunta);
         $em->flush();

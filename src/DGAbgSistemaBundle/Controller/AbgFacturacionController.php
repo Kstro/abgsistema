@@ -84,7 +84,7 @@ class AbgFacturacionController extends Controller {
      */
     public function dataFacturacionAction(Request $request)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $start = $request->query->get('start');
         $draw = $request->query->get('draw');
         $longitud = $request->query->get('length');
