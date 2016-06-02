@@ -43,7 +43,7 @@ class AbgPreyResController extends Controller{
                
         $parameters = $request->request->all();
         //$pregunta =  $parameters['pregunta'];
-        
+        $pregunta = $request->get('preg');
         $prom = $this->busquedaPublicidad(1);
         $prom2 = $this->busquedaPublicidad(2);
         $prom3 = $this->busquedaPublicidad(3);
@@ -70,7 +70,7 @@ class AbgPreyResController extends Controller{
         $topUsuarios = $em->createNativeQuery($sql, $rsm)
                                   ->getResult();
         
-        $pregunta = '';
+        //$pregunta = '';
         
         $ctlespecialidad = $em->getRepository('DGAbgSistemaBundle:CtlEspecialidad')->findAll();
         return $this->render('preyres/pregunta_detalle.html.twig', array('pregunta'=>$pregunta, 'prom1'=> $prom, 'prom2'=> $prom2, 'prom3'=> $prom3, 'prom4'=> $prom4, 'ctlEspecialidad'=>$ctlespecialidad, 'top'=>$topUsuarios));
@@ -111,7 +111,7 @@ class AbgPreyResController extends Controller{
         $abgPregunta->setAbgEspecialidad($espeid);
         
        
-       /*   $em->persist($abgPregunta);
+          $em->persist($abgPregunta);
         $em->flush();
         $lastpreg = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->findOneBy(array() ,array('id' => 'DESC'));
         $lastidpreg = $lastpreg->getId();
@@ -150,7 +150,7 @@ class AbgPreyResController extends Controller{
                                         </table>
                                     ");         
         }
-*/
+
         return $this->render('enviopregsuccess/success.html.twig');
         } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
