@@ -279,6 +279,10 @@
                                                             {%endif%}
                                                         {%endfor%}
                                                     {%else%}
+                                                      
+                                                    {%endif%}
+                                                    {%if [0]['anioIni'] |default is not empty %}
+                                                         {%else%}
                                                         Añadir educación
                                                     {%endif%}
                                                 </a>
@@ -501,9 +505,48 @@
                                                         </br>
                                                         <span style="font-size: 13px;">{{datos.puesto}}</br> 
                                                             {%if (datos.dias is null)%}
-                                                                {{datos.fechaIn}} -  Actualmente
+                                                                {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}} -  Actualmente
                                                             {%else%}
-                                                                {{datos.fechaIn}} - {{datos.fechaFin}} (&nbsp;{{(datos.dias/365)|round(0, 'floor')}} años {{(((datos.dias/365)-(datos.dias/365)|round(0, 'floor'))*12)|round(0, 'floor')}} meses) 
+                                                                {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}} - {{datos.fechaFin|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}} (&nbsp;{{(datos.dias/365)|round(0, 'floor')}} años {{(((datos.dias/365)-(datos.dias/365)|round(0, 'floor'))*12)|round(0, 'floor')}} meses) 
                                                             {%endif%}| {{datos.hubicacion}} </span>
                                                         </br><p style="width: 100%; margin-top: 5px;text-align:justify; ">{{datos.funcion}}</p>
                                                     </div>
@@ -613,7 +656,33 @@
                                                         <div class="col-xs-12">
                                                             <span style="font-size: 16px;">{{datos.nombre}}</span> 
                                                                      <br>
-                                                            <span style="font-size: 13px;">{{datos.puesto}}</br> {{datos.fechaIn}} - {{datos.fechaFin}}</span>
+                                                            <span style="font-size: 13px;">{{datos.puesto}}</br> {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}} - {{datos.fechaFin|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}}</span>
                                                             <p style="width: 100%; margin-top: 5px;text-align:justify;">{{datos.descripcion}}</p>
                                                                 <script type="text/javascript">
                                                                     $("#Org" +{{datos.id}} ).hover(
@@ -649,7 +718,33 @@
                                                     <div class="col-xs-11">
                                                         <span style="font-size: 16px;">{{datos.institucion}}</span> 
                                                               </br>
-                                                        <span style="font-size: 13px;">{{datos.nombre}}</br> {{datos.fechaIn}} - {{datos.fechaFin}}</span>
+                                                        <span style="font-size: 13px;">{{datos.nombre}}</br> {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}} - {{datos.fechaFin|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}}</span>
                                                         <p style="width: 100%; margin-top: 5px;text-align:justify;"></p>
                                                            <div>  <script type="text/javascript">
                                                                 $("#Cert" +{{datos.id}} ).hover(
@@ -685,7 +780,33 @@
                                                     <div class="col-xs-11">
                                                         <span style="font-size: 16px;">{{datos.institucion}}</span> 
                                                              </br>
-                                                        <span style="font-size: 13px;">{{datos.nombre}}</br> {{datos.fechaIn}} - {{datos.fechaFin}}</span>
+                                                        <span style="font-size: 13px;">{{datos.nombre}}</br> {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}} - {{datos.fechaFin|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}}</span>
                                                         <p style="width: 90%; margin-top: 5px;text-align:justify;">{{datos.descripcion}} </p>
                                                            <div> <script type="text/javascript">
                                                                 $("#CM" +{{datos.id}} ).hover(

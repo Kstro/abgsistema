@@ -4,14 +4,17 @@ namespace DGAbgSistemaBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 //use Symfony\Component\HttpFoundation\Response;
+
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use DGAbgSistemaBundle\Entity\AbgEntrada;
 use DGAbgSistemaBundle\Entity\CtlUsuario;
 use DGAbgSistemaBundle\Entity\AbgImagenBlog;
 use DGAbgSistemaBundle\Entity\AbgPregunta;
+
 use Symfony\Component\HttpFoundation\Response;
 use DGAbgSistemaBundle\Form\AbgPersonaType;
 
@@ -55,7 +58,7 @@ class AbgPanelCentroRespuestaController extends Controller {
      * @Method("POST")
      */
     public function enviorespuestapanelAction(Request $request) {
-        //$abgPregunta = new AbgPregunta();
+         try {
         $parameters = $request->request->all();
         $idpreg = $request->get('idpreg');
         $respuesta = $request->get('respuesta');
@@ -64,20 +67,36 @@ class AbgPanelCentroRespuestaController extends Controller {
         $personaId = $username->getRhPersona();
 
         $em = $this->getDoctrine()->getManager();
-        $abgPregunta = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->find($idpreg);
-
-        //Aqui se realizan las actualizaciones
-        $abgPregunta->setCtlUsuario($username);
-        $abgPregunta->setRespuesta($respuesta);
-        $abgPregunta->setFechaRespuesta(new \DateTime ('now'));
-        $abgPregunta->setEstado(0);
-
-        $em->merge($abgPregunta);
+        $abgPregunta = $em->getRepository('DGAbgSistemaBundle:AbgPregunta');
+        $pregunta= $abgPregunta->find($idpreg);
+        $correo_anonimo= $abgPregunta->find($idpreg)->getCorreoelectronico();
+        
+             $this->get('pregunta_respuesta')->sendEmail($correo_anonimo, "", "", "", "
+                                        <table style=\"width: 540px; margin: 0 auto;\">
+                                          <tr>
+                                            <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
+                                            <center>
+                                              <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
+                                            </center>                                                
+                                                <p>Hola ".$correo_anonimo." tu pregunta ha sido respondida</p>
+                                                <p>Haz click en el enlace y se el primero en contestar</p>
+                                                <a href='http://http://abg.localhost/app_dev.php/preguntascentro/respuestas?id=".$idpreg."'>Clik aqui para responder</a> 
+                                                
+                                            </td>
+                                            <td class=\"expander\"></td>
+                                          </tr>
+                                        </table>
+                                    ");     
+        $pregunta->setCtlUsuario($username);
+        $pregunta->setRespuesta($respuesta);
+        $pregunta->setEstado(0);
+        $em->merge($pregunta);
         $em->flush();
-
-        //      return $this->render('panelcentropregabog/respuestaenviadasuccess.html.twig');
-
         return $this->redirect($this->generateUrl('panel_list_pregunta'));
+        } catch (Exception $e) {
+            $data['msj'] = $e->getMessage();
+            return new Response(json_encode($data));
+        }
     }
 
     /**

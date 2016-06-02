@@ -43,7 +43,7 @@ class AbgPreyResController extends Controller{
                
         $parameters = $request->request->all();
         //$pregunta =  $parameters['pregunta'];
-        
+        $pregunta = $request->get('preg');
         $prom = $this->busquedaPublicidad(1);
         $prom2 = $this->busquedaPublicidad(2);
         $prom3 = $this->busquedaPublicidad(3);
@@ -70,7 +70,7 @@ class AbgPreyResController extends Controller{
         $topUsuarios = $em->createNativeQuery($sql, $rsm)
                                   ->getResult();
         
-        $pregunta = '';
+        //$pregunta = '';
         
         $ctlespecialidad = $em->getRepository('DGAbgSistemaBundle:CtlEspecialidad')->findAll();
         return $this->render('preyres/pregunta_detalle.html.twig', array('pregunta'=>$pregunta, 'prom1'=> $prom, 'prom2'=> $prom2, 'prom3'=> $prom3, 'prom4'=> $prom4, 'ctlEspecialidad'=>$ctlespecialidad, 'top'=>$topUsuarios));
@@ -85,18 +85,15 @@ class AbgPreyResController extends Controller{
      */
     public function envioPreguntaAction(Request $request) {
         
-//        $username = $this->container->get('security.context')->getToken()->getUser();
-        //var_dump($username);
-        //die();
-//       $personaId = $username->getRhPersona();
-        //$idabg = $username->getRhPersona()->getId();
-        
+        try {
+           $em = $this->getDoctrine()->getManager();
         $fechapregunta = date('Y-m-d');  
         $parameters = $request->request->all();
                         
         $pregunta =  $parameters['pregunta'];
         $detalle =  $parameters['detalle'];
         $especialidad =  $parameters['especialidad'];
+  
         $email =  $parameters['email'];
         
         $abgPregunta = new AbgPregunta();
@@ -107,39 +104,34 @@ class AbgPreyResController extends Controller{
         $abgPregunta->setCorreoelectronico($email);
         $abgPregunta->setFechaPregunta(new \DateTime ('now'));
 //      $abgPregunta->setCtlUsuario($username);
-        
-        
+
         $em = $this->getDoctrine()->getManager();
         $espeid = $em->getRepository('DGAbgSistemaBundle:CtlEspecialidad')->find($especialidad);
-                
-        //var_dump($subespeid);
-        //die();
-        
         $abgPregunta->setAbgEspecialidad($espeid);
         
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($abgPregunta);        
+       
+          $em->persist($abgPregunta);
         $em->flush();
-        
         $lastpreg = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->findOneBy(array() ,array('id' => 'DESC'));
         $lastidpreg = $lastpreg->getId();
-        
-        //var_dump($lastidpreg);
-        //die();        
-              
-        $sql = "SELECT * FROM abg_pregunta ,
-                              ctl_usuario ,
-                              abg_persona
-                              WHERE abg_pregunta.ctl_usuario_id=ctl_usuario.id AND ctl_usuario.rh_persona_id=abg_persona.id AND abg_pregunta.ctl_especialidad=".$especialidad;
+      
+        $sql = "SELECT abg_persona.correoelectronico FROM 
+                       ctl_usuario
+                JOIN    abg_persona
+                       on  ctl_usuario.rh_persona_id=abg_persona.id
+                JOIN ctl_rol_usuario
+                ON ctl_usuario.id=ctl_rol_usuario.ctl_usuario_id 
+                          AND ctl_rol_usuario.ctl_rol_id=2
+                JOIN abg_persona_especialidad 
+                ON abg_persona_especialidad.abg_persona_id=abg_persona.id 
+                AND abg_persona_especialidad.ctl_especialidad_id=".$especialidad;
         $em = $this->getDoctrine()->getManager();
         $stmt = $em->getConnection()->prepare($sql);
         $stmt->execute();
         $coenv = $stmt->fetchAll();
-        
+       
         foreach ($coenv as $value) {
-            //var_dump($value['correoelectronico']);
             $email = $value['correoelectronico'];
-            //$email="elman.ortiz@gmail.com";
             $this->get('envio_correo')->sendEmail($email, "", "", "", "
                                         <table style=\"width: 540px; margin: 0 auto;\">
                                           <tr>
@@ -157,23 +149,12 @@ class AbgPreyResController extends Controller{
                                         </table>
                                     ");         
         }
-                        
-//        $this->get('envio_correo')->sendEmail($email, "", "", "", "
-//                                        <table style=\"width: 540px; margin: 0 auto;\">
-//                                          <tr>
-//                                            <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
-//                                            <center>
-//                                              <img style=\"width:50%;\" src=\"http://expressionsprint.com/img/logo.jpg\">
-//                                            </center>
-//                                                <p>Su orden
-//                                                <b>#1</b> Hola ".$email." hay una nueva pregunta en la que puedes participar dando tu opinion
-//                                                </p>
-//                                            </td>
-//                                            <td class=\"expander\"></td>
-//                                          </tr>
-//                                        </table>
-//                                    ");
+
         return $this->render('enviopregsuccess/success.html.twig');
+        } catch (Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
     }
     
     private function busquedaPublicidad($posicion) {
