@@ -55,7 +55,8 @@
                         <div style="margin-top: 15px;">
                             <p class="" style="font-size: 20px;">{{pregunta.pregunta}}</p>
                         </div>
-                        <div class="attachment">
+                        <small>Realizada {{ tiempo }}</small>
+                        <div class="attachment" style="margin-top: 15px;">
                             <div class="col-md-11" style="margin-left: 20px;">
                                 <p class="text-justify" >{{pregunta.detalle}}</p>
                             </div>
@@ -65,7 +66,7 @@
                 <div class="box box-widget">
                     <div class="box-body " style=" padding: 5px;"> 
                             <div class="box-header with-border">
-                                <h3 class="box-title">Respuesta</h3>
+                                <h3 class="box-title">Respuestas</h3>
                             </div>
                             <div style="margin-top: 10px; margin-left: 5px;">
                             {#<p style="margin-left:5px;">#}
@@ -127,7 +128,7 @@
                                                         <div id="sparkline-2">
                                                             {#<img src="{{asset('') }}{{ row.src}}" style="width: 40px; height: 40px; margin-bottom: 0px;" class="img-circle" alt="User Image" />#}
                                                             <div>{{ nombres[0] }} {{ apellidos[0] }}</div>
-                                                            <a href="{{ path('busquedaPerfil', {url: row.url}) }}">Ver perfil</a> | <a href="{{ path('busquedaPerfil', {url: row.url}) }}">{{ row.totalrespuestas }} {% if row.totalrespuestas > 1 %}respuestas{% else %}respuesta{% endif %}</a>
+                                                            <a href="{{ path('busquedaPerfil', {url: row.url}) }}">Ver perfil</a> | {#<a href="{{ path('busquedaPerfil', {url: row.url}) }}">#}{{ row.totalrespuestas }} {% if row.totalrespuestas > 1 %}respuestas{% else %}respuesta{% endif %}{#</a>#}
                                                         </div>
                                                     </div>
                                     </div>

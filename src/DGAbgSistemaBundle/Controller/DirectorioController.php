@@ -51,7 +51,7 @@ class DirectorioController extends Controller
             }
         }
         else{
-            //$ctlEstado = $em->getRepository('DGAbgSistemaBundle:CtlEstado')->findAll();
+            $ctlCiudads = $em->getRepository('DGAbgSistemaBundle:CtlCiudad')->findAll();
             $dql = "SELECT c FROM DGAbgSistemaBundle:CtlEstado c "
                     . "INNER JOIN c.ctlPais p WHERE p.estado=1";
 

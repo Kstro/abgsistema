@@ -167,9 +167,14 @@ class AbgPanelCentroRespuestaController extends Controller {
         $stmt->execute();
         $preguntas = $stmt->fetchAll();
 
-
-
-        return $this->render('panelcentropregabog/panelistpreguntas.html.twig', array('abgPersona' => $result_persona, 'abgFoto' => $result_foto, 'ciuda' => $result_ciuda, 'usuario' => $username, 'preguntas' => $preguntas, 'totsincont' => $totsincont[0]['total']));
+        $fecha = array();
+        foreach ($preguntas as $key => $value) {
+            $fechaRespuesta = $this->tiempo_transcurrido($value['fecha']);
+            array_push($fecha, $fechaRespuesta);
+        }            
+        
+        
+        return $this->render('panelcentropregabog/panelistpreguntas.html.twig', array('fechaRespuesta' => $fecha, 'abgPersona' => $result_persona, 'abgFoto' => $result_foto, 'ciuda' => $result_ciuda, 'usuario' => $username, 'preguntas' => $preguntas, 'totsincont' => $totsincont[0]['total']));
     }
 
     /**
@@ -186,7 +191,7 @@ class AbgPanelCentroRespuestaController extends Controller {
 $idUser=$this->container->get('security.context')->getToken()->getUser()->getId();
             
                       
-            $sql = "SELECT preg.id as idpreg, preg.pregunta,  preg.fechapregunta AS fecha "
+            $sql = "SELECT preg.id as idpreg, preg.pregunta,  preg.fechapregunta AS fecha, preg.fecha_respuesta AS frespuesta "
                     . " FROM abg_pregunta preg "
                     . " JOIN ctl_especialidad esp "
                     . " ON esp.id=preg.ctl_especialidad AND preg.ctl_usuario_id=". $idUser
@@ -198,6 +203,15 @@ $idUser=$this->container->get('security.context')->getToken()->getUser()->getId(
             $stmt = $em->getConnection()->prepare($sql);
             $stmt->execute();
             $data['Respreguntas'] = $stmt->fetchAll();
+            
+            $fecha = array();
+            foreach ($data['Respreguntas'] as $key => $value) {
+                $fechaRespuesta = $this->tiempo_transcurrido($value['frespuesta']);
+                array_push($fecha, $fechaRespuesta);
+            }            
+        
+            $data['fechasRespuesta'] = $fecha;
+            
             return new Response(json_encode($data));
         } catch (\Exception $e) {
             $data['error'] = $e->getMessage();
@@ -233,17 +247,64 @@ $idUser=$this->container->get('security.context')->getToken()->getUser()->getId(
                     . " ON pe.ctl_especialidad_id=esp.id "
                     . " WHERE preg.estado=0"
                     . " ORDER BY  preg.fechapregunta DESC ";
+            
             $em = $this->getDoctrine()->getManager();
             $stmt = $em->getConnection()->prepare($sql);
             $stmt->execute();
-            $data['Respreguntas'] = $stmt->fetchAll();
-            return new Response(json_encode($data));
+            $data['Respreguntas'] = $stmt->fetchAll();            
+            return new Response(json_encode($data));           
         } catch (\Exception $e) {
-            $data['error'] = $e->getMessage();
+            $data['error'] = $e->getMessage();            
             return new Response(json_encode($data));
         }
     }
 
+    function tiempo_transcurrido($fecha) 
+    {
+        if(empty($fecha)) {
+            return "No hay fecha";
+        }
+
+        $intervalos = array("segundo", "minuto", "hora", "día", "semana", "mes", "año");
+        $duraciones = array("60","60","24","7","4.35","12");
+
+        $ahora = time();
+        $Fecha_Unix = strtotime($fecha);
+
+        if(empty($Fecha_Unix)) {   
+            return "Fecha incorrecta";
+        }
+        if($ahora > $Fecha_Unix) {   
+            $diferencia = $ahora - $Fecha_Unix;
+            $tiempo = "Hace";
+        } else {
+            $diferencia = $Fecha_Unix -$ahora;
+            $tiempo = "Dentro de";
+        }
+        for($j = 0; $diferencia >= $duraciones[$j] && $j < count($duraciones)-1; $j++) {
+            $diferencia /= $duraciones[$j];
+        }
+
+        $diferencia = round($diferencia);
+
+        if($diferencia != 1) {
+            $intervalos[5].="e"; //MESES
+            $intervalos[$j].="s";
+        }
+        
+        
+        if($intervalos[$j] == 'meses' and $diferencia >= 12){
+            $diferencia /= $duraciones[$j];
+            $j++;
+            $diferencia = round($diferencia);
+            
+            if($diferencia != 1) {
+                $intervalos[$j].="s";
+            }
+        }
+
+        return "$tiempo $diferencia $intervalos[$j]";
+    }
 }
 
 //FIN DEL CONTROLADOR

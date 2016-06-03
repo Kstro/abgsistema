@@ -22,6 +22,7 @@
     <script src = "{{ asset('Resources/cropit-master/dist/jquery.cropit.js') }}"  type = "text/javascript" ></script> 
 
     <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
     <script src="{{ asset('Resources/datatable/js/datatable.js') }}"></script>
     <script src="{{ asset('Resources/AdminLTE-2.3.0/dist/js/app.js') }}" type="text/javascript"></script>
     <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
@@ -152,13 +153,13 @@
                     <div class="nav-tabs-custom" style="cursor: move;">
                         {# Aquí se colocan los nombres de cada sección (tabs) #}    
                         <ul class="nav nav-tabs  ui-sortable-handle">
-                            <li class="active"><a data-toggle="tab" href="#listado-blogs">Lista de blogs</a></li>
+                            <li class="active fuente"><a data-toggle="tab" href="#listado-blogs">Lista de blogs</a></li>
                             <li><a data-toggle="tab" href="#registros">Entrada de blog</a></li>
                         </ul>
                         {# Aquí se encuentran las secciones de las tabs #}    
                         <div class="tab-content no-padding">
                             <div class="chart tab-pane active" id="listado-blogs" >
-                                <div style="margin-top: 30px; margin-left: 10px;">
+                                <div class="fuente" style="margin-top: 30px; margin-left: 10px;">
                                     <div class="row" style="margin-top: 10px; margin-right: 10px; display: none;" id="cont-error1">
                                         <div class="alert alert-danger" role="alert">
                                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -209,7 +210,7 @@
                                         </form> 
                                     </div>
                                     <br>
-                                    <div class="row" style="padding-right: 5px;">
+                                    <div class="row fuente" style="padding-right: 5px;">
                                         <div class="col-sm-12 col-md-12" >
                                             <table class="listados table table-hover table-condensed table-responsive table-striped">
                                                 <thead>

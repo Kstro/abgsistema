@@ -39,6 +39,7 @@ class AbgBlogController extends Controller{
                         ->setParameter('identrada', $identrada)
                         ->getSingleResult();
         
+                //var_dump($parametros['fecha']);
                 //var_dump($parametros);
                 //die();
         
