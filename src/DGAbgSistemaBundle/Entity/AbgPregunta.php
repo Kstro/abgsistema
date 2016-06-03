@@ -100,7 +100,11 @@ class AbgPregunta
      */
     private $ctlUsuario;
 
-
+    /**
+     * @var integer
+     * @ORM\Column(name="contador", type="integer", nullable=false)
+     */
+    private $contador;
 
     /**
      * Get id
@@ -112,6 +116,28 @@ class AbgPregunta
         return $this->id;
     }
 
+      /**
+     * Set estado
+     *
+     * @param string $contador
+     * @return AbgPregunta
+     */
+    public function setContador($contador)
+    {
+        $this->contador= $contador;
+
+        return $this;
+    }
+
+    /**
+     * Get contador
+     *
+     * @return integer 
+     */
+    public function getContador()
+    {
+        return $this->contador;
+    }
     /**
      * Set pregunta
      *

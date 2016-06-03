@@ -154,7 +154,7 @@
 
                             <div class="row" >
                                 <div class="col-xs-10" style="padding-right: 0;">
-                                    <p style="margin-top: 10px; font-size: 23px; margin-left: 10px; margin-bottom: 0px;" class="sans">
+                                    <p style="margin-top: 10px; font-size: 23px; margin-left: 10px; margin-bottom: 0px;" >
                                         <strong>
                                             {{datos.nombre~' '~datos.apellido}}
                                         </strong>
@@ -164,7 +164,7 @@
                                     {%if datos.tprofesional|default is not empty %} 
                                 <div class="row" >
                                     <div class="col-xs-12" style="padding-right: 0;">
-                                        <p style="color: #777777; margin-left: 11px; margin-top: -3px; margin-bottom: 0px;" class="sansli">
+                                        <p style="color: #777777; margin-left: 11px; margin-top: -3px; margin-bottom: 0px;" >
                                             {{datos.tprofesional}}
                                         </p>
                                     </div>
@@ -174,7 +174,7 @@
                                 <div class="row" >
                                     <div class="col-xs-12" style="padding-right: 0;">
                                         <div  style="display:block;" id="divMunicipiox">
-                                            <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">
+                                            <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" >
                                                 {% for datos in ciuda %}
                                                     <b> {{datos.estado}} </b> | {{datos.nombre}} 
                                                 {%endfor%}
@@ -268,11 +268,11 @@
 
             <div class="box box-widget">
                 <div class="box-header with-border">
-                    <h3 class="box-title">DATOS DE CONTACTO</h3>
+                    <h3 class="box-title" style=" margin-left: 10px;">DATOS DE CONTACTO</h3>
 
 
                 </div>
-                <div class="box-body" style="margin: 10px;">
+                <div class="box-body" style="margin: 10px; padding-bottom: 20px;">
 
                     <div class="row">
                         <div class="col-sm-3 col-xs-12">
@@ -326,9 +326,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- /.box-body -->
-
-                <!-- /.box-footer-->
             </div>
 
 
@@ -337,11 +334,11 @@
 
                 <div class="box box-widget">
                     <div class="box-header with-border">
-                        <h3 class="box-title">UN POCO SOBRE MI</h3>
+                        <h3 class="box-title" style=" margin-left: 10px;">UN POCO SOBRE MI</h3>
                     </div>
-                    <div class="box-body" style="margin: 10px;">
-                        <p class="text-justify">
-                            {{datos.descripcion|raw}}</p>
+                    <div class="box-body" style="margin-left: 10px; margin-right: 10px; padding-bottom: 20px;">
+                 
+                            {{datos.descripcion|raw}}
                     </div>
                 </div>
             {%endif%}
@@ -349,7 +346,7 @@
 
                 <div class="box box-widget" id="divEspecialidades">
                     <div class="box-header with-border">
-                        <h3 class="box-title">ESPECIALIDADES LEGALES</h3>
+                        <h3 class="box-title" style=" margin-left: 10px;">ESPECIALIDADES LEGALES</h3>
                     </div>
                     <div class="box-body" style="margin: 10px;">
                         <div  id="contenidoExp" >
@@ -361,9 +358,9 @@
                                         {%set n =n +1%}
                                         <div class="form-group">
                                             <div class="row">
-                                                <div class="col-xs-12" style="margin-top: .5em; margin-bottom: .5em;">
-                                                  <strong><p>&nbsp;
-                                                                {{datos.nombre| upper }}<p class="sans" ></strong>
+                                                <div class="col-xs-12" >
+                                                <p>  <strong>
+                                                                {{datos.nombre| upper }}</strong></p>
                                                         <p style="text-align:justify;">{{datos.descripcion}}</p>
                                                 </div>   
                                                 {%if ((n>0)and (n % 3== 0))%}
@@ -384,7 +381,7 @@
 
                 <div class="box box-widget" id="divExperiencia">
                     <div class="box-header with-border">
-                        <h3 class="box-title">EXPERIENCIA</h3>
+                        <h3 class="box-title" style=" margin-left: 10px;">EXPERIENCIA</h3>
                     </div>
                     <div class="box-body" style="margin: 10px;">
                         {% for datos in RegistradaExperiencia %}
@@ -468,18 +465,16 @@
             {%if Edu|default is not empty %}
                 <div class="box box-widget" id="divEducacion">
                     <div class="box-header with-border">
-                        <h3 class="box-title">EDUCACION</h3>
+                        <h3 class="box-title" style=" margin-left: 10px;">EDUCACION</h3>
                     </div>
                     <div class="box-body" style="margin: 10px;">
                         {% for datos in Edu %}
                             <div class="row " id="Edu{{datos.idEs}}">
                                 <div class="col-xs-11">
-                                    <span style="font-size: 16px;">{{datos.institucion}}</span> 
-                                    </br>
+                                       <span style="font-size: 16px;">{{datos.institucion}}</span> 
+                                    <br>
                                     <span style="font-size: 13px;">{{datos.disciplina~' | '~datos.titulo}}</br> {{datos.anioIni}} - {%if datos.anio|default is not empty %}{{datos.anio}}{%else%}Actualmente{%endif%}</span>
-                                    <p style="width: 90%; margin-top: 5px;text-align:justify;">
-
-                                    </p>
+                                 
                                 </div>
                             </div>
                             <p></p>
@@ -493,15 +488,15 @@
             {%if Idiomas|default is not empty %}
                 <div class="box box-widget">
                     <div class="box-header with-border">
-                        <h3 class="box-title">IDIOMAS</h3>
+                        <h3 class="box-title" style=" margin-left: 10px;">IDIOMAS</h3>
                     </div>
                     <div class="box-body" style="margin: 10px;">
                         <div class="row " id="Idioma">
                             {% for datos in Idiomas %}
-                                <div class="col-xs-3" style="margin-top: .5em; margin-bottom: .5em;" >
-                                    <ul class="prob"><li><strong>{{datos.nombre}}</strong></li>
-                                        <li>{{datos.nivel}}</li>
-                                    </ul>
+                                <div class="col-xs-3"  >
+                             <p><strong>{{datos.nombre}}</strong></p>
+                                        <p>{{datos.nivel}}</p>
+                               
                                 </div>
                             {%endfor%}
                             <div class="clearfix"></div>
@@ -513,14 +508,14 @@
 
                 <div class="box box-widget">
                     <div class="box-header with-border">
-                        <h3 class="box-title">ORGANIZACION</h3>
+                        <h3 class="box-title" style=" margin-left: 10px;">ORGANIZACION</h3>
                     </div>
                     <div class="box-body" style="margin: 10px;">
                         {% for datos in Organizacion %}
                             <div class="row " id="Org{{datos.id}}" >
                                 <div class="col-xs-11">
-                                    <span style="font-size: 16px;">{{datos.nombre}}</span> 
-                                    </br>
+                                   <span style="font-size: 16px;">{{datos.nombre}}</span> 
+                                    <br>
                                     <span style="font-size: 13px;">{{datos.puesto}}</br> {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
                                                                                                     'Jan'  : 'Enero',
                                                                                                     'Feb'  : 'Febrero',
@@ -560,14 +555,14 @@
             {%if Certificacion|default is not empty %}
                 <div class="box box-widget">
                     <div class="box-header with-border">
-                        <h3 class="box-title">CERTIFICACION</h3>
+                        <h3 class="box-title" style=" margin-left: 10px;">CERTIFICACION</h3>
                     </div>
                     <div class="box-body" style="margin: 10px;">
                         {% for datos in Certificacion %}
                             <div class="row " id="Cert{{datos.id}}">
                                 <div class="col-xs-11">
-                                    <span style="font-size: 16px;">{{datos.institucion}}</span> 
-                                    </br>
+                                   <span style="font-size: 16px;">{{datos.institucion}}</span> 
+                                    <br>
                                     <span style="font-size: 13px;">{{datos.nombre}}</br> {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
                                                                                                     'Jan'  : 'Enero',
                                                                                                     'Feb'  : 'Febrero',
@@ -607,7 +602,7 @@
             {%if Curso|default is not empty %}
                 <div class="box box-widget">
                     <div class="box-header with-border">
-                        <h3 class="box-title">CURSOS Y SEMINARIOS</h3>
+                        <h3 class="box-title"  style="margin-left: 10px;">CURSOS Y SEMINARIOS</h3>
                     </div>
                     <div class="box-body" style="margin: 10px;">
                         {% for datos in Curso %}

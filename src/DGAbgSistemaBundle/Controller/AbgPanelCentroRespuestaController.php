@@ -4,7 +4,6 @@ namespace DGAbgSistemaBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 //use Symfony\Component\HttpFoundation\Response;
-
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -14,7 +13,7 @@ use DGAbgSistemaBundle\Entity\AbgEntrada;
 use DGAbgSistemaBundle\Entity\CtlUsuario;
 use DGAbgSistemaBundle\Entity\AbgImagenBlog;
 use DGAbgSistemaBundle\Entity\AbgPregunta;
-
+use DGAbgSistemaBundle\Entity\AbgRespuestaPregunta;
 use Symfony\Component\HttpFoundation\Response;
 use DGAbgSistemaBundle\Form\AbgPersonaType;
 
@@ -27,27 +26,91 @@ class AbgPanelCentroRespuestaController extends Controller {
 
     /**
      * Respuesta
-     *
+     * @Route("/respuesta_abg", name="admin_pregunta_respuesta", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function PreguntaRespuestaAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+     
+        try {
+            $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+            $username= $this->container->get('security.context')->getToken()->getUser();
+           
+            $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
+                    . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.codigo as codigo "
+                    . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
+            $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+
+            $dqlfoto = "SELECT fot.src as src "
+                    . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
+            $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+
+
+            $dqlfoto = "SELECT fot.src as src, fot.estado As estado "
+                    . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=1 ";
+            $fotoP = $em->createQuery($dqlfoto)->getArrayResult();
+
+            $id = $request->get('id');
+
+            $em = $this->getDoctrine()->getManager();
+            $pregunta = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->find($id);
+
+            $username = $this->container->get('security.context')->getToken()->getUser();
+            $personaId = $username->getRhPersona();
+            $abgfoto = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findOneBy(array('abgPersona' => $personaId));
+            
+                  $abgRespuestaPregunta = $em->getRepository('DGAbgSistemaBundle:AbgRespuestaPregunta');
+            $Respuesta = $abgRespuestaPregunta->findBy(array('abgPregunta' => $id, 'ctlUsuario' => $username));
+      $respuesta="";
+      $estado="";
+    
+      if(! empty($Respuesta))
+      {
+      $estado=1;
+      $respuesta=$Respuesta[0]->getRespuesta();
+      
+      }
+      else
+      {
+           $estado=0; 
+      }
+
+            $srcfoto = $abgfoto->getSrc();
+            return $this->render('panelcentropregabog/panelRespuestaPregunta.html.twig', array('pregunta' => $pregunta,
+                        'srcfoto' => $srcfoto,
+                        'nombres' => $personaId->getNombres(),
+                        'apellidos' => $personaId->getApellido(),
+                        'abgPersona' => $result_persona,
+                        'usuario' => $idPersona,
+                        'abgFoto' => $result_foto,
+                        'estado'=>$estado,
+                'respuesta'=>$respuesta));
+        } catch (Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+     
+            $em->close();
+
+            // echo $e->getMessage();   
+        }
+    }
+
+    /**
+     * Respuesta desde correo
      * @Route("/respuestapanel", name="admin_respanel_centro", options={"expose"=true})
      * @Method("GET")
      */
     public function respuestacentroAction(Request $request) {
         $id = $request->get('id');
-        //var_dump($id);
-        //die();
+
         $em = $this->getDoctrine()->getManager();
         $pregunta = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->find($id);
 
-
         $username = $this->container->get('security.context')->getToken()->getUser();
         $personaId = $username->getRhPersona();
-        $abgfoto = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findOneBy(array('abgPersona'=>$personaId));
-        
+        $abgfoto = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findOneBy(array('abgPersona' => $personaId));
+
         $srcfoto = $abgfoto->getSrc();
-
-
-        //var_dump($personaId->getNombres());
-        //die();
         return $this->render('panelcentropregabog/panelrespuestacentro.html.twig', array('pregunta' => $pregunta, 'srcfoto' => $srcfoto, 'nombres' => $personaId->getNombres(), 'apellidos' => $personaId->getApellido()));
     }
 
@@ -58,44 +121,68 @@ class AbgPanelCentroRespuestaController extends Controller {
      * @Method("POST")
      */
     public function enviorespuestapanelAction(Request $request) {
-         try {
-        $parameters = $request->request->all();
-        $idpreg = $request->get('idpreg');
-        $respuesta = $request->get('respuesta');
+        try {
+            $parameters = $request->request->all();
+            $idpreg = $request->get('idpreg');
+            $respuesta = $request->get('respuesta');
 
-        $username = $this->container->get('security.context')->getToken()->getUser();
-        $personaId = $username->getRhPersona();
+            $username = $this->container->get('security.context')->getToken()->getUser();
+            $personaId = $username->getRhPersona();
 
-        $em = $this->getDoctrine()->getManager();
-        $abgPregunta = $em->getRepository('DGAbgSistemaBundle:AbgPregunta');
-        $pregunta= $abgPregunta->find($idpreg);
-        $correo_anonimo= $abgPregunta->find($idpreg)->getCorreoelectronico();
-        
-        $this->get('pregunta_respuesta')->sendEmail($correo_anonimo, "", "", "", "
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction();
+            $abgPregunta = $em->getRepository('DGAbgSistemaBundle:AbgPregunta');
+            $pregunta = $abgPregunta->find($idpreg);
+
+            $abgRespuestaPregunta = $em->getRepository('DGAbgSistemaBundle:AbgRespuestaPregunta');
+            $Respuesta = $abgRespuestaPregunta->findBy(array('abgPregunta' => $idpreg, 'ctlUsuario' => $username));
+
+
+            if ($abgPregunta->find($idpreg)->getContador() < 4) {
+                //  $abogado=$abgPregunta->findBy(array('id'=>$idpreg,'ctlUsuario'=>$username));
+                if ($Respuesta == null) {
+                    $contador = $abgPregunta->find($idpreg)->getContador() + 1;
+                    $correo_anonimo = $abgPregunta->find($idpreg)->getCorreoelectronico();
+                    $AbgRespuestaPregunta = new AbgRespuestaPregunta();
+                    if ($contador == 3) {
+                        $pregunta->setEstado(0);
+                    } else {
+                        $pregunta->setEstado(1);
+                    }
+                    $pregunta->setContador($contador);
+                    $em->merge($pregunta);
+                    $em->flush();
+
+                    $AbgRespuestaPregunta->setPregunta($pregunta);
+                    $AbgRespuestaPregunta->setCtlUsuario($username);
+                    $AbgRespuestaPregunta->setRespuesta($respuesta);
+                    $AbgRespuestaPregunta->setFechaRespuesta(new \DateTime('now'));
+                    $em->persist($AbgRespuestaPregunta);
+                    $em->flush();
+
+                    $this->get('pregunta_respuesta')->sendEmail($correo_anonimo, "", "", "", "
                     <table style=\"width: 540px; margin: 0 auto;\">
                       <tr>
                         <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
                         <center>
                           <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
-                        </center>                                                
-                            <p>Hola ".$correo_anonimo." tu pregunta ha sido respondida</p>
-                            <p>Haz click en el enlace y se el primero en contestar</p>
-                            <a href='http://http://abg.localhost/app_dev.php/preguntascentro/respuestas?id=".$idpreg."'>Clik aqui para responder</a> 
-
+                        </center>
+                            <p>Hola " . $correo_anonimo . ", tu pregunta ha sido respondida</p>
+                            <p>Haz click en el enlace para ver la respuesta</p>
+                            <a href='http://abg.localhost/app_dev.php/preguntascentro/respuestas?id=" . $idpreg . "'>Clik aqui para ver la respuesta</a> 
                         </td>
                         <td class=\"expander\"></td>
                       </tr>
                     </table>
-                "); 
-             
-        $pregunta->setCtlUsuario($username);
-        $pregunta->setRespuesta($respuesta);
-        $pregunta->setFechaRespuesta(new \DateTime ('now'));
-        $pregunta->setEstado(0);
-        $em->merge($pregunta);
-        $em->flush();
-        return $this->redirect($this->generateUrl('panel_list_pregunta'));
+                ");
+                }
+            }
+            $em->getConnection()->commit();
+            return $this->redirect($this->generateUrl('panel_list_pregunta'));
         } catch (Exception $e) {
+            $em->getConnection()->rollback();
+            $em->close();
+
             $data['msj'] = $e->getMessage();
             return new Response(json_encode($data));
         }
@@ -183,13 +270,13 @@ class AbgPanelCentroRespuestaController extends Controller {
         try {
             $em = $this->getDoctrine()->getManager();
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
-$idUser=$this->container->get('security.context')->getToken()->getUser()->getId();
-            
-                      
+            $idUser = $this->container->get('security.context')->getToken()->getUser()->getId();
+
+
             $sql = "SELECT preg.id as idpreg, preg.pregunta,  preg.fechapregunta AS fecha "
                     . " FROM abg_pregunta preg "
                     . " JOIN ctl_especialidad esp "
-                    . " ON esp.id=preg.ctl_especialidad AND preg.ctl_usuario_id=". $idUser
+                    . " ON esp.id=preg.ctl_especialidad AND preg.ctl_usuario_id=" . $idUser
                     . " JOIN abg_persona_especialidad pe "
                     . " ON pe.ctl_especialidad_id=esp.id AND pe.abg_persona_id=" . $idPersona
                     . " WHERE preg.estado=0"
@@ -204,7 +291,8 @@ $idUser=$this->container->get('security.context')->getToken()->getUser()->getId(
             return new Response(json_encode($data));
         }
     }
-/**
+
+    /**
      * Pregunta y respuesta.
      *
      * @Route("/pregunta_resp_abg", name="pregunta_resp_abg", options={"expose"=true})
@@ -214,17 +302,17 @@ $idUser=$this->container->get('security.context')->getToken()->getUser()->getId(
     public function PreguntaRespAbgAction() {
         try {
             $em = $this->getDoctrine()->getManager();
-                        $request = $this->getRequest();
-                        $user= $this->container->get('security.context')->getToken()->getUser()->getId();
-                   
-            $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
-            
-               $dqlfoto = "SELECT fot.src as src "
-                    . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
-            $foto= $em->createQuery($dqlfoto)->getArrayResult();
-            $data['foto']=$foto[0]['src'];
+            $request = $this->getRequest();
+            $user = $this->container->get('security.context')->getToken()->getUser()->getId();
 
-            
+            $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+
+            $dqlfoto = "SELECT fot.src as src "
+                    . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
+            $foto = $em->createQuery($dqlfoto)->getArrayResult();
+            $data['foto'] = $foto[0]['src'];
+
+
             $sql = "SELECT preg.id as idpreg, preg.pregunta,  preg.fechapregunta AS fecha, preg.respuesta AS respuesta "
                     . " FROM abg_pregunta preg "
                     . " JOIN ctl_especialidad esp "

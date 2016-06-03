@@ -8,7 +8,7 @@
     <form action="{% if pregunta.estado == 1 %}{{ path('envio_respuesta_panel') }} {% else %}{{ path('pregunta') }} {% endif %}" method="POST">
         <div class="row" style="margin-left:10px; margin-right: 10px;">
             <div class="form-group">
-                <h3 class="box-title">RESPONDER PREGUNTA </h3>
+                <h3 class="box-title">RESPONDER PREGUNTA</h3>
                 <br>
                 <input name="idpreg" class="hidden" type="text" value="{{pregunta.id}}">         
                 <div class="col-md-12">
