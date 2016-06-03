@@ -103,13 +103,11 @@ class AbgPreyResController extends Controller{
         $abgPregunta->setEstado("1");
         $abgPregunta->setCorreoelectronico($email);
         $abgPregunta->setFechaPregunta(new \DateTime ('now'));
-//      $abgPregunta->setCtlUsuario($username);
 
         $em = $this->getDoctrine()->getManager();
         $espeid = $em->getRepository('DGAbgSistemaBundle:CtlEspecialidad')->find($especialidad);
         $abgPregunta->setAbgEspecialidad($espeid);
-        
-       
+
           $em->persist($abgPregunta);
         $em->flush();
         $lastpreg = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->findOneBy(array() ,array('id' => 'DESC'));
@@ -141,8 +139,8 @@ class AbgPreyResController extends Controller{
                                             </center>                                                
                                                 <p>Hola ".$email." hay una nueva pregunta en la que puedes participar dando tu opinion</p>
                                                 <p>Haz click en el enlace y se el primero en contestar</p>
-                                                <a href='http://localhost/abgsistema/web/app_dev.php/admin/panelrespuestacentro/respuestapanel?id=".$lastidpreg."'>Clik aqui para responder</a> 
-                                                
+                                                <a href='http://abg.localhost/app_dev.php/admin/panelrespuestacentro/respuesta_abg?id=".$lastidpreg."'>Clik aqui para responder</a> 
+
                                             </td>
                                             <td class=\"expander\"></td>
                                           </tr>

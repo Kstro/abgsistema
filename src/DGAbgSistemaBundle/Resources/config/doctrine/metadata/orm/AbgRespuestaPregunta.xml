@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AbgRespuestaPregunta" table="abg_respuesta_pregunta">
+    <indexes>
+      <index name="fk_abg_respuesta_pregunta_usuario_idx" columns="ctl_usuario_id"/>
+      <index name="fk_ctl_respuesta_pregunta_1_idx" columns="abg_pregunta"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="respuesta" type="text" column="respuesta" length="65535" nullable="false"/>
+    <field name="fecha_respuesta" type="date" column="fecha_respuesta" nullable="false"/>
+     <many-to-one field="ctlUsuario" target-entity="CtlUsuario">
+      <join-columns>
+        <join-column name="ctl_usuario_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="abgPregunta" target-entity="AbgPregunta">
+      <join-columns>
+        <join-column name="abg_pregunta" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>
+

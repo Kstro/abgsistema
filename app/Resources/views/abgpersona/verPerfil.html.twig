@@ -62,7 +62,7 @@
 
                                 <div class="row" >
                                     <div class="col-xs-10" style="padding-right: 0;">
-                                        <p style="margin-top: 10px; font-size: 23px; margin-left: 10px; margin-bottom: 0px;" class="sans">
+                                        <p style="margin-top: 10px; font-size: 23px; margin-left: 10px; margin-bottom: 0px;">
                                             <strong>
                                                 {{datos.nombre~' '~datos.apellido}}
                                             </strong> 
@@ -72,7 +72,7 @@
                                         {%if datos.tprofesional|default is not empty %}
                                     <div class="row" >
                                         <div class="col-xs-12" style="padding-right: 0;">
-                                            <p style="color: #777777; margin-left: 11px; margin-top: -3px; margin-bottom: 0px;" class="sansli">
+                                            <p style="color: #777777; margin-left: 11px; margin-top: -3px; margin-bottom: 0px;" >
 
                                                 {{datos.tprofesional}}
 
@@ -85,7 +85,7 @@
                                     <div class="row" >
                                         <div class="col-xs-12" style="padding-right: 0;">
                                             <div  style="display:block;" id="divMunicipiox">
-                                                <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">
+                                                <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" >
                                                     {% for datos in ciuda %}
                                                         <b> {{datos.estado}} </b> | {{datos.nombre}} 
                                                     {%endfor%}
@@ -204,11 +204,11 @@
                 <!-- INFORMACION DE CONTACTO -->
                 <div class="box box-widget">
                     <div class="box-header with-border">
-                        <h3 class="box-title">DATOS DE CONTACTO</h3>
+                        <h3 class="box-title"  style="margin-left: 10px;">DATOS DE CONTACTO</h3>
 
 
                     </div>
-                    <div class="box-body">
+                    <div class="box-body"  style="margin: 10px; padding-bottom: 20px;">
 
                         <div class="row">
                             {%if datos.movil|default is not empty or datos.Tfijo|default is not empty%}
@@ -268,11 +268,11 @@
 
                     <div class="box box-widget">
                         <div class="box-header with-border">
-                            <h3 class="box-title">UN POCO SOBRE MI</h3>
+                            <h3 class="box-title" style="margin-left: 10px;">UN POCO SOBRE MI</h3>
                         </div>
-                        <div class="box-body" style="margin: 10px;">
-                            <p class="text-justify" >
-                                {{datos.descripcion|raw}}</p>
+                        <div class="box-body" style="margin: 10px; padding-bottom:20px;">
+                         
+                                {{datos.descripcion|raw}}
                         </div>
                     </div>
                 {%endif%}
@@ -280,9 +280,9 @@
 
                     <div class="box box-widget">
                         <div class="box-header with-border">
-                            <h3 class="box-title">ESPECIALIDADES LEGALES</h3>
+                            <h3 class="box-title" style="margin-left: 10px;">ESPECIALIDADES LEGALES</h3>
                         </div>
-                        <div class="box-body">
+                        <div class="box-body" style="margin: 10px;">
                             <div  id="contenidoExp" >
 
                                 <div   id="contenido">
@@ -292,21 +292,14 @@
                                             {%set n =n +1%}
                                             <div class="form-group">
                                                 <div class="row">
-                                                    <div class="col-xs-12" style="margin-top: .5em; margin-bottom: .5em;">
-                                                        <ul class="prob">
-                                                            <li><strong><p>&nbsp;
-                                                                        {%if(datos.nombre| upper=='DERECHO LABORAL')%}
-                                                                            <!-- img src="{#{asset('Resources/src/img/especialidades/dlaboral.png')}#}" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p-->
-
-                                                                        {%endif%}
-                                                                        <!--img src="{#{asset('Resources/src/img/especialidades/dlaboral.png')}#}" style="width:100%; margin-bottom: 8px;"  data-placement="right" ></p-->
-
-                                                                    {{datos.nombre| upper }}<p class="sans" ></strong></li>
-                                                            <li><p style="text-align:justify;">{{datos.descripcion}}</p></li>
+                                                    <div class="col-xs-12" >
+                                                            <strong>
+                                                                    {{datos.nombre| upper }}</strong><br>
+                                                         <p style="text-align:justify;">{{datos.descripcion}}</p>
                                                     </div>   
                                                     {%if ((n>0)and (n % 3== 0))%}
 
-                                                        <div class="clearfix"></div>
+                                                       
 
                                                     {%endif%}  
                                                 </div>
@@ -322,9 +315,9 @@
 
                     <div class="box box-widget">
                         <div class="box-header with-border">
-                            <h3 class="box-title">EXPERIENCIA</h3>
+                            <h3 class="box-title" style="margin-left: 10px;">EXPERIENCIA</h3>
                         </div>
-                        <div class="box-body">
+                        <div class="box-body" style="margin: 10px;">
                             {% for datos in RegistradaExperiencia %}
                                 <div class="row " id="Exp{{datos.id}}">
                                     <div class="col-xs-1" >
@@ -391,7 +384,7 @@
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}} (&nbsp;{{(datos.dias/365)|round(0, 'floor')}} años {{(((datos.dias/365)-(datos.dias/365)|round(0, 'floor'))*12)|round(0, 'floor')}} meses) 
                                             {%endif%}| {{datos.hubicacion}} </span>
-                                        </br><p style="width: 90%; margin-top: 5px;text-align:justify;">{{datos.funcion}}</p>
+                                        </br><p style="width: 100%; margin-top: 5px;text-align:justify;">{{datos.funcion}}</p>
                                     </div>  
                                 </div>
                                 <div class="row">
@@ -406,9 +399,9 @@
                 {%if Edu|default is not empty %}
                     <div class="box box-widget">
                         <div class="box-header with-border">
-                            <h3 class="box-title">EDUCACION</h3>
+                            <h3 class="box-title" style="margin-left: 10px;">EDUCACION</h3>
                         </div>
-                        <div class="box-body">
+                        <div class="box-body" style="margin: 10px;">
                             {% for datos in Edu %}
                                 <div class="row " id="Edu{{datos.idEs}}">
                                     <div class="col-xs-11">
@@ -431,15 +424,15 @@
                 {%if Idiomas|default is not empty %}
                     <div class="box box-widget">
                         <div class="box-header with-border">
-                            <h3 class="box-title">IDIOMAS</h3>
+                            <h3 class="box-title" style="margin-left: 10px;">IDIOMAS</h3>
                         </div>
-                        <div class="box-body">
-                            <div class="row " id="Idioma">
+                        <div class="box-body" style="margin:10px; padding-bottom: 20px;">
+                            <div class="row no-padding" id="Idioma">
                                 {% for datos in Idiomas %}
-                                    <div class="col-xs-3" style="margin-top: .5em; margin-bottom: .5em;" >
-                                        <ul class="prob"><li><strong>{{datos.nombre}}</strong></li>
-                                            <li>{{datos.nivel}}</li>
-                                        </ul>
+                                    <div class="col-xs-3">
+                                        <strong>{{datos.nombre}}</strong><br>
+                                            {{datos.nivel}}
+                                        
                                     </div>
                                 {%endfor%}
                                 <div class="clearfix"></div>
@@ -451,9 +444,9 @@
 
                     <div class="box box-widget">
                         <div class="box-header with-border">
-                            <h3 class="box-title">ORGANIZACION</h3>
+                            <h3 class="box-title" style="margin-left: 10px;">ORGANIZACION</h3>
                         </div>
-                        <div class="box-body" >
+                        <div class="box-body" style="margin: 10px;">
                             {% for datos in Organizacion %}
                                 <div class="row " id="Org{{datos.id}}" >
                                     <div class="col-xs-11">
@@ -500,9 +493,9 @@
 
                     <div class="box box-widget">
                         <div class="box-header with-border">
-                            <h3 class="box-title">CERTIFICACION</h3>
+                            <h3 class="box-title" style="margin-left: 10px;">CERTIFICACION</h3>
                         </div>
-                        <div class="box-body">
+                        <div class="box-body" style="margin: 10px;">
                             {% for datos in Certificacion %}
                                 <div class="row " id="Cert{{datos.id}}">
                                     <div class="col-xs-11">
@@ -549,9 +542,9 @@
 
                     <div class="box box-widget">
                         <div class="box-header with-border">
-                            <h3 class="box-title">CURSOS Y SEMINARIOS</h3>
+                            <h3 class="box-title" style="margin-left: 10px;">CURSOS Y SEMINARIOS</h3>
                         </div>
-                        <div class="box-body">
+                        <div class="box-body" style="margin: 10px;">
                             {% for datos in Curso %}
                                 <div class="row " id="CM{{datos.id}}">
                                     <div class="col-xs-11">
