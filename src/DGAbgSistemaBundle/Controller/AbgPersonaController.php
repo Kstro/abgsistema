@@ -375,7 +375,7 @@ class AbgPersonaController extends Controller {
 
                     $cumplimiento = $cumplimiento + 10;
                 }
-
+           
                 return $this->render('abgpersona/panelAdministrativoAbg.html.twig', array(
                             // return $this->render(':Layout:index.html.twig', array(
                             'abgPersona' => $result_persona,
@@ -446,7 +446,7 @@ class AbgPersonaController extends Controller {
                         inner join abg_foto foto on foto.abg_persona_id = per.id
                         inner join abg_url_personalizada uper on uper.abg_persona_id = per.id
                         where foto.estado = 1
-                        order by fecha_ingreso desc
+                        order by fecha_ingreso desc, per.id desc
                         limit 0, 12";
 
                 $rsm4->addScalarResult('nombres','nombres');
@@ -460,10 +460,11 @@ class AbgPersonaController extends Controller {
                 
                 $rsm5 = new ResultSetMapping();
                 
-                $sql5 = "select distinct emp.nombre_empresa as empresa, foto.src as src, uper.url as url
+                $sql5 = "select distinct emp.nombre_empresa as empresa, foto.src as src, uper.url as url, te.tipo_empresa as tipoEmpresa
                         from ctl_empresa emp 
                         inner join abg_foto foto on foto.ctl_empresa_id = emp.id
                         inner join abg_url_personalizada uper on uper.ctl_empresa_id = emp.id
+                        left outer join ctl_tipo_empresa te on emp.ctl_tipo_empresa_id = te.id
                         where foto.estado = 1 and emp.nombre_empresa <> 'Nombre de la empresa'
                         order by emp.id desc
                         limit 0, 8";
@@ -471,6 +472,7 @@ class AbgPersonaController extends Controller {
                 $rsm5->addScalarResult('empresa','empresa');
                 $rsm5->addScalarResult('src','src');
                 $rsm5->addScalarResult('url','url');
+                $rsm5->addScalarResult('tipoEmpresa','tipoEmpresa');
                 
                 $empresas = $em->createNativeQuery($sql5, $rsm5)
                                           ->getResult();
@@ -1290,6 +1292,7 @@ class AbgPersonaController extends Controller {
      */
     public function SubespecialidaAction() {
         try {
+            
             $request = $this->getRequest();
             $em = $this->getDoctrine()->getManager();
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));

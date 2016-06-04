@@ -172,7 +172,7 @@
                     </form>
                     <!-- TITULO DE EMPRESA -->
                     <div style="margin-top: -55px; margin-bottom: 5px;">
-                        <p class="text-right sans" style="font-size: 20px; margin-right: 10px; margin-bottom: 0px; z-index: 555;"><strong>
+                        <p class="text-right" style="font-size: 20px; margin-right: 10px; margin-bottom: 0px; z-index: 555;"><strong>
                                 <a  href="{{ path('empresapublico') }}"  style="font-size: 16px;" >  
                                     <span style="color: #4444444; margin-left: 10px;">
                                         &nbsp;Ver perfil</span>
@@ -190,7 +190,7 @@
                                 </span>
                             </strong>
                         </p>
-                        <p class="text-right sans" style="font-size: 12px; color: #777777; margin-right: 10px; z-index: 555; margin-bottom: 0px;">
+                        <p class="text-right" style="font-size: 12px; color: #777777; margin-right: 10px; z-index: 555; margin-bottom: 0px;">
                             {% if datos.movil %}
                                 {{" +503 "~datos.movil~" |"}}
 
@@ -218,11 +218,11 @@
 
             <div class="box box-widget">
                 <div class="box-header with-border">
-                    <h3 class="box-title">DATOS DE CONTACTO</h3>
+                    <h3 class="box-title" style="margin-left: 10px;">DATOS DE CONTACTO</h3>
                 </div>
-                <div class="box-body ">
-                    <div class="col-sm-3 col-xs-12">
-                        <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono(s)</strong></p>
+                <div class="box-body " style="margin:10px; padding-bottom:20px;">
+                    <div class="col-sm-3 col-xs-12 no-padding" >
+                        <p style="color: #4444444; font-size: 11px; "><strong>Telefono(s)</strong></p>
                         <p style="font-size: 11px; margin-bottom: 0px;">
                             503+
                             <a href="#" id="txtMovil" data-type="text" data-placement="right" data-title="Telefono movil">
@@ -342,29 +342,18 @@
                         <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Tipo de Empresa</strong></p>
 
                         <a href="#" id="tipoEmpresa" data-pk="1" data-type="select" data-title="Select status" style="font-size: 11px; margin-bottom: 0px;">
-
                             Tipo de empresa
-
                         </a>
                     </div>   
-
-
                 {% endif %}   
             </div> 
         </div> 
         <div class="box box-widget">
             <div class="box-header with-border">
-                <h3 class="box-title">ABOGADOS TRABAJANDO EN NUESTRO BUFETE </h3>
-
-
+                <h3 class="box-title" style="margin-left: 10px;">ABOGADOS TRABAJANDO EN NUESTRO BUFETE </h3>
             </div>
-            <div class="box-body">
+            <div class="box-body" style=" margin-right: 10px;margin-left: 10px; padding-bottom: 30px">
                 {% if empleados is not null %}
-
-
-
-
-
                     <label for="listarEmpleados" style="font-size: small;">
                         Listar empleados
                     </label>
@@ -385,12 +374,12 @@
                                             <img src="{{asset('')}}{{ data.src}}" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
                                         </div>
                                         <div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10">
-                                            <p style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>{{ data.nombres~" "~data.apellido }}</strong>
+                                            <p style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" ><strong>{{ data.nombres~" "~data.apellido }}</strong>
                                             {%if(data.verificado==1)%}
                                             <img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 0px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado">
                                         {%endif%}
                                             </p>
-                                            <p style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">{{data.tituloProfesional}}</p>
+                                            <p style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;">{{data.tituloProfesional}}</p>
                                             <div class="row" style="margin-top: 2px; margin-bottom: 15px;">
                                                 <div class="col-sm-4 col-xs-12">
                                                     <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono</strong></p>
@@ -443,7 +432,7 @@
         <!-- ESPECIALIDADES -->
         <div class="box box-widget">
             <div class="box-header with-border">
-                <h3 class="box-title">ESPECIALIDADES </h3>
+                <h3 class="box-title" style="margin-left: 10px;">ESPECIALIDADES </h3>
 
                 <div class="box-tools pull-right">
 
@@ -452,26 +441,20 @@
 
                 </div>
             </div>
-            <div class="box-body">
-                <div   id="contenido" style="padding-left:10px; padding-right: 10px;">
-                    <br>
+            <div class="box-body" style="margin: 10px;padding-bottom: 20px;">
+                <div   id="contenido" >
+                
                     {%if RegistroEspecialida|default is not empty %}
                         {%set n = 0%}
                         {% for datos in RegistroEspecialida %}
                             {%set n =n +1%}
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-xs-12" style="margin-top: .5em; margin-bottom: .5em;">
-                                        <ul class="prob">
-                                            <li><strong><p>
-                                                        {%if(datos.nombre| upper=='DERECHO LABORAL')%}
-                                                            <!-- img src="{#{asset('Resources/src/img/especialidades/dlaboral.png')}#}" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p-->
-
-                                                        {%endif%}
-                                                        <!--img src="{#{asset('Resources/src/img/especialidades/dlaboral.png')}#}" style="width:100%; margin-bottom: 8px;"  data-placement="right" ></p-->
-
-                                                    {{datos.nombre| upper }}<p class="sans" ></strong></li>
-                                            <li><p style="text-align:justify;">{{datos.descripcion}}</p></li>
+                         
+                                <div class="row no-padding">
+                                    <div class="col-xs-12" >
+                                       
+                                            <p><strong>
+                                                    {{datos.nombre| upper }}</strong></p>
+                                         <p style="text-align:justify;">{{datos.descripcion}}</p>
                                     </div>   
                                     {%if ((n>0)and (n % 3== 0))%}
 
@@ -479,7 +462,7 @@
 
                                     {%endif%}  
                                 </div>
-                            </div>
+                          
                         {%endfor%}
                         <script type="text/javascript">
                             $("#contenido").hover(
@@ -503,7 +486,7 @@
 
             <div class="box box-widget">
                 <div class="box-header with-border">
-                    <h3 class="box-title">BUSCA LA DIRECCION DE TU EMPRESA</h3>
+                    <h3 class="box-title" style="margin-left: 10px;">BUSCA LA DIRECCION DE TU EMPRESA</h3>
 
                     <div class="box-tools pull-right">
 
@@ -511,7 +494,7 @@
 
                     </div>
                 </div>
-                <div class="box-body">
+                <div class="box-body" style="margin: 10px; padding-bottom: 23px;">
 
 
 

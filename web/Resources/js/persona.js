@@ -121,8 +121,6 @@ $(document).on('ready', function () {
                     div = '<div class="nueva-Experiencia" id="div002"  style="background-color: #FBFBFB;margin-bottom:-10px;">' + data + '</div>';
                     $("#conetenedorUnpoco").hide();
                     $("#conetenedorUnpoco").before(div);
-
-
                 },
                 error: function (errors)
                 {

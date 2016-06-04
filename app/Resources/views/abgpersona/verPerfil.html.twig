@@ -10,33 +10,19 @@
 
 {% endblock %}
 {% block js_extend %}
-    <!--script src="{#{ asset('Resources/select2/dist/js/select2.min_1.js') }#}"></script-->
     <script src="{{ asset('Resources/js/editarPerfilPublico.js')}}"></script>
     <script type="text/javascript">
-        //$('#SEmpresa').select2();
+        
         $("#btnEditarperfil").click(function () {
             $("#verPerfil").empty();
             $("#verPerfil").hide();
             $("#editarPerfil").show();
         });
-
-
     </script>
-
     <style type="text/css">
         .divinfo {
-            border-radius:10px; 
-            /* position: absolute;
-            z-index: 999;
-            width: 200px;
-            height: 100px;
-           display: none;
-            background-color: #fff;
-            border: 3px solid #ebebeb;
-            padding: 10px;*/
+            border-radius:10px;
         }
-
-
     </style>
 
 
@@ -54,10 +40,14 @@
         {%set cumplimiento=10%}
 
         {% for datos in abgPersona %}
+
             <div class="row" style=" margin-left:15px; margin-right:15px;">
-                <div class="box box-widget" >
+
+
+                <div class="box box-widget" id="dviPerf">
                     <div class="box-body" >
                         <div class="row ">
+
                             <div class="col-sm-3 col-xs-3">
                                 <div style="margin-top:0;margin-left:0;" style="height:200px;width:200px; ">
                                     <center>
@@ -66,46 +56,41 @@
                                 </div>     
                             <!-- img src=" {#{asset('Resources/src/img/profile.png')}#}" style="margin-top: 10px; margin-left: 10px; width: 200px; height: 200px; margin-bottom: 10px;" /-->
                             </div>
+                            </td></tr>
 
                             <div class="col-sm-6" >
 
                                 <div class="row" >
                                     <div class="col-xs-10" style="padding-right: 0;">
-                                        <p style="margin-top: 10px; font-size: 23px; margin-left: 10px; margin-bottom: 0px;" class="sans">
+                                        <p style="margin-top: 10px; font-size: 23px; margin-left: 10px; margin-bottom: 0px;">
                                             <strong>
                                                 {{datos.nombre~' '~datos.apellido}}
                                             </strong> 
                                             {%if(datos.verificado==1)%}
                                                 <img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 0px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
                                         {%endif%}         </div></div>
-                                         {%if datos.tprofesional|default is not empty %}
-                                <div class="row" >
-                                    <div class="col-xs-12" style="padding-right: 0;">
-                                        <p style="color: #777777; margin-left: 11px; margin-top: -3px; margin-bottom: 0px;" class="sansli">
+                                        {%if datos.tprofesional|default is not empty %}
+                                    <div class="row" >
+                                        <div class="col-xs-12" style="padding-right: 0;">
+                                            <p style="color: #777777; margin-left: 11px; margin-top: -3px; margin-bottom: 0px;" >
 
-                                            {{datos.tprofesional}}
-                                            
-                                        </p>
+                                                {{datos.tprofesional}}
+
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                                      
-                                            {%endif%}
+
+                                {%endif%}
                                 {%if ciuda|default is not empty %}
                                     <div class="row" >
                                         <div class="col-xs-12" style="padding-right: 0;">
-
-
-
                                             <div  style="display:block;" id="divMunicipiox">
-                                                <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">
+                                                <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" >
                                                     {% for datos in ciuda %}
                                                         <b> {{datos.estado}} </b> | {{datos.nombre}} 
                                                     {%endfor%}
-
                                                 </p>
                                             </div>
-
-
                                         </div>
                                     </div>
 
@@ -143,8 +128,8 @@
                                             <span style="font-size:13px;">
 
                                                 {% for datos in RegistradaExperiencia %}
-                                                
-                                                         {%if datos.url|default is not empty %}
+
+                                                    {%if datos.url|default is not empty %}
                                                         <a href="{{path('busquedaPerfil', {url:datos.url})}}">{{datos.empresa}}</a>
                                                     {%else%}
 
@@ -159,43 +144,42 @@
                                 {%endif%}
                                 <!-- EDUCACION MAS RECIENTE -->
                                 {%if Edu|default is not empty %}
+                                    {%if(Edu[0]['anioIni'] is not empty)%} 
+                                       
+                                                    {%else%}
+                                                         <div class="row">
+                                            <div class="col-xs-4" style="padding-right: 0;">
+                                                <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Educación</span>
+                                            </div>
+                                            <div class="col-xs-8" style="padding-left: 0;">
+                                                <span style="font-size:13px;">
+                                                    <a href="#divEducacion">
+                                                        {% for datos in Edu %}
+                                                            {%if(datos.anio=='')%} {{datos.institucion}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    {%endif%}
+                                {%endif%}
+                                <!-- EDUCACION MAS RECIENTE -->
+                                {%if sitio|default is not empty %}
                                     <div class="row">
                                         <div class="col-xs-4" style="padding-right: 0;">
-                                            <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Educación</span>
+                                            <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Sitio Web</span>
                                         </div>
                                         <div class="col-xs-8" style="padding-left: 0;">
                                             <span style="font-size:13px;">
-                                                <a href="#divEducacion">
-                                                    {% for datos in Edu %}
-                                                        {%if(datos.anio=='')%} {{datos.institucion}}
-                                                        {%endif%}
-                                                    {%endfor%}
-                                                </a>
+                                                {% for datos in sitio %}
+                                                    {{datos.nombre}} 
+                                                {%endfor%}
                                             </span>
                                         </div>
                                     </div>
 
                                 {%endif%}
-                                <!-- EDUCACION MAS RECIENTE -->
-                                 {%if sitio|default is not empty %}
-                                <div class="row">
-                                    <div class="col-xs-4" style="padding-right: 0;">
-                                        <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Sitio Web</span>
-                                    </div>
-                                    <div class="col-xs-8" style="padding-left: 0;">
-                                        <span style="font-size:13px;">
-
-                                           
-                                                {% for datos in sitio %}
-                                                    {{datos.nombre}} 
-                                                {%endfor%}
-                                            
-
-                                        </span>
-                                    </div>
-                                </div>
-                                                
-                                            {%endif%}
                                 <div class="row">
                                     <div class="col-xs-2" style="padding-right: 0;margin-top:25px;">
                                         <p class="pull-right">
@@ -208,292 +192,404 @@
                                 </div>
                             </div>
 
+
                         </div>
                     </div>
+
                 </div>
-            </div>
-            <div class="row"  style="margin:0px;">
-                <div class="col-md-12">
-                    <!-- FIN PRIMERA BLOQUE CON FOTO DE PERFIL -->
-
-                    <!-- INFORMACION DE CONTACTO -->
-                    <div class="box box-widget">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">DATOS DE CONTACTO</h3>
 
 
-                        </div>
-                        <div class="box-body">
+                <!-- FIN PRIMERA BLOQUE CON FOTO DE PERFIL -->
 
-                            <div class="row">
-                                {%if datos.movil|default is not empty or datos.Tfijo|default is not empty%}
-                                    <div class="col-sm-3 col-xs-12">
-                                        <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono(s)</strong></p>
-                                        <p style="font-size: 11px; margin-bottom: 0px;">
+                <!-- INFORMACION DE CONTACTO -->
+                <div class="box box-widget">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"  style="margin-left: 10px;">DATOS DE CONTACTO</h3>
 
-                                            {%if datos.movil|default is not empty %}
-                                                +503   
-                                                {{datos.movil}}
-                                            {%else%}
 
-                                            {%endif%}
-
-                                            {%if datos.Tfijo|default is not empty %}
-                                                </br>+503 {{datos.Tfijo}}
-
-                                            {%endif %}
-                                            </a></p>
-                                    </div>
-                                {%endif %}
-                                {%if datos.correo|default is not empty %}
-                                    <div class="col-sm-3 col-xs-12">
-                                        <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email(s)</strong></p>
-                                        <p style="font-size: 11px; margin-bottom: 0px;">
-                                            {{datos.correo}}
-                                        </p>
-                                    </div>
-                                {%endif %}
-                                {%if datos.direccion|default is not empty %}
-                                    <div class="col-sm-3 col-xs-12">
-                                        <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Dirección</strong></p>
-                                        <p style="font-size: 11px; margin-bottom: 0px;">
-                                            {{datos.direccion}}
-                                        </p>
-                                    </div>
-                                {%endif%}
-                                {%if sitio|default is not empty %}
-                                    <div class="col-sm-3 col-xs-12">
-                                        <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio web</strong></p>
-                                        <p style="font-size: 11px; margin-bottom: 0px;">
-                                            {% for datos in sitio %}
-                                                {{datos.nombre}} 
-                                            {%endfor%}
-                                    </div>
-                                {%endif%}
-                            </div>
-                        </div>
-                        <!-- /.box-body -->
-
-                        <!-- /.box-footer-->
                     </div>
+                    <div class="box-body"  style="margin: 10px; padding-bottom: 20px;">
 
+                        <div class="row">
+                            {%if datos.movil|default is not empty or datos.Tfijo|default is not empty%}
+                                <div class="col-sm-3 col-xs-12">
+                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono(s)</strong></p>
+                                    <p style="font-size: 11px; margin-bottom: 0px;">
 
-                    <!-- INFORMACION DE CONTACTO -->
-                    {%if datos.descripcion|default is not empty %}
-
-                        <div class="box box-widget">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">UN POCO SOBRE MI</h3>
-                            </div>
-                            <div class="box-body" style="margin: 10px;">
-                                <p class="text-justify" >
-                                    {{datos.descripcion|raw}}</p>
-                            </div>
-                        </div>
-                    {%endif%}
-                    {%if RegistroEspecialida|default is not empty %}
-
-                        <div class="box box-widget">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">ESPECIALIDADES LEGALES</h3>
-                            </div>
-                            <div class="box-body">
-                                <div  id="contenidoExp" >
-
-                                    <div   id="contenido">
-                                        {%if RegistroEspecialida|default is not empty %}
-                                            {%set n = 0%}
-                                            {% for datos in RegistroEspecialida %}
-                                                {%set n =n +1%}
-                                                <div class="form-group">
-                                                    <div class="row">
-                                                        <div class="col-xs-12" style="margin-top: .5em; margin-bottom: .5em;">
-                                                            <ul class="prob">
-                                                                <li><strong><p>&nbsp;
-                                                                            {%if(datos.nombre| upper=='DERECHO LABORAL')%}
-                                                                                <!-- img src="{#{asset('Resources/src/img/especialidades/dlaboral.png')}#}" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p-->
-
-                                                                            {%endif%}
-                                                                            <!--img src="{#{asset('Resources/src/img/especialidades/dlaboral.png')}#}" style="width:100%; margin-bottom: 8px;"  data-placement="right" ></p-->
-
-                                                                        {{datos.nombre| upper }}<p class="sans" ></strong></li>
-                                                                <li><p style="text-align:justify;">{{datos.descripcion}}</p></li>
-                                                        </div>   
-                                                        {%if ((n>0)and (n % 3== 0))%}
-
-                                                            <div class="clearfix"></div>
-
-                                                        {%endif%}  
-                                                    </div>
-                                                </div>
-                                            {%endfor%}
+                                        {%if datos.movil|default is not empty %}
+                                            +503   
+                                            {{datos.movil}}
+                                        {%else%}
 
                                         {%endif%}
-                                    </div></div>
-                            </div>
-                        </div>
-                    {%endif%}
-                    {%if RegistradaExperiencia|default is not empty %}
 
-                        <div class="box box-widget">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">EXPERIENCIA</h3>
-                            </div>
-                            <div class="box-body">
-                                {% for datos in RegistradaExperiencia %}
-                                    <div class="row " id="Exp{{datos.id}}">
-                                        <div class="col-xs-1" >
-                                            {%if (datos.src is null)%}
+                                        {%if datos.Tfijo|default is not empty %}
+                                            </br>+503 {{datos.Tfijo}}
 
-                                                <img style="max-width:50px;max-height:50px;" src="{{asset('Resources/src/img/empresa/empresa.png') }}">
-                                            {%else%}
-                                                <a href="{{path('busquedaPerfil', {url:datos.url})}}">
-                                                    <img style="max-width:50px;max-height:50px;" src="{{asset('')}}{{datos.src}}">
-                                                </a>
-                                            {%endif%}
-                                        </div>
-                                        <div class="col-xs-11">
-                                            {%if datos.url|default is not empty %} 
-                                                <a href="{{path('busquedaPerfil', {url:datos.url})}}"><span style="font-size: 16px;">{{datos.empresa}}</span>
-                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i>
-                                                </a>
-                                            {%else%}
-                                                <span style="font-size: 16px;">{{datos.empresa}}</span>
-
-                                            {%endif%}  </br>
-                                            <span style="font-size: 13px;">{{datos.puesto}}</br> 
-                                                {%if (datos.dias is null)%}
-                                                    {{datos.fechaIn}} - Actualmente
-                                                {%else%}
-                                                    {{datos.fechaIn}} - {{datos.fechaFin}} (&nbsp;{{(datos.dias/365)|round(0, 'floor')}} años {{(((datos.dias/365)-(datos.dias/365)|round(0, 'floor'))*12)|round(0, 'floor')}} meses) 
-                                                {%endif%}| {{datos.hubicacion}} </span>
-                                            </br><p style="width: 90%; margin-top: 5px;text-align:justify;">{{datos.funcion}}</p>
-                                        </div>  
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-10 col-md-offset-2">
-                                        </div>
-                                    </div>
-                                    <p></p>
-                                {%endfor%}
-                            </div>
-                        </div>
-                    {%endif%}
-                    {%if Edu|default is not empty %}
-                        <div class="box box-widget">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">EDUCACION</h3>
-                            </div>
-                            <div class="box-body">
-                                {% for datos in Edu %}
-                                    <div class="row " id="Edu{{datos.idEs}}">
-                                        <div class="col-xs-11">
-                                            <span style="font-size: 16px;">{{datos.institucion}}</span> 
-                                            </br>
-                                            <span style="font-size: 13px;">{{datos.disciplina~' | '~datos.titulo}}</br> {{datos.anioIni}} - {%if datos.anio|default is not empty %}{{datos.anio}}{%else%}Actualmente{%endif%}</span>
-                                            <p style="width: 90%; margin-top: 5px;text-align:justify;">
-
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <p></p>
-                                {%endfor%}
-                            </div>
-                        </div>
-
-                    {%endif%}
-
-
-                    {%if Idiomas|default is not empty %}
-                        <div class="box box-widget">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">IDIOMAS</h3>
-                            </div>
-                            <div class="box-body">
-                                <div class="row " id="Idioma">
-                                    {% for datos in Idiomas %}
-                                        <div class="col-xs-3" style="margin-top: .5em; margin-bottom: .5em;" >
-                                            <ul class="prob"><li><strong>{{datos.nombre}}</strong></li>
-                                                <li>{{datos.nivel}}</li>
-                                            </ul>
-                                        </div>
-                                    {%endfor%}
-                                    <div class="clearfix"></div>
+                                        {%endif %}
+                                        </a></p>
                                 </div>
-                            </div>
+                            {%endif %}
+                            {%if datos.correo|default is not empty %}
+                                <div class="col-sm-3 col-xs-12">
+                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email(s)</strong></p>
+                                    <p style="font-size: 11px; margin-bottom: 0px;">
+                                        {{datos.correo}}
+                                    </p>
+                                </div>
+                            {%endif %}
+                            {%if datos.direccion|default is not empty %}
+                                <div class="col-sm-3 col-xs-12">
+                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Dirección</strong></p>
+                                    <p style="font-size: 11px; margin-bottom: 0px;">
+                                        {{datos.direccion}}
+                                    </p>
+                                </div>
+                            {%endif%}
+                            {%if sitio|default is not empty %}
+                                <div class="col-sm-3 col-xs-12">
+                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio web</strong></p>
+                                    <p style="font-size: 11px; margin-bottom: 0px;">
+                                        {% for datos in sitio %}
+                                            {{datos.nombre}} 
+                                        {%endfor%}
+                                </div>
+                            {%endif%}
                         </div>
-                    {%endif%}
-                    {%if Organizacion|default is not empty %}
+                    </div>
+                    <!-- /.box-body -->
 
-                        <div class="box box-widget">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">ORGANIZACION</h3>
-                            </div>
-                            <div class="box-body" >
-                                {% for datos in Organizacion %}
-                                    <div class="row " id="Org{{datos.id}}" >
-                                        <div class="col-xs-11">
-                                            <span style="font-size: 16px;">{{datos.nombre}}</span> 
-                                            </br>
-                                            <span style="font-size: 13px;">{{datos.puesto}}</br> {{datos.fechaIn}} - {{datos.fechaFin}}</span>
-                                            <p style="width: 100%; margin-top: 5px;text-align:justify;">{{datos.descripcion}}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <p></p>
-                                {%endfor%}
-                            </div>
-                        </div>
-                    {%endif%}
-                    {%if Certificacion|default is not empty %}
-
-
-                        <div class="box box-widget">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">CERTIFICACION</h3>
-                            </div>
-                            <div class="box-body">
-                                {% for datos in Certificacion %}
-                                    <div class="row " id="Cert{{datos.id}}">
-                                        <div class="col-xs-11">
-                                            <span style="font-size: 16px;">{{datos.institucion}}</span> 
-                                            </br>
-                                            <span style="font-size: 13px;">{{datos.nombre}}</br> {{datos.fechaIn}} - {{datos.fechaFin}}</span>
-                                            <p style="width: 100%; margin-top: 5px;text-align:justify;">
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <p></p>
-                                {%endfor%}
-                            </div>
-                        </div>
-                    {%endif%}
-                    {%if Curso|default is not empty %}
-
-
-                        <div class="box box-widget">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">CURSOS Y SEMINARIOS</h3>
-                            </div>
-                            <div class="box-body">
-                                {% for datos in Curso %}
-                                    <div class="row " id="CM{{datos.id}}">
-                                        <div class="col-xs-11">
-                                            <span style="font-size: 16px;">{{datos.institucion}}</span> 
-                                            </br>
-                                            <span style="font-size: 13px;">{{datos.nombre}}</br> {{datos.fechaIn}} - {{datos.fechaFin}}</span>
-                                            <p style="width: 90%; margin-top: 5px;text-align:justify;">{{datos.descripcion}}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <p></p>
-                                {%endfor%}
-                            </div>
-                        </div>
-                    {%endif%}
+                    <!-- /.box-footer-->
                 </div>
+
+
+                <!-- INFORMACION DE CONTACTO -->
+                {%if datos.descripcion|default is not empty %}
+
+                    <div class="box box-widget">
+                        <div class="box-header with-border">
+                            <h3 class="box-title" style="margin-left: 10px;">UN POCO SOBRE MI</h3>
+                        </div>
+                        <div class="box-body" style="margin: 10px; padding-bottom:20px;">
+                         
+                                {{datos.descripcion|raw}}
+                        </div>
+                    </div>
+                {%endif%}
+                {%if RegistroEspecialida|default is not empty %}
+
+                    <div class="box box-widget">
+                        <div class="box-header with-border">
+                            <h3 class="box-title" style="margin-left: 10px;">ESPECIALIDADES LEGALES</h3>
+                        </div>
+                        <div class="box-body" style="margin: 10px;">
+                            <div  id="contenidoExp" >
+
+                                <div   id="contenido">
+                                    {%if RegistroEspecialida|default is not empty %}
+                                        {%set n = 0%}
+                                        {% for datos in RegistroEspecialida %}
+                                            {%set n =n +1%}
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-xs-12" >
+                                                            <strong>
+                                                                    {{datos.nombre| upper }}</strong><br>
+                                                         <p style="text-align:justify;">{{datos.descripcion}}</p>
+                                                    </div>   
+                                                    {%if ((n>0)and (n % 3== 0))%}
+
+                                                       
+
+                                                    {%endif%}  
+                                                </div>
+                                            </div>
+                                        {%endfor%}
+
+                                    {%endif%}
+                                </div></div>
+                        </div>
+                    </div>
+                {%endif%}
+                {%if RegistradaExperiencia|default is not empty %}
+
+                    <div class="box box-widget">
+                        <div class="box-header with-border">
+                            <h3 class="box-title" style="margin-left: 10px;">EXPERIENCIA</h3>
+                        </div>
+                        <div class="box-body" style="margin: 10px;">
+                            {% for datos in RegistradaExperiencia %}
+                                <div class="row " id="Exp{{datos.id}}">
+                                    <div class="col-xs-1" >
+                                        {%if (datos.src is null)%}
+
+                                            <img style="max-width:50px;max-height:50px;" src="{{asset('Resources/src/img/empresa/empresa.png') }}">
+                                        {%else%}
+                                            <a href="{{path('busquedaPerfil', {url:datos.url})}}">
+                                                <img style="max-width:50px;max-height:50px;" src="{{asset('')}}{{datos.src}}">
+                                            </a>
+                                        {%endif%}
+                                    </div>
+                                    <div class="col-xs-11">
+                                        {%if datos.url|default is not empty %} 
+                                            <a href="{{path('busquedaPerfil', {url:datos.url})}}"><span style="font-size: 16px;">{{datos.empresa}}</span>
+                                                <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i>
+                                            </a>
+                                        {%else%}
+                                            <span style="font-size: 16px;">{{datos.empresa}}</span>
+
+                                        {%endif%}  </br>
+                                        <span style="font-size: 13px;">{{datos.puesto}}</br> 
+                                            {%if (datos.dias is null)%}
+                                                {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}} - Actualmente
+                                            {%else%}
+                                                {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}} - {{datos.fechaFin|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}} (&nbsp;{{(datos.dias/365)|round(0, 'floor')}} años {{(((datos.dias/365)-(datos.dias/365)|round(0, 'floor'))*12)|round(0, 'floor')}} meses) 
+                                            {%endif%}| {{datos.hubicacion}} </span>
+                                        </br><p style="width: 100%; margin-top: 5px;text-align:justify;">{{datos.funcion}}</p>
+                                    </div>  
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-10 col-md-offset-2">
+                                    </div>
+                                </div>
+                                <p></p>
+                            {%endfor%}
+                        </div>
+                    </div>
+                {%endif%}
+                {%if Edu|default is not empty %}
+                    <div class="box box-widget">
+                        <div class="box-header with-border">
+                            <h3 class="box-title" style="margin-left: 10px;">EDUCACION</h3>
+                        </div>
+                        <div class="box-body" style="margin: 10px;">
+                            {% for datos in Edu %}
+                                <div class="row " id="Edu{{datos.idEs}}">
+                                    <div class="col-xs-11">
+                                        <span style="font-size: 16px;">{{datos.institucion}}</span> 
+                                        </br>
+                                        <span style="font-size: 13px;">{{datos.disciplina~' | '~datos.titulo}}</br> {{datos.anioIni}} - {%if datos.anio|default is not empty %}{{datos.anio}}{%else%}Actualmente{%endif%}</span>
+                                        <p style="width: 90%; margin-top: 5px;text-align:justify;">
+
+                                        </p>
+                                    </div>
+                                </div>
+                                <p></p>
+                            {%endfor%}
+                        </div>
+                    </div>
+
+                {%endif%}
+
+
+                {%if Idiomas|default is not empty %}
+                    <div class="box box-widget">
+                        <div class="box-header with-border">
+                            <h3 class="box-title" style="margin-left: 10px;">IDIOMAS</h3>
+                        </div>
+                        <div class="box-body" style="margin:10px; padding-bottom: 20px;">
+                            <div class="row no-padding" id="Idioma">
+                                {% for datos in Idiomas %}
+                                    <div class="col-xs-3">
+                                        <strong>{{datos.nombre}}</strong><br>
+                                            {{datos.nivel}}
+                                        
+                                    </div>
+                                {%endfor%}
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                {%endif%}
+                {%if Organizacion|default is not empty %}
+
+                    <div class="box box-widget">
+                        <div class="box-header with-border">
+                            <h3 class="box-title" style="margin-left: 10px;">ORGANIZACION</h3>
+                        </div>
+                        <div class="box-body" style="margin: 10px;">
+                            {% for datos in Organizacion %}
+                                <div class="row " id="Org{{datos.id}}" >
+                                    <div class="col-xs-11">
+                                        <span style="font-size: 16px;">{{datos.nombre}}</span> 
+                                        </br>
+                                        <span style="font-size: 13px;">{{datos.puesto}}</br> {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}} - {{datos.fechaFin|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}}</span>
+                                        <p style="width: 100%; margin-top: 5px;text-align:justify;">{{datos.descripcion}}
+                                        </p>
+                                    </div>
+                                </div>
+                                <p></p>
+                            {%endfor%}
+                        </div>
+                    </div>
+                {%endif%}
+                {%if Certificacion|default is not empty %}
+
+
+                    <div class="box box-widget">
+                        <div class="box-header with-border">
+                            <h3 class="box-title" style="margin-left: 10px;">CERTIFICACION</h3>
+                        </div>
+                        <div class="box-body" style="margin: 10px;">
+                            {% for datos in Certificacion %}
+                                <div class="row " id="Cert{{datos.id}}">
+                                    <div class="col-xs-11">
+                                        <span style="font-size: 16px;">{{datos.institucion}}</span> 
+                                        </br>
+                                        <span style="font-size: 13px;">{{datos.nombre}}</br> {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}} - {{datos.fechaFin|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}}</span>
+                                        <p style="width: 100%; margin-top: 5px;text-align:justify;">
+                                        </p>
+                                    </div>
+                                </div>
+                                <p></p>
+                            {%endfor%}
+                        </div>
+                    </div>
+                {%endif%}
+                {%if Curso|default is not empty %}
+
+
+                    <div class="box box-widget">
+                        <div class="box-header with-border">
+                            <h3 class="box-title" style="margin-left: 10px;">CURSOS Y SEMINARIOS</h3>
+                        </div>
+                        <div class="box-body" style="margin: 10px;">
+                            {% for datos in Curso %}
+                                <div class="row " id="CM{{datos.id}}">
+                                    <div class="col-xs-11">
+                                        <span style="font-size: 16px;">{{datos.institucion}}</span> 
+                                        </br>
+                                        <span style="font-size: 13px;">{{datos.nombre}}</br> {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}} - {{datos.fechaFin|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}}</span>
+                                        <p style="width: 90%; margin-top: 5px;text-align:justify;">{{datos.descripcion}}
+                                        </p>
+                                    </div>
+                                </div>
+                                <p></p>
+                            {%endfor%}
+                        </div>
+                    </div>
+                {%endif%}
             </div>
-            <div style="height: 10px;"></div>
+
+
+
             <script type="text/javascript">
                 $(function () {
                     $('[data-toggle="tooltip"]').tooltip()

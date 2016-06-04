@@ -42,21 +42,37 @@
                     <a href="{{path('bloglist')}}" class=" pull-right">Regresar</a>
                     <br>
                     <p class="sans" style="font-size: 1.5em; margin-top: 10px; padding-left: 10px;">{{detalleblog.titulo}}</p>
-                    <p class="sans" style="font-size: 13px; padding-left: 10px;">{{detalleblog.fecha|date("d M Y", "America/El_Salvador")|replace({
-                                                                                                    'Jan'  : 'enero',
-                                                                                                    'Feb'  : 'febrero',
-                                                                                                    'Mar'  : 'marzo',
-                                                                                                    'Apr'  : 'abril',
-                                                                                                    'May'  : 'mayo',
-                                                                                                    'Jun'  : 'junio',
-                                                                                                    'Jul'  : 'julio',
-                                                                                                    'Aug'  : 'agosto',
-                                                                                                    'Sep'  : 'septiembre',
-                                                                                                    'Oct'  : 'octrube',
-                                                                                                    'Nov'  : 'noviembre',
-                                                                                                    'Dec'  : 'diciembre',
+                    <p class="sans" style="font-size: 13px; padding-left: 10px;">{{detalleblog.fecha|date("d M Y")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octubre',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
                                                                                             })      
                         }} | Escrito por: {{ detalleblog.nombres }} {{ detalleblog.apellidos }} | {{detalleblog.catblognombre}}</p>
+                    
+                    {#<p class="sans" style="font-size: 13px; padding-left: 10px;">{{detalleblog.fecha|date("d M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octubre',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })      
+                        }} | Escrito por: {{ detalleblog.nombres }} {{ detalleblog.apellidos }} | {{detalleblog.catblognombre}}</p>#}
                     
                     <p class="sans text-justify" style="font-size: 13px; font-weight: 300; padding-left: 10px; padding-right: 10px;">
                         {{detalleblog.contenido | raw }}
@@ -172,7 +188,7 @@
                 }
 
                 if (lon2 > 0) {
-                    document.getElementById("fotocambia2").src = '../../../' + imagenes2[contador2];
+                    document.getElementById("fotocambia2").src = '{{asset('')}}' + imagenes2[contador2];
                     contador2++;
                 } else {
                     document.getElementById("fotocambia2").src = '{{asset('Resources/src/img/banner.png')}}';
@@ -183,7 +199,7 @@
                 }
 
                 if (lon3 > 0) {
-                    document.getElementById("fotocambia3").src = '../../../' + imagenes3[contador3];
+                    document.getElementById("fotocambia3").src = '{{asset('')}}' + imagenes3[contador3];
                     contador3++;
                 } else {
                     document.getElementById("fotocambia3").src = '{{asset('Resources/src/img/banner.png')}}';

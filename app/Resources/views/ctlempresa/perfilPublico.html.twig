@@ -132,17 +132,6 @@
             } else {
                 document.getElementById("fotocambia3").src = '{{asset('Resources/src/img/banner.png')}}';
             }
-            
-            {#if(contador4 >= lon4){
-                contador4 = 0;
-            }
-            
-            if(lon4 > 0){
-                document.getElementById("fotocambia4").src = '../' + imagenes4[contador4];
-                contador4++;
-            } else {
-                document.getElementById("fotocambia4").src = '{{asset('Resources/src/img/banner1.png')}}';
-            }#}
         }
     </script> 
 {% endblock %} 
@@ -190,7 +179,7 @@
                             </form> 
                             <!-- TITULO DE EMPRESA -->
                             <div style="margin-top: -55px; margin-bottom: 5px;">
-                                <p class="text-right sans" style="font-size: 20px; margin-right: 10px; margin-bottom: 0px; z-index: 555;">
+                                <p class="text-right " style="font-size: 20px; margin-right: 10px; margin-bottom: 0px; z-index: 555;">
                                     <strong>
                                         <a data-type="text" data-placement="right" data-title="Telefono movil" style="color: inherit; text-decoration: none;">
                                             {% if datos.nombreEmpresa %}
@@ -201,7 +190,7 @@
                                         </a>
                                     </strong>
                                 </p>
-                                <p class="text-right sans" style="font-size: 12px; color: #777777; margin-right: 10px; z-index: 555; margin-bottom: 0px;">
+                                <p class="text-right " style="font-size: 12px; color: #777777; margin-right: 10px; z-index: 555; margin-bottom: 0px;">
                                     <a  data-type="text" data-placement="right" data-title="Telefono movil" style="color: inherit; text-decoration: none;">
                                         {% if datos.movil %}
                                             {{" +503 "~datos.movil~" |"}}
@@ -232,11 +221,11 @@
 
                     <div class="box box-widget">
                         <div class="box-header with-border">
-                            <h3 class="box-title">DATOS DE CONTACTO</h3>
+                            <h3 class="box-title"  style="margin-left: 10px;">DATOS DE CONTACTO</h3>
                         </div>
-                        <div class="box-body">
+                        <div class="box-body"  style="margin: 10px; padding-bottom:20px;">
                             <!-- Contenido Aqui -->
-                            <div class="row">
+                            <div class="row no-padding">
                                 <div class="col-sm-3 col-xs-12">
                                     <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono(s)</strong></p>
                                     <p style="font-size: 11px; margin-bottom: 0px;">
@@ -356,9 +345,9 @@
                 {% if (empleados | default is not empty)%}
                     <div class="box box-widget">
                         <div class="box-header with-border">
-                            <h3 class="box-title">ABOGADOS TRABAJANDO EN NUESTRO BUFETE</h3>
+                            <h3 class="box-title"  style="margin-left: 10px;">ABOGADOS TRABAJANDO EN NUESTRO BUFETE</h3>
                         </div>
-                        <div class="box-body">
+                        <div class="box-body"  style=" margin-left: 10px;margin-right: 10px;padding-bottom: 30px;">
 
                             {% for data in empleados %}
                                 {% for datas in url %}
@@ -423,15 +412,15 @@
                 {%if RegistroEspecialida| default is not empty %}
                     <div class="box box-widget">
                         <div class="box-header with-border">
-                            <h3 class="box-title">ESPECIALIDADES</h3>
+                            <h3 class="box-title" style=" margin-left: 10px;">ESPECIALIDADES</h3>
                         </div>
-                        <div class="box-body" style=" padding: 15px;">
+                        <div class="box-body" style="margin: 10px; padding-bottom: 20px;">
                             {%set n = 0%}
                             {% for datos in RegistroEspecialida %}
                                 {%set n =n +1%}
                                 <div class="form-group">
                                     <div class="row">
-                                        <div class="col-xs-12" style="margin-top: .5em; margin-bottom: .5em;">
+                                        <div class="col-xs-12" >
                                             <strong>{{datos.nombre| upper }}</strong><p class="sans" >
                                             <p style="text-align:justify;">{{datos.descripcion}}</p>
                                         </div>

@@ -14,7 +14,7 @@
                     $("#contenedor").hide()
                     $("#divRespuesta").empty();
                     $("#divRespuesta").append(data);
-                    $("#divRespuesta").show()
+                    $("#divRespuesta").show();
                 },
                 error: function (errors)
                 {
@@ -23,13 +23,13 @@
         }
 
         function NoResponder() {
-            $("#divRespuesta").hide()
-            $("#contenedor").show()
+            $("#divRespuesta").hide();
+            $("#contenedor").show();
         }
         function RegresaRespuestas()
         {
-            $("#divRespregunta").hide()
-            $("#Tablacontenedor").show()
+            $("#divRespregunta").hide();
+            $("#Tablacontenedor").show();
         }
         function verRespust(val) {
             $.ajax({
@@ -43,7 +43,7 @@
                     $("#Tablacontenedor").hide();
                     $("#divRespregunta").empty();
                     var datos;
-
+                    
                     $.each($(data.Respreguntas), function (indice, val) {
                         datos = '<div class="row direct-chat direct-chat-primary" style="margin-left:10px; margin-right: 10px;">';
                         datos += '<div class="form-group">';
@@ -93,9 +93,9 @@
                     $("#idtbody").empty();
                     $.each($(data.Respreguntas), function (indice, val) {
                         datos = '<tr>';
-                        datos += '<td style="width:80%;">' + val.pregunta + '</td>';
-                        datos += '<td style="width:10%;">&nbsp;' + val.fecha + '</td>';
-                        datos += '<td style="width:10%;"><a  style="text-decoration: none;" onClick="verRespust(' + val.idpreg + ')">&nbsp; Ver </a></td>';
+                        datos += '<td style="width:70%;">' + val.pregunta + '</td>';
+                        datos += '<td style="width:15%;">&nbsp;' + data.fechasRespuesta[indice] + '</td>';
+                        datos += '<td style="width:15%;"><a data-toggle="tooltip"  data-container="body" title="Ver respuesta" style="text-decoration: none;" onClick="verRespust(' + val.idpreg + ')">&nbsp; <i class="fa fa-fa fa-commenting-o fa-lg"></i> </a></td>';
                         datos += '</tr>';
                         $("#idtbody").append(datos);
                     });
@@ -128,12 +128,12 @@
                                     </thead>
                                     <tbody id="body">
 
-                                        {% for preguntas in preguntas %}
+                                        {% for key, preguntas in preguntas %}
                                             <tr>
                                                 <td>{{ preguntas.pregunta }}</td>  
-                                                <td>{{ preguntas.fecha}}</td>
+                                                <td>{{ fechaRespuesta[key] }}</td>
 
-                                                <td><a  style="text-decoration: none;" onClick="responder({{preguntas.idpreg}})">Responder</a></td>
+                                                <td><a  style="text-decoration: none;" onClick="responder({{preguntas.idpreg}});" data-toggle="tooltip"  data-container="body" title="Responder" accesskey=""><i class="fa fa-edit fa-lg"></i></a></td>
                                             </tr>
                                         {% endfor %}
                                     </tbody>

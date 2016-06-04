@@ -154,9 +154,10 @@
                         <div class="col-sm-6" >
                             <div class="row" >
                                 <div class="col-xs-10" style="padding-right: 0;">
-                                    <p style="margin-top: 10px; font-size: 23px; margin-left: 10px; margin-bottom: 0px;" class="sans">
+                                    <p style="margin-top: 10px; font-size: 23px; margin-left: 10px; margin-bottom: 0px;" >
                                         <strong>  
-                                            <a href="#" id="txtNombres" data-type="addnombres" data-pk="1" data-title="Nombre" data-placement="right" class="editable editable-click" > {{datos.nombre~' '~datos.apellido}}
+                                            <a href="#" id="txtNombres" data-type="addnombres" data-pk="1" 
+                                               data-title="Nombre" data-placement="right" class="editable editable-click" > {{datos.nombre~' '~datos.apellido}}
                                             </a>
                                         </strong>
                                         {%if(datos.verificado==1)%}
@@ -165,7 +166,7 @@
                                 </div></div>
                             <div class="row" >
                                 <div class="col-xs-10" style="padding-right: 0;">
-                                    <p style="color: #777777; margin-left: 11px; margin-top: -3px; margin-bottom: 0px;" class="sansli">
+                                    <p style="color: #777777; margin-left: 11px; margin-top: -3px; margin-bottom: 0px;" >
                                         <a href="#" id="txtTituloProfesional" data-type="text" data-pk="1" data-title="Nombre" data-placement="right" class="editable editable-click" title="Título Profesional">
                                             {%if datos.tprofesional|default is not empty %} {{datos.tprofesional}}
                                             {%else%}
@@ -179,7 +180,7 @@
                                 <div class="col-xs-10" style="padding-right: 0;">
                                     {%if ciuda|default is not empty %}
                                         <div  id="divMunicipiox">
-                                            <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">
+                                            <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" >
                                                 <a id="txtDepMun" title="Departamento | Municipio">
                                                     {% for datos in ciuda %}
                                                         <b> {{datos.estado}} </b> | {{datos.nombre}} 
@@ -189,7 +190,7 @@
                                         </div>
                                     {%else%}
                                         <div id="divMunicipiox">
-                                            <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">
+                                            <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" >
                                                 <a href="#" id="txtDepMun" title="Departamento | Municipio">
                                                     <b>Departamento</b> | Municipio
                                                 </a>
@@ -279,6 +280,10 @@
                                                             {%endif%}
                                                         {%endfor%}
                                                     {%else%}
+                                                      
+                                                    {%endif%}
+                                                    {%if [0]['anioIni'] |default is not empty %}
+                                                         {%else%}
                                                         Añadir educación
                                                     {%endif%}
                                                 </a>
@@ -318,7 +323,8 @@
                             <div class="row">
                                 <div class="col-xs-12 ">
                                     <div class="bloque-ocultar ">
-                                        <p class="text-center">Ocultar perfil <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="Oculte su perfil mientras lo actualize. Mida el nivel de completacion con el icono de abajo."></i></p>
+                                        <p class="text-center">Ocultar perfil <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" 
+                                                                                 title="Oculte su perfil mientras lo actualize. Mida el nivel de completacion con el icono de abajo."></i></p>
                                         <div class="onoffswitch" style="margin-left: auto; margin-right: auto;">
                                             <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" 
                                                    {%if(datos.estado==1)%}checked{%endif%}>
@@ -347,15 +353,15 @@
                 <div class="col-md-12">
                     <div class="box box-widget">
                         <div class="box-header with-border">
-                            <h3 class="box-title">DATOS DE CONTACTO</h3>
+                            <h3 class="box-title" style="margin-left: 10px;">DATOS DE CONTACTO</h3>
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool"  id="btnDatosContacto">
                                     <i class="fa fa-cog pull-right"></i>
                                 </button>
                             </div>
                         </div>
-                        <div class="box-body">
-                            <div class="row " id="datosContacto" style="padding-left: 10px; padding-right: 15px;">
+                        <div class="box-body" style="margin: 10px; padding-bottom: 20px;">
+                            <div class="row " id="datosContacto" >
                                 <div class="col-sm-3 col-xs-12">
                                     <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono(s)</strong></p>
                                     <p style="font-size: 11px; margin-bottom: 0px;">
@@ -411,26 +417,26 @@
                             </div>
                             <div class="box box-widget">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">UN POCO SOBRE MI </h3>
+                                    <h3 class="box-title"  style="margin-left: 10px;">UN POCO SOBRE MI </h3>
                                     <div class="box-tools pull-right">
                                         <button type="button" class="btn btn-box-tool"  id="btnUnpoco">
                                             <i class="fa fa-cog pull-right"></i>
                                         </button>
                                     </div>
                                 </div>
-                                <div class="box-body">
+                                <div class="box-body"  style="padding-bottom: 20px;">
                                     <div  id="conetenedorUnpoco">
-                                        <div style="margin: 10px;" class="experiencia text-justify">
+                                        <div  class="experiencia no-padding">
                                             <a href="#" id="txtunpoco" onclick="Fsobremi()" >
                                                     {%if datos.descripcion|default is not empty %}{{datos.descripcion|raw}}{%else%}Un poco sobre mi{%endif%}</a>
-                                            <p class="text-justify"></p>
+                                        
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="box box-widget" id="Especialidades">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">ESPECIALIDADES LEGALES</h3>
+                                    <h3 class="box-title"style="margin-left: 10px;">ESPECIALIDADES LEGALES</h3>
                                     <div class="box-tools pull-right">
                                         <button type="button" class="btn btn-box-tool"  id="btnespecialida">
                                             <i class="fa fa-cog pull-right"></i>
@@ -469,7 +475,7 @@
                             </div>
                             <div class="box box-widget" id="Experiencia">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">EXPERIENCIA </h3>
+                                    <h3 class="box-title" style="margin-left: 10px;">EXPERIENCIA </h3>
                                     <div class="box-tools pull-right">
                                         <button type="button" class="btn btn-box-tool"  id="btnExperiencia">
                                             <i class="fa fa-cog pull-right"></i>
@@ -501,9 +507,48 @@
                                                         </br>
                                                         <span style="font-size: 13px;">{{datos.puesto}}</br> 
                                                             {%if (datos.dias is null)%}
-                                                                {{datos.fechaIn}} -  Actualmente
+                                                                {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}} -  Actualmente
                                                             {%else%}
-                                                                {{datos.fechaIn}} - {{datos.fechaFin}} (&nbsp;{{(datos.dias/365)|round(0, 'floor')}} años {{(((datos.dias/365)-(datos.dias/365)|round(0, 'floor'))*12)|round(0, 'floor')}} meses) 
+                                                                {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}} - {{datos.fechaFin|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}} (&nbsp;{{(datos.dias/365)|round(0, 'floor')}} años {{(((datos.dias/365)-(datos.dias/365)|round(0, 'floor'))*12)|round(0, 'floor')}} meses) 
                                                             {%endif%}| {{datos.hubicacion}} </span>
                                                         </br><p style="width: 100%; margin-top: 5px;text-align:justify; ">{{datos.funcion}}</p>
                                                     </div>
@@ -527,7 +572,7 @@
                             </div>
                             <div class="box box-widget" id="divEducacion">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">EDUCACION </h3>
+                                    <h3 class="box-title"  style="margin-left: 10px;">EDUCACION </h3>
                                     <div class="box-tools pull-right">
                                         <button type="button" class="btn btn-box-tool"  id="btnEducacion">
                                             <i class="fa fa-cog pull-right"></i>
@@ -562,7 +607,7 @@
                             </div>
                             <div class="box box-widget">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">IDIOMAS</h3>
+                                    <h3 class="box-title"  style="margin-left: 10px;">IDIOMAS</h3>
                                     <div class="box-tools pull-right">
                                         <button type="button" class="btn btn-box-tool"  id="btnIdioma">
                                             <i class="fa fa-cog pull-right"></i>
@@ -575,9 +620,9 @@
                                             <div class="row " id="Idioma">
                                                 {% for datos in Idiomas %}
                                                     <div class="col-xs-3" style="margin-top: .5em; margin-bottom: .5em;" >
-                                                        <ul class="prob"><li><strong>{{datos.nombre}}</strong></li>
-                                                            <li>{{datos.nivel}}</li>
-                                                        </ul>
+                                                        <strong>{{datos.nombre}}</strong><br>
+                                                           {{datos.nivel}}
+                                                        
                                                     </div>
                                                 {%endfor%}
                                                 <div class="clearfix"></div>
@@ -597,23 +642,49 @@
                             </div>
                             <div class="box box-widget">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">ORGANIZACIONES</h3>
+                                    <h3 class="box-title" style="margin-left: 10px;">ORGANIZACIONES</h3>
                                     <div class="box-tools pull-right">
                                         <button type="button" class="btn btn-box-tool"  id="btnOrganizacion">
                                             <i class="fa fa-cog pull-right"></i>
                                         </button>
                                     </div>
                                 </div>
-                                <div class="box-body ">
+                                <div class="box-body "style="margin: 10px;">
                                     <div  id="contenidoOrg" class="organiza" >
-                                        <div id="consultaOrg" style="padding-left: 10px; padding-right: 15px;margin-bottom: 0px;">
+                                        <div id="consultaOrg" >
                                             {%if Organizacion|default is not empty %}
                                                 {% for datos in Organizacion %}
-                                                    <div class="row " id="Org{{datos.id}}">
+                                                    <div class="row no-padding" id="Org{{datos.id}}">
                                                         <div class="col-xs-12">
                                                             <span style="font-size: 16px;">{{datos.nombre}}</span> 
                                                                      <br>
-                                                            <span style="font-size: 13px;">{{datos.puesto}}</br> {{datos.fechaIn}} - {{datos.fechaFin}}</span>
+                                                            <span style="font-size: 13px;">{{datos.puesto}}</br> {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}} - {{datos.fechaFin|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}}</span>
                                                             <p style="width: 100%; margin-top: 5px;text-align:justify;">{{datos.descripcion}}</p>
                                                                 <script type="text/javascript">
                                                                     $("#Org" +{{datos.id}} ).hover(
@@ -634,7 +705,7 @@
                             </div>
                             <div class="box box-widget">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">CERTIFICACIONES</h3>
+                                    <h3 class="box-title"  style="margin-left: 10px;">CERTIFICACIONES</h3>
                                     <div class="box-tools pull-right">
                                         <button type="button" class="btn btn-box-tool"  id="btnCertificacion">
                                             <i class="fa fa-cog pull-right"></i>
@@ -649,7 +720,33 @@
                                                     <div class="col-xs-11">
                                                         <span style="font-size: 16px;">{{datos.institucion}}</span> 
                                                               </br>
-                                                        <span style="font-size: 13px;">{{datos.nombre}}</br> {{datos.fechaIn}} - {{datos.fechaFin}}</span>
+                                                        <span style="font-size: 13px;">{{datos.nombre}}</br> {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}} - {{datos.fechaFin|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}}</span>
                                                         <p style="width: 100%; margin-top: 5px;text-align:justify;"></p>
                                                            <div>  <script type="text/javascript">
                                                                 $("#Cert" +{{datos.id}} ).hover(
@@ -670,7 +767,7 @@
                             </div>
                             <div class="box box-widget">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">CURSOS Y SEMINARIOS</h3>
+                                    <h3 class="box-title"  style="margin-left: 10px;">CURSOS Y SEMINARIOS</h3>
                                     <div class="box-tools pull-right">
                                         <button type="button" class="btn btn-box-tool"  id="btnCurso">
                                             <i class="fa fa-cog pull-right"></i>
@@ -685,7 +782,33 @@
                                                     <div class="col-xs-11">
                                                         <span style="font-size: 16px;">{{datos.institucion}}</span> 
                                                              </br>
-                                                        <span style="font-size: 13px;">{{datos.nombre}}</br> {{datos.fechaIn}} - {{datos.fechaFin}}</span>
+                                                        <span style="font-size: 13px;">{{datos.nombre}}</br> {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}} - {{datos.fechaFin|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}}</span>
                                                         <p style="width: 90%; margin-top: 5px;text-align:justify;">{{datos.descripcion}} </p>
                                                            <div> <script type="text/javascript">
                                                                 $("#CM" +{{datos.id}} ).hover(

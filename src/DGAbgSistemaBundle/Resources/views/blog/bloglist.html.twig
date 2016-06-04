@@ -206,7 +206,47 @@
                             //alert(i);
                             if (i === 0) {
                                 var contenido = busquedaContenido.substr(0, 100);//Esto es 
-
+                                var fecha = busquedaFecha.split("-"); 
+                                
+                                switch (fecha[1]) {
+                                    case '01':
+                                        fecha[1] = "Enero";
+                                        break;
+                                    case '02':
+                                        fecha[1] = "Febrero";
+                                        break;
+                                    case '03':
+                                        fecha[1] = "Marzo";
+                                        break;
+                                    case '04':
+                                        fecha[1] = "Abril";
+                                        break;
+                                    case '05':
+                                        fecha[1] = "Mayo";
+                                        break;
+                                    case '06':
+                                        fecha[1] = "Junio";
+                                        break;
+                                    case '07':
+                                        fecha[1] = "Julio";
+                                        break;
+                                    case '08':
+                                        fecha[1] = "Agosto";
+                                        break;
+                                    case '09':
+                                        fecha[1] = "Septiembre";
+                                        break;
+                                    case '10':
+                                        fecha[1] = "Octubre";
+                                        break;
+                                    case '11':
+                                        fecha[1] = "Noviembre";
+                                        break;
+                                    case '12':
+                                        fecha[1] = "Diciembre";
+                                        break;
+                                } 
+                                
                                 cadena2 = '<div class="bloque-main">';
                                 cadena2 += '<div class="row">';
                                 cadena2 += '<div class="col-md-4">';
@@ -216,7 +256,7 @@
                                 cadena2 += '<p class="text-left " style="font-size: 16px; color: #337ab7; margin-bottom: 0px;">';
                                 cadena2 += '<strong>' + busquedaTitulo.toUpperCase()+ '</strong>';
                                 cadena2 += '</p>';
-                                cadena2 += '<p class="text-left sans" style="margin-bottom: 0px; font-size: 12px;">Por: ' + busquedaNombre + ' ' + busquedaApellido + ' | ' + busquedaFecha + ' | ' + busquedaCategoria + '</p>';
+                                cadena2 += '<p class="text-left sans" style="margin-bottom: 0px; font-size: 12px;">Por: ' + busquedaNombre + ' ' + busquedaApellido + ' | ' + busquedaCategoria + ' | ' + fecha[2] + ' de ' + fecha[1] + ' de ' + fecha[0] + '</p>';
                                 cadena2 += '<div style="height: 83px;">';
                                 cadena2 += '<p class="text-left sans" style="font-weight: 300; font-size: 12px; color: #888888; margin-bottom: 0px;">';
                                 cadena2 += contenido + ' ...';
@@ -237,7 +277,47 @@
                                 //alert("if en uno");
 
                                 var contenido = busquedaContenido.substr(0, 100);//Esto es 
-                                //alert(contenido);
+                                var fecha = busquedaFecha.split("-"); 
+                                
+                                switch (fecha[1]) {
+                                    case '01':
+                                        fecha[1] = "Enero";
+                                        break;
+                                    case '02':
+                                        fecha[1] = "Febrero";
+                                        break;
+                                    case '03':
+                                        fecha[1] = "Marzo";
+                                        break;
+                                    case '04':
+                                        fecha[1] = "Abril";
+                                        break;
+                                    case '05':
+                                        fecha[1] = "Mayo";
+                                        break;
+                                    case '06':
+                                        fecha[1] = "Junio";
+                                        break;
+                                    case '07':
+                                        fecha[1] = "Julio";
+                                        break;
+                                    case '08':
+                                        fecha[1] = "Agosto";
+                                        break;
+                                    case '09':
+                                        fecha[1] = "Septiembre";
+                                        break;
+                                    case '10':
+                                        fecha[1] = "Octubre";
+                                        break;
+                                    case '11':
+                                        fecha[1] = "Noviembre";
+                                        break;
+                                    case '12':
+                                        fecha[1] = "Diciembre";
+                                        break;
+                                } 
+                                
                                 cadena = '<div class="bloque-nexo">';
                                 cadena += '<div class="row">';
                                 cadena += '<div class="col-md-4">';
@@ -247,7 +327,7 @@
                                 cadena += '<p class="text-left" style="font-size: 16px; color: #337ab7; margin-bottom: 0px;">';
                                 cadena += '<strong>' + busquedaTitulo.toUpperCase() + '</strong>';
                                 cadena += '</p>';
-                                cadena += '<p class="text-left sans" style="margin-bottom: 0px; font-size: 12px;">Por: ' + busquedaNombre + ' ' + busquedaApellido + ' | ' + busquedaFecha + ' | ' + busquedaCategoria + '</p>';
+                                cadena += '<p class="text-left sans" style="margin-bottom: 0px; font-size: 12px;">Por: ' + busquedaNombre + ' ' + busquedaApellido + ' | ' + busquedaCategoria + ' | ' + fecha[2] + ' de ' + fecha[1] + ' de ' + fecha[0] + '</p>';
                                 cadena += '<div style="height: 83px;">';
                                 cadena += '<p class="text-left sans" style="font-weight: 300; font-size: 12px; color: #888888; margin-bottom: 0px;">';
                                 cadena += contenido + ' ...';
@@ -353,7 +433,7 @@
             }
 
             if(lon > 0){
-                document.getElementById("fotocambia").src = '../../' + imagenes[contador];
+                document.getElementById("fotocambia").src = '{{asset('')}}' + imagenes[contador];
                 contador++;                
             } else {
                 document.getElementById("fotocambia").src = '{{asset('Resources/src/img/banner1.png')}}';
@@ -365,7 +445,7 @@
             }
 
             if(lon2 > 0){
-                document.getElementById("fotocambia2").src = '../../' + imagenes2[contador2];
+                document.getElementById("fotocambia2").src = '{{asset('')}}' + imagenes2[contador2];
                 contador2++;
              } else {
                 document.getElementById("fotocambia2").src = '{{asset('Resources/src/img/banner.png')}}';
@@ -376,7 +456,7 @@
             }
 
             if(lon3 > 0){
-                document.getElementById("fotocambia3").src = '../../' + imagenes3[contador3];
+                document.getElementById("fotocambia3").src = '{{asset('')}}' + imagenes3[contador3];
                 contador3++;
             } else {
                 document.getElementById("fotocambia3").src = '{{asset('Resources/src/img/banner.png')}}';
@@ -501,7 +581,47 @@
                                 //alert(i);
                                 if (i === 0) {
                                     var contenido = busquedaContenido.substr(0, 100);//Esto es 
-
+                                    var fecha = busquedaFecha.split("-"); 
+                                    
+                                    switch (fecha[1]) {
+                                        case '01':
+                                            fecha[1] = "Enero";
+                                            break;
+                                        case '02':
+                                            fecha[1] = "Febrero";
+                                            break;
+                                        case '03':
+                                            fecha[1] = "Marzo";
+                                            break;
+                                        case '04':
+                                            fecha[1] = "Abril";
+                                            break;
+                                        case '05':
+                                            fecha[1] = "Mayo";
+                                            break;
+                                        case '06':
+                                            fecha[1] = "Junio";
+                                            break;
+                                        case '07':
+                                            fecha[1] = "Julio";
+                                            break;
+                                        case '08':
+                                            fecha[1] = "Agosto";
+                                            break;
+                                        case '09':
+                                            fecha[1] = "Septiembre";
+                                            break;
+                                        case '10':
+                                            fecha[1] = "Octubre";
+                                            break;
+                                        case '11':
+                                            fecha[1] = "Noviembre";
+                                            break;
+                                        case '12':
+                                            fecha[1] = "Diciembre";
+                                            break;
+                                    } 
+                                    
                                     cadena2 = '<div class="bloque-main">';
                                     cadena2 += '<div class="row">';
                                     cadena2 += '<div class="col-md-4">';
@@ -511,7 +631,7 @@
                                     cadena2 += '<p class="text-left" style="font-size: 16px; color: #337ab7; margin-bottom: 0px;">';
                                     cadena2 += '<strong>' + busquedaTitulo.toUpperCase() + '</strong>';
                                     cadena2 += '</p>';
-                                    cadena2 += '<p class="text-left sans" style="margin-bottom: 0px; font-size: 12px;">Por: ' + busquedaNombre + ' ' + busquedaApellido + ' | ' + busquedaFecha + ' | ' + busquedaCategoria + '</p>';
+                                    cadena2 += '<p class="text-left sans" style="margin-bottom: 0px; font-size: 12px;">Por: ' + busquedaNombre + ' ' + busquedaApellido + ' | ' + busquedaCategoria + ' | ' + fecha[2] + ' de ' + fecha[1] + ' de ' + fecha[0] + '</p>';
                                     cadena2 += '<div style="height: 83px;">';
                                     cadena2 += '<p class="text-left sans" style="font-weight: 300; font-size: 12px; color: #888888; margin-bottom: 0px;">';
                                     cadena2 += contenido + ' ...';
@@ -529,6 +649,47 @@
 
                                 } else {
                                     var contenido = busquedaContenido.substr(0, 100);//Esto es 
+                                    var fecha = busquedaFecha.split("-"); 
+                                    
+                                    switch (fecha[1]) {
+                                        case '01':
+                                            fecha[1] = "Enero";
+                                            break;
+                                        case '02':
+                                            fecha[1] = "Febrero";
+                                            break;
+                                        case '03':
+                                            fecha[1] = "Marzo";
+                                            break;
+                                        case '04':
+                                            fecha[1] = "Abril";
+                                            break;
+                                        case '05':
+                                            fecha[1] = "Mayo";
+                                            break;
+                                        case '06':
+                                            fecha[1] = "Junio";
+                                            break;
+                                        case '07':
+                                            fecha[1] = "Julio";
+                                            break;
+                                        case '08':
+                                            fecha[1] = "Agosto";
+                                            break;
+                                        case '09':
+                                            fecha[1] = "Septiembre";
+                                            break;
+                                        case '10':
+                                            fecha[1] = "Octubre";
+                                            break;
+                                        case '11':
+                                            fecha[1] = "Noviembre";
+                                            break;
+                                        case '12':
+                                            fecha[1] = "Diciembre";
+                                            break;
+                                    } 
+                                    
                                     cadena = '<div class="bloque-nexo">';
                                     cadena += '<div class="row">';
                                     cadena += '<div class="col-md-4">';
@@ -538,7 +699,7 @@
                                     cadena += '<p class="text-left" style="font-size: 16px; color: #337ab7; margin-bottom: 0px;">';
                                     cadena += '<strong>' + busquedaTitulo.toUpperCase() + '</strong>';
                                     cadena += '</p>';
-                                    cadena += '<p class="text-left sans" style="margin-bottom: 0px; font-size: 12px;">Por: ' + busquedaNombre + ' ' + busquedaApellido + ' | ' + busquedaFecha + ' | ' + busquedaCategoria + '</p>';
+                                    cadena += '<p class="text-left sans" style="margin-bottom: 0px; font-size: 12px;">Por: ' + busquedaNombre + ' ' + busquedaApellido + ' | ' + busquedaCategoria + ' | ' + fecha[2] + ' de ' + fecha[1] + ' de ' + fecha[0] + '</p>';
                                     cadena += '<div style="height: 83px;">';
                                     cadena += '<p class="text-left sans" style="font-weight: 300; font-size: 12px; color: #888888; margin-bottom: 0px;">';
                                     cadena += contenido + ' ...';

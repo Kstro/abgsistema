@@ -57,12 +57,19 @@ class AbgPregunta
     private $detalle;
     
     /**
-     * @var string
+     * @var \DateTime
      *
-     * @ORM\Column(name="fechapregunta", type="string", length=45, nullable=false)
+     * @ORM\Column(name="fechapregunta", type="datetime", nullable=true)
      */
     private $fechapregunta;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_respuesta", type="datetime", nullable=true)
+     */
+    private $fechaRespuesta;
+    
     /**
      * @var \CtlEspecialidad
      *
@@ -93,7 +100,11 @@ class AbgPregunta
      */
     private $ctlUsuario;
 
-
+    /**
+     * @var integer
+     * @ORM\Column(name="contador", type="integer", nullable=false)
+     */
+    private $contador;
 
     /**
      * Get id
@@ -105,6 +116,28 @@ class AbgPregunta
         return $this->id;
     }
 
+      /**
+     * Set estado
+     *
+     * @param string $contador
+     * @return AbgPregunta
+     */
+    public function setContador($contador)
+    {
+        $this->contador= $contador;
+
+        return $this;
+    }
+
+    /**
+     * Get contador
+     *
+     * @return integer 
+     */
+    public function getContador()
+    {
+        return $this->contador;
+    }
     /**
      * Set pregunta
      *
@@ -220,9 +253,9 @@ class AbgPregunta
     }
     
     /**
-     * Set fecha
+     * Set fechapregunta
      *
-     * @param string $fecha
+     * @param \DateTime $fechapregunta
      * @return AbgPregunta
      */
     public function setFechaPregunta($fechapregunta) {
@@ -234,10 +267,34 @@ class AbgPregunta
     /**
      * Get fechapregunta
      *
-     * @return string 
+     * @return \DateTime
      */
     public function getFechaPregunta() {
         return $this->fechapregunta;
+    }
+    
+    /**
+     * Set fechaRespuesta
+     *
+     * @param \DateTime $fechaRespuesta
+     *
+     * @return AbgPregunta
+     */
+    public function setFechaRespuesta($fechaRespuesta)
+    {
+        $this->fechaRespuesta = $fechaRespuesta;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaRespuesta
+     *
+     * @return \DateTime
+     */
+    public function getFechaRespuesta()
+    {
+        return $this->fechaRespuesta;
     }
 
     /**

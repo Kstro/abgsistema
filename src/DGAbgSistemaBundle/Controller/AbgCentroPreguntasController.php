@@ -76,6 +76,9 @@ class AbgCentroPreguntasController extends Controller {
         
         if($pregunta->getRespuesta() != ''){
             $foto = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findOneBy(array("abgPersona" => $pregunta->getCtlUsuario()->getRhPersona()));
+            
+            $fechaRespuesta = $this->tiempo_transcurrido($pregunta->getFechaRespuesta());
+            var_dump($fechaRespuesta);
         } else {
             $foto = null;
         }
@@ -144,13 +147,15 @@ class AbgCentroPreguntasController extends Controller {
         
         $topUsuarios = $em->createNativeQuery($sql, $rsm)
                                   ->getResult();
+        //var_dump($pregunta->getFechaPregunta()->format('Y-m-d H:i:s'));
+        $tiempo = $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s'));
         
         $prom = $this->busquedaPublicidad(1);
         $prom2 = $this->busquedaPublicidad(2);
         $prom3 = $this->busquedaPublicidad(3);
         $prom4 = $this->busquedaPublicidad(4);
         
-        return $this->render('centropreg/respuestacentro.html.twig', array('foto'=> $foto, 'prom1'=> $prom, 'prom2'=> $prom2, 'prom3'=> $prom3, 'prom4'=> $prom4, 'pregunta'=>$pregunta, 'top'=>$topUsuarios));
+        return $this->render('centropreg/respuestacentro.html.twig', array('tiempo'=>$tiempo, 'foto'=> $foto, 'prom1'=> $prom, 'prom2'=> $prom2, 'prom3'=> $prom3, 'prom4'=> $prom4, 'pregunta'=>$pregunta, 'top'=>$topUsuarios));
     }
          
     /**
@@ -291,6 +296,52 @@ class AbgCentroPreguntasController extends Controller {
         $response->setData($reg);
         return $response;
         //return new Response(json_encode($reg));
+    }
+    
+    function tiempo_transcurrido($fecha) 
+    {
+        if(empty($fecha)) {
+            return "No hay fecha";
+        }
+
+        $intervalos = array("segundo", "minuto", "hora", "día", "semana", "mes", "año");
+        $duraciones = array("60","60","24","7","4.35","12");
+
+        $ahora = time();
+        $Fecha_Unix = strtotime($fecha);
+
+        if(empty($Fecha_Unix)) {   
+            return "Fecha incorrecta";
+        }
+        if($ahora > $Fecha_Unix) {   
+            $diferencia = $ahora - $Fecha_Unix;
+            $tiempo = "Hace";
+        } else {
+            $diferencia = $Fecha_Unix -$ahora;
+            $tiempo = "Dentro de";
+        }
+        for($j = 0; $diferencia >= $duraciones[$j] && $j < count($duraciones)-1; $j++) {
+            $diferencia /= $duraciones[$j];
+        }
+
+        $diferencia = round($diferencia);
+
+        if($diferencia != 1) {
+            $intervalos[5].="e"; //MESES
+            $intervalos[$j].="s";
+        }
+                
+        if($intervalos[$j] == 'meses' and $diferencia >= 12){
+            $diferencia /= $duraciones[$j];
+            $j++;
+            $diferencia = round($diferencia);
+            
+            if($diferencia != 1) {
+                $intervalos[$j].="s";
+            }
+        }
+
+        return "$tiempo $diferencia $intervalos[$j]";
     }
     
      private function busquedaPublicidad($posicion) {
