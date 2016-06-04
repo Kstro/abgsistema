@@ -14,17 +14,32 @@
 {% block js_extend %}
    <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
    <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
-   <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
+   
+               
+        
+
    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="src/js/bootstrap.js"></script>
+              <script src="{{ asset('Resources/jquery/jquery.js')}}"></script>
     <script type="text/javascript">
-        $(function () {
-          $('[data-toggle="tooltip"]').tooltip();
-        });        
+           $(document).ready(function () {
+alert("hsaidhcsla");
+    var max_chars = 35;
+
+    $('#max').html(max_chars);
+
+    $('#txtpregunta').keyup(function() {
+        var chars = $(this).val().length;
+        var diff = max_chars - chars;
+        $('#contador').html(diff);   
+    });
+});
+        
+          
     </script>
+
+
+
+
 {% endblock %} 
 
 {% block navegacion_Y_body %}
@@ -51,13 +66,14 @@
                         <form {#class="navbar-form"#} role="search" action="{{ path('envio_pregunta') }}" method="POST">
                             <div class="box box-widget">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Realice su pregunta</h3>
+                                    <h3 class="box-title">Realice su pregunta </h3>
                                 </div>
                                 <div class="box-body">
                                     <p class="" style="font-size: 15px;">Haga su pregunta al más grande grupo selecto de abogados</p>
                                     <div class="col-md-12 text-center">
                                         <div class="form-group">
-                                            <textarea id="" name="pregunta" class="form-control textarea" maxlength="250" placeholder="Haga su pregunta aqui ..." {#style="max-width: 400px; min-width: 400px; width: 400px; max-height: 150px; min-height: 150px; height: 150px;"#}>{{pregunta}}</textarea>
+                                            <textarea id="txtpregunta" name="pregunta" class="form-control textarea" maxlength="250" placeholder="Haga su pregunta aqui ..." ></textarea>
+                                           <div id="contador">25</div>
                                         </div>
                                     </div>
                                     
@@ -127,7 +143,7 @@
                     <div class="col-md-3">
                         <div class="box box-widget">
                             <div class="box-header with-border">
-                                <h3 class="box-title">TOP 10 USUARIOS ACTIVOS</h3>
+                                <h3 class="box-title">TOP 10 USUARIOS ACTIVOS </h3>
                             </div>
                             <div class="box-body">                                    
                                 <div class="list-group">
@@ -204,6 +220,7 @@
     
     
     {% block js_template %}
+ 
         <script type="text/javascript">
             var imagenes = new Array();
             var imagenes2 = new Array();
@@ -245,7 +262,7 @@
             lon4 = imagenes4.length;
             
             $(document).ready(function(){
-                $('#categoria').select2();
+           
                 
                 setInterval(cambia, 4000);
                 
@@ -302,9 +319,9 @@
 
                 if(lon4 > 0){
                     document.getElementById("fotocambia4").src = '{{asset('')}}' + imagenes4[contador4];
-                    contador4++;
+        //            contador4++;
                 } else {
-                    document.getElementById("fotocambia4").src = '{{asset('Resources/src/img/banner1.png')}}';
+           //         document.getElementById("fotocambia4").src = '{{asset('Resources/src/img/banner1.png')}}';
                 }
             }
         </script>

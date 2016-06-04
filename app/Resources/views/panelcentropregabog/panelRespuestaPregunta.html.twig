@@ -38,67 +38,71 @@
                             <div class="form-group table-responsive mailbox-messages" id="contenedor">
                                 <form action="{% if pregunta.estado == 1 %}{{ path('envio_respuesta_panel') }} {% else %}{{ path('pregunta') }} {% endif %}" method="POST">
                                     <div class="row" style="margin-left:10px; margin-right: 10px;">
-                                      
-                                            <h3 class="box-title">RESPONDER PREGUNTA</h3>
-                                            <br>
-                                            <input name="idpreg" class="hidden" type="text" value="{{pregunta.id}}">         
-                                            <div class="col-md-12">
-                                                <div class="row direct-chat direct-chat-primary  {% if (respuesta | default is not empty)%} item-directorio  {%endif%}" style=" padding: 15px;">
-                                                    <div class="direct-chat-msg">
-                                                        <div class="direct-chat-info clearfix">
-                                                            <span class="direct-chat-name pull-left">Anonimo</span>
-                                                            <span class="direct-chat-timestamp pull-right">fecha</span>
-                                                        </div>
-                                                        <!-- /.direct-chat-info -->
-                                                        <img alt="message user image" src="{{asset('Photos/defecto/defecto.png') }}" class="direct-chat-img"><!-- /.direct-chat-img -->
-                                                        <div class="direct-chat-text ">
-                                                            {{pregunta.pregunta}}
-                                                        </div>
-                                                        <!-- /.direct-chat-text -->
-                                                    </div>
-                                                    {% if (respuesta | default is not empty)%}
-                                                        <div class="direct-chat-msg right direct-chat-primary"><div class="direct-chat-info clearfix">
-                                                                <span class="direct-chat-name pull-right">Tú</span>
-                                                                <span class="direct-chat-timestamp pull-left">2016-05-26 00:00:00</span>
-                                                            </div>
-                                                            <img class="direct-chat-img " src="/Photos/Perfil/E2016-06-01100236.png" alt="message user image">
-                                                            <div class="direct-chat-text text-justify">
-                                                                {{respuesta}}
-                                                            </div></div>
-                                                        {%endif%}
-                                                </div>
 
-                                                {% if (respuesta | default is not empty)%}
-                                                {% else %}
-                                                     <div class="row " >
-                                                   
-                                                    <p style="font-size:15px;">Respuesta:</p>
-                                                    {% if pregunta.estado == 1 %}
-                                                        Aun sin responder, puedes responderlo ahora!!!!!
-                                                      
-                                                            <textarea id="" name="respuesta" class="form-control textarea" placeholder="Agregue su respuesta aqui..." style="max-width: 100%; min-width: 515px; width:100%; max-height: 150px; min-height: 150px; height: 150px;" required></textarea>
-                                                       
-                                                    {% else %}
-                                                        {{pregunta.respuesta}}
-                                                        <hr>
-                                                        <p style="margin-left: 5px;">Lamentamos informarte que la pregunta ya fue respondida, pero puedes estar atento a nuevas preguntas</p>
-                                                 
-                                                    {% endif %} 
-                                                         </div>
-                                                {% endif %}     
-                                                <div class="row " style=" margin-top: 9px;">
-                                                   
-                                                    {% if pregunta.estado == 1 %}
-                                                        <button type="submit" class="btn btn-primary btn-sm btn-flat"  {% if (respuesta | default is not empty)%}style=" display: none;{%endif%}">Enviar Respuesta</button>                     
-                                                    {% endif %}
-                                                    <a class="btn btn-default btn-sm btn-flat" href="{{ path('panel_list_pregunta')}}">Regresar al Panel </a>     
-                                            
-                                                        </div>
+                                        <h3 class="box-title">RESPONDER PREGUNTA</h3>
+                                        <br>    
+                                        <input name="idpreg" class="hidden" type="text" value="{{pregunta.id}}">  
+                                        {% if pregunta.estado == 0 %}
+                                            <div class="alert alert-info alert-dismissible" role="alert">
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <strong>Aviso!</strong> Lamentamos informarte que la pregunta ya fue respondida, pero puedes estar atento a nuevas preguntas.
                                             </div>
-                                       
+                                        {% endif %} 
+                                        <div class="col-md-12">
+
+                                            <div class="row direct-chat direct-chat-primary  {% if (respuesta | default is not empty)%} item-directorio  {%endif%}  {% if pregunta.estado == 0%} item-directorio {%endif%}" style=" padding: 15px;">
+                                                <div class="direct-chat-msg">
+                                                    <div class="direct-chat-info clearfix">
+                                                        <span class="direct-chat-name pull-left">Anonimo</span>
+                                                        <span class="direct-chat-timestamp pull-right">fecha</span>
+                                                    </div>
+                                                    <!-- /.direct-chat-info -->
+                                                    <img alt="message user image" src="{{asset('Photos/defecto/defecto.png') }}" class="direct-chat-img"><!-- /.direct-chat-img -->
+                                                    <div class="direct-chat-text ">
+                                                        {{pregunta.pregunta}}
+                                                    </div>
+                                                    <!-- /.direct-chat-text -->
+                                                </div>
+                                                {% if (respuesta | default is not empty)%}
+                                                    <div class="direct-chat-msg right direct-chat-primary"><div class="direct-chat-info clearfix">
+                                                            <span class="direct-chat-name pull-right">Tú</span>
+                                                            <span class="direct-chat-timestamp pull-left">2016-05-26 00:00:00</span>
+                                                        </div>
+                                                        <img class="direct-chat-img " src="/Photos/Perfil/E2016-06-01100236.png" alt="message user image">
+                                                        <div class="direct-chat-text text-justify">
+                                                            {{respuesta}}
+                                                        </div></div>
+                                                    {%endif%}
+                                            </div>
+
+                                            {% if (respuesta | default is not empty)%}
+                                            {% else %}
+                                                <div class="row " >
+
+
+                                                    {% if pregunta.estado == 1 %}
+                                                        <p style="font-size:15px;">Respuesta:</p>
+                                                        Aun sin responder, puedes responderlo ahora!!!!!
+
+                                                        <textarea id="" name="respuesta" class="form-control textarea" placeholder="Agregue su respuesta aqui..." style="max-width: 100%; min-width: 515px; width:100%; max-height: 150px; min-height: 150px; height: 150px;" required></textarea>
+
+
+                                                    {% endif %} 
+                                                </div>
+                                            {% endif %}     
+                                            <div class="row " style=" margin-top: 9px;">
+
+                                                {% if pregunta.estado == 1 %}
+                                                    <button type="submit" class="btn btn-primary btn-sm btn-flat"  {% if (respuesta | default is not empty)%}style=" display: none;{%endif%}">Enviar Respuesta</button>                     
+                                                {% endif %}
+                                                <a class="btn btn-default btn-sm btn-flat" href="{{ path('panel_list_pregunta')}}">Centro de preguntas</a>     
+
+                                            </div>
+                                        </div>
+
                                 </form> 
                             </div>
-                           
+
                         </div>
                     </div>
                 </div>

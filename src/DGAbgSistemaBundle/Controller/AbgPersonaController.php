@@ -240,9 +240,10 @@ class AbgPersonaController extends Controller {
                         . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.tituloProfesional AS tprofesional, p.verificado As verificado "
                         . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
                 $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+       
+      $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_persona[0]['apellido'])[0];
 
-
-
+     
                 $dql_ciudad = "SELECT c.nombreCiudad As nombre, es.nombreEstado estado"
                         . " FROM DGAbgSistemaBundle:AbgPersona p "
                         . " JOIN DGAbgSistemaBundle:CtlCiudad c WHERE p.ctlCiudad=c.id AND p.id=" . $idPersona
@@ -378,6 +379,7 @@ class AbgPersonaController extends Controller {
            
                 return $this->render('abgpersona/panelAdministrativoAbg.html.twig', array(
                             // return $this->render(':Layout:index.html.twig', array(
+                    'nombreCorto'=>$nombreCorto,
                             'abgPersona' => $result_persona,
                             'usuario' => $username,
                             'active' => 'perfil',
@@ -478,6 +480,7 @@ class AbgPersonaController extends Controller {
                                           ->getResult();
                 
                 return $this->render('abgpersona/panelAdministrativoAbg.html.twig', array(
+                     'nombreCorto'=>$nombreCorto,
                     'abgPersona' => $result_persona,
                     'abgFoto' => $result_foto,
                     'totalAbogados' => $totalAbogados,
@@ -774,7 +777,7 @@ class AbgPersonaController extends Controller {
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
 
-
+            $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_persona[0]['apellido'])[0];
 
             $dql_ciudad = "SELECT c.nombreCiudad As nombre, es.nombreEstado estado"
                     . " FROM DGAbgSistemaBundle:AbgPersona p "
@@ -872,6 +875,7 @@ class AbgPersonaController extends Controller {
 
 
             return $this->render('abgpersona/verPerfil.html.twig', array(
+                 'nombreCorto'=>$nombreCorto,
                         'abgPersona' => $result_persona,
                         'active' => 'verperfil',
                         'RegistrosubEsp' => $result_sub,
@@ -906,6 +910,7 @@ class AbgPersonaController extends Controller {
                     . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.codigo as codigo "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+            $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_persona[0]['apellido'])[0];
 
             $dql_tipoPago = "SELECT p.id as id, p.tipoPago As nombre "
                     . " FROM DGAbgSistemaBundle:CtlTipoPago p ORDER BY p.tipoPago ASC";
@@ -923,6 +928,7 @@ class AbgPersonaController extends Controller {
 
 
             return $this->render('abgpersona/panelAjustes.html.twig', array(
+                       'nombreCorto'=>$nombreCorto,
                         'abgPersona' => $result_persona,
                         'usuario' => $idPersona,
                         'TipoPago' => $TipoPago,
@@ -2594,6 +2600,7 @@ class AbgPersonaController extends Controller {
                     . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+            $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_persona[0]['apellido'])[0];
 
             $dql_solict_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
                     . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado "
@@ -2626,6 +2633,7 @@ class AbgPersonaController extends Controller {
             switch ($RolUser[0]['rol']) {
                 case 'ROLE_USER':
                     return $this->render(':abgpersona:panelVerificacion.html.twig', array(
+                        'nombreCorto'=>$nombreCorto,
                                 'abgPersona' => $result_persona,
                                 'usuario' => $idPersona,
                                 'TipoPago' => $TipoPago,
@@ -2649,6 +2657,7 @@ class AbgPersonaController extends Controller {
 
 
                     return $this->render(':administracion:panelVerificacion.html.twig', array(
+                         'nombreCorto'=>$nombreCorto,
                                 'abgPersona' => $result_solict_persona,
                                 'usuario' => $idPersona,
                                 'TipoPago' => $TipoPago,
@@ -2845,7 +2854,7 @@ class AbgPersonaController extends Controller {
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
 
 
-
+$nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_persona[0]['apellido'])[0];
 
             $dqlfoto = "SELECT fot.src as src "
                     . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
@@ -2872,6 +2881,7 @@ class AbgPersonaController extends Controller {
 
             //  return $this->render('abgpersona/panelAdministrativoAbg.html.twig', array(
             return $this->render(':abgpersona:panelSuscripcion.html.twig', array(
+                'nombreCorto'=>$nombreCorto,
                         'abgPersona' => $result_persona,
                         'usuario' => $idPersona,
                         'abgFoto' => $result_foto,

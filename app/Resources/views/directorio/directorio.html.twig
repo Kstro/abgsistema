@@ -3,6 +3,8 @@
 {% block css %}
     
     {{parent()}}
+     <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
+    <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
     <style>
         td{
             width:100%;
@@ -53,9 +55,9 @@
                                             <div class="col-md-2">#}
                                                 <select id="filtrarMunicipio" style="width:20%;">
                                                     <option value="0">Todos...</option>
-                                                    {% for ciudad in ciudades %}
+                                                    {#{% for ciudad in ciudades %}
                                                         <option value="{{ciudad.id}}">{{ciudad.nombreCiudad}}</option>
-                                                    {% endfor %}
+                                                    {% endfor %}#}
                                                 </select>
                                             {#</div>
                                             <div class="col-md-2">#}
