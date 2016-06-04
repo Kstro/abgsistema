@@ -101,6 +101,7 @@ class AbgPreyResController extends Controller{
         $abgPregunta->setPregunta($pregunta);
         $abgPregunta->setDetalle($detalle);
         $abgPregunta->setEstado("1");
+        $abgPregunta->setContador(0);
         $abgPregunta->setCorreoelectronico($email);
         $abgPregunta->setFechaPregunta(new \DateTime ('now'));
 

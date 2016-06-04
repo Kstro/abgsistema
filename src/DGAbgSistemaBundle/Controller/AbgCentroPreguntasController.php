@@ -37,12 +37,11 @@ class AbgCentroPreguntasController extends Controller {
         $preguntas = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->findBy(array('estado' => 1), array('id' => 'DESC'), 10, 0);
         $rsm = new ResultSetMapping();
         
-        $sql = "select per.nombres as nombres, per.apellido as apellidos, foto.src as src, uper.url as url, count(pre.respuesta) as totalrespuestas
-                from abg_pregunta pre inner join ctl_usuario usu on pre.ctl_usuario_id = usu.id
+        $sql = "select per.nombres as nombres, per.apellido as apellidos, uper.url as url, count(pre.respuesta) as totalrespuestas
+                from abg_respuesta_pregunta pre inner join ctl_usuario usu on pre.ctl_usuario_id = usu.id
                 inner join abg_persona per on usu.rh_persona_id = per.id
-                inner join abg_foto foto on foto.abg_persona_id = per.id
                 inner join abg_url_personalizada uper on uper.abg_persona_id = per.id
-                group by per.nombres, per.apellido, foto.src, uper.url
+                group by per.nombres, per.apellido, uper.url
                 order by count(pre.respuesta) desc
                 limit 0, 10";
         
@@ -121,21 +120,34 @@ class AbgCentroPreguntasController extends Controller {
         $id = $request->get('id');
         $em = $this->getDoctrine()->getManager();
         $pregunta = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->find($id);
+        $respuestas = $em->getRepository('DGAbgSistemaBundle:AbgRespuestaPregunta')->findBy(array('abgPregunta' => $pregunta), array('id' => 'DESC'));
         
-        if($pregunta->getRespuesta() != ''){
-            $foto = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findOneBy(array("abgPersona" => $pregunta->getCtlUsuario()->getRhPersona()));
+//        if($pregunta->getRespuesta() != ''){
+//            $foto = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findOneBy(array("abgPersona" => $pregunta->getCtlUsuario()->getRhPersona()));
+//        } else {
+//            $foto = null;
+//        }
+        
+        $fotos = array();
+        $tiemposRespuesta = array();
+        if($respuestas != NULL){
+            foreach ($respuestas as $key => $value) {
+                $foto = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findOneBy(array("abgPersona" => $value->getCtlUsuario()->getRhPersona()));
+                
+                array_push($fotos,$foto);
+                array_push($tiemposRespuesta, $this->tiempo_transcurrido($value->getFechaRespuesta()->format('Y-m-d H:i:s')));
+            }
         } else {
-            $foto = null;
+            $tiemposRespuesta = NULL;
         }
-            
+        //var_dump($fotos);
         $rsm = new ResultSetMapping();
         
-        $sql = "select per.nombres as nombres, per.apellido as apellidos, foto.src as src, uper.url as url, count(pre.respuesta) as totalrespuestas
-                from abg_pregunta pre inner join ctl_usuario usu on pre.ctl_usuario_id = usu.id
+        $sql = "select per.nombres as nombres, per.apellido as apellidos, uper.url as url, count(pre.respuesta) as totalrespuestas
+                from abg_respuesta_pregunta pre inner join ctl_usuario usu on pre.ctl_usuario_id = usu.id
                 inner join abg_persona per on usu.rh_persona_id = per.id
-                inner join abg_foto foto on foto.abg_persona_id = per.id
                 inner join abg_url_personalizada uper on uper.abg_persona_id = per.id
-                group by per.nombres, per.apellido, foto.src, uper.url
+                group by per.nombres, per.apellido, uper.url
                 order by count(pre.respuesta) desc
                 limit 0, 10";
         
@@ -147,7 +159,9 @@ class AbgCentroPreguntasController extends Controller {
         
         $topUsuarios = $em->createNativeQuery($sql, $rsm)
                                   ->getResult();
-        //var_dump($pregunta->getFechaPregunta()->format('Y-m-d H:i:s'));
+        
+                          //var_dump($topUsuarios);
+        
         $tiempo = $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s'));
         
         $prom = $this->busquedaPublicidad(1);
@@ -155,7 +169,7 @@ class AbgCentroPreguntasController extends Controller {
         $prom3 = $this->busquedaPublicidad(3);
         $prom4 = $this->busquedaPublicidad(4);
         
-        return $this->render('centropreg/respuestacentro.html.twig', array('tiempo'=>$tiempo, 'foto'=> $foto, 'prom1'=> $prom, 'prom2'=> $prom2, 'prom3'=> $prom3, 'prom4'=> $prom4, 'pregunta'=>$pregunta, 'top'=>$topUsuarios));
+        return $this->render('centropreg/respuestacentro.html.twig', array('tiempo'=>$tiempo, 'tiemposRespuesta'=>$tiemposRespuesta, 'fotos'=> $fotos, 'prom1'=> $prom, 'prom2'=> $prom2, 'prom3'=> $prom3, 'prom4'=> $prom4, 'pregunta'=>$pregunta, 'respuestas' => $respuestas, 'top'=>$topUsuarios));
     }
          
     /**

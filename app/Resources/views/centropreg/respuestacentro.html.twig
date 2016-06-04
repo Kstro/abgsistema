@@ -70,7 +70,28 @@
                             </div>
                             <div style="margin-top: 10px; margin-left: 5px;">
                             {#<p style="margin-left:5px;">#}
-                                {% if pregunta.respuesta == false %}
+                                {% for key, respuesta in respuestas %}
+                                        <div style="padding: 10px;">
+                                            <div class="direct-chat-msg direct-chat {% if loop.index is divisibleby(2) %}direct-chat-primary right{% endif %}"  {% if loop.last %}style="margin-bottom: 15px;"{% endif %}>
+                                                <div class="direct-chat-info clearfix">
+                                                    <span class="direct-chat-name {% if loop.index is not divisibleby(2) %}pull-left{% else %}pull-right{% endif %}">{{ respuesta.ctlUsuario.rhPersona.nombres }} {{ respuesta.ctlUsuario.rhPersona.apellido }}</span>
+                                                    <small class="direct-chat-name {% if loop.index is not divisibleby(2) %}pull-right{% else %}pull-left{% endif %}">{{ tiemposRespuesta[key] }}</small>
+                                                </div>
+                                                {#{% if loop.index is not divisibleby(2) %}#}
+                                                    <img src="{{asset('') }}{{ fotos[key].src }}" style="width: 45px; height: 45px; margin-bottom: 0px;" class="direct-chat-img img-circle img-bordered-sm" alt="User Image" />                             
+                                                    <div style="margin-top: 8px;" class="direct-chat-text">
+                                                        {{respuesta.respuesta}} 
+                                                    </div>
+                                                {#{% else %}
+                                                    <div style="margin-top: 8px;" class="direct-chat-text">
+                                                        {{respuesta.respuesta}} 
+                                                    </div>
+                                                    <img src="{{asset('') }}{{ fotos[key].src }}" style="width: 45px; height: 45px; margin-bottom: 0px;" class="direct-chat-img img-circle img-bordered-sm" alt="User Image" />
+                                                {% endif %}#}
+                                            </div>
+                                        </div>
+                                            
+                                {% else %}
                                     <div style="padding: 10px;">
                                         <div class="direct-chat-msg direct-chat direct-chat-primary" style="margin-bottom: 15px;">
                                             <div class="direct-chat-info clearfix">
@@ -82,19 +103,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                {% else %}
-                                    <div style="padding: 10px;">
-                                        <div class="direct-chat-msg direct-chat direct-chat-primary" style="margin-bottom: 15px;">
-                                            <div class="direct-chat-info clearfix">
-                                                <span class="direct-chat-name pull-left">{{ pregunta.ctlUsuario.rhPersona.nombres }} {{ pregunta.ctlUsuario.rhPersona.apellido }}</span>
-                                            </div>
-                                            <img src="{{asset('') }}{{ foto.src }}" style="width: 45px; height: 45px; margin-bottom: 0px;" class="direct-chat-img img-circle img-bordered-sm" alt="User Image" />                             
-                                            <div style="margin-top: 8px;" class="direct-chat-text">
-                                                {{pregunta.respuesta}}
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endif %}
+                                {% endfor %}
                             </div>
                             {#</p>#}
                        {# </div>   #}   

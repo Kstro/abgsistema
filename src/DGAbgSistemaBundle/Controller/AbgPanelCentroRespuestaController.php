@@ -278,14 +278,26 @@ class AbgPanelCentroRespuestaController extends Controller {
             $idUser = $this->container->get('security.context')->getToken()->getUser()->getId();
 
 
-            $sql = "SELECT preg.id as idpreg, preg.pregunta,  preg.fechapregunta AS fecha "
-                    . " FROM abg_pregunta preg "
-                    . " JOIN ctl_especialidad esp "
-                    . " ON esp.id=preg.ctl_especialidad AND preg.ctl_usuario_id=" . $idUser
-                    . " JOIN abg_persona_especialidad pe "
-                    . " ON pe.ctl_especialidad_id=esp.id AND pe.abg_persona_id=" . $idPersona
-                    . " WHERE preg.estado=0"
-                    . " ORDER BY  preg.fechapregunta DESC ";
+//            $sql = "SELECT preg.id as idpreg, preg.pregunta,  preg.fechapregunta AS fecha "
+//                    . " FROM abg_respuesta_pregunta resp "
+//                    . " INNER JOIN abg_pregunta preg "
+//                    . " ON resp.abg_pregunta = preg.id "
+//                    . " INNER JOIN ctl_especialidad esp "
+//                    . " ON esp.id=preg.ctl_especialidad AND preg.ctl_usuario_id=" . $idUser
+//                    . " JOIN abg_persona_especialidad pe "
+//                    . " ON pe.ctl_especialidad_id=esp.id AND pe.abg_persona_id=" . $idPersona
+//                    . " WHERE preg.estado=0"
+//                    . " ORDER BY  preg.fechapregunta DESC ";
+            $sql = "SELECT preg.id as idpreg, preg.pregunta,  preg.fechapregunta AS fecha, resp.fecha_respuesta as frespuesta
+                     FROM abg_respuesta_pregunta resp 
+                     INNER JOIN abg_pregunta preg 
+                     ON resp.abg_pregunta = preg.id 
+                     INNER JOIN ctl_especialidad esp 
+                     ON esp.id=preg.ctl_especialidad AND resp.ctl_usuario_id=" . $idUser . "
+                     JOIN abg_persona_especialidad pe 
+                     ON pe.ctl_especialidad_id=esp.id AND pe.abg_persona_id=" . $idPersona . "
+                     ORDER BY  resp.fecha_respuesta DESC ";
+            
             $em = $this->getDoctrine()->getManager();
             $stmt = $em->getConnection()->prepare($sql);
             $stmt->execute();
@@ -317,7 +329,8 @@ class AbgPanelCentroRespuestaController extends Controller {
         try {
             $em = $this->getDoctrine()->getManager();
             $request = $this->getRequest();
-            $user = $this->container->get('security.context')->getToken()->getUser()->getId();
+            $id = $request->get('id');
+            $user = $this->container->get('security.context')->getToken()->getUser();
 
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
 
@@ -326,20 +339,32 @@ class AbgPanelCentroRespuestaController extends Controller {
             $foto = $em->createQuery($dqlfoto)->getArrayResult();
             $data['foto'] = $foto[0]['src'];
 
-
-            $sql = "SELECT preg.id as idpreg, preg.pregunta,  preg.fechapregunta AS fecha, preg.respuesta AS respuesta "
-                    . " FROM abg_pregunta preg "
-                    . " JOIN ctl_especialidad esp "
-                    . " ON esp.id=preg.ctl_especialidad AND preg.ctl_usuario_id=" . $user
-                    . " JOIN abg_persona_especialidad pe "
-                    . " ON pe.ctl_especialidad_id=esp.id "
-                    . " WHERE preg.estado=0"
-                    . " ORDER BY  preg.fechapregunta DESC ";
+//            $sql = "SELECT DISTINCT preg.id as idpreg, preg.pregunta,  preg.fechapregunta AS fecha, resp.respuesta AS respuesta "
+//                    . " FROM abg_respuesta_pregunta resp "
+//                    . " INNER JOIN abg_pregunta preg "
+//                    . " ON resp.abg_pregunta = preg.id "
+//                    . " JOIN ctl_especialidad esp "
+//                    . " ON esp.id=preg.ctl_especialidad AND resp.ctl_usuario_id=" . $user
+//                    . " JOIN abg_persona_especialidad pe "
+//                    . " ON pe.ctl_especialidad_id=esp.id "
+//                    . " ORDER BY  preg.fechapregunta DESC ";
+//            
+//            $em = $this->getDoctrine()->getManager();
+//            $stmt = $em->getConnection()->prepare($sql);
+//            $stmt->execute();
+//            $data['Respreguntas'] = $stmt->fetchAll(); 
             
-            $em = $this->getDoctrine()->getManager();
-            $stmt = $em->getConnection()->prepare($sql);
-            $stmt->execute();
-            $data['Respreguntas'] = $stmt->fetchAll();            
+            $abgRespuestaPregunta = $em->getRepository('DGAbgSistemaBundle:AbgRespuestaPregunta');
+            $Respreguntas = $abgRespuestaPregunta->findOneBy(array('abgPregunta' => $id, 'ctlUsuario' => $user));
+
+            $data['fechaPregunta'] = $Respreguntas->getPregunta()->getFechaPregunta()->format('Y-m-d H:i:s');
+            $data['pregunta'] = $Respreguntas->getPregunta()->getPregunta();
+            $data['tiempoPregunta'] = $this->tiempo_transcurrido($data['fechaPregunta']);
+            
+            $data['fechaRespuesta'] = $Respreguntas->getFechaRespuesta()->format('Y-m-d H:i:s');
+            $data['respuesta'] = $Respreguntas->getRespuesta();
+            $data['tiempoRespuesta'] = $this->tiempo_transcurrido($data['fechaRespuesta']);
+                    
             return new Response(json_encode($data));           
         } catch (\Exception $e) {
             $data['error'] = $e->getMessage();            

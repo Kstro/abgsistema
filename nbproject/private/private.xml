@@ -23,6 +23,7 @@
             <file>file:/C:/xampp/htdocs/sw_abogados/app/Resources/views/blog/index.html.twig</file>
             <file>file:/C:/xampp/htdocs/sw_abogados/app.php</file>
             <file>file:/C:/xampp/htdocs/sw_abogados/app/Resources/views/administracion/perfil.html.twig</file>
+            <file>file:/C:/xampp/htdocs/sw_abogados/src/DGAbgSistemaBundle/Resources/views/blog/bloglist.html.twig</file>
             <file>file:/C:/xampp/htdocs/sw_abogados/src/DGAbgSistemaBundle/Entity/AdmPromociones.php</file>
             <file>file:/C:/xampp/htdocs/sw_abogados/src/DGAbgSistemaBundle/Controller/AdmPromocionesController.php</file>
             <file>file:/C:/xampp/htdocs/sw_abogados/app_dev.php</file>
@@ -42,6 +43,7 @@
             <file>file:/C:/xampp/htdocs/sw_abogados/src/DGAbgSistemaBundle/Controller/CtlTipoEmpresaController.php</file>
             <file>file:/C:/xampp/htdocs/sw_abogados/src/DGAbgSistemaBundle/Resources/views/Emails/Layout.html.twig</file>
             <file>file:/C:/xampp/htdocs/sw_abogados/src/DGAbgSistemaBundle/Controller/AbgFacturacionController.php</file>
+            <file>file:/C:/xampp/htdocs/sw_abogados/src/DGAbgSistemaBundle/Entity/AbgRespuestaPregunta.php</file>
             <file>file:/C:/xampp/htdocs/sw_abogados/app/config/config.yml</file>
             <file>file:/C:/xampp/htdocs/sw_abogados/app/Resources/views/blog/blog.html.twig</file>
             <file>file:/C:/xampp/htdocs/sw_abogados/app/Resources/views/abgfacturacion/facturacion.html.twig</file>
@@ -49,7 +51,9 @@
             <file>file:/C:/xampp/htdocs/sw_abogados/app/Resources/views/abgpersona/verificacion.html.twig</file>
             <file>file:/C:/xampp/htdocs/sw_abogados/app/Resources/views/abgpersona/detalleSuscripcion.html.twig</file>
             <file>file:/C:/xampp/htdocs/sw_abogados/src/DGAbgSistemaBundle/Services/EmailService.php</file>
+            <file>file:/C:/xampp/htdocs/sw_abogados/app/Resources/views/preyres/pregunta_detalle.html.twig</file>
             <file>file:/C:/xampp/htdocs/sw_abogados/app/Resources/views/abgpersona/panelAjustes.html.twig</file>
+            <file>file:/C:/xampp/htdocs/sw_abogados/app/Resources/views/centropreg/respuestacentro.html.twig</file>
             <file>file:/C:/xampp/htdocs/sw_abogados/app/Resources/views/abgpersona/verificarmeAbg.html.twig</file>
             <file>file:/C:/xampp/htdocs/sw_abogados/src/DGAbgSistemaBundle/Controller/AdmImagenPromocionController.php</file>
             <file>file:/C:/xampp/htdocs/sw_abogados/app/Resources/views/abgfacturacion/ConsultaFacturacion.html.twig</file>

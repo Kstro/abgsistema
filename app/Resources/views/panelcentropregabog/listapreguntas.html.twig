@@ -44,33 +44,33 @@
                     $("#divRespregunta").empty();
                     var datos;
                     
-                    $.each($(data.Respreguntas), function (indice, val) {
+                    {#$.each($(data.Respreguntas), function (indice, val) {#}
                         datos = '<div class="row direct-chat direct-chat-primary" style="margin-left:10px; margin-right: 10px;">';
                         datos += '<div class="form-group">';
                         datos += '<h4 >RESPUESTA</h4>';
-                        datos += '<div class="item-directorio" style="padding: 15px;">'
+                        datos += '<div class="item-directorio" style="padding: 15px;">';
                         datos += '<div class="direct-chat-msg">';
                         datos += '<div class="direct-chat-info clearfix">';
                         datos += '<span class="direct-chat-name pull-left">Anonimo</span>';
-                        datos += '<span class="direct-chat-timestamp pull-right">' + val.fecha + '</span>';
+                        datos += '<span class="direct-chat-timestamp pull-right">' + data.tiempoPregunta + '</span>';
                         datos += '</div>';
-                        datos += '<img alt="message user image" src="/Photos/defecto/defecto.png" class="direct-chat-img">';
-                        datos += '<div class="direct-chat-text">' + val.pregunta + '</div>';
+                        datos += '<img alt="message user image" src="{{asset('Photos/defecto/defecto.png')}}" class="direct-chat-img">';
+                        datos += '<div class="direct-chat-text">' + data.pregunta + '</div>';
                         datos += '</div>';
 
                         datos += '<div class="direct-chat-msg right " >';
                         datos += '<div class="direct-chat-info clearfix">';
                         datos += '<span class="direct-chat-name pull-right">Tú</span>';
-                        datos += '<span class="direct-chat-timestamp pull-left">' + val.fecha + '</span>';
+                        datos += '<span class="direct-chat-timestamp pull-left">' + data.tiempoRespuesta + '</span>';
                         datos += '</div>';
 
-                        datos += '<img alt="message user image" src="/' + data.foto + '" class="direct-chat-img ">';
-                        datos += '<div class="direct-chat-text text-justify">' + val.respuesta + '</div>';
+                        datos += '<img alt="message user image" src=' + '{{asset('')}}' + data.foto + '" class="direct-chat-img ">';
+                        datos += '<div class="direct-chat-text text-justify">' + data.respuesta + '</div>';
                         datos += '</div></div><br>';
                         datos += '<button type="button" class="btn btn-default btn-sm btn-flat" onClick="RegresaRespuestas()" >Regresar al Panel</button>';
 
-                    });
-                    $("#divRespregunta").show()
+                    {# }); #}
+                    $("#divRespregunta").show();
                     $("#divRespregunta").append(datos);
 
                 },
