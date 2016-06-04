@@ -94,7 +94,7 @@
                                  class="user-image" calt="User Image" />
                         {% endif %}
                         <span class="hidden-xs">
-                            {{'  '~datos.nombre~' '~datos.apellido}}
+                            {{nombreCorto}}
                         </span>
                     </a>
                     
@@ -106,7 +106,7 @@
 
                         {% endif %}
                         <p >
-                            {{datos.nombre~' '~datos.apellido}}
+                            {{nombreCorto}}
                             <small>{%if datos.correo|default is not empty %}
                                 {{datos.correo}}
                                 {%endif %}</small>
