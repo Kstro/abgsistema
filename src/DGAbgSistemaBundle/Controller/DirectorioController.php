@@ -72,7 +72,7 @@ class DirectorioController extends Controller
         
         return $this->render('directorio/directorio.html.twig', array(
             'deptos' => $ctlEstado,
-            'ciudades' => $ctlCiudads,
+//            'ciudades' => $ctlCiudads,
             'prom1'   => $prom,
             'prom2'   => $prom2,
             'prom3'   => $prom3,
