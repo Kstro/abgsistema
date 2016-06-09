@@ -46,7 +46,7 @@
                                     <p class="sans text-justify" style="font-size: 13px; color: #999999;">
                                         {{pregunta.detalle}}
                                     </p>
-                                    <p class="sans" style="color: #999999; font-size: 13px;">Realizado por Anonimo en la categoria <a href="#">Derecho Civil</a> {{ tiempo }}</p>
+                                    <p class="sans" style="color: #999999; font-size: 13px;">Realizado por Anonimo en la categoria <a href="{{ path('directorio_index') }}?busqueda={{respuestas[0].especialidad}}">{{respuestas[0].especialidad}}</a> {{ tiempo }}</p>
                                 </div>
                             </div>
                         </div>
@@ -68,7 +68,7 @@
                                                     <p class="sans text-justify" style="font-size: 13px;">
                                                          {{respuesta.respuesta}} 
                                                     </p>
-                                                    <p class="sans" style="color: #999999; font-size: 13px;">Respuesta por <a href="{{path('busquedaPerfil', {url:respuesta.url})}}">{{ respuesta.nombres}}</a> en la categoria <a href="#">Derecho Civil</a> {{ tiemposRespuesta[key] }}</p>
+                                                    <p class="sans" style="color: #999999; font-size: 13px;">Respuesta por <a href="{{path('busquedaPerfil', {url:respuesta.url})}}">{{ respuesta.nombres}}</a> en la categoria <a href="{{ path('directorio_index') }}?busqueda={{respuesta.especialidad}}">{{respuesta.especialidad}}</a> {{ tiemposRespuesta[key] }}</p>
                                                 </div>
 
                                                 <div class="col-md-2">

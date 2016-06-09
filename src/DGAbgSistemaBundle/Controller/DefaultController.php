@@ -35,7 +35,11 @@ class DefaultController extends Controller
                                   ->getResult();
         //var_dump($usuarios);
         
-        
+        $sqldepto= "SELECT est.nombre_estado AS nombreEstado FROM ctl_estado est ORDER BY est.nombre_estado DESC LIMIT 0,6";
+
+         $stm = $this->container->get('database_connection')->prepare($sqldepto);
+        $stm->execute();
+        $departamentos = $stm->fetchAll();
         //$preguntas = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->findAll();
         
           $sql_preguntas_resiente = "SELECT  pre.id, usu.id,CONCAT(per.nombres, '  ', per.apellido) as nombres, uper.url as url, fot.src AS src, "
@@ -64,7 +68,8 @@ class DefaultController extends Controller
         return $this->render('DGAbgSistemaBundle:Default:home.html.twig',array(
             'usuarios' =>$usuarios,
             'ultimas_prteguntas'=> $ultimas_prteguntas,
-            'tiemposRespuesta' => $tiemposRespuesta
+            'tiemposRespuesta' => $tiemposRespuesta,
+            'departamentos'=>$departamentos
         ));
     }
     

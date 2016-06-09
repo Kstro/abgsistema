@@ -268,7 +268,7 @@ class AbgCentroPreguntasController extends Controller {
         $rsm = new ResultSetMapping();
         $em = $this->getDoctrine()->getEntityManager();
 
-        $sql = " SELECT ciu.id AS id, concat(ciu.nombre_ciudad,'  |   ',est.nombre_estado)as value "
+        $sql = " SELECT ciu.id AS id, concat(ciu.nombre_ciudad,', ',est.nombre_estado)as value "
                 . " FROM ctl_estado est "
                 . " JOIN ctl_ciudad ciu ON ciu.ctl_estado_id= est.id "
                 . "  AND CONCAT(upper(ciu.nombre_ciudad),' ',upper(est.nombre_estado)) "
@@ -400,7 +400,7 @@ class AbgCentroPreguntasController extends Controller {
  
 
         if ($request->get('busquedaDept') !=='' && $request->get('busqueda') !== '') {
-            $busquedaDept = split(" \|\ ", $request->get('busquedaDept'));
+            $busquedaDept = split(", ", $request->get('busquedaDept'));
             $municipio = $em->getRepository('DGAbgSistemaBundle:CtlCiudad')->findByNombreCiudad(trim($busquedaDept[0]));
             $idCiudad = $municipio[0]->getId();
             $reg['Busquedageneral'] = $request->get('busqueda').' | '.$municipio[0]->getNombreCiudad();
@@ -415,7 +415,7 @@ class AbgCentroPreguntasController extends Controller {
         }
         else
         {
-            $busquedaDept = split(" \|\ ", $request->get('busquedaDept'));
+            $busquedaDept = split(", ", $request->get('busquedaDept'));
             $municipio = $em->getRepository('DGAbgSistemaBundle:CtlCiudad')->findByNombreCiudad(trim($busquedaDept[0]));
             $idCiudad = $municipio[0]->getId();
              $criterio = "WHERE idCiudad =" . $idCiudad;

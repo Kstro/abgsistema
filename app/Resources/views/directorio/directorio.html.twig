@@ -13,7 +13,7 @@
             cursor: pointer;
         }
 
-  
+
     </style>
     {#        <link rel="stylesheet" href="{{ asset('Resources/datatable/css/datatable.css') }}">#}
 {% endblock css %}
@@ -31,36 +31,24 @@
                         <img src="{{asset('')}}{{ prom1[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia">
                     {% endif %}
                 </div>
+                <form class="form-inline">
                 <div class="item-directorio" style="margin-top: 5px !important; padding: 10px;">
-                    <form class="form-inline">
-                        {#<div class="row">
-                            <div class="col-md-6">#}
-                        <input value="{{busqueda}}" id="searchBox" maxlength="140" class="searchbox" {#style="width: 100%;"#} placeholder="Buscar por asunto legal o nombre de abogado/firma" oninvalid="this.setCustomValidity('Porfavor ingrese el nombre de un Abogado, Bufete, Firma o Problema Legal')" required> </input>
-                        {#</div>
-                        <div class="col-md-2">#}
-                        <select id="filtrarDepartamento" style="width:20%;">
-                            <option value="0">Todos...</option>
-                            {% for depto in deptos %}
-                                <option value="{{depto.id}}">{{depto.nombreEstado}}</option>
-                            {% endfor %}
-                        </select>
-                        {#</div>
-                        <div class="col-md-2">#}
-                        <select id="filtrarMunicipio" style="width:20%;">
-                            <option value="0">Todos...</option>
-                            {#{% for ciudad in ciudades %}
-                                <option value="{{ciudad.id}}">{{ciudad.nombreCiudad}}</option>
-                            {% endfor %}#}
-                        </select>
-                        {#</div>
-                        <div class="col-md-2">#}
-                        <button id="searchButton" type="submit" class="searchbotondir input-group btn btn-xs" style="height: 30px; color:#FFF; ">Buscar</button>
-                        {#</div>
-                    </div>#}
-
-                        <input type="hidden" value="0" id="inicioInput">
-                    </form>
+                    
+                        <div class="row no-padding" >
+                            <div class="col-md-7" style="padding-right: 5px;">
+                                <input value="{{busqueda}}" id="searchBox" maxlength="140" {#class="searchbox"#} style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; text-decoration: none;" placeholder="Buscar por asunto legal o nombre de abogado/firma" oninvalid="this.setCustomValidity('Porfavor ingrese el nombre de un Abogado, Bufete, Firma o Problema Legal')" required> </input>
+                            </div>
+                            <div class="col-md-3" style=" padding-left: 5px;padding-right: 5px;">
+                                <input class="search " value="{{ciudad}}" id="searchInputDept" name="txtlugar" style="border: 1px solid #d2d6de; border-radius: 0;  height: 34px; width: 100%; text-decoration: none;" placeholder="Cuidad, Dept">
+                            </div>
+                            <div class="col-md-2" style="padding-left: 5px;">
+                                <button id="searchButton" type="submit" class="searchbotondir input-group btn btn-xs" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; background-color: #F42; color: #fff; font-weight: 600;">Buscar</button>
+                            </div>
+                        </div>
+                     
                 </div>
+                               <input type="hidden" value="0" id="inicioInput">
+                    </form>
                 <div class="item-directorio-nexo" style="height: 40px;">
                     <p class="pull-left" style="font-size: 12px; margin-bottom: 0px; padding: 10px;">
                         Mostrando los resultado para '<label id="filtro"><strong>Familiar</strong></label>'.
@@ -132,11 +120,25 @@
 
 
 {% block js_template %}
+    <style>
+
+        .autocomplete-suggestions { border: 1px solid #999; background: #FFF; cursor: default; overflow: auto; -webkit-box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); -moz-box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); }
+        .autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+        .autocomplete-no-suggestion { padding: 2px 5px;}
+        .autocomplete-selected { background: #F0F0F0; }
+        .autocomplete-suggestions strong { font-weight: bold; color: #000; }
+        .autocomplete-group { padding: 2px 5px; }
+        .autocomplete-group strong { font-weight: bold; font-size: 16px; color: #000; display: block; border-bottom: 1px solid #000; }
+        a{  color:#333;}
+        a:hover{  text-decoration: none;}
+    </style>
     <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
     <script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
     {#    <script src="{{ asset('Resources/datatable/dataTable.js') }}"></script>#}
     <script src="{{ asset('Resources/datatable/js/datatable.js') }}"></script>
     {#<script src="{{ asset('Resources/js/generadorPublicidad.js') }}"></script>#}
+    <script src="{{ asset('Resources/autocomplete/jquery.autocomplete.js')}}"></script>
+    <script src="{{ asset('Resources/js/busquedaPregunta.js')}}"></script>
 
     <script>
         var imagenes = new Array();
@@ -265,13 +267,14 @@
 
 
                 var deptoId = $('#filtrarDepartamento').val();
-                var munId = $('#filtrarMunicipio').val();
+                var munId = $('#searchInputDept').val();
 
                 console.log("depto Id: " + deptoId);
                 console.log("mun Id: " + munId);
 
                 var cadenaPaginas = "";
-                if (busqueda != "") {
+                // ERAAAAAAAAAAAA (busqueda != "")
+                if (busqueda == "" || busqueda != "") {
 
                     $.ajax({
                         data: {inicio: inicio, longitud: longitud, paginaActual: paginaActual, busqueda: busqueda, deptoId: deptoId, munId: munId},
@@ -560,6 +563,8 @@
                     $('#registros').hide();
                     $('#busquedaVacia').show();
                 }
+                
+                
             }
 
             function cambia() {

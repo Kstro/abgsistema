@@ -63,43 +63,82 @@
                 js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6";
                 fjs.parentNode.insertBefore(js, fjs);
             }(document, 'script', 'facebook-jssdk'));
-                </script>
-          
+        </script>
+
 
         <!-- Navbar -->
-{% embed ':Layout:head.html.twig' %}{% endembed %}
-        <div class="container">
-            <img src="{{asset('Resources/src/img/bannerprincipal.png')}}" style="width: 100%; max-width: 100%;">
-        </div>
+    {% embed ':Layout:head.html.twig' %}{% endembed %}
+    <div class="container">
+        <img src="{{asset('Resources/src/img/bannerprincipal.png')}}" style="width: 100%; max-width: 100%;">
+    </div>
 
-        <!-- Busqueda/Query -->
-        <div class="container" style="padding-top: 30px; padding-bottom: 30px;">
-            <p class="text-center sans" style="font-size: 25px;">Busqueda de un Profesional del Derecho</p>
-            <div style="border-top: 3px solid #263345; width: 150px; margin-left: auto; margin-right: auto;"></div>
-            <div class="row" style="margin-top: 20px;">
-                <div class="col-md-5 col-md-offset-2">
-                    <input name="abogados" class="search sans" id="searchInput" type="text" value="" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%;" placeholder="Solucion legal o Nombre de abogado.">
+    <!-- Busqueda/Query -->
+    <div class="container" style="padding-top: 30px; padding-bottom: 30px;">
+        <p class="text-center sans" style="font-size: 25px;">Busqueda de un Profesional del Derecho</p>
+        <div style="border-top: 3px solid #263345; width: 150px; margin-left: auto; margin-right: auto;"></div>
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-md-5 col-md-offset-2">
+                <input name="abogados" class="search sans" id="searchInput" type="text" value="" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%;" placeholder="Solucion legal o Nombre de abogado.">
+            </div>
+            <div class="col-md-2">
+                <input id="ciudad" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%;" placeholder="Ciudad, Dept">
+            </div>
+            <div class="col-md-1" style="padding: 0px 5px;">
+                <button id="buscar" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; background-color: #F42; color: #fff; font-weight: 600;" class="sans text-center" value="Buscar">Buscar </button>
+            </div>
+        </div>
+        <div style="margin-top: 50px;" class="row">
+            <!-- Abogados por DEpartaento -->
+            <div class="col-md-5 col-md-offset-1">
+                <p style="font-size: 18px; font-weight: 600;" class="text-center sans">ABOGADOS POR DEPARTMNTO</p>
+                <div class="row">
+                    {% for departamento in departamentos %}
+                    <div class="col-md-6">
+                        <ul>
+                            <li><a href="{{ path('directorio_index') }}?ciu={{departamento.nombreEstado}}">{{departamento.nombreEstado}}</li>
+                        </ul>
+                    </div>
+                         {%if loop.index==2%}
+                              <div class="clearfix"></div>
+                         {%endif%}
+                      {% endfor %}
+                  
                 </div>
-                <div class="col-md-2">
-                    <input id="ciudad" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%;" placeholder="Ciudad, Dept">
-                </div>
-                <div class="col-md-1" style="padding: 0px 5px;">
-                    <button id="buscar" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; background-color: #F42; color: #fff; font-weight: 600;" class="sans text-center" value="Buscar">Buscar </button>
+            </div>
+            <!-- Abogados por Esp -->
+            <div class="col-md-5 col-md-offset-1">
+                <p style="font-size: 18px; font-weight: 600;" class="text-center sans">ABOGADOS POR ESPECIALIDAD LEGAL</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul>
+                            <li>Morazan</li>
+                            <li>La Paz</li>
+                            <li>La Union</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul>
+                            <li>Morazan</li>
+                            <li>La Paz</li>
+                            <li>La Union</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="container-fluid" style="background-color: #f3f3f3; padding-top: 70px; padding-bottom: 70px;">
-            <div class="container" style="">
-                <p class="text-center sans" style="font-size: 25px;">Ultimos Abogados Registrados</p>
-                <div style="border-top: 3px solid #263345; width: 150px; margin-left: auto; margin-right: auto;"></div>
-                <div class="row" style="margin-top: 35px;">
-                    {% for usuario in usuarios %}
-                        {%if loop.first %}
-                            <div class="col-md-2 col-md-offset-1">
+    <div class="container-fluid" style="background-color: #f3f3f3; padding-top: 70px; padding-bottom: 70px;">
+        <div class="container" style="">
+            <p class="text-center sans" style="font-size: 25px;">Ultimos Abogados Registrados</p>
+            <div style="border-top: 3px solid #263345; width: 150px; margin-left: auto; margin-right: auto;"></div>
+            <div class="row" style="margin-top: 35px;">
+                {% for usuario in usuarios %}
+                    {%if loop.first %}
+                        <div class="col-md-2 col-md-offset-1">
                         {%else%}
-                               <div class="col-md-2">
-                        {%endif%}
+                            <div class="col-md-2">
+                            {%endif%}
                             <a href="{{path('busquedaPerfil',{url:usuario.url})}}" style="text-decoration: none; color: inherit;"><img src="/{{usuario.foto}}" style="width: 100%; max-width: 100%;">
                                 <p data-original-title="Ver Perfil" class="text-center sans" style="font-size: 13px; font-weight: 600; margin-top: 10px;" data-toggle="tooltip" data-placement="bottom" title="">{{usuario.nombres}} {{usuario.apellido}}</p></a>
                         </div>
@@ -225,19 +264,19 @@
                         <p class="sans">Los Abogados de nuestra red estan listos para responder tus preguntas casi instantaneamente.</p>
                     </div>
                     <div class="col-md-7">
-                         <form action="{{ path('preg_deta') }}" method="POST">
-                        <textarea id="txtpregunta" name="txtpregunta" class="sans" maxlength="150" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; width: 100%;" rows="3" placeholder="Escriba su pregunta aqui..." required></textarea>
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <p class="sans" style="margin-top: 10px;" id="contador">0 out of 150 characters</p>
+                        <form action="{{ path('preg_deta') }}" method="POST">
+                            <textarea id="txtpregunta" name="txtpregunta" class="sans" maxlength="150" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; width: 100%;" rows="3" placeholder="Escriba su pregunta aqui..." required></textarea>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <p class="sans" style="margin-top: 10px;" id="contador">0 out of 150 characters</p>
+                                </div>
+                                <div class="col-xs-6">
+                                    <p class="pull-right" style="margin-top: 10px;">
+                                        <button type="submit"  style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; background-color: #F42; color: #fff; font-weight: 600;" class="sans text-center" value="Buscar">Preguntarle a un abogado</button>
+                                    </p>
+                                </div>
                             </div>
-                            <div class="col-xs-6">
-                                <p class="pull-right" style="margin-top: 10px;">
-                                    <button type="submit"  style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; background-color: #F42; color: #fff; font-weight: 600;" class="sans text-center" value="Buscar">Preguntarle a un abogado</button>
-                                </p>
-                            </div>
-                        </div>
-                         </form>
+                        </form>
                     </div>
                     <div class="clearfix"></div>
                     <div class="col-md-"></div>
@@ -248,23 +287,23 @@
                 <div style="border-top: 3px solid #263345; width: 150px;"></div>
                 <div class="row" style="margin-top: 20px;">
                     {%if ultimas_prteguntas|default is not empty %}
-                            {% for key, datos in ultimas_prteguntas %}
-                                <div class="col-md-6" style="margin-top: 20px;">
-                                    <div class="col-xs-3">
-                                        <img src="{{ asset('') }}{{datos.src}}" style="width: 100%;">
-                                    </div>
-                                    <div class="col-xs-9">
-                                        <p class="sans" style="color: #888888; margin-bottom: 3px;"><a href="{{path('respuestas_pregunta', {id:datos.idPregunta})}}" style="text-decoration: none; color: inherit;">{{datos.respuesta| slice(0,100)~'...'}}</a></p>
-                                        <p class="sans" style="font-size: 12px;">Respondida {{tiemposRespuesta[key]}} por <a href="{{path('busquedaPerfil', {url:datos.url})}}">{{datos.nombres}}</a>.</p>
-                                    </div>
+                        {% for key, datos in ultimas_prteguntas %}
+                            <div class="col-md-6" style="margin-top: 20px;">
+                                <div class="col-xs-3">
+                                    <img src="{{ asset('') }}{{datos.src}}" style="width: 100%;">
                                 </div>
-                                {% if loop.index is divisibleby(2) %}
-                                    <div class="clearfix"></div>
-                                {% endif %} 
+                                <div class="col-xs-9">
+                                    <p class="sans" style="color: #888888; margin-bottom: 3px;"><a href="{{path('respuestas_pregunta', {id:datos.idPregunta})}}" style="text-decoration: none; color: inherit;">{{datos.respuesta| slice(0,100)~'...'}}</a></p>
+                                    <p class="sans" style="font-size: 12px;">Respondida {{tiemposRespuesta[key]}} por <a href="{{path('busquedaPerfil', {url:datos.url})}}">{{datos.nombres}}</a>.</p>
+                                </div>
+                            </div>
+                            {% if loop.index is divisibleby(2) %}
+                                <div class="clearfix"></div>
+                            {% endif %} 
 
-                            {%endfor%}
+                        {%endfor%}
 
-                        {%endif%}
+                    {%endif%}
                 </div>
                 <p class="text-center" style="margin-top: 30px;">
                     <a  href="{{ path('respuestas_publicas') }}" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 22px; height: 34px; background-color: transparent; color: #888888; font-weight: 600;" class="sans text-center">Buscar respuestas por solucion legal</a>
@@ -273,46 +312,46 @@
         </div>
 
         <!-- Footer -->
-{% embed ':Layout:footer.html.twig' %}{% endembed %}
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script src="{{ asset('Resources/autocomplete/jquery.autocomplete.js')}}"></script>
-        <script src="{{ asset('Resources/select2/dist/js/i18n/es.js')}}"></script>
-        <script src="{{ asset('Resources/js/busquedaHome.js')}}"></script>
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="src/js/bootstrap.js"></script>
-                  <script type="text/javascript">
-           $(document).ready(function () {
+    {% embed ':Layout:footer.html.twig' %}{% endembed %}
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="{{ asset('Resources/autocomplete/jquery.autocomplete.js')}}"></script>
+    <script src="{{ asset('Resources/select2/dist/js/i18n/es.js')}}"></script>
+    <script src="{{ asset('Resources/js/busquedaHome.js')}}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="src/js/bootstrap.js"></script>
+    <script type="text/javascript">
+            $(document).ready(function () {
 
-    var max_chars = 150;
-    $('#max').html(max_chars);
+                var max_chars = 150;
+                $('#max').html(max_chars);
 
-    $('#txtpregunta').keyup(function() {
-        var chars = $(this).val().length;
-      var diff =chars ;
-        $('#contador').html(diff+" out of 150 characters");   
-    });
-});
+                $('#txtpregunta').keyup(function () {
+                    var chars = $(this).val().length;
+                    var diff = chars;
+                    $('#contador').html(diff + " out of 150 characters");
+                });
+            });
     </script>
-        <script type="text/javascript">
-   
-            $(function () {
-                $('[data-toggle="tooltip"]').tooltip();
-            })
-        </script>
-        <script type="text/javascript">
-            <!--
-                function check_length(my_form)
-            {
-                maxLen = 140; // max number of characters allowed
-                if (my_form.my_text.value.length >= maxLen) {
-                    // Reached the Maximum length so trim the textarea
-                    my_form.my_text.value = my_form.my_text.value.substring(0, maxLen);
-                } else { // Maximum length not reached so update the value of my_text counter
-                    my_form.text_num.value = maxLen - my_form.my_text.value.length;
-                }
-            }
-            //-->
-        </script>
+    <script type="text/javascript">
 
-    </body></html>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        })
+    </script>
+    <script type="text/javascript">
+        <!--
+            function check_length(my_form)
+        {
+            maxLen = 140; // max number of characters allowed
+            if (my_form.my_text.value.length >= maxLen) {
+                // Reached the Maximum length so trim the textarea
+                my_form.my_text.value = my_form.my_text.value.substring(0, maxLen);
+            } else { // Maximum length not reached so update the value of my_text counter
+                my_form.text_num.value = maxLen - my_form.my_text.value.length;
+            }
+        }
+        //-->
+    </script>
+
+</body></html>
