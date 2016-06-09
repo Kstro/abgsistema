@@ -31,7 +31,7 @@ class AbgPanelCentroRespuestaController extends Controller {
      */
     public function PreguntaRespuestaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-     
+       
         try {
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $username= $this->container->get('security.context')->getToken()->getUser();
@@ -40,7 +40,7 @@ class AbgPanelCentroRespuestaController extends Controller {
                     . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.codigo as codigo "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
-
+ $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_persona[0]['apellido'])[0];
             $dqlfoto = "SELECT fot.src as src "
                     . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
             $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
@@ -77,6 +77,7 @@ class AbgPanelCentroRespuestaController extends Controller {
 
             $srcfoto = $abgfoto->getSrc();
             return $this->render('panelcentropregabog/panelRespuestaPregunta.html.twig', array('pregunta' => $pregunta,
+            'nombreCorto'=>$nombreCorto,
                         'srcfoto' => $srcfoto,
                         'nombres' => $personaId->getNombres(),
                         'apellidos' => $personaId->getApellido(),
@@ -216,6 +217,9 @@ class AbgPanelCentroRespuestaController extends Controller {
                 . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.tituloProfesional AS tprofesional, p.verificado As verificado "
                 . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
         $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+        
+        $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_persona[0]['apellido'])[0];
+  
 
         $dqlfoto = "SELECT fot.src as src "
                 . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
@@ -261,7 +265,15 @@ class AbgPanelCentroRespuestaController extends Controller {
         }            
         
         
-        return $this->render('panelcentropregabog/panelistpreguntas.html.twig', array('fechaRespuesta' => $fecha, 'abgPersona' => $result_persona, 'abgFoto' => $result_foto, 'ciuda' => $result_ciuda, 'usuario' => $username, 'preguntas' => $preguntas, 'totsincont' => $totsincont[0]['total']));
+        return $this->render('panelcentropregabog/panelistpreguntas.html.twig', 
+                array('fechaRespuesta' => $fecha,
+                    'nombreCorto'=>$nombreCorto,
+                    'abgPersona' => $result_persona, 
+                    'abgFoto' => $result_foto,
+                    'ciuda' => $result_ciuda, 
+                    'usuario' => $username, 
+                    'preguntas' => $preguntas,
+                    'totsincont' => $totsincont[0]['total']));
     }
 
     /**

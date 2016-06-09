@@ -36,14 +36,14 @@ class AbgPreyResController extends Controller{
      * Esta funcion recibe el contenido de la pregunta en la interfaz inicial
      *
      * @Route("/preg_det", name="preg_deta", options={"expose"=true})
-     * @Method("GET")
+     * @Method("POST")
      * @Template()
      */
     public function preguntaDetalleAction(Request $request) {
                
         $parameters = $request->request->all();
         //$pregunta =  $parameters['pregunta'];
-        $pregunta = $request->get('preg');
+        $pregunta = $request->get('txtpregunta');
         $prom = $this->busquedaPublicidad(1);
         $prom2 = $this->busquedaPublicidad(2);
         $prom3 = $this->busquedaPublicidad(3);
@@ -70,10 +70,15 @@ class AbgPreyResController extends Controller{
         $topUsuarios = $em->createNativeQuery($sql, $rsm)
                                   ->getResult();
         
-        //$pregunta = '';
-        
         $ctlespecialidad = $em->getRepository('DGAbgSistemaBundle:CtlEspecialidad')->findAll();
-        return $this->render('preyres/pregunta_detalle.html.twig', array('pregunta'=>$pregunta, 'prom1'=> $prom, 'prom2'=> $prom2, 'prom3'=> $prom3, 'prom4'=> $prom4, 'ctlEspecialidad'=>$ctlespecialidad, 'top'=>$topUsuarios));
+        return $this->render('preyres/pregunta_detalle.html.twig', 
+                array('pregunta'=>$pregunta,
+                    'prom1'=> $prom,
+                    'prom2'=> $prom2, 
+                    'prom3'=> $prom3, 
+                    'prom4'=> $prom4, 
+                    'ctlEspecialidad'=>$ctlespecialidad, 
+                    'top'=>$topUsuarios));
     }
     
     /**

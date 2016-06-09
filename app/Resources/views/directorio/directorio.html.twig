@@ -1,944 +1,630 @@
 {% extends ':Layout:layout2.html.twig' %}
 
 {% block css %}
-    
+
     {{parent()}}
-     <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
-    <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
+
     <style>
         td{
             width:100%;
         }
-        
+
         .paginas,.anterior,.siguiente{
             cursor: pointer;
         }
-        
-        .pos4 {
-            position: fixed;
-            bottom: 0px;
-            margin-right: auto;
-            margin-left: auto;
-            width: 850px;
-        }
+
+  
     </style>
-{#        <link rel="stylesheet" href="{{ asset('Resources/datatable/css/datatable.css') }}">#}
+    {#        <link rel="stylesheet" href="{{ asset('Resources/datatable/css/datatable.css') }}">#}
 {% endblock css %}
 {% block cuerpo %}
-	<div class="clearfix"></div>
+    <div class="clearfix"></div>
 
-	<div class="container">
-		<div class="row" id="registrosBusqueda">
-			<!-- LADO IZQUIERDO -->
-			<div class="col-md-9">
-				<div class="bloque-main pos1" style="padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px; margin-top: 30px;">
-                                    {% if prom1 is null%}
-                                        <img src="{{asset('Resources/src/img/banner1.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia">
-                                    {% else %}
-                                        <img src="{{asset('')}}{{ prom1[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia">
-                                    {% endif %}
-				</div>
-				<div class="item-directorio" style="margin-top: 5px !important; padding: 10px;">
-                                    <form class="form-inline">
-                                        {#<div class="row">
-                                            <div class="col-md-6">#}
-                                                <input value="{{busqueda}}" id="searchBox" maxlength="140" class="searchbox" {#style="width: 100%;"#} placeholder="Buscar por asunto legal o nombre de abogado/firma" oninvalid="this.setCustomValidity('Porfavor ingrese el nombre de un Abogado, Bufete, Firma o Problema Legal')" required> </input>
-                                            {#</div>
-                                            <div class="col-md-2">#}
-                                                <select id="filtrarDepartamento" style="width:20%;">
-                                                    <option value="0">Todos...</option>
-                                                    {% for depto in deptos %}
-                                                        <option value="{{depto.id}}">{{depto.nombreEstado}}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            {#</div>
-                                            <div class="col-md-2">#}
-                                                <select id="filtrarMunicipio" style="width:20%;">
-                                                    <option value="0">Todos...</option>
-                                                    {#{% for ciudad in ciudades %}
-                                                        <option value="{{ciudad.id}}">{{ciudad.nombreCiudad}}</option>
-                                                    {% endfor %}#}
-                                                </select>
-                                            {#</div>
-                                            <div class="col-md-2">#}
-                                                <button id="searchButton" type="submit" class="searchbotondir input-group btn btn-xs" style="height: 30px; color:#FFF; ">Buscar</button>
-                                            {#</div>
-                                        </div>#}
-                                      
-                                      <input type="hidden" value="0" id="inicioInput">
-                                    </form>
-				</div>
-				<div class="item-directorio-nexo" style="height: 40px;">
-                                    <p class="pull-left" style="font-size: 12px; margin-bottom: 0px; padding: 10px;">
-                                        Mostrando los resultado para '<label id="filtro"><strong>Familiar</strong></label>'.
-                                    </p>
-                                    <p class="numRegistros pull-right" style="font-size: 12px; margin-bottom: 0px; padding: 10px;">
-                                        Mostrando <label class="filtroRegistros"></label> resultados de <label class="totalRegistros"></label>
-                                    </p>
-				</div>
-				<!-- item 1 -->
-								
-                                <div id="registros">
-                                    
-                                            
-                                        
-                                        
-                                    
-                                    {#<tr>
-                                        <td style="width: 100%">
-                                            <div class="item-directorio-nexo" style="width: 100%">
-                                                <div class="clearfix"></div>
-                                                <div class="row">
-                                                    <div class="col-xs-2 col-sm-3 col-md-3 col-lg-2">
-                                                        <img id="busquedaImagen2" src="{{asset('Resources/src/img/profile.png')}}" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
-                                                    </div>
-                                                    <div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10">
-                                                        <p id="busquedaNombre2" style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>Marvin Jose Vigil</strong></p>
-                                                        <p id="busquedaCargo2" style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">Director Ejecutivo en Digitality Garage</p>
-                                                        <div class="row" style="margin-top: 2px; margin-bottom: 15px;">
-                                                            <div class="col-sm-4 col-xs-12">
-                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono</strong></p>
-                                                                <p id="busquedaTelefono2" style="font-size: 11px; margin-bottom: 0px;">+503 77971933</p>
-                                                            </div>
-                                                            <div class="col-sm-4 col-xs-12">
-                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p>
-                                                                <p id="busquedaCorreo2" style="font-size: 11px; margin-bottom: 0px;">marvinvigil@gmail.com</p>
-                                                            </div>
-                                                            <div class="col-sm-4 col-xs-12">
-                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
-                                                                <p id="busquedaSitioWeb2" style="font-size: 11px; margin-bottom: 0px;"><a href="http://www.ariaslaw.com" target="_blank">www.ariaslaw.com</a></p>
-                                                            </div>
-                                                            <div class="col-sm-12">
-                                                                <span style="color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;"><strong>Especialidades:</strong> </span>
-                                                                <span id="busquedaEspecialidades2" style="font-size: 11px;">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span>
-                                                            </div>
-                                                            <div class="col-sm-12" style="margin-top: -0px;">
-                                                                <span style='font-size: 11px;'><a href="#">Ver perfil</a></span>
-                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
-                                                                <span style='font-size: 11px;'><a href="#">Contactar</a></span>
-                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
-                                                                <span style='font-size: 11px;'><a href="#">Recomendar</a></span>							
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    
-                                    
-                                    
-                                    <tr>
-                                        <td style="width: 100%">
-                                            <div class="item-directorio-nexo" style="width: 100%">
-                                                <div class="clearfix"></div>
-                                                <div class="row">
-                                                    <div class="col-xs-2 col-sm-3 col-md-3 col-lg-2">
-                                                        <img id="busquedaImagen3" src="{{asset('Resources/src/img/profile.png')}}" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
-                                                    </div>
-                                                    <div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10">
-                                                        <p id="busquedaNombre3" style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>Marvin Jose Vigil</strong></p>
-                                                        <p id="busquedaCargo3" style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">Director Ejecutivo en Digitality Garage</p>
-                                                        <div class="row" style="margin-top: 2px; margin-bottom: 15px;">
-                                                            <div class="col-sm-4 col-xs-12">
-                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono</strong></p>
-                                                                <p id="busquedaTelefono3" style="font-size: 11px; margin-bottom: 0px;">+503 77971933</p>
-                                                            </div>
-                                                            <div class="col-sm-4 col-xs-12">
-                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p>
-                                                                <p id="busquedaCorreo3" style="font-size: 11px; margin-bottom: 0px;">marvinvigil@gmail.com</p>
-                                                            </div>
-                                                            <div class="col-sm-4 col-xs-12">
-                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
-                                                                <p id="busquedaSitioWeb3" style="font-size: 11px; margin-bottom: 0px;"><a href="http://www.ariaslaw.com" target="_blank">www.ariaslaw.com</a></p>
-                                                            </div>
-                                                            <div class="col-sm-12">
-                                                                <span style="color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;"><strong>Especialidades:</strong> </span>
-                                                                <span id="busquedaEspecialidades3" style="font-size: 11px;">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span>
-                                                            </div>
-                                                            <div class="col-sm-12" style="margin-top: -0px;">
-                                                                <span style='font-size: 11px;'><a href="#">Ver perfil</a></span>
-                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
-                                                                <span style='font-size: 11px;'><a href="#">Contactar</a></span>
-                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
-                                                                <span style='font-size: 11px;'><a href="#">Recomendar</a></span>							
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    
-                                     
-                                   
-                                    
-                                   
-                                    <tr>
-                                        <td style="width: 100%">
-                                            <div class="item-directorio-nexo" style="width: 100%">
-                                                <div class="clearfix"></div>
-                                                <div class="row">
-                                                    <div class="col-xs-2 col-sm-3 col-md-3 col-lg-2">
-                                                        <img id="busquedaImagen7" src="{{asset('Resources/src/img/profile.png')}}" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
-                                                    </div>
-                                                    <div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10">
-                                                        <p id="busquedaNombre7" style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>Marvin Jose Vigil</strong></p>
-                                                        <p id="busquedaCargo7" style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">Director Ejecutivo en Digitality Garage</p>
-                                                        <div class="row" style="margin-top: 2px; margin-bottom: 15px;">
-                                                            <div class="col-sm-4 col-xs-12">
-                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono</strong></p>
-                                                                <p id="busquedaTelefono7" style="font-size: 11px; margin-bottom: 0px;">+503 77971933</p>
-                                                            </div>
-                                                            <div class="col-sm-4 col-xs-12">
-                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p>
-                                                                <p id="busquedaCorreo7" style="font-size: 11px; margin-bottom: 0px;">marvinvigil@gmail.com</p>
-                                                            </div>
-                                                            <div class="col-sm-4 col-xs-12">
-                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
-                                                                <p id="busquedaSitioWeb7" style="font-size: 11px; margin-bottom: 0px;"><a href="http://www.ariaslaw.com" target="_blank">www.ariaslaw.com</a></p>
-                                                            </div>
-                                                            <div class="col-sm-12">
-                                                                <span style="color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;"><strong>Especialidades:</strong> </span>
-                                                                <span id="busquedaEspecialidades7" style="font-size: 11px;">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span>
-                                                            </div>
-                                                            <div class="col-sm-12" style="margin-top: -0px;">
-                                                                <span style='font-size: 11px;'><a href="#">Ver perfil</a></span>
-                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
-                                                                <span style='font-size: 11px;'><a href="#">Contactar</a></span>
-                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
-                                                                <span style='font-size: 11px;'><a href="#">Recomendar</a></span>							
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    
-                                    
-                                    
-                                    <tr>
-                                        <td style="width: 100%">
-                                            <div class="item-directorio-nexo" style="width: 100%">
-                                                <div class="clearfix"></div>
-                                                <div class="row">
-                                                    <div class="col-xs-2 col-sm-3 col-md-3 col-lg-2">
-                                                        <img id="busquedaImagen8" src="{{asset('Resources/src/img/profile.png')}}" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
-                                                    </div>
-                                                    <div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10">
-                                                        <p id="busquedaNombre8" style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>Marvin Jose Vigil</strong></p>
-                                                        <p id="busquedaCargo8" style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">Director Ejecutivo en Digitality Garage</p>
-                                                        <div class="row" style="margin-top: 2px; margin-bottom: 15px;">
-                                                            <div class="col-sm-4 col-xs-12">
-                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono</strong></p>
-                                                                <p id="busquedaTelefono8" style="font-size: 11px; margin-bottom: 0px;">+503 77971933</p>
-                                                            </div>
-                                                            <div class="col-sm-4 col-xs-12">
-                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p>
-                                                                <p id="busquedaCorreo8" style="font-size: 11px; margin-bottom: 0px;">marvinvigil@gmail.com</p>
-                                                            </div>
-                                                            <div class="col-sm-4 col-xs-12">
-                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
-                                                                <p id="busquedaSitioWeb8" style="font-size: 11px; margin-bottom: 0px;"><a href="http://www.ariaslaw.com" target="_blank">www.ariaslaw.com</a></p>
-                                                            </div>
-                                                            <div class="col-sm-12">
-                                                                <span style="color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;"><strong>Especialidades:</strong> </span>
-                                                                <span id="busquedaEspecialidades8" style="font-size: 11px;">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span>
-                                                            </div>
-                                                            <div class="col-sm-12" style="margin-top: -0px;">
-                                                                <span style='font-size: 11px;'><a href="#">Ver perfil</a></span>
-                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
-                                                                <span style='font-size: 11px;'><a href="#">Contactar</a></span>
-                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
-                                                                <span style='font-size: 11px;'><a href="#">Recomendar</a></span>							
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    
-                                 
-                                    <tr>
-                                        <td style="width: 100%">
-                                            <div class="item-directorio-nexo" style="width: 100%">
-                                                <div class="clearfix"></div>
-                                                <div class="row">
-                                                    <div class="col-xs-2 col-sm-3 col-md-3 col-lg-2">
-                                                        <img id="busquedaImagen10" src="{{asset('Resources/src/img/profile.png')}}" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
-                                                    </div>
-                                                    <div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10">
-                                                        <p id="busquedaNombre10" style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class="sans"><strong>Marvin Jose Vigil</strong></p>
-                                                        <p id="busquedaCargo10" style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">Director Ejecutivo en Digitality Garage</p>
-                                                        <div class="row" style="margin-top: 2px; margin-bottom: 15px;">
-                                                            <div class="col-sm-4 col-xs-12">
-                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono</strong></p>
-                                                                <p id="busquedaTelefono10" style="font-size: 11px; margin-bottom: 0px;">+503 77971933</p>
-                                                            </div>
-                                                            <div class="col-sm-4 col-xs-12">
-                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p>
-                                                                <p id="busquedaCorreo10" style="font-size: 11px; margin-bottom: 0px;">marvinvigil@gmail.com</p>
-                                                            </div>
-                                                            <div class="col-sm-4 col-xs-12">
-                                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio Web</strong></p>
-                                                                <p id="busquedaSitioWeb10" style="font-size: 11px; margin-bottom: 0px;"><a href="http://www.ariaslaw.com" target="_blank">www.ariaslaw.com</a></p>
-                                                            </div>
-                                                            <div class="col-sm-12">
-                                                                <span style="color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;"><strong>Especialidades:</strong> </span>
-                                                                <span id="busquedaEspecialidades10" style="font-size: 11px;">Derecho Civil, Derecho Comercial, Derecho Constitucional, Derecho Penal</span>
-                                                            </div>
-                                                            <div class="col-sm-12" style="margin-top: -0px;">
-                                                                <span style='font-size: 11px;'><a href="#">Ver perfil</a></span>
-                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
-                                                                <span style='font-size: 11px;'><a href="#">Contactar</a></span>
-                                                                <span style="color: #777777; margin-left: 5px; margin-right: 5px;">|</span>
-                                                                <span style='font-size: 11px;'><a href="#">Recomendar</a></span>							
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>#}
-                                        {#{% endfor %}#}
-                                    
-                                </div>
-                                <div id="busquedaVacia" style="display:none;border-bottom-color: #000">
-                                    No se encontraron registros...
-                                </div>
-				<!-- Fin de Items -->
-				<!-- PAGINACION -->
-				<div class="item-directorio-nexo" style="margin-top:150px;">
-					<div class="row">
-						<div class="col-md-7" style="padding-top: 9px;" >
-							<ul class="numeroPaginas" style="list-style: none; display: inline; padding-left: 10px !important; color: #777777;">
-								
-							</ul>
-						</div>
-						<div class="col-md-5">
-							<p class="numRegistros text-right" style="font-size: 12px; margin-bottom: 0px; padding: 10px;">
-                                                            Mostrando <label class="filtroRegistros"></label> resultados de <label class="totalRegistros"></label>
-							</p>
-						</div>	
-					</div>
-				</div>
+    <div class="container">
+        <div class="row" id="registrosBusqueda">
+            <!-- LADO IZQUIERDO -->
+            <div class="col-md-9">
+                <div class="bloque-main pos1" style="padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px; margin-top: 30px;">
+                    {% if prom1 is null%}
+                        <img src="{{asset('Resources/src/img/banner1.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia">
+                    {% else %}
+                        <img src="{{asset('')}}{{ prom1[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia">
+                    {% endif %}
+                </div>
+                <div class="item-directorio" style="margin-top: 5px !important; padding: 10px;">
+                    <form class="form-inline">
+                        {#<div class="row">
+                            <div class="col-md-6">#}
+                        <input value="{{busqueda}}" id="searchBox" maxlength="140" class="searchbox" {#style="width: 100%;"#} placeholder="Buscar por asunto legal o nombre de abogado/firma" oninvalid="this.setCustomValidity('Porfavor ingrese el nombre de un Abogado, Bufete, Firma o Problema Legal')" required> </input>
+                        {#</div>
+                        <div class="col-md-2">#}
+                        <select id="filtrarDepartamento" style="width:20%;">
+                            <option value="0">Todos...</option>
+                            {% for depto in deptos %}
+                                <option value="{{depto.id}}">{{depto.nombreEstado}}</option>
+                            {% endfor %}
+                        </select>
+                        {#</div>
+                        <div class="col-md-2">#}
+                        <select id="filtrarMunicipio" style="width:20%;">
+                            <option value="0">Todos...</option>
+                            {#{% for ciudad in ciudades %}
+                                <option value="{{ciudad.id}}">{{ciudad.nombreCiudad}}</option>
+                            {% endfor %}#}
+                        </select>
+                        {#</div>
+                        <div class="col-md-2">#}
+                        <button id="searchButton" type="submit" class="searchbotondir input-group btn btn-xs" style="height: 30px; color:#FFF; ">Buscar</button>
+                        {#</div>
+                    </div>#}
 
+                        <input type="hidden" value="0" id="inicioInput">
+                    </form>
+                </div>
+                <div class="item-directorio-nexo" style="height: 40px;">
+                    <p class="pull-left" style="font-size: 12px; margin-bottom: 0px; padding: 10px;">
+                        Mostrando los resultado para '<label id="filtro"><strong>Familiar</strong></label>'.
+                    </p>
+                    <p class="numRegistros pull-right" style="font-size: 12px; margin-bottom: 0px; padding: 10px;">
+                        Mostrando <label class="filtroRegistros"></label> resultados de <label class="totalRegistros"></label>
+                    </p>
+                </div>
+                <!-- item 1 -->
 
-				<div style="height: 20px;"></div>
-                                <div class="bloque-main pos4 hidden-md hidden-sm hidden-xs" style="padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px; margin-top: 20px;">
-                                    {% if prom4 is null %}
-                                        <img src="{{asset('Resources/src/img/banner1.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia4">
-                                    {% else %}
-                                        <img src="{{asset('')}}{{ prom4[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia4">
-                                    {% endif %}
-				</div>
-			</div> <!-- END COL-MD-9 -->
+                <div id="registros">
 
-			<!-- LADO DERECHO -->
-			<div class="col-md-3" style="margin-top: 10px;">
-                            <div class="bloque-main pos2" style="padding: 5px;">
-                                {% if prom2 is null %}
-                                    <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
-                                {% else %}
-                                    <img src="{{asset('')}}{{ prom2[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
-                                {% endif %}
-                            </div>
-                            <div class="bloque-nexo pos3" style="padding: 5px;">
-                                {% if prom3 is null %}
-                                    <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia3">
-                                {% else %}
-                                    <img src="{{asset('')}}{{ prom3[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia3">
-                                {% endif %}
-                            </div>
+                </div>
+                <div id="busquedaVacia" style="display:none;border-bottom-color: #000">
+                    No se encontraron registros...
+                </div>
+                <!-- Fin de Items -->
+                <!-- PAGINACION -->
+                <div class="item-directorio-nexo" style="margin-top:150px;">
+                    <div class="row">
+                        <div class="col-md-7" style="padding-top: 9px;" >
+                            <ul class="numeroPaginas" style="list-style: none; display: inline; padding-left: 10px !important; color: #777777;">
+
+                            </ul>
                         </div>
-		</div>
-		</div>
-	
+                        <div class="col-md-5">
+                            <p class="numRegistros text-right" style="font-size: 12px; margin-bottom: 0px; padding: 10px;">
+                                Mostrando <label class="filtroRegistros"></label> resultados de <label class="totalRegistros"></label>
+                            </p>
+                        </div>	
+                    </div>
+                </div>
 
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	
-	<!-- Include all compiled plugins (below), or include individual files as needed -->
-	
-{#	<script type="text/javascript">
-<!--
-function check_length(my_form)
-{
-maxLen = 140; // max number of characters allowed
-if (my_form.my_text.value.length >= maxLen) {
-// Reached the Maximum length so trim the textarea  
-	my_form.my_text.value = my_form.my_text.value.substring(0, maxLen);
- }
-else{ // Maximum length not reached so update the value of my_text counter
-	my_form.text_num.value = maxLen - my_form.my_text.value.length;
-}
-}
-//-->
-</script>#}
+
+                <div style="height: 20px;"></div>
+
+            </div> <!-- END COL-MD-9 -->
+
+            <!-- LADO DERECHO -->
+            <div class="col-md-3" style="margin-top: 10px;">
+                <div class="bloque-main pos2" style="padding: 5px;">
+                    {% if prom2 is null %}
+                        <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
+                    {% else %}
+                        <img src="{{asset('')}}{{ prom2[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
+                    {% endif %}
+                </div>
+                <div class="bloque-nexo pos3" style="padding: 5px;">
+                    {% if prom3 is null %}
+                        <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia3">
+                    {% else %}
+                        <img src="{{asset('')}}{{ prom3[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia3">
+                    {% endif %}
+                </div>
+
+                <div class="bloque-nexo pos4 " style="padding: 5px;">
+                    {% if prom4 is null %}
+                        <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia4">
+                    {% else %}
+                        <img src="{{asset('')}}{{ prom4[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia4">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 {% endblock cuerpo %}
 
 
 {% block js_template %}
     <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
     <script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
-{#    <script src="{{ asset('Resources/datatable/dataTable.js') }}"></script>#}
+    {#    <script src="{{ asset('Resources/datatable/dataTable.js') }}"></script>#}
     <script src="{{ asset('Resources/datatable/js/datatable.js') }}"></script>
     {#<script src="{{ asset('Resources/js/generadorPublicidad.js') }}"></script>#}
-    
+
     <script>
         var imagenes = new Array();
         var imagenes2 = new Array();
         var imagenes3 = new Array();
         var imagenes4 = new Array();
-        
+
         var contador = 1;
         var contador2 = 1;
         var contador3 = 1;
         var contador4 = 1;
-        
+
         var lon = 0;
         var lon2 = 0;
         var lon3 = 0;
         var lon4 = 0;
-        
+
         {% for pro in prom1 %}
             imagenes.push("{{ pro.src }}");
         {% endfor %}
-        
-        lon = imagenes.length;
-        
+
+            lon = imagenes.length;
+
         {% for pro in prom2 %}
             imagenes2.push("{{ pro.src }}");
         {% endfor %}
-        
-        lon2 = imagenes2.length;
-        
+
+            lon2 = imagenes2.length;
+
         {% for pro in prom3 %}
             imagenes3.push("{{ pro.src }}");
         {% endfor %}
-        
-        lon3 = imagenes3.length;
-        
+
+            lon3 = imagenes3.length;
+
         {% for pro in prom4 %}
             imagenes4.push("{{ pro.src }}");
         {% endfor %}
-        
-        lon4 = imagenes4.length;
-        
-        $(document).ready(function(){
-            
-            var inicio = $('#inicioInput').val(); //numero de registros que se van a mostrar
-            var busqueda=$('#searchBox').val();
-            var longitud = 10; //numero de registros que se van a mostrar
-            var paginaActual = 1; //primer registro a mostrar
-            var numPages = 0;
-            
-            //var contenidoOriginal = $('#registros').html();
-            buscar(busqueda,inicio,longitud,paginaActual);
-            $(document).on('click','#searchButton', function(){
-                inicio   = $('#inicioInput').val(); //numero de registros que se van a mostrar
-                busqueda =$('#searchBox').val();
-                longitud = 10; //numero de registros que se van a mostrar
-                paginaActual = 1; //numero de registros que se van a mostrar
-                //contenidoOriginal = $('#registros').html();
-                buscar(busqueda,inicio,longitud,paginaActual);
-                //$('#registros').html('');
-                //var url = Routing.generate('busqueda_data');
-                return false;
-            });        
-            $('#filtrarDepartamento').select2();
-            $('#filtrarMunicipio').select2();
-            
-            
-{#            $('#datatables1').DataTable({ 
-                    {#searching:true,
-                    order:[[1,"asc"]],
-                    "processing": true,
-                    "pageLength": 10,
-                    "serverSide": true,
-                    "dom":'tip',
-                    "ajax": {
-                        "url": '{{path('busqueda_data')}}',
-                        "type": 'GET'
-                    },
-                    "columns": [
-                        { "data": "datos" }
-                    ],
-                    "columnDefs": [
-                           { "orderable": false, "targets": 0 }
 
-                           { "orderable": false, "targets": 5 },
-                           { "orderable": false, "targets": 6 }
-                           
-                           
-                           
-                    ],
-                    "language": {
-                    "info": "Mostrando página _PAGE_ de _PAGES_",
-                    "infoEmpty": "",
-                    "emptyTable": "No se encontraron registros",
-                    "paginate": { 
-                        "next": ">",
-                        "previous": "<"
-                    },
-                    "processing": "Procesando petición...",
-                    "search": "Buscar registros:",
-                    "lengthMenu": "Mostrar _MENU_ registros"
-                }, 
-                    
-        });#}
-                
-            $(document).on('click','.paginas', function(){
-                paginaActual = $(this).attr('id');
-                console.log("Página actual enviada: "+paginaActual);
-                buscar(busqueda,inicio,longitud,paginaActual);
-            });
-            
-            $(document).on('click','.siguiente', function(){
-                if(paginaActual!=numPages){
-                    paginaActual++;
-                    console.log("Página actual enviada: "+paginaActual);
-                    buscar(busqueda,inicio,longitud,paginaActual);
-                }
-            });
-            
-            $(document).on('click','.anterior', function(){
-                //console.log(paginaActual);
-                if(paginaActual!=1){
-                    paginaActual--;
-                    console.log("Página actual enviada: "+paginaActual);
-                    buscar(busqueda,inicio,longitud,paginaActual);
-                }
-            });
-            
-            
-            $(document).on('change','#filtrarDepartamento',function(){
-                var deptoId = $(this).val();
-                
-                $.ajax({
-                    data:{inicio:inicio,longitud: longitud, paginaActual:paginaActual,busqueda:busqueda,deptoId:deptoId},
-                    url:"{{path('busqueda_mun')}}",
-                    type: "post",
-                    success: function (data) {
-                        {#console.log(data[0].id);#}
-                        var item='';
-                        $('#filtrarMunicipio').html('');
-                        
-                        {#console.log(data.length);#}
-                            item+='<option selected value=\"0\">Todos...</option>';
-                            $('#filtrarMunicipio').append(item);
-                        for(i=0;i<data.length;i++){
-                            item='';
-                            item+='<option value=\"'+data[i].id+'\" >'+data[i].nombre+'</option>';
-                            {#console.log(item);#}
-                            $('#filtrarMunicipio').append(item);
-                        }
-                        $('#filtrarMunicipio').select2();
-                    },
-                    error: function (data) {
+            lon4 = imagenes4.length;
 
+            $(document).ready(function () {
+
+                var inicio = $('#inicioInput').val(); //numero de registros que se van a mostrar
+                var busqueda = $('#searchBox').val();
+                var longitud = 10; //numero de registros que se van a mostrar
+                var paginaActual = 1; //primer registro a mostrar
+                var numPages = 0;
+
+                //var contenidoOriginal = $('#registros').html();
+                buscar(busqueda, inicio, longitud, paginaActual);
+                $(document).on('click', '#searchButton', function () {
+                    inicio = $('#inicioInput').val(); //numero de registros que se van a mostrar
+                    busqueda = $('#searchBox').val();
+                    longitud = 10; //numero de registros que se van a mostrar
+                    paginaActual = 1; //numero de registros que se van a mostrar
+                    //contenidoOriginal = $('#registros').html();
+                    buscar(busqueda, inicio, longitud, paginaActual);
+                    //$('#registros').html('');
+                    //var url = Routing.generate('busqueda_data');
+                    return false;
+                });
+                $('#filtrarDepartamento').select2();
+                $('#filtrarMunicipio').select2();
+
+                $(document).on('click', '.paginas', function () {
+                    paginaActual = $(this).attr('id');
+                    console.log("Página actual enviada: " + paginaActual);
+                    buscar(busqueda, inicio, longitud, paginaActual);
+                });
+
+                $(document).on('click', '.siguiente', function () {
+                    if (paginaActual != numPages) {
+                        paginaActual++;
+                        console.log("Página actual enviada: " + paginaActual);
+                        buscar(busqueda, inicio, longitud, paginaActual);
                     }
                 });
-                
-            });
-            
-            
-            
-            
-            setInterval(cambia, 4000);  
-        });
-        
-        function buscar(busqueda,inicio,longitud,paginaActual){
-            $('#filtro').children().html(busqueda);
-            $('.numRegistros').hide();
-            $('.numeroPaginas').html('');
-            
-            
-            var deptoId=$('#filtrarDepartamento').val();
-            var munId=$('#filtrarMunicipio').val();
-            
-            console.log("depto Id: "+deptoId);
-            console.log("mun Id: "+munId);
-            
-            var cadenaPaginas="";
-            if(busqueda!=""){
-                    
+
+                $(document).on('click', '.anterior', function () {
+                    //console.log(paginaActual);
+                    if (paginaActual != 1) {
+                        paginaActual--;
+                        console.log("Página actual enviada: " + paginaActual);
+                        buscar(busqueda, inicio, longitud, paginaActual);
+                    }
+                });
+
+
+                $(document).on('change', '#filtrarDepartamento', function () {
+                    var deptoId = $(this).val();
+
                     $.ajax({
-                        data:{inicio:inicio,longitud: longitud, paginaActual:paginaActual,busqueda:busqueda,deptoId:deptoId,munId:munId},
-                        url:"{{path('busqueda_data')}}",
+                        data: {inicio: inicio, longitud: longitud, paginaActual: paginaActual, busqueda: busqueda, deptoId: deptoId},
+                        url: "{{path('busqueda_mun')}}",
                         type: "post",
                         success: function (data) {
-                                //inicio = data.inicio++;
-{#                                console.log(data.data.length);#}
-                                $('#registros').html('');
-                                $('#filtro').children().html();
-                                $('.numRegistros').show();
-                                
-                                //console.log(data);
-                                {#console.log("num registros: "+data.numRegistros);
-                                console.log("filtro registros: "+data.filtroRegistros);#}
+        {#console.log(data[0].id);#}
+                            var item = '';
+                            $('#filtrarMunicipio').html('');
+
+        {#console.log(data.length);#}
+                            item += '<option selected value=\"0\">Todos...</option>';
+                            $('#filtrarMunicipio').append(item);
+                            for (i = 0; i < data.length; i++) {
+                                item = '';
+                                item += '<option value=\"' + data[i].id + '\" >' + data[i].nombre + '</option>';
+        {#console.log(item);#}
+                                $('#filtrarMunicipio').append(item);
+                            }
+                            $('#filtrarMunicipio').select2();
+                        },
+                        error: function (data) {
+
+                        }
+                    });
+
+                });
+                setInterval(cambia, 4000);
+            });
+
+            function buscar(busqueda, inicio, longitud, paginaActual) {
+                $('#filtro').children().html(busqueda);
+                $('.numRegistros').hide();
+                $('.numeroPaginas').html('');
+
+
+                var deptoId = $('#filtrarDepartamento').val();
+                var munId = $('#filtrarMunicipio').val();
+
+                console.log("depto Id: " + deptoId);
+                console.log("mun Id: " + munId);
+
+                var cadenaPaginas = "";
+                if (busqueda != "") {
+
+                    $.ajax({
+                        data: {inicio: inicio, longitud: longitud, paginaActual: paginaActual, busqueda: busqueda, deptoId: deptoId, munId: munId},
+                        url: "{{path('busqueda_data')}}",
+                        type: "post",
+                        success: function (data) {
+                            //inicio = data.inicio++;
+        {#                                console.log(data.data.length);#}
+                            $('#registros').html('');
+                            $('#filtro').children().html();
+                            $('.numRegistros').show();
+
+                            //console.log(data);
+        {#console.log("num registros: "+data.numRegistros);
+        console.log("filtro registros: "+data.filtroRegistros);#}
+                            $('.totalRegistros').html(data.numRegistros);
+                            $('.filtroRegistros').html(data.filtroRegistros);
+
+                            if (data.data.length != 0) {
+                                $('#inicioInput').val((parseInt($('#inicioInput').val()) + 1));
+                                //console.log(data.inicio);
+                                //console.log(data.data.length);
+                                var cadena = "";
+                                for (i = 0; i < data.data.length; i++) {
+
+
+
+                                    var busquedaImagen = "#busquedaImagen" + (i + 1);
+                                    var busquedaTelefono = "#busquedaTelefono" + (i + 1);
+                                    var busquedaEspecialidades = "#busquedaEspecialidades" + (i + 1);
+
+                                    var busquedaNombre = data.data[i].nombres + ' ' + data.data[i].apellido;
+                                    var busquedaCargo = "";
+
+                                    var telefonos = "";
+                                    var busquedaCorreo = data.data[i].correoelectronico;
+                                    var busquedaFoto = data.data[i].foto;
+                                    //var sitioWeb = data.data[i].sitioWeb;
+                                    //var busquedaSitioWeb = "#busquedaSitioWeb"+(i+1);
+                                    var busquedaSitioWeb = data.data[i].sitioweb;
+                                    ;
+
+
+                                    if (busquedaFoto == null) {
+                                        busquedaFoto = "";
+                                    }
+
+                                    if (busquedaCargo == null) {
+                                        busquedaCargo = "";
+                                    } else {
+                                        busquedaCargo = data.data[i].puesto;
+                                    }
+
+                                    if (busquedaCorreo == null) {
+                                        busquedaCorreo = "-";
+                                    }
+
+                                    if (busquedaSitioWeb == null) {
+                                        busquedaSitioWeb = "";
+                                    }
+
+                                    //console.log(data);
+
+                                    var telefonos = "";
+                                    if (data.data[i].telefono_fijo === null || data.data[i].telefono_fijo === '') {
+                                        //data.data[i].telefonoFijo="";
+                                        if (data.data[i].telefono_movil === null || data.data[i].telefono_movil === '') {
+                                            telefonos = "-";
+                                        } else {
+                                            telefonos = "+503 " + data.data[i].telefono_movil;
+                                        }
+                                    } else {
+                                        telefonos = "+503 " + data.data[i].telefono_fijo;
+                                        if (data.data[i].telefono_movil === null || data.data[i].telefono_movil === '') {
+                                            telefonos += "";
+                                        } else {
+                                            telefonos += ", +503 " + data.data[i].telefono_movil;
+                                        }
+
+                                    }
+
+
+
+
+
+
+                                    //console.log(data.data[i].especialidades.length);
+                                    var especialidades = "";
+                                    if (data.data[i].especialidad !== 'undefined') {
+                                        especialidades += data.data[i].especialidad;
+
+                                    } else {
+                                        especialidades = "N/A";
+                                    }
+                                    var verificado = '';
+                                    if (data.data[i].verificado == 1) {
+                                        verificado = '<img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 0px;margin-left:1px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>';
+                                    }
+
+                                    //console.log(data.data[i].especialidades);
+                                    //console.log(especialidades);
+
+
+                                    //console.log(data.data[i].foto);
+
+
+        {#$(busquedaEspecialidades).html(especialidades);
+        $(busquedaSitioWeb).children().html(data.data[i].sitioweb);#}
+                                    //console.log(data.data[i].fotoPerfil);
+
+                                    cadena = '<div class=\"item-directorio-nexo\" style=\"width: 100%;\"> <div class=\"clearfix\"></div><div class=\"row\">\n\
+                                        <div class=\"col-xs-2 col-sm-3 col-md-3 col-lg-2\"><img id=\"busquedaImagen' + (i + 1) + '\" src=\"{{asset('')}}' + data.data[i].foto + '\" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">\n\
+                                        </div><div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10"><p id=\"busquedaNombre' + (i + 1) + '\" style=\"margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;\" class=\"sans\"><strong>' + busquedaNombre + '</strong>' + verificado + '</p>\n\
+                                        <p id=\"busquedaCargo' + (i + 1) + '\" style=\"color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;\" class=\"sans\">' + busquedaCargo + '</p>\n\
+                                        <div class=\"row\" style=\"margin-top: 2px; margin-bottom: 15px;\"><div class=\"col-sm-4 col-xs-12\"><p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Telefono</strong></p><p id=\"busquedaTelefono1\" style=\"font-size: 11px; margin-bottom: 0px;\">' + telefonos + ' </p>\n\
+                                        </div><div class=\"col-sm-4 col-xs-12\"><p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p><p id="busquedaCorreo' + (i + 1) + '" style="font-size: 11px; margin-bottom: 0px;">' + busquedaCorreo + '</p></div>\n\
+                                        <div class=\"col-sm-4 col-xs-12\"><p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Sitio Web</strong></p>\n\
+                                        <p id=\"busquedaSitioWeb' + (i + 1) + '\" style=\"font-size: 11px; margin-bottom: 0px;\"><a href=\"http://' + busquedaSitioWeb + '\" target=\"_blank\">' + busquedaSitioWeb + '</a></p></div>\n\
+                                        <div class=\"col-sm-12\"><span style=\"color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;\"><strong>Especialidades:</strong> </span>\n\
+                                        <span id=\"busquedaEspecialidades' + (i + 1) + '\" style=\"font-size: 11px;\">' + especialidades + '</span>\n\
+                                        </div><div class=\"col-sm-12\" style=\"margin-top: -0px;\"><span style=\"font-size: 11px;\"><a href=\"../' + data.data[i].url + '\">Ver perfil</a></span>\n\
+                                        <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"{{path('contacto')}}?correo=' + busquedaCorreo + '\">Contactar</a></span>\n\
+                                        <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"{{path('recomendacion')}}?correo=' + busquedaCorreo + '\">Recomendar</a></span></div></div></div></div></div>';
+                                    $(busquedaImagen).attr('src', "{{asset('')}}" + data.data[i].foto);
+                                    $(busquedaImagen).load();
+                                    $('#registros').show();
+                                    $('#registros').append(cadena);
+
+                                    $('#busquedaVacia').hide();
+
+        {#console.log(data.pages);#}
+                                    numPages = data.pages;
+                                    cadenaPaginas = '';
+                                    cadenaPaginas = '<li class="anterior" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-left\"></i></li>';
+        {#for(k=1;k<=data.pages;k++){#}
+        {#console.log("data pages: "+data.pages);#}
+        {#console.log(paginaActual);#}
+
+
+                                    if (data.pages > 10) {
+
+
+                                        if (paginaActual == 1) {
+                                            cadenaPaginas += '<li class="paginas" id="' + paginaActual + '" style=\"display: inline; padding: 7px;\"><strong>' + paginaActual + '</strong></li>';
+                                            cadenaPaginas += '<li class="paginas" id="' + (parseInt(paginaActual) + 1) + '" style=\"display: inline; padding: 7px;\">' + (parseInt(paginaActual) + 1) + '</li>';
+                                            cadenaPaginas += '<li class="paginas" id="' + data.pages + '" style=\"display: inline; padding: 7px;\">...' + data.pages + '</li>';
+                                        } else {
+                                            if (paginaActual == 2) {
+                                                cadenaPaginas += '<li class="paginas" id="' + 1 + '" style=\"display: inline; padding: 7px;\">' + 1 + '</li>';
+        {#                                                cadenaPaginas+='<li class="paginas" id="'+(paginaActual-1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual-1)+'</li>';#}
+                                                cadenaPaginas += '<li class="paginas" id="' + paginaActual + '" style=\"display: inline; padding: 7px;\"><strong>' + paginaActual + '</strong></li>';
+                                                cadenaPaginas += '<li class="paginas" id="' + (parseInt(paginaActual) + 1) + '" style=\"display: inline; padding: 7px;\">' + (parseInt(paginaActual) + 1) + '</li>';
+                                                cadenaPaginas += '<li class="paginas" id="' + data.pages + '" style=\"display: inline; padding: 7px;\">...' + data.pages + '</li>';
+                                            } else {
+                                                if (paginaActual == (data.pages - 1)) {
+                                                    cadenaPaginas += '<li class="paginas" id="' + 1 + '" style=\"display: inline; padding: 7px;\">' + 1 + '...</li>';
+                                                    cadenaPaginas += '<li class="paginas" id="' + (parseInt(paginaActual) - 1) + '" style=\"display: inline; padding: 7px;\">' + (parseInt(paginaActual) - 1) + '</li>';
+                                                    cadenaPaginas += '<li class="paginas" id="' + paginaActual + '" style=\"display: inline; padding: 7px;\"><strong>' + paginaActual + '</strong></li>';
+                                                    cadenaPaginas += '<li class="paginas" id="' + data.pages + '" style=\"display: inline; padding: 7px;\">' + data.pages + '</li>';
+                                                } else {
+                                                    if (paginaActual == data.pages) {
+                                                        cadenaPaginas += '<li class="paginas" id="' + 1 + '" style=\"display: inline; padding: 7px;\">' + 1 + '...</li>';
+                                                        cadenaPaginas += '<li class="paginas" id="' + (parseInt(paginaActual) - 1) + '" style=\"display: inline; padding: 7px;\">' + (parseInt(paginaActual) - 1) + '</li>';
+                                                        cadenaPaginas += '<li class="paginas" id="' + paginaActual + '" style=\"display: inline; padding: 7px;\"><strong>' + paginaActual + '</strong></li>';
+
+                                                    } else {
+
+                                                        cadenaPaginas += '<li class="paginas" id="' + 1 + '" style=\"display: inline; padding: 7px;\">' + 1 + '</li>';
+                                                        cadenaPaginas += '<li class="paginas" id="' + (parseInt(paginaActual) - 1) + '" style=\"display: inline; padding: 7px;\">' + (parseInt(paginaActual) - 1) + '</li>';
+                                                        cadenaPaginas += '<li class="paginas" id="' + paginaActual + '" style=\"display: inline; padding: 7px;\"><strong>' + paginaActual + '</strong></li>';
+                                                        cadenaPaginas += '<li class="paginas" id="' + (parseInt(paginaActual) + 1) + '" style=\"display: inline; padding: 7px;\">' + (parseInt(paginaActual) + 1) + '</li>';
+                                                        cadenaPaginas += '<li class="paginas" id="' + data.pages + '" style=\"display: inline; padding: 7px;\">...' + data.pages + '</li>';
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    } else {
+
+                                        for (k = 1; k <= data.pages; k++) {
+                                            if (k == paginaActual) {
+                                                cadenaPaginas += '<li class="paginas" id="' + k + '" style=\"display: inline; padding: 7px;\"><strong>' + k + '</strong></li>';
+                                            } else {
+                                                cadenaPaginas += '<li class="paginas" id="' + k + '" style=\"display: inline; padding: 7px;\">' + k + '</li>';
+                                            }
+                                        }
+                                    }
+
+        {#                                        console.log(cadenaPaginas);#}
+
+
+
+
+
+        {#switch(paginaActual){#}
+        {#case 1:
+            cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
+            cadenaPaginas+='<li class="paginas" id="'+(paginaActual+1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual+1)+'</li>';
+            cadenaPaginas+='<li class="paginas" id="'+data.pages+'" style=\"display: inline; padding: 7px;\">...'+data.pages+'</li>';
+            break;#}
+        {#case 2:
+            cadenaPaginas+='<li class="paginas" id="'+1+'" style=\"display: inline; padding: 7px;\">'+1+'</li>';
+{#                                                cadenaPaginas+='<li class="paginas" id="'+(paginaActual-1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual-1)+'</li>';#}
+        {#cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
+            cadenaPaginas+='<li class="paginas" id="'+(paginaActual+1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual+1)+'</li>';
+            cadenaPaginas+='<li class="paginas" id="'+data.pages+'" style=\"display: inline; padding: 7px;\">...'+data.pages+'</li>';
+            break;#}
+
+        {#case (data.pages-1):
+            cadenaPaginas+='<li class="paginas" id="'+1+'" style=\"display: inline; padding: 7px;\">'+1+'</li>';
+            cadenaPaginas+='<li class="paginas" id="'+(paginaActual-1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual-1)+'</li>';
+            cadenaPaginas+='<li class="paginas" id="'+data.pages+'" style=\"display: inline; padding: 7px;\"><strong>'+data.pages+'</strong></li>';
+            break;
+                                            
+        case data.pages:
+            cadenaPaginas+='<li class="paginas" id="'+1+'" style=\"display: inline; padding: 7px;\">'+1+'</li>';
+            cadenaPaginas+='<li class="paginas" id="'+(paginaActual-1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual-1)+'</li>';
+            cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
+            break;
+    }#}
+        {#if(paginaActual == 1 ){
+                                                
+            cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
+            cadenaPaginas+='<li class="paginas" id="'+(paginaActual+1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual+1)+'</li>';
+        }
+        else{
+            if(paginaActual>2 && paginaActual<data.pages && (paginaActual+1)!=data.pages){
+                cadenaPaginas+='<li class="paginas" id="'+1+'" style=\"display: inline; padding: 7px;\">'+1+'</li>';
+                cadenaPaginas+='<li class="paginas" id="'+(paginaActual-1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual-1)+'</li>';
+                cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
+                cadenaPaginas+='<li class="paginas" id="'+(paginaActual+1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual+1)+'</li>';
+            }
+            else{
+                if(paginaActual>1 && paginaActual<data.pages && (paginaActual+1)!=data.pages){
+                    cadenaPaginas+='<li class="paginas" id="'+1+'" style=\"display: inline; padding: 7px;\">'+1+'</li>';
+                                                        
+                    cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
+                    cadenaPaginas+='<li class="paginas" id="'+(paginaActual+1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual+1)+'</li>';
+                }#}
+        {#if(paginaActual===1){
+            cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
+            cadenaPaginas+='<li class="paginas" id="'+(paginaActual+1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual+1)+'</li>';
+        }
+        else{#}
+        {#if(paginaActual===data.pages){
+            cadenaPaginas+='<li class="paginas" id="'+(paginaActual-1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual-1)+'</li>';
+            cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
+        }#}
+        {#                                                            }#}
+        {#   }
+                                                
+       }#}
+
+
+
+        {#                                        cadenaPaginas+='<li class="paginas" id="'+k+'" style=\"display: inline; padding: 7px;\"><strong>'+k+'</strong></li>';#}
+                                    cadenaPaginas += '<li class="siguiente" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-right\"></i></li>';
+                                    $('.numeroPaginas').html(cadenaPaginas);
+                                    //$('#registros').html('prueba');
+                                }//fin for
+                            }//fin if
+                            else {
+                                cadenaPaginas = '';
+                                $('.numeroPaginas').html('');
+                                console.log('datosvacios');
+        {#                                    $('#paginas').html(cadenaPaginas);#}
+                                console.log(data.numRegistros);
+                                console.log(data.filtroRegistros);
                                 $('.totalRegistros').html(data.numRegistros);
                                 $('.filtroRegistros').html(data.filtroRegistros);
-                                
-                                if(data.data.length!=0){
-                                    $('#inicioInput').val((parseInt($('#inicioInput').val())+1));
-                                    //console.log(data.inicio);
-                                    //console.log(data.data.length);
-                                    var cadena = "";
-                                    for(i=0;i<data.data.length;i++){
+                                $('#registros').hide();
+                                $('#busquedaVacia').show();
 
-                                        {#var busquedaImagen = "#busquedaImagen"+(i+1);
-                                        var busquedaNombre = "#busquedaNombre"+(i+1);
-                                        var busquedaCargo = "#busquedaCargo"+(i+1);
-                                        var busquedaTelefono = "#busquedaTelefono"+(i+1);
-                                        var busquedaCorreo = "#busquedaCorreo"+(i+1);
-                                        var busquedaSitioWeb = "#busquedaSitioWeb"+(i+1);
-                                        var busquedaEspecialidades = "#busquedaEspecialidades"+(i+1);#}
-                                        
-                                        
-                                        var busquedaImagen = "#busquedaImagen"+(i+1);
-                                        var busquedaTelefono = "#busquedaTelefono"+(i+1);
-                                        var busquedaEspecialidades = "#busquedaEspecialidades"+(i+1);
-                                        
-                                        var busquedaNombre = data.data[i].nombres +' ' + data.data[i].apellido;
-                                        var busquedaCargo = "";
-                                        
-                                        var telefonos = "";
-                                        var busquedaCorreo = data.data[i].correoelectronico;
-                                        var busquedaFoto = data.data[i].foto;
-                                        //var sitioWeb = data.data[i].sitioWeb;
-                                        //var busquedaSitioWeb = "#busquedaSitioWeb"+(i+1);
-                                        var busquedaSitioWeb = data.data[i].sitioweb;;
-                                        
-                                        
-                                        if(busquedaFoto==null){
-                                            busquedaFoto="";
-                                        }
-                                        
-                                        if(busquedaCargo==null){
-                                            busquedaCargo="";
-                                        }
-                                        else{
-                                            busquedaCargo = data.data[i].puesto;
-                                        }
-                                        
-                                        if(busquedaCorreo==null){
-                                            busquedaCorreo="-";
-                                        }
-                                        
-                                        if(busquedaSitioWeb==null){
-                                            busquedaSitioWeb="";
-                                        }
-
-                                        //console.log(data);
-{#                                      $(busquedaNombre).children().html(data.data[i].nombres +' ' + data.data[i].apellido);#}
-                                        //$(busquedaCargo).children().html(data.data[i].nombres +' ' + data.data[i].cargo);
-                                        var telefonos = "";
-                                        if(data.data[i].telefono_fijo === null ||data.data[i].telefono_fijo==='' ){
-                                            //data.data[i].telefonoFijo="";
-                                            if(data.data[i].telefono_movil === null || data.data[i].telefono_movil==='' ){
-                                                telefonos = "-";
-                                            }
-                                            else{
-                                                telefonos = "+503 "+data.data[i].telefono_movil;
-                                            }
-                                        }
-                                        else{
-                                            telefonos = "+503 "+data.data[i].telefono_fijo;
-                                            if(data.data[i].telefono_movil === null || data.data[i].telefono_movil==='' ){
-                                                telefonos += "";
-                                            }
-                                            else{
-                                                telefonos += ", +503 "+data.data[i].telefono_movil;
-                                            }
-                                            
-                                        }
-                                              
-                                        
-                                        
-                                        
-
-{#                                            console.log(data.data[i].telefono_fijo);#}
-{#                                      $(busquedaTelefono).html(telefonos);#}
-{#                                      $(busquedaCorreo).html(data.data[i].correoelectronico);#}
-                                        //$(busquedaSitioWeb).children().html(data.data[i].nombres +' ' + data.data[i].apellido);
-
-                                        //console.log(data.data[i].especialidades.length);
-                                        var especialidades = "";
-                                        if(data.data[i].especialidad!=='undefined'){
-                                            especialidades += data.data[i].especialidad;
-                                            
-                                        }
-                                        else{
-                                            especialidades = "N/A";
-                                        }
-                                        var verificado ='';
-                                        if(data.data[i].verificado==1){
-                                            verificado = '<img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 0px;margin-left:1px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>';
-                                        }
-                                        
-                                        //console.log(data.data[i].especialidades);
-                                        //console.log(especialidades);
-                                        
-
-                                        //console.log(data.data[i].foto);
-                                        
-                                        
-                                        {#$(busquedaEspecialidades).html(especialidades);
-                                        $(busquedaSitioWeb).children().html(data.data[i].sitioweb);#}
-                                        //console.log(data.data[i].fotoPerfil);
-                                        
-                                        cadena = '<div class=\"item-directorio-nexo\" style=\"width: 100%;\"> <div class=\"clearfix\"></div><div class=\"row\">\n\
-                                        <div class=\"col-xs-2 col-sm-3 col-md-3 col-lg-2\"><img id=\"busquedaImagen'+(i+1)+'\" src=\"{{asset('')}}'+data.data[i].foto+'\" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">\n\
-                                        </div><div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10"><p id=\"busquedaNombre'+(i+1)+'\" style=\"margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;\" class=\"sans\"><strong>'+busquedaNombre+'</strong>'+verificado+'</p>\n\
-                                        <p id=\"busquedaCargo'+(i+1)+'\" style=\"color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;\" class=\"sans\">'+busquedaCargo+'</p>\n\
-                                        <div class=\"row\" style=\"margin-top: 2px; margin-bottom: 15px;\"><div class=\"col-sm-4 col-xs-12\"><p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Telefono</strong></p><p id=\"busquedaTelefono1\" style=\"font-size: 11px; margin-bottom: 0px;\">'+telefonos+' </p>\n\
-                                        </div><div class=\"col-sm-4 col-xs-12\"><p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p><p id="busquedaCorreo'+(i+1)+'" style="font-size: 11px; margin-bottom: 0px;">'+busquedaCorreo+'</p></div>\n\
-                                        <div class=\"col-sm-4 col-xs-12\"><p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Sitio Web</strong></p>\n\
-                                        <p id=\"busquedaSitioWeb'+(i+1)+'\" style=\"font-size: 11px; margin-bottom: 0px;\"><a href=\"http://'+busquedaSitioWeb+'\" target=\"_blank\">'+busquedaSitioWeb+'</a></p></div>\n\
-                                        <div class=\"col-sm-12\"><span style=\"color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;\"><strong>Especialidades:</strong> </span>\n\
-                                        <span id=\"busquedaEspecialidades'+(i+1)+'\" style=\"font-size: 11px;\">'+especialidades+'</span>\n\
-                                        </div><div class=\"col-sm-12\" style=\"margin-top: -0px;\"><span style=\"font-size: 11px;\"><a href=\"../'+data.data[i].url+'\">Ver perfil</a></span>\n\
-                                        <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"{{path('contacto')}}?correo='+busquedaCorreo+'\">Contactar</a></span>\n\
-                                        <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"{{path('recomendacion')}}?correo='+busquedaCorreo+'\">Recomendar</a></span></div></div></div></div></div>';
-                                        $(busquedaImagen).attr('src', "{{asset('')}}"+data.data[i].foto);
-                                        $(busquedaImagen).load();
-                                        $('#registros').show();
-                                        $('#registros').append(cadena);
-                                        
-                                        $('#busquedaVacia').hide();
-                                        
-                                        {#console.log(data.pages);#}
-                                        numPages=data.pages;
-                                        cadenaPaginas = '';
-                                        cadenaPaginas = '<li class="anterior" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-left\"></i></li>';
-                                        {#for(k=1;k<=data.pages;k++){#}
-                                        {#console.log("data pages: "+data.pages);#}
-                                        {#console.log(paginaActual);#}
-                                        
-                                        
-                                        if(data.pages>10){
-                                        
-                                        
-                                            if(paginaActual==1){
-                                                cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
-                                                cadenaPaginas+='<li class="paginas" id="'+(parseInt(paginaActual)+1)+'" style=\"display: inline; padding: 7px;\">'+(parseInt(paginaActual)+1)+'</li>';
-                                                cadenaPaginas+='<li class="paginas" id="'+data.pages+'" style=\"display: inline; padding: 7px;\">...'+data.pages+'</li>';
-                                            }
-                                            else{
-                                                if(paginaActual==2){
-                                                    cadenaPaginas+='<li class="paginas" id="'+1+'" style=\"display: inline; padding: 7px;\">'+1+'</li>';
-        {#                                                cadenaPaginas+='<li class="paginas" id="'+(paginaActual-1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual-1)+'</li>';#}
-                                                    cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
-                                                    cadenaPaginas+='<li class="paginas" id="'+(parseInt(paginaActual)+1)+'" style=\"display: inline; padding: 7px;\">'+(parseInt(paginaActual)+1)+'</li>';
-                                                    cadenaPaginas+='<li class="paginas" id="'+data.pages+'" style=\"display: inline; padding: 7px;\">...'+data.pages+'</li>';
-                                                }
-                                                else{
-                                                    if(paginaActual==(data.pages-1)){
-                                                        cadenaPaginas+='<li class="paginas" id="'+1+'" style=\"display: inline; padding: 7px;\">'+1+'...</li>';
-                                                        cadenaPaginas+='<li class="paginas" id="'+(parseInt(paginaActual)-1)+'" style=\"display: inline; padding: 7px;\">'+(parseInt(paginaActual)-1)+'</li>';
-                                                        cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
-                                                        cadenaPaginas+='<li class="paginas" id="'+data.pages+'" style=\"display: inline; padding: 7px;\">'+data.pages+'</li>'; 
-                                                    }
-                                                    else{
-                                                        if(paginaActual==data.pages){
-                                                            cadenaPaginas+='<li class="paginas" id="'+1+'" style=\"display: inline; padding: 7px;\">'+1+'...</li>';
-                                                            cadenaPaginas+='<li class="paginas" id="'+(parseInt(paginaActual)-1)+'" style=\"display: inline; padding: 7px;\">'+(parseInt(paginaActual)-1)+'</li>';
-                                                            cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
-
-                                                        }
-                                                        else{
-
-                                                            cadenaPaginas+='<li class="paginas" id="'+1+'" style=\"display: inline; padding: 7px;\">'+1+'</li>';
-                                                            cadenaPaginas+='<li class="paginas" id="'+(parseInt(paginaActual)-1)+'" style=\"display: inline; padding: 7px;\">'+(parseInt(paginaActual)-1)+'</li>';
-                                                            cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
-                                                            cadenaPaginas+='<li class="paginas" id="'+(parseInt(paginaActual)+1)+'" style=\"display: inline; padding: 7px;\">'+(parseInt(paginaActual)+1)+'</li>';
-                                                            cadenaPaginas+='<li class="paginas" id="'+data.pages+'" style=\"display: inline; padding: 7px;\">...'+data.pages+'</li>'; 
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        else{
-                                            
-                                            for(k=1;k<=data.pages;k++){
-                                                if(k==paginaActual){
-                                                    cadenaPaginas+='<li class="paginas" id="'+k+'" style=\"display: inline; padding: 7px;\"><strong>'+k+'</strong></li>';
-                                                }
-                                                else{
-                                                    cadenaPaginas+='<li class="paginas" id="'+k+'" style=\"display: inline; padding: 7px;\">'+k+'</li>';   
-                                                }
-                                            }
-                                        }
-                                        
-{#                                        console.log(cadenaPaginas);#}
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        {#switch(paginaActual){#}
-                                            {#case 1:
-                                                cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
-                                                cadenaPaginas+='<li class="paginas" id="'+(paginaActual+1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual+1)+'</li>';
-                                                cadenaPaginas+='<li class="paginas" id="'+data.pages+'" style=\"display: inline; padding: 7px;\">...'+data.pages+'</li>';
-                                                break;#}
-                                            {#case 2:
-                                                cadenaPaginas+='<li class="paginas" id="'+1+'" style=\"display: inline; padding: 7px;\">'+1+'</li>';
-{#                                                cadenaPaginas+='<li class="paginas" id="'+(paginaActual-1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual-1)+'</li>';#}
-                                            {#cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
-                                                cadenaPaginas+='<li class="paginas" id="'+(paginaActual+1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual+1)+'</li>';
-                                                cadenaPaginas+='<li class="paginas" id="'+data.pages+'" style=\"display: inline; padding: 7px;\">...'+data.pages+'</li>';
-                                                break;#}
-                                                
-                                            {#case (data.pages-1):
-                                                cadenaPaginas+='<li class="paginas" id="'+1+'" style=\"display: inline; padding: 7px;\">'+1+'</li>';
-                                                cadenaPaginas+='<li class="paginas" id="'+(paginaActual-1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual-1)+'</li>';
-                                                cadenaPaginas+='<li class="paginas" id="'+data.pages+'" style=\"display: inline; padding: 7px;\"><strong>'+data.pages+'</strong></li>';
-                                                break;
-                                            
-                                            case data.pages:
-                                                cadenaPaginas+='<li class="paginas" id="'+1+'" style=\"display: inline; padding: 7px;\">'+1+'</li>';
-                                                cadenaPaginas+='<li class="paginas" id="'+(paginaActual-1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual-1)+'</li>';
-                                                cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
-                                                break;
-                                        }#}
-                                            {#if(paginaActual == 1 ){
-                                                
-                                                cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
-                                                cadenaPaginas+='<li class="paginas" id="'+(paginaActual+1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual+1)+'</li>';
-                                            }
-                                            else{
-                                                if(paginaActual>2 && paginaActual<data.pages && (paginaActual+1)!=data.pages){
-                                                    cadenaPaginas+='<li class="paginas" id="'+1+'" style=\"display: inline; padding: 7px;\">'+1+'</li>';
-                                                    cadenaPaginas+='<li class="paginas" id="'+(paginaActual-1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual-1)+'</li>';
-                                                    cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
-                                                    cadenaPaginas+='<li class="paginas" id="'+(paginaActual+1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual+1)+'</li>';
-                                                }
-                                                else{
-                                                    if(paginaActual>1 && paginaActual<data.pages && (paginaActual+1)!=data.pages){
-                                                        cadenaPaginas+='<li class="paginas" id="'+1+'" style=\"display: inline; padding: 7px;\">'+1+'</li>';
-                                                        
-                                                        cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
-                                                        cadenaPaginas+='<li class="paginas" id="'+(paginaActual+1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual+1)+'</li>';
-                                                    }#}
-                                                    {#if(paginaActual===1){
-                                                        cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
-                                                        cadenaPaginas+='<li class="paginas" id="'+(paginaActual+1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual+1)+'</li>';
-                                                    }
-                                                    else{#}
-                                                        {#if(paginaActual===data.pages){
-                                                            cadenaPaginas+='<li class="paginas" id="'+(paginaActual-1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual-1)+'</li>';
-                                                            cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
-                                                        }#}
-    {#                                                            }#}
-                                             {#   }
-                                                
-                                            }#}
-                                           
-                                            
-                                
-{#                                        cadenaPaginas+='<li class="paginas" id="'+k+'" style=\"display: inline; padding: 7px;\"><strong>'+k+'</strong></li>';#}
-                                        cadenaPaginas+='<li class="siguiente" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-right\"></i></li>';
-                                        $('.numeroPaginas').html(cadenaPaginas);
-                                        //$('#registros').html('prueba');
-                                    }//fin for
-                                }//fin if
-                                else{
-                                    cadenaPaginas = '';
-                                    $('.numeroPaginas').html('');
-                                    console.log('datosvacios');
-{#                                    $('#paginas').html(cadenaPaginas);#}
-                                    console.log(data.numRegistros);
-                                    console.log(data.filtroRegistros);
-                                    $('.totalRegistros').html(data.numRegistros);
-                                    $('.filtroRegistros').html(data.filtroRegistros);
-                                    $('#registros').hide();
-                                    $('#busquedaVacia').show();
-                                    
-                                }
-                                {#console.log("pagina actual: "+data.paginaActual);
-                                console.log("Inicio de registro: "+data.inicioRegistro);#}
-                            },
-                            error: function (data) {
-                                Lobibox.notify("error", {
-                                    size: 'mini',
-                                    msg: 'Ocurrió un error, intente de nuevo!'
-                                });
-                                $('#registros').append(contenidoOriginal);
                             }
-                        });
-                    }
-                    else{
-                        $('#registros').hide();
-                        $('#busquedaVacia').show();
-                    }
-        }     
-        
-        function cambia() {
-            console.log('cont: '+contador);
-                console.log('lon: '+lon);
-            if(contador >= lon){
-                contador = 0;
+        {#console.log("pagina actual: "+data.paginaActual);
+        console.log("Inicio de registro: "+data.inicioRegistro);#}
+                        },
+                        error: function (data) {
+                            Lobibox.notify("error", {
+                                size: 'mini',
+                                msg: 'Ocurrió un error, intente de nuevo!'
+                            });
+                            $('#registros').append(contenidoOriginal);
+                        }
+                    });
+                } else {
+                    $('#registros').hide();
+                    $('#busquedaVacia').show();
+                }
             }
-            
-            if(lon > 0){
-                document.getElementById("fotocambia").src = '{{asset('')}}' + imagenes[contador];
-                contador++;
-                console.log(imagenes[contador]);
-                console.log(contador);
-                console.log(lon);
-            } else {
-                document.getElementById("fotocambia").src = '{{asset('Resources/src/img/banner1.png')}}';
+
+            function cambia() {
+                console.log('cont: ' + contador);
+                console.log('lon: ' + lon);
+                if (contador >= lon) {
+                    contador = 0;
+                }
+
+                if (lon > 0) {
+                    document.getElementById("fotocambia").src = '{{asset('')}}' + imagenes[contador];
+                    contador++;
+                    console.log(imagenes[contador]);
+                    console.log(contador);
+                    console.log(lon);
+                } else {
+                    document.getElementById("fotocambia").src = '{{asset('Resources/src/img/banner1.png')}}';
+                }
+
+
+                if (contador2 >= lon2) {
+                    contador2 = 0;
+                }
+
+                if (lon2 > 0) {
+                    document.getElementById("fotocambia2").src = '{{asset('')}}' + imagenes2[contador2];
+                    contador2++;
+                } else {
+                    document.getElementById("fotocambia2").src = '{{asset('Resources/src/img/banner.png')}}';
+                }
+
+                if (contador3 >= lon3) {
+                    contador3 = 0;
+                }
+
+                if (lon3 > 0) {
+                    document.getElementById("fotocambia3").src = '{{asset('')}}' + imagenes3[contador3];
+                    contador3++;
+                } else {
+                    document.getElementById("fotocambia3").src = '{{asset('Resources/src/img/banner.png')}}';
+                }
+
+                if (contador4 >= lon4) {
+                    contador4 = 0;
+                }
+
+                if (lon4 > 0) {
+                    document.getElementById("fotocambia4").src = '{{asset('')}}' + imagenes4[contador4];
+                    contador4++;
+                } else {
+                    document.getElementById("fotocambia4").src = '{{asset('Resources/src/img/banner1.png')}}';
+                }
             }
-            
-            
-            if(contador2 >= lon2){
-                contador2 = 0;
+
+            function inicio() {
+                setInterval(cambia(), 10000);
             }
-            
-            if(lon2 > 0){
-                document.getElementById("fotocambia2").src = '{{asset('')}}' + imagenes2[contador2];
-                contador2++;
-             } else {
-                document.getElementById("fotocambia2").src = '{{asset('Resources/src/img/banner.png')}}';
-            }
-            
-            if(contador3 >= lon3){
-                contador3 = 0;
-            }
-            
-            if(lon3 > 0){
-                document.getElementById("fotocambia3").src = '{{asset('')}}' + imagenes3[contador3];
-                contador3++;
-            } else {
-                document.getElementById("fotocambia3").src = '{{asset('Resources/src/img/banner.png')}}';
-            }
-            
-            if(contador4 >= lon4){
-                contador4 = 0;
-            }
-            
-            if(lon4 > 0){
-                document.getElementById("fotocambia4").src = '{{asset('')}}' + imagenes4[contador4];
-                contador4++;
-            } else {
-                document.getElementById("fotocambia4").src = '{{asset('Resources/src/img/banner1.png')}}';
-            }
-        }
-        
-        function inicio() {
-            setInterval(cambia(), 10000);
-        }
     </script>
     <SCRIPT LANGUAGE="JavaScript">
-        
 
-        
 
-        
+
+
+
     </script>
-    
-    
+
+
 {% endblock js_template %}

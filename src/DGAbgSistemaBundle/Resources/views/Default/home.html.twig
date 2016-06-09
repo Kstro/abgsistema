@@ -7,6 +7,7 @@
 
         <!-- Stylesheet de Bootstrap -->
         <link href="src/css/bootstrap.css" rel="stylesheet">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
         <!-- Stylesheet Personales -->
         <link href="src/css/style.css" rel="stylesheet">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
@@ -61,38 +62,14 @@
                 js.id = id;
                 js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6";
                 fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));</script>
+            }(document, 'script', 'facebook-jssdk'));
+                </script>
+          
 
         <!-- Navbar -->
-       
-        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')%}
-{% else %}
- <div class="container-fluid" style="height: 27px; background-color: #263345;">
-            <div class="container">
-                <p class="text-right sans" style="color: #fff; line-height: 27px; font-size: 13px;"><a href="{{ path('registro')}}"  style=" text-decoration:none;" >Registrarme <span style="font-weight: 700;">GRATIS</span> como un Profesional del Derecho </a>| <a href="{{ path('abogado_login')}}"  style=" text-decoration:none;"> Login</a></p>
-            </div>
-        </div>
-{% endif %}
-        <div class="container-fluid" style="height: 70px; background-color: #f6f6f6; border-bottom: 1px solid #ededed;">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3">
-                        <img src="{{asset('Resources/src/img/logo2.png')}}" style="line-height: 70px; max-width: 100%;">
-                    </div>
-                    <div class="col-md-9">
-                        <ul style="display:inline; list-style: none; font-weight: 700; color: #263345; line-height: 70px;" class="pull-right text-uppercase">
-                            <li style="display: inline; padding: 15px 15px;" class="sans"><a href="{{path('directorio_index')}}"> directorio</a></li>
-                            <li style="display: inline; padding: 15px 15px;" class="sans">preguntar gratis</li>
-                            <li style="display: inline; padding: 15px 15px;" class="sans">blog</li>
-                            <!-- <li style="display: inline; padding: 15px 15px;" class="sans">login</li> -->
-                            <li style="display: inline; padding: 15px 0px 0px 15px;" class="sans">soy un abogado</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+{% embed ':Layout:head.html.twig' %}{% endembed %}
         <div class="container">
-            <img src="{{asset('Resources/src/img/facep.jpg')}}" style="width: 100%; max-width: 100%;">
+            <img src="{{asset('Resources/src/img/bannerprincipal.png')}}" style="width: 100%; max-width: 100%;">
         </div>
 
         <!-- Busqueda/Query -->
@@ -118,7 +95,11 @@
                 <div style="border-top: 3px solid #263345; width: 150px; margin-left: auto; margin-right: auto;"></div>
                 <div class="row" style="margin-top: 35px;">
                     {% for usuario in usuarios %}
-                        <div class="col-md-2 col-md-offset-1">
+                        {%if loop.first %}
+                            <div class="col-md-2 col-md-offset-1">
+                        {%else%}
+                               <div class="col-md-2">
+                        {%endif%}
                             <a href="{{path('busquedaPerfil',{url:usuario.url})}}" style="text-decoration: none; color: inherit;"><img src="/{{usuario.foto}}" style="width: 100%; max-width: 100%;">
                                 <p data-original-title="Ver Perfil" class="text-center sans" style="font-size: 13px; font-weight: 600; margin-top: 10px;" data-toggle="tooltip" data-placement="bottom" title="">{{usuario.nombres}} {{usuario.apellido}}</p></a>
                         </div>
@@ -244,17 +225,19 @@
                         <p class="sans">Los Abogados de nuestra red estan listos para responder tus preguntas casi instantaneamente.</p>
                     </div>
                     <div class="col-md-7">
-                        <textarea id="pregunta" class="sans" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; width: 100%;" rows="3" placeholder="Escriba su pregunta aqui..."></textarea>
+                         <form action="{{ path('preg_deta') }}" method="POST">
+                        <textarea id="txtpregunta" name="txtpregunta" class="sans" maxlength="150" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; width: 100%;" rows="3" placeholder="Escriba su pregunta aqui..." required></textarea>
                         <div class="row">
                             <div class="col-xs-6">
-                                <p class="sans" style="margin-top: 10px;">0 out of 150 characters</p>
+                                <p class="sans" style="margin-top: 10px;" id="contador">0 out of 150 characters</p>
                             </div>
                             <div class="col-xs-6">
                                 <p class="pull-right" style="margin-top: 10px;">
-                                    <button id="realicePregunta" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; background-color: #F42; color: #fff; font-weight: 600;" class="sans text-center" value="Buscar">Preguntarle a un abogado</button>
+                                    <button type="submit"  style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; background-color: #F42; color: #fff; font-weight: 600;" class="sans text-center" value="Buscar">Preguntarle a un abogado</button>
                                 </p>
                             </div>
                         </div>
+                         </form>
                     </div>
                     <div class="clearfix"></div>
                     <div class="col-md-"></div>
@@ -264,61 +247,33 @@
                 <p class="sans" style="font-size: 20px; margin-bottom: 5px;">Respuestas recientes</p>
                 <div style="border-top: 3px solid #263345; width: 150px;"></div>
                 <div class="row" style="margin-top: 20px;">
-                    <div class="col-md-6">
-                        <div class="col-xs-2">
-                            <img src="src/img/1.jpg" style="width: 100%;">
-                        </div>
-                        <div class="col-xs-10">
+                    {%if ultimas_prteguntas|default is not empty %}
+                            {% for key, datos in ultimas_prteguntas %}
+                                <div class="col-md-6" style="margin-top: 20px;">
+                                    <div class="col-xs-3">
+                                        <img src="{{ asset('') }}{{datos.src}}" style="width: 100%;">
+                                    </div>
+                                    <div class="col-xs-9">
+                                        <p class="sans" style="color: #888888; margin-bottom: 3px;"><a href="{{path('respuestas_pregunta', {id:datos.idPregunta})}}" style="text-decoration: none; color: inherit;">{{datos.respuesta| slice(0,100)~'...'}}</a></p>
+                                        <p class="sans" style="font-size: 12px;">Respondida {{tiemposRespuesta[key]}} por <a href="{{path('busquedaPerfil', {url:datos.url})}}">{{datos.nombres}}</a>.</p>
+                                    </div>
+                                </div>
+                                {% if loop.index is divisibleby(2) %}
+                                    <div class="clearfix"></div>
+                                {% endif %} 
 
-                        </div>
-                    </div>
-                    <div class="col-md-6">
+                            {%endfor%}
 
-                    </div>
+                        {%endif%}
                 </div>
                 <p class="text-center" style="margin-top: 30px;">
-                    <button style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 22px; height: 34px; background-color: transparent; color: #888888; font-weight: 600;" class="sans text-center" value="Buscar">Buscar respuestas por solucion legal</button>
+                    <a  href="{{ path('respuestas_publicas') }}" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 22px; height: 34px; background-color: transparent; color: #888888; font-weight: 600;" class="sans text-center">Buscar respuestas por solucion legal</a>
                 </p>
             </div>
         </div>
 
         <!-- Footer -->
-        <div class="container-fluid" style="background-color: #263345;">
-            <div class="container" style="padding-top: 40px; padding-bottom: 40px;">
-                <div class="row">
-                    <div class="col-md-3">
-                        <p class="sans" style="font-size: 16px; font-weight: 600; color: #fff;">Sitemap</p>
-                        <ul style="list-style: none; padding: 0; font-size: 13px; color: #c3c3c3;" class="sans">
-                            <li>Inicio</li>
-                            <li>Directorio</li>
-                            <li>Preguntar gratis</li>
-                            <li>Blog Comunitario</li>
-                            <li>Soy un abogado</li>
-                            <li>Login Abogados</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-3">
-
-                    </div>
-                    <div class="col-md-3">
-
-                    </div>
-                    <div class="col-md-3">
-
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-md-6">
-                        <p class="sans" style="color: #c3c3c3; font-size: 13px;">
-                            Aviso: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commod.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
+{% embed ':Layout:footer.html.twig' %}{% endembed %}
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="{{ asset('Resources/autocomplete/jquery.autocomplete.js')}}"></script>
@@ -326,14 +281,21 @@
         <script src="{{ asset('Resources/js/busquedaHome.js')}}"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="src/js/bootstrap.js"></script>
+                  <script type="text/javascript">
+           $(document).ready(function () {
+
+    var max_chars = 150;
+    $('#max').html(max_chars);
+
+    $('#txtpregunta').keyup(function() {
+        var chars = $(this).val().length;
+      var diff =chars ;
+        $('#contador').html(diff+" out of 150 characters");   
+    });
+});
+    </script>
         <script type="text/javascript">
-            $(document).ready(function () {
-                $(document).on('click', '#realicePregunta', function () {
-                    var url = Routing.generate('preg_deta');
-                    var pregunta = $('#pregunta').val();
-                    window.location = url + "?preg=" + pregunta;
-                });
-            });
+   
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip();
             })

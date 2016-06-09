@@ -34,7 +34,7 @@ class DirectorioController extends Controller
         $prom2 = $this->busquedaPublicidad(2);
         $prom3 = $this->busquedaPublicidad(3);
         $prom4 = $this->busquedaPublicidad(4);
-        $busqueda = $this->getRequest()->get('busqueda');
+        $busqueda = $this->getRequest()->get('query');
         $ciudad= $this->getRequest()->get('ciu');
         $depto= $this->getRequest()->get('depto');
 //        var_dump($busqueda);

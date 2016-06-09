@@ -69,7 +69,7 @@
                                     <div class="row">
                                         <div class="col-md-12" style="margin-bottom: 10px;">
                                             <a href="{{ path('preg_deta') }}" class="button">
-                                                <button class="btn btn-default btn-flat pull-right">Realice su pregunta </button>
+                                                <button class="btn btn-default btn-flat pull-right"></button>
                                             </a>
                                         </div>
                                     </div>
@@ -245,12 +245,7 @@
                                             </div>
                                         {% endfor %}                                    
                                     </div>
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
+
                                 </div> {#Inicio de top abogados activos#}
                             </div>
                             <div class="row" style="margin-top: 6px;">
@@ -358,43 +353,6 @@
                     return false;
                 });        
         
-                {#        $('#datatables1').DataTable({ 
-                                {#searching:true,
-                                order:[[1,"asc"]],
-                                "processing": true,
-                                "pageLength": 10,
-                                "serverSide": true,
-                                "dom":'tip',
-                                "ajax": {
-                                    "url": '{{path('busqueda_data')}}',
-                                    "type": 'GET'
-                                },
-                                "columns": [
-                                    { "data": "datos" }
-                                ],
-                                "columnDefs": [
-                                       { "orderable": false, "targets": 0 }
-
-                                       { "orderable": false, "targets": 5 },
-                                       { "orderable": false, "targets": 6 }
-                           
-                           
-                           
-                                ],
-                                "language": {
-                                "info": "Mostrando página _PAGE_ de _PAGES_",
-                                "infoEmpty": "",
-                                "emptyTable": "No se encontraron registros",
-                                "paginate": { 
-                                    "next": ">",
-                                    "previous": "<"
-                                },
-                                "processing": "Procesando petición...",
-                                "search": "Buscar registros:",
-                                "lengthMenu": "Mostrar _MENU_ registros"
-                            }, 
-                    
-                    });#}
                 
             $(document).on('click','.paginas', function(){
                 paginaActual = $(this).attr('id');
@@ -515,7 +473,8 @@
                                         var busquedaDetalle = data.data[i].detalle;
                                         var busquedaFechapregunta = data.data[i].fechapregunta;
                                         
-                                        console.log(data.data[i].id);
+                                        console.log(data.data[i]);
+                                        
                                         
                                         if(busquedaPregunta==null){
                                             busquedaPregunta="";
@@ -532,32 +491,14 @@
                                         if(busquedaFechapregunta==null){
                                             busquedaFechapregunta="-";
                                         }
-                                                                
-                                        {#var especialidades = "";
-                                        if(data.data[i].especialidades!=='undefined'){
-                                                                        for (j = 0; j < data.data[i].especialidades.length; j++) {
-                                                                            if (j == 0) {
-                                                                                especialidades += data.data[i].especialidades[j].nombreEspecialidad;
-                                                                            }
-                                                                            else {
-                                                                                especialidades += ", " + data.data[i].especialidades[j].nombreEspecialidad;
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    else {
-                                                                        especialidades = "N/A";
-                                                                    }
-                                                                    //console.log(data.data[i].especialidades);
-                                                                    //console.log(especialidades);
-
-                                                                    console.log(data.data[i].foto);#}
-                                                                   cadena = '<div class="bloque-main">';
-                                                                   cadena += '<div class="row">';                             
-                                                                   cadena += '<li><a href="{{path('respuesta_centro')}}?id='+data.data[i].id+'" style="text-decoration:none;">'+busquedaPregunta+'</a></br>';
-                                                                   cadena += '<div style="margin-left: 15px; font-size: 12px; font-weight: bold;">Fecha de la pregunta: '+busquedaFechapregunta+'</div>';
-                                                                   cadena += '</li>';
-                                                                   cadena += '</div>';
-                                                                   cadena += '</div>';
+                                    
+                                                cadena = '<div class="bloque-main">';
+                                                cadena += '<div class="row">';                             
+                                                cadena += '<li><a href="{{path('respuesta_centro')}}?id='+data.data[i].id+'" style="text-decoration:none;">'+busquedaPregunta+'</a></br>';
+                                                cadena += '<div style="margin-left: 15px; font-size: 12px; font-weight: bold;">Fecha de la pregunta: '+busquedaFechapregunta+'</div>';
+                                                cadena += '</li>';
+                                                cadena += '</div>';
+                                                cadena += '</div>';
                                                                                
                                                                     $('#registros').show();
                                                                     $('#registros').append(cadena);
@@ -597,11 +538,7 @@
                                                             console.log("Inicio de registro: " + data.inicioRegistro);
                                                         },
                                                         error: function (data) {
-                                                            //Lobibox.notify("error", {
-                                                            //    size: 'mini',
-                                                            //    msg: 'Los datos no fueron ingresados, intente más tarde. Si el error persiste pongase en contacto con el administrador del sistema.'
-                                                            //});
-                                                            //$('#registros').append(contenidoOriginal);
+                                                     
                                                         }
                                                     });
                                                 }//FIN IF VACIOOOOOOOOOOO
@@ -660,24 +597,6 @@
                                                                         busquedaFechapregunta="-";
                                                                     }
 
-                                                                    {#var especialidades = "";
-                                                                    if(data.data[i].especialidades!=='undefined'){
-                                                                                                    for (j = 0; j < data.data[i].especialidades.length; j++) {
-                                                                                                        if (j == 0) {
-                                                                                                            especialidades += data.data[i].especialidades[j].nombreEspecialidad;
-                                                                                                        }
-                                                                                                        else {
-                                                                                                            especialidades += ", " + data.data[i].especialidades[j].nombreEspecialidad;
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                                else {
-                                                                                                    especialidades = "N/A";
-                                                                                                }
-                                                                                                //console.log(data.data[i].especialidades);
-                                                                                                //console.log(especialidades);
-
-                                                                                                console.log(data.data[i].foto);#}
                                                                                                cadena = '<div class="bloque-main">';
                                                                                                cadena += '<div class="row">';                             
                                                                                                cadena += '<li><a href="{{path('respuesta_centro')}}?id='+data.data[i].id+'" style="text-decoration:none;">'+busquedaPregunta+'</a></br>';
@@ -724,20 +643,13 @@
                                                                                         console.log("Inicio de registro: " + data.inicioRegistro);
                                                                                     },
                                                                                     error: function (data) {
-                                                                                        //Lobibox.notify("error", {
-                                                                                        //    size: 'mini',
-                                                                                        //    msg: 'Los datos no fueron ingresados, intente más tarde. Si el error persiste pongase en contacto con el administrador del sistema.'
-                                                                                        //});
-                                                                                        //$('#registros').append(contenidoOriginal);
+                                                                          
                                                                                     }
                                                                                 });
                                                     
                                                     
                                                 }//FIN DEL ELSE
                                             }
-                                                {#else {
-                                                    $('#registros').hide();
-                                                    $('#busquedaVacia').show();
-                                                }#}                                                                                                                         
+                                                                                                                                                      
         </script>
     {% endblock js_template %}

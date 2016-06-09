@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Directorio de Abogados de El Salvador | Primero y unico directorio de abogados de El Salvador | Abogados.com.sv</title>
+        <meta name="robots" content="noindex">
+
+
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <link href="{{asset('Resources/src/css/bootstrap.css')}}" rel="stylesheet">
+        <!-- Stylesheet Personales -->
+        <link href="{{asset('Resources/src/css/style.css')}}" rel="stylesheet">
+        <!-- Favicon (Icono Pequeño) -->
+        <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+        <link rel="icon" href="favicon.png" type="image/x-icon">
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+        <style>
+
+            .autocomplete-suggestions { border: 1px solid #999; background: #FFF; cursor: default; overflow: auto; -webkit-box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); -moz-box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); }
+            .autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+            .autocomplete-no-suggestion { padding: 2px 5px;}
+            .autocomplete-selected { background: #F0F0F0; }
+            .autocomplete-suggestions strong { font-weight: bold; color: #000; }
+            .autocomplete-group { padding: 2px 5px; }
+            .autocomplete-group strong { font-weight: bold; font-size: 16px; color: #000; display: block; border-bottom: 1px solid #000; }
+            a{  color:#333;}
+            a:hover{  text-decoration: none;}
+        </style>
+    </head>
+    <body>
+
+        <!-- Navbar -->
+    {% embed ':Layout:head.html.twig' %}{% endembed %}
+
+
+    <!-- Banner -->
+    <div class="container-fluid" style="height: 300px; background-color: #555555;">
+        <div class="clearfix"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <p class="text-center sans" style="color: #fff; font-size: 20px; margin-top: 16%; font-weight: 600;">
+                        OBTENGA RESPUESTAS GRATIS DE PROFESIONALES DEL DERECHO
+                    </p>
+                    <p class="text-center">
+                        <a  href="#pregunta_gratis" style="font-size: 13px; border: 1px solid #d2d6de; background-color: transparent; border-radius: 2px; padding: 6px 12px;">
+                            <span class="sans" style="color: #f2f2f2;">Pregunte gratis ahora mismo</span>
+                        </a>
+                    </p>	
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Como funciona -->
+    <div class="container" style="padding-top: 70px; padding-bottom: 70px;">
+        <p class="text-center sans text-uppercase" style="margin-bottom: 5px; font-size: 25px; font-weight: 700;">¿Como funciona?
+        </p>
+        <p class="text-center" style="font-size: 16px; color: #777777;"> ¡Preguntar sobre asuntos legales es muy facil y efectivo!</p>
+        <div style="border-top: 2px solid #263345; width: 50px; margin-left: auto; margin-right: auto;  margin-bottom: 50px;"></div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <p class="text-center">
+                    <img src="{{asset('Resources/src/img/perso-01.png')}}" style="width: 100%; max-width: 100%;" class="img-circle">
+                </p>
+                <p class="sans text-uppercase text-center" style="font-size: 16px; font-weight: 600; margin-top: 20px;">RELIZA TU PREGUNTA</p>
+                <p class="sans text-center" style="font-size: 13px; color: #888888;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ven.</p>
+            </div>
+
+            <div class="col-md-4">
+                <p class="text-center">
+                    <img src="{{asset('Resources/src/img/perso-02.png')}}" style="width: 100%; max-width: 100%;" class="img-circle">
+                </p>
+                <p class="sans text-uppercase text-center" style="font-size: 16px; font-weight: 600; margin-top: 20px;">RECIBE RESPUESTAS</p>
+                <p class="sans text-center" style="font-size: 13px; color: #888888;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ven.</p>
+            </div>
+
+            <div class="col-md-4">
+                <p class="text-center">
+                    <img src="{{asset('Resources/src/img/perso-03.png')}}" style="width: 100%; max-width: 100%;" class="img-circle">
+                </p>
+                <p class="sans text-uppercase text-center" style="font-size: 16px; font-weight: 600; margin-top: 20px;">SELECCIONA TU ABOGADO</p>
+                <p class="sans text-center" style="font-size: 13px; color: #888888;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ven.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- centro de preguntas -->
+    <div class="container-fluid" id="pregunta_gratis" style="padding-top: 70px; padding-bottom: 70px; background-color: #f6f6f6;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5">
+                    <p class="text-left sans text-uppercase" style="font-size: 20px; font-weight: 600;">
+                        gratis, respuestas personalizadas de nuestra red de abogados expertos.
+                    </p>
+                    <p class="sans">Los Abogados de nuestra red estan listos para responder tus preguntas casi instantaneamente.</p>
+                    <p class="sans" style="font-size: 12px;">Aviso: Estas respuestas son solamente de referencia a su caso, debe de realizar una contratacion para poder obtener ayuda legal de un profesional.</p>
+                </div>
+                <div class="col-md-7">
+                    <form action="{{ path('preg_deta') }}" method="POST">
+                        <textarea class="sans" id="txtpregunta" name="txtpregunta" maxlength="150" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; width: 100%;" rows="3" placeholder="Escriba su pregunta aqui..." required></textarea>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <p class="sans" style="margin-top: 10px;" id="contador">0 out of 150 characters</p>
+                            </div>
+                            <div class="col-xs-6">
+                                <p class="pull-right" style="margin-top: 10px;">
+                                    <button type="submit" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; background-color: #F42; color: #fff; font-weight: 600;" class="sans text-center" value="Buscar">Preguntarle a un abogado</button>
+                                </p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-"></div>
+            </div> <!-- end row -->
+        </div>
+    </div>
+
+    <!-- Busqueda por Area de Especialidad -->
+    <div class="container" style="padding-top: 70px; padding-bottom: 70px;">
+        <div class="row">
+            <div class="col-md-9">
+                <p class="sans" style="font-size: 20px; margin-bottom: 5px; font-weight: 600;">Busqueda de Preguntas por Area de Especialidad</p>
+                <div style="border-top: 3px solid #263345; width: 150px; margin-bottom: 8px;"></div>
+                <p class="sans">¿Necesitas ayuda para poder encontrar un profesional del derecho? ... realiza una pregunta y un maximo de 3 abogados
+                    te responderan. Recuerda, no publiques informacion privada y contacta el abogado de tu eleccion.</p>
+
+                <div class="clearfix"></div>
+
+                <!-- Inicio de Buscador -->
+                <div style="margin-top: 25px;">
+                    <form action="{{ path('respuestas_publicas') }}" method="GET">
+                        <div class="col-md-6">
+                            <input class="search sans" id="searchInput" name="txtgeneral" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%;" placeholder="Solucion legal o Nombre de abogado." >
+                        </div>
+                        <div class="col-md-4">
+                            <input class="search sans" id="searchInputDept" name="txtlugar" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%;" placeholder="Cuidad, Dept">
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; background-color: #F42; color: #fff; font-weight: 600;" class="sans text-center" value="Buscar">Buscar </button>
+                        </div>
+                    </form>
+                </div>
+                <!-- fin de buscador -->
+
+                <div class="clearfix"></div>
+
+                <!-- Inicio de Respuetas Recientes -->
+                <div class="col-md-12">
+                    <p class="sans" style="font-size: 16px; color: #999999; margin-bottom: 5px; font-weight: 600; margin-top: 20px;">Respuestas recientes</p>
+                    <div style="border-top: 2px solid #263345; width: 100px;"></div>
+                    <div class="row">
+                        {%if ultimas_prteguntas|default is not empty %}
+                            {% for key, datos in ultimas_prteguntas %}
+                                <div class="col-md-6" style="margin-top: 20px;">
+                                    <div class="col-xs-3">
+                                        <img src="{{ asset('') }}{{datos.src}}" style="width: 100%;">
+                                    </div>
+                                    <div class="col-xs-9">
+                                        <p class="sans" style="color: #888888; margin-bottom: 3px;"><a href="{{path('respuestas_pregunta', {id:datos.idPregunta})}}" style="text-decoration: none; color: inherit;">{{datos.respuesta| slice(0,100)~'...'}}</a></p>
+                                        <p class="sans" style="font-size: 12px;">Respondida {{tiemposRespuesta[key]}} por <a href="{{path('busquedaPerfil', {url:datos.url})}}">{{datos.nombres}}</a>.</p>
+                                    </div>
+                                </div>
+                                {% if loop.index is divisibleby(2) %}
+                                    <div class="clearfix"></div>
+                                {% endif %} 
+
+                            {%endfor%}
+
+                        {%endif%}
+                    </div>
+                    <p class="text-center" style="margin-top: 30px;">
+                        <a href="{{ path('respuestas_publicas') }}" ><button style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 22px; height: 34px; background-color: transparent; color: #888888; font-weight: 600;" class="sans text-center" value="Buscar">Ver más respuestas</button></a>
+                    </p>
+                </div> <!-- Fin de Respuetas Recientes -->
+
+            </div> <!-- Fin col md 9 Izquierdo -->
+
+            <div class="col-md-3">
+                <!-- Stat 1 -->
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div>
+                            <img src="{{ asset('Resources/src/img/pregunta-01.png')}}" style="width: 100%;">
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <p class="sans" style="font-size: 30px; font-weight: 700; margin-bottom: 0;">{{NAgb}}</p>
+                        <p class="sans" style="font-size: 15px; margin-top: 0;">Abogados registrados</p>
+                    </div>
+                </div>
+                <!-- Stat 2 -->
+                <div class="row" style="padding-top: 10px;">
+                    <div class="col-sm-4">
+                        <div>
+                            <img src="{{ asset('Resources/src/img/pregunta-03.png') }}" style="width: 100%;">
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <p class="sans" style="font-size: 30px; font-weight: 700; margin-bottom: 0;">{{Npreguntas}}</p>
+                        <p class="sans" style="font-size: 15px; margin-top: 0;">Preguntas realizadas</p>
+                    </div>
+                </div>
+                <!-- Stat 3 -->
+                <div class="row" style="padding-top: 10px;">
+                    <div class="col-sm-4">
+                        <div>
+                            <img src="{{  asset('Resources/src/img/pregunta-02.png')}}" style="width: 100%;">
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <p class="sans" style="font-size: 30px; font-weight: 700; margin-bottom: 0;">{{Npreguntas}}</p>
+                        <p class="sans" style="font-size: 15px; margin-top: 0;">Respuestas realizadas</p>
+                    </div>
+                </div>
+            </div>
+
+        </div> <!-- Fin row Principal -->
+
+
+    </div>
+
+    <!-- Navbar -->
+{% embed ':Layout:footer.html.twig' %}{% endembed %}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="{{ asset('Resources/autocomplete/jquery.autocomplete.js')}}"></script>
+    <script src="{{ asset('Resources/js/busquedaPregunta.js')}}"></script>
+   
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var max_chars = 150;
+            $('#max').html(max_chars);
+            $('#txtpregunta').keyup(function () {
+                var chars = $(this).val().length;
+                var diff = chars;
+                $('#contador').html(diff + " out of 150 characters");
+            });
+
+          $('a[href*=#]').click(function () {
+                if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')
+                        && location.hostname == this.hostname) {
+                    var $target = $(this.hash);
+                    $target = $target.length && $target || $('[name=' + this.hash.slice(1) + ']');
+                    if ($target.length) {
+                        var targetOffset = $target.offset().top;
+                        $('html,body').animate({scrollTop: targetOffset}, 1000);
+                        return false;
+                    }
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+   /*     $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })*/
+    </script>
+
+</body>
+</html>{# empty Twig template #}

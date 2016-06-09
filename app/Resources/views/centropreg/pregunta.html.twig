@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Directorio de Abogados de El Salvador | Primero y unico directorio de abogados de El Salvador | Abogados.com.sv</title>
+        <meta name="robots" content="noindex">
+
+        <!-- Stylesheet de Bootstrap -->
+
+        <!-- Stylesheet Personales -->
+        <link href="src/css/style.css" rel="stylesheet">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+
+        <!-- Favicon (Icono Pequeño) -->
+        <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+        <link rel="icon" href="favicon.png" type="image/x-icon">
+
+
+        <link href="{{asset('Resources/src/css/bootstrap.css')}}" rel="stylesheet">
+        <!-- Stylesheet Personales -->
+        <link href="{{asset('Resources/src/css/style.css')}}" rel="stylesheet">
+
+    </head>
+    <body>
+
+        <!-- Navbar -->
+    {% embed ':Layout:head.html.twig' %}{% endembed %}
+
+    <div class="container" style="padding-bottom: 70px;">
+        <div class="row">
+            <div class="col-md-9">
+                <img src="{{asset('Resources/src/img/publicida/banner1.png')}}" class="img-thumbnail" style="width: 100%; max-width: 100%;">
+
+                <!-- INICIO DE PREGUNTA -->
+                <div class="row" style=" margin-top: 10px;">
+                    <div class="col-md-12">
+                        <div class="pregunta">
+                            <p class="sans text-center text-uppercase" style="margin-bottom: 0px; font-size: 16px; background-color: #263345; color: #fff; font-weight: 600; width: 170px; height: 40px; line-height: 40px;">Pregunta</p>
+                            <div style="padding: 15px; background-color: #f6f6f6;">
+                                <div style="background-color: #fff; padding: 15px;">
+                                    <p class="sans text-justify" style="font-size: 16px;">
+                                        <strong>{{pregunta.pregunta}}</strong></p>
+                                    <p class="sans text-justify" style="font-size: 13px; color: #999999;">
+                                        {{pregunta.detalle}}
+                                    </p>
+                                    <p class="sans" style="color: #999999; font-size: 13px;">Realizado por Anonimo en la categoria <a href="#">Derecho Civil</a> {{ tiempo }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Respuestas -->
+                        <div class="pregunta" style="margin-top: 20px;">
+                            <div class="pregunta">
+                                <p class="sans text-center text-uppercase" style="margin-bottom: 0px; font-size: 16px; background-color: #263345; color: #fff; font-weight: 600; width: 170px; height: 40px; line-height: 40px;">Respuesta/s</p>
+                                <!-- INICIO DE RESPUESTA -->
+                                {% for key, respuesta in respuestas %}
+                                <div style="padding: 15px; background-color: #f6f6f6;">
+                                    <div style="background-color: #fff; padding: 15px;">
+                                        
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <p class="sans" style="font-size: 13px;">
+                                                        <strong>RESPUESTA POR <a href="{{path('busquedaPerfil', {url:respuesta.url})}}">{{ respuesta.nombres}}</a></strong>
+                                                    </p>
+                                                    <p class="sans text-justify" style="font-size: 13px;">
+                                                         {{respuesta.respuesta}} 
+                                                    </p>
+                                                    <p class="sans" style="color: #999999; font-size: 13px;">Respuesta por <a href="{{path('busquedaPerfil', {url:respuesta.url})}}">{{ respuesta.nombres}}</a> en la categoria <a href="#">Derecho Civil</a> {{ tiemposRespuesta[key] }}</p>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <a href="{{path('busquedaPerfil', {url:respuesta.url})}}"><img src="{{asset('') }}{{ fotos[key].src }}" style="width: 100%;"></a>
+                                                    <div style="background-color: #263345; height: 30px; line-height: 30px; margin-top: 5px;">
+                                                        <p class="text-center sans text-uppercase" style="color: #fff; font-size: 13px; font-weight: 600;"><a class="sans" href="{{path('busquedaPerfil', {url:respuesta.url})}}" style=" text-transform: none; color: inherit;">Ver perfil</a></p>
+                                                    </div>
+                                                    <div style="background-color: #263345; height: 30px; line-height: 30px; margin-top: 5px;">
+                                                        <p class="text-center sans text-uppercase" style="color: #fff; font-size: 13px; font-weight: 600;"><a class="sans" href="{{path('contacto', {correo:respuesta.correo})}}" style=" text-transform: none; color: inherit;">Contactar</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                       
+                                    </div>
+                                </div> <!-- FIN DE RESPUESTA -->
+                           {% endfor %}
+                         
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-3">
+                <img src="{{asset('Resources/src/img/publicida/banner.png')}}" class="img-thumbnail" style="width: 100%; max-width: 100%;">
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+  {% embed ':Layout:footer.html.twig' %}{% endembed %}
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="src/js/bootstrap.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script type="text/javascript">
+        <!--
+    function check_length(my_form)
+        {
+            maxLen = 140; // max number of characters allowed
+            if (my_form.my_text.value.length >= maxLen) {
+                // Reached the Maximum length so trim the textarea
+                my_form.my_text.value = my_form.my_text.value.substring(0, maxLen);
+            } else { // Maximum length not reached so update the value of my_text counter
+                my_form.text_num.value = maxLen - my_form.my_text.value.length;
+            }
+        }
+        //-->
+    </script>
+</body>
+</html>
+
+
+<!-- Respuesta de abogado 1 
+<div class="respuesta" style="margin-top: 10px;">
+        <div class="row">
+                <div class="col-md-1">
+                        
+                </div>
+                <div class="col-md-11">
+                        <img src="src/img/profile.png" class="img-circle" style="max-width: 100%; width: 100%; margin-top: 10px; margin-left: 10px; width: 50px;">
+                        <p class="sans" style="padding: 10px; margin-bottom: 0; font-size: 13px;"><strong>R:</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris.</p>
+                        <p class="text-left sans" style="font-size: 11px; margin-left: 10px;">Respondida hace 23 minutos.</p>
+                </div>
+                <div class="col-md-2" style="padding: 0;">
+                        <img src="src/img/profile.png" class="img-thumbnail" style="max-width: 100%; width: 100%; margin: 10px">
+                </div>
+                <div class="col-md-4" style="padding: 0;">
+                        <p style="margin-top: 10px; font-size: 13px; margin-left: 10px; margin-bottom: 0px;" class="sans"><strong>Marvin Jose Vigil</strong> <img src="src/img/verified.png" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
+                        <p style="color: #777777; margin-left: 11px; font-size: 12px; margin-top: -3px; margin-bottom: 0px;" class="sansli">Director Ejecutivo en Digitality Garage</p>
+                        <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 0px;" class="sansli">San Salvador | El Salvador</p>
+                        <p style="color: 5555555; margin-left: 10px; font-size: 12px; margin-bottom: 0px;" class="sansli">+503 2250300 | +503 78888888</p>
+                </div>
+        </div>
+        
+</div>
+<div class="respuesta" style="border-top: 0 !important;">
+        <div class="row">
+                <div class="col-xs-2" style="padding-right: 0;">
+                        <img src="src/img/profile.png" style="max-width: 100%; width: 100%; padding: 10px">
+                </div>
+                <div class="col-xs-5" style="padding-left: 0;">
+                        <p style="margin-top: 10px; font-size: 13px; margin-left: 10px; margin-bottom: 0px;" class="sans"><strong>Marvin Jose Vigil</strong> <img src="src/img/verified.png" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
+                        <p style="color: #777777; margin-left: 11px; font-size: 12px; margin-top: -3px; margin-bottom: 0px;" class="sansli">Director Ejecutivo en Digitality Garage</p>
+                        <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 0px;" class="sansli">San Salvador | El Salvador</p>
+                        <p style="color: 5555555; margin-left: 10px; font-size: 12px; margin-bottom: 0px;" class="sansli">+503 2250300 | +503 78888888</p>
+                </div>
+                <div class="col-xs-5">
+                        <strong>R:</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                                                                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                                                                                quis nostrud exercitation ullamco laboris.</p>
+                </div>
+        </div>
+</div>  fin de respuesta 1 -->
+
+<!-- Respuesta de abogado 2 
+<div class="respuesta" style="margin-top: 10px;">
+        <p class="sans" style="padding: 10px; margin-bottom: 0; font-size: 13px;"><strong>R:</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris.</p>
+        <p class="text-right sans" style="font-size: 11px; margin-right: 10px;">Respondida hace 23 minutos.</p>
+</div>
+<div class="respuesta" style="border-top: 0 !important;">
+        <div class="row">
+                <div class="col-xs-2" style="padding-right: 0;">
+                        <img src="src/img/2.jpg" style="max-width: 100%; width: 100%; padding: 10px">
+                </div>
+                <div class="col-xs-5" style="padding-left: 0;">
+                        <p style="margin-top: 10px; font-size: 13px; margin-left: 10px; margin-bottom: 0px;" class="sans"><strong>Marvin Jose Vigil</strong> <img src="src/img/verified.png" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
+                        <p style="color: #777777; margin-left: 11px; font-size: 12px; margin-top: -3px; margin-bottom: 0px;" class="sansli">Director Ejecutivo en Digitality Garage</p>
+                        <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 0px;" class="sansli">San Salvador | El Salvador</p>
+                        <p style="color: 5555555; margin-left: 10px; font-size: 12px; margin-bottom: 0px;" class="sansli">+503 2250300 | +503 78888888</p>
+                </div>
+                <div class="col-xs-5">
+                        
+                </div>
+        </div>
+</div>  fin de respuesta 2 -->
+
+<!-- Respuesta de abogado 3 
+<div class="respuesta" style="margin-top: 10px;">
+        <p class="sans" style="padding: 10px; margin-bottom: 0; font-size: 13px;"><strong>R:</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris.</p>
+        <p class="text-right sans" style="font-size: 11px; margin-right: 10px;">Respondida hace 23 minutos.</p>
+</div>
+<div class="respuesta" style="border-top: 0 !important;">
+        <div class="row">
+                <div class="col-xs-2" style="padding-right: 0;">
+                        <img src="src/img/1.jpg" style="max-width: 100%; width: 100%; padding: 10px">
+                </div>
+                <div class="col-xs-5" style="padding-left: 0;">
+                        <p style="margin-top: 10px; font-size: 13px; margin-left: 10px; margin-bottom: 0px;" class="sans"><strong>Marvin Jose Vigil</strong> <img src="src/img/verified.png" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
+                        <p style="color: #777777; margin-left: 11px; font-size: 12px; margin-top: -3px; margin-bottom: 0px;" class="sansli">Director Ejecutivo en Digitality Garage</p>
+                        <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 0px;" class="sansli">San Salvador | El Salvador</p>
+                        <p style="color: 5555555; margin-left: 10px; font-size: 12px; margin-bottom: 0px;" class="sansli">+503 2250300 | +503 78888888</p>
+                </div>
+                <div class="col-xs-5">
+                        
+                </div>
+        </div>
+</div> fin de respuesta 3 -->

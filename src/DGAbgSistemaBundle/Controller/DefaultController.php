@@ -38,9 +38,33 @@ class DefaultController extends Controller
         
         //$preguntas = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->findAll();
         
+          $sql_preguntas_resiente = "SELECT  pre.id, usu.id,CONCAT(per.nombres, '  ', per.apellido) as nombres, uper.url as url, fot.src AS src, "
+                . " pre.respuesta AS respuesta, pre.fecha_respuesta, pre.abg_pregunta AS idPregunta "
+                . " FROM abg_respuesta_pregunta pre "
+                . " JOIN ctl_usuario usu ON pre.ctl_usuario_id = usu.id "
+                . " JOIN abg_persona per ON usu.rh_persona_id = per.id "
+                . " JOIN abg_url_personalizada uper ON uper.abg_persona_id = per.id "
+                . "  JOIN abg_foto fot "
+                . " ON fot.abg_persona_id=per.id AND fot.tipo_foto=0 AND fot.tipo_foto <> 5 "
+                . " ORDER BY  pre.id desc "
+                . " LIMIT 0, 4 ";
+        $stm = $this->container->get('database_connection')->prepare($sql_preguntas_resiente);
+        $stm->execute();
+        $ultimas_prteguntas = $stm->fetchAll();
+        
+            $tiemposRespuesta = array();
+        if ($ultimas_prteguntas != NULL) {
+            foreach ($ultimas_prteguntas as $row) {
+                array_push($tiemposRespuesta, $this->tiempo_transcurrido($row['fecha_respuesta']));
+            }
+        } else {
+            $tiemposRespuesta = NULL;
+        }
         
         return $this->render('DGAbgSistemaBundle:Default:home.html.twig',array(
-            'usuarios' =>$usuarios
+            'usuarios' =>$usuarios,
+            'ultimas_prteguntas'=> $ultimas_prteguntas,
+            'tiemposRespuesta' => $tiemposRespuesta
         ));
     }
     
@@ -149,4 +173,48 @@ class DefaultController extends Controller
         return new Response(json_encode($abogado));
     }
     
+      function tiempo_transcurrido($fecha) {
+        if (empty($fecha)) {
+            return "No hay fecha";
+        }
+
+        $intervalos = array("segundo", "minuto", "hora", "día", "semana", "mes", "año");
+        $duraciones = array("60", "60", "24", "7", "4.35", "12");
+
+        $ahora = time();
+        $Fecha_Unix = strtotime($fecha);
+
+        if (empty($Fecha_Unix)) {
+            return "Fecha incorrecta";
+        }
+        if ($ahora > $Fecha_Unix) {
+            $diferencia = $ahora - $Fecha_Unix;
+            $tiempo = "Hace";
+        } else {
+            $diferencia = $Fecha_Unix - $ahora;
+            $tiempo = "Dentro de";
+        }
+        for ($j = 0; $diferencia >= $duraciones[$j] && $j < count($duraciones) - 1; $j++) {
+            $diferencia /= $duraciones[$j];
+        }
+
+        $diferencia = round($diferencia);
+
+        if ($diferencia != 1) {
+            $intervalos[5].="e"; //MESES
+            $intervalos[$j].="s";
+        }
+
+        if ($intervalos[$j] == 'meses' and $diferencia >= 12) {
+            $diferencia /= $duraciones[$j];
+            $j++;
+            $diferencia = round($diferencia);
+
+            if ($diferencia != 1) {
+                $intervalos[$j].="s";
+            }
+        }
+
+        return "$tiempo $diferencia $intervalos[$j]";
+    }
 }

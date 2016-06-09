@@ -77,17 +77,12 @@
                                                     <span class="direct-chat-name {% if loop.index is not divisibleby(2) %}pull-left{% else %}pull-right{% endif %}">{{ respuesta.ctlUsuario.rhPersona.nombres }} {{ respuesta.ctlUsuario.rhPersona.apellido }}</span>
                                                     <small class="direct-chat-name {% if loop.index is not divisibleby(2) %}pull-right{% else %}pull-left{% endif %}">{{ tiemposRespuesta[key] }}</small>
                                                 </div>
-                                                {#{% if loop.index is not divisibleby(2) %}#}
+                                             
                                                     <img src="{{asset('') }}{{ fotos[key].src }}" style="width: 45px; height: 45px; margin-bottom: 0px;" class="direct-chat-img img-circle img-bordered-sm" alt="User Image" />                             
                                                     <div style="margin-top: 8px;" class="direct-chat-text">
                                                         {{respuesta.respuesta}} 
                                                     </div>
-                                                {#{% else %}
-                                                    <div style="margin-top: 8px;" class="direct-chat-text">
-                                                        {{respuesta.respuesta}} 
-                                                    </div>
-                                                    <img src="{{asset('') }}{{ fotos[key].src }}" style="width: 45px; height: 45px; margin-bottom: 0px;" class="direct-chat-img img-circle img-bordered-sm" alt="User Image" />
-                                                {% endif %}#}
+                                          
                                             </div>
                                         </div>
                                             

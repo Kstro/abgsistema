@@ -600,10 +600,7 @@ class AbgPersonaController extends Controller {
                         . " AND url.estado=1";
 
                 $result_url = $em->createQuery($dqlUrl)->getArrayResult();
-//                $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
-//                $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo "
-//                        . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
-//                $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+
 
                 return $this->render('ctlempresa/perfilGeneral.html.twig', array(
                             'ctlEmpresa' => $result_empresa,
@@ -935,25 +932,7 @@ class AbgPersonaController extends Controller {
                         'abgFoto' => $result_foto,
             ));
 
-            /*   $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username); //->getRhPersona();
-              $idPersona = $RepositorioPersona[0]->getRhPersona()->getId(); */
-            /*
-              $dql_persona = "SELECT  p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo,p.codigo as codigo "
-              . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
-              $result_persona = $em->createQuery($dql_persona)->getArrayResult();
-
-              //Este es la consulta que carga la foto del panel de ajuste de
-              $dqlfoto = "SELECT fot.src as src "
-              . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . "  and fot.tipoFoto=1";
-              $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
-
-
-              return $this->render('abgpersona/panelAjustes.html.twig', array(
-              'abgPersona' => $result_persona,
-              'usuario' => $username,
-              'active' => 'ajuste',
-              'AbgFoto' => $result_foto,
-              )); */
+ 
         } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
