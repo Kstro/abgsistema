@@ -407,6 +407,8 @@ class AbgPersonaController extends Controller {
                         . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
                 $result_persona = $em->createQuery($dql_persona)->getArrayResult();
                 
+                $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_persona[0]['apellido'])[0];
+                
                 $dqlfoto = "SELECT fot.src as src "
                         . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
                 $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
@@ -421,7 +423,7 @@ class AbgPersonaController extends Controller {
                         . "inner join abg_persona per on usu.rh_persona_id = per.id "
                         . "inner join abg_foto foto on foto.abg_persona_id = per.id "
                         . "inner join abg_url_personalizada uper on uper.abg_persona_id = per.id "
-                        . "where per.fecha_ingreso > '".$nuevafecha."' and per.fecha_ingreso <= '".$fecha."' and foto.estado = 1";
+                        . "where per.fecha_ingreso > '".$nuevafecha."' and per.fecha_ingreso <= '".$fecha."' and foto.estado = 1 and uper.estado = 1";
                 //var_dump($sql);
                 $rsm->addScalarResult('total','total');
                 
@@ -447,7 +449,7 @@ class AbgPersonaController extends Controller {
                         inner join abg_persona per on usu.rh_persona_id = per.id
                         inner join abg_foto foto on foto.abg_persona_id = per.id
                         inner join abg_url_personalizada uper on uper.abg_persona_id = per.id
-                        where foto.estado = 1
+                        where foto.estado = 1 and uper.estado = 1
                         order by fecha_ingreso desc, per.id desc
                         limit 0, 12";
 
@@ -467,7 +469,7 @@ class AbgPersonaController extends Controller {
                         inner join abg_foto foto on foto.ctl_empresa_id = emp.id
                         inner join abg_url_personalizada uper on uper.ctl_empresa_id = emp.id
                         left outer join ctl_tipo_empresa te on emp.ctl_tipo_empresa_id = te.id
-                        where foto.estado = 1 and emp.nombre_empresa <> 'Nombre de la empresa'
+                        where foto.estado = 1 and emp.nombre_empresa <> 'Nombre de la empresa' and uper.estado = 1
                         order by emp.id desc
                         limit 0, 8";
                 
