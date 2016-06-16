@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
+<script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>   
+<div id="txtDepMun-content" >
+    <div class="row">
+        <div class="col-sm-7 col-xs-7">
+            <div id="divD" class="row">
+                <div class=" col-sm-12 col-xs-12">
+                    <select style="width:100%;" class="form-control input-sm" name="SDepartamento" id="SDepartamento" >
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+            <div id="divC" class="row">
+                <div class=" col-sm-12 col-xs-12">
+                    <select style="width:100%;"  class="form-control input-sm  select3" name="sEstado" id="sEstado">
+                        <option value="0">Seleccione ciudad</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-sm-5 col-xs-5">
+            <div class="row">
+                <div class="col-sm-12 col-xs-12">
+                    <button type="button" class="btn btn-primary btn-sm "  onclick="bntMunicipio()"><i class="glyphicon glyphicon-ok"></i></button>
+                    <button class="btn btn-default btn-sm editable-cancel" type="button" onClick="bntCancelDepMun()"><i class="glyphicon glyphicon-remove"></i></button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

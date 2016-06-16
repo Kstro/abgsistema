@@ -1,10 +1,10 @@
 <!-- Logo -->
 
-<a href="" class="logo" >
+<a href="{{ path('index')}}" class="logo" >
     <!-- mini logo for sidebar mini 50x50 pixels -->
-  
+
     <!-- logo for regular state and mobile devices -->
-    <span class="logo-lg">  <img src="{{ asset('Resources/src/img/loo.png')}}" style="margin-top: 6px;"></span>
+    <span class="logo-lg"><img src="{{ asset('Resources/src/img/loo.png')}}" style="margin-top: 6px;"></span>
 </a>
 <!-- Header Navbar: style can be found in header.less -->
 <nav class="navbar navbar-static-top" role="navigation">
@@ -15,16 +15,16 @@
     <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
             <!-- Messages: style can be found in dropdown.less-->
-            <li class="dropdown messages-menu ">
+           {# <li class="dropdown messages-menu ">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="fa fa-envelope-o"></i>
                     <span class="label label-success">4</span>
                 </a>
                
-            </li>
+            </li>#}
             
             <!-- Notifications: style can be found in dropdown.less -->
-          <li class="dropdown notifications-menu  ">
+        {#  <li class="dropdown notifications-menu  ">
                 <a href="#"class="dropdown-toggle" data-toggle="dropdown">
                     <i class="fa fa-bell-o"></i>
                     {%if NNotificaciones|default is not empty %}
@@ -53,9 +53,9 @@
                             <li class="footer"><a href="#">View all</a></li>
                         </ul>
                     {%endif%} {%endif%}
-                </li>
+                </li> #}
                 <!-- Tasks: style can be found in dropdown.less -->
-                <li class="dropdown tasks-menu">
+              {#  <li class="dropdown tasks-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-flag-o"></i>
                         <span class="label label-danger">9</span>
@@ -84,7 +84,7 @@
                             <a href="#">View all tasks</a>
                         </li>
                     </ul>
-                </li>
+                </li>#}
                 <!-- User Account: style can be found in dropdown.less -->
                 
                 <li class="dropdown user user-menu" >
@@ -117,12 +117,10 @@
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="{{ path('perfil')}}" class="btn btn-flat btnsesion ">Perfil</a>
+                                    <a href="{{ path('perfil')}}" class="btn btn-flat btnsesion " style="text-decoration:none;color: inherit;">Perfil</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="{{ path('abogado_logout')}}"  style=" text-decoration:none;" class="btn btn-flat btnsesion "> 
-                                        Cerrar sesión
-                                    </a>
+                                    <a href="{{ path('abogado_logout')}}"   class="btn btn-flat btnsesion " style="text-decoration:none;color: inherit;">Cerrar sesión</a>
 
                                 </div>
                             </li>

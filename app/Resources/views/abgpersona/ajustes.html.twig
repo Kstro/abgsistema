@@ -1,4 +1,5 @@
 {% block js_extend %}
+     <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
@@ -64,7 +65,7 @@
                             <div class="col-md-offset-1 col-md-5" style="margin-top: 10px;">
                                 <p style="margin-bottom: 0px; color: #989898; font-size: 14px;">Password:</p>
                                 <p style="font-size: 14px;">¿Modificar tu contraseña? <a href="#" id="showFormPassword">Cambiar</a>
-                                    <a href="#" id="hideFormPassword">Cerrar</a>
+                                    <a href="#" id="hideFormPassword" style="display:none;">Cerrar</a>
                                 </p>
 
 
@@ -119,7 +120,7 @@
                             <div class="col-md-offset-1" style="margin-top: 30px;">
                                 <p style="font-size: 16px;">URL Personalizada:</p>
                                 <p style="margin-bottom: 0px; color: #989898; font-size: 14px;">¿Modificar Urls personalizadas? <a href="#" id="urlAncla">Cambiar</a>
-                                    <a href="#" id="cerarModificarionUrl">Cerrar</a>
+                                    <a href="#" id="cerarModificarionUrl" style="display: none;">Cerrar</a>
                                 </p>
                             </div>
                             <div class="row">
@@ -192,7 +193,7 @@
                             <div class="col-md-offset-1" style="margin-top: 30px;">
                                 <p style="font-size: 16px;">Codigo QR:</p>
                                 <p style="margin-bottom: 0px; color: #989898; font-size: 14px;">¿Mostrar mi codigo QR? <a href="#" id="idAqrContenedor">Mostrar</a>
-                                    <a href="#" id="carncelarQR">Cerrar</a>
+                                    <a href="#" id="carncelarQR" style="display:none;">Cerrar</a>
                                 </p>
                             </div>
                             <div style="display: none;" id="mostrar_qr">
@@ -226,7 +227,7 @@
                             <div class="col-md-offset-1" style="margin-top: 30px;">
                                 <p style="font-size: 16px;">Badge</p>
                                 <p style="margin-bottom: 0px; color: #989898; font-size: 14px;">¿Generar el codigo de mi badge? <a href="#" id="idMostrarBadge">Mostrar</a>
-                                    <a href="#" id="cancelarBadge">Cerrar</a>
+                                    <a href="#" id="cancelarBadge" style="display: none;">Cerrar</a>
                                 </p>
                             </div>
                             <div style="display: none;" id="codigo_badge">

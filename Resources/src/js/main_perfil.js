@@ -18,13 +18,13 @@ var arrayEspecialidad = [];
  
  });
  */
-$(document).on('click', "#txtNombres", function (e) {
+/*$(document).on('click', "#txtNombres", function (e) {
     $('.popover-content').css("width", "350px");
     $('.popover-content').css("height", "85px");
     $('.popover-content').css("resize", "auto");
 
 });
-
+*/
 $(document).ready(function () {
 
     //toggle `popup` / `inline` mode
@@ -128,12 +128,7 @@ $(document).ready(function () {
 
     });*/
 
-    $('#txtNombres').editable({
-        validate: function (value) {
-            if (value === "")
-                return 'requerido';
-        }
-    });
+
     $('#txtUnpoco').editable({
         row: 4,
         validate: function (value) {

@@ -63,18 +63,19 @@
                                             <div class="row">
                                                 <div class="col-md-10">
                                                     <p class="sans" style="font-size: 13px;">
-                                                        <strong>RESPUESTA POR <a href="{{path('busquedaPerfil', {url:respuesta.url})}}">{{ respuesta.nombres}}</a></strong>
+                                                        <strong>RESPUESTA POR {%if(respuesta.estado !=0)%}<a href="{{path('busquedaPerfil', {url:respuesta.url})}}"> {{respuesta.nombres}}</a>{%else%} {{respuesta.nombres}}{%endif%} </strong>
                                                     </p>
                                                     <p class="sans text-justify" style="font-size: 13px;">
                                                          {{respuesta.respuesta}} 
                                                     </p>
-                                                    <p class="sans" style="color: #999999; font-size: 13px;">Respuesta por <a href="{{path('busquedaPerfil', {url:respuesta.url})}}">{{ respuesta.nombres}}</a> en la categoria <a href="{{ path('directorio_index') }}?busqueda={{respuesta.especialidad}}">{{respuesta.especialidad}}</a> {{ tiemposRespuesta[key] }}</p>
+                                                    <p class="sans" style="color: #999999; font-size: 13px;">Respuesta por {%if(respuesta.estado !=0)%}<a href="{{path('busquedaPerfil', {url:respuesta.url})}}"> {{respuesta.nombres}}</a>{%else%} {{respuesta.nombres}}{%endif%} en la categoria <a href="{{ path('directorio_index') }}?busqueda={{respuesta.especialidad}}">{{respuesta.especialidad}}</a> {{ tiemposRespuesta[key] }}</p>
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <a href="{{path('busquedaPerfil', {url:respuesta.url})}}"><img src="{{asset('') }}{{ fotos[key].src }}" style="width: 100%;"></a>
+                                                   <img src="{{asset('') }}{{ fotos[key].src }}" style="width: 100%;">
                                                     <div style="background-color: #263345; height: 30px; line-height: 30px; margin-top: 5px;">
-                                                        <p class="text-center sans text-uppercase" style="color: #fff; font-size: 13px; font-weight: 600;"><a class="sans" href="{{path('busquedaPerfil', {url:respuesta.url})}}" style=" text-transform: none; color: inherit;">Ver perfil</a></p>
+                                             
+                                                        <p class="text-center sans text-uppercase" style="color: #fff; font-size: 13px; font-weight: 600;"> {%if(respuesta.estado !=0)%}<a class="sans" href="{{path('busquedaPerfil', {url:respuesta.url})}}" style=" text-transform: none; color: inherit;">Ver perfil</a> {%else%}Ver perfi{%endif%}</p>
                                                     </div>
                                                     <div style="background-color: #263345; height: 30px; line-height: 30px; margin-top: 5px;">
                                                         <p class="text-center sans text-uppercase" style="color: #fff; font-size: 13px; font-weight: 600;"><a class="sans" href="{{path('contacto', {correo:respuesta.correo})}}" style=" text-transform: none; color: inherit;">Contactar</a></p>
@@ -105,7 +106,7 @@
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="src/js/bootstrap.js"></script>
+   <script src="{{asset('Resources/src/js/bootstrap.js')}}"></script>
     <script type="text/javascript">
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()

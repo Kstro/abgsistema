@@ -42,6 +42,7 @@
             show_select_today: "Hoy",
             show_icon: false,
         });
+        
         $("#cancel").click(function () {
              $('div.experienc').children('br').remove();
             $("#" + editExp).show();
@@ -172,14 +173,14 @@
                     </div>
                     {%if(datos.fechaFin|default is not empty)%}
                          <div  id="fechafin">
-                        <div class="col-sm-4"  >
+                        <div class="col-sm-4 col-xs-6"  >
                             <input type="text" class="form-control txtFechaFin  input-sm" 
                                    placeholder="Fecha fin de labor"  id="txtFechaFin" name="txtFechaFin" value="{{datos.fechaFin}}" data-rule-required="true">
                         </div>
                     </div>
               {%else%}
                     <div  id="fechafin" style=" display: none">
-                        <div class="col-sm-4"  >
+                        <div class="col-sm-4 col-xs-6"  >
                             <input type="text" class="form-control txtFechaFin  input-sm" 
                                    placeholder="Fecha fin de labor"  id="txtFechaFin" name="txtFechaFin" value="{{datos.fechaFin}}" data-rule-required="true">
                         </div>
@@ -201,7 +202,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-sm"  onclick="addExperiencia()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                            <button type="submit" class="btn btn-primary btn-sm btn-flat"  onclick="addExperiencia()">Guardar</button> <button type="button" class="btn btn-default btn-sm btn-flat" id="cancel">Cancelar</button>
                         </div>
                     </div>
                 </div>
@@ -241,12 +242,12 @@
                         <div class="form-group ">
                             <label for="Fecha_inicio">Periodo </label>
                             <div class="row">
-                                <div class="col-sm-4">
+                                <div class="col-sm-4 col-xs-6">
                                     <input type="text" class="form-control txtFechaIni  input-sm" 
                                            placeholder="Fecha inicio de labor"  id="txtFechaIni" name="txtFechaIni" data-rule-required="true">
                                 </div>
                                 <div  id="fechafin">
-                                    <div class="col-sm-4"  >
+                                    <div class="col-sm-4 col-xs-6"  >
                                         <input type="text" class="form-control txtFechaFin  input-sm" 
                                                placeholder="Fecha fin de labor"  id="txtFechaFin" name="txtFechaFin">
                                     </div>
@@ -266,7 +267,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary btn-sm" onClick="addExperiencia()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary btn-sm btn-flat" onClick="addExperiencia()">Guardar</button> <button type="button" class="btn btn-default btn-sm btn-flat" id="cancel">Cancelar</button>
                                 </div>
                             </div>
                         </div>

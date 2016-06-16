@@ -44,6 +44,7 @@
  
        
         $("#cancel").click(function () {
+              $('div.curso_semi').children('br').remove();
             $("#CM"+editEdu).show();
             $("#div7").remove();
         });
@@ -97,12 +98,12 @@
         <div class="form-group ">
             <label for="Fecha_inicio">Periodo</label>
              <div class="row">
-                <div class="col-sm-2">
+                <div class="col-sm-2 col-xs-6">
                     <input type="text" class="form-control txtFechaIni  input-sm" 
                            placeholder="Fecha inicio"  id="txtFechIniCM" name="txtFechIniCM" value="{{datos.fechaIn}}" data-rule-required="true">
                 </div>
                 <div  id="fechafin">
-                    <div class="col-sm-2"  >
+                    <div class="col-sm-2 col-xs-6"  >
                         <input type="text" class="form-control txtFechaFin  input-sm" 
                                placeholder="Fecha fin"  id="txtFechFinCM" name="txtFechFinCM" value="{{datos.fechaFin}}" data-rule-required="true">
                     </div>
@@ -116,7 +117,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-sm"  onclick="addCurso()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                    <button type="submit" class="btn btn-primary btn-sm btn-flat"  onclick="addCurso()">Guardar</button> <button type="button" class="btn btn-default btn-sm btn-flat" id="cancel">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -142,12 +143,12 @@
         <div class="form-group ">
             <label for="Fecha_inicio">Periodo</label>
              <div class="row">
-                <div class="col-sm-2">
+                <div class="col-sm-2 col-xs-6">
                     <input type="text" class="form-control txtFechaIni  input-sm" 
                            placeholder="Fecha inicio"  id="txtFechIniCM" name="txtFechIniCM" data-rule-required="true">
                 </div>
                 <div  id="fechafin">
-                    <div class="col-sm-2"  >
+                    <div class="col-sm-2 col-xs-6"  >
                         <input type="text" class="form-control txtFechaFin  input-sm" 
                                placeholder="Fecha fin"  id="txtFechFinCM" name="txtFechFinCM" data-rule-required="true">
                     </div>
@@ -161,7 +162,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-sm"  onclick="addCurso()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                    <button type="submit" class="btn btn-primary btn-sm btn-flat"  onclick="addCurso()">Guardar</button> <button type="button" class="btn btn-default btn-sm btn-flat" id="cancel">Cancelar</button>
                 </div>
             </div>
         </div>

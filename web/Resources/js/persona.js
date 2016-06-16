@@ -723,7 +723,14 @@ function addEdu() {
     if ($("#txtCentro").val() !== "" && $("#txtTitulo").val() !== "" && $("#Sdisciplina").val() !== "" && $("#txtAnioIni").val() !== "")
     {
         var datos;
-        $("#fEdu").submit(
+        if($("#txtAnioIni").val()>$("#txtAnioFin").val())
+        {
+            Lobibox.notify("warning", {
+                                    size: 'mini',
+                                    msg: "<p> Año fin menor que año inicio</p>"
+                                });
+        }
+   /*     $("#fEdu").submit(
                 function (event) {
                     $.ajax({
                         type: 'POST',
@@ -777,6 +784,8 @@ function addEdu() {
                     });
                     event.preventDefault();
                 });
+                
+                */
     }
 }
 function removeEdu(val)

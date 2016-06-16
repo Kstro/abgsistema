@@ -23,17 +23,17 @@
         });
 
 
-        $('#txtFechIniOrg').Zebra_DatePicker({
+        $('.fechIniOrg').Zebra_DatePicker({
             months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
             days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
             format: 'd-m-Y',
             direction: false,
             show_clear_date: false,
             show_select_today: "Hoy",
-            pair: $('.txtFechaFin'),
+            pair: $('.fechFinOrg'),
             show_icon: false,
         });
-        $('#txtFechFinOrg').Zebra_DatePicker({
+        $('.fechFinOrg').Zebra_DatePicker({
             months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
             days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
             format: 'd-m-Y',
@@ -42,7 +42,6 @@
             show_select_today: "Hoy",
             show_icon: false,
         });
-
 
         $("#cancel").click(function () {
              $('div.organiza').children('br').remove();
@@ -95,12 +94,12 @@
             <div class="form-group ">
                 <label for="Fecha_inicio">Periodo</label>
                 <div class="row">
-                    <div class="col-sm-2">
-                        <input type="text" class="form-control txtFechaIniOrg  input-sm" 
+                    <div class="col-sm-3 col-xs-6">
+                        <input type="text" class="form-control fechIniOrg  input-sm" 
                                placeholder="Fecha inicio"  id="txtFechIniOrg" name="txtFechIniOrg"  value="{{datos.fechaIn}}" data-rule-required="true">
                     </div>
-                    <div class="col-sm-2"  id="fechafin" >
-                        <input type="text" class="form-control txtFechaFinOrg  input-sm" 
+                    <div class="col-sm-3 col-xs-6"  id="fechafin" >
+                        <input type="text" class="form-control fechFinOrg  input-sm" 
                                placeholder="Fecha fin"  id="txtFechFinOrg" name="txtFechFinOrg"  value="{{datos.fechaFin}}" data-rule-required="true">
                     </div>
                 </div>
@@ -117,7 +116,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-sm"  onclick="addOrganizacion()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                        <button type="submit" class="btn btn-primary btn-sm btn-flat"  onclick="addOrganizacion()">Guardar</button> <button type="button" class="btn btn-default btn-sm btn-flat" id="cancel">Cancelar</button>
                     </div>
                 </div>
             </div>
@@ -141,12 +140,12 @@
         <div class="form-group ">
             <label for="Fecha_inicio">Periodo</label>
             <div class="row">
-                <div class="col-sm-2">
-                    <input type="text" class="form-control txtFechaIniOrg  input-sm" 
+                <div class="col-sm-3 col-xs-6">
+                    <input type="text" class="form-control fechIniOrg  input-sm" 
                            placeholder="Fecha inicio"  id="txtFechIniOrg" name="txtFechIniOrg" data-rule-required="true">
                 </div>
-                <div class="col-sm-2"  id="fechafin" >
-                    <input type="text" class="form-control txtFechaFinOrg  input-sm" 
+                <div class="col-sm-3 col-xs-6"  id="fechafin" >
+                    <input type="text" class="form-control fechFinOrg  input-sm" 
                            placeholder="Fecha fin"  id="txtFechFinOrg" name="txtFechFinOrg" data-rule-required="true">
                 </div>
             </div>
@@ -158,7 +157,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-sm"  onclick="addOrganizacion()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                    <button type="submit" class="btn btn-primary btn-sm btn-flat"  onclick="addOrganizacion()">Guardar</button> <button type="button" class="btn btn-default btn-sm btn-flat" id="cancel">Cancelar</button>
                 </div>
             </div>
         </div>

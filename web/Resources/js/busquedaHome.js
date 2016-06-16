@@ -7,7 +7,7 @@
     $(document).ready(function(){
         $('#searchInput').focus();
         var url = Routing.generate("busqueda_ab_input");
-        var urlCiudad = Routing.generate("busqueda_ciudad_input");
+        var urlCiudad = Routing.generate("depto_ciudad");
         $(document).on('click','.submitsearch', function(){
             var busqueda = $('.search').val();
             console.log(busqueda);
@@ -32,7 +32,6 @@
             serviceUrl: urlCiudad,
         });
 
-        
 
 //        $(document).on('keyup','#searchInput',function(event){
 //            var keycode = (event.keyCode ? event.keyCode : event.which);

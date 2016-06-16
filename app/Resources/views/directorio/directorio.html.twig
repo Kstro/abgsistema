@@ -1,127 +1,140 @@
-{% extends ':Layout:layout2.html.twig' %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Directorio de Abogados de El Salvador | Primero y unico directorio de abogados de El Salvador | Abogados.com.sv</title>
+        <meta name="robots" content="noindex">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <link href="{{asset('Resources/src/css/bootstrap.css')}}" rel="stylesheet">
 
-{% block css %}
-
-    {{parent()}}
-
-    <style>
-        td{
-            width:100%;
-        }
-
-        .paginas,.anterior,.siguiente{
-            cursor: pointer;
-        }
+        <link href="{{asset('Resources/src/css/style.css')}}" rel="stylesheet">
+        <link href="{{asset('Resources/src/css/menu_movil.css')}}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
 
 
-    </style>
-    {#        <link rel="stylesheet" href="{{ asset('Resources/datatable/css/datatable.css') }}">#}
-{% endblock css %}
-{% block cuerpo %}
-    <div class="clearfix"></div>
+        <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+        <style>
+            td{
+                width:100%;
+            }
 
-    <div class="container">
-        <div class="row" id="registrosBusqueda">
-            <!-- LADO IZQUIERDO -->
-            <div class="col-md-9">
-                <div class="bloque-main pos1" style="padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px; margin-top: 30px;">
-                    {% if prom1 is null%}
-                        <img src="{{asset('Resources/src/img/banner1.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia">
-                    {% else %}
-                        <img src="{{asset('')}}{{ prom1[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia">
-                    {% endif %}
-                </div>
-                <form class="form-inline">
-                <div class="item-directorio" style="margin-top: 5px !important; padding: 10px;">
-                    
-                        <div class="row no-padding" >
-                            <div class="col-md-7" style="padding-right: 5px;">
-                                <input value="{{busqueda}}" id="searchBox" maxlength="140" {#class="searchbox"#} style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; text-decoration: none;" placeholder="Buscar por asunto legal o nombre de abogado/firma" oninvalid="this.setCustomValidity('Porfavor ingrese el nombre de un Abogado, Bufete, Firma o Problema Legal')" required> </input>
-                            </div>
-                            <div class="col-md-3" style=" padding-left: 5px;padding-right: 5px;">
-                                <input class="search " value="{{ciudad}}" id="searchInputDept" name="txtlugar" style="border: 1px solid #d2d6de; border-radius: 0;  height: 34px; width: 100%; text-decoration: none;" placeholder="Cuidad, Dept">
-                            </div>
-                            <div class="col-md-2" style="padding-left: 5px;">
-                                <button id="searchButton" type="submit" class="searchbotondir input-group btn btn-xs" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; background-color: #F42; color: #fff; font-weight: 600;">Buscar</button>
-                            </div>
-                        </div>
-                     
-                </div>
-                               <input type="hidden" value="0" id="inicioInput">
-                    </form>
-                <div class="item-directorio-nexo" style="height: 40px;">
-                    <p class="pull-left" style="font-size: 12px; margin-bottom: 0px; padding: 10px;">
-                        Mostrando los resultado para '<label id="filtro"><strong>Familiar</strong></label>'.
-                    </p>
-                    <p class="numRegistros pull-right" style="font-size: 12px; margin-bottom: 0px; padding: 10px;">
-                        Mostrando <label class="filtroRegistros"></label> resultados de <label class="totalRegistros"></label>
-                    </p>
-                </div>
-                <!-- item 1 -->
-
-                <div id="registros">
-
-                </div>
-                <div id="busquedaVacia" style="display:none;border-bottom-color: #000">
-                    No se encontraron registros...
-                </div>
-                <!-- Fin de Items -->
-                <!-- PAGINACION -->
-                <div class="item-directorio-nexo" style="margin-top:150px;">
-                    <div class="row">
-                        <div class="col-md-7" style="padding-top: 9px;" >
-                            <ul class="numeroPaginas" style="list-style: none; display: inline; padding-left: 10px !important; color: #777777;">
-
-                            </ul>
-                        </div>
-                        <div class="col-md-5">
-                            <p class="numRegistros text-right" style="font-size: 12px; margin-bottom: 0px; padding: 10px;">
-                                Mostrando <label class="filtroRegistros"></label> resultados de <label class="totalRegistros"></label>
-                            </p>
-                        </div>	
+            .paginas,.anterior,.siguiente{
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+    {% embed ':Layout:head.html.twig' %}{% endembed %}
+    <div id="page-content">
+       
+        <div class="container" style=" margin-bottom: 20px;">
+            <div class="row" id="registrosBusqueda">
+                <!-- LADO IZQUIERDO -->
+                <div class="col-md-9">
+                   <div class="bloque-main pos1 hidden-xs " style="padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px; ">
+                        {% if prom1 is null%}
+                            <img src="{{asset('Resources/src/img/banner1.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia">
+                        {% else %}
+                            <img src="{{asset('')}}{{ prom1[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia">
+                        {% endif %}
                     </div>
-                </div>
+                    <div class="bloque-main hidden-lg hidden-md hidden-sm" style=" margin-top: 70px; padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px; ">
+                        {% if prom1 is null%}
+                            <img src="{{asset('Resources/src/img/banner1.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia">
+                        {% else %}
+                            <img src="{{asset('')}}{{ prom1[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia">
+                        {% endif %}
+                    </div>
+                    <form class="form-inline">
+                        <div class="item-directorio" style="margin-top: 5px !important; padding: 10px;">
+
+                            <div class="row no-padding" >
+                                <div class="col-md-7 col-xs-5" style="padding-right: 5px;">
+                                    <input value="{{busqueda|trim}}" id="searchBox" maxlength="140" {#class="searchbox"#} style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; text-decoration: none;" placeholder="Buscar por asunto legal o nombre de abogado/firma" oninvalid="this.setCustomValidity('Porfavor ingrese el nombre de un Abogado, Bufete, Firma o Problema Legal')" > </input>
+                                </div>
+                                <div class="col-md-3  col-xs-5" style=" padding-left: 5px;padding-right: 5px;">
+                                    <input class="search " value="{{ciudad}}" id="searchInputDept" name="txtlugar" style="border: 1px solid #d2d6de; border-radius: 0;  height: 34px; width: 100%; text-decoration: none;" placeholder="Cuidad, Dept">
+                                </div>
+                                <div class="col-md-2  col-xs-2" style="padding-left: 5px;">
+                                    <button id="searchButton" type="submit" class="searchbotondir input-group btn btn-xs" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; background-color: #F42; color: #fff; font-weight: 600;">Buscar</button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <input type="hidden" value="0" id="inicioInput">
+                    </form>
+                    <div class="item-directorio-nexo" style="height: 40px;">
+                        <p class="pull-left" id="mesaje_busqueda" style="font-size: 12px; margin-bottom: 0px; padding: 10px; display: none;">
+                            Mostrando los resultado para '<label id="filtro"></label>'.
+                        </p>
+                        <p class="numRegistros pull-right" style="font-size: 12px; margin-bottom: 0px; padding: 10px;">
+                            Mostrando <label class="filtroRegistros"></label> resultados de <label class="totalRegistros"></label>
+                        </p>
+                    </div>
+                    <!-- item 1 -->
+
+                    <div id="registros">
+
+                    </div>
+                    <div id="busquedaVacia" style="display:none;border-bottom-color: #000">
+                        No se encontraron registros...
+                    </div>
+                    <!-- Fin de Items -->
+                    <!-- PAGINACION -->
+                    <div class="item-directorio-nexo" >
+                        <div class="row">
+                            <div class="col-md-7" style="padding-top: 9px;" >
+                                <ul class="numeroPaginas" style="list-style: none; display: inline; padding-left: 10px !important; color: #777777;">
+
+                                </ul>
+                            </div>
+                            <div class="col-md-5">
+                                <p class="numRegistros text-right" style="font-size: 12px; margin-bottom: 0px; padding: 10px;">
+                                    Mostrando <label class="filtroRegistros"></label> resultados de <label class="totalRegistros"></label>
+                                </p>
+                            </div>	
+                        </div>
+                    </div>
 
 
-                <div style="height: 20px;"></div>
+                    <div style="height: 20px;"></div>
 
-            </div> <!-- END COL-MD-9 -->
+                </div> <!-- END COL-MD-9 -->
 
-            <!-- LADO DERECHO -->
-            <div class="col-md-3" style="margin-top: 10px;">
-                <div class="bloque-main pos2" style="padding: 5px;">
-                    {% if prom2 is null %}
-                        <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
-                    {% else %}
-                        <img src="{{asset('')}}{{ prom2[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
-                    {% endif %}
-                </div>
-                <div class="bloque-nexo pos3" style="padding: 5px;">
-                    {% if prom3 is null %}
-                        <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia3">
-                    {% else %}
-                        <img src="{{asset('')}}{{ prom3[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia3">
-                    {% endif %}
-                </div>
+                <!-- LADO DERECHO -->
+                <div class="col-md-3" >
+                    <div class="bloque-main pos2" style="padding: 5px;">
+                        {% if prom2 is null %}
+                            <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
+                        {% else %}
+                            <img src="{{asset('')}}{{ prom2[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
+                        {% endif %}
+                    </div>
+                    <div class="bloque-nexo pos3" style="padding: 5px;">
+                        {% if prom3 is null %}
+                            <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia3">
+                        {% else %}
+                            <img src="{{asset('')}}{{ prom3[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia3">
+                        {% endif %}
+                    </div>
 
-                <div class="bloque-nexo pos4 " style="padding: 5px;">
-                    {% if prom4 is null %}
-                        <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia4">
-                    {% else %}
-                        <img src="{{asset('')}}{{ prom4[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia4">
-                    {% endif %}
+                    <div class="bloque-nexo pos4 " style="padding: 5px;">
+                        {% if prom4 is null %}
+                            <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia4">
+                        {% else %}
+                            <img src="{{asset('')}}{{ prom4[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia4">
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
+                    
     </div>
-
-
-{% endblock cuerpo %}
-
-
-{% block js_template %}
     <style>
-
         .autocomplete-suggestions { border: 1px solid #999; background: #FFF; cursor: default; overflow: auto; -webkit-box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); -moz-box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); }
         .autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
         .autocomplete-no-suggestion { padding: 2px 5px;}
@@ -132,13 +145,14 @@
         a{  color:#333;}
         a:hover{  text-decoration: none;}
     </style>
-    <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
-    <script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
-    {#    <script src="{{ asset('Resources/datatable/dataTable.js') }}"></script>#}
+    <script src="{{ asset('Resources/src/js/jquery-2.0.3.min.js')}}"></script>
+
+    <script src="{{asset('Resources/src/js/bootstrap.js')}}"></script>
     <script src="{{ asset('Resources/datatable/js/datatable.js') }}"></script>
     {#<script src="{{ asset('Resources/js/generadorPublicidad.js') }}"></script>#}
     <script src="{{ asset('Resources/autocomplete/jquery.autocomplete.js')}}"></script>
-    <script src="{{ asset('Resources/js/busquedaPregunta.js')}}"></script>
+    <script src="{{ asset('Resources/js/busquedaDirectorio.js')}}"></script>
+    <script src="{{asset('Resources/src/js/menu_movil.js')}}"></script>
 
     <script>
         var imagenes = new Array();
@@ -195,14 +209,10 @@
                     busqueda = $('#searchBox').val();
                     longitud = 10; //numero de registros que se van a mostrar
                     paginaActual = 1; //numero de registros que se van a mostrar
-                    //contenidoOriginal = $('#registros').html();
                     buscar(busqueda, inicio, longitud, paginaActual);
-                    //$('#registros').html('');
-                    //var url = Routing.generate('busqueda_data');
                     return false;
                 });
-                $('#filtrarDepartamento').select2();
-                $('#filtrarMunicipio').select2();
+
 
                 $(document).on('click', '.paginas', function () {
                     paginaActual = $(this).attr('id');
@@ -236,17 +246,13 @@
                         url: "{{path('busqueda_mun')}}",
                         type: "post",
                         success: function (data) {
-        {#console.log(data[0].id);#}
                             var item = '';
                             $('#filtrarMunicipio').html('');
-
-        {#console.log(data.length);#}
                             item += '<option selected value=\"0\">Todos...</option>';
                             $('#filtrarMunicipio').append(item);
                             for (i = 0; i < data.length; i++) {
                                 item = '';
                                 item += '<option value=\"' + data[i].id + '\" >' + data[i].nombre + '</option>';
-        {#console.log(item);#}
                                 $('#filtrarMunicipio').append(item);
                             }
                             $('#filtrarMunicipio').select2();
@@ -261,68 +267,64 @@
             });
 
             function buscar(busqueda, inicio, longitud, paginaActual) {
-                $('#filtro').children().html(busqueda);
+
                 $('.numRegistros').hide();
                 $('.numeroPaginas').html('');
+                $('#registros').html("");
 
-
-                var deptoId = $('#filtrarDepartamento').val();
+                //  var deptoId = $('#filtrarDepartamento').val();
                 var munId = $('#searchInputDept').val();
-
-                console.log("depto Id: " + deptoId);
-                console.log("mun Id: " + munId);
-
                 var cadenaPaginas = "";
                 // ERAAAAAAAAAAAA (busqueda != "")
                 if (busqueda == "" || busqueda != "") {
 
                     $.ajax({
-                        data: {inicio: inicio, longitud: longitud, paginaActual: paginaActual, busqueda: busqueda, deptoId: deptoId, munId: munId},
+                        data: {inicio: inicio, longitud: longitud, paginaActual: paginaActual, busqueda: busqueda, munId: munId},
                         url: "{{path('busqueda_data')}}",
                         type: "post",
                         success: function (data) {
-                            //inicio = data.inicio++;
-        {#                                console.log(data.data.length);#}
+
                             $('#registros').html('');
-                            $('#filtro').children().html();
                             $('.numRegistros').show();
 
-                            //console.log(data);
-        {#console.log("num registros: "+data.numRegistros);
-        console.log("filtro registros: "+data.filtroRegistros);#}
+                            $("#mesaje_busqueda").css("display", "block");
+                            if ($('#searchInputDept').val() !== "" && $('#searchBox').val() != "")
+                            {
+                                $('#filtro').text($('#searchBox').val() + '| ' + $('#searchInputDept').val());
+                            }
+                            if ($('#searchInputDept').val() !== "" && $('#searchBox').val() == "")
+                            {
+                                $('#filtro').text($('#searchInputDept').val());
+                            }
+                            if ($('#searchInputDept').val() == "" && $('#searchBox').val() !== "")
+                            {
+                                $('#filtro').text($('#searchBox').val());
+                            }
+
                             $('.totalRegistros').html(data.numRegistros);
                             $('.filtroRegistros').html(data.filtroRegistros);
 
                             if (data.data.length != 0) {
                                 $('#inicioInput').val((parseInt($('#inicioInput').val()) + 1));
-                                //console.log(data.inicio);
-                                //console.log(data.data.length);
                                 var cadena = "";
                                 for (i = 0; i < data.data.length; i++) {
-
-
-
                                     var busquedaImagen = "#busquedaImagen" + (i + 1);
                                     var busquedaTelefono = "#busquedaTelefono" + (i + 1);
                                     var busquedaEspecialidades = "#busquedaEspecialidades" + (i + 1);
 
                                     var busquedaNombre = data.data[i].nombres + ' ' + data.data[i].apellido;
                                     var busquedaCargo = "";
-
                                     var telefonos = "";
                                     var busquedaCorreo = data.data[i].correoelectronico;
                                     var busquedaFoto = data.data[i].foto;
-                                    //var sitioWeb = data.data[i].sitioWeb;
-                                    //var busquedaSitioWeb = "#busquedaSitioWeb"+(i+1);
+
                                     var busquedaSitioWeb = data.data[i].sitioweb;
-                                    ;
-
-
+                                    
                                     if (busquedaFoto == null) {
                                         busquedaFoto = "";
                                     }
 
-                                    if (busquedaCargo == null) {
+                                    if (data.data[i].puesto == null) {
                                         busquedaCargo = "";
                                     } else {
                                         busquedaCargo = data.data[i].puesto;
@@ -356,11 +358,6 @@
 
                                     }
 
-
-
-
-
-
                                     //console.log(data.data[i].especialidades.length);
                                     var especialidades = "";
                                     if (data.data[i].especialidad !== 'undefined') {
@@ -373,17 +370,6 @@
                                     if (data.data[i].verificado == 1) {
                                         verificado = '<img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 0px;margin-left:1px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>';
                                     }
-
-                                    //console.log(data.data[i].especialidades);
-                                    //console.log(especialidades);
-
-
-                                    //console.log(data.data[i].foto);
-
-
-        {#$(busquedaEspecialidades).html(especialidades);
-        $(busquedaSitioWeb).children().html(data.data[i].sitioweb);#}
-                                    //console.log(data.data[i].fotoPerfil);
 
                                     cadena = '<div class=\"item-directorio-nexo\" style=\"width: 100%;\"> <div class=\"clearfix\"></div><div class=\"row\">\n\
                                         <div class=\"col-xs-2 col-sm-3 col-md-3 col-lg-2\"><img id=\"busquedaImagen' + (i + 1) + '\" src=\"{{asset('')}}' + data.data[i].foto + '\" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">\n\
@@ -405,13 +391,9 @@
 
                                     $('#busquedaVacia').hide();
 
-        {#console.log(data.pages);#}
                                     numPages = data.pages;
                                     cadenaPaginas = '';
                                     cadenaPaginas = '<li class="anterior" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-left\"></i></li>';
-        {#for(k=1;k<=data.pages;k++){#}
-        {#console.log("data pages: "+data.pages);#}
-        {#console.log(paginaActual);#}
 
 
                                     if (data.pages > 10) {
@@ -462,74 +444,7 @@
                                         }
                                     }
 
-        {#                                        console.log(cadenaPaginas);#}
-
-
-
-
-
-        {#switch(paginaActual){#}
-        {#case 1:
-            cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
-            cadenaPaginas+='<li class="paginas" id="'+(paginaActual+1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual+1)+'</li>';
-            cadenaPaginas+='<li class="paginas" id="'+data.pages+'" style=\"display: inline; padding: 7px;\">...'+data.pages+'</li>';
-            break;#}
-        {#case 2:
-            cadenaPaginas+='<li class="paginas" id="'+1+'" style=\"display: inline; padding: 7px;\">'+1+'</li>';
-{#                                                cadenaPaginas+='<li class="paginas" id="'+(paginaActual-1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual-1)+'</li>';#}
-        {#cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
-            cadenaPaginas+='<li class="paginas" id="'+(paginaActual+1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual+1)+'</li>';
-            cadenaPaginas+='<li class="paginas" id="'+data.pages+'" style=\"display: inline; padding: 7px;\">...'+data.pages+'</li>';
-            break;#}
-
-        {#case (data.pages-1):
-            cadenaPaginas+='<li class="paginas" id="'+1+'" style=\"display: inline; padding: 7px;\">'+1+'</li>';
-            cadenaPaginas+='<li class="paginas" id="'+(paginaActual-1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual-1)+'</li>';
-            cadenaPaginas+='<li class="paginas" id="'+data.pages+'" style=\"display: inline; padding: 7px;\"><strong>'+data.pages+'</strong></li>';
-            break;
-                                            
-        case data.pages:
-            cadenaPaginas+='<li class="paginas" id="'+1+'" style=\"display: inline; padding: 7px;\">'+1+'</li>';
-            cadenaPaginas+='<li class="paginas" id="'+(paginaActual-1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual-1)+'</li>';
-            cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
-            break;
-    }#}
-        {#if(paginaActual == 1 ){
-                                                
-            cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
-            cadenaPaginas+='<li class="paginas" id="'+(paginaActual+1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual+1)+'</li>';
-        }
-        else{
-            if(paginaActual>2 && paginaActual<data.pages && (paginaActual+1)!=data.pages){
-                cadenaPaginas+='<li class="paginas" id="'+1+'" style=\"display: inline; padding: 7px;\">'+1+'</li>';
-                cadenaPaginas+='<li class="paginas" id="'+(paginaActual-1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual-1)+'</li>';
-                cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
-                cadenaPaginas+='<li class="paginas" id="'+(paginaActual+1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual+1)+'</li>';
-            }
-            else{
-                if(paginaActual>1 && paginaActual<data.pages && (paginaActual+1)!=data.pages){
-                    cadenaPaginas+='<li class="paginas" id="'+1+'" style=\"display: inline; padding: 7px;\">'+1+'</li>';
-                                                        
-                    cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
-                    cadenaPaginas+='<li class="paginas" id="'+(paginaActual+1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual+1)+'</li>';
-                }#}
-        {#if(paginaActual===1){
-            cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
-            cadenaPaginas+='<li class="paginas" id="'+(paginaActual+1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual+1)+'</li>';
-        }
-        else{#}
-        {#if(paginaActual===data.pages){
-            cadenaPaginas+='<li class="paginas" id="'+(paginaActual-1)+'" style=\"display: inline; padding: 7px;\">'+(paginaActual-1)+'</li>';
-            cadenaPaginas+='<li class="paginas" id="'+paginaActual+'" style=\"display: inline; padding: 7px;\"><strong>'+paginaActual+'</strong></li>';
-        }#}
-        {#                                                            }#}
-        {#   }
-                                                
-       }#}
-
-
-
-        {#                                        cadenaPaginas+='<li class="paginas" id="'+k+'" style=\"display: inline; padding: 7px;\"><strong>'+k+'</strong></li>';#}
+                {#                                        cadenaPaginas+='<li class="paginas" id="'+k+'" style=\"display: inline; padding: 7px;\"><strong>'+k+'</strong></li>';#}
                                     cadenaPaginas += '<li class="siguiente" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-right\"></i></li>';
                                     $('.numeroPaginas').html(cadenaPaginas);
                                     //$('#registros').html('prueba');
@@ -539,7 +454,7 @@
                                 cadenaPaginas = '';
                                 $('.numeroPaginas').html('');
                                 console.log('datosvacios');
-        {#                                    $('#paginas').html(cadenaPaginas);#}
+
                                 console.log(data.numRegistros);
                                 console.log(data.filtroRegistros);
                                 $('.totalRegistros').html(data.numRegistros);
@@ -548,23 +463,22 @@
                                 $('#busquedaVacia').show();
 
                             }
-        {#console.log("pagina actual: "+data.paginaActual);
-        console.log("Inicio de registro: "+data.inicioRegistro);#}
+
                         },
                         error: function (data) {
                             Lobibox.notify("error", {
                                 size: 'mini',
                                 msg: 'Ocurrió un error, intente de nuevo!'
                             });
-                            $('#registros').append(contenidoOriginal);
+                            // $('#registros').append(contenidoOriginal);
                         }
                     });
                 } else {
                     $('#registros').hide();
                     $('#busquedaVacia').show();
                 }
-                
-                
+
+
             }
 
             function cambia() {
@@ -623,13 +537,7 @@
                 setInterval(cambia(), 10000);
             }
     </script>
-    <SCRIPT LANGUAGE="JavaScript">
+</body>
+</html>
 
 
-
-
-
-    </script>
-
-
-{% endblock js_template %}

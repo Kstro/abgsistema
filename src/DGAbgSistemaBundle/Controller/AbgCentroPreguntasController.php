@@ -30,8 +30,6 @@ class AbgCentroPreguntasController extends Controller {
      * @Method("GET")
      */
     public function indexAction() {
-        //$em = $this->getDoctrine()->getManager();
-        //  $abgPersonas = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->findAll();
 
         $em = $this->getDoctrine()->getManager();
 
@@ -74,8 +72,9 @@ class AbgCentroPreguntasController extends Controller {
         $NAbg = $em->createQuery($dqlNabg)->getArrayResult();
 
         $sql_preguntas_resiente = "SELECT  pre.id, usu.id,CONCAT(per.nombres, '  ', per.apellido) as nombres, uper.url as url, fot.src AS src, "
-                . " pre.respuesta AS respuesta, pre.fecha_respuesta, pre.abg_pregunta AS idPregunta "
-                . " FROM abg_respuesta_pregunta pre "
+                . " pre.respuesta AS respuesta, pre.fecha_respuesta, pre.abg_pregunta AS idPregunta, per.estado AS estado, preg.pregunta AS pregunta "
+                . " FROM abg_pregunta preg "
+                . "JOIN abg_respuesta_pregunta pre ON preg.id=pre.abg_pregunta "
                 . " JOIN ctl_usuario usu ON pre.ctl_usuario_id = usu.id "
                 . " JOIN abg_persona per ON usu.rh_persona_id = per.id "
                 . " JOIN abg_url_personalizada uper ON uper.abg_persona_id = per.id "
@@ -161,8 +160,9 @@ class AbgCentroPreguntasController extends Controller {
 
 
         $sql_preguntas_resiente = "SELECT  pre.id, usu.id,CONCAT(per.nombres, '  ', per.apellido) as nombres, uper.url as url, fot.src AS src, "
-                . " pre.respuesta AS respuesta, pre.fecha_respuesta "
-                . " FROM abg_respuesta_pregunta pre "
+                . " pre.respuesta AS respuesta, pre.fecha_respuesta, per.estado AS estado, preg.pregunta AS pregunta "
+                . " FROM abg_pregunta preg "
+                . "JOIN abg_respuesta_pregunta pre ON preg.id=pre.abg_pregunta "
                 . " JOIN ctl_usuario usu ON pre.ctl_usuario_id = usu.id "
                 . " JOIN abg_persona per ON usu.rh_persona_id = per.id "
                 . " JOIN abg_url_personalizada uper ON uper.abg_persona_id = per.id "
@@ -183,7 +183,7 @@ class AbgCentroPreguntasController extends Controller {
             $tiemposRespuesta = NULL;
         }
         $sqlTop10 = "SELECT CONCAT(per.nombres, '  ', per.apellido) as nombres, uper.url as url, "
-                . " count(pre.respuesta) as totalrespuestas, fot.src AS src "
+                . " count(pre.respuesta) as totalrespuestas, fot.src AS src, per.estado AS estado"
                 . " FROM abg_respuesta_pregunta pre inner join ctl_usuario usu on pre.ctl_usuario_id = usu.id "
                 . " INNER JOIN abg_persona per on usu.rh_persona_id = per.id "
                 . " INNER JOIN abg_url_personalizada uper on uper.abg_persona_id = per.id "
@@ -304,7 +304,7 @@ class AbgCentroPreguntasController extends Controller {
 
         $rsm = new ResultSetMapping();
 
-        $sql = "select per.nombres as nombres, per.apellido as apellidos, foto.src as src, uper.url as url, count(pre.respuesta) as totalrespuestas
+        $sql = "select per.nombres as nombres, per.apellido as apellidos, foto.src as src, uper.url as url, count(pre.respuesta) as totalrespuestas, per.estado AS estado
                 from abg_pregunta pre inner join ctl_usuario usu on pre.ctl_usuario_id = usu.id
                 inner join abg_persona per on usu.rh_persona_id = per.id
                 inner join abg_foto foto on foto.abg_persona_id = per.id
@@ -400,12 +400,12 @@ class AbgCentroPreguntasController extends Controller {
  
 
         if ($request->get('busquedaDept') !=='' && $request->get('busqueda') !== '') {
-            $busquedaDept = split(", ", $request->get('busquedaDept'));
-            $municipio = $em->getRepository('DGAbgSistemaBundle:CtlCiudad')->findByNombreCiudad(trim($busquedaDept[0]));
-            $idCiudad = $municipio[0]->getId();
-            $reg['Busquedageneral'] = $request->get('busqueda').' | '.$municipio[0]->getNombreCiudad();
+            $idCiudad = $request->get('busquedaDept');
+            /*$municipio = $em->getRepository('DGAbgSistemaBundle:CtlCiudad')->findByNombreCiudad(trim($busquedaDept[0]));
+            $idCiudad = $municipio[0]->getId();*/
+            $reg['Busquedageneral'] = $idCiudad;
             $criterio = "WHERE CONCAT(upper(nombres),' ',upper(subEspecialidad),' ',upper(especialidad),'',upper(pregunta),'',upper(respuesta)) "
-                            ." LIKE '%".trim(strtoupper($request->get('busqueda')))."%' AND idCiudad =" . $idCiudad;
+                            ." LIKE '%".trim(strtoupper($request->get('busqueda')))."%' AND ciudad LIKE '%" . trim(strtoupper($idCiudad))."%'";
         }
 
        else if ($request->get('busqueda') !== '' && $request->get('busquedaDept') =='') {
@@ -415,11 +415,11 @@ class AbgCentroPreguntasController extends Controller {
         }
         else
         {
-            $busquedaDept = split(", ", $request->get('busquedaDept'));
-            $municipio = $em->getRepository('DGAbgSistemaBundle:CtlCiudad')->findByNombreCiudad(trim($busquedaDept[0]));
-            $idCiudad = $municipio[0]->getId();
-             $criterio = "WHERE idCiudad =" . $idCiudad;
-              $reg['Busquedageneral'] = $municipio[0]->getNombreCiudad();
+            $busquedaDept = $request->get('busquedaDept');
+         /*   $municipio = $em->getRepository('DGAbgSistemaBundle:CtlCiudad')->findByNombreCiudad(trim($busquedaDept[0]));
+            $idCiudad = $municipio[0]->getId();*/
+             $criterio = "WHERE ciudad  LIKE '%" . trim(strtoupper($busquedaDept))."%'";
+              $reg['Busquedageneral'] = $busquedaDept;
         }
         $inicioRegistro = ($longitud * ($paginaActual - 1));
 
@@ -443,6 +443,8 @@ class AbgCentroPreguntasController extends Controller {
         $stmt->execute();
         $ultimas_preguntas = $stmt->fetchAll();
         $reg['data'] = $ultimas_preguntas;
+        
+    
 
         $tiemposRespuesta = array();
         if ($ultimas_preguntas != NULL) {
@@ -479,7 +481,6 @@ class AbgCentroPreguntasController extends Controller {
         //return new Response(json_encode($reg));
     }
 
-//Fin de la funcion databusqueda
 //    ESTA PARTE ES PARA CUANDO EL SEARCH ESTA VACIO
     /**
      * 
@@ -488,13 +489,10 @@ class AbgCentroPreguntasController extends Controller {
      */
     public function databusquedavaciaAction(Request $request) {
 
-
-
         $inicio = $request->get('inicio');
         $longitud = $request->get('longitud');
         $paginaActual = $request->get('paginaActual');
         $busqueda = $request->get('busqueda');
-
 
         $inicioRegistro = ($longitud * ($paginaActual - 1));
 

@@ -106,13 +106,25 @@ class AbgPanelCentroRespuestaController extends Controller {
 
         $em = $this->getDoctrine()->getManager();
         $pregunta = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->find($id);
-
+   
         $username = $this->container->get('security.context')->getToken()->getUser();
         $personaId = $username->getRhPersona();
         $abgfoto = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findOneBy(array('abgPersona' => $personaId));
-
+     $tiemposRespuesta = array();
+        if ($pregunta->getFechaPregunta() != NULL) {
+        
+       //         array_push($tiemposRespuesta, $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s')));
+             $tiempo = $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s'));
+        } else {
+            $tiempo = NULL;
+        }
         $srcfoto = $abgfoto->getSrc();
-        return $this->render('panelcentropregabog/panelrespuestacentro.html.twig', array('pregunta' => $pregunta, 'srcfoto' => $srcfoto, 'nombres' => $personaId->getNombres(), 'apellidos' => $personaId->getApellido()));
+        return $this->render('panelcentropregabog/panelrespuestacentro.html.twig', 
+                array('pregunta' => $pregunta,
+                    'srcfoto' => $srcfoto,
+                    'nombres' => $personaId->getNombres(), 
+                    'apellidos' => $personaId->getApellido(),
+                'tiempo'=>$tiempo));
     }
 
     /**

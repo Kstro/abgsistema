@@ -63,6 +63,7 @@ class AdmPromocionesController extends Controller
         $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
         
         return $this->render('admpromociones/index.html.twig', array(
+            'nombreCorto'=>$nombreCorto,
             'abgPersona' => $result_persona,
             'usuario'    => $idPersona,
             'TipoPago'   => $TipoPago,

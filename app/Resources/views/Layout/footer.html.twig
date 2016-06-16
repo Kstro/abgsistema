@@ -1,15 +1,16 @@
-        <div class="container-fluid" style="background-color: #263345;">
+  
+<div class="container-fluid" style="background-color: #263345;">
             <div class="container" style="padding-top: 40px; padding-bottom: 40px;">
                 <div class="row">
                     <div class="col-md-3">
                         <p class="sans" style="font-size: 16px; font-weight: 600; color: #fff;">Sitemap</p>
                         <ul style="list-style: none; padding: 0; font-size: 13px; color: #c3c3c3;" class="sans">
-                            <li>Inicio</li>
-                            <li>Directorio</li>
-                            <li>Preguntar gratis</li>
+                            <li><a href="{{ path('index')}}" style=" text-decoration:none;color: inherit;" >Inicio</a></li>
+                            <li><a href="{{ path('directorio_index')}}" style=" text-decoration:none;color: inherit;">Directorio</a></li>
+                            <li><a href="{{path('pregunta_index')}}" style=" text-decoration:none;color: inherit;">Preguntar gratis</a></li>
                             <li>Blog Comunitario</li>
-                            <li>Soy un abogado</li>
-                            <li>Login Abogados</li>
+                            <li><a href="{{path('soy_abogado')}}" style=" text-decoration:none;color: inherit;">Soy un abogado</a></li>
+                            <li> <a href="{{ path('abogado_login')}}"  style=" text-decoration:none;color: inherit;" > Login Abogados</a></li>
                         </ul>
                     </div>
                     <div class="col-md-3">
@@ -34,3 +35,4 @@
                 </div>
             </div>
         </div>
+                         
