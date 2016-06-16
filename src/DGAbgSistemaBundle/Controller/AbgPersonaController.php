@@ -39,11 +39,11 @@ class AbgPersonaController extends Controller {
      * @Method("GET")
      */
     public function indexAction() {
-        //$em = $this->getDoctrine()->getManager();
-        //  $abgPersonas = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->findAll();
+//$em = $this->getDoctrine()->getManager();
+//  $abgPersonas = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->findAll();
 
         return $this->render(':Layout:index.html.twig', array(
-                        //   'abgPersonas' => $abgPersonas,
+//   'abgPersonas' => $abgPersonas,
         ));
     }
 
@@ -80,7 +80,7 @@ class AbgPersonaController extends Controller {
      */
     public function showAction(AbgPersona $abgPersona) {
 
-        //   $deleteForm = $this->createDeleteForm($abgPersona);
+//   $deleteForm = $this->createDeleteForm($abgPersona);
 
         $em = $this->getDoctrine()->getManager();
         $dql_persona = "SELECT  p.nombres AS nombre, p.apellido AS apellido "
@@ -197,7 +197,7 @@ class AbgPersonaController extends Controller {
             $em->getConnection()->rollback();
             $em->close();
 
-            // echo $e->getMessage();   
+// echo $e->getMessage();   
         }
     }
 
@@ -221,7 +221,7 @@ class AbgPersonaController extends Controller {
         $Experiencia = "";
         $Certificacion = "";
         $Curso = "";
-        
+
         try {
             if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
                 $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
@@ -240,10 +240,10 @@ class AbgPersonaController extends Controller {
                         . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.tituloProfesional AS tprofesional, p.verificado As verificado "
                         . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
                 $result_persona = $em->createQuery($dql_persona)->getArrayResult();
-       
-      $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_persona[0]['apellido'])[0];
 
-     
+                $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
+
+
                 $dql_ciudad = "SELECT c.nombreCiudad As nombre, es.nombreEstado estado"
                         . " FROM DGAbgSistemaBundle:AbgPersona p "
                         . " JOIN DGAbgSistemaBundle:CtlCiudad c WHERE p.ctlCiudad=c.id AND p.id=" . $idPersona
@@ -328,7 +328,7 @@ class AbgPersonaController extends Controller {
                         . " FROM  DGAbgSistemaBundle:AbgUrlPersonalizada u "
                         . " JOIN DGAbgSistemaBundle:AbgPersona p WHERE p.id=u.abgPersona AND u.abgPersona=" . $idPersona;
                 $url = $em->createQuery($dql_url)->getArrayResult();
-                //Esta consulta  es la que jala el src de la foto dejela
+//Esta consulta  es la que jala el src de la foto dejela
 
                 $dqlfoto = "SELECT fot.src as src "
                         . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
@@ -376,10 +376,10 @@ class AbgPersonaController extends Controller {
 
                     $cumplimiento = $cumplimiento + 10;
                 }
-           
+
                 return $this->render('abgpersona/panelAdministrativoAbg.html.twig', array(
-                            // return $this->render(':Layout:index.html.twig', array(
-                    'nombreCorto'=>$nombreCorto,
+// return $this->render(':Layout:index.html.twig', array(
+                            'nombreCorto' => $nombreCorto,
                             'abgPersona' => $result_persona,
                             'usuario' => $username,
                             'active' => 'perfil',
@@ -399,49 +399,49 @@ class AbgPersonaController extends Controller {
                             'NNotificaciones' => $NNotificaciones[0][1],
                                 // 'ru'=>$RolUser[0]['id']
                 ));
-            }  elseif ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
                 $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
-                
+
                 $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
                         . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.tituloProfesional AS tprofesional, p.verificado As verificado "
                         . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
                 $result_persona = $em->createQuery($dql_persona)->getArrayResult();
-                
+                $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
                 $dqlfoto = "SELECT fot.src as src "
                         . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
                 $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
-                
+
                 $fecha = date('Y-m-j');
-                $nuevafecha = strtotime ( '-8 day' , strtotime ( $fecha ) ) ;
-                $nuevafecha = date ( 'Y-m-j' , $nuevafecha );
-                
+                $nuevafecha = strtotime('-8 day', strtotime($fecha));
+                $nuevafecha = date('Y-m-j', $nuevafecha);
+
                 $rsm = new ResultSetMapping();
                 $sql = "select count(per.id) as total "
-                        . "from ctl_usuario usu " 
+                        . "from ctl_usuario usu "
                         . "inner join abg_persona per on usu.rh_persona_id = per.id "
                         . "inner join abg_foto foto on foto.abg_persona_id = per.id "
                         . "inner join abg_url_personalizada uper on uper.abg_persona_id = per.id "
-                        . "where per.fecha_ingreso > '".$nuevafecha."' and per.fecha_ingreso <= '".$fecha."' and foto.estado = 1";
-                //var_dump($sql);
-                $rsm->addScalarResult('total','total');
-                
+                        . "where per.fecha_ingreso > '" . $nuevafecha . "' and per.fecha_ingreso <= '" . $fecha . "' and foto.estado = 1";
+//var_dump($sql);
+                $rsm->addScalarResult('total', 'total');
+
                 $totalAbogados = $em->createNativeQuery($sql, $rsm)
-                                  ->getSingleResult();
-                
+                        ->getSingleResult();
+
                 $rsm2 = new ResultSetMapping();
-                $sql2 = "select count(id) as total from abg_entrada where fecha >= '".$nuevafecha."' and fecha <= '".$fecha."'";
-                $rsm2->addScalarResult('total','total');
+                $sql2 = "select count(id) as total from abg_entrada where fecha >= '" . $nuevafecha . "' and fecha <= '" . $fecha . "'";
+                $rsm2->addScalarResult('total', 'total');
                 $totalBlogs = $em->createNativeQuery($sql2, $rsm2)
-                                  ->getSingleResult();
-                
+                        ->getSingleResult();
+
                 $rsm3 = new ResultSetMapping();
-                $sql3 = "select count(id) as total from abg_pregunta where fechapregunta >= '".$nuevafecha."' and fechapregunta <= '".$fecha."'";
-                $rsm3->addScalarResult('total','total');
+                $sql3 = "select count(id) as total from abg_pregunta where fechapregunta >= '" . $nuevafecha . "' and fechapregunta <= '" . $fecha . "'";
+                $rsm3->addScalarResult('total', 'total');
                 $totalPreguntas = $em->createNativeQuery($sql3, $rsm3)
-                                  ->getSingleResult();
-                
+                        ->getSingleResult();
+
                 $rsm4 = new ResultSetMapping();
-        
+
                 $sql4 = "select per.nombres as nombres, per.apellido as apellidos, foto.src as src, uper.url as url, fecha_ingreso as fecha
                         from ctl_usuario usu 
                         inner join abg_persona per on usu.rh_persona_id = per.id
@@ -451,17 +451,17 @@ class AbgPersonaController extends Controller {
                         order by fecha_ingreso desc, per.id desc
                         limit 0, 12";
 
-                $rsm4->addScalarResult('nombres','nombres');
-                $rsm4->addScalarResult('apellidos','apellidos');
-                $rsm4->addScalarResult('src','src');
-                $rsm4->addScalarResult('url','url');
-                $rsm4->addScalarResult('fecha','fecha');
+                $rsm4->addScalarResult('nombres', 'nombres');
+                $rsm4->addScalarResult('apellidos', 'apellidos');
+                $rsm4->addScalarResult('src', 'src');
+                $rsm4->addScalarResult('url', 'url');
+                $rsm4->addScalarResult('fecha', 'fecha');
 
                 $usuarios = $em->createNativeQuery($sql4, $rsm4)
-                                          ->getResult();
-                
+                        ->getResult();
+
                 $rsm5 = new ResultSetMapping();
-                
+
                 $sql5 = "select distinct emp.nombre_empresa as empresa, foto.src as src, uper.url as url, te.tipo_empresa as tipoEmpresa
                         from ctl_empresa emp 
                         inner join abg_foto foto on foto.ctl_empresa_id = emp.id
@@ -470,36 +470,35 @@ class AbgPersonaController extends Controller {
                         where foto.estado = 1 and emp.nombre_empresa <> 'Nombre de la empresa'
                         order by emp.id desc
                         limit 0, 8";
-                
-                $rsm5->addScalarResult('empresa','empresa');
-                $rsm5->addScalarResult('src','src');
-                $rsm5->addScalarResult('url','url');
-                $rsm5->addScalarResult('tipoEmpresa','tipoEmpresa');
-                
+
+                $rsm5->addScalarResult('empresa', 'empresa');
+                $rsm5->addScalarResult('src', 'src');
+                $rsm5->addScalarResult('url', 'url');
+                $rsm5->addScalarResult('tipoEmpresa', 'tipoEmpresa');
+
                 $empresas = $em->createNativeQuery($sql5, $rsm5)
-                                          ->getResult();
-                
+                        ->getResult();
+
                 return $this->render('abgpersona/panelAdministrativoAbg.html.twig', array(
-                     'nombreCorto'=>$nombreCorto,
-                    'abgPersona' => $result_persona,
-                    'abgFoto' => $result_foto,
-                    'totalAbogados' => $totalAbogados,
-                    'totalBlogs' => $totalBlogs,
-                    'totalPreguntas' => $totalPreguntas,
-                    'usuarios' => $usuarios,
-                    'empresas' => $empresas,
+                            'nombreCorto' => $nombreCorto,
+                            'abgPersona' => $result_persona,
+                            'abgFoto' => $result_foto,
+                            'totalAbogados' => $totalAbogados,
+                            'totalBlogs' => $totalBlogs,
+                            'totalPreguntas' => $totalPreguntas,
+                            'usuarios' => $usuarios,
+                            'empresas' => $empresas,
                 ));
-            }    
-                
+            }
         } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
 
-            // echo $e->getMessage();   
+// echo $e->getMessage();   
         }
     }
-    
-    //Busqueda de perfiles de la empresa en base a la URL
+
+//Busqueda de perfiles de la empresa en base a la URL
 
     /**
      * Lists all CtlEmpresa entities.
@@ -518,7 +517,7 @@ class AbgPersonaController extends Controller {
 
             if ($empresa != null) {
 
-                //Completo los elementos de las visitas
+//Completo los elementos de las visitas
                 $entity = $em->getRepository('DGAbgSistemaBundle:AbgVisitas')->findBy(array("ctlEmpresa" => $empresa->getId()));
                 $valor = $entity[0]->getVisita();
 
@@ -528,7 +527,7 @@ class AbgPersonaController extends Controller {
                 $em->merge($entity[0]);
                 $em->flush();
 
-                //Coleccion de datos de la empresa
+//Coleccion de datos de la empresa
 
                 $dqlempresa = "SELECT  e.nombreEmpresa AS nombreEmpresa, e.correoelectronico as correoEmpresa, e.direccion, e.sitioWeb,e.movil, e.telefono, e.color,e.cantidadEmpleados ,e.latitude, e.longitude ,"
                         . "date_format(e.fechaFundacion, '%Y') As fechaFundacion"
@@ -536,35 +535,35 @@ class AbgPersonaController extends Controller {
 
                 $result_empresa = $em->createQuery($dqlempresa)->getArrayResult();
 
-                //Valor de la foto de la empresa
+//Valor de la foto de la empresa
 
                 $dqlfoto = "SELECT fot.src as src "
                         . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.ctlEmpresa=" . $ctlEmpresaId . " and fot.estado=1 and fot.tipoFoto=1";
                 $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
 
 
-                //Array de si se lista o no dentro del perfil de la empresa
+//Array de si se lista o no dentro del perfil de la empresa
                 $RepositorioListaEmpresa = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlEmpresa')->find($ctlEmpresaId); //->getRhPersona();
                 $lista = $RepositorioListaEmpresa->getListaEmpleado();
 
                 if ($lista) {
-                    //Listar los empleados de la empresa
+//Listar los empleados de la empresa
                     $sqlEmpEmp = "SELECT  emp.ctl_empresa_id, per.id as idPersona, per.nombres as nombres, per.apellido as apellido, per.correoelectronico as correoelectronico, "
                             . " per.telefono_fijo as telefonoFijo, per.telefono_movil as telefonoMovil, per.titulo_profesional AS tituloProfesional, "
                             . " per.id, fot.src, sw.nombre AS sitioWeb, per.verificado AS verificado, exp.puesto AS puesto, "
                             . " pesp.ctl_especialidad_id,GROUP_CONCAT(distinct (esp.nombre_especialidad)) AS especialida "
-                            . " FROM marvinvi_abg.abg_foto fot "
-                            . "JOIN marvinvi_abg.abg_persona per "
+                            . " FROM  abg_foto fot "
+                            . "JOIN  abg_persona per "
                             . "ON fot.abg_persona_id=per.id AND fot.tipo_foto=0 AND fot.tipo_foto <> 5 "
-                            . " JOIN marvinvi_abg.abg_persona_empresa emp "
+                            . " JOIN  abg_persona_empresa emp "
                             . " ON  emp.ctl_empresa_id=" . $ctlEmpresaId . " AND emp.abg_persona_id=per.id "
-                            . "JOIN marvinvi_abg.abg_experiencia_laboral exp "
+                            . "JOIN  abg_experiencia_laboral exp "
                             . " ON exp.ctl_empresa_id=" . $ctlEmpresaId
-                            . " LEFT JOIN marvinvi_abg.abg_sitio_web sw "
+                            . " LEFT JOIN  abg_sitio_web sw "
                             . " ON per.id = sw.abg_persona_id "
-                            . " LEFT JOIN marvinvi_abg.abg_persona_especialidad pesp "
+                            . " LEFT JOIN  abg_persona_especialidad pesp "
                             . "ON pesp.abg_persona_id = per.id "
-                            . "LEFT JOIN marvinvi_abg.ctl_especialidad esp "
+                            . "LEFT JOIN  ctl_especialidad esp "
                             . "ON pesp.ctl_especialidad_id = esp.id AND esp.id = pesp.ctl_especialidad_id "
                             . " GROUP BY pesp.abg_persona_id "
                             . " ORDER  BY per.nombres ASC";
@@ -576,7 +575,7 @@ class AbgPersonaController extends Controller {
                     $registro_empleados = null;
                 }
 
-                //valor de los tipos de empresa  
+//valor de los tipos de empresa  
                 $dqlTipoEmpresa = "SELECT tipo.tipoEmpresa as tipoEmpresa  "
                         . "FROM DGAbgSistemaBundle:CtlEmpresa emp "
                         . "JOIN emp.ctlTipoEmpresa tipo "
@@ -584,7 +583,7 @@ class AbgPersonaController extends Controller {
 
                 $registro_tipoempresa = $em->createQuery($dqlTipoEmpresa)->getResult();
 
-                //metodo que me retorna Especialidades
+//metodo que me retorna Especialidades
                 $dql_especialida = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre, pe.descripcion AS descripcion "
                         . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
                         . " JOIN DGAbgSistemaBundle:AbgPersonaEspecialida pe WHERE e.id=pe.ctlEspecialidad AND pe.ctlEmpresa=" . $ctlEmpresaId
@@ -592,7 +591,7 @@ class AbgPersonaController extends Controller {
                         . " ORDER BY e.nombreEspecialidad";
                 $result_especialida = $em->createQuery($dql_especialida)->getArrayResult();
 
-                //Selccion de las URL personalizadas de los abogados de las empresas
+//Selccion de las URL personalizadas de los abogados de las empresas
                 $dqlUrl = "SELECT per.id as idpersonaUrl, per.nombres, url.url  FROM DGAbgSistemaBundle:AbgUrlPersonalizada url "
                         . "JOIN url.abgPersona per  "
                         . "JOIN per.ctlEmpresa emp "
@@ -648,11 +647,11 @@ class AbgPersonaController extends Controller {
                     $sql = "SELECT  el.id AS id, el.puesto AS puesto, el.compania AS empresa, el.funcion AS funcion,"
                             . "f.src AS src, DATEDIFF(el.fecha_fin,el.facha_inicio) AS dias, date_format(el.facha_inicio, '%M %Y') As fechaIn, "
                             . " date_format(el.fecha_fin, '%M %Y') As fechaFin, el.ubicacion AS hubicacion, urle.url AS url "
-                            . " FROM  marvinvi_abg.abg_experiencia_laboral el "
-                            . " JOIN marvinvi_abg.abg_persona p on p.id=el.abg_persona_id AND el.abg_persona_id=" . $idPersona
-                            . " left JOIN marvinvi_abg.ctl_empresa em on em.id=el.ctl_empresa_id "
-                            . " left JOIN marvinvi_abg.abg_foto AS f on f.ctl_empresa_id=em.id"
-                            . " left JOIN marvinvi_abg.abg_url_personalizada urle ON em.id=urle.ctl_empresa_id "
+                            . " FROM   abg_experiencia_laboral el "
+                            . " JOIN  abg_persona p on p.id=el.abg_persona_id AND el.abg_persona_id=" . $idPersona
+                            . " left JOIN  ctl_empresa em on em.id=el.ctl_empresa_id "
+                            . " left JOIN  abg_foto AS f on f.ctl_empresa_id=em.id"
+                            . " left JOIN  abg_url_personalizada urle ON em.id=urle.ctl_empresa_id "
                             . " GROUP by el.id,el.abg_persona_id,em.id"
                             . " ORDER BY el.facha_inicio Desc";
                     $stm = $this->container->get('database_connection')->prepare($sql);
@@ -660,9 +659,9 @@ class AbgPersonaController extends Controller {
                     $Experiencia = $stm->fetchAll();
 
                     $sqlEdu = "SELECT e.id AS idEs, e.institucion AS institucion, e.titulo AS titulo, e.anio_inicio AS anioIni, e.anio_graduacion AS anio, tp.abg_titulocol AS disciplina "
-                            . " FROM marvinvi_abg.abg_estudio e "
-                            . " JOIN  marvinvi_abg.abg_persona p ON e.abg_persona_id=p.id AND e.abg_persona_id=" . $idPersona
-                            . " JOIN marvinvi_abg.ctl_titulo_profesional tp ON tp.id=e.abg_titulo_profesional_id "
+                            . " FROM  abg_estudio e "
+                            . " JOIN   abg_persona p ON e.abg_persona_id=p.id AND e.abg_persona_id=" . $idPersona
+                            . " JOIN  ctl_titulo_profesional tp ON tp.id=e.abg_titulo_profesional_id "
                             . " ORDER BY e.anio_inicio Asc";
                     $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                     $stm->execute();
@@ -670,8 +669,8 @@ class AbgPersonaController extends Controller {
 
                     $sqlCert = "SELECT c.id AS id, c.certficacion_nombre AS nombre,c.institucion As institucion, "
                             . " date_format(c.fecha_inicio, '%M %Y') As fechaIn,date_format(c.fecha_fin, '%M %Y') AS fechaFin "
-                            . " FROM  marvinvi_abg.abg_certificacion c "
-                            . " JOIN marvinvi_abg.abg_persona p on p.id=c.abg_persona_id AND c.abg_persona_id=" . $idPersona
+                            . " FROM   abg_certificacion c "
+                            . " JOIN  abg_persona p on p.id=c.abg_persona_id AND c.abg_persona_id=" . $idPersona
                             . " ORDER BY c.fecha_inicio";
                     $stm = $this->container->get('database_connection')->prepare($sqlCert);
                     $stm->execute();
@@ -679,8 +678,8 @@ class AbgPersonaController extends Controller {
 
                     $sqlCurso = "SELECT s.id AS id, s.nombre AS nombre,s.institucion As institucion, "
                             . " date_format(s.fecha_incio, '%M %Y') As fechaIn,date_format(s.fecha_fin, '%M %Y') AS fechaFin, s.descripcion AS descripcion "
-                            . " FROM  marvinvi_abg.seminario s "
-                            . " JOIN marvinvi_abg.abg_persona p on p.id=s.abg_persona_id AND s.abg_persona_id=" . $idPersona
+                            . " FROM   seminario s "
+                            . " JOIN  abg_persona p on p.id=s.abg_persona_id AND s.abg_persona_id=" . $idPersona
                             . " ORDER BY s.fecha_incio";
                     $stm = $this->container->get('database_connection')->prepare($sqlCurso);
                     $stm->execute();
@@ -688,17 +687,17 @@ class AbgPersonaController extends Controller {
 
                     $sqlOrg = "SELECT org.id AS id, org.nombre AS nombre,org.puesto As puesto,org.descripcion AS descripcion, "
                             . " date_format(org.fecha_inicio, '%M %Y') As fechaIn,date_format(org.fecha_fin, '%M %Y') AS fechaFin"
-                            . " FROM  marvinvi_abg.abg_organizacion org "
-                            . " JOIN marvinvi_abg.abg_persona p on p.id=org.abg_persona_id AND org.abg_persona_id=" . $idPersona
+                            . " FROM   abg_organizacion org "
+                            . " JOIN  abg_persona p on p.id=org.abg_persona_id AND org.abg_persona_id=" . $idPersona
                             . " ORDER BY org.fecha_inicio";
                     $stm = $this->container->get('database_connection')->prepare($sqlOrg);
                     $stm->execute();
                     $Organizacion = $stm->fetchAll();
 
                     $sqlEdu = "SELECT i.id As idIdioma,pi.id AS idPi,i.idioma As nombre, pi.nivel As nivel "
-                            . " FROM marvinvi_abg.abg_persona_idioma pi "
-                            . " join marvinvi_abg.ctl_idioma i on i.id=pi.ctl_idioma_id "
-                            . " join marvinvi_abg.abg_persona p on p.id=pi.abg_persona_id "
+                            . " FROM  abg_persona_idioma pi "
+                            . " join  ctl_idioma i on i.id=pi.ctl_idioma_id "
+                            . " join  abg_persona p on p.id=pi.abg_persona_id "
                             . " AND p.id=" . $idPersona
                             . " order by i.idioma";
                     $stm = $this->container->get('database_connection')->prepare($sqlEdu);
@@ -715,7 +714,7 @@ class AbgPersonaController extends Controller {
                             . " JOIN DGAbgSistemaBundle:AbgPersona p WHERE p.id=u.abgPersona AND u.abgPersona=" . $idPersona;
                     $url = $em->createQuery($dql_url)->getArrayResult();
 
-                    //Esta consulta  es la que jala el src de la foto dejela
+//Esta consulta  es la que jala el src de la foto dejela
 
                     $dqlfoto = "SELECT fot.src as src, fot.estado As estado "
                             . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
@@ -751,7 +750,7 @@ class AbgPersonaController extends Controller {
             var_dump("Lo sentimos mucho esa url no existe");
         }
     }
-    
+
     /**
      * @Route("/ver_perfil", name="ver_perfil", options={"expose"=true})
      * @Method("GET")
@@ -774,7 +773,7 @@ class AbgPersonaController extends Controller {
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
 
-            $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_persona[0]['apellido'])[0];
+            $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
 
             $dql_ciudad = "SELECT c.nombreCiudad As nombre, es.nombreEstado estado"
                     . " FROM DGAbgSistemaBundle:AbgPersona p "
@@ -860,7 +859,7 @@ class AbgPersonaController extends Controller {
                     . " JOIN DGAbgSistemaBundle:AbgPersona p WHERE p.id=u.abgPersona AND u.abgPersona=" . $idPersona;
             $url = $em->createQuery($dql_url)->getArrayResult();
 
-            //Esta consulta  es la que jala el src de la foto dejela
+//Esta consulta  es la que jala el src de la foto dejela
 
             $dqlfoto = "SELECT fot.src as src, fot.estado As estado "
                     . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
@@ -872,7 +871,7 @@ class AbgPersonaController extends Controller {
 
 
             return $this->render('abgpersona/verPerfil.html.twig', array(
-                 'nombreCorto'=>$nombreCorto,
+                        'nombreCorto' => $nombreCorto,
                         'abgPersona' => $result_persona,
                         'active' => 'verperfil',
                         'RegistrosubEsp' => $result_sub,
@@ -907,7 +906,7 @@ class AbgPersonaController extends Controller {
                     . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.codigo as codigo "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
-            $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_persona[0]['apellido'])[0];
+            $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
 
             $dql_tipoPago = "SELECT p.id as id, p.tipoPago As nombre "
                     . " FROM DGAbgSistemaBundle:CtlTipoPago p ORDER BY p.tipoPago ASC";
@@ -925,21 +924,19 @@ class AbgPersonaController extends Controller {
 
 
             return $this->render('abgpersona/panelAjustes.html.twig', array(
-                       'nombreCorto'=>$nombreCorto,
+                        'nombreCorto' => $nombreCorto,
                         'abgPersona' => $result_persona,
                         'usuario' => $idPersona,
                         'TipoPago' => $TipoPago,
                         'abgFoto' => $result_foto,
             ));
-
- 
         } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
             $em->getConnection()->rollback();
             $em->close();
 
-            // echo $e->getMessage();   
+// echo $e->getMessage();   
         }
     }
 
@@ -1048,7 +1045,7 @@ class AbgPersonaController extends Controller {
         try {
             $em = $this->getDoctrine()->getManager();
 
-            //  $idPersona = 93;
+//  $idPersona = 93;
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
                     . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil "
@@ -1069,7 +1066,7 @@ class AbgPersonaController extends Controller {
             return new Response(json_encode($data));
 
 
-            // echo $e->getMessage();   
+// echo $e->getMessage();   
         }
     }
 
@@ -1083,7 +1080,7 @@ class AbgPersonaController extends Controller {
             $em = $this->getDoctrine()->getManager();
 
 
-            //  $idPersona = 93;
+//  $idPersona = 93;
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $dql_persona = "SELECT  p.id AS id, p.descripcion AS  descripcion,"
                     . " p.direccion AS direccion "
@@ -1099,7 +1096,7 @@ class AbgPersonaController extends Controller {
             return new Response(json_encode($data));
 
 
-            // echo $e->getMessage();   
+// echo $e->getMessage();   
         }
     }
 
@@ -1277,7 +1274,7 @@ class AbgPersonaController extends Controller {
      */
     public function SubespecialidaAction() {
         try {
-            
+
             $request = $this->getRequest();
             $em = $this->getDoctrine()->getManager();
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
@@ -1380,7 +1377,7 @@ class AbgPersonaController extends Controller {
 
             $idEmpresa = "";
             $IdExperiencia = "";
-  
+
 
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
 
@@ -1393,22 +1390,22 @@ class AbgPersonaController extends Controller {
             $dqlPersonaExp = $em->createQuery($ExpPersona);
             $resulExp = $dqlPersonaExp->getResult();
 
-          
+
             $idEXp = "";
             if ($datos['hidExp'] == "") {
-          if ($request->get('tipo') == "1") {
-                $idEmpresa = $Empresa->find(intval($request->get('empresa')));
+                if ($request->get('tipo') == "1") {
+                    $idEmpresa = $Empresa->find(intval($request->get('empresa')));
 
-                if ($idEmpresa !== null) {
-                    $nombre = $Empresa->find(intval($request->get('empresa')))->getNombreEmpresa();
+                    if ($idEmpresa !== null) {
+                        $nombre = $Empresa->find(intval($request->get('empresa')))->getNombreEmpresa();
+                    }
+                } else {
+
+                    $nombre = $request->get('empresa');
                 }
-            } else {
-
-                $nombre = $request->get('empresa');
-            }
                 if ((count($resulExp) > 0) && ($datos['txtFechaFin'] == "")) {
                     foreach ($resulExp as $row) {
-                        //  $fechaFin = $row['fecha_fin'];
+//  $fechaFin = $row['fecha_fin'];
                         $compania = $row['compania'];
                         $id = $row['id'];
                     }
@@ -1425,7 +1422,7 @@ class AbgPersonaController extends Controller {
                     $Experiencia->setFuncion($datos['txtfuncion']);
                     $Experiencia->setPuesto($datos['txtpuesto']);
                     $Experiencia->setUbicacion($datos['txthubicacion']);
-           
+
                     if (($datos['txtFechaFin']) != "") {
                         $fechaFin = date_create($datos['txtFechaFin']);
                         $Experiencia->setFechaFin($fechaFin);
@@ -1434,10 +1431,9 @@ class AbgPersonaController extends Controller {
                         $Experiencia->setFechaFin($fechaFin);
                     }
                     if ($idEmpresa != null) {
-                  
-                     $Empresa = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($idEmpresa->getId());
+
+                        $Empresa = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($idEmpresa->getId());
                         $Experiencia->setCtlEmpresa($Empresa);
-                    
                     }
                     $em->persist($Experiencia);
                     $em->flush();
@@ -1447,7 +1443,7 @@ class AbgPersonaController extends Controller {
                         try {
                             $AbgPersonaEmpresa = new AbgPersonaEmpresa();
                             $Empresa = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($idEmpresa->getId());
-                            
+
                             if ($Empresa) {
                                 $AbgPersonaEmpresa->setAbgPersona($Persona);
                                 $AbgPersonaEmpresa->setCtlEmpresa($Empresa);
@@ -1461,19 +1457,18 @@ class AbgPersonaController extends Controller {
                     }
                     $data['msj'] = "Experiencia registrada";
                 }
-                
             }// Actualizar 
             else {
-                        if ($request->get('tipo') == "1") {
-                $idEmpresa = $Empresa->find(intval($request->get('empresa')));
+                if ($request->get('tipo') == "1") {
+                    $idEmpresa = $Empresa->find(intval($request->get('empresa')));
 
-                if ($idEmpresa !== null) {
-                    $nombre = $Empresa->find(intval($request->get('empresa')));//->getNombreEmpresa();
+                    if ($idEmpresa !== null) {
+                        $nombre = $Empresa->find(intval($request->get('empresa'))); //->getNombreEmpresa();
+                    }
+                } else {
+
+                    $nombre = $request->get('empresa');
                 }
-            } else {
-
-                $nombre = $request->get('empresa');
-            }
 
                 foreach ($resulExp as $row) {
 
@@ -1496,12 +1491,12 @@ class AbgPersonaController extends Controller {
                         $Experiencia->setFechaFin($fechaFin);
                         if ($request->get('tipo') == "1") {
 
-                            // var_dump($Empresa->find(intval($request->get('empresa'))));
+// var_dump($Empresa->find(intval($request->get('empresa'))));
                             /*  var_dump($datos['hidEmp'] . "<85>-- empre " . $datos['txtFechaFin'] . " --" . $request->get('tipo') . "---" . $nombre);
                               exit(); */
                             $Experiencia->setCompania($idEmpresa->getNombreEmpresa());
                             $Experiencia->setCtlEmpresa($idEmpresa);
-                            // Inserta en persona_empresa si la fecha final es null
+// Inserta en persona_empresa si la fecha final es null
                             $sqlEdu = "DELETE FROM abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
                             $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                             $stm->execute();
@@ -1512,12 +1507,12 @@ class AbgPersonaController extends Controller {
                             $stm->execute();
                         } elseif ($request->get('tipo') == "0" && $datos['hidEmp'] !== "" && $request->get('empresa') == "") {
 
-                            // elimina de la tabla persona_empresa porq la nueva empresa no esta registrada en el directorio de abogados 
-                            // y actualiza personaExperiencia CtlEmpresa null porq la nueva empresa no esta registrada
+// elimina de la tabla persona_empresa porq la nueva empresa no esta registrada en el directorio de abogados 
+// y actualiza personaExperiencia CtlEmpresa null porq la nueva empresa no esta registrada
                             /*       var_dump($Empresa->find(intval($request->get('empresa'))));
                               var_dump($datos['hidEmp'] . "<86>-- empre " . $datos['txtFechaFin'] . " --" . $request->get('tipo') . "---" . $nombre);
                               exit(); */
-                            //    $Experiencia->setCtlEmpresa(null);
+//    $Experiencia->setCtlEmpresa(null);
 
                             $sqlEdu = "DELETE FROM abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
                             $stm = $this->container->get('database_connection')->prepare($sqlEdu);
@@ -1572,7 +1567,7 @@ class AbgPersonaController extends Controller {
                             $nombrempresa = $Empresa->find($datos['hidEmp'])->getnombreEmpresa();
                             $Experiencia->setCompania($nombrempresa);
 
-                            $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                            $sqlEdu = "DELETE FROM  abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
                             $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                             $stm->execute();
                         } elseif ($request->get('tipo') == '1') {
@@ -1585,7 +1580,7 @@ class AbgPersonaController extends Controller {
                             $Experiencia->setCompania($nombrempresa);
                             $Experiencia->setCtlEmpresa($idEmpresaComp);
 
-                            $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                            $sqlEdu = "DELETE FROM  abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
                             $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                             $stm->execute();
                         }
@@ -1610,7 +1605,7 @@ class AbgPersonaController extends Controller {
                     $data['msj'] = "Experiencia actualizada";
                 }
 
-                // si hay experiencia registrada pero la empresa no esta registrada como bufete
+// si hay experiencia registrada pero la empresa no esta registrada como bufete
                 else {
 
                     if ((count($resulExp) > 0) && ($datos['txtFechaFin'] == "")) {
@@ -1635,7 +1630,7 @@ class AbgPersonaController extends Controller {
 
                             $fechaFin = null;
                             $Experiencia->setFechaFin($fechaFin);
-                            //  $Experiencia->setFechaFin($fechaFin);
+//  $Experiencia->setFechaFin($fechaFin);
 
                             if ($request->get('tipo') == "1") {
 
@@ -1657,26 +1652,25 @@ class AbgPersonaController extends Controller {
                                 }
                             } elseif ($request->get('tipo') == "0" && $datos['hidEmp'] !== "") {
 
-                           /*     var_dump("hhhhhhhh");
-                                exit();*/
+                                /*     var_dump("hhhhhhhh");
+                                  exit(); */
                                 $sqlEdu = "DELETE FROM abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
                                 $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                                 $stm->execute();
                                 if ($request->get('empresa') !== "") {
-                                     $Experiencia->setCompania($request->get('empresa'));
-                                   $Experiencia->setCtlEmpresa(null);
+                                    $Experiencia->setCompania($request->get('empresa'));
+                                    $Experiencia->setCtlEmpresa(null);
                                 } else {
-                                        $Emp = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($datos['hidEmp']);
+                                    $Emp = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($datos['hidEmp']);
                                     $sqlEdu = "INSERT INTO abg_persona_empresa (abg_persona_id,ctl_empresa_id) "
                                             . " VALUES (" . $idPersona . "," . intval($datos['hidEmp']) . ")";
                                     $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                                     $stm->execute();
-                                   $Experiencia->setCtlEmpresa($Emp);
+                                    $Experiencia->setCtlEmpresa($Emp);
                                 }
-                            
+
                                 $fechaFin = null;
                                 $Experiencia->setFechaFin($fechaFin);
-                             
                             } elseif ($request->get('tipo') == "0" && $datos['hidEmp'] !== "" && $request->get('empresa') !== "") {
 
                                 $Experiencia->setCompania($request->get('empresa'));
@@ -1692,7 +1686,7 @@ class AbgPersonaController extends Controller {
                             $fechaFin = date_create($datos['txtFechaFin']);
                             if ($request->get('tipo') == "1") {
 
-                                //    var_dump($Empresa->find(intval($request->get('empresa'))));
+//    var_dump($Empresa->find(intval($request->get('empresa'))));
 
                                 $IdCTLEMPRESA = $Empresa->find(intval($request->get('empresa')));
 
@@ -1703,7 +1697,7 @@ class AbgPersonaController extends Controller {
                                 }
                                 $Experiencia->setCtlEmpresa($IdCTLEMPRESA);
 
-                                // var_dump($Empresa->find(intval($request->get('empresa'))));
+// var_dump($Empresa->find(intval($request->get('empresa'))));
                                 /*        var_dump($datos['hidEmp']);
                                   exit(); */
 
@@ -1714,7 +1708,7 @@ class AbgPersonaController extends Controller {
                                 $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                                 $stm->execute();
                                 /*
-                                  $sqlEdu = "INSERT INTO marvinvi_abg.abg_persona_empresa (abg_persona_id,ctl_empresa_id) "
+                                  $sqlEdu = "INSERT INTO  abg_persona_empresa (abg_persona_id,ctl_empresa_id) "
                                   . " VALUES (" . $idPersona . "," . $Empresa->find(intval($request->get('empresa')))->getId() . ")";
                                   $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                                   $stm->execute(); */
@@ -1723,7 +1717,7 @@ class AbgPersonaController extends Controller {
                                 $sqlEdu = "DELETE FROM abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
                                 $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                                 $stm->execute();
-                                //   $Experiencia->setCtlEmpresa(null);
+//   $Experiencia->setCtlEmpresa(null);
                             } elseif ($request->get('tipo') == "0" && $datos['hidEmp'] !== "" && $datos['txtFechaFin'] !== "" && $request->get('empresa') !== "") {
 
                                 $sqlEdu = "DELETE FROM abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
@@ -1803,7 +1797,7 @@ class AbgPersonaController extends Controller {
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $Experiencia = $em->getRepository("DGAbgSistemaBundle:AbgExperienciaLaboral")->find(intval($request->get('experiencia')));
             if ($Experiencia->getCtlEmpresa() != NULL) {
-                $sqlEdu = "DELETE FROM marvinvi_abg.abg_persona_empresa  WHERE abg_persona_id= " . $idPersona
+                $sqlEdu = "DELETE FROM  abg_persona_empresa  WHERE abg_persona_id= " . $idPersona
                         . "  AND ctl_empresa_id=" . $Experiencia->getCtlEmpresa()->getId();
                 $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                 $stm->execute();
@@ -2421,7 +2415,7 @@ class AbgPersonaController extends Controller {
                     $AbgPersonaIdioma->setCtlioma($IdIdioma);
                     $em->persist($AbgPersonaIdioma);
                     $em->flush();
-                    $data['msj'] = "Idioma registrada";
+                    $data['msj'] = "Idioma registrado";
                 }
             }
 
@@ -2579,7 +2573,7 @@ class AbgPersonaController extends Controller {
                     . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
-            $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_persona[0]['apellido'])[0];
+            $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
 
             $dql_solict_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
                     . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado "
@@ -2608,11 +2602,11 @@ class AbgPersonaController extends Controller {
             $stm = $this->container->get('database_connection')->prepare($sqlRol);
             $stm->execute();
             $RolUser = $stm->fetchAll();
-            
+
             switch ($RolUser[0]['rol']) {
                 case 'ROLE_USER':
                     return $this->render(':abgpersona:panelVerificacion.html.twig', array(
-                        'nombreCorto'=>$nombreCorto,
+                                'nombreCorto' => $nombreCorto,
                                 'abgPersona' => $result_persona,
                                 'usuario' => $idPersona,
                                 'TipoPago' => $TipoPago,
@@ -2636,7 +2630,7 @@ class AbgPersonaController extends Controller {
 
 
                     return $this->render(':administracion:panelVerificacion.html.twig', array(
-                         'nombreCorto'=>$nombreCorto,
+                                'nombreCorto' => $nombreCorto,
                                 'abgPersona' => $result_solict_persona,
                                 'usuario' => $idPersona,
                                 'TipoPago' => $TipoPago,
@@ -2646,7 +2640,7 @@ class AbgPersonaController extends Controller {
                     break;
             }
         } catch (Exception $e) {
-            
+
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
@@ -2690,14 +2684,14 @@ class AbgPersonaController extends Controller {
             $request = $this->getRequest();
             $idPersona = $request->get('abg');
 
-            //    $idPersona = $this->container->get('security.context')->getToken()->getUser()->getId();
+//    $idPersona = $this->container->get('security.context')->getToken()->getUser()->getId();
             $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
                     . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil,p.estado As estado, p.tituloProfesional AS tituloProfesional, "
                     . " p.verificado As verificado "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona . " AND p.verificado=0";
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
 
-            //Esta consulta  es la que jala el src de la foto dejela
+//Esta consulta  es la que jala el src de la foto dejela
             $dqlfoto = "SELECT fot.src as src "
                     . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
             $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
@@ -2722,7 +2716,7 @@ class AbgPersonaController extends Controller {
 
             $data['datosP'] = $result_persona;
             $data['especialida'] = $sitio;
-            //  $data['sitioweb'] = $sitio[0]['nombre'];
+//  $data['sitioweb'] = $sitio[0]['nombre'];
             $data['foto'] = $result_foto[0]['src'];
 
 
@@ -2746,7 +2740,7 @@ class AbgPersonaController extends Controller {
 
 
 
-            //    $idPersona = $this->container->get('security.context')->getToken()->getUser()->getId();
+//    $idPersona = $this->container->get('security.context')->getToken()->getUser()->getId();
 
             $sqlverificacion = "SELECT p.id AS id, CONCAT(p.nombres, '  ', p.apellido)   AS nombre, fot.src AS src, "
                     . " p.direccion AS direccion, p.telefono_fijo AS Tfijo, p.telefono_movil AS movil, p.correoelectronico AS correo, "
@@ -2833,7 +2827,7 @@ class AbgPersonaController extends Controller {
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
 
 
-$nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_persona[0]['apellido'])[0];
+            $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
 
             $dqlfoto = "SELECT fot.src as src "
                     . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
@@ -2858,9 +2852,9 @@ $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_pe
             $stm->execute();
             $suscripcion = $stm->fetchAll();
 
-            //  return $this->render('abgpersona/panelAdministrativoAbg.html.twig', array(
+//  return $this->render('abgpersona/panelAdministrativoAbg.html.twig', array(
             return $this->render(':abgpersona:panelSuscripcion.html.twig', array(
-                'nombreCorto'=>$nombreCorto,
+                        'nombreCorto' => $nombreCorto,
                         'abgPersona' => $result_persona,
                         'usuario' => $idPersona,
                         'abgFoto' => $result_foto,
@@ -2870,8 +2864,10 @@ $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_pe
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
 
-            // echo $e->getMessage();   
+// echo $e->getMessage();   
         }
     }
+
+    
 
 }

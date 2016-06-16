@@ -54,6 +54,7 @@ class AdmPromocionesController extends Controller
                         . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
         $result_persona = $em->createQuery($dql_persona)->getArrayResult();
         
+        $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_persona[0]['apellido'])[0];
         $dql_tipoPago = "SELECT p.id as id, p.tipoPago As nombre FROM DGAbgSistemaBundle:CtlTipoPago p ORDER BY p.tipoPago ASC";
         $TipoPago = $em->createQuery($dql_tipoPago)->getArrayResult();
 
@@ -61,6 +62,7 @@ class AdmPromocionesController extends Controller
         $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
         
         return $this->render('admpromociones/index.html.twig', array(
+            'nombreCorto'=>$nombreCorto,
             'abgPersona' => $result_persona,
             'usuario'    => $idPersona,
             'TipoPago'   => $TipoPago,

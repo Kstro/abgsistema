@@ -50,22 +50,26 @@ box-shadow: 3px 3px 2px #888888;
     
 }
 .btnperfil {
-    background:#F0F0F0;
+    background:#F0F0F0 ;
     color: #505050;
     border-radius:0px;
 
 }
 .btnsesion:hover {
     background:#00c0ef !important;
-    color:#fff ;
-border:none;
+    color:#fff  !important;
+border:none  !important;
     border-radius:0px;
+    box-shadow: 3px 3px 2px #888888  !important;
 
     
 }
 .btnsesion {
-    background:#F0F0F0;
-    color: #505050;
+    background:#F0F0F0 !important;
+    color: #363636;
     border-radius:0px;
-border: 1px solid #e0e0e0;
+border: 1px solid #e0e0e0 !important;
+}
+
+.depto_muni:hover { cursor:hand;
 }

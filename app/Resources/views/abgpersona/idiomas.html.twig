@@ -48,26 +48,19 @@
             <div class="row" id="divIdioma">
                 <div class="col-sm-3"><label for="Fecha_inicio">Idioma</label></div>
             </div>
-
             {% for datosIR in IdiomaRegistrado %}
-
                 <p>
                 <div class="row" id="divIdioma{{datosIR.idPi}}">
-
-                    <div class="col-sm-4">
-
+                   
+                    <div class="col-sm-4 col-xs-3">
                         <select style="width: 100%;" id="SIdioma{{datosIR.idPi}}" name="SIdioma{{datosIR.idPi}}" class="form-control input-sm newIdioma" data-rule-required="true">
                             <option value="">Select...</option>
                             {% for datos in idioma %}
                                 <option value="{{datos.id}}" {%if(datos.id==datosIR.idIdioma)%}selected{%endif%}>{{datos.nombre}}</option>
                             {%endfor%}
-
                         </select>
-
                     </div>
-
-                    <div class="col-sm-4"  >
-
+                    <div class="col-sm-4 col-xs-3"  >
                         <select style="width: 100%;" id="Snivel{{datosIR.idPi}}" name="Snivel{{datosIR.idPi}}" class="form-control input-sm newIdioma" data-rule-required="true">
                             <option value="">Select...</option>
                             <option value="Avanzado" {%if(datosIR.nivel=='Avanzado')%}selected{%endif%}>Avanzado</option>
@@ -97,7 +90,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-sm"  onclick="addIdiomas()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                    <button type="submit" class="btn btn-primary btn-sm btn-flat"  onclick="addIdiomas()">Guardar</button> <button type="button" class="btn btn-default btn-sm btn-flat" id="cancel">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -109,7 +102,7 @@
                 <div class="col-sm-3"><label for="Fecha_inicio">Idioma </label></div>
             </div>
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-4 col-xs-3">
                     <select id="SIdioma1" name="SIdioma1" class="form-control input-sm newIdioma " data-rule-required="true">
                         <option value="">Select an option...</option>
                         {% for datos in idioma %}
@@ -118,13 +111,13 @@
 
                     </select>
                 </div>
-                <div class="col-sm-4"  >
+                <div class="col-sm-4 col-xs-3"  >
                     <select id="Snivel1" name="Snivel1" class="form-control input-sm newIdioma " data-rule-required="true">
                         <option value="">Select an option...</option>
                         <option value="Avanzado">Avanzado</option>
                         <option value="Basico">Basico</option>
                         <option value="Intermedio">Intermedio</option>
-                        <option value="Navito">Navito</option>
+                        <option value="Nativo">Nativo</option>
                     </select> 
                 </div>
             </div>
@@ -138,7 +131,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-sm"  onclick="addIdiomas()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                    <button type="submit" class="btn btn-primary btn-sm btn-flat"  onclick="addIdiomas()">Guardar</button> <button type="button" class="btn btn-default btn-sm btn-flat" id="cancel">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -155,7 +148,7 @@
             Idioma = [];
             div = '<p><div class="row" id="divIdioma' + $("#divContenedor div").length + '">';
 
-            div += '<div class="col-sm-4">';
+            div += '<div class="col-sm-4 col-xs-3">';
             div += '<select id="SIdioma' + $("#divContenedor div").length + '" name="SIdioma' + $("#divContenedor div").length + '" class="form-control input-sm newIdioma" data-rule-required="true">';
 
             div += '<option value="">Selecione una opcion...</option>';
@@ -164,14 +157,14 @@
 
         {%endfor%}
                 div += '</select></div>';
-                div += '<div class="col-sm-4">';
+                div += '<div class="col-sm-4 col-xs-3">';
                 div += '<select id="Snivel' + $("#divContenedor div").length + '" name="Snivel' + $("#divContenedor div").length + '"';
                 div += 'class="form-control input-sm newIdioma" data-rule-required="true">';
                 div += '<option value="">Select an option...</option>';
                 div += '<option value="Avanzado">Avanzado</option>';
                 div += '<option value="Basico">Basico</option>';
                 div += '<option value="Intermedio">Intermedio</option>';
-                div += '<option value="Navito">Navito</option>';
+                div += '<option value="Nativo">Nativo</option>';
                 div += '</select></div>';
                 div += '<a onClick="RemoveIdioma(' + $("#divContenedor div").length + ')"><i class="fa fa-remove" style="color: #999999;" data-toggle="tooltip" data-placement="left" title="Remover" ></i></a>';
                 div += '</div></p>';

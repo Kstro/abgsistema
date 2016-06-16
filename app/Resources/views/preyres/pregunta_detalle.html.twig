@@ -62,7 +62,7 @@
                     <form action="{{ path('envio_pregunta') }}" method="POST">
                         <label class="sans" style="margin-top: 20px;">Escriba su pregunta</label>
                         <p class="sans" style="font-size: 13px;">Estas a 30 segundos de realizar tu pregunta gratis y encontrar el abogado perfecto para tu situacion legal.</p>
-                        <textarea id="txtpregunta" name="pregunta" type="text" maxlength="150"  style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; width: 100%; font-size: 14px;" class="sans" rows="3" placeholder="Escribe tu pregunta aqui.."> {%if pregunta|default is not empty %}{{pregunta}}{%endif%}</textarea>
+                        <textarea id="txtpregunta" name="pregunta" type="text" maxlength="150"  style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; width: 100%; font-size: 14px;" class="sans" rows="3" placeholder="Escribe tu pregunta aqui..">{%if pregunta|default is not empty %}{{pregunta|trim}}{%endif%}</textarea>
                         <p class="sans" style="font-size: 13px; color: #999999;" id="contador">0 d 150 Charattters</p>
 
                         <label class="sans" style="margin-top: 15px;">Detalles adicionales</label>

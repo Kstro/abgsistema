@@ -374,10 +374,10 @@ class AbgFacturacionController extends Controller {
    
         $sql = "SELECT p.id AS idAbg, CONCAT(p.nombres, '  ', p.apellido)   AS nombre, f.id As idFact, f.monto AS monto, f.plazo As plazo, "
                 . " f.servicio As servicio, tp.tipo_pago As tipoPago, f.descripcion As descripcion, date_format(f.fecha_pago, '%d/%m/%Y') As fechaPago "
-                . " FROM marvinvi_abg.abg_persona p "
-                . " JOIN marvinvi_abg.abg_facturacion f"
+                . " FROM  abg_persona p "
+                . " JOIN  abg_facturacion f"
                 . " ON  p.id=f.abg_persona_id AND p.id=".$datos['Sabogado']."  AND f.fecha_pago >=".$datos['txtFechaInicio']."  OR  f.fecha_pago <=".$datos['txtFechaFin']
-                . " JOIN marvinvi_abg.ctl_tipo_pago tp "
+                . " JOIN  ctl_tipo_pago tp "
                 . " ON  tp.id=f.abg_tipo_pago_id"
                 . " ORDER BY p.nombres ASC ";
         $stm = $this->container->get('database_connection')->prepare($sql);

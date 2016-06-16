@@ -12,7 +12,7 @@ class DefaultController extends Controller
 {
     //pagina home
     /**
-     * @Route("/")
+     * @Route("/", name="index")
      */
     public function indexAction()
     {
@@ -35,16 +35,30 @@ class DefaultController extends Controller
                                   ->getResult();
         //var_dump($usuarios);
         
-        $sqldepto= "SELECT est.nombre_estado AS nombreEstado FROM ctl_estado est ORDER BY est.nombre_estado DESC LIMIT 0,6";
-
+     //   $sqldepto= "SELECT est.nombre_estado AS nombreEstado FROM ctl_estado est ORDER BY est.nombre_estado DESC LIMIT 0,6";
+         $sqldepto="SELECT dep.nombre_estado As nombreEstado, count(*) AS Estado FROM  directorio d "
+                 . " join ctl_estado dep ON dep.id=d.estado " 
+                 . " group by estado limit 0,6";
          $stm = $this->container->get('database_connection')->prepare($sqldepto);
         $stm->execute();
         $departamentos = $stm->fetchAll();
+        
+        $sqlEsp = "SELECT esp.nombre_especialidad AS especialidad, count(*) AS Nabogados "
+                . " FROM  directorio d "
+                . " JOIN abg_persona_especialidad ep ON d.id=abg_persona_id "
+                . " JOIN ctl_especialidad esp ON esp.id=ep.ctl_especialidad_id "
+                . " GROUP BY ep.ctl_especialidad_id limit 0,6";
+        
+        $stm = $this->container->get('database_connection')->prepare($sqlEsp);
+        $stm->execute();
+        $especialidad= $stm->fetchAll();
+        
         //$preguntas = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->findAll();
         
           $sql_preguntas_resiente = "SELECT  pre.id, usu.id,CONCAT(per.nombres, '  ', per.apellido) as nombres, uper.url as url, fot.src AS src, "
-                . " pre.respuesta AS respuesta, pre.fecha_respuesta, pre.abg_pregunta AS idPregunta "
-                . " FROM abg_respuesta_pregunta pre "
+                . " pre.respuesta AS respuesta, pre.fecha_respuesta, pre.abg_pregunta AS idPregunta, per.estado AS esatdo, preg.pregunta AS pregunta "
+                . " FROM abg_pregunta preg "
+                . " JOIN abg_respuesta_pregunta pre ON preg.id=pre.abg_pregunta "
                 . " JOIN ctl_usuario usu ON pre.ctl_usuario_id = usu.id "
                 . " JOIN abg_persona per ON usu.rh_persona_id = per.id "
                 . " JOIN abg_url_personalizada uper ON uper.abg_persona_id = per.id "
@@ -69,7 +83,8 @@ class DefaultController extends Controller
             'usuarios' =>$usuarios,
             'ultimas_prteguntas'=> $ultimas_prteguntas,
             'tiemposRespuesta' => $tiemposRespuesta,
-            'departamentos'=>$departamentos
+            'departamentos'=>$departamentos,
+            'especialidad'=>$especialidad
         ));
     }
     
@@ -155,6 +170,7 @@ class DefaultController extends Controller
     */
     public function busquedaCiudadInputAction(Request $request)
     {
+      
         $busqueda = $request->query->get('query');
         $page = $request->query->get('page');
         

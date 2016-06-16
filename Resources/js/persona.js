@@ -17,16 +17,14 @@ $(document).on('ready', function () {
         success: function (data)
         {
             $("#divD").empty();
-            estado = '<p><div class="col-sm-12"> ';
+            estado = '<div class="col-sm-12 col-xs-12"  style="margin-bottom:7px;"> ';
             estado += '<select  width:100%; class="form-control input-sm select2"  name="sEstado" id="sEstado" onChange=ciudad()>';
-            estado += '<option value="0">Seleccione Deptamento</option>';
+            estado += '<option value="0">Seleccione Departamento</option>';
             $.each(data.depto, function (indice, val) {
                 estado += '<option value="' + val.id + '">' + val.nombre + '</option>';
             });
-            estado += ' </select></div></p>';
-
+            estado += ' </select></div>';
             $("#divD").append(estado);
-              
         },
         error: function (errors)
         {
@@ -179,7 +177,9 @@ $(document).on('ready', function () {
 
         if ($("#div1").length > 0) {
 
-        } else {
+        } else
+        {
+            
             $.ajax({
                 type: "GET",
                 url: Routing.generate('from_experiencia'),
@@ -310,31 +310,53 @@ $(document).on('ready', function () {
 });
 function Fsobremi()
 {
+          if ($("#div002").length > 0) {
+
+        } else
+        {
     $("#btnUnpoco").click();
+        }
 }
 function editIdioma()
 {
+           if ($("#div3").length > 0) {
+
+        } else
+        {
     $('#btnIdioma').click();
+        }
 }
 
 function editEspe()
-{
+{ if ($("#div01").length > 0) {
+
+        } else {
     $('#btnespecialida').click();
+        }
 }
 function editExperiencia(val)
 {
     var div, divn;
+           if ($("#div1").length > 0) {
+
+        } else
+        {
     $.ajax({
         type: "GET",
         url: Routing.generate('from_experiencia'),
         data: {experiencia: val},
         success: function (data)
         {
+              if ($("#div1").length > 0) {
+
+        } else
+        {
             actExp = 1;
             div = '<div class="nueva-Experiencia" id="div1"  style="background-color: #FBFBFB;margin-bottom:10px;border-bottom:1px solid #F1EEEE">' + data + '</div><br>';
             $("#consultas").before(div);
             $("#" + val).hide();
             editExp = val;
+        }
 
         },
         error: function (errors)
@@ -342,6 +364,7 @@ function editExperiencia(val)
 
         }
     });
+        }
 }
 function removeExperiencia(val)
 {
@@ -628,7 +651,7 @@ if(persaEmpresa==0)
                         data: {hPersona: $('input#hPersona').val(), dato: $("#fExperiencia").serialize(), empresa: empresa, tipo: tipo},
                         success: function (data)
                         {
-                              $('div.experienc').children('br').remove();
+                                $('div.experienc').children('br').remove();
                             if (data.msj !== false) {
                                 $.each($(data.Exp), function (indice, val) {
                                     $("#Exp" + val.id).remove();
@@ -727,7 +750,16 @@ function addEdu() {
         var datos;
         $("#fEdu").submit(
                 function (event) {
-                    $.ajax({
+                           if(($("#txtAnioIni").val()>$("#txtAnioFin").val())&& ($("#txtAnioFin").val()!=""))
+        {
+            Lobibox.notify("warning", {
+                                    size: 'mini',
+                                    msg: "<p> Año fin menor que año inicio</p>"
+                                });
+        }
+        else
+        {
+                   $.ajax({
                         type: 'POST',
                         async: false,
                         dataType: 'json',
@@ -757,6 +789,12 @@ function addEdu() {
                                     datos += '</script></div>';
                                     datos += '</div>';
                                     datos += '</div>';
+                                    console.log(val.anio);
+                                    if(val.anio=="")
+                                    {
+                                    $('#estudioActual').text(val.institucion);
+                                    console.log(val.institucion);
+                                }
                                 });
                                 $("#consultaEducacion").append(datos);
                                 Lobibox.notify("success", {
@@ -764,6 +802,8 @@ function addEdu() {
                                     msg: "<p>" + data.msj + "</p>"
                                 });
                                 $("#div2").remove();
+                                
+                                
                             } else {
                                 Lobibox.notify("warning", {
                                     size: 'mini',
@@ -777,8 +817,10 @@ function addEdu() {
 
                         }
                     });
+                    }
                     event.preventDefault();
                 });
+                
     }
 }
 function removeEdu(val)
@@ -914,43 +956,55 @@ function removeOrg(val)
 function editOrganizacion(val)
 {
     var div, divn;
+         if ($("#div5").length > 0) {
+        } else {
     $.ajax({
         type: "GET",
         url: Routing.generate('from_organizacion'),
         data: {organizacion: val},
         success: function (data)
         {
+              if ($("#div5").length > 0) {
+        } else {
             div = '<div class="nueva-Experiencia" id="div5"  style="background-color:#FBFBFB;margin-bottom:-38px;border-bottom:1px solid #F1EEEE;">' + data + '</div><br>';
             $("#consultaOrg").before(div);
             $("#Org" + val).hide();
             editEdu = val;
+        }
         },
         error: function (errors)
         {
 
         }
     });
+        }
 }
 
 function editEducacion(val)
 {
     var div, divn;
+        if ($("#div2").length > 0) {
+        } else {
     $.ajax({
         type: "GET",
         url: Routing.generate('from_educacion'),
         data: {educacion: val},
         success: function (data)
         {
+               if ($("#div2").length > 0) {
+        } else {
             div = '<div class="nueva-Experiencia" id="div2"  style="background-color:#f4f4f4;margin-bottom:-28px;border-bottom:1px solid #F1EEEE">' + data + '</div><br><br>';
             $("#consultaEducacion").before(div);
             $("#Edu" + val).hide();
             editEdu = val;
+        }
         },
         error: function (errors)
         {
 
         }
     });
+        }
 }
 
 function addCertificacion() {
@@ -1055,22 +1109,27 @@ function removeCertificacion(val)
 function editCertificacion(val)
 {
     var div, divn;
+       if ($("#div6").length > 0) {
+        } else {
     $.ajax({
         type: "GET",
         url: Routing.generate('from_certificacion'),
         data: {certificacion: val},
         success: function (data)
-        {
+        {if ($("#div6").length > 0) {
+        } else {
             div = '<div class="nueva-Experiencia" id="div6"  style="background-color:#f4f4f4;margin-bottom:-30px;border-bottom:1px solid #F1EEEE">' + data + '</div><br><br>';
             $("#consultaCertificacion").before(div);
             $("#Cert" + val).hide();
             editEdu = val;
+        }
         },
         error: function (errors)
         {
 
         }
     });
+        }
 }
 function addCurso() {
     if ($("#txtCurso").val() !== "" && $("#txtAutoridaCM").val() !== "" && $("#txtFechIniCM").val() !== "" && $("#txtFechFinCM").val() !== "")
@@ -1273,22 +1332,28 @@ function addIdiomas() {
 function editCurso(val)
 {
     var div, divn;
+    console.log($("#div7"));
+     if ($("#div7").length > 0) {
+        } else {
     $.ajax({
         type: "GET",
         url: Routing.generate('from_curso'),
         data: {curso: val},
         success: function (data)
-        {
+        { if ($("#div7").length > 0) {
+        } else {
             div = '<div class="nueva-Experiencia" id="div7"  style="background-color:#f4f4f4;margin-bottom:-48px;border-bottom:1px solid #F1EEEE">' + data + '</div><br>';
             $("#consultaCurso").before(div);
             $("#CM" + val).hide();
             editEdu = val;
+        }
         },
         error: function (errors)
         {
 
         }
     });
+        }
 }
 
 function ciudad()
@@ -1303,13 +1368,13 @@ function ciudad()
         success: function (data)
         {
             $("#divC").empty();
-            ciudad = '<p><div class="col-sm-12"> ';
+            ciudad = '<div class="col-sm-12 col-xs-12"  style="margin-bottom:7px;"> ';
             ciudad += ' <select class="form-control input-sm select3"  name="sCiuda" id="sCiuda" >';
             ciudad += '<option value="0">Seleccione ciudad</option>';
             $.each(data.ciudad, function (indice, val) {
                 ciudad += '<option value="' + val.id + '">' + val.nombre + '</option>';
             });
-            ciudad += ' </select></div></p>';
+            ciudad += ' </select></div>';
             $("#divC").append(ciudad);
             $('.select3').select2();
         },

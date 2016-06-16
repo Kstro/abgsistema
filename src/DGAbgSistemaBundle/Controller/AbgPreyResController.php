@@ -36,7 +36,7 @@ class AbgPreyResController extends Controller{
      * Esta funcion recibe el contenido de la pregunta en la interfaz inicial
      *
      * @Route("/preg_det", name="preg_deta", options={"expose"=true})
-     * @Method("POST")
+     * @Method({"GET", "POST"})
      * @Template()
      */
     public function preguntaDetalleAction(Request $request) {
