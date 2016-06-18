@@ -55,6 +55,7 @@ class AdmPromocionesController extends Controller
         $result_persona = $em->createQuery($dql_persona)->getArrayResult();
         
         $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_persona[0]['apellido'])[0];
+        
         $dql_tipoPago = "SELECT p.id as id, p.tipoPago As nombre FROM DGAbgSistemaBundle:CtlTipoPago p ORDER BY p.tipoPago ASC";
         $TipoPago = $em->createQuery($dql_tipoPago)->getArrayResult();
 
@@ -68,6 +69,7 @@ class AdmPromocionesController extends Controller
             'TipoPago'   => $TipoPago,
             'abgFoto'    => $result_foto,
             'tipoPago'   => $tipoPago,  
+            'nombreCorto'=>$nombreCorto,
             //'admPromociones' => $admPromociones,
         ));
     }
@@ -116,6 +118,8 @@ class AdmPromocionesController extends Controller
         
         $result_persona = $em->createQuery($dql_persona)->getArrayResult();
         
+        $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_persona[0]['apellido'])[0];
+        
         if($admPromocione->getCtlPromociones() != NULL){
             $abgFoto = $em->getRepository("DGAbgSistemaBundle:AbgFoto")->findBy(array('promocion' => $admPromocione->getCtlPromociones()->getId()));
         } else {
@@ -138,6 +142,7 @@ class AdmPromocionesController extends Controller
             'tipoPago'      => $tipoPago, 
             'abgFoto'       => $result_foto,
             'admPromocione' => $admPromocione,
+            'nombreCorto'=>$nombreCorto,
             'publicidad'    => $abgFoto
         ));
     }

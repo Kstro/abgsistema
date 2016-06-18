@@ -115,12 +115,14 @@
                                     </div>
                                     {% if admPromocione.ctlPromociones %}
                                         <div class="row">
-                                            <div class="col-md-offset-2 col-md-8" style="margin-top: 20px;">
-                                                <strong>Imagen de Publicidad:</strong>
-                                            </div>
-                                            <div class="col-md-offset-2 col-md-6" style="margin-top: 20px;">
-                                                <img src="{{asset('')}}{{ publicidad[0].src}}" alt="espacio_publicitario">
-                                            </div>
+                                            {% if publicidad %}
+                                                <div class="col-md-offset-2 col-md-8" style="margin-top: 20px;">
+                                                    <strong>Imagen de Publicidad:</strong>
+                                                </div>
+                                                <div class="col-md-offset-2 col-md-6" style="margin-top: 20px;">                                                
+                                                    <img src="{{asset('')}}{{ publicidad[0].src}}" alt="espacio_publicitario">                                                
+                                                </div>
+                                            {% endif %}
                                         </div>
                                     {% endif %}                                               
                                 </div>       
