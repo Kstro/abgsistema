@@ -39,7 +39,7 @@ class AbgCentroPreguntasController extends Controller {
         $sql = "select per.nombres as nombres, per.apellido as apellidos, uper.url as url, count(pre.respuesta) as totalrespuestas
                 from abg_respuesta_pregunta pre inner join ctl_usuario usu on pre.ctl_usuario_id = usu.id
                 inner join abg_persona per on usu.rh_persona_id = per.id
-                inner join abg_url_personalizada uper on uper.abg_persona_id = per.id
+                inner join abg_url_personalizada uper on uper.abg_persona_id = per.id and uper.estado=1
                 group by per.nombres, per.apellido, uper.url
                 order by count(pre.respuesta) desc
                 limit 0, 10";
@@ -77,7 +77,7 @@ class AbgCentroPreguntasController extends Controller {
                 . "JOIN abg_respuesta_pregunta pre ON preg.id=pre.abg_pregunta "
                 . " JOIN ctl_usuario usu ON pre.ctl_usuario_id = usu.id "
                 . " JOIN abg_persona per ON usu.rh_persona_id = per.id "
-                . " JOIN abg_url_personalizada uper ON uper.abg_persona_id = per.id "
+                . " JOIN abg_url_personalizada uper ON uper.abg_persona_id = per.id AND uper.estado=1 "
                 . "  JOIN abg_foto fot "
                 . " ON fot.abg_persona_id=per.id AND fot.tipo_foto=0 AND fot.tipo_foto <> 5 "
                 . " ORDER BY  pre.id desc "
@@ -125,7 +125,7 @@ class AbgCentroPreguntasController extends Controller {
         $sql = "select per.nombres as nombres, per.apellido as apellidos, uper.url as url, count(pre.respuesta) as totalrespuestas
                 from abg_respuesta_pregunta pre inner join ctl_usuario usu on pre.ctl_usuario_id = usu.id
                 inner join abg_persona per on usu.rh_persona_id = per.id
-                inner join abg_url_personalizada uper on uper.abg_persona_id = per.id
+                inner join abg_url_personalizada uper on uper.abg_persona_id = per.id and uper.estado=1
                 group by per.nombres, per.apellido, uper.url
                 order by count(pre.respuesta) desc
                 limit 0, 10";
@@ -165,7 +165,7 @@ class AbgCentroPreguntasController extends Controller {
                 . "JOIN abg_respuesta_pregunta pre ON preg.id=pre.abg_pregunta "
                 . " JOIN ctl_usuario usu ON pre.ctl_usuario_id = usu.id "
                 . " JOIN abg_persona per ON usu.rh_persona_id = per.id "
-                . " JOIN abg_url_personalizada uper ON uper.abg_persona_id = per.id "
+                . " JOIN abg_url_personalizada uper ON uper.abg_persona_id = per.id AND uper.estado=1 "
                 . "  JOIN abg_foto fot "
                 . " ON fot.abg_persona_id=per.id AND fot.tipo_foto=0 AND fot.tipo_foto <> 5 "
                 . " ORDER BY  pre.id desc "
@@ -186,7 +186,7 @@ class AbgCentroPreguntasController extends Controller {
                 . " count(pre.respuesta) as totalrespuestas, fot.src AS src, per.estado AS estado"
                 . " FROM abg_respuesta_pregunta pre inner join ctl_usuario usu on pre.ctl_usuario_id = usu.id "
                 . " INNER JOIN abg_persona per on usu.rh_persona_id = per.id "
-                . " INNER JOIN abg_url_personalizada uper on uper.abg_persona_id = per.id "
+                . " INNER JOIN abg_url_personalizada uper on uper.abg_persona_id = per.id AND uper.estado=1 "
                 . " JOIN abg_foto fot  "
                 . " ON fot.abg_persona_id=per.id AND fot.tipo_foto=0 AND fot.tipo_foto <> 5 "
                 . " group by per.nombres, per.apellido, uper.url "
@@ -308,7 +308,7 @@ class AbgCentroPreguntasController extends Controller {
                 from abg_pregunta pre inner join ctl_usuario usu on pre.ctl_usuario_id = usu.id
                 inner join abg_persona per on usu.rh_persona_id = per.id
                 inner join abg_foto foto on foto.abg_persona_id = per.id
-                inner join abg_url_personalizada uper on uper.abg_persona_id = per.id
+                inner join abg_url_personalizada uper on uper.abg_persona_id = per.id and uper.estado=1
                 group by per.nombres, per.apellido, foto.src, uper.url
                 order by count(pre.respuesta) desc
                 limit 0, 10";

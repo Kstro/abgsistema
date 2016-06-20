@@ -1,4 +1,0 @@
-{
-  "#emailField": "",
-  "#field3": "ok"
-}

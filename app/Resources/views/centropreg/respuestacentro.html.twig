@@ -13,6 +13,7 @@
 {% endblock %}
 {% block js_extend %}
     <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
+     <link href="{{asset('Resources/src/css/menu_movil.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
     <link rel="stylesheet" href="{{asset('Resources/AdminLTE-2.3.0/bootstrap/css/bootstrap.min.css')}}">
     
@@ -33,6 +34,7 @@
     {% endblock %}
     {% block cuerpo %}
         {% embed ':Layout:head.html.twig' %}{% endembed %}
+        <div id="page-content">
         <div class="row contenedor-perfil" style=" padding: 10px; background-color:#ecf0f5;">                    
             <div class="col-md-9">
                 <div class="box box-widget">
@@ -179,8 +181,10 @@
                   
         </div> {#Fin del row#}	
 	<div style="height: 10px;"></div>	
+        </div>
     {% endblock %}    
     {% block js_template %}
+        <script src="{{asset('Resources/src/js/menu_movil.js')}}"></script>
         <script type="text/javascript">
             var imagenes = new Array();
             var imagenes2 = new Array();

@@ -40,7 +40,8 @@ class AbgPanelCentroRespuestaController extends Controller {
                     . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.codigo as codigo "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
- $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_persona[0]['apellido'])[0];
+            $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_persona[0]['apellido'])[0];
+            
             $dqlfoto = "SELECT fot.src as src "
                     . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
             $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
@@ -54,6 +55,7 @@ class AbgPanelCentroRespuestaController extends Controller {
 
             $em = $this->getDoctrine()->getManager();
             $pregunta = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->find($id);
+            
 
             $username = $this->container->get('security.context')->getToken()->getUser();
             $personaId = $username->getRhPersona();
@@ -74,7 +76,13 @@ class AbgPanelCentroRespuestaController extends Controller {
       {
            $estado=0; 
       }
-
+      if ($pregunta->getFechaPregunta() != NULL) {
+        
+       //         array_push($tiemposRespuesta, $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s')));
+             $tiempo = $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s'));
+        } else {
+            $tiempo = NULL;
+        }
             $srcfoto = $abgfoto->getSrc();
             return $this->render('panelcentropregabog/panelRespuestaPregunta.html.twig', array('pregunta' => $pregunta,
             'nombreCorto'=>$nombreCorto,
@@ -85,7 +93,8 @@ class AbgPanelCentroRespuestaController extends Controller {
                         'usuario' => $idPersona,
                         'abgFoto' => $result_foto,
                         'estado'=>$estado,
-                'respuesta'=>$respuesta));
+                'respuesta'=>$respuesta,
+                'tiempo'=>$tiempo));
         } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
@@ -251,25 +260,28 @@ class AbgPanelCentroRespuestaController extends Controller {
         $personaId = $username->getRhPersona();
         $idabg = $username->getRhPersona()->getId();
 
-        $sql = "SELECT COUNT(*) as total FROM abg_pregunta, ctl_usuario WHERE abg_pregunta.estado=1 AND ctl_usuario_id=ctl_usuario.id AND ctl_usuario.rh_persona_id =" . $idabg;
+        $sql = "SELECT COUNT(*) as total FROM abg_pregunta, ctl_usuario "
+                . " WHERE abg_pregunta.estado=1 AND ctl_usuario_id=ctl_usuario.id AND ctl_usuario.rh_persona_id =" . $idabg;
         $em = $this->getDoctrine()->getManager();
         $stmt = $em->getConnection()->prepare($sql);
         $stmt->execute();
         $totsincont = $stmt->fetchAll();
+ 
 
-        $sql = "SELECT preg.id as idpreg, preg.pregunta,  preg.fechapregunta AS fecha "
-                . " FROM abg_pregunta preg "
-                . " JOIN ctl_especialidad esp "
-                . " ON esp.id=preg.ctl_especialidad "
-                . " JOIN abg_persona_especialidad pe "
-                . " ON pe.ctl_especialidad_id=esp.id AND pe.abg_persona_id=" . $idPersona
-                . " WHERE preg.estado=1"
-                . " ORDER BY  preg.fechapregunta DESC ";
+        $sql = "SELECT preg.id as idpreg, preg.pregunta,  preg.fechapregunta AS fecha, resp.id "
+                 ." FROM abg_pregunta preg "
+                  ." LEFT JOIN abg_respuesta_pregunta resp on preg.id=resp.abg_pregunta "
+                 ." JOIN ctl_especialidad esp "
+                 ." ON esp.id=preg.ctl_especialidad "
+                 ." JOIN abg_persona_especialidad pe " 
+                 ." ON pe.ctl_especialidad_id=esp.id AND pe.abg_persona_id=".$idPersona
+                 ." WHERE preg.estado=1 and resp.id is null "
+                 ." ORDER BY  preg.fechapregunta DESC ";
         $em = $this->getDoctrine()->getManager();
         $stmt = $em->getConnection()->prepare($sql);
         $stmt->execute();
         $preguntas = $stmt->fetchAll();
-
+  
         $fecha = array();
         foreach ($preguntas as $key => $value) {
             $fechaRespuesta = $this->tiempo_transcurrido($value['fecha']);
@@ -301,17 +313,6 @@ class AbgPanelCentroRespuestaController extends Controller {
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $idUser = $this->container->get('security.context')->getToken()->getUser()->getId();
 
-
-//            $sql = "SELECT preg.id as idpreg, preg.pregunta,  preg.fechapregunta AS fecha "
-//                    . " FROM abg_respuesta_pregunta resp "
-//                    . " INNER JOIN abg_pregunta preg "
-//                    . " ON resp.abg_pregunta = preg.id "
-//                    . " INNER JOIN ctl_especialidad esp "
-//                    . " ON esp.id=preg.ctl_especialidad AND preg.ctl_usuario_id=" . $idUser
-//                    . " JOIN abg_persona_especialidad pe "
-//                    . " ON pe.ctl_especialidad_id=esp.id AND pe.abg_persona_id=" . $idPersona
-//                    . " WHERE preg.estado=0"
-//                    . " ORDER BY  preg.fechapregunta DESC ";
             $sql = "SELECT preg.id as idpreg, preg.pregunta,  preg.fechapregunta AS fecha, resp.fecha_respuesta as frespuesta
                      FROM abg_respuesta_pregunta resp 
                      INNER JOIN abg_pregunta preg 
@@ -325,7 +326,9 @@ class AbgPanelCentroRespuestaController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $stmt = $em->getConnection()->prepare($sql);
             $stmt->execute();
+           
             $data['Respreguntas'] = $stmt->fetchAll();
+           
             
             $fecha = array();
             foreach ($data['Respreguntas'] as $key => $value) {

@@ -1671,7 +1671,6 @@ $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_pe
                             . " ORDER BY e.nombreEspecialidad";
                     $result_especialida = $em->createQuery($dql_especialida)->getArrayResult();
 
-
                     $sql = "SELECT  el.id AS id, el.puesto AS puesto, el.compania AS empresa, el.funcion AS funcion,"
                             . "f.src AS src, DATEDIFF(el.fecha_fin,el.facha_inicio) AS dias, date_format(el.facha_inicio, '%M %Y') As fechaIn, "
                             . " date_format(el.fecha_fin, '%M %Y') As fechaFin, el.ubicacion AS hubicacion, urle.url AS url "
@@ -1679,7 +1678,7 @@ $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_pe
                             . " JOIN  abg_persona p on p.id=el.abg_persona_id AND el.abg_persona_id=" . $idPersona
                             . " left JOIN  ctl_empresa em on em.id=el.ctl_empresa_id "
                             . " left JOIN  abg_foto AS f on f.ctl_empresa_id=em.id"
-                            . " left JOIN  abg_url_personalizada urle ON em.id=urle.ctl_empresa_id "
+                            . " left JOIN  abg_url_personalizada urle ON em.id=urle.ctl_empresa_id AND urle.estado=1 "
                             . " GROUP by el.id,el.abg_persona_id,em.id"
                             . " ORDER BY el.facha_inicio Desc";
                     $stm = $this->container->get('database_connection')->prepare($sql);

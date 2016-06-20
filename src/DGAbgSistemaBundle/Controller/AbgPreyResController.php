@@ -55,7 +55,7 @@ class AbgPreyResController extends Controller{
                 from abg_pregunta pre inner join ctl_usuario usu on pre.ctl_usuario_id = usu.id
                 inner join abg_persona per on usu.rh_persona_id = per.id
                 inner join abg_foto foto on foto.abg_persona_id = per.id
-                inner join abg_url_personalizada uper on uper.abg_persona_id = per.id
+                inner join abg_url_personalizada uper on uper.abg_persona_id = per.id and uper.estado=1
                 group by per.nombres, per.apellido, foto.src, uper.url
                 order by count(pre.respuesta) desc
                 limit 0, 10";

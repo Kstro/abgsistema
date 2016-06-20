@@ -265,7 +265,7 @@ class AbgPersonaController extends Controller {
                         . " JOIN abg_persona p on p.id=el.abg_persona_id AND el.abg_persona_id=" . $idPersona
                         . " left JOIN ctl_empresa em on em.id=el.ctl_empresa_id "
                         . " left JOIN abg_foto AS f on f.ctl_empresa_id=em.id "
-                        . " left JOIN abg_url_personalizada urle ON em.id=urle.ctl_empresa_id"
+                        . " left JOIN abg_url_personalizada urle ON em.id=urle.ctl_empresa_id and urle.estado=1 "
                         . " GROUP by el.id,el.abg_persona_id,em.id"
                         . " ORDER BY el.facha_inicio Desc";
                 $stm = $this->container->get('database_connection')->prepare($sql);

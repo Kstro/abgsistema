@@ -93,10 +93,10 @@
                     $("#idtbody").empty();
                     $.each($(data.Respreguntas), function (indice, val) {
                         datos = '<tr>';
-                        datos += '<td style="width:70%;">' + val.pregunta + '</td>';
-                        datos += '<td style="width:15%;">&nbsp;' + data.fechasRespuesta[indice] + '</td>';
-                        datos += '<td style="width:15%;"><a data-toggle="tooltip"  data-container="body" title="Ver respuesta" style="text-decoration: none;" onClick="verRespust(' + val.idpreg + ')">&nbsp; <i class="fa fa-fa fa-commenting-o fa-lg"></i> </a></td>';
-                        datos += '</tr>';
+                          datos += '<td style="width:4%;"><a data-toggle="tooltip"  data-container="body" title="Ver respuesta" style="text-decoration: none;" onClick="verRespust(' + val.idpreg + ')">&nbsp;<i class="fa fa-fa fa-commenting-o fa-lg"></i></a></td>';
+                        datos += '<td style="width:82%;">' + val.pregunta + '</td>';
+                        datos += '<td style="width:14%;">&nbsp;' + data.fechasRespuesta[indice] + '</td>';
+                         datos += '</tr>';
                         $("#idtbody").append(datos);
                     });
                 },
@@ -112,7 +112,7 @@
     <div class="row" style=" margin-left:0px; margin-right:0px;">
         <section class="col-lg-12 connectedSortable ui-sortable"> 
             <div class="nav-tabs-custom" style="cursor: move;">
-                <ul class="nav nav-tabs  ui-sortable-handle">
+                <ul class="nav nav-tabs  ui-sortable-handle">   
                     <li class="active"><a href="#listaPreguntas" data-toggle="tab">Lista de preguntas</a></li>
                     <li><a href="#resPregunta" data-toggle="tab"  onClick="Respregut()">Preguntas respondidas</a></li>
                     <li class="pull-left header ">
@@ -129,12 +129,12 @@
                                     <tbody id="body">
 
                                         {% for key, preguntas in preguntas %}
-                                            <tr>
-                                                <td>{{ preguntas.pregunta }}</td>  
-                                                <td>{{ fechaRespuesta[key] }}</td>
+                                            <tr> <td style=" width: 4%;"><a  style="text-decoration: none;" onClick="responder({{preguntas.idpreg}});" data-toggle="tooltip"  data-container="body" title="Responder" accesskey=""><i class="fa fa-edit fa-lg"></i></a></td>
+                                        
+                                                <td style="width:82%;">{{ preguntas.pregunta }}</td>  
+                                                <td style="width:14%;">{{ fechaRespuesta[key] }}</td>
 
-                                                <td><a  style="text-decoration: none;" onClick="responder({{preguntas.idpreg}});" data-toggle="tooltip"  data-container="body" title="Responder" accesskey=""><i class="fa fa-edit fa-lg"></i></a></td>
-                                            </tr>
+                                                   </tr>
                                         {% endfor %}
                                     </tbody>
                                 </table> 

@@ -39,9 +39,9 @@
 
             FB.getLoginStatus(function (response) {
                 if (response.status === 'connected') {
-                    FB.api('/me', {"fields": "email,first_name,last_name,id,gender"}, function (response)
+                    FB.api('/me','get', {"fields": "email,first_name,last_name,id,gender"}, function (response)
                     {
-                        
+                        console.log(response);
                         $.ajax({
                             data: {id: response.id, email: response.email},
                             url: Routing.generate('validar_correo'),
@@ -93,13 +93,15 @@
                 return;
             js = d.createElement(s);
             js.id = id;
-            js.src = "//connect.facebook.net/en_US/sdk.js";
+            js.src = "//connect.facebook.net/es_ES/sdk.js";
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
 
         function iniciaAPI() {
             FB.api('/me', {"fields": "email,first_name,last_name,id,gender"}, function (response)
             {
+                
+                conosle.log(response);
                 $.ajax({
                     data: {id: response.id, email: response.email},
                     url: Routing.generate('validar_correo'),
