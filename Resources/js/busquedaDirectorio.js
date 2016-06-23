@@ -45,5 +45,9 @@ $(document).ready(function () {
             window.location = Routing.generate("directorio_index") + "?busqueda=" + busqueda + "&ciu=" + ciu;
         }
     });
+    
+    $(document).on('input', '#searchBox, #searchInputDept', function (event) {
+        $('#randomDir').val('');
+    });
 });
 
