@@ -21,6 +21,67 @@
     <script src = "{{ asset('Resources/vContra/strength.js') }}"  type = "text/javascript" ></script>
     <script src = "{{ asset('Resources/vContra/js.js') }}"  type = "text/javascript" ></script> 
     <script src="{{ asset('Resources/jQuery-Mask/src/jquery.mask.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+    
+    $(function editarFoto() {
+    $('.image-editor').cropit();
+    $('form').submit(function () {
+
+
+        // Move cropped image data to hidden input
+        var imageData = $('.image-editor').cropit('export');
+        $('.hidden-image-data').val(imageData);
+        //alert(imageData);
+        var usuario = $("#usuario").val();
+        var empresaId = $("#empresaId").val();
+        $("#gif").show();
+        //Aqui tiene que ir el ajax
+        $.ajax({
+            type: 'POST',
+            async: false,
+            dataType: 'json',
+            data: {imageDatas: imageData, usuario: usuario, empresaId: empresaId},
+            url: Routing.generate('ingresar_foto'),
+            success: function (data)
+            {
+                if (data.estado == true) {
+
+                    Lobibox.notify("success", {
+                        size: 'mini',
+                        msg: 'Datos modificados con exito'
+                    });
+                    $("#prev").attr('src', "{{ asset('') }}" + data.direccion);
+                    $("#gif").hide();
+                    $(".close").click();
+
+
+
+                }
+            },
+            error: function (xhr, status)
+            {
+                Lobibox.notify("danger", {
+                    size: 'mini',
+                    msg: 'Lo sentimos, ocurrio un error'
+                });
+                $("#gif").hide();
+                $(".close").click();
+
+            }
+        });
+
+        // Print HTTP request params
+        var formValue = $(this).serialize();
+        $('#result-data').text(formValue);
+        // Prevent the form from actually submitting
+        return false;
+    });
+});
+});
+
+             </script>
+     
 
 
     <style>
@@ -275,18 +336,18 @@
                             {% if datos.direccion %}
                                 {{datos.direccion}} 
                             {% else %}
-                                Direccion                                                              
+                                Dirección                                                             
                             {% endif %}  
                         </a>
                     </div>
                     <div class="col-sm-3 col-xs-12">
                         <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Fecha fundada</strong></p>
-                        <a href="#" id="txtFechaFundacion" data-type="text" data-placement="top" data-title="Año de funcacion" style="font-size: 11px; margin-bottom: 0px;">
+                        <a href="#" id="txtFechaFundacion" data-type="text" data-placement="top" data-title="Año de funcación" style="font-size: 11px; margin-bottom: 0px;">
 
                             {% if datos.fechaFundacion %}
                                 {{datos.fechaFundacion}} 
                             {% else %}
-                                Fecha de fundacion                                                              
+                                Fecha de fundación                                                             
                             {% endif %}  
                         </a>
                     </div>      
@@ -468,7 +529,7 @@
                             $("#contenido").hover(
                                     function () {
                                         $(this).append($('<span style="margin-left:13px;"><i class="fa fa-pencil fa-x2 btn btnperfil" onClick="editEspeEmp()"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn btnperfil"  onClick="editEspeEmp()">&nbsp;Eliminar</i></span>'));
-                                    }, function () {
+                                    }, function () {http://marvinvigil.info/abgdirectorio/abgsistema/app_dev.php/
                                 $(this).find("span:last").remove();
                             });
                         </script>

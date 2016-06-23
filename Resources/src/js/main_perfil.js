@@ -48,10 +48,15 @@ $(document).ready(function () {
     // a=datacheck.slice(0,-2);
     // console.log(eval(datacheck.slice(0,-2)));
     $('#txtTituloProfesional').editable({
-        validate: function (value) {
+       validate: function (value) {
             if (value === "")
                 return 'requerido';
-        }
+        },
+        source: [
+               {value: 'Doctor/a', text: 'Doctor/a'},
+               {value: 'Licenciado/a', text: 'Licenciado/a'},
+               {value: 'Magíster', text: 'Magíster'}
+           ]
 
     });
 
@@ -59,7 +64,11 @@ $(document).ready(function () {
     $('#txtMovil').editable({
         validate: function (value) {
             if (value === "")
-                return 'requerido';
+            {return 'requerido';}
+              else if(value.length<9)
+        {
+              return 'Formato no valido. ej. 7777-7777';
+        }
         },
         type: 'text',
         name: 'zip',
@@ -71,7 +80,11 @@ $(document).ready(function () {
     $('#txtOficina').editable({
         validate: function (value) {
             if (value === "")
-                return 'requerido';
+            {   return 'requerido'; }
+             else if(value.length<9)
+        {
+              return 'Formato no valido. ej. 2222-2222';
+        }
         },
         type: 'text',
         name: 'zip',

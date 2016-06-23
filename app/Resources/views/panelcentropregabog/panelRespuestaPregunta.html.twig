@@ -60,15 +60,18 @@
                                                     <img alt="message user image" src="{{asset('Photos/defecto/defecto.png') }}" class="direct-chat-img"><!-- /.direct-chat-img -->
                                                     <div class="direct-chat-text ">
                                                         {{pregunta.pregunta}}
+                                                    <p class="text-justify" style="margin-top:5px;">
+                                     {{pregunta.detalle}}</p>
+                                                       
                                                     </div>
                                                     <!-- /.direct-chat-text -->
                                                 </div>
                                                 {% if (respuesta | default is not empty)%}
                                                     <div class="direct-chat-msg right direct-chat-primary"><div class="direct-chat-info clearfix">
                                                             <span class="direct-chat-name pull-right">Tú</span>
-                                                            <span class="direct-chat-timestamp pull-left">2016-05-26 00:00:00</span>
+                                                            <span class="direct-chat-timestamp pull-left">{{tiempoRes}}</span>
                                                         </div>
-                                                        <img class="direct-chat-img " src="/Photos/Perfil/E2016-06-01100236.png" alt="message user image">
+                                                        <img class="direct-chat-img " src="{{ asset('')}}{{abgFoto[0].src}}" alt="message user image">
                                                         <div class="direct-chat-text text-justify">
                                                             {{respuesta}}
                                                         </div></div>

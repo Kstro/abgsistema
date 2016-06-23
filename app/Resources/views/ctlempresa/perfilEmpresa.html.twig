@@ -114,18 +114,13 @@
     </style>
     <script type = "text/javascript" >
         $(document).on('ready', function () {
-
             $('.main-sidebar').css("display", "none");
             $('.sidebar-toggle').css("display", "none");
         });
-
     </script>  
-{% endblock %} 
-
+{% endblock %}
 {% block cuerpo %}
     {% for datos in abgPersona %} 
-
-
         <header class="main-header">
         {% embed ':Layout:encabezado.html.twig' %}{% endembed %}
     </header>
@@ -136,7 +131,6 @@
         <section class="content-header">
         </section>
         <section >
-
             <div class="row" >
                 <!-- LADO IZQUIERDO -->
                 <div class="col-md-9">
@@ -157,7 +151,7 @@
                                             <div>
 
                                                 <center>
-                                                    <img id="prev" src="{{ asset('') }}{{ abgFoto[0].src}}" style="height:194px; width:195px;  "/>
+                                                    <img id="prev" src="{{ asset('') }}{{ result_fotoEmp[0].src}}" style="height:194px; width:195px;  "/>
                                                 </center>
                                             </div>    
                                         </div>
@@ -344,7 +338,7 @@
 
                         </div>   
                              </div> 
-                    </div>  
+              
               
                 {% if (empleados | default is not empty)%}
                     <div class="box box-widget">
@@ -432,7 +426,7 @@
 
 
             <div class="col-md-3" >
-                <div class="bloque-main" style="padding: 5px;">
+                <div class="bloque-main no-margin" style="padding: 5px;">
                     <div style="width:300px;overflow:hidden;height:450px;max-width:100%;" >
                         {#  Aqui empieza el mapa de geolocalizacion    #}
                         {% for datos in ctlEmpresa %} 

@@ -31,7 +31,8 @@
             show_clear_date: false,
             show_select_today: "Hoy",
             pair: $('.fechFinOrg'),
-            show_icon: false,
+            show_icon: false
+
         });
         $('.fechFinOrg').Zebra_DatePicker({
             months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
@@ -40,36 +41,37 @@
             // direction:false,
             show_clear_date: false,
             show_select_today: "Hoy",
-            show_icon: false,
+            show_icon: false
+
+            });
+
+            $("#cancel").click(function () {
+                $('div.organiza').children('br').remove();
+                $("#Org" + editEdu).show();
+                $("#div5").remove();
+            });
+
         });
+        $('#checkActual').change(function () {
+            if ($('#checkActual').is(":checked")) {
 
-        $("#cancel").click(function () {
-             $('div.organiza').children('br').remove();
-            $("#Org" + editEdu).show();
-            $("#div5").remove();
+                $('#fechafin').hide();
+                $('#txtFechaFin').val(null);
+            } else {
+                $('#fechafin').show();
+            }
+
         });
-
-    });
-    $('#checkActual').change(function () {
-        if ($('#checkActual').is(":checked")) {
-
-            $('#fechafin').hide();
-            $('#txtFechaFin').val(null);
-        } else {
-            $('#fechafin').show();
+        function CambioEmp()
+        {
+            document.getElementById('cambioEmpresa').style.display = 'block';
+            document.getElementById('EditEmpresa').style.display = 'none';
         }
-
-    });
-    function CambioEmp()
-    {
-        document.getElementById('cambioEmpresa').style.display = 'block';
-        document.getElementById('EditEmpresa').style.display = 'none';
-    }
-    function EditEmp()
-    {
-        document.getElementById('cambioEmpresa').style.display = 'none';
-        document.getElementById('EditEmpresa').style.display = 'block';
-    }
+        function EditEmp()
+        {
+            document.getElementById('cambioEmpresa').style.display = 'none';
+            document.getElementById('EditEmpresa').style.display = 'block';
+        }
 </script>
 
 <form id="fOrg" >

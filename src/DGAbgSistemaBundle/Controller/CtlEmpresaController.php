@@ -12,6 +12,7 @@ use DGAbgSistemaBundle\Entity\CtlEmpresa;
 use DGAbgSistemaBundle\Entity\AbgFoto;
 use DGAbgSistemaBundle\Entity\AbgPersona;
 use DGAbgSistemaBundle\Entity\CtlUsuario;
+use DGAbgSistemaBundle\Entity\AbgFacturacion;
 use DGAbgSistemaBundle\Entity\AbgSitioWeb;
 use DGAbgSistemaBundle\Entity\AbgUrlPersonalizada;
 use DGAbgSistemaBundle\Entity\AbgVisitas;
@@ -54,10 +55,10 @@ class CtlEmpresaController extends Controller {
      */
     public function EmpresaAction() {
         $username = $this->container->get('security.context')->getToken()->getUser();
-       
+
         $em = $this->getDoctrine()->getManager();
         $RepositorioPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($username->getUsername()); //->getRhPersona();
-   
+
         $ctlEmpresaId = $username->getCtlEmpresa()->getId();
 
         //Coleccion de datos de la empresa
@@ -119,7 +120,7 @@ class CtlEmpresaController extends Controller {
         $result_persona = $em->createQuery($dql_persona)->getArrayResult();
 
 
-$nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_persona[0]['apellido'])[0];
+        $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
         //Foto de la persona de perfil cuando este dentro del modulo de empresa
         /*   $dqlfoto = "SELECT fot.src as src "
           . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=1";
@@ -146,7 +147,7 @@ $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_pe
 
 
         return $this->render('ctlempresa/paneladministrativoempresa.html.twig', array(
-            'nombreCorto'=>$nombreCorto,
+                    'nombreCorto' => $nombreCorto,
                     'ctlEmpresa' => $result_empresa,
                     'abgFotoEmp' => $result_fotoEmp,
                     'ctlEmpresaId' => $ctlEmpresaId,
@@ -239,11 +240,13 @@ $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_pe
         $dqlfoto = "SELECT fot.src as src "
                 . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.ctlEmpresa=" . $ctlEmpresaId . " and fot.estado=1 and fot.tipoFoto=1";
         $result_fotoEmp = $em->createQuery($dqlfoto)->getArrayResult();
+     
+       
 
-       $dqlfoto = "SELECT fot.src as src "
+        $dqlfoto = "SELECT fot.src as src "
                 . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
-        $result_foto= $em->createQuery($dqlfoto)->getArrayResult();
-        
+        $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+
         //Array de si se lista o no dentro del perfil de la empresa
         $RepositorioListaEmpresa = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlEmpresa')->find($ctlEmpresaId); //->getRhPersona();
         $lista = $RepositorioListaEmpresa->getListaEmpleado();
@@ -290,7 +293,7 @@ $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_pe
         $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo "
                 . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
         $result_persona = $em->createQuery($dql_persona)->getArrayResult();
-$nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_persona[0]['apellido'])[0];
+        $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
         //metodo que me retorna Especialidades
         $dql_especialida = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre, pe.descripcion AS descripcion "
                 . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
@@ -313,10 +316,10 @@ $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_pe
 
 
         return $this->render('ctlempresa/perfilEmpresa.html.twig', array(
-            'nombreCorto'=>$nombreCorto,
+                    'nombreCorto' => $nombreCorto,
                     'ctlEmpresa' => $result_empresa,
                     'abgFoto' => $result_foto,
-            'result_fotoEmp'=>$result_fotoEmp,
+                    'result_fotoEmp' => $result_fotoEmp,
                     'ctlEmpresaId' => $ctlEmpresaId,
                     'empleados' => $registro_empleados,
                     'tipoEmpresa' => $registro_tipoempresa,
@@ -333,180 +336,208 @@ $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_pe
      */
     public function RegistrarUsuarioAction(Request $request) {
 
-        $request = $this->getRequest();
+   
+        try {
+                 $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();
+        $em->getConnection()->beginTransaction();
+            
+            $isAjax = $this->get('Request')->isXMLhttpRequest();
+            if ($isAjax) {
+                $em = $this->getDoctrine()->getManager();
+                $datos = $this->get('request')->request->get('frm');
+                $frm = json_decode($datos);
 
-        $isAjax = $this->get('Request')->isXMLhttpRequest();
-        if ($isAjax) {
-            $em = $this->getDoctrine()->getManager();
-            $datos = $this->get('request')->request->get('frm');
-            $frm = json_decode($datos);
+                $ctlEmpresa = new CtlEmpresa();
+                $abgPersona = new AbgPersona();
+                $ctlUsuario = new CtlUsuario();
+                $abgFoto = new AbgFoto();
 
-            $ctlEmpresa = new CtlEmpresa();
-            $abgPersona = new AbgPersona();
-            $ctlUsuario = new CtlUsuario();
-            $abgFoto = new AbgFoto();
+                if ($request->get('id')) {
 
-            if ($request->get('id')) {
+                    $contrasenha = $request->get('id');
+                    $nombreAbogado = $request->get('nombre');
+                    $apellidoAbogado = $request->get('apellido');
+                    $correoUsuario = $request->get('email');
+                } else {
+                    $nombreAbogado = $frm->txtnombre;
+                    $apellidoAbogado = $frm->txtapellido;
+                    $correoUsuario = $frm->correoEmpresa;
+                    $contrasenha = $frm->contrasenha;
+                }
 
-                $contrasenha = $request->get('id');
-                $nombreAbogado = $request->get('nombre');
-                $apellidoAbogado = $request->get('apellido');
-                $correoUsuario = $request->get('email');
-      
-            } else {
-                $nombreAbogado = $frm->txtnombre;
-                $apellidoAbogado = $frm->txtapellido;
-                $correoUsuario = $frm->correoEmpresa;
-                $contrasenha = $frm->contrasenha;
-            }
+                $user = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($correoUsuario);
 
-            $user = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($correoUsuario);
+                //Ingreso de una persona
 
-            //Ingreso de una persona
+                $codigo = $this->generarIdClienteAbogado();
+                $abgPersona->setNombres($nombreAbogado);
+                $abgPersona->setApellido($apellidoAbogado);
+                $abgPersona->setCorreoelectronico($correoUsuario);
+                $abgPersona->setFechaIngreso(new \DateTime("now"));
+                $abgPersona->setEstado(0);
+                $abgPersona->setCodigo($codigo);
+                $abgPersona->setVerificado(0);
+                $em->persist($abgPersona);
 
-            $codigo = $this->generarIdClienteAbogado();
-            $abgPersona->setNombres($nombreAbogado);
-            $abgPersona->setApellido($apellidoAbogado);
-            $abgPersona->setCorreoelectronico($correoUsuario);
-            $abgPersona->setFechaIngreso(new \DateTime("now"));
-            $abgPersona->setEstado(0);
-            $abgPersona->setCodigo($codigo);
-            $abgPersona->setVerificado(0);
-            $em->persist($abgPersona);
+                $em->flush();
+                $idPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgPersona')->find($abgPersona->getId());
 
-            $em->flush();
-            $idPersona = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgPersona')->find($abgPersona->getId());
+                //Ingreso null de una empresa
 
-            //Ingreso null de una empresa
+                $ctlEmpresa->setNombreEmpresa('Nombre de la empresa');
+                $ctlEmpresa->setCtlCiudad(null);
+                $ctlEmpresa->setCtlTipoEmpresa(null);
+                $ctlEmpresa->setMovil('00000000');
+                $ctlEmpresa->setTelefono('00000000');
+                $ctlEmpresa->setSitioWeb('Sitio Web');
+                $ctlEmpresa->setServicios(null);
+                $ctlEmpresa->setNit(null);
+                $ctlEmpresa->setFotoPerfil(null);
+                $ctlEmpresa->setFechaFundacion(null);
+                $ctlEmpresa->setFax(null);
+                $ctlEmpresa->setDireccion('Direccion empresa');
+                $ctlEmpresa->setDescripcion(null);
+                $ctlEmpresa->setCorreoelectronico('ejemplo@ejemplo.com');
+                $ctlEmpresa->setColor("#000035");
 
-            $ctlEmpresa->setNombreEmpresa('Nombre de la empresa');
-            $ctlEmpresa->setCtlCiudad(null);
-            $ctlEmpresa->setCtlTipoEmpresa(null);
-            $ctlEmpresa->setMovil('00000000');
-            $ctlEmpresa->setTelefono('00000000');
-            $ctlEmpresa->setSitioWeb('Sitio Web');
-            $ctlEmpresa->setServicios(null);
-            $ctlEmpresa->setNit(null);
-            $ctlEmpresa->setFotoPerfil(null);
-            $ctlEmpresa->setFechaFundacion(null);
-            $ctlEmpresa->setFax(null);
-            $ctlEmpresa->setDireccion('Direccion empresa');
-            $ctlEmpresa->setDescripcion(null);
-            $ctlEmpresa->setCorreoelectronico('ejemplo@ejemplo.com');
-            $ctlEmpresa->setColor("#000035");
+                $ctlEmpresa->setCantidadEmpleados(null);
+                $ctlEmpresa->setLatitude(13.70036411285400400000);
+                $ctlEmpresa->setLongitude(-89.22023010253906000000);
+                $ctlEmpresa->setListaEmpleado(1);
 
-            $ctlEmpresa->setCantidadEmpleados(null);
-            $ctlEmpresa->setLatitude(13.70036411285400400000);
-            $ctlEmpresa->setLongitude(-89.22023010253906000000);
-            $ctlEmpresa->setListaEmpleado(1);
+                $ctlEmpresa->setUrlPermiso(0);
+                $em->persist($ctlEmpresa);
+                $em->flush();
 
-            $ctlEmpresa->setUrlPermiso(0);
-            $em->persist($ctlEmpresa);
-            $em->flush();
+                $idEmpresa = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlEmpresa')->find($ctlEmpresa->getId());
 
-            $idEmpresa = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlEmpresa')->find($ctlEmpresa->getId());
+                //Ingreso de un usuario
+                $rol = $em->getRepository('DGAbgSistemaBundle:CtlRol')->find(2);
 
-            //Ingreso de un usuario
-            $rol = $em->getRepository('DGAbgSistemaBundle:CtlRol')->find(2);
+                $ctlUsuario->setUsername($correoUsuario);
 
-            $ctlUsuario->setUsername($correoUsuario);
+                $ctlUsuario->setEstado('1');
+                $ctlUsuario->setRhPersona($idPersona);
+                $ctlUsuario->setCtlEmpresa($idEmpresa);
+                $ctlUsuario->addCtlRol($rol);
+                if ($request->get('id')) {
+                    $ctlUsuario->setIdFacebook($request->get('id'));
+                    $ctlUsuario->setPassword($request->get('id'));
+                } else {
+                    $ctlUsuario->setPassword($contrasenha);
+                }
+                $this->setSecurePassword($ctlUsuario, $contrasenha);
+                $em->persist($ctlUsuario);
+                $em->flush();
 
-            $ctlUsuario->setEstado('1');
-            $ctlUsuario->setRhPersona($idPersona);
-            $ctlUsuario->setCtlEmpresa($idEmpresa);
-            $ctlUsuario->addCtlRol($rol);
-            if ($request->get('id')) {
-                $ctlUsuario->setIdFacebook($request->get('id'));
-                $ctlUsuario->setPassword($request->get('id'));
-            } else {
-                $ctlUsuario->setPassword($contrasenha);
-            }
-            $this->setSecurePassword($ctlUsuario, $contrasenha);
-            $em->persist($ctlUsuario);
-            $em->flush();
+                // Suscripcion Gratis
+                $abgFacturacion = new AbgFacturacion();
+                $date = new \DateTime("now");
+                 $fechaPago=date_add($date, date_interval_create_from_date_string('30 days'));
+                $abgFacturacion->setAbgPersona($idPersona);
+                $abgFacturacion->setAbgTipoPago(null);
+                $abgFacturacion->setFechaPago($fechaPago);
+                $abgFacturacion->setIdUser(null);
+                $abgFacturacion->setMonto(00.00);
+                $abgFacturacion->setPlazo(30);
+                $abgFacturacion->setServicio('Trial');
+                $abgFacturacion->setDescripcion('30 dias de prueba');
+                $em->persist($abgFacturacion);
+                $em->flush();
 
-            // Autenticando al usuario que se acaba de registrar
-            $this->authenticateUser($ctlUsuario);
+                // Autenticando al usuario que se acaba de registrar
+                $this->authenticateUser($ctlUsuario);
 
-            //Creo el registro de visitas de los perfiles publicos de empresa y persona
-            $visitasE = new AbgVisitas();
-            $visitasE->setAbgPersona(null);
-            $visitasE->setCtlEmpresa($idEmpresa);
-            $visitasE->setVisita(0);
-            $visitasE->setVisitaUnica(0);
-            $em->persist($visitasE);
-            $em->flush();
+                //Creo el registro de visitas de los perfiles publicos de empresa y persona
+                $visitasE = new AbgVisitas();
+                $visitasE->setAbgPersona(null);
+                $visitasE->setCtlEmpresa($idEmpresa);
+                $visitasE->setVisita(0);
+                $visitasE->setVisitaUnica(0);
+                $em->persist($visitasE);
+                $em->flush();
 
 
-            $visitasP = new AbgVisitas();
-            $visitasP->setAbgPersona($idPersona);
-            $visitasP->setCtlEmpresa(null);
-            $visitasP->setVisita(0);
-            $visitasP->setVisitaUnica(0);
-            $em->persist($visitasP);
-            $em->flush();
+                $visitasP = new AbgVisitas();
+                $visitasP->setAbgPersona($idPersona);
+                $visitasP->setCtlEmpresa(null);
+                $visitasP->setVisita(0);
+                $visitasP->setVisitaUnica(0);
+                $em->persist($visitasP);
+                $em->flush();
 
-            //Creacion de las registros de la URL personalizada
-            //Ingreso de url de la empresa
+                //Creacion de las registros de la URL personalizada
+                //Ingreso de url de la empresa
 
-            $url = $this->generarCorrelativoEmpresa();
-            $urlPerE = new AbgUrlPersonalizada();
-            $urlPerE->setCtlEmpresa($idEmpresa);
-            $urlPerE->setAbgPersonas(null);
-            $urlPerE->setEstado(1);
-            $urlPerE->setUrl($url);
-            $em->persist($urlPerE);
-            $em->flush();
+                $url = $this->generarCorrelativoEmpresa();
+                $urlPerE = new AbgUrlPersonalizada();
+                $urlPerE->setCtlEmpresa($idEmpresa);
+                $urlPerE->setAbgPersonas(null);
+                $urlPerE->setEstado(1);
+                $urlPerE->setUrl($url);
+                $em->persist($urlPerE);
+                $em->flush();
 
-            //Ingreso de la url del abogado
+                //Ingreso de la url del abogado
 
-            $urlA = $this->generarCorrelativoAbogado();
+                $urlA = $this->generarCorrelativoAbogado();
 
-            $urlPerA = new AbgUrlPersonalizada();
-            $urlPerA->setCtlEmpresa(null);
-            $urlPerA->setAbgPersonas($idPersona);
-            $urlPerA->setEstado(1);
-            $urlPerA->setUrl($urlA);
-            $em->persist($urlPerA);
-            $em->flush();
+                $urlPerA = new AbgUrlPersonalizada();
+                $urlPerA->setCtlEmpresa(null);
+                $urlPerA->setAbgPersonas($idPersona);
+                $urlPerA->setEstado(1);
+                $urlPerA->setUrl($urlA);
+                $em->persist($urlPerA);
+                $em->flush();
 
 //            $em->getConnection()->commit();
 //            $em->close();
-            //Insercion del registro de la foto de la empresa
-            //Ojo que posteriormente tengo que sacar los valores con el id de la variable de sesion que este presente
+                //Insercion del registro de la foto de la empresa
+                //Ojo que posteriormente tengo que sacar los valores con el id de la variable de sesion que este presente
 
-            $idEmpresas = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlEmpresa')->find($idEmpresa);
-            $abgFotoE = new AbgFoto();
-            //Aqui termina lo del id
-            $abgFotoE->setAbgPersona(null);
-            $abgFotoE->setCtlEmpresa($idEmpresas);
-            $abgFotoE->setTipoFoto(1);
-            $abgFotoE->setSrc('Photos/defecto/defecto.png');
-            $abgFotoE->setFechaRegistro(null);
-            $abgFotoE->setFechaExpiracion(null);
-            $abgFotoE->setEstado(1);
-            $em->persist($abgFotoE);
-            $em->flush();
+                $idEmpresas = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlEmpresa')->find($idEmpresa);
+                $abgFotoE = new AbgFoto();
+                //Aqui termina lo del id
+                $abgFotoE->setAbgPersona(null);
+                $abgFotoE->setCtlEmpresa($idEmpresas);
+                $abgFotoE->setTipoFoto(1);
+                $abgFotoE->setSrc('Photos/defecto/defecto.png');
+                $abgFotoE->setFechaRegistro(null);
+                $abgFotoE->setFechaExpiracion(null);
+                $abgFotoE->setEstado(1);
+                $em->persist($abgFotoE);
+                $em->flush();
 
-            $abgFoto->setAbgPersona($idPersona);
-            $abgFoto->setCtlEmpresa(null);
-            $abgFoto->setTipoFoto(0);
-            $abgFoto->setSrc('Photos/defecto/defecto.png');
-            $abgFoto->setFechaRegistro(null);
-            $abgFoto->setFechaExpiracion(null);
-            $abgFoto->setEstado(1);
-            $em->persist($abgFoto);
-            $em->flush();
+                $abgFoto->setAbgPersona($idPersona);
+                $abgFoto->setCtlEmpresa(null);
+                $abgFoto->setTipoFoto(0);
+                $abgFoto->setSrc('Photos/defecto/defecto.png');
+                $abgFoto->setFechaRegistro(null);
+                $abgFoto->setFechaExpiracion(null);
+                $abgFoto->setEstado(1);
+                $em->persist($abgFoto);
+                $em->flush();
 
-            $data['username'] = $ctlUsuario->getUsername();
-            $data['estado'] = true;
+               $em->getConnection()->commit();
+                $em->close();
+                $data['username'] = $ctlUsuario->getUsername();
+                $data['estado'] = true;
+                 
 
+                return new Response(json_encode($data));
+            } else {
+                $data['estado'] = false;
+                return new Response(json_encode($data));
+            }
+     
+        } catch (Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
-        } else {
+            $em->getConnection()->rollback();
+            $em->close();
 
-
-            $data['estado'] = false;
-            return new Response(json_encode($data));
+// echo $e->getMessage();   
         }
     }
 
@@ -520,44 +551,14 @@ $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_pe
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         try {
-              if ($request->get('id')) {
+            if ($request->get('id')) {
 
                 $contrasenha = $request->get('id');
                 $correo = $request->get('email');
-            
-                       $dqlEmp = "SELECT COUNT(emp.id) AS res FROM DGAbgSistemaBundle:CtlEmpresa emp WHERE"
-                        . " emp.correoelectronico = :correo ";
-                  $resultadoEmpresa = $em->createQuery($dqlEmp)
-                        ->setParameters(array('correo' => $correo))
-                        ->getResult();
-
-                $dqlPer = "SELECT COUNT(per.id) AS resp FROM DGAbgSistemaBundle:AbgPersona per WHERE"
-                        . " per.correoelectronico = :correo ";
-                $resultadoPersona = $em->createQuery($dqlPer)
-                        ->setParameters(array('correo' => $correo))
-                        ->getResult();
-                $rp = $resultadoPersona[0]['resp'];
-                $re = $resultadoEmpresa[0]['res'];
-                $num = $rp + $re;
-                if ($num == 0) {
-                    $data = true;
-                } else {
-                    $data = false;
-                }
-            }
-        else{
-
-            if ($isAjax) {
-                $response = new JsonResponse();
-
-                $datos = $this->get('request')->request->get('frm');
-                $frm = json_decode($datos);
-
-                $correo = $frm->correoEmpresa;
 
                 $dqlEmp = "SELECT COUNT(emp.id) AS res FROM DGAbgSistemaBundle:CtlEmpresa emp WHERE"
                         . " emp.correoelectronico = :correo ";
-                  $resultadoEmpresa = $em->createQuery($dqlEmp)
+                $resultadoEmpresa = $em->createQuery($dqlEmp)
                         ->setParameters(array('correo' => $correo))
                         ->getResult();
 
@@ -568,18 +569,47 @@ $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_pe
                         ->getResult();
                 $rp = $resultadoPersona[0]['resp'];
                 $re = $resultadoEmpresa[0]['res'];
-
                 $num = $rp + $re;
-
                 if ($num == 0) {
                     $data = true;
                 } else {
-
                     $data = false;
                 }
+            } else {
+
+                if ($isAjax) {
+                    $response = new JsonResponse();
+
+                    $datos = $this->get('request')->request->get('frm');
+                    $frm = json_decode($datos);
+
+                    $correo = $frm->correoEmpresa;
+
+                    $dqlEmp = "SELECT COUNT(emp.id) AS res FROM DGAbgSistemaBundle:CtlEmpresa emp WHERE"
+                            . " emp.correoelectronico = :correo ";
+                    $resultadoEmpresa = $em->createQuery($dqlEmp)
+                            ->setParameters(array('correo' => $correo))
+                            ->getResult();
+
+                    $dqlPer = "SELECT COUNT(per.id) AS resp FROM DGAbgSistemaBundle:AbgPersona per WHERE"
+                            . " per.correoelectronico = :correo ";
+                    $resultadoPersona = $em->createQuery($dqlPer)
+                            ->setParameters(array('correo' => $correo))
+                            ->getResult();
+                    $rp = $resultadoPersona[0]['resp'];
+                    $re = $resultadoEmpresa[0]['res'];
+
+                    $num = $rp + $re;
+
+                    if ($num == 0) {
+                        $data = true;
+                    } else {
+
+                        $data = false;
+                    }
+                }
             }
-        }
-         return new Response(json_encode($data));
+            return new Response(json_encode($data));
         } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
@@ -609,7 +639,7 @@ $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_pe
         $data = base64_decode($img);
         $file = UPLOAD_DIR . $nombreTemporal . '.png';
         $success = file_put_contents($file, $data);
-       
+
         $nombreTemporal = $nombreTemporal . '.png';
 
         if ($success) {
@@ -1525,7 +1555,7 @@ $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_pe
 
         $em = $this->getDoctrine()->getManager();
         $ObjetoUrl = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:AbgUrlPersonalizada')->findByUrl($url);
-      
+
         if (!empty($ObjetoUrl)) {
 
             $persona = $ObjetoUrl[0]->getAbgPersona();

@@ -41,6 +41,14 @@ $(document).ready(function () {
             buscar(busqueda, inicio, longitud, paginaActual, busquedaDept);
         }
     });
+    
+            $(document).on('click','#searchButton', function(){
+            var busqueda = $('#searchInput').val();
+            var busquedaDept = $('#searchInputDept').val();
+           
+             buscar(busqueda, inicio, longitud, paginaActual, busquedaDept);
+        //    window.location = Routing.generate("busqueda_pregunta")+"?busqueda="+busqueda+"&ciu="+busquedaDept;
+        });
 });
 
 
