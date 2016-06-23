@@ -77,11 +77,11 @@
                     <!-- item 1 -->
 
                     <div id="registros">
-
+                        
                     </div>
-                    <div id="busquedaVacia" style="display:none;border-bottom-color: #000">
+                    {#<div id="busquedaVacia" style="display:none;border-bottom-color: #000">
                         No se encontraron registros...
-                    </div>
+                    </div>#}
                     <!-- Fin de Items -->
                     <!-- PAGINACION -->
                     <div class="item-directorio-nexo" >
@@ -458,25 +458,30 @@
 
                                 console.log(data.numRegistros);
                                 console.log(data.filtroRegistros);
-                                $('.totalRegistros').html(data.numRegistros);
-                                $('.filtroRegistros').html(data.filtroRegistros);
-                                $('#registros').hide();
-                                $('#busquedaVacia').show();
+                                //$('.totalRegistros').html(data.numRegistros);
+                                //$('.filtroRegistros').html(data.filtroRegistros);
+                                //$('#registros').hide();
+                                
+                                $('.numRegistros').hide();
+                                $('.numeroPaginas').html('');
+                                $('#registros').html('<div style="text-align:center;margin-top:20px;" class="col-md-12 pull-right">No se encontraron registros!</div>');
+                                //$('#busquedaVacia').show();
 
                             }
 
                         },
                         error: function (data) {
-                            Lobibox.notify("error", {
-                                size: 'mini',
-                                msg: 'Ocurrió un error, intente de nuevo!'
-                            });
+                            $('#registros').html('<div style="text-align:center;margin-top:20px;" class="col-md-12 pull-right">Ocurrió un error, intente de nuevo!</div>');
                             // $('#registros').append(contenidoOriginal);
+                        },
+                        timeout: function(){
+                            $('#registros').html('<div style="text-align:center;margin-top:20px;" class="col-md-12 pull-right">El servidor no esta respondiendo, intente de nuevo</div>');
                         }
                     });
                 } else {
-                    $('#registros').hide();
-                    $('#busquedaVacia').show();
+                    //$('#registros').hide();
+                    //$('#busquedaVacia').show();
+                    $('#registros').html('<div style="text-align:center;margin-top:20px;" class="col-md-12 pull-right">No se encontraron registros!</div>');
                 }
 
 

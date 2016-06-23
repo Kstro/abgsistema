@@ -99,7 +99,11 @@ class DirectorioController extends Controller {
 
         $em = $this->getDoctrine()->getEntityManager();
         $abogadosTotal = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->findBy(array('estado' => 1));
-
+        
+        
+        set_time_limit(0.5);
+        sleep(5);
+        //echo '¿';
         $reg['inicio'] = $inicio++;
         $reg['longitud'] = $longitud;
         $reg['paginaActual'] = $paginaActual;
@@ -129,7 +133,7 @@ class DirectorioController extends Controller {
                 $newOrderBy.="'".$row."',";
             }
         }
-
+        
         //echo $newOrderBy;
         //var_dump($data);
         //die();
