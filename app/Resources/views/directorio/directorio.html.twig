@@ -51,10 +51,10 @@
                     </div>
                     <form class="form-inline">
                         <div class="item-directorio" style="margin-top: 5px !important; padding: 10px;">
-
                             <div class="row no-padding" >
                                 <div class="col-md-7 col-xs-5" style="padding-right: 5px;">
                                     <input value="{{busqueda|trim}}" id="searchBox" maxlength="140" {#class="searchbox"#} style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; text-decoration: none;" placeholder="Buscar por asunto legal o nombre de abogado/firma" oninvalid="this.setCustomValidity('Porfavor ingrese el nombre de un Abogado, Bufete, Firma o Problema Legal')" > </input>
+                                    <input type="hidden" id="randomDir" value="">
                                 </div>
                                 <div class="col-md-3  col-xs-5" style=" padding-left: 5px;padding-right: 5px;">
                                     <input class="search " value="{{ciudad}}" id="searchInputDept" name="txtlugar" style="border: 1px solid #d2d6de; border-radius: 0;  height: 34px; width: 100%; text-decoration: none;" placeholder="Cuidad, Dept">
@@ -63,7 +63,6 @@
                                     <button id="searchButton" type="submit" class="searchbotondir input-group btn btn-xs" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; background-color: #F42; color: #fff; font-weight: 600;">Buscar</button>
                                 </div>
                             </div>
-
                         </div>
                         <input type="hidden" value="0" id="inicioInput">
                     </form>
@@ -195,21 +194,22 @@
             lon4 = imagenes4.length;
 
             $(document).ready(function () {
-
+                $('#randomDir').val('');
                 var inicio = $('#inicioInput').val(); //numero de registros que se van a mostrar
                 var busqueda = $('#searchBox').val();
                 var longitud = 10; //numero de registros que se van a mostrar
                 var paginaActual = 1; //primer registro a mostrar
                 var numPages = 0;
-
+                var orderBy="";
                 //var contenidoOriginal = $('#registros').html();
-                buscar(busqueda, inicio, longitud, paginaActual);
+                buscar(busqueda, inicio, longitud, paginaActual,orderBy);
                 $(document).on('click', '#searchButton', function () {
+                    $('#randomDir').val('');
                     inicio = $('#inicioInput').val(); //numero de registros que se van a mostrar
                     busqueda = $('#searchBox').val();
                     longitud = 10; //numero de registros que se van a mostrar
                     paginaActual = 1; //numero de registros que se van a mostrar
-                    buscar(busqueda, inicio, longitud, paginaActual);
+                    buscar(busqueda, inicio, longitud, paginaActual,orderBy);
                     return false;
                 });
 
@@ -217,14 +217,14 @@
                 $(document).on('click', '.paginas', function () {
                     paginaActual = $(this).attr('id');
                     console.log("Página actual enviada: " + paginaActual);
-                    buscar(busqueda, inicio, longitud, paginaActual);
+                    buscar(busqueda, inicio, longitud, paginaActual,orderBy);
                 });
 
                 $(document).on('click', '.siguiente', function () {
                     if (paginaActual != numPages) {
                         paginaActual++;
                         console.log("Página actual enviada: " + paginaActual);
-                        buscar(busqueda, inicio, longitud, paginaActual);
+                        buscar(busqueda, inicio, longitud, paginaActual,orderBy);
                     }
                 });
 
@@ -233,7 +233,7 @@
                     if (paginaActual != 1) {
                         paginaActual--;
                         console.log("Página actual enviada: " + paginaActual);
-                        buscar(busqueda, inicio, longitud, paginaActual);
+                        buscar(busqueda, inicio, longitud, paginaActual,orderBy);
                     }
                 });
 
@@ -266,12 +266,13 @@
                 setInterval(cambia, 4000);
             });
 
-            function buscar(busqueda, inicio, longitud, paginaActual) {
+            function buscar(busqueda, inicio, longitud, paginaActual,orderBy) {
 
                 $('.numRegistros').hide();
                 $('.numeroPaginas').html('');
-                $('#registros').html("");
-
+                $('#registros').html('<div style="text-align:center;margin-top:20px;" class="col-md-12 pull-right"><i class="fa fa-circle-o-notch fa-spin fa-1x fa-fw"></i>Buscando...</div>');
+                //return false;
+                orderBy=$('#randomDir').val();
                 //  var deptoId = $('#filtrarDepartamento').val();
                 var munId = $('#searchInputDept').val();
                 var cadenaPaginas = "";
@@ -279,7 +280,7 @@
                 if (busqueda == "" || busqueda != "") {
 
                     $.ajax({
-                        data: {inicio: inicio, longitud: longitud, paginaActual: paginaActual, busqueda: busqueda, munId: munId},
+                        data: {inicio: inicio, longitud: longitud, paginaActual: paginaActual, busqueda: busqueda, munId: munId, orderBy: orderBy},
                         url: "{{path('busqueda_data')}}",
                         type: "post",
                         success: function (data) {
@@ -392,13 +393,13 @@
                                     $('#busquedaVacia').hide();
 
                                     numPages = data.pages;
+                                    orderBy = data.order;
+                                    $('#randomDir').val(orderBy);
                                     cadenaPaginas = '';
-                                    cadenaPaginas = '<li class="anterior" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-left\"></i></li>';
-
-
+                                    if(paginaActual!=1){
+                                        cadenaPaginas = '<li class="anterior" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-left\"></i></li>';
+                                    }
                                     if (data.pages > 10) {
-
-
                                         if (paginaActual == 1) {
                                             cadenaPaginas += '<li class="paginas" id="' + paginaActual + '" style=\"display: inline; padding: 7px;\"><strong>' + paginaActual + '</strong></li>';
                                             cadenaPaginas += '<li class="paginas" id="' + (parseInt(paginaActual) + 1) + '" style=\"display: inline; padding: 7px;\">' + (parseInt(paginaActual) + 1) + '</li>';
@@ -420,10 +421,8 @@
                                                     if (paginaActual == data.pages) {
                                                         cadenaPaginas += '<li class="paginas" id="' + 1 + '" style=\"display: inline; padding: 7px;\">' + 1 + '...</li>';
                                                         cadenaPaginas += '<li class="paginas" id="' + (parseInt(paginaActual) - 1) + '" style=\"display: inline; padding: 7px;\">' + (parseInt(paginaActual) - 1) + '</li>';
-                                                        cadenaPaginas += '<li class="paginas" id="' + paginaActual + '" style=\"display: inline; padding: 7px;\"><strong>' + paginaActual + '</strong></li>';
-
+                                                        cadenaPaginas += '<li class="paginas" id="' + paginaActual + '" style=\"diplay: inline; padding: 7px;\"><strong>' + paginaActual + '</strong></li>';
                                                     } else {
-
                                                         cadenaPaginas += '<li class="paginas" id="' + 1 + '" style=\"display: inline; padding: 7px;\">' + 1 + '</li>';
                                                         cadenaPaginas += '<li class="paginas" id="' + (parseInt(paginaActual) - 1) + '" style=\"display: inline; padding: 7px;\">' + (parseInt(paginaActual) - 1) + '</li>';
                                                         cadenaPaginas += '<li class="paginas" id="' + paginaActual + '" style=\"display: inline; padding: 7px;\"><strong>' + paginaActual + '</strong></li>';
@@ -445,7 +444,9 @@
                                     }
 
                 {#                                        cadenaPaginas+='<li class="paginas" id="'+k+'" style=\"display: inline; padding: 7px;\"><strong>'+k+'</strong></li>';#}
+                                if(numPages!=paginaActual){
                                     cadenaPaginas += '<li class="siguiente" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-right\"></i></li>';
+                                }
                                     $('.numeroPaginas').html(cadenaPaginas);
                                     //$('#registros').html('prueba');
                                 }//fin for
