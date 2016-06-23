@@ -204,6 +204,7 @@
                 //var contenidoOriginal = $('#registros').html();
                 buscar(busqueda, inicio, longitud, paginaActual,orderBy);
                 $(document).on('click', '#searchButton', function () {
+                    $('#randomDir').val('');
                     inicio = $('#inicioInput').val(); //numero de registros que se van a mostrar
                     busqueda = $('#searchBox').val();
                     longitud = 10; //numero de registros que se van a mostrar
