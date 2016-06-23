@@ -50,14 +50,10 @@
     {% embed ':Layout:head.html.twig' %}{% endembed %}
     <div id="page-content" >
         <div class="container hidden-xs">
-                    <img src="{{asset('Resources/src/img/bannerprincipal.png')}}" style="width: 100%; max-width: 100%;">
+            <img src="{{asset('Resources/src/img/bannerprincipal.png')}}" style="width: 100%; max-width: 100%;">
         </div>
-<div class="container hidden-lg hidden-md hidden-sm" style=" margin-top: 70px;">
-            
-           
-                    <img src="{{asset('Resources/src/img/bannerprincipal.png')}}" style="width: 100%; max-width: 100%;">
-           
-   
+        <div class="container hidden-lg hidden-md hidden-sm" style=" margin-top: 70px;">
+            <img src="{{asset('Resources/src/img/bannerprincipal.png')}}" style="width: 100%; max-width: 100%;">
         </div>
         <!-- Busqueda/Query -->
         <div class="container" style="padding-top: 30px; padding-bottom: 30px;">
@@ -118,10 +114,15 @@
                 <div class="row" style="margin-top: 35px;">
                     {% for usuario in usuarios %}
                         {%if loop.first %}
-                            <div class="col-md-2 col-md-offset-1 col-xs-6">
+                            <div class="col-md-2 col-md-offset-1 col-xs-3">
                             {%else%}
-                                <div class="col-md-2 col-xs-6">
+                                {%if loop.last %}
+                                    <div class="col-md-2 col-xs-3 hidden-xs">
+                                      {%else%}  
+                                <div class="col-md-2 col-xs-3">
                                 {%endif%}
+                                    
+                                        {% endif %}
                                 <a href="{{path('busquedaPerfil',{url:usuario.url})}}" style="text-decoration: none; color: inherit;"><img src="{{asset('')}}{{usuario.foto}}" style="width: 100%; max-width: 100%;">
                                     <p data-original-title="Ver Perfil" class="text-center sans" style="font-size: 13px; font-weight: 600; margin-top: 10px;" data-toggle="tooltip" data-placement="bottom" title="">{{usuario.nombres}} {{usuario.apellido}}</p></a>
                             </div>
@@ -305,24 +306,24 @@
 <script src="{{asset('Resources/src/js/bootstrap.js')}}"></script>
 <script src="{{asset('Resources/src/js/menu_movil.js')}}"></script>
 <script type="text/javascript">
-        $(document).ready(function () {
+            $(document).ready(function () {
 
-            var max_chars = 150;
-            $('#max').html(max_chars);
-            $('#txtpregunta').keyup(function () {
-                var chars = $(this).val().length;
-                var diff = chars;
-                $('#contador').html(diff + " out of 150 characters");
-            });
+                var max_chars = 150;
+                $('#max').html(max_chars);
+                $('#txtpregunta').keyup(function () {
+                    var chars = $(this).val().length;
+                    var diff = chars;
+                    $('#contador').html(diff + " out of 150 characters");
+                });
 
-            $(document).on('keyup', '#txtpregunta', function (event) {
-                var keycode = (event.keyCode ? event.keyCode : event.which);
-                if (keycode == '13') {
-                    var busqueda = $('#txtpregunta').val();
-                    window.location = Routing.generate("preg_deta") + "?txtpregunta=" + busqueda;
-                }
+                $(document).on('keyup', '#txtpregunta', function (event) {
+                    var keycode = (event.keyCode ? event.keyCode : event.which);
+                    if (keycode == '13') {
+                        var busqueda = $('#txtpregunta').val();
+                        window.location = Routing.generate("preg_deta") + "?txtpregunta=" + busqueda;
+                    }
+                });
             });
-        });
 </script>
 <script type="text/javascript">
 

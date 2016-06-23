@@ -32,7 +32,7 @@ $(document).ready(function () {
             type: 'POST',
             dataType: 'json',
             success: function (data) {
-                console.log(data);
+            
                 data = jQuery.parseJSON(data);
                 if (data == true) {
                     //Ajax de insersion de datos               
@@ -44,10 +44,12 @@ $(document).ready(function () {
                         type: 'POST',
                         dataType: 'json',
                         success: function (data) {
+            
                             if (data.estado == true) {
-                                var url = Routing.generate('perfil');
+                                   var url = Routing.generate('inicio');
+                         //       var url = Routing.generate('perfil');
                                 //var url = Routing.generate('abogado_login');
-                                window.open(url, "_self");
+                              window.open(url, "_self");
 
                                 Lobibox.notify("success", {
                                     size: 'mini',
@@ -85,6 +87,14 @@ $(document).ready(function () {
 
 
     $('#txtMovil').editable({
+          validate: function (value) {
+            if (value === "")
+            {return 'requerido';}
+              else if(value.length<9)
+        {
+              return 'Formato no valido. ej. 7777-7777';
+        }
+        },
         type: 'text',
         name: 'zip',
         tpl: '   <input type="text" id ="zipiddemo" class="form-control    input-sm" style="padding-right: 24px;">'
@@ -124,6 +134,14 @@ $(document).ready(function () {
     });
 
     $('#txtFijo').editable({
+          validate: function (value) {
+            if (value === "")
+            {return 'requerido';}
+              else if(value.length<9)
+        {
+              return 'Formato no valido. ej. 2222-2222';
+        }
+        },
         type: 'text',
         name: 'zip',
         tpl: '   <input type="text" id ="telefonoFijo" class="form-control    input-sm" style="padding-right: 24px;">'
@@ -404,7 +422,23 @@ $(document).ready(function () {
 
 
 
-    $("#txtFechaFundacion").editable();
+    $("#txtFechaFundacion").editable({
+          validate: function (value) {
+            if (value === "")
+            {return 'requerido';}
+              else if(value.length<4)
+        {
+              return 'Formato no valido. ej. 2016';
+        }
+        },
+        type: 'text',
+        name: 'zip',
+        tpl: '   <input type="text" id ="txtFechaFundacion" class="form-control    input-sm" style="padding-right: 24px;">'
+    }).on('shown', function () {
+        $("input#txtFechaFundacion").mask("0000");
+    });
+    
+    
     $('#txtFechaFundacion').on('save', function (e, params) {
         $.ajax({
             type: 'POST',
@@ -614,8 +648,7 @@ function fil(idcheckbox)
 
     if (Especialida.indexOf(idcheckbox) === -1)
     {
-        if (Especialida.length < 3)
-        {
+       
             Especialida = [];
             DataEspecialida = [];
             $.each($('.Especialida'), function (indice, val) {
@@ -635,14 +668,6 @@ function fil(idcheckbox)
                 }
             });
 
-        } else {
-            Lobibox.notify("warning", {
-                size: 'mini',
-                msg: 'Se deben seleccionar maxino 3 especialidades.'
-            });
-            $("#" + idcheckbox).prop('checked', false);
-            document.getElementById('div' + idcheckbox).style.display = 'none';
-        }
     } else {
 
         Especialida = [];
@@ -755,59 +780,59 @@ function editEspeEmp()
 
 
 
-$(function editarFoto() {
-    $('.image-editor').cropit();
-    $('form').submit(function () {
-
-
-        // Move cropped image data to hidden input
-        var imageData = $('.image-editor').cropit('export');
-        $('.hidden-image-data').val(imageData);
-        //alert(imageData);
-        var usuario = $("#usuario").val();
-        var empresaId = $("#empresaId").val();
-        $("#gif").show();
-        //Aqui tiene que ir el ajax
-        $.ajax({
-            type: 'POST',
-            async: false,
-            dataType: 'json',
-            data: {imageDatas: imageData, usuario: usuario, empresaId: empresaId},
-            url: Routing.generate('ingresar_foto'),
-            success: function (data)
-            {
-                if (data.estado == true) {
-
-                    Lobibox.notify("success", {
-                        size: 'mini',
-                        msg: 'Datos modificados con exito'
-                    });
-                    $("#prev").attr('src', "/" + data.direccion);
-                    $("#gif").hide();
-                    $(".close").click();
-
-
-
-                }
-            },
-            error: function (xhr, status)
-            {
-                Lobibox.notify("danger", {
-                    size: 'mini',
-                    msg: 'Lo sentimos, ocurrio un error'
-                });
-                $("#gif").hide();
-                $(".close").click();
-
-            }
-        });
-
-        // Print HTTP request params
-        var formValue = $(this).serialize();
-        $('#result-data').text(formValue);
-        // Prevent the form from actually submitting
-        return false;
-    });
-});
-
-              
+//$(function editarFoto() {
+//    $('.image-editor').cropit();
+//    $('form').submit(function () {
+//
+//
+//        // Move cropped image data to hidden input
+//        var imageData = $('.image-editor').cropit('export');
+//        $('.hidden-image-data').val(imageData);
+//        //alert(imageData);
+//        var usuario = $("#usuario").val();
+//        var empresaId = $("#empresaId").val();
+//        $("#gif").show();
+//        //Aqui tiene que ir el ajax
+//        $.ajax({
+//            type: 'POST',
+//            async: false,
+//            dataType: 'json',
+//            data: {imageDatas: imageData, usuario: usuario, empresaId: empresaId},
+//            url: Routing.generate('ingresar_foto'),
+//            success: function (data)
+//            {
+//                if (data.estado == true) {
+//
+//                    Lobibox.notify("success", {
+//                        size: 'mini',
+//                        msg: 'Datos modificados con exito'
+//                    });
+//                    $("#prev").attr('src', "/" + data.direccion);
+//                    $("#gif").hide();
+//                    $(".close").click();
+//
+//
+//
+//                }
+//            },
+//            error: function (xhr, status)
+//            {
+//                Lobibox.notify("danger", {
+//                    size: 'mini',
+//                    msg: 'Lo sentimos, ocurrio un error'
+//                });
+//                $("#gif").hide();
+//                $(".close").click();
+//
+//            }
+//        });
+//
+//        // Print HTTP request params
+//        var formValue = $(this).serialize();
+//        $('#result-data').text(formValue);
+//        // Prevent the form from actually submitting
+//        return false;
+//    });
+//});
+//
+//              

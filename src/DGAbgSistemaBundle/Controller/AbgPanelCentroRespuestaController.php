@@ -62,9 +62,12 @@ class AbgPanelCentroRespuestaController extends Controller {
             $abgfoto = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findOneBy(array('abgPersona' => $personaId));
             
                   $abgRespuestaPregunta = $em->getRepository('DGAbgSistemaBundle:AbgRespuestaPregunta');
+                
             $Respuesta = $abgRespuestaPregunta->findBy(array('abgPregunta' => $id, 'ctlUsuario' => $username));
+       
       $respuesta="";
       $estado="";
+      $tiempoRes="";
     
       if(! empty($Respuesta))
       {
@@ -83,6 +86,17 @@ class AbgPanelCentroRespuestaController extends Controller {
         } else {
             $tiempo = NULL;
         }
+         if(! empty($Respuesta))
+      {
+            
+            if ($Respuesta[0]->getFechaRespuesta() != NULL) {
+        
+       //         array_push($tiemposRespuesta, $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s')));
+             $tiempoRes = $this->tiempo_transcurrido($Respuesta[0]->getFechaRespuesta()->format('Y-m-d H:i:s'));
+        } else {
+            $tiempoRes = NULL;
+        }
+         }
             $srcfoto = $abgfoto->getSrc();
             return $this->render('panelcentropregabog/panelRespuestaPregunta.html.twig', array('pregunta' => $pregunta,
             'nombreCorto'=>$nombreCorto,
@@ -94,7 +108,8 @@ class AbgPanelCentroRespuestaController extends Controller {
                         'abgFoto' => $result_foto,
                         'estado'=>$estado,
                 'respuesta'=>$respuesta,
-                'tiempo'=>$tiempo));
+                'tiempo'=>$tiempo,
+                'tiempoRes'=>$tiempoRes));
         } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));

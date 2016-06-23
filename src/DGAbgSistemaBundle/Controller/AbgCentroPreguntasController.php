@@ -160,7 +160,7 @@ class AbgCentroPreguntasController extends Controller {
 
 
         $sql_preguntas_resiente = "SELECT  pre.id, usu.id,CONCAT(per.nombres, '  ', per.apellido) as nombres, uper.url as url, fot.src AS src, "
-                . " pre.respuesta AS respuesta, pre.fecha_respuesta, per.estado AS estado, preg.pregunta AS pregunta "
+                . " pre.respuesta AS respuesta, pre.fecha_respuesta, per.estado AS estado, preg.pregunta AS pregunta, preg.id AS idPreg "
                 . " FROM abg_pregunta preg "
                 . "JOIN abg_respuesta_pregunta pre ON preg.id=pre.abg_pregunta "
                 . " JOIN ctl_usuario usu ON pre.ctl_usuario_id = usu.id "

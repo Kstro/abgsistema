@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * AbgPersona controller.
@@ -57,7 +58,6 @@ class AbgPersonaController extends Controller {
         $abgPersona = new AbgPersona();
         $form = $this->createForm('DGAbgSistemaBundle\Form\AbgPersonaType', $abgPersona);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($abgPersona);
@@ -82,14 +82,15 @@ class AbgPersonaController extends Controller {
 
 //   $deleteForm = $this->createDeleteForm($abgPersona);
 
-        $em = $this->getDoctrine()->getManager();
-        $dql_persona = "SELECT  p.nombres AS nombre, p.apellido AS apellido "
-                . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $abgPersona->getId();
-        $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+        /*      $em = $this->getDoctrine()->getManager();
+          $dql_persona = "SELECT  p.nombres AS nombre, p.apellido AS apellido "
+          . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $abgPersona->getId();'nombres')
+          $result_persona = $em->createQuery($dql_persona)->getArrayResult();
 
-        return $this->render('abgpersona/perfil.html.twig', array(
-                    'abgPersona' => $result_persona,
-        ));
+          return $this->render('abgpersona/perfil.html.twig', array(
+          'abgPersona' => $result_persona,
+          ));
+         */
     }
 
     /**
@@ -209,6 +210,123 @@ class AbgPersonaController extends Controller {
     }
 
     /**
+     * @Route("/inicio/", name="inicio", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function InicioAction() {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+                $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+                $username = $this->container->get('security.context')->getToken()->getUser()->getId();
+
+                $sqlRol = "SELECT  r.id As id, r.rol As rol"
+                        . " FROM  ctl_rol_usuario ru "
+                        . " JOIN ctl_rol r ON r.id=ru.ctl_rol_id AND ru.ctl_usuario_id=" . $username;
+
+                $stm = $this->container->get('database_connection')->prepare($sqlRol);
+                $stm->execute();
+                $RolUser = $stm->fetchAll();
+
+                $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
+                        . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.tituloProfesional AS tprofesional, p.verificado As verificado "
+                        . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
+                $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+
+                $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
+                $dqlfoto = "SELECT fot.src as src "
+                        . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
+                $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+
+                $dql_departamento = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre"
+                        . " FROM  DGAbgSistemaBundle:CtlEspecialidad e ";
+                $result_especialida = $em->createQuery($dql_departamento)->getArrayResult();
+
+                $dql_departamento = "SELECT  d.id AS id, d.nombreEstado AS nombre"
+                        . " FROM DGAbgSistemaBundle:CtlEstado d";
+                $depto = $em->createQuery($dql_departamento)->getArrayResult();
+
+                return $this->render('abgpersona/datosGenerales.html.twig', array(
+                            'nombreCorto' => $nombreCorto,
+                            'abgPersona' => $result_persona,
+                            'usuario' => $username,
+                            'active' => 'perfil',
+                            'depto' => $depto,
+                            'abgFoto' => $result_foto,
+                            'especialida' => $result_especialida
+                ));
+            }
+        } catch (Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
+    }
+
+    /**
+     * @Route("/informacion_general/", name="informacion_general", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function InformacionGeneralAction() {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction();
+            $request = $this->getRequest();
+            parse_str($request->get('datos'), $datos);
+            $array = $request->get('esp');
+ $data['msj'] = "";
+
+            $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+            $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($idPersona);
+            $Ciudad = $em->getRepository("DGAbgSistemaBundle:CtlCiudad")->find($datos['Smunicipio']);
+
+
+            $Persona->setNombres($datos['txtnombre']);
+            $Persona->setApellido($datos['txtapellido']);
+            $Persona->setTituloProfesional($datos['Stitulo']);
+            $Persona->setCtlCiudad($Ciudad);
+
+            $em->merge($Persona);
+            $em->flush();
+
+            $RepositorioEsp = $em->getRepository("DGAbgSistemaBundle:AbgPersonaEspecialida");
+    
+         
+            if (is_null($RepositorioEsp->findByAbgPersona($idPersona))) {
+                
+            } else {
+                $PersonaEsp = $RepositorioEsp->findByAbgPersona($idPersona);
+              
+                foreach ($PersonaEsp as $obj) {
+                    $em->remove($obj);
+                    $em->flush();
+                }
+            }
+            
+            if (is_null($array)) {
+                
+            } else {
+                foreach ($array as $obj) {
+                    $PersonaEspecialidad = new AbgPersonaEspecialida();
+                    $idSub = $em->getRepository("DGAbgSistemaBundle:CtlEspecialidad")->find(intval($obj['0']));
+                    $PersonaEspecialidad->setAbgPersona($Persona);
+                    $PersonaEspecialidad->setCtlEspecialidad($idSub);
+                    $em->persist($PersonaEspecialidad);
+                    $em->flush();
+                }
+            }
+             $em->getConnection()->commit();
+            $em->close();
+            $data['msj'] = "Datos actualizados.";
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+            $data['error'] = $e->getMessage();
+           $em->getConnection()->rollback();
+            $em->close();
+            return new Response(json_encode($data));
+        }
+    }
+
+    /**
      * @Route("/perfil/", name="perfil", options={"expose"=true})
      * @Method("GET")
      */
@@ -241,6 +359,7 @@ class AbgPersonaController extends Controller {
                         . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
                 $result_persona = $em->createQuery($dql_persona)->getArrayResult();
 
+           
                 $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
 
 
@@ -271,6 +390,8 @@ class AbgPersonaController extends Controller {
                 $stm = $this->container->get('database_connection')->prepare($sql);
                 $stm->execute();
                 $Experiencia = $stm->fetchAll();
+
+
 
 
                 $sqlEdu = "SELECT e.id AS idEs, e.institucion AS institucion, e.titulo AS titulo, e.anio_inicio AS anioIni, e.anio_graduacion AS anio, tp.abg_titulocol AS disciplina "
@@ -336,7 +457,7 @@ class AbgPersonaController extends Controller {
 
 
                 $dqlfoto = "SELECT fot.src as src, fot.estado As estado "
-                        . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=0 ";
+                        . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=1";
                 $fotoP = $em->createQuery($dqlfoto)->getArrayResult();
 
                 $dqlNotificacion = "SELECT count(p.id) "
@@ -376,9 +497,7 @@ class AbgPersonaController extends Controller {
 
                     $cumplimiento = $cumplimiento + 10;
                 }
-
-                return $this->render('abgpersona/panelAdministrativoAbg.html.twig', array(
-// return $this->render(':Layout:index.html.twig', array(
+     return $this->render('abgpersona/panelAdministrativoAbg.html.twig', array(
                             'nombreCorto' => $nombreCorto,
                             'abgPersona' => $result_persona,
                             'usuario' => $username,
@@ -406,9 +525,9 @@ class AbgPersonaController extends Controller {
                         . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.tituloProfesional AS tprofesional, p.verificado As verificado "
                         . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
                 $result_persona = $em->createQuery($dql_persona)->getArrayResult();
-                
-                $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_persona[0]['apellido'])[0];
-                
+
+                $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
+
                 $dqlfoto = "SELECT fot.src as src "
                         . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
                 $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
@@ -423,10 +542,10 @@ class AbgPersonaController extends Controller {
                         . "inner join abg_persona per on usu.rh_persona_id = per.id "
                         . "inner join abg_foto foto on foto.abg_persona_id = per.id "
                         . "inner join abg_url_personalizada uper on uper.abg_persona_id = per.id "
-                        . "where per.fecha_ingreso > '".$nuevafecha."' and per.fecha_ingreso <= '".$fecha."' and foto.estado = 1 and uper.estado = 1";
+                        . "where per.fecha_ingreso > '" . $nuevafecha . "' and per.fecha_ingreso <= '" . $fecha . "' and foto.estado = 1 and uper.estado = 1";
                 //var_dump($sql);
-                $rsm->addScalarResult('total','total');
-                
+                $rsm->addScalarResult('total', 'total');
+
                 $totalAbogados = $em->createNativeQuery($sql, $rsm)
                         ->getSingleResult();
 
@@ -1254,8 +1373,7 @@ class AbgPersonaController extends Controller {
                 }
             }
             $dql_departamento = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre"
-                    . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
-                    . "JOIN  DGAbgSistemaBundle:CtlSubespecialidad sub WHERE e.id=sub.abgEspecialidad group by e.id";
+                    . " FROM  DGAbgSistemaBundle:CtlEspecialidad e ";
             $result_especialida = $em->createQuery($dql_departamento)->getArrayResult();
 
 
@@ -1372,18 +1490,12 @@ class AbgPersonaController extends Controller {
             $request = $this->getRequest();
 
             parse_str($request->get('dato'), $datos);
-
-
             $Empresa = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa");
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
 
             $idEmpresa = "";
             $IdExperiencia = "";
-
-
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
-
-
             $fechaIni = date_create($datos['txtFechaIni']);
 
             $ExpPersona = "SELECT el.id AS id, el.fechaFin AS fecha_fin, el.compania As compania "
@@ -1391,7 +1503,6 @@ class AbgPersonaController extends Controller {
                     . " AND el.abgPersona=" . $request->get('hPersona');
             $dqlPersonaExp = $em->createQuery($ExpPersona);
             $resulExp = $dqlPersonaExp->getResult();
-
 
             $idEXp = "";
             if ($datos['hidExp'] == "") {
@@ -1407,7 +1518,7 @@ class AbgPersonaController extends Controller {
                 }
                 if ((count($resulExp) > 0) && ($datos['txtFechaFin'] == "")) {
                     foreach ($resulExp as $row) {
-//  $fechaFin = $row['fecha_fin'];
+
                         $compania = $row['compania'];
                         $id = $row['id'];
                     }
@@ -1493,9 +1604,6 @@ class AbgPersonaController extends Controller {
                         $Experiencia->setFechaFin($fechaFin);
                         if ($request->get('tipo') == "1") {
 
-// var_dump($Empresa->find(intval($request->get('empresa'))));
-                            /*  var_dump($datos['hidEmp'] . "<85>-- empre " . $datos['txtFechaFin'] . " --" . $request->get('tipo') . "---" . $nombre);
-                              exit(); */
                             $Experiencia->setCompania($idEmpresa->getNombreEmpresa());
                             $Experiencia->setCtlEmpresa($idEmpresa);
 // Inserta en persona_empresa si la fecha final es null
@@ -1511,10 +1619,7 @@ class AbgPersonaController extends Controller {
 
 // elimina de la tabla persona_empresa porq la nueva empresa no esta registrada en el directorio de abogados 
 // y actualiza personaExperiencia CtlEmpresa null porq la nueva empresa no esta registrada
-                            /*       var_dump($Empresa->find(intval($request->get('empresa'))));
-                              var_dump($datos['hidEmp'] . "<86>-- empre " . $datos['txtFechaFin'] . " --" . $request->get('tipo') . "---" . $nombre);
-                              exit(); */
-//    $Experiencia->setCtlEmpresa(null);
+
 
                             $sqlEdu = "DELETE FROM abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
                             $stm = $this->container->get('database_connection')->prepare($sqlEdu);
@@ -1535,12 +1640,6 @@ class AbgPersonaController extends Controller {
                             $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                             $stm->execute();
                         } else {
-
-
-                            /*
-                              var_dump($Empresa->find(intval($request->get('empresa'))));
-                              var_dump($datos['hidEmp'] . "<87>-- empre " . $datos['txtFechaFin'] . " --" . $request->get('tipo') . "---" . $nombre);
-                              exit(); */
                             $fechaFin = null;
                             $Experiencia->setFechaFin($fechaFin);
                             $Experiencia->setCtlEmpresa(null);
@@ -1549,62 +1648,58 @@ class AbgPersonaController extends Controller {
                             $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                             $stm->execute();
                         }
+                        $em->merge($Experiencia);
+                        $em->flush();
+                        $IdExperiencia = $Experiencia->getId();
+                        $data['msj'] = "Experiencia actualizada";
                     } else {
 
-                        if ($datos['hidEmp'] !== "" && $request->get('tipo') == '0') {
+                        if (date_create($datos['txtFechaFin']) > $fechaIni) {
+                            if ($datos['hidEmp'] !== "" && $request->get('tipo') == '0') {
+                                $fechaFin = date_create($datos['txtFechaFin']);
+                                $Experiencia->setFechaFin($fechaFin);
+                                $Empre = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($datos['hidEmp']);
+                                if ($datos['hidEmp'] == "" && $request->get('empresa') !== "") {
+                                    $Experiencia->setCtlEmpresa(null);
+                                }
 
+                                $nombrempresa = $Empresa->find($datos['hidEmp'])->getnombreEmpresa();
+                                $Experiencia->setCompania($nombrempresa);
 
-                            $fechaFin = date_create($datos['txtFechaFin']);
-                            $Experiencia->setFechaFin($fechaFin);
+                                $sqlEdu = "DELETE FROM  abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                                $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                                $stm->execute();
+                            } elseif ($request->get('tipo') == '1') {
 
-                            /*  var_dump($nombre. "hsxh");
-                              var_dump($datos['hidEmp'] . "<8 gggg>-- empre " . $datos['txtFechaFin'] . " --" . $request->get('tipo') . "---" . $nombre);
-                              exit(); */
+                                $nombrempresa = $Empresa->find($request->get('empresa'))->getnombreEmpresa();
+                                $idEmpresaComp = $Empresa->find(intval($request->get('empresa')));
 
-                            $Empre = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($datos['hidEmp']);
-                            if ($datos['hidEmp'] == "" && $request->get('empresa') !== "") {
-                                $Experiencia->setCtlEmpresa(null);
+                                $fechaFin = date_create($datos['txtFechaFin']);
+                                $Experiencia->setFechaFin($fechaFin);
+                                $Experiencia->setCompania($nombrempresa);
+                                $Experiencia->setCtlEmpresa($idEmpresaComp);
+
+                                $sqlEdu = "DELETE FROM  abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                                $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                                $stm->execute();
                             }
+                            if ($datos['hidEmp'] == "" && $request->get('tipo') == '0') {
 
-                            $nombrempresa = $Empresa->find($datos['hidEmp'])->getnombreEmpresa();
-                            $Experiencia->setCompania($nombrempresa);
-
-                            $sqlEdu = "DELETE FROM  abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
-                            $stm = $this->container->get('database_connection')->prepare($sqlEdu);
-                            $stm->execute();
-                        } elseif ($request->get('tipo') == '1') {
-
-                            $nombrempresa = $Empresa->find($request->get('empresa'))->getnombreEmpresa();
-                            $idEmpresaComp = $Empresa->find(intval($request->get('empresa')));
-
-                            $fechaFin = date_create($datos['txtFechaFin']);
-                            $Experiencia->setFechaFin($fechaFin);
-                            $Experiencia->setCompania($nombrempresa);
-                            $Experiencia->setCtlEmpresa($idEmpresaComp);
-
-                            $sqlEdu = "DELETE FROM  abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
-                            $stm = $this->container->get('database_connection')->prepare($sqlEdu);
-                            $stm->execute();
-                        }
-                        if ($datos['hidEmp'] == "" && $request->get('tipo') == '0') {
-
-                            if ($request->get('empresa') != "") {
-                                $Experiencia->setCompania($request->get('empresa'));
+                                if ($request->get('empresa') != "") {
+                                    $Experiencia->setCompania($request->get('empresa'));
+                                }
+                                $fechaFin = date_create($datos['txtFechaFin']);
+                                $Experiencia->setFechaFin($fechaFin);
                             }
-                            $fechaFin = date_create($datos['txtFechaFin']);
-                            $Experiencia->setFechaFin($fechaFin);
+                            $em->merge($Experiencia);
+                            $em->flush();
+                            $IdExperiencia = $Experiencia->getId();
+                            $data['msj'] = "Experiencia actualizada";
+                        } else {
+                            $data['msj'] = false;
+                            $data['error'] = "Fecha inicio mayor a fecha fin";
                         }
                     }
-
-
-                    /* var_dump($Empresa->find(intval($request->get('empresa'))));
-                      var_dump($datos['hidEmp'] . "<8>-- empre " . $datos['txtFechaFin'] . " --" . $request->get('tipo') . "---" . $nombre);
-                      exit(); */
-                    $em->merge($Experiencia);
-                    $em->flush();
-
-                    $IdExperiencia = $Experiencia->getId();
-                    $data['msj'] = "Experiencia actualizada";
                 }
 
 // si hay experiencia registrada pero la empresa no esta registrada como bufete
@@ -1683,82 +1778,88 @@ class AbgPersonaController extends Controller {
                                 $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                                 $stm->execute();
                             }
+                            $em->merge($Experiencia);
+                            $em->flush();
+                            $IdExperiencia = $Experiencia->getId();
+                            $data['msj'] = "Experiencia actualizada";
                         } else {
+                            if (date_create($datos['txtFechaFin']) > $fechaIni) {
 
-                            $fechaFin = date_create($datos['txtFechaFin']);
-                            if ($request->get('tipo') == "1") {
+                                $fechaFin = date_create($datos['txtFechaFin']);
+                                if ($request->get('tipo') == "1") {
 
 //    var_dump($Empresa->find(intval($request->get('empresa'))));
 
-                                $IdCTLEMPRESA = $Empresa->find(intval($request->get('empresa')));
+                                    $IdCTLEMPRESA = $Empresa->find(intval($request->get('empresa')));
 
-                                /*     var_dump($IdCTLEMPRESA);
-                                  exit(); */
-                                if ($request->get('empresa') !== "") {
-                                    $Experiencia->setCompania($Empresa->find(intval($request->get('empresa')))->getnombreEmpresa());
-                                }
-                                $Experiencia->setCtlEmpresa($IdCTLEMPRESA);
+
+                                    if ($request->get('empresa') !== "") {
+                                        $Experiencia->setCompania($Empresa->find(intval($request->get('empresa')))->getnombreEmpresa());
+                                    }
+                                    $Experiencia->setCtlEmpresa($IdCTLEMPRESA);
 
 // var_dump($Empresa->find(intval($request->get('empresa'))));
-                                /*        var_dump($datos['hidEmp']);
-                                  exit(); */
+                                    /*        var_dump($datos['hidEmp']);
+                                      exit(); */
 
 
-                                $Experiencia->setFechaFin($fechaFin);
+                                    $Experiencia->setFechaFin($fechaFin);
 
-                                $sqlEdu = "DELETE FROM abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
-                                $stm = $this->container->get('database_connection')->prepare($sqlEdu);
-                                $stm->execute();
-                                /*
-                                  $sqlEdu = "INSERT INTO  abg_persona_empresa (abg_persona_id,ctl_empresa_id) "
-                                  . " VALUES (" . $idPersona . "," . $Empresa->find(intval($request->get('empresa')))->getId() . ")";
-                                  $stm = $this->container->get('database_connection')->prepare($sqlEdu);
-                                  $stm->execute(); */
-                            } elseif ($request->get('tipo') == "0" && $datos['hidEmp'] !== "" && $datos['txtFechaFin'] == "") {
+                                    $sqlEdu = "DELETE FROM abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                                    $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                                    $stm->execute();
+                                    /*
+                                      $sqlEdu = "INSERT INTO  abg_persona_empresa (abg_persona_id,ctl_empresa_id) "
+                                      . " VALUES (" . $idPersona . "," . $Empresa->find(intval($request->get('empresa')))->getId() . ")";
+                                      $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                                      $stm->execute(); */
+                                } elseif ($request->get('tipo') == "0" && $datos['hidEmp'] !== "" && $datos['txtFechaFin'] == "") {
 
-                                $sqlEdu = "DELETE FROM abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
-                                $stm = $this->container->get('database_connection')->prepare($sqlEdu);
-                                $stm->execute();
+                                    $sqlEdu = "DELETE FROM abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                                    $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                                    $stm->execute();
 //   $Experiencia->setCtlEmpresa(null);
-                            } elseif ($request->get('tipo') == "0" && $datos['hidEmp'] !== "" && $datos['txtFechaFin'] !== "" && $request->get('empresa') !== "") {
+                                } elseif ($request->get('tipo') == "0" && $datos['hidEmp'] !== "" && $datos['txtFechaFin'] !== "" && $request->get('empresa') !== "") {
 
-                                $sqlEdu = "DELETE FROM abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
-                                $stm = $this->container->get('database_connection')->prepare($sqlEdu);
-                                $stm->execute();
-                                $Experiencia->setCtlEmpresa(null);
-                                $Experiencia->setFechaFin($fechaFin);
-                                $Experiencia->setCompania($request->get('empresa'));
-                            } elseif ($request->get('tipo') == "0" && $datos['hidEmp'] !== "" && $datos['txtFechaFin'] !== "" && $request->get('empresa') == "") {
+                                    $sqlEdu = "DELETE FROM abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                                    $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                                    $stm->execute();
+                                    $Experiencia->setCtlEmpresa(null);
+                                    $Experiencia->setFechaFin($fechaFin);
+                                    $Experiencia->setCompania($request->get('empresa'));
+                                } elseif ($request->get('tipo') == "0" && $datos['hidEmp'] !== "" && $datos['txtFechaFin'] !== "" && $request->get('empresa') == "") {
 
-                                $sqlEdu = "DELETE FROM abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
-                                $stm = $this->container->get('database_connection')->prepare($sqlEdu);
-                                $stm->execute();
-                            } elseif ($request->get('tipo') == "0" && $datos['hidEmp'] == "" && $datos['txtFechaFin'] !== "" && $request->get('empresa') == "") {
+                                    $sqlEdu = "DELETE FROM abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                                    $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                                    $stm->execute();
+                                } elseif ($request->get('tipo') == "0" && $datos['hidEmp'] == "" && $datos['txtFechaFin'] !== "" && $request->get('empresa') == "") {
 
-                                $Experiencia->setCtlEmpresa(null);
-                                $Experiencia->setFechaFin($fechaFin);
-                                $sqlEdu = "DELETE FROM abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
-                                $stm = $this->container->get('database_connection')->prepare($sqlEdu);
-                                $stm->execute();
-                            } elseif ($request->get('tipo') == "0" && $datos['hidEmp'] == "" && $datos['txtFechaFin'] !== "" && $request->get('empresa') !== "") {
+                                    $Experiencia->setCtlEmpresa(null);
+                                    $Experiencia->setFechaFin($fechaFin);
+                                    $sqlEdu = "DELETE FROM abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                                    $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                                    $stm->execute();
+                                } elseif ($request->get('tipo') == "0" && $datos['hidEmp'] == "" && $datos['txtFechaFin'] !== "" && $request->get('empresa') !== "") {
 
-                                $Experiencia->setCompania($request->get('empresa'));
-                                $Experiencia->setCtlEmpresa(null);
-                                $Experiencia->setFechaFin($fechaFin);
-                                $sqlEdu = "DELETE FROM abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
-                                $stm = $this->container->get('database_connection')->prepare($sqlEdu);
-                                $stm->execute();
+                                    $Experiencia->setCompania($request->get('empresa'));
+                                    $Experiencia->setCtlEmpresa(null);
+                                    $Experiencia->setFechaFin($fechaFin);
+                                    $sqlEdu = "DELETE FROM abg_persona_empresa  WHERE abg_persona_id= " . $idPersona;
+                                    $stm = $this->container->get('database_connection')->prepare($sqlEdu);
+                                    $stm->execute();
+                                }
+
+
+                                $em->merge($Experiencia);
+                                $em->flush();
+                                $IdExperiencia = $Experiencia->getId();
+                                $data['msj'] = "Experiencia actualizada";
+                            } else {
+                                $data['msj'] = false;
+                                $data['error'] = "Fecha inicio mayor a fecha fin";
                             }
-
-                            /* var_dump(intval($datos['hidEmp']). " ultimo");
-                              var_dump( $idEmpresa = $Empresa->find(intval($request->get('empresa')))->getId());
-                              exit(); */
                         }
                     }
-                    $em->merge($Experiencia);
-                    $em->flush();
-                    $IdExperiencia = $Experiencia->getId();
-                    $data['msj'] = "Experiencia actualizada";
                 }
             }
 
@@ -2015,17 +2116,7 @@ class AbgPersonaController extends Controller {
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
 
             $IdEducacion = "";
-            /*
-              if ($request->get('tipo') == "1") {
-              $idEmpresa = $Empresa->find(intval($request->get('empresa')));
-              $nombre = $Empresa->find(intval($request->get('empresa')))->getNombreEmpresa();
-              } else {
 
-              $nombre = $request->get('empresa');
-              }
-
-              $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
-             */
 
             $fechaIni = date_create($datos['txtFechIniC']);
             $fechaFin = date_create($datos['txtFechFinC']);
@@ -2848,11 +2939,25 @@ class AbgPersonaController extends Controller {
                     . " JOIN abg_facturacion f"
                     . " ON  p.id=f.abg_persona_id AND p.id=" . $idPersona
                     . " JOIN ctl_tipo_pago tp "
-                    . " ON  tp.id=f.abg_tipo_pago_id"
+                    //   . " ON  tp.id=f.abg_tipo_pago_id"
                     . " ORDER BY p.nombres ASC ";
-            $stm = $this->container->get('database_connection')->prepare($sql);
+
+            $sqlPersona = "select per.id AS idAbg, per.codigo AS codigo, CONCAT(per.nombres, '  ', per.apellido) as nombre, foto.src as src, uper.url as url, date_format(fecha_ingreso, '%d/%m/%Y') as fecha,
+        date_format(fac.fecha_pago, '%d/%m/%Y') AS fechaPago, fac.servicio AS servicio, fac.plazo,TIMESTAMPDIFF(DAY,CURDATE(),fac.fecha_pago) AS caducidad, fac.monto AS monto, 
+        fac.descripcion As descripcion
+                        from ctl_usuario usu 
+                        inner join abg_persona per on usu.rh_persona_id = per.id AND per.id=" . $idPersona .
+                    " inner join abg_foto foto on foto.abg_persona_id = per.id
+                        inner join abg_url_personalizada uper on uper.abg_persona_id = per.id
+                        inner join abg_facturacion fac on per.id=fac.abg_persona_id 
+                       where foto.estado = 1 and uper.estado = 1
+                        order by caducidad desc
+                        limit 0, 12";
+
+            $stm = $this->container->get('database_connection')->prepare($sqlPersona);
             $stm->execute();
             $suscripcion = $stm->fetchAll();
+
 
 //  return $this->render('abgpersona/panelAdministrativoAbg.html.twig', array(
             return $this->render(':abgpersona:panelSuscripcion.html.twig', array(
@@ -2869,7 +2974,5 @@ class AbgPersonaController extends Controller {
 // echo $e->getMessage();   
         }
     }
-
-    
 
 }

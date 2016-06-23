@@ -40,169 +40,169 @@
     {% embed ':Layout:head.html.twig' %}{% endembed %}
 
 
-    <div id="page-content">
-        <!-- Busqueda por Area de Especialidad -->
-        <div class="container" style="padding-top: 40px; padding-bottom: 70px;">
-            <div class="row">
-                <div class="col-md-9">
-                    <img src="{{asset('Resources/src/img/publicida/banner1.png')}}" class="img-thumbnail" style="width: 100%; max-width: 100%; margin-bottom: 20px;">
+<div id="page-content">
+    <!-- Busqueda por Area de Especialidad -->
+    <div class="container" style="padding-top: 40px; padding-bottom: 70px;">
+        <div class="row">
+            <div class="col-md-9">
+                <img src="{{asset('Resources/src/img/publicida/banner1.png')}}" class="img-thumbnail" style="width: 100%; max-width: 100%; margin-bottom: 20px;">
 
-                    <p class="sans" style="font-size: 20px; margin-bottom: 5px; font-weight: 600;">Busqueda de Preguntas por Area de Especialidad</p>
-                    <div style="border-top: 3px solid #263345; width: 150px; margin-bottom: 8px;"></div>
-                    <p class="sans">¿Necesitas ayuda para poder encontrar un profesional del derecho? ... realiza una pregunta y un maximo de 3 abogados
-                        te responderan. Recuerda, no publiques informacion privada y contacta el abogado de tu eleccion.</p>
+                <p class="sans" style="font-size: 20px; margin-bottom: 5px; font-weight: 600;">Busqueda de Preguntas por Area de Especialidad</p>
+                <div style="border-top: 3px solid #263345; width: 150px; margin-bottom: 8px;"></div>
+                <p class="sans">¿Necesitas ayuda para poder encontrar un profesional del derecho? ... realiza una pregunta y un maximo de 3 abogados
+                    te responderan. Recuerda, no publiques informacion privada y contacta el abogado de tu eleccion.</p>
 
-                    <div class="clearfix"></div>
+                <div class="clearfix"></div>
 
-                    <!-- Inicio de Buscador -->
-                    <div style="margin-top: 25px;">
+                <!-- Inicio de Buscador -->
+                <div style="margin-top: 25px;">
 
-                        <div class="col-md-6 col-xs-5">
-                            <input style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%;" 
-                                   class="search sans" id="searchInput"  placeholder="Solucion legal o Nombre de abogado." value="{{busquedagenral}}">
-                        </div>
-                        <div class="col-md-4  col-xs-5">
-                            <input class="search sans" id="searchInputDept" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%;" placeholder="Cuidad, Dept" value="{{busquedaDept}}">
-                        </div>
-                        <div class="col-md-2  col-xs-2">
-                            <button  type="button" id="searchButton" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; background-color: #F42; color: #fff; font-weight: 600;" class="sans text-center" value="Buscar">Buscar </button>
-                            <input type="hidden" value="0" id="inicioInput">
-                        </div>
-                        <div class="clearfix"></div>
-                        <p class="sans" style="margin-left: 15px; margin-top: 10px;">Mostrando resultados de busqueda por 
-                            <strong><label class="criterio">{%if (busquedagenral|default is not empty) and (busquedaDept|default is not empty)%}{{busquedagenral~' | '~busquedaDept}}{%endif%}{%if busquedagenral|default is not empty and busquedaDept |default is empty%}{{busquedagenral}}{%endif%}{%if busquedagenral|default is  empty and busquedaDept|default is not empty%}{{busquedaDept}}{%endif%}
-                                </label></strong></p>
-
+                    <div class="col-md-6 col-xs-5">
+                        <input style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%;" 
+                               class="search sans" id="searchInput"  placeholder="Solucion legal o Nombre de abogado." value="{{busquedagenral}}">
                     </div>
-                    <!-- fin de buscador -->
-
+                    <div class="col-md-4  col-xs-5">
+                        <input class="search sans" id="searchInputDept" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%;" placeholder="Cuidad, Dept" value="{{busquedaDept}}">
+                    </div>
+                    <div class="col-md-2  col-xs-2">
+                        <button  type="button" id="searchButton" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; background-color: #F42; color: #fff; font-weight: 600;" class="sans text-center" value="Buscar">Buscar </button>
+                        <input type="hidden" value="0" id="inicioInput">
+                    </div>
                     <div class="clearfix"></div>
+                    <p class="sans" style="margin-left: 15px; margin-top: 10px;">Mostrando resultados de busqueda por 
+                        <strong><label class="criterio">{%if (busquedagenral|default is not empty) and (busquedaDept|default is not empty)%}{{busquedagenral~' | '~busquedaDept}}{%endif%}{%if busquedagenral|default is not empty and busquedaDept |default is empty%}{{busquedagenral}}{%endif%}{%if busquedagenral|default is  empty and busquedaDept|default is not empty%}{{busquedaDept}}{%endif%}
+                            </label></strong></p>
 
-                    <!-- Inicio de Respuetas Recientes -->
-                    <div class="col-md-12">
-                        <p class="sans" style="font-size: 16px; color: #999999; margin-bottom: 5px; font-weight: 600; margin-top: 20px;">Respuestas recientes</p>
-                        <div style="border-top: 2px solid #263345; width: 100px;"></div>
-                        <div class="row" id="contenidoBusc">
-                            {%if ultimas_preguntas|default is not empty %}
-                                {% for key, datos in ultimas_preguntas %}
-                                    <div class="col-md-6 col-xs-12" style="margin-top: 20px;">
-                                        <div class="col-xs-3  col-md-3">
-                                            <img src="{{ asset('') }}{{datos.src}}" style="width: 100%;">
-                                        </div>
-                                        <div class="col-xs-9  col-md-9">
-                                            <p class="sans" style="color: #888888; margin-bottom: 3px;">{{datos.pregunta| slice(0,100)~'...'}}</p>
-                                            <p class="sans" style="font-size: 12px;">Respondida {{tiemposRespuesta[key]}} por {%if(datos.estado !=0)%}<a href="{{path('busquedaPerfil', {url:datos.url})}}">{{datos.nombres}}</a>{%else%}{{datos.nombres}}{%endif%}</p>
-                                        </div>
+                </div>
+                <!-- fin de buscador -->
+
+                <div class="clearfix"></div>
+
+                <!-- Inicio de Respuetas Recientes -->
+                <div class="col-md-12">
+                    <p class="sans" style="font-size: 16px; color: #999999; margin-bottom: 5px; font-weight: 600; margin-top: 20px;">Respuestas recientes</p>
+                    <div style="border-top: 2px solid #263345; width: 100px;"></div>
+                    <div class="row" id="contenidoBusc">
+                        {%if ultimas_preguntas|default is not empty %}
+                            {% for key, datos in ultimas_preguntas %}
+                                <div class="col-md-6 col-xs-12" style="margin-top: 20px;">
+                                    <div class="col-xs-3  col-md-3">
+                                        <img src="{{ asset('') }}{{datos.src}}" style="width: 100%;">
                                     </div>
-                                    {% if loop.index is divisibleby(2) %}
-                                        <div class="clearfix"></div>
-                                    {% endif %} 
+                                    <div class="col-xs-9  col-md-9">
+                                        <p class="sans" style="color: #888888; margin-bottom: 3px;">{{datos.pregunta| slice(0,100)~'...'}}</p>
+                                        <p class="sans" style="font-size: 12px;">Respondida {{tiemposRespuesta[key]}} por {%if(datos.estado !=0)%}<a href="{{path('busquedaPerfil', {url:datos.url})}}">{{datos.nombres}}</a>{%else%}{{datos.nombres}}{%endif%}</p>
+                                    </div>
+                                </div>
+                                {% if loop.index is divisibleby(2) %}
+                                    <div class="clearfix"></div>
+                                {% endif %} 
 
-                                {%endfor%}
+                            {%endfor%}
 
-                            {%endif%}
-                        </div>
-                        <div class="row" id="contenidoBuscAv"></div>
-                    </div> <!-- Fin de Respuetas Recientes -->
-                    <!-- PAGINACION -->
-                    <div class="row">
-                        <div class="col-md-7" style="padding-top: 9px;">
-                            <ul class="numeroPaginas sans" style="list-style: none; display: inline; padding-left: 10px !important; color: #777777;" >
-
-                            </ul>
-
-                        </div>
-                        <div class="col-md-5">
-                            <p class="text-right sans" style="font-size: 12px; margin-bottom: 0px; padding: 10px;">
-                                Mostrando <label class="filtroRegistros"></label> resultados de <label class="totalRegistros"></label>.
-                            </p>
-                        </div>	
+                        {%endif%}
                     </div>
-                </div> <!-- Fin col md 9 Izquierdo -->
+                    <div class="row" id="contenidoBuscAv"></div>
+                </div> <!-- Fin de Respuetas Recientes -->
+                <!-- PAGINACION -->
+                <div class="row">
+                    <div class="col-md-7" style="padding-top: 9px;">
+                        <ul class="numeroPaginas sans" style="list-style: none; display: inline; padding-left: 10px !important; color: #777777;" >
 
-                <div class="col-md-3 col-xs-12">
-                    <!-- Stat 1 -->
-                    <div class="row">
-                        <div class="col-sm-4 col-xs-3">
-                            <div >
-                                <img src="{{ asset('Resources/src/img/pregunta-01.png')}}" style="width: 100%;">
-                            </div>
-                        </div>
-                        <div class="col-sm-8 col-xs-9">
-                            <p class="sans" style="font-size: 30px; font-weight: 700; margin-bottom: 0;">{{NAgb}}</p>
-                            <p class="sans" style="font-size: 15px; margin-top: 0;">Abogados registrados</p>
-                        </div>
+                        </ul>
+
                     </div>
-                    <!-- Stat 2 -->
-                    <div class="row" style="padding-top: 10px;">
-                        <div class="col-sm-4 col-xs-3">
-                            <div >
-                                <img src="{{ asset('Resources/src/img/pregunta-03.png') }}" style="width: 100%;">
-                            </div>
-                        </div>
-                        <div class="col-sm-8 col-xs-9">
-                            <p class="sans" style="font-size: 30px; font-weight: 700; margin-bottom: 0;">{{Npreguntas}}</p>
-                            <p class="sans" style="font-size: 15px; margin-top: 0;">Preguntas realizadas</p>
+                    <div class="col-md-5">
+                        <p class="text-right sans" style="font-size: 12px; margin-bottom: 0px; padding: 10px;">
+                            Mostrando <label class="filtroRegistros"></label> resultados de <label class="totalRegistros"></label>.
+                        </p>
+                    </div>	
+                </div>
+            </div> <!-- Fin col md 9 Izquierdo -->
+
+            <div class="col-md-3 col-xs-12">
+                <!-- Stat 1 -->
+                <div class="row">
+                    <div class="col-sm-4 col-xs-3">
+                        <div >
+                            <img src="{{ asset('Resources/src/img/pregunta-01.png')}}" style="width: 100%;">
                         </div>
                     </div>
-                    <!-- Stat 3 -->
-                    <div class="row" style="padding-top: 10px;">
-                        <div class="col-sm-4 col-xs-3">
-                            <div>
-                                <img src="{{  asset('Resources/src/img/pregunta-02.png')}}" style="width: 100%;">
-                            </div>
-                        </div>
-                        <div class="col-sm-8 col-xs-9">
-                            <p class="sans" style="font-size: 30px; font-weight: 700; margin-bottom: 0;">{{Nrespuestas}}</p>
-                            <p class="sans" style="font-size: 15px; margin-top: 0;">Respuestas realizadas</p>
+                    <div class="col-sm-8 col-xs-9">
+                        <p class="sans" style="font-size: 30px; font-weight: 700; margin-bottom: 0;">{{NAgb}}</p>
+                        <p class="sans" style="font-size: 15px; margin-top: 0;">Abogados registrados</p>
+                    </div>
+                </div>
+                <!-- Stat 2 -->
+                <div class="row" style="padding-top: 10px;">
+                    <div class="col-sm-4 col-xs-3">
+                        <div >
+                            <img src="{{ asset('Resources/src/img/pregunta-03.png') }}" style="width: 100%;">
                         </div>
                     </div>
-                    <!-- Usuarios Activos -->
-                    <div class="row">
-                        <div class=" col-md-12 col-xs-12">
-                            <div style="width: 100%; background-color: #263345; margin-top: 20px;">
-                                <p class="sans text-left" style="font-weight: 600; padding: 10px; font-size: 12px; color: #fff; margin-bottom: 0px;">Top 10 activos en los ultimos 15 dias.</p>
-                            </div>
-                            <div style="border: 2px solid #c3c3c3; padding-bottom: 10px;">
-                                {%if top10|default is not empty %}
-                                    {% for datos in top10 %}
-                                        <div class="abogado-top" style="margin-top: 10px;">
-
-                                            <div class="col-sm-4 col-xs-3">
-                                                <img src="{{ asset('') }}{{datos.src}}" style="width: 100%;" >
-                                            </div>
-                                            <div class="col-sm-8 col-xs-9" style="padding-left: 0px;">
-                                                <p class="sans" style="margin-bottom: 0px; font-size: 13px;">{%if(datos.estado !=0)%}<a href="{{path('busquedaPerfil', {url:datos.url})}}">{{datos.nombres}}</a>{%else%}{{datos.nombres}}{%endif%}</p>
-
-                                                <p class="sans" style="margin-bottom: 0px; font-size: 11px;">{{datos.totalrespuestas}} Respuestas</p>
-                                            </div>
-
-                                            <div class="clearfix">
-                                            </div>
-                                        </div>
-                                    {%endfor%}
-
-                                {%endif%}
-                                <!-- Abogado Top Fin -->
-
-
-                                <!-- End colmd3 -->
-                            </div>
+                    <div class="col-sm-8 col-xs-9">
+                        <p class="sans" style="font-size: 30px; font-weight: 700; margin-bottom: 0;">{{Npreguntas}}</p>
+                        <p class="sans" style="font-size: 15px; margin-top: 0;">Preguntas realizadas</p>
+                    </div>
+                </div>
+                <!-- Stat 3 -->
+                <div class="row" style="padding-top: 10px;">
+                    <div class="col-sm-4 col-xs-3">
+                        <div>
+                            <img src="{{  asset('Resources/src/img/pregunta-02.png')}}" style="width: 100%;">
                         </div>
                     </div>
-                </div> <!-- Fin row Principal -->
+                    <div class="col-sm-8 col-xs-9">
+                        <p class="sans" style="font-size: 30px; font-weight: 700; margin-bottom: 0;">{{Nrespuestas}}</p>
+                        <p class="sans" style="font-size: 15px; margin-top: 0;">Respuestas realizadas</p>
+                    </div>
+                </div>
+                <!-- Usuarios Activos -->
+<div class="row">
+       <div class=" col-md-12 col-xs-12">
+                <div style="width: 100%; background-color: #263345; margin-top: 20px;">
+                    <p class="sans text-left" style="font-weight: 600; padding: 10px; font-size: 12px; color: #fff; margin-bottom: 0px;">Top 10 activos en los ultimos 15 dias.</p>
+                </div>
+                <div style="border: 2px solid #c3c3c3; padding-bottom: 10px;">
+                    {%if top10|default is not empty %}
+                        {% for datos in top10 %}
+                            <div class="abogado-top" style="margin-top: 10px;">
+
+                                <div class="col-sm-4 col-xs-3">
+                                    <img src="{{ asset('') }}{{datos.src}}" style="width: 100%;" >
+                                </div>
+                                <div class="col-sm-8 col-xs-9" style="padding-left: 0px;">
+                                    <p class="sans" style="margin-bottom: 0px; font-size: 13px;">{%if(datos.estado !=0)%}<a href="{{path('busquedaPerfil', {url:datos.url})}}">{{datos.nombres}}</a>{%else%}{{datos.nombres}}{%endif%}</p>
+
+                                    <p class="sans" style="margin-bottom: 0px; font-size: 11px;">{{datos.totalrespuestas}} Respuestas</p>
+                                </div>
+
+                                <div class="clearfix">
+                                </div>
+                            </div>
+                        {%endfor%}
+
+                    {%endif%}
+                    <!-- Abogado Top Fin -->
 
 
-            </div>
+                    <!-- End colmd3 -->
+                </div>
+                       </div>
+                       </div>
+            </div> <!-- Fin row Principal -->
 
-        </div>       
-    </div>
+
+        </div>
+
+    </div>          
+                    
 
     <!-- Navbar -->
 
 {% embed ':Layout:footer.html.twig' %}{% endembed %}
+</div>  
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="{{ asset('Resources/autocomplete/jquery.autocomplete.js')}}"></script>
@@ -211,9 +211,9 @@
 <script src="src/js/bootstrap.js"></script>
 
 <script type="text/javascript">
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
+    /*     $(function () {
+     $('[data-toggle="tooltip"]').tooltip()
+     })*/
 
 </script>
 
@@ -312,100 +312,225 @@
             });
 
         });
-    {#
-    function cambia() {
-        if (contador >= lon) {
-            contador = 0;
-        }
 
-        if (lon > 0) {
-            document.getElementById("fotocambia").src = '{{asset('')}}' + imagenes[contador];
-            contador++;
-        } else {
-            document.getElementById("fotocambia").src = '{{asset('Resources/src/img/banner1.png')}}';
-        }
+function buscar(busqueda, inicio, longitud, paginaActual, busquedaDept) {
+    //console.log(llamada);
 
-
-        if (contador2 >= lon2) {
-            contador2 = 0;
-        }
-
-        if (lon2 > 0) {
-            document.getElementById("fotocambia2").src = '{{asset('')}}' + imagenes2[contador2];
-            contador2++;
-        } else {
-            document.getElementById("fotocambia2").src = '{{asset('Resources/src/img/banner.png')}}';
-        }
-
-        if (contador3 >= lon3) {
-            contador3 = 0;
-        }
-
-        if (lon3 > 0) {
-            document.getElementById("fotocambia3").src = '{{asset('')}}' + imagenes3[contador3];
-            contador3++;
-        } else {
-            document.getElementById("fotocambia3").src = '{{asset('Resources/src/img/banner.png')}}';
-        }
-
-        if (contador4 >= lon4) {
-            contador4 = 0;
-        }
-
-        if (lon4 > 0) {
-            document.getElementById("fotocambia4").src = '{{asset('')}}' + imagenes4[contador4];
-            contador4++;
-        } else {
-            document.getElementById("fotocambia4").src = '{{asset('Resources/src/img/banner1.png')}}';
-        }
+    if (busqueda) {
+        $('#mostrando').show();
+        $('#filtro').children().html(busqueda);
+    } else {
+        $('#mostrando').hide();
     }
-#}
-    function buscar(busqueda, inicio, longitud, paginaActual, busquedaDept) {
-        //console.log(llamada);
 
-        if (busqueda) {
-            $('#mostrando').show();
-            $('#filtro').children().html(busqueda);
-        } else {
-            $('#mostrando').hide();
-        }
+    if (busqueda != "" || busquedaDept != "") {
 
-        if (busqueda != "" || busquedaDept != "") {
+        $.ajax({
+            type: "post",
+            async: false,
+            dataType: 'json',
+            data: {inicio: inicio, longitud: longitud, paginaActual: paginaActual, busqueda: busqueda, busquedaDept: busquedaDept},
+            url: "{{path('busqueda_pregunta')}}",
+            success: function (data) {
 
-            $.ajax({
-                type: "post",
-                async: false,
-                dataType: 'json',
-                data: {inicio: inicio, longitud: longitud, paginaActual: paginaActual, busqueda: busqueda, busquedaDept: busquedaDept},
-                url: "{{path('busqueda_pregunta')}}",
-                success: function (data) {
-
-
-                    if ($('#searchInput').val() !== "" && $('#searchInputDept').val() != "")
-                    {
-                        $(".criterio").text($('#searchInput').val() + '| ' + $('#searchInputDept').val());
-                    }
-                    if ($('#searchInputDept').val() !== "" && $('#searchInput').val() == "")
-                    {
-                        $(".criterio").text($('#searchInputDept').val());
-                    }
-                    if ($('#searchInputDept').val() == "" && $('#searchInput').val() !== "")
-                    {
-                        $(".criterio").text($('#searchInput').val());
-                    }
+         
+                        if ($('#searchInput').val() !== "" && $('#searchInputDept').val()  != "")
+                            {
+                                $(".criterio").text($('#searchInput').val() + '| ' + $('#searchInputDept').val());
+                            }
+                            if ($('#searchInputDept').val() !== "" && $('#searchInput').val() == "")
+                            {
+                                $(".criterio").text($('#searchInputDept').val());
+                            }
+                            if ($('#searchInputDept').val() == "" && $('#searchInput').val() !== "")
+                            {
+                                $(".criterio").text($('#searchInput').val());
+                            }
+                
+                
+                
+                $("#contenidoBusc").hide();
+                $("#contenidoBuscAv").empty();
 
 
 
-                    $("#contenidoBusc").hide();
-                    $("#contenidoBuscAv").empty();
+                if (data.numRegistros > 0)
+                {
+
+                    $.each(data.data, function (index, val) {
+
+                        cadena = '<div class="col-md-6 col-xs-12" style="margin-top: 20px;">';
+                        cadena += '<div class="col-xs-3  col-md-3">';
+                        cadena += '<img src="{{ asset('') }}' + val.src + '" style="width: 100%;">';
+                        cadena += '</div>';
+                        cadena += '<div class="col-xs-9  col-md-9">';
+                        cadena += '<p class="sans" style="color: #888888; margin-bottom: 3px;"><a href="' + Routing.generate('respuestas_pregunta') + '/' + val.idPregunta + '" style="text-decoration: none; color: inherit;">' + val.pregunta.substr(0, 100) + '...</a></p>';
+                        cadena += '<p class="sans" style="font-size: 12px;">';
+                        cadena += 'Respondida ' + data.tiemposRespuesta[index] + ' por  ';
+                        if (val.estado != '0')
+                        {
+                            cadena += '<a href="' + Routing.generate('busquedaPerfil') + val.url + '">' + val.nombres + '</a></p>';
+                        } else
+                        {
+                            cadena += val.nombres + '</p>';
+                        }
+                        cadena += '</div>';
+                        cadena += '</div>';
+                        if ((index + 1) % 2 === 0)
+                        {
+
+                            cadena += '<div class="clearfix"></div>';
+
+                        }
+                        $('#contenidoBuscAv').append(cadena);
+
+                    });
+
+                } else
+                {
+                    $('#contenidoBuscAv').append('<div class="sans" ><br><p>No se encontró ningun resultado de <strong>' + data.Busquedageneral + '</strong></p></div>');
+                }
+                $('#registros').html('');
+                $('#filtro').children().html();
 
 
+                //console.log(data);
+                console.log("num registros: " + data.numRegistros);
+                console.log("filtro registros: " + data.filtroRegistros);
 
-                    if (data.numRegistros > 0)
-                    {
+                $('.totalRegistros').html(data.numRegistros);
+                $('.filtroRegistros').html(data.filtroRegistros);
+
+                if (data.data.length > 0) {
+                    $('#inicioInput').val((parseInt($('#inicioInput').val()) + 1));
+                    //console.log(data.inicio);
+                    //console.log(data.data.length);
+                    var cadena = "";
+                    for (i = 0; i < data.data.length; i++) {
+
+                        //var busquedaNombre = data.data[i].nombres +' ' + data.data[i].apellido;
+                        var busquedaCargo = "";
+
+                        var telefonos = "";
+                        var busquedaPregunta = data.data[i].pregunta;
+                        var busquedaRespuesta = data.data[i].respuesta;
+                        //var sitioWeb = data.data[i].sitioWeb;
+                        //var busquedaSitioWeb = "#busquedaSitioWeb"+(i+1);
+                        var busquedaDetalle = data.data[i].detalle;
+                        var busquedaFechapregunta = data.data[i].fechapregunta;
+
+                        console.log(data.data[i].id);
+
+
+                        if (busquedaPregunta == null) {
+                            busquedaPregunta = "";
+                        }
+
+                        if (busquedaRespuesta == null) {
+                            busquedaRespuesta = "";
+                        }
+
+                        if (busquedaDetalle == null) {
+                            busquedaDetalle = "-";
+                        }
+
+                        if (busquedaFechapregunta == null) {
+                            busquedaFechapregunta = "-";
+                        }
+
+
+                        $('#busquedaVacia').hide();
+
+                        //console.log(data.pages);
+                        numPages = data.pages;
+                        var cadenaPaginas = '<li class="anterior" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-left\"></i></li>';
+                        for (k = 1; k <= data.pages; k++) {
+                            if (k == paginaActual) {
+                                cadenaPaginas += '<li class="paginas" id="' + k + '" style=\"display: inline; padding: 7px;\"><strong>' + k + '</strong></li>';
+                            } else {
+                                cadenaPaginas += '<li class="paginas" id="' + k + '" style=\"display: inline; padding: 7px;\">' + k + '</li>';
+                            }
+
+                        }
+
+                        cadenaPaginas += '<li class="siguiente" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-right\"></i></li>';
+                        $('.numeroPaginas').html(cadenaPaginas);
+                        //$('#registros').html('prueba');
+                    }//fin for
+                }//fin if
+                else {
+                    console.log('datosvacios');
+                    $('#paginas').html(cadenaPaginas);
+                    console.log(data.numRegistros);
+                    console.log(data.filtroRegistros);
+                    $('.totalRegistros').html(data.numRegistros);
+                    $('.filtroRegistros').html(data.filtroRegistros);
+                    $('#registros').hide();
+                    $('#busquedaVacia').show();
+
+                }
+                console.log("pagina actual: " + data.paginaActual);
+                console.log("Inicio de registro: " + data.inicioRegistro);
+            },
+            error: function (data) {
+
+            }
+        });
+    }//FIN IF VACIOOOOOOOOOOO
+    else {//CUANDO NO ESTA VACIO
+
+        $.ajax({
+            type: "post",
+            async: false,
+            dataType: 'json',
+            data: {inicio: inicio, longitud: longitud, paginaActual: paginaActual, busqueda: busqueda, busquedaDept: busquedaDept},
+            url: "{{path('busquedavacia_pregunta')}}",
+            success: function (data) {
+
+                $('#registros').html('');
+                $('#filtro').children().html();
+
+                console.log("num registros: " + data.numRegistros);
+                console.log("filtro registros: " + data.filtroRegistros);
+                $('.totalRegistros').html(data.numRegistros);
+                $('.filtroRegistros').html(data.filtroRegistros);
+
+                if (data.data.length > 0) {
+
+                    $('#inicioInput').val((parseInt($('#inicioInput').val()) + 1));
+
+                    var cadena = "";
+                    for (i = 0; i < data.data.length; i++) {
+
+                        var busquedaCargo = "";
+
+                        var telefonos = "";
+                        var busquedaPregunta = data.data[i].pregunta;
+                        var busquedaRespuesta = data.data[i].respuesta;
+
+                        var busquedaDetalle = data.data[i].detalle;
+                        var busquedaFechapregunta = data.data[i].fechapregunta;
+
+                        if (busquedaPregunta == null) {
+                            busquedaPregunta = "";
+                        }
+
+                        if (busquedaRespuesta == null) {
+                            busquedaRespuesta = "";
+                        }
+
+                        if (busquedaDetalle == null) {
+                            busquedaDetalle = "-";
+                        }
+
+                        if (busquedaFechapregunta == null) {
+                            busquedaFechapregunta = "-";
+                        }
+
+                        $("#contenidoBusc").hide();
+                        $("#contenidoBuscAv").empty();
 
                         $.each(data.data, function (index, val) {
-
                             cadena = '<div class="col-md-6 col-xs-12" style="margin-top: 20px;">';
                             cadena += '<div class="col-xs-3  col-md-3">';
                             cadena += '<img src="{{ asset('') }}' + val.src + '" style="width: 100%;">';
@@ -413,7 +538,7 @@
                             cadena += '<div class="col-xs-9  col-md-9">';
                             cadena += '<p class="sans" style="color: #888888; margin-bottom: 3px;"><a href="' + Routing.generate('respuestas_pregunta') + '/' + val.idPregunta + '" style="text-decoration: none; color: inherit;">' + val.pregunta.substr(0, 100) + '...</a></p>';
                             cadena += '<p class="sans" style="font-size: 12px;">';
-                            cadena += 'Respondida ' + data.tiemposRespuesta[index] + ' por  ';
+                            cadena += 'Respondida ' + data.tiemposRespuesta[index] + ' por ';
                             if (val.estado != '0')
                             {
                                 cadena += '<a href="' + Routing.generate('busquedaPerfil') + val.url + '">' + val.nombres + '</a></p>';
@@ -421,237 +546,65 @@
                             {
                                 cadena += val.nombres + '</p>';
                             }
+
                             cadena += '</div>';
                             cadena += '</div>';
                             if ((index + 1) % 2 === 0)
                             {
-
+                                console.log(index % 2);
                                 cadena += '<div class="clearfix"></div>';
 
                             }
+
+                            $('#contenidoBuscAv').show();
                             $('#contenidoBuscAv').append(cadena);
 
                         });
 
-                    } else
-                    {
-                        $('#contenidoBuscAv').append('<div class="sans" ><br><p>No se encontró ningun resultado de <strong>' + data.Busquedageneral + '</strong></p></div>');
-                    }
-                    $('#registros').html('');
-                    $('#filtro').children().html();
 
 
-                    //console.log(data);
-                    console.log("num registros: " + data.numRegistros);
-                    console.log("filtro registros: " + data.filtroRegistros);
 
+                        $('#busquedaVacia').hide();
+
+                        numPages = data.pages;
+
+                        var cadenaPaginas = '<li class="anterior" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-left\"></i></li>';
+                        for (k = 1; k <= data.pages; k++) {
+                            if (k == paginaActual) {
+                                cadenaPaginas += '<li class="paginas" id="' + k + '" style=\"display: inline; padding: 7px;\"><strong>' + k + '</strong></li>';
+                            } else {
+                                cadenaPaginas += '<li class="paginas" id="' + k + '" style=\"display: inline; padding: 7px;\">' + k + '</li>';
+                            }
+
+                        }
+
+                        cadenaPaginas += '<li class="siguiente" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-right\"></i></li>';
+                        $('.numeroPaginas').html(cadenaPaginas);
+
+                    }//fin for
+                }//fin if
+                else {
+                    console.log('datosvacios');
+                    $('#paginas').html(cadenaPaginas);
+                    console.log(data.numRegistros);
+                    console.log(data.filtroRegistros);
                     $('.totalRegistros').html(data.numRegistros);
                     $('.filtroRegistros').html(data.filtroRegistros);
-
-                    if (data.data.length > 0) {
-                        $('#inicioInput').val((parseInt($('#inicioInput').val()) + 1));
-                        //console.log(data.inicio);
-                        //console.log(data.data.length);
-                        var cadena = "";
-                        for (i = 0; i < data.data.length; i++) {
-
-                            //var busquedaNombre = data.data[i].nombres +' ' + data.data[i].apellido;
-                            var busquedaCargo = "";
-
-                            var telefonos = "";
-                            var busquedaPregunta = data.data[i].pregunta;
-                            var busquedaRespuesta = data.data[i].respuesta;
-                            //var sitioWeb = data.data[i].sitioWeb;
-                            //var busquedaSitioWeb = "#busquedaSitioWeb"+(i+1);
-                            var busquedaDetalle = data.data[i].detalle;
-                            var busquedaFechapregunta = data.data[i].fechapregunta;
-
-                            console.log(data.data[i].id);
-
-
-                            if (busquedaPregunta == null) {
-                                busquedaPregunta = "";
-                            }
-
-                            if (busquedaRespuesta == null) {
-                                busquedaRespuesta = "";
-                            }
-
-                            if (busquedaDetalle == null) {
-                                busquedaDetalle = "-";
-                            }
-
-                            if (busquedaFechapregunta == null) {
-                                busquedaFechapregunta = "-";
-                            }
-
-
-                            $('#busquedaVacia').hide();
-
-                            //console.log(data.pages);
-                            numPages = data.pages;
-                            var cadenaPaginas = '<li class="anterior" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-left\"></i></li>';
-                            for (k = 1; k <= data.pages; k++) {
-                                if (k == paginaActual) {
-                                    cadenaPaginas += '<li class="paginas" id="' + k + '" style=\"display: inline; padding: 7px;\"><strong>' + k + '</strong></li>';
-                                } else {
-                                    cadenaPaginas += '<li class="paginas" id="' + k + '" style=\"display: inline; padding: 7px;\">' + k + '</li>';
-                                }
-
-                            }
-
-                            cadenaPaginas += '<li class="siguiente" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-right\"></i></li>';
-                            $('.numeroPaginas').html(cadenaPaginas);
-                            //$('#registros').html('prueba');
-                        }//fin for
-                    }//fin if
-                    else {
-                        console.log('datosvacios');
-                        $('#paginas').html(cadenaPaginas);
-                        console.log(data.numRegistros);
-                        console.log(data.filtroRegistros);
-                        $('.totalRegistros').html(data.numRegistros);
-                        $('.filtroRegistros').html(data.filtroRegistros);
-                        $('#registros').hide();
-                        $('#busquedaVacia').show();
-
-                    }
-                    console.log("pagina actual: " + data.paginaActual);
-                    console.log("Inicio de registro: " + data.inicioRegistro);
-                },
-                error: function (data) {
+                    $('#registros').hide();
+                    $('#busquedaVacia').show();
 
                 }
-            });
-        }//FIN IF VACIOOOOOOOOOOO
-        else {//CUANDO NO ESTA VACIO
+                console.log("pagina actual: " + data.paginaActual);
+                console.log("Inicio de registro: " + data.inicioRegistro);
+            },
+            error: function (data) {
 
-            $.ajax({
-                type: "post",
-                async: false,
-                dataType: 'json',
-                data: {inicio: inicio, longitud: longitud, paginaActual: paginaActual, busqueda: busqueda, busquedaDept: busquedaDept},
-                url: "{{path('busquedavacia_pregunta')}}",
-                success: function (data) {
-
-                    $('#registros').html('');
-                    $('#filtro').children().html();
-
-                    console.log("num registros: " + data.numRegistros);
-                    console.log("filtro registros: " + data.filtroRegistros);
-                    $('.totalRegistros').html(data.numRegistros);
-                    $('.filtroRegistros').html(data.filtroRegistros);
-
-                    if (data.data.length > 0) {
-
-                        $('#inicioInput').val((parseInt($('#inicioInput').val()) + 1));
-
-                        var cadena = "";
-                        for (i = 0; i < data.data.length; i++) {
-
-                            var busquedaCargo = "";
-
-                            var telefonos = "";
-                            var busquedaPregunta = data.data[i].pregunta;
-                            var busquedaRespuesta = data.data[i].respuesta;
-
-                            var busquedaDetalle = data.data[i].detalle;
-                            var busquedaFechapregunta = data.data[i].fechapregunta;
-
-                            if (busquedaPregunta == null) {
-                                busquedaPregunta = "";
-                            }
-
-                            if (busquedaRespuesta == null) {
-                                busquedaRespuesta = "";
-                            }
-
-                            if (busquedaDetalle == null) {
-                                busquedaDetalle = "-";
-                            }
-
-                            if (busquedaFechapregunta == null) {
-                                busquedaFechapregunta = "-";
-                            }
-
-                            $("#contenidoBusc").hide();
-                            $("#contenidoBuscAv").empty();
-
-                            $.each(data.data, function (index, val) {
-                                cadena = '<div class="col-md-6 col-xs-12" style="margin-top: 20px;">';
-                                cadena += '<div class="col-xs-3  col-md-3">';
-                                cadena += '<img src="{{ asset('') }}' + val.src + '" style="width: 100%;">';
-                                cadena += '</div>';
-                                cadena += '<div class="col-xs-9  col-md-9">';
-                                cadena += '<p class="sans" style="color: #888888; margin-bottom: 3px;"><a href="' + Routing.generate('respuestas_pregunta') + '/' + val.idPregunta + '" style="text-decoration: none; color: inherit;">' + val.pregunta.substr(0, 100) + '...</a></p>';
-                                cadena += '<p class="sans" style="font-size: 12px;">';
-                                cadena += 'Respondida ' + data.tiemposRespuesta[index] + ' por ';
-                                if (val.estado != '0')
-                                {
-                                    cadena += '<a href="' + Routing.generate('busquedaPerfil') + val.url + '">' + val.nombres + '</a></p>';
-                                } else
-                                {
-                                    cadena += val.nombres + '</p>';
-                                }
-
-                                cadena += '</div>';
-                                cadena += '</div>';
-                                if ((index + 1) % 2 === 0)
-                                {
-                                    console.log(index % 2);
-                                    cadena += '<div class="clearfix"></div>';
-
-                                }
-
-                                $('#contenidoBuscAv').show();
-                                $('#contenidoBuscAv').append(cadena);
-
-                            });
+            }
+        });
 
 
-
-
-                            $('#busquedaVacia').hide();
-
-                            numPages = data.pages;
-
-                            var cadenaPaginas = '<li class="anterior" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-left\"></i></li>';
-                            for (k = 1; k <= data.pages; k++) {
-                                if (k == paginaActual) {
-                                    cadenaPaginas += '<li class="paginas" id="' + k + '" style=\"display: inline; padding: 7px;\"><strong>' + k + '</strong></li>';
-                                } else {
-                                    cadenaPaginas += '<li class="paginas" id="' + k + '" style=\"display: inline; padding: 7px;\">' + k + '</li>';
-                                }
-
-                            }
-
-                            cadenaPaginas += '<li class="siguiente" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-right\"></i></li>';
-                            $('.numeroPaginas').html(cadenaPaginas);
-
-                        }//fin for
-                    }//fin if
-                    else {
-                        console.log('datosvacios');
-                        $('#paginas').html(cadenaPaginas);
-                        console.log(data.numRegistros);
-                        console.log(data.filtroRegistros);
-                        $('.totalRegistros').html(data.numRegistros);
-                        $('.filtroRegistros').html(data.filtroRegistros);
-                        $('#registros').hide();
-                        $('#busquedaVacia').show();
-
-                    }
-                    console.log("pagina actual: " + data.paginaActual);
-                    console.log("Inicio de registro: " + data.inicioRegistro);
-                },
-                error: function (data) {
-
-                }
-            });
-
-
-        }//FIN DEL ELSE
-    }
+    }//FIN DEL ELSE
+}
 
 </script>
 

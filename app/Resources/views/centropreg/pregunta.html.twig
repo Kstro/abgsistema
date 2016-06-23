@@ -6,14 +6,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Directorio de Abogados de El Salvador | Primero y unico directorio de abogados de El Salvador | Abogados.com.sv</title>
         <meta name="robots" content="noindex">
-
         <!-- Stylesheet de Bootstrap -->
-
         <!-- Stylesheet Personales -->
         <link href="src/css/style.css" rel="stylesheet">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
-
+    <link href="{{asset('Resources/src/css/menu_movil.css')}}" rel="stylesheet">
         <!-- Favicon (Icono Pequeño) -->
         <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
         <link rel="icon" href="favicon.png" type="image/x-icon">
@@ -28,7 +26,7 @@
 
         <!-- Navbar -->
     {% embed ':Layout:head.html.twig' %}{% endembed %}
-
+    <div id="page-content">
     <div class="container" style="padding-bottom: 70px;">
         <div class="row">
             <div class="col-md-9">
@@ -99,14 +97,17 @@
             </div>
         </div>
     </div>
-
+              {% embed ':Layout:footer.html.twig' %}{% endembed %}
+   </div>
     <!-- Navbar -->
-  {% embed ':Layout:footer.html.twig' %}{% endembed %}
+
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
    <script src="{{asset('Resources/src/js/bootstrap.js')}}"></script>
+   <script src="{{asset('Resources/src/js/menu_movil.js')}}"></script>
+     <script src="{{ asset('Resources/src/js/jquery-2.0.3.min.js')}}"></script>
     <script type="text/javascript">
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()

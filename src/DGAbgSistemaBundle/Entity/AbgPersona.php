@@ -101,7 +101,7 @@ class AbgPersona
     /**
      * @var boolean
      *
-     * @ORM\Column(name="estado", type="boolean", nullable=false)
+     * @ORM\Column(name="estado", type="integer", nullable=false)
      */
     private $estado;
 
@@ -428,7 +428,7 @@ class AbgPersona
     /**
      * Set estado
      *
-     * @param boolean $estado
+     * @param integer $estado
      * @return AbgPersona
      */
     public function setEstado($estado)

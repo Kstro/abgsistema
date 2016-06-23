@@ -22,25 +22,34 @@
                 txtEditEmpresa: {required: 'Requerido!'}
             }
         });
+var fecha =new   Date();
+var dia = fecha.getDate();
+var mes = fecha.getMonth();
+var anho = fecha.getFullYear();
 
+    if (mes<10){
+        mes=mes+1;
+    }
+
+
+ var fechaFinal = dia+"-"+"0"+mes+"-"+anho;
         $('.txtFechaIni').Zebra_DatePicker({
             months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
             days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
             format: 'd-m-Y',
-            direction: false,
-            show_clear_date: false,
-            show_select_today: "Hoy",
+            direction: -1,
+        // show_clear_date: true,
+       //     show_select_today: "Hoy",
             pair: $('.txtFechaFin'),
-            show_icon: false,
+           show_icon: false
         });
         $('.txtFechaFin').Zebra_DatePicker({
             months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
             days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
             format: 'd-m-Y',
-            // direction:false,
-            show_clear_date: false,
-            show_select_today: "Hoy",
-            show_icon: false,
+           direction:[true,fechaFinal],
+            show_icon: false
+         
         });
         
         $("#cancel").click(function () {
@@ -58,6 +67,7 @@
             $('#fechafin').show();
         }
     });
+
 
     function CambioEmp()
     {

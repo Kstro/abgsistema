@@ -5,6 +5,7 @@
     <script src = "{{ asset('Resources/js/empresa/function.js') }}"  type = "text/javascript" ></script>    
     <script src = "{{ asset('Resources/Empresa/globalfunction.js') }}"  type = "text/javascript" ></script> 
     <!-- Bootstrap 3.3.5 -->
+    <link href="{{asset('Resources/src/css/style.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('Resources/AdminLTE-2.3.0/bootstrap/css/bootstrap.min.css')}}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -12,7 +13,7 @@
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css')}}">
-    <!-- iCheck -->
+
     <link rel="stylesheet" href="{{asset('Resources/AdminLTE-2.3.0/plugins/iCheck/square/blue.css')}}">
     <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
       <link href="{{asset('Resources/src/css/menu_movil.css')}}" rel="stylesheet">
@@ -27,7 +28,7 @@
 {% endblock %} 
 {% block cuerpo %}
     <script>
-        
+        /*
         window.fbAsyncInit = function () {
             FB.init({
                 appId: '254758488249381',
@@ -36,7 +37,7 @@
                 xfbml: true, // parse social plugins on this page
                 version: 'v2.2' // use version 2.2
             });
-
+*/
             FB.getLoginStatus(function (response) {
                 if (response.status === 'connected') {
                     FB.api('/me','get', {"fields": "email,first_name,last_name,id,gender"}, function (response)
@@ -142,12 +143,12 @@
                 
     </script>
      <div id="page-content">
-         <div class="container" style=" margin-bottom: 20px;">
-    <div class="login-box">
-        <div class="login-logo">
-            <b>Login</b>
+         <div class="container">
+    <div class="login-box"  style="margin-top: 70px;box-shadow: 3px 3px 2px #888888; border: 1px solid #e0e0e0;">
+        <div class="login-logo " style=" margin-top: 20px;">
+            <p class=" sans">Login</p>
         </div><!-- /.login-logo -->
-        <div class="login-box-body" style="box-shadow: 3px 3px 2px #888888;">
+        <div class="login-box-body" >
             <p class="login-box-msg">Inicia sesión para acceder al Directorio</p>
             <form action="{% block form_action %}{{ path("abogado_security_check") }}{% endblock %}" method="post" id="frmLogin">  
 
@@ -172,15 +173,15 @@
                     </div><!-- /.col -->
                 </div>
             </form>
+                    {#
             <div class="social-auth-links text-center">
                 <p>- OR -</p>
-                {#  <fb:login-button scope="public_profile,email" onClick="checkLoginState();" class=" btn-flat" >Sign in using Facebook
-                  </fb:login-button>#}
+              
                 <div class="fb-login-button btn-flat" style=" width:220px;" data-max-rows="2" data-size="large" data-show-faces="false" data-auto-logout-link="false">Iniciar sesión </div>
 	
             </div><!-- /.social-auth-links -->
 
-
+#}
 
             {% block alert -%}
                 {% if error %}

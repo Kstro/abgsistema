@@ -623,7 +623,7 @@ function addExperiencia()
     {
         $('#ScambioEmpresa').select2();
     }
-    console.log(persaEmpresa);
+  
 
     if ($("#txtpuesto").val() !== "" && $("#txthubicacion").val() !== "" && $("#txtFechaIni").val() !== "" && ($("#txtEditEmpresa").val() !== "" || $("#ScambioEmpresa").val() !==null))
     {
@@ -701,6 +701,10 @@ if(persaEmpresa==0)
                                     datos += '</script></p>';
                                     datos += '</div>';
                                     datos += '</div>';
+                                      if(val.fechaFin==null)
+                                    {
+                                    $('#experienciaActual').text(val.empresa);
+                                }
                                 }
                                 );
                                 $("#consultas").append(datos);
@@ -789,11 +793,11 @@ function addEdu() {
                                     datos += '</script></div>';
                                     datos += '</div>';
                                     datos += '</div>';
-                                    console.log(val.anio);
+                                   
                                     if(val.anio=="")
                                     {
                                     $('#estudioActual').text(val.institucion);
-                                    console.log(val.institucion);
+                                  
                                 }
                                 });
                                 $("#consultaEducacion").append(datos);
@@ -858,7 +862,8 @@ function removeEdu(val)
 }
 function addOrganizacion() {
 
-    if ($("#txtOrg").val() !== "" && $("#txtPuestoOrg").val() !== "" && $("#txtFechIniOrg").val() !== "")
+console.log($("#txtFechFinOrg").val()+" "+$("#txtFechIniOrg").val());
+    if ($("#txtOrg").val() !== "" && $("#txtPuestoOrg").val() !== "" && $("#txtFechIniOrg").val() !== "" )
     {
 
         var datos;
