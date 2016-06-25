@@ -91,7 +91,7 @@
                                     </div>
                                     <div class="col-xs-9  col-md-9">
                                         <p class="sans" style="color: #888888; margin-bottom: 3px;">{{datos.pregunta| slice(0,100)~'...'}}</p>
-                                        <p class="sans" style="font-size: 12px;">Respondida {{tiemposRespuesta[key]}} por {%if(datos.estado !=0)%}<a href="{{path('busquedaPerfil', {url:datos.url})}}">{{datos.nombres}}</a>{%else%}{{datos.nombres}}{%endif%}</p>
+                                        <p class="sans" style="font-size: 12px;">Respondida {{tiemposRespuesta[key]}} por {%if(datos.estado ==1)%}<a href="{{path('busquedaPerfil', {url:datos.url})}}">{{datos.nombres}}</a>{%else%}{{datos.nombres}}{%endif%}</p>
                                     </div>
                                 </div>
                                 {% if loop.index is divisibleby(2) %}
@@ -172,7 +172,7 @@
                                     <img src="{{ asset('') }}{{datos.src}}" style="width: 100%;" >
                                 </div>
                                 <div class="col-sm-8 col-xs-9" style="padding-left: 0px;">
-                                    <p class="sans" style="margin-bottom: 0px; font-size: 13px;">{%if(datos.estado !=0)%}<a href="{{path('busquedaPerfil', {url:datos.url})}}">{{datos.nombres}}</a>{%else%}{{datos.nombres}}{%endif%}</p>
+                                    <p class="sans" style="margin-bottom: 0px; font-size: 13px;">{%if(datos.estado ==1)%}<a href="{{path('busquedaPerfil', {url:datos.url})}}">{{datos.nombres}}</a>{%else%}{{datos.nombres}}{%endif%}</p>
 
                                     <p class="sans" style="margin-bottom: 0px; font-size: 11px;">{{datos.totalrespuestas}} Respuestas</p>
                                 </div>
@@ -367,7 +367,7 @@ function buscar(busqueda, inicio, longitud, paginaActual, busquedaDept) {
                         cadena += '<p class="sans" style="color: #888888; margin-bottom: 3px;"><a href="' + Routing.generate('respuestas_pregunta') + '/' + val.idPregunta + '" style="text-decoration: none; color: inherit;">' + val.pregunta.substr(0, 100) + '...</a></p>';
                         cadena += '<p class="sans" style="font-size: 12px;">';
                         cadena += 'Respondida ' + data.tiemposRespuesta[index] + ' por  ';
-                        if (val.estado != '0')
+                        if (val.estado == 1)
                         {
                             cadena += '<a href="' + Routing.generate('busquedaPerfil') + val.url + '">' + val.nombres + '</a></p>';
                         } else
@@ -539,7 +539,7 @@ function buscar(busqueda, inicio, longitud, paginaActual, busquedaDept) {
                             cadena += '<p class="sans" style="color: #888888; margin-bottom: 3px;"><a href="' + Routing.generate('respuestas_pregunta') + '/' + val.idPregunta + '" style="text-decoration: none; color: inherit;">' + val.pregunta.substr(0, 100) + '...</a></p>';
                             cadena += '<p class="sans" style="font-size: 12px;">';
                             cadena += 'Respondida ' + data.tiemposRespuesta[index] + ' por ';
-                            if (val.estado != '0')
+                            if (val.estado == 1)
                             {
                                 cadena += '<a href="' + Routing.generate('busquedaPerfil') + val.url + '">' + val.nombres + '</a></p>';
                             } else

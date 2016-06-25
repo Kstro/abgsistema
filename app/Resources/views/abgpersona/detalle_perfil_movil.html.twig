@@ -1,0 +1,41 @@
+<link href="{{asset('Resources/src/css/movilcss.css')}}" rel="stylesheet">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+<!-- Favicon (Icono Pequeño) -->
+<link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+<link rel="icon" href="favicon.png" type="image/x-icon">
+<div id="page-content">
+    <!-- PERFIL MOVIL -->
+    <div class="container hidden-md hidden-lg " style="padding-bottom: 15px; " id="contenido-inicio">
+        <button style="padding: 5px; font-size: 13px; margin-top: 60px; text-align: center; width: 100%; border: 1px solid #c3c3c3; color: #fff; background-color: #263345;" class="sans" onclick="javascript:history.go(-1)">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <strong>Regresar atras</strong>
+        </button>
+        <!-- Educacion -->
+        {%if Edu|default is not empty %}
+            <div class="bloque-main" style="padding: 10px !important;">
+                <p style="font-size: 11px; margin-bottom: 0px;" class="sans text-uppercase"><strong>educacion</strong></p>
+                {% for datos in Edu %}
+                    <div class="row" style="margin-top: 15px;">
+                        <div class="col-xs-2" style="padding-right: 8px;">
+                        </div>
+                        <div class="col-xs-10" style="padding-left: 5px">
+                            <p class="sans" style="font-size: 12px; margin-bottom: 0px;">{{datos.institucion}}</p>
+                            <p class="sans" style="font-size: 11px; color: #777777; margin-bottom: 0px;">{{datos.disciplina~' | '~datos.titulo}}</p>
+                            <p class="sans" style="font-size: 11px; margin-bottom: 0px;">{{datos.anioIni}} - {%if datos.anio|default is not empty %}{{datos.anio}}{%else%}Actualmente{%endif%}</p>
+                        </div>
+                    </div> <!-- end row -->
+                {%endfor%}
+                <a href="#"><p class="sans text-center" style="font-size: 11px; margin-top: 5px; margin-bottom: 0px;"><em>Ver mas</em></p></a>
+            </div>
+        {%endif%}
+        <div class=" clearfix" style=" height: 10px;"></div>
+    </div>  <!-- Fin de hiddenmd hiddenlg -->
+    <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        })
+    </script>
+</div>
+
+
+

@@ -27,7 +27,7 @@
         </div>
     </div>
 {% endif %}
-<div class="container-fluid hidden-xs" style="height: 70px; background-color: #f6f6f6; border-bottom: 1px solid #ededed;">
+<div class="container-fluid hidden-xs hidden-sm" style=" height:70px; background-color: #f6f6f6; border-bottom: 1px solid #ededed;">
     <div class="container">
         <div class="row">
             <div class="col-md-3">
@@ -40,14 +40,14 @@
                         <button onclick="myFunction()" class="dropbtn text-uppercase">Especialidades <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
                         <div id="myDropdown" class="dropdown-content">
 
-                            <a href="{{ path('directorio_index') }}?busqueda=Derecho familiar"  style="line-height: 20px; font-size: 13px;" class="text-capitalize">Derecho de Familia</a>
+                            <a href="{{ path('directorio_index') }}?busqueda=Derecho familiar"  style="line-height: 20px; font-size: 13px;" class="text-capitalize">Derecho de familia</a>
                             <a href="{{ path('directorio_index') }}?busqueda=Derecho civil" style="line-height: 20px; font-size: 13px;" class="text-capitalize">Derecho Civil</a>
                             <a href="{{ path('directorio_index') }}?busqueda=Derecho corporativo" style="line-height: 20px; font-size: 13px;" class="text-capitalize">Derecho Corporativo</a>
                             <a href="{{ path('directorio_index') }}?busqueda=Derecho mercantil" style="line-height: 20px; font-size: 13px;" class="text-capitalize">Derecho Mercantil</a>
                             <a href="{{ path('directorio_index') }}?busqueda=Derecho laboral" style="line-height: 20px; font-size: 13px;" class="text-capitalize">Derecho Laboral</a>
 
                             <a href="{{ path('directorio_index') }}?busqueda=Derecho administrativo" style="line-height: 20px; font-size: 13px;" class="text-capitalize">Derecho Administrativo</a>
-                            <a href="{{ path('directorio_index') }}?busqueda=Derecho administrativo" style="line-height: 20px; font-size: 13px;" class="text-capitalize">Derecho Contencioso Adminsitrativo</a>
+                            <a href="{{ path('directorio_index') }}?busqueda=Derecho administrativo" style="line-height: 20px; font-size: 13px;" class="text-capitalize">Derecho Contencioso AdminiStrativo</a>
 
                             <a href="{{ path('directorio_index') }}?busqueda=Derecho migratorio" style="line-height: 20px; font-size: 13px;" class="text-capitalize">Derecho Migratorio</a>
                             <a href="{{ path('directorio_index') }}?busqueda=Derecho constitucional" style="line-height: 20px; font-size: 13px;" class="text-capitalize">Derecho Constitucional</a>
@@ -67,16 +67,16 @@
     </div>
 </div>         
 
-<div class="navbar navbar-default navbar-fixed-top hidden-sm hidden-lg hidden-md" role="navigation" id="slide-nav">
-    <div class="container">
-        <div class="navbar-header">
+<div class="navbar navbar-default navbar-fixed-top  hidden-lg hidden-md no-margin no-padding" role="navigation" id="slide-nav" >
+    <div class="container " >
+        <div class="navbar-header" >
             <a class="navbar-toggle"> 
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-            <a class="navbar-brand logo" href="{{ path('index')}}"><span class="logo-lg"><img src="{{ asset('Resources/src/img/logo2.png')}}" style="width:220px; margin-top: -17px;" ></span></a>
+            <a class="navbar-brand logo" href="{{ path('index')}}"><span class="logo-lg"><img src="{{ asset('Resources/src/img/logo2.png')}}" style="width:220px; margin-top: -17px;"  class="img-responsive" alt="Imagen responsive"></span></a>
         </div>
         <div id="slidemenu" >
        {#     <form class="navbar-form navbar-right" >
@@ -99,7 +99,7 @@
                         <li style=" padding: 2px;"><a href="{{ path('directorio_index') }}?busqueda=Derecho mercantil" style="line-height: 20px; font-size: 13px;font-weight: bold;" class="">Derecho mercantil</a></li>
                         <li style=" padding: 2px;"><a href="{{ path('directorio_index') }}?busqueda=Derecho laboral" style="line-height: 20px; font-size: 13px;font-weight: bold;" class="">Derecho laboral</a></li>
                         <li style=" padding: 2px;"><a href="{{ path('directorio_index') }}?busqueda=Derecho administrativo" style="line-height: 20px; font-size: 13px;font-weight: bold;" class="">Derecho administrativo</a></li>
-                        <li style=" padding: 2px;"><a href="{{ path('directorio_index') }}?busqueda=Derecho administrativo" style="line-height: 20px; font-size: 13px;font-weight: bold;" class="">Derecho contencioso adminsitrativo</a></li>
+                        <li style=" padding: 2px;"><a href="{{ path('directorio_index') }}?busqueda=Derecho administrativo" style="line-height: 20px; font-size: 13px;font-weight: bold;" class="">Derecho contencioso administrativo</a></li>
                         <li style=" padding: 2px;"><a href="{{ path('directorio_index') }}?busqueda=Derecho migratorio" style="line-height: 20px; font-size: 13px;font-weight: bold;" class="">Derecho migratorio</a></li>
                         <li style=" padding: 2px;"><a href="{{ path('directorio_index') }}?busqueda=Derecho constitucional" style="line-height: 20px; font-size: 13px;font-weight: bold;" class="">Derecho constitucional</a></li>
                         <li style=" padding: 2px;"><a href="{{ path('directorio_index') }}?busqueda=Derecho aduanero" style="line-height: 20px; font-size: 13px;font-weight: bold;" class="">Derecho aduanero</a></li>

@@ -13,6 +13,9 @@ services:
      pregunta_respuesta:
         class: DGAbgSistemaBundle\Service\EmailResService
         arguments: ["@mailer",""]
+     new_usuario:
+        class: DGAbgSistemaBundle\Correo\newUserService
+        arguments: ["@mailer",""]
 #  service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]

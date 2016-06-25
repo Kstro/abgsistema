@@ -178,7 +178,7 @@
                                     </div>
                                     <div class="col-xs-9 col-sm-9">
                                         <p class="sans" style="color: #888888; margin-bottom: 3px;"><a href="{{path('respuestas_pregunta', {id:datos.idPregunta})}}" style="text-decoration: none; color: inherit;">{{datos.pregunta| slice(0,100)~'...'}}</a></p>
-                                        <p class="sans" style="font-size: 12px;">Respondida {{tiemposRespuesta[key]}} por {%if(datos.estado !=0)%}<a href="{{path('busquedaPerfil', {url:datos.url})}}">{{datos.nombres}}</a>{%else%}{{datos.nombres}}{%endif%}</p>
+                                        <p class="sans" style="font-size: 12px;">Respondida {{tiemposRespuesta[key]}} por {%if(datos.estado ==1)%}<a href="{{path('busquedaPerfil', {url:datos.url})}}">{{datos.nombres}}</a>{%else%}{{datos.nombres}}{%endif%}</p>
                                     </div>
                                 </div>
                                 {% if loop.index is divisibleby(2) %}

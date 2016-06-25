@@ -368,6 +368,24 @@ class CtlEmpresaController extends Controller {
 
                 $user = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($correoUsuario);
 
+                /*
+                         $this->get('new_usuario')->sendEmail($correoUsuario, "", "", "", "
+                    <table style=\"width: 540px; margin: 0 auto;\">
+                      <tr>
+                        <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
+                        <center>
+                          <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
+                        </center>
+                        <p>Bienvenido al directorio mas grande de abogados de El Salvador</p>
+                         <p>Hola " . $nombreAbogado." ". $apellidoAbogado .", tu pregunta ha sido respondida</p>
+                            <p>Haz click en el enlace para verificar tu corro</p>
+                            <a href='#'>Clik aqui para ver la respuesta</a> 
+                        </td>
+                        <td class=\"expander\"></td>
+                      </tr>
+                    </table>
+                ");
+               */
                 //Ingreso de una persona
 
                 $codigo = $this->generarIdClienteAbogado();
@@ -502,7 +520,7 @@ class CtlEmpresaController extends Controller {
                 $abgFotoE->setAbgPersona(null);
                 $abgFotoE->setCtlEmpresa($idEmpresas);
                 $abgFotoE->setTipoFoto(1);
-                $abgFotoE->setSrc('Photos/defecto/defecto.png');
+                $abgFotoE->setSrc('Photos/defecto/empresa.png');
                 $abgFotoE->setFechaRegistro(null);
                 $abgFotoE->setFechaExpiracion(null);
                 $abgFotoE->setEstado(1);
@@ -523,8 +541,24 @@ class CtlEmpresaController extends Controller {
                 $em->close();
                 $data['username'] = $ctlUsuario->getUsername();
                 $data['estado'] = true;
-                 
-
+            /*
+                $this->get('bienvenido')->sendEmail($correoUsuario, "", "", "", "
+                    <table style=\"width: 540px; margin: 0 auto;\">
+                      <tr>
+                        <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
+                        <center>
+                          <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
+                        </center>
+                        <p>Bienvenido al directorio mas grande de abogados de El Salvador</p>
+                         <p>Hola " . $nombreAbogado." ". $apellidoAbogado .", tu pregunta ha sido respondida</p>
+                            <p>Haz click en el enlace para verificar tu corro</p>
+                            <a href='#'>Clik aqui para ver la respuesta</a> 
+                        </td>
+                        <td class=\"expander\"></td>
+                      </tr>
+                    </table>
+                ");
+*/
                 return new Response(json_encode($data));
             } else {
                 $data['estado'] = false;
@@ -562,8 +596,8 @@ class CtlEmpresaController extends Controller {
                         ->setParameters(array('correo' => $correo))
                         ->getResult();
 
-                $dqlPer = "SELECT COUNT(per.id) AS resp FROM DGAbgSistemaBundle:AbgPersona per WHERE"
-                        . " per.correoelectronico = :correo ";
+                $dqlPer = "SELECT COUNT(per.id) AS resp FROM DGAbgSistemaBundle:CtlUsuario per WHERE"
+                        . " per.username = :correo ";
                 $resultadoPersona = $em->createQuery($dqlPer)
                         ->setParameters(array('correo' => $correo))
                         ->getResult();
@@ -591,8 +625,8 @@ class CtlEmpresaController extends Controller {
                             ->setParameters(array('correo' => $correo))
                             ->getResult();
 
-                    $dqlPer = "SELECT COUNT(per.id) AS resp FROM DGAbgSistemaBundle:AbgPersona per WHERE"
-                            . " per.correoelectronico = :correo ";
+                    $dqlPer = "SELECT COUNT(per.id) AS resp FROM DGAbgSistemaBundle:CtlUsuario per WHERE"
+                            . " per.username = :correo ";
                     $resultadoPersona = $em->createQuery($dqlPer)
                             ->setParameters(array('correo' => $correo))
                             ->getResult();
@@ -1808,8 +1842,10 @@ class CtlEmpresaController extends Controller {
                 }
             }
         } else {
-            var_dump("Lo sentimos mucho esa url no existe");
+            var_dump("Lo sentimos mucho esa url no existe yyyy");
         }
+        
+        
     }
 
     private function busquedaPublicidad($posicion) {

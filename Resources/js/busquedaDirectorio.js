@@ -1,11 +1,4 @@
 
-
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 $(document).ready(function () {
     $('#searchBox').focus();
     var url = Routing.generate("busqueda_ab_input");
@@ -19,23 +12,14 @@ $(document).ready(function () {
     $(document).on('click', '#buscar', function () {
         var busqueda = $('#search').val();
         var ciudad = $('#searchInputDept').val();
-
-
         window.location = Routing.generate("directorio_index") + "?busqueda=" + busqueda + "&ciu=" + ciudad;
     });
-
-
     $('#searchBox').autocomplete({
         serviceUrl: url,
     });
-
-
     $('#searchInputDept').autocomplete({
         serviceUrl: urlCiudad,
     });
-
-
-
     $(document).on('keyup', '#searchBox, #searchInputDept', function (event) {
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if (keycode == '13') {
@@ -45,7 +29,7 @@ $(document).ready(function () {
             window.location = Routing.generate("directorio_index") + "?busqueda=" + busqueda + "&ciu=" + ciu;
         }
     });
-    
+
     $(document).on('input', '#searchBox, #searchInputDept', function (event) {
         $('#randomDir').val('');
     });

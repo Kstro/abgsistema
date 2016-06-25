@@ -99,7 +99,12 @@ class CtlUsuario implements AdvancedUserInterface, \Serializable
     
     private $isEnabled;// = false; 
     
-    
+        /**
+     * @var boolean
+     *
+     * @ORM\Column(name="estado_correo", type="integer", nullable=false)
+     */
+    private $estadoCorreo;
     
     /**
      * Constructor
@@ -119,7 +124,28 @@ class CtlUsuario implements AdvancedUserInterface, \Serializable
     {
         return $this->id;
     }
+      /**
+     * Get estado_correo
+     *
+     * @return integer 
+     */
+    public function getEstadoCorreo()
+    {
+        return $this->estadoCorreo;
+    }
 
+    /**
+     * Set idFacebook
+     *
+     * @param integer $estadoCorreo
+     * @return CtlUsuario
+     */
+    public function setEstadoCorreo($estadoCorreo)
+    {
+        $this->estadoCorreo= $estadoCorreo;
+
+        return $this;
+    }
     
         /**
      * Get idFacebook
