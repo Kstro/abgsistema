@@ -20,14 +20,18 @@ $(document).ready(function () {
     $('#searchInputDept').autocomplete({
         serviceUrl: urlCiudad,
     });
-    $(document).on('keyup', '#searchBox, #searchInputDept', function (event) {
+
+
+
+    $(document).on('keyup', '#searchBox, #searchBoxMov, #searchInputDept', function (event) {
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if (keycode == '13') {
             var busqueda = $('#searchBox').val();
             var ciu = $('#searchInputDept').val();
-
-            window.location = Routing.generate("directorio_index") + "?busqueda=" + busqueda + "&ciu=" + ciu;
+            buscar(busqueda, inicio, longitud, paginaActual,orderBy);
+            //window.location = Routing.generate("directorio_index") + "?busqueda=" + busqueda + "&ciu=" + ciu;
         }
+        return false;
     });
 
     $(document).on('input', '#searchBox, #searchInputDept', function (event) {

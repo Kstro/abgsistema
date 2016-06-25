@@ -11,6 +11,7 @@
 
         <link href="{{asset('Resources/src/css/style.css')}}" rel="stylesheet">
         <link href="{{asset('Resources/src/css/menu_movil.css')}}" rel="stylesheet">
+        <link href="{{asset('Resources/src/css/movilcss.css')}}" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
 
 
@@ -28,72 +29,116 @@
         </style>
     </head>
     <body>
-    {% embed ':Layout:head.html.twig' %}{% endembed %}
-  
-            
-    <div id="page-content">
+    <div id="encabezado" class="hidden-xs">
+        {% embed ':Layout:head.html.twig' %}{% endembed %}
+    </div>
+    
+    <div id="page-content ">
        
         <div class="container" style=" margin-bottom: 20px;">
+            
+            
+            
+            
+            <!-- Buscador -->
+		<div class="row hidden-md hidden-lg" style="margin-bottom:10px;">
+                    <div class="col-xs-8" style="padding-right: 2px; margin-bottom: ">
+                            <input value="{{busqueda|trim}}" id="searchBoxMov" class="sans" placeholder="Realiza tu busqueda..." style="font-size: 13px; padding-left: 4px; margin-top: 10px; border: 1px solid #c3c3c3; border-radius: 2px; width: 100%; height: 30px;">				
+                    </div>
+                    <div class="col-xs-2" style="padding-left: 2px; padding-right: 2px;">
+                            <button id="searchButton" class="sans" style="font-size: 13px; margin-top: 10px; border: 1px solid #c3c3c3; border-radius: 2px; height: 30px; width: 100%;">
+                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                            </button>
+                    </div>
+                    <div class="col-xs-2" style="padding-left: 2px;">
+                            <button class="sans" style="font-size: 13px; margin-top: 10px; border: 1px solid #c3c3c3; border-radius: 2px; height: 30px; width: 100%;">
+                                    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                            </button>
+                    </div>
+		</div>
+            
+            
+            
+            
             <div class="row" id="registrosBusqueda">
                 <!-- LADO IZQUIERDO -->
                 <div class="col-md-9">
-                   <div class="bloque-main pos1 hidden-xs " style="padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px; ">
+                   <div class="bloque-main pos1 hidden-xs hidden-sm" style="padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px; ">
                         {% if prom1 is null%}
                             <img src="{{asset('Resources/src/img/banner1.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia">
                         {% else %}
                             <img src="{{asset('')}}{{ prom1[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia">
                         {% endif %}
                     </div>
-                    <div class="bloque-main hidden-lg hidden-md hidden-sm" style=" margin-top: 70px; padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px; ">
+                    <div class="bloque-main hidden-lg hidden-md hidden-sm hidden-xs" style=" margin-top: 70px; padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px; ">
                         {% if prom1 is null%}
                             <img src="{{asset('Resources/src/img/banner1.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia">
                         {% else %}
                             <img src="{{asset('')}}{{ prom1[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia">
                         {% endif %}
                     </div>
-                    <form class="form-inline">
+                    <form class="form-inline hidden-xs hidden-md hidden-sm">
                         <div class="item-directorio" style="margin-top: 5px !important; padding: 10px;">
                             <div class="row no-padding" >
-                                <div class="col-md-7 col-xs-5" style="padding-right: 5px;">
+                                <div class="col-md-7 col-xs-8" style="padding-right: 5px;">
                                     <input value="{{busqueda|trim}}" id="searchBox" maxlength="140" {#class="searchbox"#} style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; text-decoration: none;" placeholder="Buscar por asunto legal o nombre de abogado/firma" oninvalid="this.setCustomValidity('Porfavor ingrese el nombre de un Abogado, Bufete, Firma o Problema Legal')" > </input>
                                     <input type="hidden" id="randomDir" value="">
                                 </div>
-                                <div class="col-md-3  col-xs-5" style=" padding-left: 5px;padding-right: 5px;">
-                                    <input class="search " value="{{ciudad}}" id="searchInputDept" name="txtlugar" style="border: 1px solid #d2d6de; border-radius: 0;  height: 34px; width: 100%; text-decoration: none;" placeholder="Cuidad, Dept">
+                                <div class="col-md-3 hidden-xs  col-xs-5" style=" padding-left: 5px;padding-right: 5px;">
+                                    <input class="search" value="{{ciudad}}" id="searchInputDept" name="txtlugar" style="border: 1px solid #d2d6de; border-radius: 0;  height: 34px; width: 100%; text-decoration: none;" placeholder="Cuidad, Dept">
                                 </div>
-                                <div class="col-md-2  col-xs-2" style="padding-left: 5px;">
+                                <div class="col-md-2 hidden-xs col-xs-2" style="padding-left: 5px;">
                                     <button id="searchButton" type="submit" class="searchbotondir input-group btn btn-xs" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; background-color: #F42; color: #fff; font-weight: 600;">Buscar</button>
+                                </div>
+                                <div class="col-xs-2 hidden-sm hidden-md hidden-lg" style="padding-left: 5px;">
+                                    <button id="searchButtonMov" type="submit" class="searchbotondir input-group btn btn-xs" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; background-color: #F42; color: #fff; font-weight: 600;">Buscar</button>
                                 </div>
                             </div>
                         </div>
                         <input type="hidden" value="0" id="inicioInput">
                     </form>
-                    <div class="item-directorio-nexo" style="height: 40px;">
-                        <p class="pull-left" id="mesaje_busqueda" style="font-size: 12px; margin-bottom: 0px; padding: 10px; display: none;">
+                    <div class="item-directorio-nexo" style="height: 40px; border:0px solid #FFF;">
+                        <p class="pull-left col-xs-6" id="mesaje_busqueda" style="font-size: 12px; margin-bottom: 0px; padding: 10px; display: none;">
                             Mostrando los resultado para '<label id="filtro"></label>'.
                         </p>
-                        <p class="numRegistros pull-right" style="font-size: 12px; margin-bottom: 0px; padding: 10px;">
+                        <p class="numRegistros pull-right col-xs-6" style="font-size: 12px; margin-bottom: 0px; padding: 10px; text-align: right">
                             Mostrando <label class="filtroRegistros"></label> resultados de <label class="totalRegistros"></label>
                         </p>
                     </div>
                     <!-- item 1 -->
 
-                    <div id="registros">
-
+                    <div id="registros" class="xs">
+                        
                     </div>
-                    <div id="busquedaVacia" style="display:none;border-bottom-color: #000">
+                    <!-- Paginado -->
+                    <div class="row hidden-lg hidden-md hidden-sm">
+                            <div class="col-xs-2" style="padding-right: 2px;">
+                                    <button class="sans anteriorMov" style="font-size: 13px; margin-top: 10px; border: 1px solid #c3c3c3; border-radius: 2px; height: 30px; width: 100%;">
+                                            <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+                                    </button>
+                            </div>
+                            <div class="col-xs-8" style="padding-right: 2px;">
+                                <p class="sans text-center numeroPaginas" style="margin-top: 15px;">1 .. 4, <strong>6</strong> , 7 .. 8</p>
+                            </div>
+                            <div class="col-xs-2" style="padding-left: 2px;">
+                                    <button class="sans siguienteMov" style="font-size: 13px; margin-top: 10px; border: 1px solid #c3c3c3; border-radius: 2px; height: 30px; width: 100%;">
+                                            <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+                                    </button>
+                            </div>
+                    </div>
+                    {#<div id="busquedaVacia" style="display:none;border-bottom-color: #000">
                         No se encontraron registros...
-                    </div>
+                    </div>#}
                     <!-- Fin de Items -->
                     <!-- PAGINACION -->
-                    <div class="item-directorio-nexo" >
+                    <div class="item-directorio-nexo hidden-xs" >
                         <div class="row">
-                            <div class="col-md-7" style="padding-top: 9px;" >
-                                <ul class="numeroPaginas" style="list-style: none; display: inline; padding-left: 10px !important; color: #777777;">
+                            <div class="col-md-7 col-xs-7" style="padding-top: 9px;" >
+                                <ul class="numeroPaginas hidden-xs" style="list-style: none; display: inline; padding-left: 10px !important; color: #777777;">
 
                                 </ul>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-5 hidden-xs">
                                 <p class="numRegistros text-right" style="font-size: 12px; margin-bottom: 0px; padding: 10px;">
                                     Mostrando <label class="filtroRegistros"></label> resultados de <label class="totalRegistros"></label>
                                 </p>
@@ -107,7 +152,7 @@
                 </div> <!-- END COL-MD-9 -->
 
                 <!-- LADO DERECHO -->
-                <div class="col-md-3" >
+                <div class="col-md-3 hidden-xs hidden-md hidden-sm" >
                     <div class="bloque-main pos2" style="padding: 5px;">
                         {% if prom2 is null %}
                             <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
@@ -115,7 +160,7 @@
                             <img src="{{asset('')}}{{ prom2[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia2">
                         {% endif %}
                     </div>
-                    <div class="bloque-nexo pos3" style="padding: 5px;">
+                    <div class="bloque-nexo pos3 hidden-xs" style="padding: 5px;">
                         {% if prom3 is null %}
                             <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia3">
                         {% else %}
@@ -123,7 +168,7 @@
                         {% endif %}
                     </div>
 
-                    <div class="bloque-nexo pos4 " style="padding: 5px;">
+                    <div class="bloque-nexo pos4 hidden-xs" style="padding: 5px;">
                         {% if prom4 is null %}
                             <img src="{{asset('Resources/src/img/banner.png')}}" style="width: 100%; max-width: 100%;" id="fotocambia4">
                         {% else %}
@@ -205,8 +250,13 @@
                 var numPages = 0;
                 var orderBy="";
                 //var contenidoOriginal = $('#registros').html();
-                buscar(busqueda, inicio, longitud, paginaActual,orderBy);
-                $(document).on('click', '#searchButton', function () {
+                if($('#searchBox').val()!='' || $('#searchBoxMov').val()!=''){
+                    buscar(busqueda, inicio, longitud, paginaActual,orderBy);
+                }
+                else{
+                    $('.numRegistros,.anteriorMov,.siguienteMov,.numeroPaginas').hide();
+                }
+                $(document).on('click', '#searchButton, #searchButtonMov', function () {
                     $('#randomDir').val('');
                     inicio = $('#inicioInput').val(); //numero de registros que se van a mostrar
                     busqueda = $('#searchBox').val();
@@ -217,13 +267,17 @@
                 });
 
 
+                $(document).on('input', '#searchBoxMov', function () {
+                    var valorMov = $(this).val();
+                    $('#searchBox').val(valorMov);
+                });
                 $(document).on('click', '.paginas', function () {
                     paginaActual = $(this).attr('id');
                     console.log("Página actual enviada: " + paginaActual);
                     buscar(busqueda, inicio, longitud, paginaActual,orderBy);
                 });
 
-                $(document).on('click', '.siguiente', function () {
+                $(document).on('click', '.siguiente,.siguienteMov', function () {
                     if (paginaActual != numPages) {
                         paginaActual++;
                         console.log("Página actual enviada: " + paginaActual);
@@ -231,7 +285,7 @@
                     }
                 });
 
-                $(document).on('click', '.anterior', function () {
+                $(document).on('click', '.anterior,.anteriorMov', function () {
                     //console.log(paginaActual);
                     if (paginaActual != 1) {
                         paginaActual--;
@@ -266,16 +320,29 @@
                     });
 
                 });
-                setInterval(cambia, 4000);
+                if($('#encabezado').is(':visible')){
+                    setInterval(cambia, 4000);
+                }
+                
+                
             });
 
             function buscar(busqueda, inicio, longitud, paginaActual,orderBy) {
-
+                $('.anteriorMov').hide();
+                $('.siguienteMov').hide();
                 $('.numRegistros').hide();
+                $('#mesaje_busqueda').hide();
                 $('.numeroPaginas').html('');
-                $('#registros').html('<div style="text-align:center;margin-top:20px;" class="col-md-12 pull-right"><i class="fa fa-circle-o-notch fa-spin fa-1x fa-fw"></i>Buscando...</div>');
+                $('#registros').html('<div style="text-align:center;margin-top:20px;" class="col-md-12 col-xs-12 pull-right"><i class="fa fa-circle-o-notch fa-spin fa-1x fa-fw"></i>Buscando...</div>');
                 //return false;
                 orderBy=$('#randomDir').val();
+                
+                if(!$('#encabezado').is(':visible')){
+                    longitud=6;//movil
+                }
+                else{
+                    longitud=10;//desktop
+                }
                 //  var deptoId = $('#filtrarDepartamento').val();
                 var munId = $('#searchInputDept').val();
                 var cadenaPaginas = "";
@@ -287,10 +354,11 @@
                         url: "{{path('busqueda_data')}}",
                         type: "post",
                         success: function (data) {
-
+                            //console.log(data);
+                            
                             $('#registros').html('');
                             $('.numRegistros').show();
-
+                            
                             $("#mesaje_busqueda").css("display", "block");
                             if ($('#searchInputDept').val() !== "" && $('#searchBox').val() != "")
                             {
@@ -309,6 +377,7 @@
                             $('.filtroRegistros').html(data.filtroRegistros);
 
                             if (data.data.length != 0) {
+                                $('.numRegistros,.anteriorMov,.siguienteMov,.numeroPaginas').show();
                                 $('#inicioInput').val((parseInt($('#inicioInput').val()) + 1));
                                 var cadena = "";
                                 for (i = 0; i < data.data.length; i++) {
@@ -375,19 +444,68 @@
                                         verificado = '<img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 0px;margin-left:1px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>';
                                     }
 
-                                    cadena = '<div class=\"item-directorio-nexo\" style=\"width: 100%;\"> <div class=\"clearfix\"></div><div class=\"row\">\n\
-                                        <div class=\"col-xs-2 col-sm-3 col-md-3 col-lg-2\"><img id=\"busquedaImagen' + (i + 1) + '\" src=\"{{asset('')}}' + data.data[i].foto + '\" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">\n\
-                                        </div><div class=" col-xs-10 col-sm-9 col-md-9 col-lg-10"><p id=\"busquedaNombre' + (i + 1) + '\" style=\"margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;\" class=\"sans\"><strong>' + busquedaNombre + '</strong>' + verificado + '</p>\n\
+                                    if(!$('#encabezado').is(':visible')){
+                                        $('.anteriorMov').show();
+                                        $('.siguienteMov').show();
+                                        if(i==data.data.length){
+                                            cadena = '<div class=\"item-directorio-movil\" style=\"margin-top: 0px !important;\">';
+                                        }
+                                        else{
+                                            cadena = '<div class=\"item-directorio-movil\" style=\"margin-top: -1px !important;\">';
+                                        }
+                                            
+                                        
+                                        cadena +='<div class=\"row hidden-lg hidden-md hidden-sm\"><!-- Foto -->\n\
+                                                    <div class=\"col-xs-3\" style=\"padding-right: 5px;\">\n\
+                                                        <a href=\"../' + data.data[i].url + '\">\n\
+                                                            <img src=\"{{asset('')}}' + data.data[i].foto + '\" style=\"max-width: 100%; width: 100%; padding: 3px;\">\n\
+                                                        </a>\n\
+                                                    </div>\n\
+                                                    <!-- Contacto+Info -->\n\
+                                                    <div class=\"col-xs-9\" style=\"padding-left: 0px;\">\n\
+                                                        <a href=\"../' + data.data[i].url + '\"><p style=\"margin-top: 5px; font-size: 1em; margin-bottom: 0px; font-size: 12px;\" class=\"sans\"><strong>' + busquedaNombre +'</strong></p></a>\n\
+                                                        <p style=\"color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 10px;\" class=\"sans\">'+busquedaCargo+'</p>\n\
+                                                        <p class=\"sans\" style=\"font-size: 11px; margin-bottom: 0px; margin-top: 1px;\"><strong>Especialidades:</strong> '+especialidades+'</p>\n\
+                                                    </div>\n\
+                                                </div> <!-- end row -->\n\
+                                                <div class=\"row hidden-md hidden-lg hidden-sm\" style=\"padding: 2px;\">\n\
+                                                    <div class=\"col-xs-4\" style=\"padding-right: 2px;\">\n\
+                                                        <a href=\"tel:+'+data.data[i].telefono_movil+'\">\n\
+                                                        <button class=\"sans borded\"><span class=\"glyphicon glyphicon-earphone\" aria-hidden=\"true\"></span> \n\
+                                                            <strong>Llamar</strong>\n\
+                                                        </button></a>\n\
+                                                    </div>\n\
+                                                    <div class="col-xs-4" style=\"padding-left: 2px;\">\n\
+                                                    <a href=\"../' + data.data[i].url + '\">\n\
+                                                        <button class=\"sans borded\"><span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></span>\n\
+                                                            <strong>Perfil</strong>\n\
+                                                        </button>\n\
+                                                    </a>\n\
+                                                    </div>\n\
+                                                </div></div>';
+    
+                                    }
+                                    else{
+                                        if(i===0){//evalua si pintar un borde superior en el primer elemento de la busqueda
+                                            cadena = '<div class=\"item-directorio-nexo\" style=\"width: 100%; border-top:1px solid #E0E0E0\"> <div class=\"clearfix\"></div><div class=\"row\">';
+                                        }
+                                        else{
+                                            cadena = '<div class=\"item-directorio-nexo\" style=\"width: 100%;\"> <div class=\"clearfix\"></div><div class=\"row\">';
+                                        }
+                                        
+                                        cadena+='<div class=\"col-xs-3 col-sm-3 col-md-3 col-lg-2\"><img id=\"busquedaImagen' + (i + 1) + '\" src=\"{{asset('')}}' + data.data[i].foto + '\" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">\n\
+                                        </div><div class=" col-xs-9 col-sm-9 col-md-9 col-lg-10"><p id=\"busquedaNombre' + (i + 1) + '\" style=\"margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;\" class=\"sans\"><strong>' + busquedaNombre + '</strong>' + verificado + '</p>\n\
                                         <p id=\"busquedaCargo' + (i + 1) + '\" style=\"color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;\" class=\"sans\">' + busquedaCargo + '</p>\n\
-                                        <div class=\"row\" style=\"margin-top: 2px; margin-bottom: 15px;\"><div class=\"col-sm-4 col-xs-12\"><p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Telefono</strong></p><p id=\"busquedaTelefono1\" style=\"font-size: 11px; margin-bottom: 0px;\">' + telefonos + ' </p>\n\
-                                        </div><div class=\"col-sm-4 col-xs-12\"><p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p><p id="busquedaCorreo' + (i + 1) + '" style="font-size: 11px; margin-bottom: 0px;">' + busquedaCorreo + '</p></div>\n\
-                                        <div class=\"col-sm-4 col-xs-12\"><p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Sitio Web</strong></p>\n\
+                                        <div class=\"row\" style=\"margin-top: 2px; margin-bottom: 15px;\"><div class=\" hidden-xs hidden-md col-sm-4 col-xs-12\"><p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Telefono</strong></p><p id=\"busquedaTelefono1\" style=\"font-size: 11px; margin-bottom: 0px;\">' + telefonos + ' </p>\n\
+                                        </div><div class=\"hidden-xs hidden-md col-sm-4 col-xs-12\"><p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p><p id="busquedaCorreo' + (i + 1) + '" style="font-size: 11px; margin-bottom: 0px;">' + busquedaCorreo + '</p></div>\n\
+                                        <div class=\"hidden-xs hidden-md col-sm-4 col-xs-12\"><p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Sitio Web</strong></p>\n\
                                         <p id=\"busquedaSitioWeb' + (i + 1) + '\" style=\"font-size: 11px; margin-bottom: 0px;\"><a href=\"http://' + busquedaSitioWeb + '\" target=\"_blank\">' + busquedaSitioWeb + '</a></p></div>\n\
                                         <div class=\"col-sm-12\"><span style=\"color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;\"><strong>Especialidades:</strong> </span>\n\
                                         <span id=\"busquedaEspecialidades' + (i + 1) + '\" style=\"font-size: 11px;\">' + especialidades + '</span>\n\
-                                        </div><div class=\"col-sm-12\" style=\"margin-top: -0px;\"><span style=\"font-size: 11px;\"><a href=\"../' + data.data[i].url + '\">Ver perfil</a></span>\n\
+                                        </div><div class=\"hidden-xs hidden-md col-sm-12\" style=\"margin-top: -0px;\"><span style=\"font-size: 11px;\"><a href=\"../' + data.data[i].url + '\">Ver perfil</a></span>\n\
                                         <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"{{path('contacto')}}?correo=' + busquedaCorreo + '\">Contactar</a></span>\n\
-                                        <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"{{path('recomendacion')}}?correo=' + busquedaCorreo + '\">Recomendar</a></span></div></div></div></div></div>';
+                                        <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"{{path('recomendacion')}}?correo=' + busquedaCorreo + '\">Recomendar</a></span></div></div></div></div><div class=\"row hidden-md hidden-lg hidden-sm\" style=\"padding: 2px;\"><div class="col-xs-4" style="padding-right: 2px;"><button class="sans borded"><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> <strong>Llamar</strong></button></div><div class="col-xs-4" style="padding-left: 2px; "><button class="sans borded"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <strong>Perfil</strong></button></div></div></div>';
+                                    }
                                     $(busquedaImagen).attr('src', "{{asset('')}}" + data.data[i].foto);
                                     $(busquedaImagen).load();
                                     $('#registros').show();
@@ -400,7 +518,18 @@
                                     $('#randomDir').val(orderBy);
                                     cadenaPaginas = '';
                                     if(paginaActual!=1){
-                                        cadenaPaginas = '<li class="anterior" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-left\"></i></li>';
+                                        
+                                        
+                                        if(!$('#encabezado').is(':visible')){
+                                            //cadenaPaginas = '<div class="col-xs-2" style="padding-right: 2px;"><button class="sans" style="font-size: 13px; margin-top: 10px; border: 1px solid #c3c3c3; border-radius: 2px; height: 30px; width: 100%;"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></button></div>';
+                                            
+                                        }
+                                        else{
+                                            cadenaPaginas = '<li class="anterior" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-left\"></i></li>';
+                                        }
+                                    }
+                                    else{
+                                        $('.anteriorMov').hide();
                                     }
                                     if (data.pages > 10) {
                                         if (paginaActual == 1) {
@@ -426,7 +555,7 @@
                                                         cadenaPaginas += '<li class="paginas" id="' + (parseInt(paginaActual) - 1) + '" style=\"display: inline; padding: 7px;\">' + (parseInt(paginaActual) - 1) + '</li>';
                                                         cadenaPaginas += '<li class="paginas" id="' + paginaActual + '" style=\"diplay: inline; padding: 7px;\"><strong>' + paginaActual + '</strong></li>';
                                                     } else {
-                                                        cadenaPaginas += '<li class="paginas" id="' + 1 + '" style=\"display: inline; padding: 7px;\">' + 1 + '</li>';
+                                                        cadenaPaginas += '<li class="paginas" id="' + 1 + '" style=\"display: inline; padding: 7px;\">' + 1 + '...</li>';
                                                         cadenaPaginas += '<li class="paginas" id="' + (parseInt(paginaActual) - 1) + '" style=\"display: inline; padding: 7px;\">' + (parseInt(paginaActual) - 1) + '</li>';
                                                         cadenaPaginas += '<li class="paginas" id="' + paginaActual + '" style=\"display: inline; padding: 7px;\"><strong>' + paginaActual + '</strong></li>';
                                                         cadenaPaginas += '<li class="paginas" id="' + (parseInt(paginaActual) + 1) + '" style=\"display: inline; padding: 7px;\">' + (parseInt(paginaActual) + 1) + '</li>';
@@ -448,9 +577,26 @@
 
                 {#                                        cadenaPaginas+='<li class="paginas" id="'+k+'" style=\"display: inline; padding: 7px;\"><strong>'+k+'</strong></li>';#}
                                 if(numPages!=paginaActual){
-                                    cadenaPaginas += '<li class="siguiente" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-right\"></i></li>';
+                                    if(!$('#encabezado').is(':visible')){
+                                        //cadenaPaginas += '<li class="siguiente pull-right" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-right\"></i></li>';
+                                    }
+                                    else{
+                                        cadenaPaginas += '<li class="siguiente" style=\"display: inline; padding: 7px;\"><i class=\"fa fa-chevron-right\"></i></li>';
+                                    }
+                                    
                                 }
+                                else{
+                                    $('.siguienteMov').hide();
+                                }
+                                
+                                if(!$('#encabezado').is(':visible')){
+                                    $('.numeroPaginas').html('<div style="text-align:center">'+cadenaPaginas+'</div>');
+                                }
+                                else{
                                     $('.numeroPaginas').html(cadenaPaginas);
+                                }
+                                
+                                    
                                     //$('#registros').html('prueba');
                                 }//fin for
                             }//fin if
@@ -461,25 +607,34 @@
 
                                 console.log(data.numRegistros);
                                 console.log(data.filtroRegistros);
-                                $('.totalRegistros').html(data.numRegistros);
-                                $('.filtroRegistros').html(data.filtroRegistros);
-                                $('#registros').hide();
-                                $('#busquedaVacia').show();
+                                //$('.totalRegistros').html(data.numRegistros);
+                                //$('.filtroRegistros').html(data.filtroRegistros);
+                                //$('#registros').hide();
+                                
+                                $('.numRegistros').hide();
+                                $('.numeroPaginas').html('');
+                                $('#registros').html('<div style="text-align:center;margin-top:20px;" class="col-md-12 col-xs-12 pull-right">No se encontraron registros!</div>');
+                                $('#mesaje_busqueda').hide();
+                                //$('#busquedaVacia').show();
 
                             }
 
                         },
                         error: function (data) {
-                            Lobibox.notify("error", {
-                                size: 'mini',
-                                msg: 'Ocurrió un error, intente de nuevo!'
-                            });
+                            $('#registros').html('<div style="text-align:center;margin-top:20px;" class="col-md-12 col-xs-12 pull-right">Ocurrió un error, intente de nuevo!</div>');
+                            $('#mesaje_busqueda').hide();
                             // $('#registros').append(contenidoOriginal);
+                        },
+                        timeout: function(){
+                            $('#registros').html('<div style="text-align:center;margin-top:20px;" class="col-md-12 col-xs-12 pull-right">El servidor no esta respondiendo, intente de nuevo</div>');
+                            $('#mesaje_busqueda').hide();
                         }
                     });
                 } else {
-                    $('#registros').hide();
-                    $('#busquedaVacia').show();
+                    //$('#registros').hide();
+                    //$('#busquedaVacia').show();
+                    $('#registros').html('<div style="text-align:center;margin-top:20px;" class="col-md-12 col-xs-12 pull-right">No se encontraron registros!</div>');
+                    $('#mesaje_busqueda').hide();
                 }
 
 

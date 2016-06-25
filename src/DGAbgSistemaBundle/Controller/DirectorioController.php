@@ -97,9 +97,13 @@ class DirectorioController extends Controller {
 
         $response = new JsonResponse();
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $abogadosTotal = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->findBy(array('estado' => 1));
-
+        
+        
+//        set_time_limit(0.5);
+//        sleep(5);
+        //echo '¿';
         $reg['inicio'] = $inicio++;
         $reg['longitud'] = $longitud;
         $reg['paginaActual'] = $paginaActual;
@@ -129,7 +133,7 @@ class DirectorioController extends Controller {
                 $newOrderBy.="'".$row."',";
             }
         }
-
+        
         //echo $newOrderBy;
         //var_dump($data);
         //die();
@@ -149,7 +153,7 @@ class DirectorioController extends Controller {
                 $reg['data'] = $stmt->fetchAll();
                 //var_dump($reg);
                 //            $sql = "SELECT COUNT(*) as total FROM directorio WHERE CONCAT(upper(nombres),' ',upper(apellido)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
-                $sql = "SELECT COUNT(*) as total FROM directorio WHERE orden in($newOrderBy) AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub),' ',upper(especialidad) ) LIKE '%" . strtoupper($busqueda) . "%' ORDER BY FIELD(orden,$newOrderBy) LIMIT 0,10";
+                $sql = "SELECT COUNT(*) as total FROM directorio WHERE orden in($newOrderBy) AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub),' ',upper(especialidad) ) LIKE '%" . strtoupper($busqueda) . "%' ORDER BY FIELD(orden,$newOrderBy) LIMIT 0,".$longitud;
                 $stmt = $em->getConnection()->prepare($sql);
                 $stmt->execute();
                 $totales = $stmt->fetchAll();
@@ -168,7 +172,7 @@ class DirectorioController extends Controller {
                     $reg['data'] = $stmt->fetchAll();
                     //var_dump($reg);
                     //                $sql = "SELECT COUNT(*) as total FROM directorio WHERE estado=".$deptoId." AND CONCAT(upper(nombres),' ',upper(apellido)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
-                    $sql = "SELECT COUNT(*) as total FROM directorio WHERE UCASE(departamento) LIKE '%" . trim($deptoId) . "'  AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub),' ',upper(especialidad)) LIKE '%" . strtoupper($busqueda) . "%' ORDER BY nombres ASC LIMIT 0,10";
+                    $sql = "SELECT COUNT(*) as total FROM directorio WHERE UCASE(departamento) LIKE '%" . trim($deptoId) . "'  AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub),' ',upper(especialidad)) LIKE '%" . strtoupper($busqueda) . "%' ORDER BY nombres ASC LIMIT 0,".$longitud;
 
                     $em = $this->getDoctrine()->getManager();
                     $stmt = $em->getConnection()->prepare($sql);
@@ -180,8 +184,14 @@ class DirectorioController extends Controller {
 
 
             //$reg['numRegistros']= count($reg3['data']);
-            if ($reg['numRegistros'] > 10) {
-                $reg['pages'] = floor(($reg['numRegistros'] / 10)) + 1;
+            if ($reg['numRegistros'] > $longitud) {
+                if(intval($reg['numRegistros']) % intval($longitud)!=0){
+                    $reg['pages'] = floor(($reg['numRegistros'] / $longitud)) + 1;
+                }
+                else{
+                    $reg['pages'] = floor(($reg['numRegistros'] / $longitud));
+                }
+                
             } else {
                 $reg['pages'] = 1;
             }
@@ -202,7 +212,7 @@ class DirectorioController extends Controller {
             $stmt->execute();
             $reg['data'] = $stmt->fetchAll();
 
-            $sql = "SELECT COUNT(*) as total FROM directorio WHERE UCASE(departamento) LIKE '%" . strtoupper(trim($deptoId)) . "%'  AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub),' ',upper(especialidad)) LIKE '%" . strtoupper(trim($busqueda)) . "%' ORDER BY nombres ASC LIMIT 0,10";
+            $sql = "SELECT COUNT(*) as total FROM directorio WHERE UCASE(departamento) LIKE '%" . strtoupper(trim($deptoId)) . "%'  AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub),' ',upper(especialidad)) LIKE '%" . strtoupper(trim($busqueda)) . "%' ORDER BY nombres ASC LIMIT 0,".$longitud;
 
             
             $stmt = $em->getConnection()->prepare($sql);
@@ -210,11 +220,14 @@ class DirectorioController extends Controller {
             $totales = $stmt->fetchAll();
 
             $reg['numRegistros'] = $totales[0]['total'];
-            if ($reg['numRegistros'] > 10) {
-                $reg['pages'] = floor(($reg['numRegistros'] / 10)) + 1;
-            } else {
-                $reg['pages'] = 1;
+            
+            if(intval($reg['numRegistros']) % intval($longitud)!=0){
+                $reg['pages'] = floor(($reg['numRegistros'] / $longitud)) + 1;
             }
+            else{
+                $reg['pages'] = floor(($reg['numRegistros'] / $longitud));
+            }
+            
 
 
             $reg['filtroRegistros'] = count($reg['data']);
@@ -231,8 +244,8 @@ class DirectorioController extends Controller {
             $stmt->execute();
             $reg['data'] = $stmt->fetchAll();
 
-            if ($reg['numRegistros'] > 10) {
-                $reg['pages'] = floor(($reg['numRegistros'] / 10)) + 1;
+            if ($reg['numRegistros'] > $longitud) {
+                $reg['pages'] = floor(($reg['numRegistros'] / $longitud)) + 1;
             } else {
                 $reg['pages'] = 1;
             }
@@ -241,7 +254,7 @@ class DirectorioController extends Controller {
 
             $i = 0;
 
-            $sql = "SELECT COUNT(*) as total FROM directorio WHERE UCASE(departamento) LIKE '%" . trim($deptoId) . "%' ORDER BY nombres ASC LIMIT 0,10";
+            $sql = "SELECT COUNT(*) as total FROM directorio WHERE UCASE(departamento) LIKE '%" . trim($deptoId) . "%' ORDER BY nombres ASC LIMIT 0,".$longitud;
 
             
             $stmt = $em->getConnection()->prepare($sql);
@@ -280,7 +293,7 @@ class DirectorioController extends Controller {
 
         $response = new JsonResponse();
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         //$municipios['regs'] = $em->getRepository('DGAbgSistemaBundle:CtlCiudad')->findBy(array('ctlEstado'=>intval($deptoId)));
 //        $dql
         $dql = "SELECT c.id as id,c.nombreCiudad as nombre FROM DGAbgSistemaBundle:CtlCiudad c "

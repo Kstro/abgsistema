@@ -438,7 +438,9 @@ class CtlEmpresaController extends Controller {
                 $ctlUsuario->setEstado('1');
                 $ctlUsuario->setRhPersona($idPersona);
                 $ctlUsuario->setCtlEmpresa($idEmpresa);
+                $ctlUsuario->setEstadoCorreo(0);
                 $ctlUsuario->addCtlRol($rol);
+                
                 if ($request->get('id')) {
                     $ctlUsuario->setIdFacebook($request->get('id'));
                     $ctlUsuario->setPassword($request->get('id'));
