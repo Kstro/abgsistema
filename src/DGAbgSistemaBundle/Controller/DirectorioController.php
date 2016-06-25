@@ -97,7 +97,7 @@ class DirectorioController extends Controller {
 
         $response = new JsonResponse();
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $abogadosTotal = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->findBy(array('estado' => 1));
         
         
@@ -293,7 +293,7 @@ class DirectorioController extends Controller {
 
         $response = new JsonResponse();
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         //$municipios['regs'] = $em->getRepository('DGAbgSistemaBundle:CtlCiudad')->findBy(array('ctlEstado'=>intval($deptoId)));
 //        $dql
         $dql = "SELECT c.id as id,c.nombreCiudad as nombre FROM DGAbgSistemaBundle:CtlCiudad c "

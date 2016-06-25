@@ -98,10 +98,10 @@
                         <input type="hidden" value="0" id="inicioInput">
                     </form>
                     <div class="item-directorio-nexo" style="height: 40px; border:0px solid #FFF;">
-                        <p class="pull-left" id="mesaje_busqueda" style="font-size: 12px; margin-bottom: 0px; padding: 10px; display: none;">
+                        <p class="pull-left col-xs-6" id="mesaje_busqueda" style="font-size: 12px; margin-bottom: 0px; padding: 10px; display: none;">
                             Mostrando los resultado para '<label id="filtro"></label>'.
                         </p>
-                        <p class="numRegistros pull-right" style="font-size: 12px; margin-bottom: 0px; padding: 10px;">
+                        <p class="numRegistros pull-right col-xs-6" style="font-size: 12px; margin-bottom: 0px; padding: 10px; text-align: right">
                             Mostrando <label class="filtroRegistros"></label> resultados de <label class="totalRegistros"></label>
                         </p>
                     </div>
@@ -133,7 +133,7 @@
                     <!-- PAGINACION -->
                     <div class="item-directorio-nexo hidden-xs" >
                         <div class="row">
-                            <div class="col-md-7" style="padding-top: 9px;" >
+                            <div class="col-md-7 col-xs-7" style="padding-top: 9px;" >
                                 <ul class="numeroPaginas hidden-xs" style="list-style: none; display: inline; padding-left: 10px !important; color: #777777;">
 
                                 </ul>
@@ -249,7 +249,12 @@
                 var numPages = 0;
                 var orderBy="";
                 //var contenidoOriginal = $('#registros').html();
-                buscar(busqueda, inicio, longitud, paginaActual,orderBy);
+                if($('#searchBox').val()!='' || $('#searchBoxMov').val()!=''){
+                    buscar(busqueda, inicio, longitud, paginaActual,orderBy);
+                }
+                else{
+                    $('.numRegistros,.anteriorMov,.siguienteMov,.numeroPaginas').hide();
+                }
                 $(document).on('click', '#searchButton, #searchButtonMov', function () {
                     $('#randomDir').val('');
                     inicio = $('#inicioInput').val(); //numero de registros que se van a mostrar
@@ -261,6 +266,10 @@
                 });
 
 
+                $(document).on('input', '#searchBoxMov', function () {
+                    var valorMov = $(this).val();
+                    $('#searchBox').val(valorMov);
+                });
                 $(document).on('click', '.paginas', function () {
                     paginaActual = $(this).attr('id');
                     console.log("Página actual enviada: " + paginaActual);
@@ -321,6 +330,7 @@
                 $('.anteriorMov').hide();
                 $('.siguienteMov').hide();
                 $('.numRegistros').hide();
+                $('#mesaje_busqueda').hide();
                 $('.numeroPaginas').html('');
                 $('#registros').html('<div style="text-align:center;margin-top:20px;" class="col-md-12 col-xs-12 pull-right"><i class="fa fa-circle-o-notch fa-spin fa-1x fa-fw"></i>Buscando...</div>');
                 //return false;
@@ -343,10 +353,11 @@
                         url: "{{path('busqueda_data')}}",
                         type: "post",
                         success: function (data) {
-
+                            //console.log(data);
+                            
                             $('#registros').html('');
                             $('.numRegistros').show();
-
+                            
                             $("#mesaje_busqueda").css("display", "block");
                             if ($('#searchInputDept').val() !== "" && $('#searchBox').val() != "")
                             {
@@ -365,6 +376,7 @@
                             $('.filtroRegistros').html(data.filtroRegistros);
 
                             if (data.data.length != 0) {
+                                $('.numRegistros,.anteriorMov,.siguienteMov,.numeroPaginas').show();
                                 $('#inicioInput').val((parseInt($('#inicioInput').val()) + 1));
                                 var cadena = "";
                                 for (i = 0; i < data.data.length; i++) {
@@ -473,8 +485,14 @@
     
                                     }
                                     else{
-                                        cadena = '<div class=\"item-directorio-nexo\" style=\"width: 100%;\"> <div class=\"clearfix\"></div><div class=\"row\">\n\
-                                        <div class=\"col-xs-3 col-sm-3 col-md-3 col-lg-2\"><img id=\"busquedaImagen' + (i + 1) + '\" src=\"{{asset('')}}' + data.data[i].foto + '\" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">\n\
+                                        if(i===0){//evalua si pintar un borde superior en el primer elemento de la busqueda
+                                            cadena = '<div class=\"item-directorio-nexo\" style=\"width: 100%; border-top:1px solid #E0E0E0\"> <div class=\"clearfix\"></div><div class=\"row\">';
+                                        }
+                                        else{
+                                            cadena = '<div class=\"item-directorio-nexo\" style=\"width: 100%;\"> <div class=\"clearfix\"></div><div class=\"row\">';
+                                        }
+                                        
+                                        cadena+='<div class=\"col-xs-3 col-sm-3 col-md-3 col-lg-2\"><img id=\"busquedaImagen' + (i + 1) + '\" src=\"{{asset('')}}' + data.data[i].foto + '\" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">\n\
                                         </div><div class=" col-xs-9 col-sm-9 col-md-9 col-lg-10"><p id=\"busquedaNombre' + (i + 1) + '\" style=\"margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;\" class=\"sans\"><strong>' + busquedaNombre + '</strong>' + verificado + '</p>\n\
                                         <p id=\"busquedaCargo' + (i + 1) + '\" style=\"color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;\" class=\"sans\">' + busquedaCargo + '</p>\n\
                                         <div class=\"row\" style=\"margin-top: 2px; margin-bottom: 15px;\"><div class=\" hidden-xs hidden-md col-sm-4 col-xs-12\"><p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Telefono</strong></p><p id=\"busquedaTelefono1\" style=\"font-size: 11px; margin-bottom: 0px;\">' + telefonos + ' </p>\n\
