@@ -4,14 +4,17 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/perfilPublico.html.twig</file>
+            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/Resources/js/empresa/script.js</file>
             <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/perfil.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/Resources/src/css/fullscreen.css</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/Layout/head.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/detalle_perfil_movil.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/panelAdministrativoAbg.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/Layout/layout3.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/directorio/directorio.html.twig</file>
+            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Service/EmailResService.php</file>
+            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Entity/CtlUsuario.php</file>
+            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/CtlEmpresaController.php</file>
+            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/Resources/src/css/movilcss.css</file>
             <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/mperfil.html.twig</file>
+            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Correo/newUserService.php</file>
+            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/Resources/src/css/menu.css</file>
+            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Service/EmailService.php</file>
+            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/config/services.yml</file>
         </group>
     </open-files>
 </project-private>
