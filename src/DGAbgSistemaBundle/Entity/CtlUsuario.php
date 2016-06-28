@@ -106,6 +106,13 @@ class CtlUsuario implements AdvancedUserInterface, \Serializable
      */
     private $estadoCorreo;
     
+       /**
+     * @var boolean
+     *
+     * @ORM\Column(name="codigo_confirmar", type="string", nullable=true)
+     */
+    private $codigoConfirmar;
+    
     /**
      * Constructor
      */
@@ -143,6 +150,29 @@ class CtlUsuario implements AdvancedUserInterface, \Serializable
     public function setEstadoCorreo($estadoCorreo)
     {
         $this->estadoCorreo= $estadoCorreo;
+
+        return $this;
+    }
+    
+          /**
+     * Get codigo_confirmar
+     *
+     * @return string 
+     */
+    public function getCodigoConfirmar()
+    {
+        return $this->codigoConfirmar;
+    }
+
+    /**
+     * Set codigoConfirmar
+     *
+     * @param string $codigoConfirmar
+     * @return CtlUsuario
+     */
+    public function setCodigoConfirmar($codigoConfirmar)
+    {
+        $this->codigoConfirmar= $codigoConfirmar;
 
         return $this;
     }

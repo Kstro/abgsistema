@@ -16,10 +16,12 @@ $(document).ready(function () {
 
 
     });
-
-
+    
+  
+/*
     $(document).on("submit", "#frmEmpresaUsuarioPersona", function (e) {
-
+alert("Nuevo usuario");
+console.log("bgsdsa");
         var estadoCorreo;
         e.preventDefault();
         frm = serializeToJson($(this).serializeArray());
@@ -43,17 +45,16 @@ $(document).ready(function () {
                         url: Routing.generate('ingresar_usuarioEmpresa'),
                         type: 'POST',
                         dataType: 'json',
-                        success: function (data) {
-            
+                        success: function (data) 
+                        {
                             if (data.estado == true) {
-                                   var url = Routing.generate('inicio');
+                             //      var url = Routing.generate('confirma_cuenta');
                          //       var url = Routing.generate('perfil');
                                 //var url = Routing.generate('abogado_login');
-                              window.open(url, "_self");
-
+                           //   window.open(url, "_self");
                                 Lobibox.notify("success", {
                                     size: 'mini',
-                                    msg: 'Registro exitoso, espere un momento'
+                                    msg: 'Registro exitoso, espere un momento5555'
                                 });
                             } else {
 
@@ -62,23 +63,21 @@ $(document).ready(function () {
                                     msg: 'Error al ingresar los datos'
                                 });
                             }
+                            return false;
                         }
                     });
                 } else {
                     Lobibox.notify("error", {
                         size: 'mini',
-                        msg: 'Correo ya existente, intenete con otro.'
+                        msg: 'Correo ya existente, intenete con otro sdbhjbwjdbwhwb.'
                     });
 
                 }
-
             }
         });
-
-
-
-
     });
+    
+    */
 
 
 

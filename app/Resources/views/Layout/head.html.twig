@@ -12,8 +12,8 @@
 </style>
 {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')%}
     <div class="container-fluid hidden-xs" style="height: 27px; background-color: #263345;">
-        <div class="container">
-            <p class="text-right sans" style="color: #fff; line-height: 27px; font-size: 13px;"> 
+        <div class="container ">
+            <p class="text-right sans micuenta" style="color: #fff; line-height: 27px; font-size: 13px;"> 
                 <a href="{{ path('perfil')}}"  style=" text-decoration:none;color: inherit;" >Mi cuenta</a></p>
         </div>
     </div>
@@ -76,7 +76,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-            <a class="navbar-brand logo" href="{{ path('index')}}"><span class="logo-lg"><img src="{{ asset('Resources/src/img/logo2.png')}}" style="width:220px; margin-top: -17px;"  class="img-responsive" alt="Imagen responsive"></span></a>
+            <a class="navbar-brand logo" href="{{ path('index')}}"><span class="logo-lg"><img src="{{ asset('Resources/src/img/logo2.png')}}" style="width:220px; margin-top: -17px;"  class="img-responsive" ></span></a>
         </div>
         <div id="slidemenu" >
        {#     <form class="navbar-form navbar-right" >

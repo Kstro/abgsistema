@@ -147,8 +147,7 @@ class AbgPersonaController extends Controller {
         return $this->createFormBuilder()
                         ->setAction($this->generateUrl('abgpersona_delete', array('id' => $abgPersona->getId())))
                         ->setMethod('DELETE')
-                        ->getForm()
-        ;
+                        ->getForm();
     }
 
     /**
@@ -210,15 +209,32 @@ class AbgPersonaController extends Controller {
     }
 
     /**
-     * @Route("/inicio/", name="inicio", options={"expose"=true})
-     * @Method("GET")
+     * @Route("/inicio/{id}", name="inicio", options={"expose"=true})
+     * @Method({"GET", "POST"})
      */
-    public function InicioAction() {
+    public function InicioAction(Request $request) {
         try {
+              //$id = $request->get('id');
+                   var_dump($request->get('id'));
+                exit();
             $em = $this->getDoctrine()->getManager();
-            if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-                $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+            $ctlUsuario=$em->getRepository('DGAbgSistemaBundle:CtlUsuario')->find($request->get('id'));
+            $this->authenticateUser($ctlUsuario);
+  
+            $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+            $username = $this->container->get('security.context')->getToken()->getUser()->getId();
+                
+              ///  $idPersona = $request->get('id');
+                
+              
+                // $this->authenticateUser($ctlUsuario);
                 $username = $this->container->get('security.context')->getToken()->getUser()->getId();
+                
+                $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($idPersona);
+                $em->merge($Persona);
+                $em->flush();
+                
+                
 
                 $sqlRol = "SELECT  r.id As id, r.rol As rol"
                         . " FROM  ctl_rol_usuario ru "
@@ -255,7 +271,7 @@ class AbgPersonaController extends Controller {
                             'abgFoto' => $result_foto,
                             'especialida' => $result_especialida
                 ));
-            }
+         
         } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
@@ -1364,7 +1380,7 @@ class AbgPersonaController extends Controller {
                 $esp = $em->createQuery($dql_departamento)->getArrayResult();
                 if (count($esp) > 0) {
 
-                    $sql = "SELECT  e.id AS id, e.nombre_especialidad AS nombre, pe.descripcion AS descripcion, pe.id As idPE, pe.ctl_especialidad_id AS idEsp "
+                    $sql = "SELECT  e.id AS id, e.nombre_especialidad AS nombre, pe.descripcion AS   $id = $request->get('id');descripcion, pe.id As idPE, pe.ctl_especialidad_id AS idEsp "
                             . " FROM  ctl_especialidad e "
                             . " left JOIN abg_persona_especialidad pe ON e.id=pe.ctl_especialidad_id AND pe.abg_persona_id=" . $request->get('hPersona')
                             . " ORDER BY e.nombre_especialidad";
