@@ -8,10 +8,12 @@
         <meta name="robots" content="noindex">
 
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
         <link href="{{asset('Resources/src/css/bootstrap.css')}}" rel="stylesheet">
         <link href="{{asset('Resources/src/css/style.css')}}" rel="stylesheet">
         <link href="{{asset('Resources/src/css/menu_movil.css')}}" rel="stylesheet">
+        <link href="{{asset('Resources/src/css/movilcss.css')}}" rel="stylesheet">
 
         <!-- Favicon (Icono Pequeño) -->
         <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
@@ -47,198 +49,268 @@
             }(document, 'script', 'facebook-jssdk'));
         </script>
         <!-- Navbar -->
-    {% embed ':Layout:head.html.twig' %}{% endembed %}
-    <div id="page-content" >
-        <div class="container hidden-xs">
-            <img src="{{asset('Resources/src/img/bannerprincipal.png')}}" style="width: 100%; max-width: 100%;">
-        </div>
-        <div class="container hidden-lg hidden-md hidden-sm" style=" margin-top: 70px;">
-            <img src="{{asset('Resources/src/img/bannerprincipal.png')}}" style="width: 100%; max-width: 100%;">
-        </div>
-        <!-- Busqueda/Query -->
-        <div class="container" style="padding-top: 30px; padding-bottom: 30px;">
-            <p class="text-center sans" style="font-size: 25px;">Búsqueda de un profesional del derecho</p>
-            <div style="border-top: 3px solid #263345; width: 150px; margin-left: auto; margin-right: auto;"></div>
+{#    {% embed ':Layout:head.html.twig' %}{% endembed %}#}
+    <!-- MOVIL -->
+    <div class="hidden-md hidden-lg">
+
+            {% embed ':Layout:headmovil.html.twig' %}{% endembed %}
+
+            <div style="height: 500px;" class="headerperfil">
+
+                    <p class="text-center text-uppercase sans" style="color: #FFF; font-weight: 600; padding-top: 20px; font-size: 40px; line-height: 40px;">ENCUENTRE ABOGADOS</p>
+
+                    <!-- Form de busqueda -->
+                    <div style="margin: 10px; background-color: #F6F6F6; border-radius: 1px;">
+
+                    </div>
+            </div>
+
+    </div>
+    <div class="hidden-xs hidden-sm">
+        
+	<!-- Imagen + buscador -->
+	<div class="container-fluid heroindex banner">
+		
+
+		<div>
+
+		<!-- Barra de Navegacion -->
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3">
+					<img src="{{asset('Resources/src/img/logowhite.png')}}" style="width: 300px; margin-top: 20px; max-width: 100%;">
+				</div> <!-- end md 4 -->
+				<div class="col-md-9">
+					<ul style="display:inline; list-style: none; color: #fff; font-weight: 700; margin-top: 43px;" class="pull-right text-uppercase">
+						<a href="{{ path('directorio_index') }}" class="nodeco"><li style="display: inline; padding: 15px 15px;" class="sans">DIRECTORIO</li></a>
+						<button id="botonDrp" {#onclick="myFunction()"#} class="dropbtn text-uppercase sans">Especialidades <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+					  <div id="myDropdown" class="dropdown-content">
+					    <a href="{{ path('directorio_index') }}?busqueda=Derecho familiar" style="line-height: 20px; font-size: 13px;" class="sans text-capitalize">Derecho familiar</a>
+					    <a href="{{ path('directorio_index') }}?busqueda=Derecho civil" style="line-height: 20px; font-size: 13px;" class="sans text-capitalize">Derecho civil</a>
+					    <a href="{{ path('directorio_index') }}?busqueda=Derecho corporativo" style="line-height: 20px; font-size: 13px;" class="sans text-capitalize">Derecho corporativo</a>
+					    <a href="{{ path('directorio_index') }}?busqueda=Derecho mercantil" style="line-height: 20px; font-size: 13px;" class="sans text-capitalize">Derecho mercantil</a>
+					    <a href="{{ path('directorio_index') }}?busqueda=Derecho laboral" style="line-height: 20px; font-size: 13px;" class="sans text-capitalize">Derecho laboral</a>
+					    <a href="{{ path('directorio_index') }}?busqueda=Derecho administrativo" style="line-height: 20px; font-size: 13px;" class="sans text-capitalize">Derecho administrativo</a>
+					    <a href="{{ path('directorio_index') }}?busqueda=Derecho contencioso administrativo" style="line-height: 20px; font-size: 13px;" class="sans text-capitalize">Derecho contencioso administrativo</a>
+					    <a href="{{ path('directorio_index') }}?busqueda=Derecho migratorio" style="line-height: 20px; font-size: 13px;" class="sans text-capitalize">Derecho migratorio</a>
+					    <a href="{{ path('directorio_index') }}?busqueda=Derecho constitucional" style="line-height: 20px; font-size: 13px;" class="sans text-capitalize">Derecho constitucional</a>
+					    <a href="{{ path('directorio_index') }}?busqueda=Derecho aduanero" style="line-height: 20px; font-size: 13px;" class="sans text-capitalize">Derecho aduanero</a>
+					    <a href="{{ path('directorio_index') }}?busqueda=Derecho internacional" style="line-height: 20px; font-size: 13px;" class="sans text-capitalize">Derecho internacional</a>
+					  </div>
+						<a href="{{path('pregunta_index')}}" class="nodeco"><li style="display: inline; padding: 15px 15px;" class="sans">PREGUNTAR GRATIS</li></a>
+						<a href="{{path('bloglist')}}" class="nodeco"><li style="display: inline; padding: 15px 15px;" class="sans">blog</li></a>
+						<a href="{{path('soy_abogado')}}" class="nodeco"><li style="display: inline; padding: 10px 15px; border: 1px solid #f2f2f2;" class="sans">Soy un abogado</li></a>
+						<!-- <li style="display: inline; padding: 15px 15px;" class="sans">soy un abogado</li> -->
+						<!-- <li style="display: inline; padding: 15px 15px;" class="sans">contacto</li> -->
+					</ul>
+				</div> <!-- end md 8 -->
+			</div> <!-- end row -->
+		</div> <!-- End Barra de Navegacion -->
+
+		<div class="clearfix"></div>
+
+		</div>
+		
+		<!-- Titulos -->
+		<p class="text-center" style="color: #fff; font-size: 2em; margin-bottom: 0px; margin-top: 150px; font-family: 'Montserrat', sans-serif;">UNA COMUNIDAD DE</p>
+		<p class="text-center" style="color: #fff; font-size: 3em; margin-top: -10px; font-family: 'Montserrat', sans-serif; font-weight: 700;">ABOGADOS PARA TI</p>
+
+		<div class="container">
+			<!-- Buscador -->
+			<div class="row" style="margin-top: 0px;">
+				<div class="col-md-5 col-md-offset-2">
+                                    <input name="abogados" class="search sans" id="searchInput" type="text" value="" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%;" placeholder="Solución legal o Nombre de abogado.">
+				</div>
+				<div class="col-md-2">
+                                    <input id="ciudad" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%;" placeholder="Ciudad, Dept">
+				</div>
+				<div class="col-md-1" style="padding: 0px 5px;">
+                                    <button id="buscar" style="border: 1px solid #f42; border-radius: 2px; padding: 6px 12px; height: 34px; width: 100%; background-color: #F42; color: #fff; font-weight: 600;" class="sans text-center" value="Buscar">Buscar </button>
+				</div>
+			</div>
+		</div>
+		<!-- <p class="text-center" style="color: #fff; margin-top: 10px; font-size: 20px; margin-top: 20px; font-family: 'Montserrat', sans-serif;">
+			Analiza y contrata según </br> experiencias y tus requerimientos
+		</p> -->
+		<div style="margin-top: 28px;" class="text-center">
+			<div class="fb-like" data-href="https://business.facebook.com/Abogadoscomsv-953460784737301/?business_id=925554047540608&amp;ref=bookmarks" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true"></div>
+		</div>
+
+
+	</div> <!-- End Imagen + Buscador -->
+        
+
+                    
+             <!-- Ultimos Abogados -->
+	<div class="container-fluid" style="height: 100px; background-color: #efefef;">
+		
+	</div>
+        <div class="container" style="padding-bottom: 50px;">
+            <div class="row"><p class="sans text-uppercase" style="font-family: 'Montserrat', sans-serif; width: 350px; padding: 10px; margin-top: -22px; background-color: #082242; font-size: 15px; margin-bottom: 3px; color: #FFF;">ultimos abogados registrados</p>
+            </div>
+            <!-- Listado de abogados recientes -->
             <div class="row" style="margin-top: 20px;">
-                <div class="col-md-5 col-md-offset-2 col-xs-5">
-                    <input name="abogados" class="search sans" id="searchInput" type="text" value="" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%;" placeholder="Solución legal o Nombre de abogado.">
-                </div>
-                <div class="col-md-2 col-xs-5">
-                    <input id="ciudad" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%;" placeholder="Ciudad, Dept">
-                </div>
-                <div class="col-md-1 col-xs-2" style="padding: 0px 5px;">
-                    <button id="buscar" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; background-color: #F42; color: #fff; font-weight: 600;" class="sans text-center" value="Buscar">Buscar </button>
-                </div>
+                {% for usuario in usuarios %}
+                    <a class="{{loop.index}}" href="{{path('busquedaPerfil',{url:usuario.url})}}" style="text-decoration: none; color: inherit;">
+                        <div class="col-md-1" style="padding: 5px; margin-top: 20px;">
+                                <img src="{{asset('')}}{{usuario.foto}}" style="width: 100%;">
+                        </div>
+                        <div class="col-md-3" style="margin-top: 20px;">
+                                <p class="text-left" style="font-size: 15px; margin-bottom: 0px; font-family: 'Montserrat', sans-serif; padding-top: 5px;">
+                                    {{usuario.nombres}} {{usuario.apellido}}
+                                </p>
+                                <p class="sans" style="font-size: 12px;">Especialidades: {{usuario.especialidad}}</p>
+                        </div>
+                    </a>
+                    {% if (loop.index) is divisible by(3) %}
+                        <div class="clearfix"></div>
+                    {% endif %}
+                {% endfor %}
             </div>
-            <div style="margin-top: 50px;" class="row">
-                <!-- Abogados por DEpartaento -->
-                <div class="col-md-5 col-md-offset-1">
-                    <p style="font-size: 18px; font-weight: 600;" class="text-center sans">ABOGADOS POR DEPARTAMENTO</p>
-                    <div class="row">
-                        {% for departamento in departamentos %}
-                            <div class="col-md-6 no-padding no-margin col-xs-6">
-                                <ul>
-                                    <li><a href="{{ path('directorio_index') }}?ciu={{departamento.nombreEstado}}">{{departamento.nombreEstado}}</a></li>
-                                </ul>
-                            </div>
-                            {%if loop.index==2%}
-                                <div class="clearfix no-padding no-margin"></div>
-                            {%endif%}
-                        {% endfor %}
+	</div>
 
-                    </div>
-                </div>
-                <!-- Abogados por Esp -->
-                <div class="col-md-5 col-md-offset-1">
-                    <p style="font-size: 18px; font-weight: 600;" class="text-center sans">ABOGADOS POR ESPECIALIDAD LEGAL </p>
-                    <div class="row">
-                        {% for especialida in especialidad %}
-                            <div class="col-md-6 no-padding no-margin col-xs-6">
-                                <ul>
-                                    <li><a href="{{path('directorio_index') }}?busqueda={{especialida.especialidad}}">{{especialida.especialidad}}</a></li>
-                                </ul>
-                            </div>
-                            {%if loop.index==2%}
-                                <div class="clearfix no-padding no-margin"></div>
-                            {%endif%}
-                        {% endfor %}
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid" style="background-color: #f3f3f3; padding-top: 70px; padding-bottom: 70px;">
-            <div class="container" style="">
-                <p class="text-center sans" style="font-size: 25px;">Últimos Abogados Registrados</p>
-                <div style="border-top: 3px solid #263345; width: 150px; margin-left: auto; margin-right: auto;"></div>
-                <div class="row" style="margin-top: 35px;">
-                    {% for usuario in usuarios %}
-                        {%if loop.first %}
-                            <div class="col-md-2 col-md-offset-1 col-xs-3">
-                            {%else%}
-                                {%if loop.last %}
-                                    <div class="col-md-2 col-xs-3 hidden-xs">
-                                      {%else%}  
-                                <div class="col-md-2 col-xs-3">
-                                {%endif%}
+	<!-- CTA DE ABOGADOS + HERO -->
+	<div class="container-fluid herocta">
+		
+	</div>       
+                    
+        <!-- ESPECIALIDADES LEGALES -->
+	<div class="container" style="padding-top: 70px; padding-bottom: 70px;">
+		<div class="row">
+			<div class="col-md-8">
+				<div class="row">
+                                    <a href="{{ path('directorio_index') }}?busqueda=Derecho familiar" >
+					<div class="col-md-3" style="margin-top: 20px;">
+						<p class="text-center"><img src="{{asset('Resources/src/img/iconos/1.png')}}" onmouseover="this.src='{{asset('Resources/src/img/iconos/1-1.png')}}'" onmouseout="this.src='{{asset('Resources/src/img/iconos/1.png')}}'" style="width: 50%; max-width: 100%;"></p>
+						<p class="text-center {#text-capitalize#}" style="font-family: 'Montserrat', sans-serif; font-size: 16px;">Derecho familiar</p>
+					</div>
+                                    </a>
+                                    <a href="{{ path('directorio_index') }}?busqueda=Derecho penal" >
+					<div class="col-md-3" style="margin-top: 20px;">
+						<p class="text-center"><img src="{{asset('Resources/src/img/iconos/2.png')}}" onmouseover="this.src='{{asset('Resources/src/img/iconos/2-2.png')}}'" onmouseout="this.src='{{asset('Resources/src/img/iconos/2.png')}}'" style="width: 50%; max-width: 100%;"></p>
+						<p class="text-center {#text-capitalize#}" style="font-family: 'Montserrat', sans-serif; font-size: 16px;">Derecho penal</p>
+					</div>
+                                    </a>
+                                    <a href="{{ path('directorio_index') }}?busqueda=Derecho civil" >
+					<div class="col-md-3" style="margin-top: 20px;">
+						<p class="text-center"><img src="{{asset('Resources/src/img/iconos/3.png')}}" onmouseover="this.src='{{asset('Resources/src/img/iconos/3-3.png')}}'" onmouseout="this.src='{{asset('Resources/src/img/iconos/3.png')}}'" style="width: 50%; max-width: 100%;"></p>
+						<p class="text-center {#text-capitalize#}" style="font-family: 'Montserrat', sans-serif; font-size: 16px;">Derecho civil</p>
+					</div>
+                                    </a>
+                                    <a href="{{ path('directorio_index') }}?busqueda=Derecho corporativo" >
+					<div class="col-md-3" style="margin-top: 20px;">
+						<p class="text-center"><img src="{{asset('Resources/src/img/iconos/4.png')}}" onmouseover="this.src='{{asset('Resources/src/img/iconos/4-4.png')}}'" onmouseout="this.src='{{asset('Resources/src/img/iconos/4.png')}}'" style="width: 50%; max-width: 100%;"></p>
+						<p class="text-center {#text-capitalize#}" style="font-family: 'Montserrat', sans-serif; font-size: 16px;">Derecho corporativo</p>
+					</div>
+                                    </a>
+                                    <a href="{{ path('directorio_index') }}?busqueda=Derecho mercantil" >
+					<div class="col-md-3" style="margin-top: 20px;">
+						<p class="text-center"><img src="{{asset('Resources/src/img/iconos/5.png')}}" onmouseover="this.src='{{asset('Resources/src/img/iconos/5-5.png')}}'" onmouseout="this.src='{{asset('Resources/src/img/iconos/5.png')}}'" style="width: 50%; max-width: 100%;"></p>
+						<p class="text-center {#text-capitalize#}" style="font-family: 'Montserrat', sans-serif; font-size: 16px;">Derecho mercantil</p>
+					</div>
+                                    </a>
+                                    <a href="{{ path('directorio_index') }}?busqueda=Derecho laboral" >
+					<div class="col-md-3" style="margin-top: 20px;">
+						<p class="text-center"><img src="{{asset('Resources/src/img/iconos/6.png')}}" onmouseover="this.src='{{asset('Resources/src/img/iconos/6-6.png')}}'" onmouseout="this.src='{{asset('Resources/src/img/iconos/6.png')}}'" style="width: 50%; max-width: 100%;"></p>
+						<p class="text-center {#text-capitalize#}" style="font-family: 'Montserrat', sans-serif; font-size: 16px;">Derecho laboral</p>
+					</div>
+                                    </a>
+                                    <a href="{{ path('directorio_index') }}?busqueda=Derecho administrativo" >
+					<div class="col-md-3" style="margin-top: 20px;">
+						<p class="text-center"><img src="{{asset('Resources/src/img/iconos/7.png')}}" onmouseover="this.src='{{asset('Resources/src/img/iconos/7-7.png')}}'" onmouseout="this.src='{{asset('Resources/src/img/iconos/7.png')}}'" style="width: 50%; max-width: 100%;"></p>
+						<p class="text-center {#text-capitalize#}" style="font-family: 'Montserrat', sans-serif; font-size: 16px;">Derecho administrativo</p>
+					</div>
+                                    </a>
+                                    <a href="{{ path('directorio_index') }}?busqueda=Derecho contencioso administrativo" >
+					<div class="col-md-3" style="margin-top: 20px;">
+						<p class="text-center"><img src="{{asset('Resources/src/img/iconos/8.png')}}" onmouseover="this.src='{{asset('Resources/src/img/iconos/8-8.png')}}'" onmouseout="this.src='{{asset('Resources/src/img/iconos/8.png')}}'" style="width: 50%; max-width: 100%;"></p>
+						<p class="text-center {#text-capitalize#}" style="font-family: 'Montserrat', sans-serif; font-size: 16px;">Derecho contencioso adm.</p>
+					</div>
+                                    </a>
+                                    <a href="{{ path('directorio_index') }}?busqueda=Derecho migratorio" >
+					<div class="col-md-3" style="margin-top: 20px;">
+						<p class="text-center"><img src="{{asset('Resources/src/img/iconos/9.png')}}" onmouseover="this.src='{{asset('Resources/src/img/iconos/9-9.png')}}'" onmouseout="this.src='{{asset('Resources/src/img/iconos/9.png')}}'" style="width: 50%; max-width: 100%;"></p>
+						<p class="text-center {#text-capitalize#}" style="font-family: 'Montserrat', sans-serif; font-size: 16px;">Derecho migratorio</p>
+					</div>
+                                    </a>
+                                    <a href="{{ path('directorio_index') }}?busqueda=Derecho constitucional" >
+					<div class="col-md-3" style="margin-top: 20px;">
+						<p class="text-center"><img src="{{asset('Resources/src/img/iconos/10.png')}}" onmouseover="this.src='{{asset('Resources/src/img/iconos/10-10.png')}}'" onmouseout="this.src='{{asset('Resources/src/img/iconos/10.png')}}'" style="width: 50%; max-width: 100%;"></p>
+						<p class="text-center {#text-capitalize#}" style="font-family: 'Montserrat', sans-serif; font-size: 16px;">Derecho constitucional</p>
+					</div>
+                                    </a>
+                                    <a href="{{ path('directorio_index') }}?busqueda=Derecho aduanero" >
+					<div class="col-md-3" style="margin-top: 20px;">
+						<p class="text-center"><img src="{{asset('Resources/src/img/iconos/11.png')}}" onmouseover="this.src='{{asset('Resources/src/img/iconos/11-11.png')}}'" onmouseout="this.src='{{asset('Resources/src/img/iconos/11.png')}}'" style="width: 50%; max-width: 100%;"></p>
+						<p class="text-center {#text-capitalize#}" style="font-family: 'Montserrat', sans-serif; font-size: 16px;">Derecho aduanero</p>
+					</div>
+                                    </a>
+                                    <a href="{{ path('directorio_index') }}?busqueda=Derecho internacional" >
+					<div class="col-md-3" style="margin-top: 20px;">
+						<p class="text-center"><img src="{{asset('Resources/src/img/iconos/12.png')}}" onmouseover="this.src='{{asset('Resources/src/img/iconos/12-12.png')}}'" onmouseout="this.src='{{asset('Resources/src/img/iconos/12.png')}}'" style="width: 50%; max-width: 100%;"></p>
+						<p class="text-center {#text-capitalize#}" style="font-family: 'Montserrat', sans-serif; font-size: 16px;">Derecho internacional</p>
+					</div>
+                                    </a>
                                     
-                                        {% endif %}
-                                <a href="{{path('busquedaPerfil',{url:usuario.url})}}" style="text-decoration: none; color: inherit;"><img src="{{asset('')}}{{usuario.foto}}" style="width: 100%; max-width: 100%;">
-                                    <p data-original-title="Ver Perfil" class="text-center sans" style="font-size: 13px; font-weight: 600; margin-top: 10px;" data-toggle="tooltip" data-placement="bottom" title="">{{usuario.nombres}} {{usuario.apellido}}</p></a>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-
-            <div class="container" style="padding-top: 50px; padding-bottom: 50px;">
-                <p class="sans text-center" style="font-size: 30px; margin-bottom: 0px;">Áreas de especialidad</p>
-                <p class="sans text-center" style="font-size: 13px; margin-bottom: 30px;">Haga click en una imagen para cargar una lista de abogados de esa especialidad legal.</p>
-                <div class="row">
-                    <div class="col-md-3 col-xs-6" style="margin-top: 10px;">
-                        <a href="{{ path('directorio_index') }}?busqueda=Derecho familiar" >
-                            <p class="text-center">
-                                <img src="{{asset('Resources/src/img/legal/familia.png')}}" style="width: 90px;">
-                            </p>
-                            <p class="text-center"><span class="sans" style="font-weight: 700;">Derecho de Familia</span></p>
-                            <p></p>
-                        </a>
-                    </div>
-                    <div class="col-md-3 col-xs-6" style="margin-top: 10px;">
-                        <a href="{{ path('directorio_index') }}?busqueda=Derecho penal" >
-                            <p class="text-center">
-                                <img src="{{asset('Resources/src/img/legal/penal.png')}}" style="width: 90px;">
-                            </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Penal</span></p>
-                            <p></p>
-                        </a>
-                    </div>
-                    <div class="col-md-3 col-xs-6" style="margin-top: 10px;">
-                        <a href="{{ path('directorio_index') }}?busqueda=Derecho civil" >
-                            <p class="text-center">
-                                <img src="{{asset('Resources/src/img/legal/civil.png')}}" style="width: 90px;">
-                            </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Civil</span></p>
-                            <p></p>
-                        </a>
-                    </div>
-                    <div class="col-md-3 col-xs-6" style="margin-top: 10px;">
-                        <a href="{{ path('directorio_index') }}?busqueda=Derecho corporativo" >
-                            <p class="text-center">
-                                <img src="{{asset('Resources/src/img/legal/corporativo.png')}}" style="width: 90px;">
-                            </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Corporativo</span></p>
-                            <p></p>
-                        </a>
-                    </div>
-                    <div class="clearfix"></div>
-                    <div class="col-md-3 col-xs-6" style="margin-top: 25px;">
-                        <a href="{{ path('directorio_index') }}?busqueda=Derecho mercantil" >
-                            <p class="text-center">
-                                <img src="{{asset('Resources/src/img/legal/mercantil.png')}}" style="width: 90px;">
-                            </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Mercantil</span></p>
-                            <p></p>
-                        </a>
-                    </div>
-                    <div class="col-md-3 col-xs-6" style="margin-top: 25px;">
-                        <a href="{{ path('directorio_index') }}?busqueda=Derecho laboral" >
-                            <p class="text-center">
-                                <img src="{{asset('Resources/src/img/legal/laboral.png')}}" style="width: 90px;">
-                            </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Laboral</span></p>
-                            <p></p>
-                        </a>
-                    </div>
-                    <div class="col-md-3 col-xs-6" style="margin-top: 25px;">
-                        <a href="{{ path('directorio_index') }}?busqueda=Derecho administrativo" >
-                            <p class="text-center">
-                                <img src="{{asset('Resources/src/img/legal/admin.png')}}" style="width: 90px;">
-                            </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Administrativo</span></p>
-                            <p></p>
-                        </a>
-                    </div>
-                    <div class="col-md-3 col-xs-6" style="margin-top: 25px;">
-                        <a href="{{ path('directorio_index') }}?busqueda=Derecho familiar" >
-                            <p class="text-center">
-                                <img src="{{asset('Resources/src/img/legal/admi_conten.png')}}" style="width: 90px;">
-                            </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Contencioso Adminsitrativo</span></p>
-                            <p></p>
-                        </a>    
-                    </div>
-                    <div class="clearfix"></div>
-                    <div class="col-md-3 col-xs-6" style="margin-top: 25px;">
-                        <a href="{{ path('directorio_index') }}?busqueda=Derecho migratorio" >
-                            <p class="text-center">
-                                <img src="{{asset('Resources/src/img/legal/migra.png')}}" style="width: 90px;">
-                            </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Migratorio</span></p>
-                            <p></p>
-                        </a>
-                    </div>
-                    <div class="col-md-3 col-xs-6" style="margin-top: 25px;">
-                        <a href="{{ path('directorio_index') }}?busqueda=Derecho constitucional" >
-                            <p class="text-center">
-                                <img src="{{asset('Resources/src/img/legal/consti.png')}}" style="width: 90px;">
-                            </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Constitucional</span></p>
-                            <p></p>
-                        </a>
-                    </div>
-                    <div class="col-md-3 col-xs-6" style="margin-top: 25px;">
-                        <a href="{{ path('directorio_index') }}?busqueda=Derecho aduanero" >
-                            <p class="text-center">
-                                <img src="{{asset('Resources/src/img/legal/aduana.png')}}" style="width: 90px;">
-                            </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Aduanero</span></p>
-                            <p></p>
-                        </a>
-                    </div>
-                    <div class="col-md-3 col-xs-6" style="margin-top: 25px;">
-                        <a href="{{ path('directorio_index') }}?busqueda=Derecho internacional" >
-                            <p class="text-center">
-                                <img src="{{asset('Resources/src/img/legal/inter.png')}}" style="width: 90px;">
-                            </p><p class="text-center"><span class="sans" style="font-weight: 700;">Derecho Internacional</span></p>
-                            <p></p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
+				</div>
+			</div>
+			<div class="col-md-4">
+				<p class="text-center" style="font-family: 'Montserrat', sans-serif; margin-bottom: 0px; font-size: 1.8em; margin-top: 120px;">
+					Encuentra a tu
+				</p>
+				<p class="text-center" style="font-family: 'Montserrat', sans-serif; margin-top: -10px; font-size: 2.5em; font-weight: 700;">
+					abogado indicado
+				</p>
+				<p class="text-center sans" style="font-family: 'Montserrat', sans-serif;">Haz click en la especialidad legal en la cual necesites un abogado para cargar una lista amplia 
+				de profesionales del derecho.</p>
+			</div>
+		</div>
+	</div>
+                    
+                    
+                    
+          
+            
+            
+            
+            
             <!-- centro de preguntas -->
-            <div class="container-fluid" style="padding-top: 70px; padding-bottom: 70px; background-color: #f6f6f6;">
+	<div class="container-fluid" style="padding-top: 70px; padding-bottom: 70px; background-color: #bfdbef;">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-5">
+					<p class="text-text sans text-uppercase" style="font-size: 20px; font-weight: 700; font-family: 'Montserrat', sans-serif;">
+						gratis, respuestas personalizadas de nuestra red de abogados expertos.
+					</p>
+					<p class="sans" style="font-family: 'Montserrat', sans-serif;">Los Abogados de nuestra red estan listos para responder tus preguntas casi instantaneamente.</p>
+					<p class="sans" style="font-size: 12px;">Aviso: Estas respuestas son solamente de referencia a su caso, debe de realizar una contratacion para poder obtener ayuda legal de un profesional.</p>
+				</div>
+				<div class="col-md-7">
+					<form action="{{ path('preg_deta') }}" method="POST">
+                                            <textarea id="txtpregunta" name="txtpregunta" class="sans" maxlength="150" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; width: 100%;" rows="3" placeholder="Escriba su pregunta aqui..." required></textarea>
+                                            <div class="row">
+                                                <div class="col-xs-5">
+                                                    <p class="sans" style="margin-top: 10px;" id="contador">0 out of 150 characters</p>
+                                                </div>
+                                                <div class="col-xs-7">
+                                                    <p class="pull-right" style="margin-top: 10px;">
+                                                        <button type="submit"  style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; background-color: #F42; color: #fff; font-weight: 600;" class="sans text-center" value="Buscar">Preguntarle a un abogado</button>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </form>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-md-"></div>
+			</div> <!-- end row -->
+		</div>
+	</div>
+            
+            
+            
+            
+            <!-- centro de preguntas -->
+            {#<div class="container-fluid" style="padding-top: 70px; padding-bottom: 70px; background-color: #f6f6f6;">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-5">
@@ -264,9 +336,44 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="col-md-"></div>
-                    </div> <!-- end row -->
+                    </div> <!-- end row -->#}
+            <div class="container" style="padding-bottom: 50px;">
+			<!-- Inicio de respuestas recientes -->
+			<p class="sans text-uppercase" style="font-family: 'Montserrat', sans-serif; width: 300px; padding: 10px; margin-top: -28px; background-color: #082242; font-size: 15px; margin-bottom: 3px; color: #FFF;">Respuestas recientes</p>
+			
+			<div class="row" style="margin-top: 20px;">
+                            <!-- RESPUESTA 1 -->
+                            {%if ultimas_prteguntas|default is not empty %}
+                                {% for key, datos in ultimas_prteguntas %}
+                                    <div class="col-md-6 col-xs-12" style="margin-top: 20px;">
+                                        <div class="col-xs-3 col-md-3">
+                                            <img src="{{ asset('') }}{{datos.src}}" style="width: 100%;">
+                                        </div>
+                                        <div class="col-xs-9 col-md-9">
+                                            <p class="sans" style="color: #888888; margin-bottom: 3px;"><a href="{{path('respuestas_pregunta', {id:datos.idPregunta})}}" style="text-decoration: none; color: inherit;">{{datos.pregunta| slice(0,100)~'...'}}</a></p>
+                                            <p class="sans" style="font-size: 12px;">Respondida {{tiemposRespuesta[key]}} por {%if(datos.esatdo !=0)%}<a href="{{path('busquedaPerfil', {url:datos.url})}}">{{datos.nombres}}</a>{%else%}{{datos.nombres}}{%endif%}</p>
+                                        </div>
+                                    </div>
+                                    {% if loop.index is divisibleby(2) %}
+                                        <div class="clearfix"></div>
+                                    {% endif %} 
 
-                    <!-- Inicio de respuestas recientes -->
+                                {%endfor%}
+
+                            {%endif%}
+
+			</div>
+                        <p class="text-center" style="margin-top: 30px;">
+                            <a href="{{ path('respuestas_publicas') }}">
+                                <button style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 22px; height: 34px; background-color: transparent; color: #262626; font-weight: 600;" class="sans text-center" value="Buscar">Ver más respuestas</button>
+                            </a>
+			</p>
+                        
+			{#<p class="text-center" style="margin-top: 30px;">
+                            <a  href="{{ path('respuestas_publicas') }}" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 22px; height: 34px; background-color: transparent; color: #888888; font-weight: 600;" class="sans text-center">Buscar respuestas por solucion legal</a>
+                        </p>#}
+		</div>
+                    {#<!-- Inicio de respuestas recientes -->
                     <p class="sans" style="font-size: 20px; margin-bottom: 5px;">Respuestas recientes</p>
                     <div style="border-top: 3px solid #263345; width: 150px;"></div>
                     <div class="row" style="margin-top: 20px;">
@@ -291,7 +398,7 @@
                     </div>
                     <p class="text-center" style="margin-top: 30px;">
                         <a  href="{{ path('respuestas_publicas') }}" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 22px; height: 34px; background-color: transparent; color: #888888; font-weight: 600;" class="sans text-center">Buscar respuestas por solucion legal</a>
-                    </p>
+                    </p>#}
                 </div>
             </div>
         </div>
@@ -306,6 +413,14 @@
 <script src="{{asset('Resources/src/js/bootstrap.js')}}"></script>
 <script src="{{asset('Resources/src/js/menu_movil.js')}}"></script>
 <script type="text/javascript">
+    {#function myFunction() {
+        console.log('antes');
+        document.getElementById("myDropdown").classList.toggle("show");
+        //$('#myDropdown').show();
+        console.log('despues');
+    }#}
+    
+    
             $(document).ready(function () {
 
                 var max_chars = 150;
@@ -323,6 +438,34 @@
                         window.location = Routing.generate("preg_deta") + "?txtpregunta=" + busqueda;
                     }
                 });
+                $(document).on('click', '#botonDrp', function (event) {
+                    //console.log('click boton');
+                    //document.getElementById("myDropdown").classList.toggle("show");
+                    //$('#myDropdown').show();
+                    $('.dropdown-content').toggle();
+                });
+                
+                // Close the dropdown if the user clicks outside of it
+                window.onclick = function (event) {
+                    if (!event.target.matches('.dropbtn')) {
+
+                        {#var dropdowns = document.getElementsByClassName("dropdown-content");
+                        var i;
+                        for (i = 0; i < dropdowns.length; i++) {
+                            var openDropdown = dropdowns[i];
+                            if (openDropdown.classList.contains('show')) {
+                                openDropdown.classList.remove('show');
+                            }
+                            if ($('.dropdown-content').is(':visible')) {
+                                $('.dropdown-content').toggle();
+                            }
+                        }#}
+                        if ($('.dropdown-content').is(':visible')) {
+                            $('.dropdown-content').toggle();
+                        }
+                        //$('.dropdown-content').toggle();
+                    }
+                }
             });
 </script>
 <script type="text/javascript">

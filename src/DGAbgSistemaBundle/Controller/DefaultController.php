@@ -30,6 +30,7 @@ class DefaultController extends Controller
         $rsm4->addScalarResult('apellido','apellido');
         $rsm4->addScalarResult('foto','foto');
         $rsm4->addScalarResult('url','url');
+        $rsm4->addScalarResult('especialidad','especialidad');
         
         $usuarios = $em->createNativeQuery($sql4, $rsm4)
                                   ->getResult();
@@ -78,7 +79,7 @@ class DefaultController extends Controller
         } else {
             $tiemposRespuesta = NULL;
         }
-        
+        //var_dump($especialidad);
         return $this->render('DGAbgSistemaBundle:Default:home.html.twig',array(
             'usuarios' =>$usuarios,
             'ultimas_prteguntas'=> $ultimas_prteguntas,

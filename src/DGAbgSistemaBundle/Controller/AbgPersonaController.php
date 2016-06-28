@@ -556,7 +556,8 @@ class AbgPersonaController extends Controller {
                         ->getSingleResult();
 
                 $rsm3 = new ResultSetMapping();
-                $sql3 = "select count(id) as total from abg_pregunta where fechapregunta >= '" . $nuevafecha . "' and fechapregunta <= '" . $fecha . "'";
+                $sql3 = "select count(id) as total from abg_pregunta where fechapregunta >= '" . $nuevafecha . " 00:00:00' and fechapregunta <= '" . $fecha . " 23:59:59'";
+                //var_dump($sql3);
                 $rsm3->addScalarResult('total', 'total');
                 $totalPreguntas = $em->createNativeQuery($sql3, $rsm3)
                         ->getSingleResult();
