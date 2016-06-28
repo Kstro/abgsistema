@@ -540,6 +540,7 @@
 
                                     var busquedaNombre = data.data[i].nombres + ' ' + data.data[i].apellido;
                                     var busquedaCargo = "";
+                                    var busquedaTitulo = "";
                                     var telefonos = "";
                                     var busquedaCorreo = data.data[i].correoelectronico;
                                     var busquedaFoto = data.data[i].foto;
@@ -550,11 +551,39 @@
                                         busquedaFoto = "";
                                     }
 
-                                    if (data.data[i].puesto == null) {
+                                    if (data.data[i].cargo == null) {
                                         busquedaCargo = "";
                                     } else {
-                                        busquedaCargo = data.data[i].puesto;
+                                        busquedaCargo = data.data[i].cargo;
                                     }
+                                    
+                                    if (data.data[i].titulo == null) {
+                                        busquedaTitulo = "";
+                                    }
+                                    else {
+                                        switch(parseInt(data.data[i].titulo)){//Evalua el titulo profesional
+                                            case 1:
+                                                if(data.data[i].genero==="M"){//Masculino
+                                                    busquedaTitulo = "Lic.";
+                                                }
+                                                else{
+                                                    busquedaTitulo = "Licda.";
+                                                }
+                                            break;
+                                            case 2:
+                                                busquedaTitulo = "Máster";
+                                            break;
+                                            case 3:
+                                                if(data.data[i].genero==="M"){//Masculino
+                                                    busquedaTitulo = "Dr.";
+                                                }
+                                                else{
+                                                    busquedaTitulo = "Dra.";
+                                                }
+                                            break;
+                                        }
+                                    }
+                                    busquedaNombre = busquedaTitulo+" "+busquedaNombre;
 
                                     if (busquedaCorreo == null) {
                                         busquedaCorreo = "-";
@@ -563,6 +592,11 @@
                                     if (busquedaSitioWeb == null) {
                                         busquedaSitioWeb = "";
                                     }
+
+                                    if (busquedaCorreo == null) {
+                                        busquedaCorreo = "-";
+                                    }
+
 
                                     //console.log(data);
 

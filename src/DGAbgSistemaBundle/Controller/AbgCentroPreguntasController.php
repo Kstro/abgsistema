@@ -62,7 +62,7 @@ class AbgCentroPreguntasController extends Controller {
         $dqlNresouestas = "SELECT COUNT(pre.respuesta) AS totalrespuestas "
                 . " FROM DGAbgSistemaBundle:AbgRespuestaPregunta pre";
         $Nrespuestas = $em->createQuery($dqlNresouestas)->getArrayResult();
-
+        
         $dqlNpreguntas = "select count(pre.id) as totalpreguntas
                 from DGAbgSistemaBundle:AbgPregunta pre";
         $Npreguntas = $em->createQuery($dqlNpreguntas)->getArrayResult();

@@ -1,38 +1,75 @@
-  
-<div class="container-fluid" style="background-color: #263345;">
-            <div class="container" style="padding-top: 40px; padding-bottom: 40px;">
-                <div class="row">
-                    <div class="col-md-3">
-                        <p class="sans" style="font-size: 16px; font-weight: 600; color: #fff;">Sitemap</p>
-                        <ul style="list-style: none; padding: 0; font-size: 13px; color: #c3c3c3;" class="sans">
-                            <li><a href="{{ path('index')}}" style=" text-decoration:none;color: inherit;" >Inicio</a></li>
-                            <li><a href="{{ path('directorio_index')}}" style=" text-decoration:none;color: inherit;">Directorio</a></li>
-                            <li><a href="{{path('pregunta_index')}}" style=" text-decoration:none;color: inherit;">Preguntar gratis</a></li>
-                            <li>Blog Comunitario</li>
-                            <li><a href="{{path('soy_abogado')}}" style=" text-decoration:none;color: inherit;">Soy un abogado</a></li>
-                            <li> <a href="{{ path('abogado_login')}}"  style=" text-decoration:none;color: inherit;" > Login Abogados</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-3">
+ 
 
-                    </div>
-                    <div class="col-md-3">
+<div class="container-fluid" style="padding-top: 30px; padding-bottom: 30px; background-color: #082242;">
+    <div class="container">
+            <p class="text-center">
+            <a href="{{path('soy_abogado')}}" style="color: #fff; border: 1px solid #c3c3c3; padding: 10px; border-radius: 2px; background-color: transparent;font-family: 'Montserrat', sans-serif;">Soy un abogado</a>
+            <button style="margin-left: 10px; color: #fff; border: 1px solid #c3c3c3; padding: 10px; border-radius: 2px; background-color: transparent;font-family: 'Montserrat', sans-serif;">Soy una firma</button>
+            <a href="{{path('abogado_login')}}" style="margin-left: 10px; color: #fff; border: 1px solid #c3c3c3; padding: 10px; border-radius: 2px; background-color: transparent;font-family: 'Montserrat', sans-serif;">Login</a>
+            </p>
+            <p class="sans text-center" style="color: #fff; margin-bottom: 5px; font-size: 13px; margin-top: 10px;">
+                <a style="text-decoration: none;color:#FFF;" href="{{path('index')}}" >Inicio</a> |
+                <a style="text-decoration: none;color:#FFF;" href="{{path('index')}}" >Quienes somos</a> |
+                <a style="text-decoration: none;color:#FFF;" href="{{path('index')}}" >Políticas de privacidad</a> |
+                <a style="text-decoration: none;color:#FFF;" href="{{path('index')}}" >Términos de uso</a> |
+                <a style="text-decoration: none;color:#FFF;" href="{{path('index')}}" >Uso de cookies</a> |
+                <a style="text-decoration: none;color:#FFF;" href="{{path('index')}}" >Contáctanos</a> |
+            </p>
+            <!-- <hr style="margin-top: 10px; margin-bottom: 10px;"> -->
+            <p class="sans" style="color: #fff; margin-bottom: 0px; font-size: 13px; color: #777777;">Aviso: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p>
+            <hr style="margin-top: 10px; margin-bottom: 10px; border: 0.2px solid #fff;">
+            <p class="text-left" style="color: #fff; font-family: 'Montserrat', sans-serif; font-size: 12px; margin-bottom: 0px;">Todos los derechos reservados <?php echo date("Y"); ?> &copy;</p>
+    </div>
+</div>
 
-                    </div>
-                    <div class="col-md-3">
-
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-md-6">
-                        <p class="sans" style="color: #c3c3c3; font-size: 13px;">
-                            Aviso: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commod.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-                         
+<div class="container-fluid" style="background-color: #051A30; padding-top: 15px; padding-bottom: 15px;">
+		<div class="container">
+			<div class="row">
+                            <a href="http://abogados.com.sv">
+				<div class="col-md-2">
+					<p class="text-center" style="font-family: 'Montserrat', sans-serif; margin-bottom: 0px; color: #fff;">
+						<img src="{{asset('Resources/src/img/ni.png')}}" style="width: 40px; margin-bottom: 3px;"> </br>abogados.com.sv
+					</p>
+				</div>
+                            </a>
+                            <a href="http://abogados.com.ni">
+				<div class="col-md-2">
+					<p class="text-center" style="font-family: 'Montserrat', sans-serif; margin-bottom: 0px; color: #fff;">
+						<img src="{{asset('Resources/src/img/ni.png')}}" style="width: 40px; margin-bottom: 3px;"> </br>abogados.com.ni
+					</p>
+				</div>
+                            </a>
+                            <a href="http://abogados.com.pa">
+				<div class="col-md-2">
+					<p class="text-center" style="font-family: 'Montserrat', sans-serif; margin-bottom: 0px; color: #fff;">
+						<img src="{{asset('Resources/src/img/pa.png')}}" style="width: 40px; margin-bottom: 3px;"> </br>abogados.com.pa
+					</p>
+				</div>
+                            </a>
+                            <a href="http://abogados.com.cr">
+				<div class="col-md-2">
+					<p class="text-center" style="font-family: 'Montserrat', sans-serif; margin-bottom: 0px; color: #fff;">
+						<img src="{{asset('Resources/src/img/cr.png')}}" style="width: 40px; margin-bottom: 3px;"> </br>abogados.co.cr
+					</p>
+				</div>
+                            </a>
+                            <a href="#">
+				<div class="col-md-2">
+					<p class="text-center" style="font-family: 'Montserrat', sans-serif; margin-bottom: 0px; color: #fff;" data-toggle="tooltip" data-placement="top" title="Proximamente">
+						<img src="{{asset('Resources/src/img/hn.png')}}" style="width: 40px; margin-bottom: 3px;"> </br>abogados.com.hn
+					</p>
+				</div>
+                            </a>
+                            <a href="#">
+				<div class="col-md-2">
+					<p class="text-center" style="font-family: 'Montserrat', sans-serif; margin-bottom: 0px; color: #fff;" data-toggle="tooltip" data-placement="top" title="Proximamente">
+						<img src="{{asset('Resources/src/img/gt.png')}}" style="width: 40px; margin-bottom: 3px;"> </br>Guatemala
+					</p>
+				</div>
+                            </a>
+                            
+			</div>
+		</div>
+	</div>
