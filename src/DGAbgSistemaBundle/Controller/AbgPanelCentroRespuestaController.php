@@ -206,7 +206,7 @@ class AbgPanelCentroRespuestaController extends Controller {
                         </center>
                             <p>Hola " . $correo_anonimo . ", tu pregunta ha sido respondida</p>
                             <p>Haz click en el enlace para ver la respuesta</p>
-                            <a href='http://abg.localhost/app_dev.php/preguntascentro/respuestas?id=" . $idpreg . "'>Clik aqui para ver la respuesta</a> 
+                            <a href='http://abg.localhost/app_dev.php/preguntascentro/respuestas_pregunta/" .$idpreg ."'>Clik aqui para ver la respuesta</a> 
                         </td>
                         <td class=\"expander\"></td>
                       </tr>
@@ -288,14 +288,16 @@ class AbgPanelCentroRespuestaController extends Controller {
                   ." LEFT JOIN abg_respuesta_pregunta resp on preg.id=resp.abg_pregunta "
                  ." JOIN ctl_especialidad esp "
                  ." ON esp.id=preg.ctl_especialidad "
-                 ." JOIN abg_persona_especialidad pe " 
+                 ." JOIN abg_persona_especialidad pe "
                  ." ON pe.ctl_especialidad_id=esp.id AND pe.abg_persona_id=".$idPersona
-                 ." WHERE preg.estado=1 and resp.id is null "
+                 ." WHERE preg.estado=1 and preg.contador<3 and resp.id is null "
                  ." ORDER BY  preg.fechapregunta DESC ";
         $em = $this->getDoctrine()->getManager();
         $stmt = $em->getConnection()->prepare($sql);
         $stmt->execute();
         $preguntas = $stmt->fetchAll();
+        
+        
   
         $fecha = array();
         foreach ($preguntas as $key => $value) {

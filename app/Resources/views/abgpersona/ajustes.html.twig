@@ -1,5 +1,5 @@
 {% block js_extend %}
-     <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
+    <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
@@ -26,8 +26,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">AJUSTES</h3>
                         <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool"  id="btnIdioma">
-                                <i class="fa fa-cog pull-right"></i></button>
+
                         </div>
                     </div>
                     <div class="box-body">
@@ -94,13 +93,8 @@
 
                                                 <label for="contrasenhaAntigua" style="margin-bottom: 0px; color: #989898; font-size: 13px;">Confirmar contraseña</label>
                                                 <input type="password" name="contrasenhaNuevaConfirmacion" class="form-control input-sm verificacion" id="idcontrsenhaNuevaConfirmacion">
-
-
                                             </div>
-
-
                                         </div>
-                                    
                                         <div class="form-group" >
                                             <div class="col-md-12">
 
@@ -230,6 +224,7 @@
                                     <a href="#" id="cancelarBadge" style="display: none;">Cerrar</a>
                                 </p>
                             </div>
+
                             <div style="display: none;" id="codigo_badge">
                                 <div class="row">
 
@@ -257,78 +252,42 @@
                                     </div>
                                 </div> 
                             </div>
-                            <div id="notificaciones-email" style="display: none;"> 
+
+                            <div id="notificaciones-email"> 
                                 <!-- NOTIFICACION DE EMAILS -->
                                 <div class="col-md-offset-1" style="margin-top: 30px;">
                                     <p class="sans" style="font-size: 13px; margin-bottom: 0px;">
                                         Notificaciones por Email:
                                     </p>
-                                    <p style="margin-bottom: 0px; color: #989898; font-size: 13px;" class="sans">Seleccione las casillas de las cuales quiere recibir correos.</p>
+                                    <p style="margin-bottom: 0px; color: #989898; font-size: 13px;" class="sans">Seleccione la casillas si quiere recibir correos.</p>
                                 </div>
                                 <div class="col-md-10 col-md-offset-1" style="margin-top: 5px;">
                                     <!-- START DE CHECKBOX -->
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox"> <p class="sans" style="font-size: 13px;">Cuando alguien me quiere contactar</p>
+                                            <input type="checkbox" name="checkActual" id="checkActual" {%if(notificacion==1)%} checked{%endif%}> <p class="sans" style="font-size: 13px;">Cuando alguien hace una pregunta </p>
                                         </label>
                                     </div>
                                     <!-- START DE CHECKBOX -->
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox"> <p class="sans" style="font-size: 13px;">Cuando alguien me quiere contactar</p>
-                                        </label>
-                                    </div>
-                                    <!-- START DE CHECKBOX -->
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox"> <p class="sans" style="font-size: 13px;">Cuando alguien me quiere contactar</p>
-                                        </label>
-                                    </div>
-                                    <!-- START DE CHECKBOX -->
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox"> <p class="sans" style="font-size: 13px;">Cuando alguien me quiere contactar</p>
-                                        </label>
-                                    </div>
-                                    <!-- START DE CHECKBOX -->
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox"> <p class="sans" style="font-size: 13px;">Cuando alguien me quiere contactar</p>
-                                        </label>
-                                    </div>
-                                    <!-- START DE CHECKBOX -->
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox"> <p class="sans" style="font-size: 13px;">Cuando alguien me quiere contactar</p>
-                                        </label>
-                                    </div>
-                                    <!-- START DE CHECKBOX -->
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox"> <p class="sans" style="font-size: 13px;">Cuando alguien me quiere contactar</p>
-                                        </label>
-                                    </div>
-                                    <!-- START DE CHECKBOX -->
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox"> <p class="sans" style="font-size: 13px;">Cuando alguien me quiere contactar</p>
-                                        </label>
-                                    </div>
-                                    <!-- START DE CHECKBOX -->
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox"> <p class="sans" style="font-size: 13px;">Cuando alguien me quiere contactar</p>
-                                        </label>
-                                    </div>
-                                    <hr style="margin-top: 10px; margin-bottom: 10px;">
-                                    <!-- START DE CHECKBOX -->
-                                    <p style="margin-bottom: 0px; color: #989898; font-size: 13px;" class="sans">Desea removerse de todo? Aun le mandaremos notificaciones que creemos que fueran importantes.</p>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox"> <p class="sans" style="font-size: 13px;">Quiero desuscribirme de todas las notificaciones</p>
-                                        </label>
-                                    </div>
-
+                                    {#    <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> <p class="sans" style="font-size: 13px;">Cuando alguien me quiere contactar</p>
+                                            </label>
+                                        </div>
+                                        <!-- START DE CHECKBOX -->
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> <p class="sans" style="font-size: 13px;">Cuando alguien me quiere contactar</p>
+                                            </label>
+                                        </div>
+                                        <hr style="margin-top: 10px; margin-bottom: 10px;">
+                                        <!-- START DE CHECKBOX -->
+                                        <p style="margin-bottom: 0px; color: #989898; font-size: 13px;" class="sans">Desea removerse de todo? Aun le mandaremos notificaciones que creemos que fueran importantes.</p>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> <p class="sans" style="font-size: 13px;">Quiero desuscribirme de todas las notificaciones</p>
+                                            </label>
+                                        </div> #}
                                 </div>
                             </div>
                         </div>
@@ -336,5 +295,47 @@
                 </div>
             </section>
         </div>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#checkActual').change(function () {
+                    var estado;
+                    if ($('#checkActual').is(":checked")) {
+
+                        estado = 1;
+                    } else {
+                        estado = 0;
+                    }
+                    $.ajax({
+                        type: "POST",
+                        async: false,
+                        dataType: 'json',
+                        url: Routing.generate('notificacion'),
+                        data: {estado: estado},
+                        success: function (data)
+                        {
+
+                            if (data.msj !== false)
+                            {
+                                Lobibox.notify("success", {
+                                    size: 'mini',
+                                    msg: "<p>" + data.msj + "</p>"
+                                });
+                                
+                            } else
+                            {
+                                Lobibox.notify("warning", {
+                                    size: 'mini',
+                                    msg: "<p>" + data.error + "</p>"
+                                });
+                            }
+                        },
+                        error: function (errors)
+                        {
+
+                        }
+                    });
+                });
+            });
+        </script>
     {% endblock %}
 {% endblock %}

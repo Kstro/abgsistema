@@ -6,7 +6,7 @@ var Nidioma, Idioma = [];
 var DatosIdiomas = [];
 var EspecialidaSelect = [];
 var datos = "", datosMostrados = "";
-var persaEmpresa=0;
+var persaEmpresa = 0;
 
 $(document).on('ready', function () {
     $.ajax({
@@ -63,7 +63,7 @@ $(document).on('ready', function () {
         } else {
             estado = 0;
         }
-  
+
         $.ajax({
             type: 'POST',
             async: false,
@@ -179,7 +179,7 @@ $(document).on('ready', function () {
 
         } else
         {
-            
+
             $.ajax({
                 type: "GET",
                 url: Routing.generate('from_experiencia'),
@@ -310,65 +310,66 @@ $(document).on('ready', function () {
 });
 function Fsobremi()
 {
-          if ($("#div002").length > 0) {
+    if ($("#div002").length > 0) {
 
-        } else
-        {
-    $("#btnUnpoco").click();
-        }
+    } else
+    {
+        $("#btnUnpoco").click();
+    }
 }
 function editIdioma()
 {
-           if ($("#div3").length > 0) {
+    if ($("#div3").length > 0) {
 
-        } else
-        {
-    $('#btnIdioma').click();
-        }
+    } else
+    {
+        $('#btnIdioma').click();
+    }
 }
 
 function editEspe()
-{ if ($("#div01").length > 0) {
+{
+    if ($("#div01").length > 0) {
 
-        } else {
-    $('#btnespecialida').click();
-        }
+    } else {
+        $('#btnespecialida').click();
+    }
 }
 function editExperiencia(val)
 {
     var div, divn;
-           if ($("#div1").length > 0) {
+    if ($("#div1").length > 0) {
 
-        } else
-        {
-    $.ajax({
-        type: "GET",
-        url: Routing.generate('from_experiencia'),
-        data: {experiencia: val},
-        success: function (data)
-        {
-              if ($("#div1").length > 0) {
+    } else
+    {
+        $.ajax({
+            type: "GET",
+            url: Routing.generate('from_experiencia'),
+            data: {experiencia: val},
+            success: function (data)
+            {
+                if ($("#div1").length > 0) {
 
-        } else
-        {
-            actExp = 1;
-            div = '<div class="nueva-Experiencia" id="div1"  style="background-color: #FBFBFB;margin-bottom:10px;border-bottom:1px solid #F1EEEE">' + data + '</div><br>';
-            $("#consultas").before(div);
-            $("#" + val).hide();
-            editExp = val;
-        }
+                } else
+                {
+                    actExp = 1;
+                    div = '<div class="nueva-Experiencia" id="div1"  style="background-color: #FBFBFB;margin-bottom:10px;border-bottom:1px solid #F1EEEE">' + data + '</div><br>';
+                    $("#consultas").before(div);
+                    $("#" + val).hide();
+                    editExp = val;
+                }
 
-        },
-        error: function (errors)
-        {
+            },
+            error: function (errors)
+            {
 
-        }
-    });
-        }
+            }
+        });
+    }
 }
 function removeExperiencia(val)
 {
-  
+
     var div, divn;
     $.ajax({
         type: "GET",
@@ -505,39 +506,39 @@ function editDatosContacto() {
 }
 
 function editSobremi() {
-  tinymce.remove('.txtUnpoco1');
+    tinymce.remove('.txtUnpoco1');
 
-                    $.ajax({
-                        type: 'POST',
-                        async: false,
-                        dataType: 'json',
-                        url: Routing.generate('edit_persona'),
-                        data: {hPersona: $('input#hPersona').val(), descripcion: $("#txtUnpoco1").val(), n: 10},
-                        success: function (data)
-                        {
-                            $('#txtunpoco').empty();
-                            if (data.msj !== false) {
-                                $('#txtunpoco').html($("#txtUnpoco1").val());
+    $.ajax({
+        type: 'POST',
+        async: false,
+        dataType: 'json',
+        url: Routing.generate('edit_persona'),
+        data: {hPersona: $('input#hPersona').val(), descripcion: $("#txtUnpoco1").val(), n: 10},
+        success: function (data)
+        {
+            $('#txtunpoco').empty();
+            if (data.msj !== false) {
+                $('#txtunpoco').html($("#txtUnpoco1").val());
 
-                                $("#div002").remove();
-                                $("#conetenedorUnpoco").show();
-                                Lobibox.notify("success", {
-                                    size: 'mini',
-                                    msg: "<p>" + data.msj + "</p>"
-                                });
-                            }
-                        }
-                        ,
-                        error: function (errors)
-                        {
+                $("#div002").remove();
+                $("#conetenedorUnpoco").show();
+                Lobibox.notify("success", {
+                    size: 'mini',
+                    msg: "<p>" + data.msj + "</p>"
+                });
+            }
+        }
+        ,
+        error: function (errors)
+        {
 
-                        }
-                    });
-    
+        }
+    });
+
 }
 function addEspecialida()
 {
-    
+
 
     if (DataEspecialida.length > 0)
     {
@@ -619,131 +620,129 @@ function addExperiencia()
     {
         $('#txtEditEmpresa').val("");
     }
-     if ($('#ScambioEmpresa').is(':hidden'))
+    if ($('#ScambioEmpresa').is(':hidden'))
     {
         $('#ScambioEmpresa').select2();
     }
-  
 
-    if ($("#txtpuesto").val() !== "" && $("#txthubicacion").val() !== "" && $("#txtFechaIni").val() !== "" && ($("#txtEditEmpresa").val() !== "" || $("#ScambioEmpresa").val() !==null))
+
+    if ($("#txtpuesto").val() !== "" && $("#txthubicacion").val() !== "" && $("#txtFechaIni").val() !== "" && ($("#txtEditEmpresa").val() !== "" || $("#ScambioEmpresa").val() !== null))
     {
-if(persaEmpresa==0)
-{
-      $("#fExperiencia").submit(
-                function (event) {
+        if (persaEmpresa == 0)
+        {
+            $("#fExperiencia").submit(
+                    function (event) {
 
-                    var empresa, tipo;
-                    if ($('#cambioEmpresa').is(":visible")) {
-                        empresa = ($("#ScambioEmpresa").val());
-                        tipo = 1;
-                    } else {
-                        empresa = $("#txtEditEmpresa").val();
-                        tipo = 0;
-                    }
-                    var datos;
-   
-         
-                    $.ajax({
-                        type: 'POST',
-                        async: false,
-                        dataType: 'json',
-                        url: Routing.generate('registrar_experiencia'),
-                        data: {hPersona: $('input#hPersona').val(), dato: $("#fExperiencia").serialize(), empresa: empresa, tipo: tipo},
-                        success: function (data)
-                        {
+                        var empresa, tipo;
+                        if ($('#cambioEmpresa').is(":visible")) {
+                            empresa = ($("#ScambioEmpresa").val());
+                            tipo = 1;
+                        } else {
+                            empresa = $("#txtEditEmpresa").val();
+                            tipo = 0;
+                        }
+                        var datos;
+
+
+                        $.ajax({
+                            type: 'POST',
+                            async: false,
+                            dataType: 'json',
+                            url: Routing.generate('registrar_experiencia'),
+                            data: {hPersona: $('input#hPersona').val(), dato: $("#fExperiencia").serialize(), empresa: empresa, tipo: tipo},
+                            success: function (data)
+                            {
                                 $('div.experienc').children('br').remove();
-                            if (data.msj !== false) {
-                                $.each($(data.Exp), function (indice, val) {
-                                    $("#Exp" + val.id).remove();
-                                    datos = '<div class="row" id="Exp' + val.id + '">';
-                                    datos += '<div class="col-xs-1">';
-                                    if (val.src !== null)
-                                    {datos +='<a href="'+Routing.generate('busquedaPerfil', {url:val.url})+'">';
-                                        datos += '<img src="/' + val.src + '" style="max-width:50px;max-height:50px;"></a>';
-                                    }
-                                    else
-                                    {
-                                         datos += '<img src="/Resources/src/img/empresa/empresa.png" style="max-width:50px;max-height:50px;">';
-                                    }
-                                    datos += '</div>';
-                                    datos += '<div class="col-xs-11">';
-                                    if (val.url !== null)
-                                    {
-                                         datos +='<a href="'+Routing.generate('busquedaPerfil', {url:val.url})+'">';
-                                         datos += '<span style="font-size: 15px;">' + val.empresa + '&nbsp;</span></a>';
-                                          datos += '&nbsp;<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
-                                         datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i>';
-                                    } 
-                                    else
-                                    {
-                                           datos += '<span style="font-size: 15px;">' + val.empresa + '&nbsp;</span>';
-                                    }
-                                    datos += '</br>';
-                                    datos += '<span style="font-size: 13px;">' + val.puesto + ' </br>';
+                                if (data.msj !== false) {
+                                    $.each($(data.Exp), function (indice, val) {
+                                        $("#Exp" + val.id).remove();
+                                        datos = '<div class="row" id="Exp' + val.id + '">';
+                                        datos += '<div class="col-xs-1">';
+                                        if (val.src !== null)
+                                        {
+                                            datos += '<a href="' + Routing.generate('busquedaPerfil', {url: val.url}) + '">';
+                                            datos += '<img src="/' + val.src + '" style="max-width:50px;max-height:50px;"></a>';
+                                        } else
+                                        {
+                                            datos += '<img src="/Resources/src/img/empresa/empresa.png" style="max-width:50px;max-height:50px;">';
+                                        }
+                                        datos += '</div>';
+                                        datos += '<div class="col-xs-11">';
+                                        if (val.url !== null)
+                                        {
+                                            datos += '<a href="' + Routing.generate('busquedaPerfil', {url: val.url}) + '">';
+                                            datos += '<span style="font-size: 15px;">' + val.empresa + '&nbsp;</span></a>';
+                                            datos += '&nbsp;<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"';
+                                            datos += 'title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i>';
+                                        } else
+                                        {
+                                            datos += '<span style="font-size: 15px;">' + val.empresa + '&nbsp;</span>';
+                                        }
+                                        datos += '</br>';
+                                        datos += '<span style="font-size: 13px;">' + val.puesto + ' </br>';
 
-                                    if (val.dias === null) {
-                                        datos += val.fechaIn + ' - Actualmente';
-                                    } else {
-                                        datos += val.fechaIn + ' - ' + val.fechaFin + '&nbsp;';
-                                        datos += '(&nbsp;' + parseFloat(val.dias / 365).toFixed(0) + '&nbsp;años&nbsp' + ((parseFloat(val.dias / 365) - (parseFloat(val.dias / 365).toFixed(0))) * 12).toFixed(0) + '&nbsp;meses)&nbsp;|&nbsp;';
+                                        if (val.dias === null) {
+                                            datos += val.fechaIn + ' - Actualmente';
+                                        } else {
+                                            datos += val.fechaIn + ' - ' + val.fechaFin + '&nbsp;';
+                                            datos += '(&nbsp;' + parseFloat(val.dias / 365).toFixed(0) + '&nbsp;años&nbsp' + ((parseFloat(val.dias / 365) - (parseFloat(val.dias / 365).toFixed(0))) * 12).toFixed(0) + '&nbsp;meses)&nbsp;|&nbsp;';
+                                        }
+                                        datos += val.hubicacion + '</span>';
+                                        datos += '<p style = "width: 90%; margin-top: 5px;text-align:justify;">' + val.funcion;
+                                        datos += '<script type="text/javascript">';
+                                        datos += '$("#Exp' + val.id + '").hover(';
+                                        datos += 'function(){';
+                                        datos += '$(this).append($(\'<span  style="margin-left:83px;"><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
+                                        datos += 'onclick="editExperiencia(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn  btnperfil" ';
+                                        datos += 'onclick="removeExperiencia(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
+                                        datos += '},function(){';
+                                        datos += '$(this).find("span:last").remove();';
+                                        datos += '});';
+                                        datos += '</script></p>';
+                                        datos += '</div>';
+                                        datos += '</div>';
+                                        if (val.fechaFin == null)
+                                        {
+                                            $('#experienciaActual').text(val.empresa);
+                                        }
                                     }
-                                    datos += val.hubicacion + '</span>';
-                                    datos += '<p style = "width: 90%; margin-top: 5px;text-align:justify;">' + val.funcion;
-                                    datos += '<script type="text/javascript">';
-                                    datos += '$("#Exp' + val.id + '").hover(';
-                                    datos += 'function(){';
-                                    datos += '$(this).append($(\'<span  style="margin-left:83px;"><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
-                                    datos += 'onclick="editExperiencia(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn  btnperfil" ';
-                                    datos += 'onclick="removeExperiencia(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
-                                    datos += '},function(){';
-                                    datos += '$(this).find("span:last").remove();';
-                                    datos += '});';
-                                    datos += '</script></p>';
-                                    datos += '</div>';
-                                    datos += '</div>';
-                                      if(val.fechaFin==null)
+                                    );
+                                    $("#consultas").append(datos);
+                                    if (data.val != null && data.val == 1)
                                     {
-                                    $('#experienciaActual').text(val.empresa);
+
+                                        persaEmpresa = data.val;
+                                        Lobibox.notify("success", {
+                                            size: 'mini',
+                                            msg: "<p>" + data.msj + "</p>"
+                                        });
+                                    } else
+                                    {
+
+                                        Lobibox.notify("success", {
+                                            size: 'mini',
+                                            msg: "<p>" + data.msj + "</p>"
+                                        });
+                                        $("#div1").remove();
+                                    }
+                                } else {
+                                    Lobibox.notify("warning", {
+                                        size: 'mini',
+                                        msg: "<p>" + data.error + "</p>"
+                                    });
                                 }
-                                }
-                                );
-                                $("#consultas").append(datos);
-                                if(data.val!=null && data.val==1)
-                                {
-                                   
-                                     persaEmpresa=data.val;
-                                     Lobibox.notify("success", {
-                                    size: 'mini',
-                                    msg: "<p>" + data.msj + "</p>"
-                                });
-                                }
-                                else
-                                {
-                                   
-                                Lobibox.notify("success", {
-                                    size: 'mini',
-                                    msg: "<p>" + data.msj + "</p>"
-                                });
-                                $("#div1").remove();
                             }
-                            } else {
-                                Lobibox.notify("warning", {
-                                    size: 'mini',
-                                    msg: "<p>" + data.error + "</p>"
-                                });
+                            ,
+                            error: function (errors)
+                            {
+
                             }
                         }
-                        ,
-                        error: function (errors)
-                        {
-
-                        }
-                    }
-                    );
-                   event.preventDefault();
-                   return false;
-               });
-               }
+                        );
+                        event.preventDefault();
+                        return false;
+                    });
+        }
     }
 
 }
@@ -754,77 +753,76 @@ function addEdu() {
         var datos;
         $("#fEdu").submit(
                 function (event) {
-                           if(($("#txtAnioIni").val()>$("#txtAnioFin").val())&& ($("#txtAnioFin").val()!=""))
-        {
-            Lobibox.notify("warning", {
-                                    size: 'mini',
-                                    msg: "<p> Año fin menor que año inicio</p>"
-                                });
-        }
-        else
-        {
-                   $.ajax({
-                        type: 'POST',
-                        async: false,
-                        dataType: 'json',
-                        url: Routing.generate('registrar_edu'),
-                        data: {hPersona: $('input#hPersona').val(), dato: $("#fEdu").serialize()},
-                        success: function (data)
-                        {
-                             $('div.education').children('br').remove();
-                            if (data.msj !== false) {
-                                $.each($(data.Edu), function (indice, val) {
-                                    $("#Edu" + val.idEs).remove();
-                                    datos = '<div class="row" id="Edu' + val.idEs + '">';
-                                    datos += '<div class="col-xs-11" id="hfd">';
-                                    datos += '<span style="font-size: 15px;">' + val.institucion + '&nbsp;</span></br>';
-                                    datos += '<span style="font-size: 13px;">' + val.disciplina + ' | ' + val.titulo + ' </br>' + val.anioIni + ' - ' + val.anio + '</span>';
-                                    
-                                    datos += '<div >';
-                                    datos += '<script type="text/javascript">';
-                                    datos += '$("#Edu' + val.idEs + '").hover(';
-                                    datos += 'function(){';
-                                    datos += '$(this).append($(\'<span style="width: 90%;margin:13px;margin-top:10px;margin-bottom:10px;"><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
-                                    datos += 'onclick="editEducacion(' + val.idEs + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
-                                    datos += 'onclick="removeEdu(' + val.idEs + ')">&nbsp;Eliminar</i></span>\'));';
-                                    datos += '},function(){';
-                                    datos += '$(this).find("span:last").remove();';
-                                    datos += '});';
-                                    datos += '</script></div>';
-                                    datos += '</div>';
-                                    datos += '</div>';
-                                   
-                                    if(val.anio=="")
-                                    {
-                                    $('#estudioActual').text(val.institucion);
-                                  
-                                }
-                                });
-                                $("#consultaEducacion").append(datos);
-                                Lobibox.notify("success", {
-                                    size: 'mini',
-                                    msg: "<p>" + data.msj + "</p>"
-                                });
-                                $("#div2").remove();
-                                
-                                
-                            } else {
-                                Lobibox.notify("warning", {
-                                    size: 'mini',
-                                    msg: "<p>" + data.error + "</p>"
-                                });
-                            }
-                        }
-                        ,
-                        error: function (errors)
-                        {
+                    if (($("#txtAnioIni").val() > $("#txtAnioFin").val()) && ($("#txtAnioFin").val() != ""))
+                    {
+                        Lobibox.notify("warning", {
+                            size: 'mini',
+                            msg: "<p> Año fin menor que año inicio</p>"
+                        });
+                    } else
+                    {
+                        $.ajax({
+                            type: 'POST',
+                            async: false,
+                            dataType: 'json',
+                            url: Routing.generate('registrar_edu'),
+                            data: {hPersona: $('input#hPersona').val(), dato: $("#fEdu").serialize()},
+                            success: function (data)
+                            {
+                                $('div.education').children('br').remove();
+                                if (data.msj !== false) {
+                                    $.each($(data.Edu), function (indice, val) {
+                                        $("#Edu" + val.idEs).remove();
+                                        datos = '<div class="row" id="Edu' + val.idEs + '">';
+                                        datos += '<div class="col-xs-11" id="hfd">';
+                                        datos += '<span style="font-size: 15px;">' + val.institucion + '&nbsp;</span></br>';
+                                        datos += '<span style="font-size: 13px;">' + val.disciplina + ' | ' + val.titulo + ' </br>' + val.anioIni + ' - ' + val.anio + '</span>';
 
-                        }
-                    });
+                                        datos += '<div >';
+                                        datos += '<script type="text/javascript">';
+                                        datos += '$("#Edu' + val.idEs + '").hover(';
+                                        datos += 'function(){';
+                                        datos += '$(this).append($(\'<span style="width: 90%;margin:13px;margin-top:10px;margin-bottom:10px;"><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
+                                        datos += 'onclick="editEducacion(' + val.idEs + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
+                                        datos += 'onclick="removeEdu(' + val.idEs + ')">&nbsp;Eliminar</i></span>\'));';
+                                        datos += '},function(){';
+                                        datos += '$(this).find("span:last").remove();';
+                                        datos += '});';
+                                        datos += '</script></div>';
+                                        datos += '</div>';
+                                        datos += '</div>';
+
+                                        if (val.anio == "")
+                                        {
+                                            $('#estudioActual').text(val.institucion);
+
+                                        }
+                                    });
+                                    $("#consultaEducacion").append(datos);
+                                    Lobibox.notify("success", {
+                                        size: 'mini',
+                                        msg: "<p>" + data.msj + "</p>"
+                                    });
+                                    $("#div2").remove();
+
+
+                                } else {
+                                    Lobibox.notify("warning", {
+                                        size: 'mini',
+                                        msg: "<p>" + data.error + "</p>"
+                                    });
+                                }
+                            }
+                            ,
+                            error: function (errors)
+                            {
+
+                            }
+                        });
                     }
                     event.preventDefault();
                 });
-                
+
     }
 }
 function removeEdu(val)
@@ -861,68 +859,72 @@ function removeEdu(val)
     });
 }
 function addOrganizacion() {
-
-console.log($("#txtFechFinOrg").val()+" "+$("#txtFechIniOrg").val());
-    if ($("#txtOrg").val() !== "" && $("#txtPuestoOrg").val() !== "" && $("#txtFechIniOrg").val() !== "" )
+    if ($("#txtOrg").val() !== "" && $("#txtPuestoOrg").val() !== "" && $("#txtFechIniOrg").val() !== "")
     {
-
         var datos;
         $("#fOrg").submit(
                 function (event) {
                     var datos;
-                    $.ajax({
-                        type: 'POST',
-                        async: false,
-                        dataType: 'json',
-                        url: Routing.generate('registrar_org'),
-                        data: {hPersona: $('input#hPersona').val(), dato: $("#fOrg").serialize()},
-                        success: function (data)
-                        {
-                      $('div.organiz').children('br').remove();
-                            if (data.msj !== false) {
-                                $.each($(data.Organizacion), function (indice, val) {
-                                    $("#Org" + val.id).remove();
-                                    datos = '<div class="row" id="Org' + val.id + '">';
-                                    datos += '<div class="col-xs-12">';
-                                    datos += '<span style="font-size: 16px;">&nbsp;' + val.nombre + '&nbsp;</span></br>';
-                                    datos += '<span style="font-size: 13px;">' + val.puesto + ' </br>' + val.fechaIn + ' - ' + val.fechaFin + '</span>';
-                                    datos += '<p style = "width:100%; margin-top: 5px;text-align:justify;">' + val.descripcion+'</p>';
-                                    datos += '<script type="text/javascript">';
-                                    datos += '$("#Org' + val.id + '").hover(';
-                                    datos += 'function(){';
-                                    datos += '$(this).append($(\'<span style="margin-left:13px;"><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
-                                    datos += 'onclick="editOrganizacion(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
-                                    datos += 'onclick="removeOrg(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
-                                    datos += '},function(){';
-                                    datos += '$(this).find("span:last").remove();';
-                                    datos += '});';
-                                    datos += '</script>';
-                                    datos += '</div>';
-                                    datos += '</div>';
-                                });
-                                $("#consultaOrg").append(datos);
-                                Lobibox.notify("success", {
-                                    size: 'mini',
-                                    msg: "<p>" + data.msj + "</p>"
-                                });
-                                $("#div5").remove();
-                            } else {
-                                Lobibox.notify("warning", {
-                                    size: 'mini',
-                                    msg: "<p>" + data.error + "</p>"
-                                });
-
-
+                    if ($("#txtFechFinOrg").val() < $("#txtFechIniOrg").val())
+                    {
+                        Lobibox.notify("warning", {
+                            size: 'mini',
+                            msg: "<p>Fecha fin menor a fecha inicio.</p>"
+                        });
+                    } else
+                    {
+                        $.ajax({
+                            type: 'POST',
+                            async: false,
+                            dataType: 'json',
+                            url: Routing.generate('registrar_org'),
+                            data: {hPersona: $('input#hPersona').val(), dato: $("#fOrg").serialize()},
+                            success: function (data)
+                            {
+                                console.log(data.msj);
+                                $('div.organiz').children('br').remove();
+                                if (data.msj !== false) {
+                                    $.each($(data.Organizacion), function (indice, val) {
+                                        $("#Org" + val.id).remove();
+                                        datos = '<div class="row" id="Org' + val.id + '">';
+                                        datos += '<div class="col-xs-12">';
+                                        datos += '<span style="font-size: 16px;">&nbsp;' + val.nombre + '&nbsp;</span></br>';
+                                        datos += '<span style="font-size: 13px;">' + val.puesto + ' </br>' + val.fechaIn + ' - ' + val.fechaFin + '</span>';
+                                        datos += '<p style = "width:100%; margin-top: 5px;text-align:justify;">' + val.descripcion + '</p>';
+                                        datos += '<script type="text/javascript">';
+                                        datos += '$("#Org' + val.id + '").hover(';
+                                        datos += 'function(){';
+                                        datos += '$(this).append($(\'<span style="margin-left:13px;"><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
+                                        datos += 'onclick="editOrganizacion(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
+                                        datos += 'onclick="removeOrg(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
+                                        datos += '},function(){';
+                                        datos += '$(this).find("span:last").remove();';
+                                        datos += '});';
+                                        datos += '</script>';
+                                        datos += '</div>';
+                                        datos += '</div>';
+                                    });
+                                    $("#consultaOrg").append(datos);
+                                    Lobibox.notify("success", {
+                                        size: 'mini',
+                                        msg: "<p>" + data.msj + "</p>"
+                                    });
+                                    $("#div5").remove();
+                                } else {
+                                    Lobibox.notify("warning", {
+                                        size: 'mini',
+                                        msg: "<p>" + data.error + "</p>"
+                                    });
+                                }
+                            },
+                            error: function (errors)
+                            {
                             }
-                        }
-                        ,
-                        error: function (errors)
-                        {
-
-                        }
-                    });
+                        });
+                    }
                     event.preventDefault();
                 });
+
     }
 }
 function removeOrg(val)
@@ -961,55 +963,55 @@ function removeOrg(val)
 function editOrganizacion(val)
 {
     var div, divn;
-         if ($("#div5").length > 0) {
-        } else {
-    $.ajax({
-        type: "GET",
-        url: Routing.generate('from_organizacion'),
-        data: {organizacion: val},
-        success: function (data)
-        {
-              if ($("#div5").length > 0) {
-        } else {
-            div = '<div class="nueva-Experiencia" id="div5"  style="background-color:#FBFBFB;margin-bottom:-38px;border-bottom:1px solid #F1EEEE;">' + data + '</div><br>';
-            $("#consultaOrg").before(div);
-            $("#Org" + val).hide();
-            editEdu = val;
-        }
-        },
-        error: function (errors)
-        {
+    if ($("#div5").length > 0) {
+    } else {
+        $.ajax({
+            type: "GET",
+            url: Routing.generate('from_organizacion'),
+            data: {organizacion: val},
+            success: function (data)
+            {
+                if ($("#div5").length > 0) {
+                } else {
+                    div = '<div class="nueva-Experiencia" id="div5"  style="background-color:#FBFBFB;margin-bottom:-38px;border-bottom:1px solid #F1EEEE;">' + data + '</div><br>';
+                    $("#consultaOrg").before(div);
+                    $("#Org" + val).hide();
+                    editEdu = val;
+                }
+            },
+            error: function (errors)
+            {
 
-        }
-    });
-        }
+            }
+        });
+    }
 }
 
 function editEducacion(val)
 {
     var div, divn;
-        if ($("#div2").length > 0) {
-        } else {
-    $.ajax({
-        type: "GET",
-        url: Routing.generate('from_educacion'),
-        data: {educacion: val},
-        success: function (data)
-        {
-               if ($("#div2").length > 0) {
-        } else {
-            div = '<div class="nueva-Experiencia" id="div2"  style="background-color:#f4f4f4;margin-bottom:-28px;border-bottom:1px solid #F1EEEE">' + data + '</div><br><br>';
-            $("#consultaEducacion").before(div);
-            $("#Edu" + val).hide();
-            editEdu = val;
-        }
-        },
-        error: function (errors)
-        {
+    if ($("#div2").length > 0) {
+    } else {
+        $.ajax({
+            type: "GET",
+            url: Routing.generate('from_educacion'),
+            data: {educacion: val},
+            success: function (data)
+            {
+                if ($("#div2").length > 0) {
+                } else {
+                    div = '<div class="nueva-Experiencia" id="div2"  style="background-color:#f4f4f4;margin-bottom:-28px;border-bottom:1px solid #F1EEEE">' + data + '</div><br><br>';
+                    $("#consultaEducacion").before(div);
+                    $("#Edu" + val).hide();
+                    editEdu = val;
+                }
+            },
+            error: function (errors)
+            {
 
-        }
-    });
-        }
+            }
+        });
+    }
 }
 
 function addCertificacion() {
@@ -1023,6 +1025,14 @@ function addCertificacion() {
                 function (event) {
 
                     var datos;
+                       if ($("#txtFechFinC").val() < $("#txtFechIniC").val())
+                    {
+                        Lobibox.notify("warning", {
+                            size: 'mini',
+                            msg: "<p>Fecha fin menor a fecha inicio. </p>"
+                        });
+                    } else
+                    {
                     $.ajax({
                         type: 'POST',
                         async: false,
@@ -1031,7 +1041,7 @@ function addCertificacion() {
                         data: {hPersona: $('input#hPersona').val(), dato: $("#fCerti").serialize()},
                         success: function (data)
                         {
-                               $('div.certif').children('br').remove();
+                            $('div.certif').children('br').remove();
                             if (data.msj !== false) {
 
                                 $.each($(data.Cert), function (indice, val) {
@@ -1074,6 +1084,7 @@ function addCertificacion() {
 
                         }
                     });
+                       }
                     event.preventDefault();
                 });
     }
@@ -1114,37 +1125,44 @@ function removeCertificacion(val)
 function editCertificacion(val)
 {
     var div, divn;
-       if ($("#div6").length > 0) {
-        } else {
-    $.ajax({
-        type: "GET",
-        url: Routing.generate('from_certificacion'),
-        data: {certificacion: val},
-        success: function (data)
-        {if ($("#div6").length > 0) {
-        } else {
-            div = '<div class="nueva-Experiencia" id="div6"  style="background-color:#f4f4f4;margin-bottom:-30px;border-bottom:1px solid #F1EEEE">' + data + '</div><br><br>';
-            $("#consultaCertificacion").before(div);
-            $("#Cert" + val).hide();
-            editEdu = val;
-        }
-        },
-        error: function (errors)
-        {
+    if ($("#div6").length > 0) {
+    } else {
+        $.ajax({
+            type: "GET",
+            url: Routing.generate('from_certificacion'),
+            data: {certificacion: val},
+            success: function (data)
+            {
+                if ($("#div6").length > 0) {
+                } else {
+                    div = '<div class="nueva-Experiencia" id="div6"  style="background-color:#f4f4f4;margin-bottom:-30px;border-bottom:1px solid #F1EEEE">' + data + '</div><br><br>';
+                    $("#consultaCertificacion").before(div);
+                    $("#Cert" + val).hide();
+                    editEdu = val;
+                }
+            },
+            error: function (errors)
+            {
 
-        }
-    });
-        }
+            }
+        });
+    }
 }
 function addCurso() {
     if ($("#txtCurso").val() !== "" && $("#txtAutoridaCM").val() !== "" && $("#txtFechIniCM").val() !== "" && $("#txtFechFinCM").val() !== "")
     {
-
         var datos;
         $("#fCurso").submit(
                 function (event) {
-
                     var datos;
+                          if ($("#txtFechFinCM").val() < $("#txtFechIniCM").val())
+                    {
+                        Lobibox.notify("warning", {
+                            size: 'mini',
+                            msg: "<p>Fecha fin menor a fecha inicio. </p>",
+                        });
+                    } else
+                    {
                     $.ajax({
                         type: 'POST',
                         async: false,
@@ -1175,7 +1193,9 @@ function addCurso() {
                                     datos += '</div>';
                                 });
                                 $("#consultaCurso").append(datos);
+
                                 Lobibox.notify("success", {
+
                                     size: 'mini',
                                     msg: "<p>" + data.msj + "</p>"
                                 });
@@ -1193,6 +1213,7 @@ function addCurso() {
 
                         }
                     });
+                }
                     event.preventDefault();
                 });
     }
@@ -1338,27 +1359,28 @@ function editCurso(val)
 {
     var div, divn;
     console.log($("#div7"));
-     if ($("#div7").length > 0) {
-        } else {
-    $.ajax({
-        type: "GET",
-        url: Routing.generate('from_curso'),
-        data: {curso: val},
-        success: function (data)
-        { if ($("#div7").length > 0) {
-        } else {
-            div = '<div class="nueva-Experiencia" id="div7"  style="background-color:#f4f4f4;margin-bottom:-48px;border-bottom:1px solid #F1EEEE">' + data + '</div><br>';
-            $("#consultaCurso").before(div);
-            $("#CM" + val).hide();
-            editEdu = val;
-        }
-        },
-        error: function (errors)
-        {
+    if ($("#div7").length > 0) {
+    } else {
+        $.ajax({
+            type: "GET",
+            url: Routing.generate('from_curso'),
+            data: {curso: val},
+            success: function (data)
+            {
+                if ($("#div7").length > 0) {
+                } else {
+                    div = '<div class="nueva-Experiencia" id="div7"  style="background-color:#f4f4f4;margin-bottom:-48px;border-bottom:1px solid #F1EEEE">' + data + '</div><br>';
+                    $("#consultaCurso").before(div);
+                    $("#CM" + val).hide();
+                    editEdu = val;
+                }
+            },
+            error: function (errors)
+            {
 
-        }
-    });
-        }
+            }
+        });
+    }
 }
 
 function ciudad()

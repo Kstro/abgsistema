@@ -76,7 +76,7 @@
                                             <td width="15%" align="center"> {{datos.plazo}} Dias</td>
                                             <td width="10%"  class="text-right">$ {{ datos.monto|number_format(2, '.', ',') }}</td>
                                             <td width="20%" align="justify">{{datos.descripcion}}&nbsp;</td>
-                                            <td width="10%" align="justify">{%if(datos.caducidad<0)%}<span class="label label-danger" style=" font-size: 12px;">Finalizado</span>{%elseif(datos.caducidad==0)%}<span class="label label-warning" style=" font-size: 12px">Hoy</span>{%else%}<span class="label label-success" style=" font-size: 12px">{{datos.caducidad}} Dias</span>{%endif%}</td>
+                                            <td width="10%" align="justify">{%if(datos.caducidad<0)%}<span class="label label-danger" style=" font-size: 12px;">Finalizado</span>{%elseif(datos.caducidad==0)%}<span class="label label-warning" style=" font-size: 12px">Hoy</span>{%elseif(datos.caducidad>0 and datos.caducidad<4)%}<span class="label label-warning" style=" font-size: 12px">{{datos.caducidad}} Dias</span>{%else%}<span class="label label-success" style=" font-size: 12px">{{datos.caducidad}} Dias</span>{%endif%}</td>
                                         </tr>
                                     {%endfor%}
                                 {%endif%}

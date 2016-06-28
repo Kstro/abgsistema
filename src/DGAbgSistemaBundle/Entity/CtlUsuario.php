@@ -107,11 +107,18 @@ class CtlUsuario implements AdvancedUserInterface, \Serializable
     private $estadoCorreo;
     
        /**
-     * @var boolean
+     * @var string
      *
      * @ORM\Column(name="codigo_confirmar", type="string", nullable=true)
      */
     private $codigoConfirmar;
+    
+     /**
+     * @var integer
+     *
+     * @ORM\Column(name="notificacion", type="integer", nullable=false)
+     */
+    private $notificacion;
     
     /**
      * Constructor
@@ -130,6 +137,29 @@ class CtlUsuario implements AdvancedUserInterface, \Serializable
     public function getId()
     {
         return $this->id;
+    }
+    
+          /**
+     * Get notificacion
+     *
+     * @return integer 
+     */
+    public function getNotificacion()
+    {
+        return $this->notificacion;
+    }
+
+    /**
+     * Set notificacion
+     *
+     * @param integer $notificacion
+     * @return CtlUsuario
+     */
+    public function setNotificacion($notificacion)
+    {
+        $this->notificacion= $notificacion;
+
+        return $this;
     }
       /**
      * Get estado_correo

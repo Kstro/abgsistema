@@ -35,7 +35,7 @@ var x=false;
  $("#cmdCambiarContra").prop('disabled', true);
  
  
-    $(document).on("change",".verificacion",function() {
+    $(document).on("input",".verificacion",function() {
 	
         var contraseNueva= $("#idcontrsenhaNueva").val();
         var contraseNuevaConfirmacion= $("#idcontrsenhaNuevaConfirmacion").val();
