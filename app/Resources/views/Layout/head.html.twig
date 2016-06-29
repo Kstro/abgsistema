@@ -9,6 +9,26 @@
     .autocomplete-group strong { font-weight: bold; font-size: 16px; color: #000; display: block; border-bottom: 1px solid #000; }
     a{  color:#333;}
     a:hover{  text-decoration: none;}
+    /* This part is added to the hamburger css so they have the same height and positioning. */
+.hamburger span, .arrow span {
+    height: 10px;
+    -webkit-transform: translateY(29px);
+}
+
+/* I also need to move it back a bit to keep it centered. */
+.arrow {
+    -webkit-transform: rotate(180deg) translateX(-3px);
+}
+
+.arrow .second,
+.arrow .third {
+    -webkit-transform: rotate(-45deg) translateY(56px);
+    width: 40px;
+}
+
+.arrow .second {
+    -webkit-transform: rotate(45deg) translateY(-15px) translateX(40px);
+}
 </style>
 {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')%}
     <div class="container-fluid hidden-xs" style="height: 27px; background-color: #263345;">
@@ -79,13 +99,14 @@
             <a class="navbar-brand logo" href="{{ path('index')}}"><span class="logo-lg"><img src="{{ asset('Resources/src/img/logo2.png')}}" style="width:220px; margin-top: -17px;"  class="img-responsive" ></span></a>
         </div>
         <div id="slidemenu" >
-       {#     <form class="navbar-form navbar-right" >
-                <div class="form-group">
+            <div class="navbar-form navbar-right" style="height: 52px;" >
+                {#<div class="form-group">
                     <input type="text" placeholder="abogado" class="form-control" id="buscar_head">
                 </div>
-                <button type="button" class="btn btn-primary btn-flat" id="btnBuscarHead">Buscar</button>
-            </form>#}
-
+                <button type="button" class="btn btn-primary btn-flat" id="btnBuscarHead">Buscar</button>#}
+                <img src="{{ asset('Resources/src/img/logo2.png') }}" style="width:220px; margin-top: -15px;" class="img-responsive">
+            </div>
+            
             <ul  class="nav navbar-nav" >
                 <li > <a href="{{ path('directorio_index')}}" style=" color: #263345;font-weight: bold;">Directorio</a></li>
                 <li class="dropdowns" >
@@ -106,14 +127,14 @@
                         <li style=" padding: 2px;"><a href="{{ path('directorio_index') }}?busqueda=Derecho penal" style="line-height: 20px; font-size: 13px;font-weight: bold;" class="">Derecho penal</a></li>
                         <li style=" padding: 2px;"><a href="{{ path('directorio_index') }}?busqueda=Derecho internacional"style="line-height: 20px; font-size: 13px;font-weight: bold;" class="">Derecho internacional</a></li>
                     </ul>
-                    </il>
+                 </li>
                 <li  class="sans"><a href="{{path('pregunta_index')}}" style=" color: #263345;font-weight: bold;">Preguntar gratis</a></li>
                 <li  class="sans"> <a href="{{path('soy_abogado')}}" style=" color: #263345;font-weight: bold;">Soy un abogado</a></li>
                     {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')%}
                     <li  class="sans"> <a href="{{ path('perfil')}}" style=" color: #263345;font-weight: bold;">Mi cuenta</a></li>
                 {% else %}
                     <li  class="sans"> <a href="{{ path('registro')}}" style=" color: #263345;font-weight: bold;">Registrarme</a></li>
-                    <li  class="sans"> <a href="{{ path('abogado_login')}}" style=" color: #263345;font-weight: bold;">Login</a></li>
+                    <li class="hidden-xs hidden-sm"  class="sans"> <a href="{{ path('abogado_login')}}" style=" color: #263345;font-weight: bold;">Login</a></li>
                     {% endif %}
             </ul>
 

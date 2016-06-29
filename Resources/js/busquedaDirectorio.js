@@ -14,10 +14,10 @@ $(document).ready(function () {
         var ciudad = $('#searchInputDept').val();
         window.location = Routing.generate("directorio_index") + "?busqueda=" + busqueda + "&ciu=" + ciudad;
     });
-    $('#searchBox').autocomplete({
+    $('#searchBox,#searchBoxMov').autocomplete({
         serviceUrl: url,
     });
-    $('#searchInputDept').autocomplete({
+    $('#searchInputDept, #searchInputDeptMov').autocomplete({
         serviceUrl: urlCiudad,
     });
 
