@@ -285,6 +285,8 @@ class AbgPersonaController extends Controller {
             $em->getConnection()->beginTransaction();
             $request = $this->getRequest();
             parse_str($request->get('datos'), $datos);
+         
+   
             $array = $request->get('esp');
             $data['msj'] = "";
 
@@ -297,6 +299,7 @@ class AbgPersonaController extends Controller {
             $Persona->setApellido($datos['txtapellido']);
             $Persona->setTituloProfesional($datos['Stitulo']);
             $Persona->setCtlCiudad($Ciudad);
+            $Persona->setGenero($request->get('genero'));
 
             $em->merge($Persona);
             $em->flush();
@@ -368,10 +371,12 @@ class AbgPersonaController extends Controller {
 
 
                 $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
-                        . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.tituloProfesional AS tprofesional, p.verificado As verificado "
+                        . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.tituloProfesional AS tprofesional, p.verificado As verificado, "
+                        . " p.genero AS genero "
                         . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
                 $result_persona = $em->createQuery($dql_persona)->getArrayResult();
-
+                
+     
 
                 $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
 
@@ -470,8 +475,9 @@ class AbgPersonaController extends Controller {
 
 
                 $dqlfoto = "SELECT fot.src as src, fot.estado As estado "
-                        . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=1";
+                        . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=0";
                 $fotoP = $em->createQuery($dqlfoto)->getArrayResult();
+             
 
                 $dqlNotificacion = "SELECT count(p.id) "
                         . " FROM DGAbgSistemaBundle:AbgFoto fot "
@@ -505,8 +511,10 @@ class AbgPersonaController extends Controller {
                 }
                 if (count($fotoP) >= 1) {
                     $cumplimiento = $cumplimiento + 10;
+                    
                 }
-                if (count($sitio) >= 1) {
+            
+                if ($result_persona[0]['verificado']== "1") {
 
                     $cumplimiento = $cumplimiento + 10;
                 }
@@ -904,7 +912,7 @@ class AbgPersonaController extends Controller {
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
                     . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado,  p.tituloProfesional AS tprofesional,"
-                    . " p.verificado As verificado "
+                    . " p.verificado As verificado, p.genero AS genero "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
 
@@ -1162,6 +1170,10 @@ class AbgPersonaController extends Controller {
                     break;
                 case 10:
                     $Persona->setDescripcion($request->get('descripcion'));
+                    $data['msj'] = "Dato actualizado";
+                    break;
+                 case 11:
+                    $Persona->setGenero($request->get('genero'));
                     $data['msj'] = "Dato actualizado";
                     break;
             }
@@ -2041,6 +2053,9 @@ class AbgPersonaController extends Controller {
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
 
             $IdEducacion = "";
+              $data['msj'] =false;
+            $data['error'] =false;
+
             if ((($datos['hidEdu'] == ""))) {
 
                 $Estudio = new AbgEstudio();
@@ -2136,6 +2151,9 @@ class AbgPersonaController extends Controller {
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
 
             $IdEducacion = "";
+              $data['msj'] =false;
+            $data['error'] =false;
+
 
 
             $fechaIni = date_create($datos['txtFechIniC']);
@@ -2257,6 +2275,9 @@ class AbgPersonaController extends Controller {
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
 
             $IdEducacion = "";
+              $data['msj'] =false;
+            $data['error'] =false;
+
 
             $fechaIni = date_create($datos['txtFechIniCM']);
             $fechaFin = date_create($datos['txtFechFinCM']);
@@ -2378,6 +2399,8 @@ class AbgPersonaController extends Controller {
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
 
             $IdEducacion = "";
+            $data['msj'] =false;
+            $data['error'] =false;
 
             $fechaIni = date_create($datos['txtFechIniOrg']);
             $fechaFin = date_create($datos['txtFechFinOrg']);
@@ -2440,8 +2463,8 @@ class AbgPersonaController extends Controller {
 
             return new Response(json_encode($data));
         } catch (Exception $e) {
-            $data['error'] = $e->getMessage(); //"Falla al Registrar ";
-            return new Response(json_encode($data));
+      //      $data['error'] = $e->getMessage(); //"Falla al Registrar ";
+         //   return new Response(json_encode($data));
         }
     }
 

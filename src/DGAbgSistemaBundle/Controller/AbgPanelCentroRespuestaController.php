@@ -130,14 +130,17 @@ class AbgPanelCentroRespuestaController extends Controller {
 
         $em = $this->getDoctrine()->getManager();
         $pregunta = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->find($id);
-   
+    $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
         $username = $this->container->get('security.context')->getToken()->getUser();
         $personaId = $username->getRhPersona();
+        $persona = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->find($idPersona)->getEstado();
+     
         $abgfoto = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findOneBy(array('abgPersona' => $personaId));
+        
      $tiemposRespuesta = array();
         if ($pregunta->getFechaPregunta() != NULL) {
         
-       //         array_push($tiemposRespuesta, $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s')));
+       //array_push($tiemposRespuesta, $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s')));
              $tiempo = $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s'));
         } else {
             $tiempo = NULL;
@@ -148,7 +151,8 @@ class AbgPanelCentroRespuestaController extends Controller {
                     'srcfoto' => $srcfoto,
                     'nombres' => $personaId->getNombres(), 
                     'apellidos' => $personaId->getApellido(),
-                'tiempo'=>$tiempo));
+                'tiempo'=>$tiempo,
+                'estado'=>$persona));
     }
 
     /**

@@ -145,7 +145,7 @@
                         <div class="col-sm-6 col-xs-9" >
                             <div class="row" >
                                 <div class="col-xs-10" style="padding-right: 0;">
-                                    <p style="margin-top: 10px; font-size: 23px; margin-left: 10px; margin-bottom: 0px;" >
+                                    <p style="font-size: 23px; margin-bottom: 0px;" >
                                         <strong>
                                             {{datos.nombre~' '~datos.apellido}}
                                         </strong>
@@ -154,21 +154,26 @@
                                         {%endif%}      
 
                                 </div></div>
-                                {%if datos.tprofesional|default is not empty %} 
-
+                               
+ {%if datos.tprofesional|default is not empty %}
                                 <div class="row" >
-                                    <div class="col-xs-12" style="padding-right: 0;">
-                                        <p style="color: #777777; margin-left: 11px; margin-top: -3px; margin-bottom: 0px;" >
-                                            {{datos.tprofesional}}
+                                     
+                                    <div class="col-xs-6 col-sm-3" style="padding-right: 0;">
+                                        <p style="color: #777777;  margin-top: -3px; margin-bottom: 0px;" >
+                                           {%if(datos.tprofesional=="1")%}Licenciatura{%elseif(datos.tprofesional=="2")%}Magíster{%elseif(datos.tprofesional=="3")%}Doctorado
+                                                        {%endif%}
+                                                      
                                         </p>
                                     </div>
+                                        
+                                          
                                 </div>
                             {%endif%}
                             {%if ciuda|default is not empty %}
                                 <div class="row" >
                                     <div class="col-xs-12" style="padding-right: 0;">
                                         <div  style="display:block;" id="divMunicipiox">
-                                            <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" >
+                                            <p style="color: 5555555; font-size: 12px; margin-bottom: 5px;" >
                                                 {% for datos in ciuda %}
                                                     <b> {{datos.estado}} </b> | {{datos.nombre}} 
                                                 {%endfor%}
@@ -180,10 +185,10 @@
                             <!-- ESPECIALIDAD(ES) -->
                             {%if RegistroEspecialida|default is not empty %}
                                 <div class="row" >
-                                    <div class="col-xs-4" style="padding-right: 0;">
-                                        <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Especialidades</span>
+                                    <div class="col-xs-4 col-sm-3" style="padding-right: 0;">
+                                        <span style="color: #4444444; font-size: 11px; ">Especialidades</span>
                                     </div>
-                                    <div class="col-xs-8" style="padding-left: 0;" >
+                                    <div class="col-xs-8 col-sm-9" style="padding-left: 0;" >
                                         <span style="font-size:13px;">
                                             <a href="#divEspecialidades">
                                                 {%set esp=""%}

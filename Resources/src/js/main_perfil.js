@@ -44,22 +44,30 @@ $(document).ready(function () {
 
     });
 
-    //a = datacheck.slice(0, -2);
-    // a=datacheck.slice(0,-2);
-    // console.log(eval(datacheck.slice(0,-2)));
+   
     $('#txtTituloProfesional').editable({
        validate: function (value) {
             if (value === "")
                 return 'requerido';
         },
         source: [
-               {value: 'Doctor/a', text: 'Doctor/a'},
-               {value: 'Licenciado/a', text: 'Licenciado/a'},
-               {value: 'Magíster', text: 'Magíster'}
+               {value: '3', text: 'Doctorado'},
+               {value: '1', text: 'Licenciatura'},
+               {value: '2', text: 'Magíster'}
            ]
 
     });
-
+    
+$('#txtGenero').editable({
+      validate: function (value) {
+            if (value === "")
+                return 'requerido';
+        },
+        source: [
+              {value: 'F', text: 'Mujer'},
+              {value: 'M', text: 'Hombre'}
+           ]
+    });
 
     $('#txtMovil').editable({
         validate: function (value) {
@@ -181,6 +189,7 @@ $(document).ready(function () {
         {
         } else
         {
+         
             $.ajax({
                 type: 'POST',
                 async: false,
@@ -198,7 +207,32 @@ $(document).ready(function () {
             });
         }
     });
+    $('#txtGenero').on('save', function (e, params) {
+      
+        if ((params.newValue["txtGenero"] === ""))
+        {
+           
+        } else
+        {
 
+            $.ajax({
+                type: 'POST',
+                async: false,
+                dataType: 'json',
+                data: {genero: params.newValue, hPersona: $('input#hPersona').val(), n:11},
+                url: Routing.generate('edit_persona'),
+                success: function (data)
+                {
+
+                },
+                error: function (xhr, status)
+                {
+                    alert('Disculpe, existió un problema');
+                }
+            });
+        }
+    });
+    
     $('#checkEspecialida').editable({
         source: eval(arrayEspecialidad),
         display: function (value, sourceData) {

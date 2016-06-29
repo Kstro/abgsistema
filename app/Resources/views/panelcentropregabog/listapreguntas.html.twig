@@ -119,7 +119,6 @@
                 </ul>
                 <div class="tab-content no-padding">
                     <div class="chart tab-pane active" id="listaPreguntas" style=" padding: 15px;">
-
                         {% if (preguntas | default is not empty)%}
                             <div class="form-group table-responsive mailbox-messages" id="contenedor">
                                 <br>
@@ -127,17 +126,14 @@
                                     <thead>
                                     </thead>
                                     <tbody id="body">
-
                                         {% for key, preguntas in preguntas %}
-                                            <tr> <td style=" width: 4%;"><a  style="text-decoration: none;" onClick="responder({{preguntas.idpreg}});" data-toggle="tooltip"  data-container="body" title="Responder" accesskey=""><i class="fa fa-edit fa-lg"></i></a></td>
-                                        
+                                            <tr><td style="width: 4%;"><a  style="text-decoration: none;" onClick="responder({{preguntas.idpreg}});" data-toggle="tooltip"  data-container="body" title="Responder" accesskey=""><i class="fa fa-edit fa-lg"></i></a></td>
                                                 <td style="width:82%;">{{ preguntas.pregunta }}</td>  
                                                 <td style="width:14%;">{{ fechaRespuesta[key] }}</td>
-
-                                                   </tr>
+                                            </tr>
                                         {% endfor %}
                                     </tbody>
-                                </table> 
+                                </table>
                             </div>
                         {%else%}
                             <div>No hay entradas de preguntas</div>

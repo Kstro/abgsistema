@@ -871,6 +871,7 @@ function addOrganizacion() {
                             size: 'mini',
                             msg: "<p>Fecha fin menor a fecha inicio.</p>"
                         });
+                          event.preventDefault();   
                     } else
                     {
                         $.ajax({
@@ -881,9 +882,9 @@ function addOrganizacion() {
                             data: {hPersona: $('input#hPersona').val(), dato: $("#fOrg").serialize()},
                             success: function (data)
                             {
-                                console.log(data.msj);
+                                
                                 $('div.organiz').children('br').remove();
-                                if (data.msj !== false) {
+                                if (data.msj !== false ) {
                                     $.each($(data.Organizacion), function (indice, val) {
                                         $("#Org" + val.id).remove();
                                         datos = '<div class="row" id="Org' + val.id + '">';
@@ -905,12 +906,13 @@ function addOrganizacion() {
                                         datos += '</div>';
                                     });
                                     $("#consultaOrg").append(datos);
+                            
                                     Lobibox.notify("success", {
                                         size: 'mini',
                                         msg: "<p>" + data.msj + "</p>"
                                     });
                                     $("#div5").remove();
-                                } else {
+                                } else if (data.error!== false){
                                     Lobibox.notify("warning", {
                                         size: 'mini',
                                         msg: "<p>" + data.error + "</p>"
@@ -923,6 +925,7 @@ function addOrganizacion() {
                         });
                     }
                     event.preventDefault();
+              
                 });
 
     }

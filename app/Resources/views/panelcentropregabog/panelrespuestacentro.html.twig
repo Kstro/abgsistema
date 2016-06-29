@@ -12,40 +12,43 @@
                 <br>
                 <input name="idpreg" class="hidden" type="text" value="{{pregunta.id}}">         
                 <div class="col-md-12">
-            
-                            <div class="direct-chat-msg direct-chat direct-chat-primary">
-                                <div class="direct-chat-info clearfix">
-                                    <span class="direct-chat-name pull-left">Anonimo</span>
-                                    <span class="direct-chat-timestamp pull-right">{{tiempo}}</span>
-                                </div>
-                                <!-- /.direct-chat-info -->
-                                <img alt="message user image" src="{{asset('Photos/defecto/defecto.png') }}" class="direct-chat-img"><!-- /.direct-chat-img -->
-                                <div class="direct-chat-text ">
-                                    {{pregunta.pregunta}}
-                                    <p class="text-justify" style="margin-top:5px;">
-                                     {{pregunta.detalle}}</p>
-                                </div>
-                                <!-- /.direct-chat-text -->
+                    <div class="direct-chat-msg direct-chat direct-chat-primary">
+                        <div class="direct-chat-info clearfix">
+                            <span class="direct-chat-name pull-left">Anonimo</span>
+                            <span class="direct-chat-timestamp pull-right">{{tiempo}}</span>
+                        </div>
+                        <!-- /.direct-chat-info -->
+                        <img alt="message user image" src="{{asset('Photos/defecto/defecto.png') }}" class="direct-chat-img"><!-- /.direct-chat-img -->
+                        <div class="direct-chat-text ">
+                            {{pregunta.pregunta}}
+                            <p class="text-justify" style="margin-top:5px;">
+                                {{pregunta.detalle}}</p>
+                        </div>
+                        <!-- /.direct-chat-text -->
+                    </div>
+                    {%if(estado==2)%}
+                        <br>
+                    {% else %}
+                        <p style="font-size:15px; margin-left: 5px;">Respuesta:</p>
+                        <p style="margin-left:5px;">
+
+                            {% if pregunta.estado == 1 %}
+                                Aun sin responder, puedes responderlo ahora!
+                            <div class="form-group" style="margin-left: 5px;">
+                                <textarea id="" name="respuesta" class="form-control textarea" placeholder="Agregue su respuesta aqui..." style="max-width: 100%; min-width: 515px; width:100%; max-height: 150px; min-height: 150px; height: 150px;" required></textarea>
                             </div>
+                        {% else %}
+                            {{pregunta.respuesta}}
+                            <hr>
+                            <p style="margin-left: 5px;">Lamentamos informarte que la pregunta ya fue respondida, pero puedes estar atento a nuevas preguntas</p>
+                        {% endif %}                                                                
 
-                            <p style="font-size:15px; margin-left: 5px;">Respuesta:</p>
-                            <p style="margin-left:5px;">
-                                {% if pregunta.estado == 1 %}
-                                    Aun sin responder, puedes responderlo ahora!
-                                <div class="form-group" style="margin-left: 5px;">
-                                    <textarea id="" name="respuesta" class="form-control textarea" placeholder="Agregue su respuesta aqui..." style="max-width: 100%; min-width: 515px; width:100%; max-height: 150px; min-height: 150px; height: 150px;" required></textarea>
-                                </div>
-                            {% else %}
-                                {{pregunta.respuesta}}
-                                <hr>
-                                <p style="margin-left: 5px;">Lamentamos informarte que la pregunta ya fue respondida, pero puedes estar atento a nuevas preguntas</p>
-                            {% endif %}                                                                
 
-                        
-                    
-                    {% if pregunta.estado == 1 %}
-                        <button type="submit" class="btn btn-primary btn-sm btn-flat">Enviar Respuesta</button>                     
 
+                        {% if pregunta.estado == 1 %}
+                            <button type="submit" class="btn btn-primary btn-sm btn-flat">Enviar Respuesta</button>                     
+
+                        {% endif %}
                     {% endif %}
                     <button type="button" class="btn btn-default btn-sm btn-flat" onClick="NoResponder()" >Regresar al Panel</button>     
                 </div>

@@ -1719,7 +1719,7 @@ class CtlEmpresaController extends Controller {
                     $idPersona = $ObjetoUrl[0]->getAbgPersona()->getId();
                     $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
                             . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado,  p.tituloProfesional AS tprofesional,"
-                            . " p.verificado As verificado "
+                            . " p.verificado As verificado, p.genero AS genero "
                             . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
                     $result_persona = $em->createQuery($dql_persona)->getArrayResult();
 

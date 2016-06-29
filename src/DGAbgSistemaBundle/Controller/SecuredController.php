@@ -180,8 +180,10 @@ class SecuredController extends Controller
        
       
         $em = $this->getDoctrine()->getManager();
-        $usuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->findOneBy(array('username' => $emailAbogado));        
-  
+        $usuario = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->findOneBy(array('correoelectronico' => $emailAbogado));  
+    
+
+  //$usuario->getRhPersona()->getId()
         $this->get('envio_correo')->sendEmail($emailAbogado, "", "", "",
                     "
                         <table style=\"width: 600px; margin: 0 auto;\">

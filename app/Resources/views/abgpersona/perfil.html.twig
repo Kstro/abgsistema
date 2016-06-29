@@ -17,6 +17,8 @@
     <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
+    
+    
     <script src="{{ asset('Resources/src/js/main_perfil.js')}}"></script>
     <style>
         .image-editor{
@@ -192,19 +194,31 @@
                                                 </p>
                                             </div></div>
                                         <div class="row" >
-                                            <div class="col-xs-10 col-ms-12" >
+                                            <div class="col-xs-6 col-sm-3" >
                                                 <p style="color: #777777;margin-top: -3px; margin-bottom: 0px;" >
                                                     <a href="#" id="txtTituloProfesional" data-type="select" data-pk="1" data-title="Nombre" data-placement="right" class="editable editable-click" title="Título Profesional">
-                                                        {%if datos.tprofesional|default is not empty %} {{datos.tprofesional}}
+                                                        {%if datos.tprofesional|default is not empty %}{%if(datos.tprofesional=="1")%}Licenciatura{%elseif(datos.tprofesional=="2")%}Magíster{%elseif(datos.tprofesional=="3")%}Doctorado
+                                                        {%endif%}
                                                         {%else%}
                                                             Título Profesional
                                                         {%endif%}
                                                     </a>
                                                 </p>
                                             </div>
+                                                    <div class="col-xs-6 col-sm-3" >
+                                                <p style="color: #777777;margin-top: -3px; margin-bottom: 0px;" >
+                                                    <a href="#" id="txtGenero" data-type="select" data-pk="1" data-title="Genero" data-placement="right" class="editable editable-click" title="Genero">
+                                                        {%if datos.genero|default is not empty %}{%if(datos.genero=="F")%}Mujer{%elseif(datos.genero=="M")%}Hombre
+                                                        {%endif%}
+                                                        {%else%}
+                                                            Genero
+                                                        {%endif%}
+                                                    </a>
+                                                </p>
+                                            </div>
                                         </div>
                                         <div class="row" >
-                                            <div class="col-xs-12 col-ms-12" >
+                                            <div class="col-xs-12 col-sm-12" >
                                                 {%if ciuda|default is not empty %}
                                                     <div  id="divMunicipiox">
                                                         <p style="color: 5555555;  font-size: 12px; margin-bottom: 5px;" >

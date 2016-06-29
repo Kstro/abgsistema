@@ -60,7 +60,19 @@
                                 <input type="text" class="form-control  input-sm"  id="txtapellido" name="txtapellido" 
                                        placeholder="Apellidos" data-rule-required="true" value="{{abgPersona[0].apellido}}">
                             </div>
-
+                                        
+                            <div class="form-group ">
+                                <div class="row">
+                                    <div class="col-sm-6 col-xs-6 col-md-3">
+                                        
+                                 <input type="radio"  name="rGenero"  value="F" class="genero"  id="gender_female" required/> <label for="Femenino">Mujer </label>
+                                    </div>
+                                        <div class="col-sm-6 col-xs-6 col-md-3" >
+                                              <input type="radio"  name="rGenero"  value="M" class="genero" id="gender_male"/> <label for="Masculino">Hombre</label>
+                                        </div>
+                                </div>
+                            </div>
+                          
                             <div class="form-group ">
 
 
@@ -90,9 +102,9 @@
                                 <label for="ejemplo_password_1">Titulo profesional</label>
                                 <select style="width: 100%;" id="Stitulo" name="Stitulo" class="input-sm newIdioma" data-rule-required="true">
                                     <option value="">- Seleccione -</option>
-                                    <option value="Doctor" >Doctorado</option>
-                                    <option value="Licenciado" >Licenciatura</option>
-                                    <option value="Magíster" >Magíster</option>
+                                    <option value="3" >Doctorado</option>
+                                    <option value="1" >Licenciatura</option>
+                                    <option value="2" >Magíster</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -106,7 +118,7 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-primary btn-sm btn-flat" onClick="enviar()">Continuar</button>
+                                        <button type="sgeneroubmit" class="btn btn-primary btn-sm btn-flat" onClick="enviar()">Continuar</button>
                                     </div>
                                 </div>
                             </div>
@@ -163,7 +175,7 @@
                                             function enviar()
                                             {
 
-                                                if ($('#Sespecialidad').val() !== null && $("#txtnombre").val() !== "" && $("#txtapellido").val() !== "" && ($("#Smunicipio").val() !== ""))
+                                               if ($('#Sespecialidad').val() !== null && $("#txtnombre").val() !== "" && $("#txtapellido").val() !== "" && ($("#Smunicipio").val() !== "") && ($('input:radio[name=rGenero]:checked').val()!== ""))
                                                 {
                                                     $("#fgeneral").submit(
                                                             function (event) {
@@ -172,7 +184,7 @@
                                                                     async: false,
                                                                     dataType: 'json',
                                                                     url: Routing.generate('informacion_general'),
-                                                                    data: {datos: $("#fgeneral").serialize(), esp: $('#Sespecialidad').val()},
+                                                                    data: {datos: $("#fgeneral").serialize(), esp: $('#Sespecialidad').val(),genero:$('input:radio[name=rGenero]:checked').val()},
                                                                     success: function (data)
                                                                     {
 
