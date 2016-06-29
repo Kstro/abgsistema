@@ -34,19 +34,12 @@
     </div>
     
     
-    <div id="page-content ">
+    <div id="page-content">
        
-        
-           <div class="container desktop hidden-xs" style=" margin-bottom: 20px;">
-            
-            
-            
-            
-            
-            
-            
-            
-            
+            {# Desktop *****************************************************************************************#}
+            {# Desktop *****************************************************************************************#}
+            <div class="container desktop hidden-xs" style=" margin-bottom: 20px;">
+                      
             <div class="row" id="registrosBusqueda">
                 <!-- LADO IZQUIERDO -->
                 <div class="col-md-9">
@@ -73,7 +66,7 @@
                                     <input type="hidden" id="randomDir" value="">
                                 </div>
                                 <div class="col-md-3 col-sm-3 hidden-xs  col-xs-5" style=" padding-left: 5px;padding-right: 5px;">
-                                    <input class="search" value="{{ciudad}}" id="searchInputDept" name="txtlugar" style="border: 1px solid #d2d6de; border-radius: 0;  height: 34px; width: 100%; text-decoration: none;" placeholder="Cuidad, Dept">
+                                    <input class="ssearch" value="{{ciudad}}" id="searchInputDept" name="txtlugar" style="border: 1px solid #d2d6de; border-radius: 0;  height: 34px; width: 100%; text-decoration: none;" placeholder="Cuidad, Dept">
                                 </div>
                                 <div class="col-md-2 col-sm2 hidden-xs col-xs-2" style="padding-left: 5px;">
                                     <button id="searchButton" type="submit" class="searchbotondir input-group btn btn-xs" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; background-color: #F42; color: #fff; font-weight: 600;">Buscar</button>
@@ -85,17 +78,17 @@
                         </div>
                         <input type="hidden" value="0" id="inicioInput">
                     </form>
-                    <div class="item-directorio-nexo" style="height: 40px; border:0px solid #FFF;">
-                        <p class="pull-left col-xs-6" id="mesaje_busqueda" style="font-size: 12px; margin-bottom: 0px; padding: 0px; display: none;">
+                    <div class="item-directorio-nexo" style="height: 40px; border-left:1px solid #CECECE;border-right:1px solid #CECECE;">
+                        <p class="pull-left col-xs-6" id="mesaje_busqueda" style="font-size: 12px; margin-bottom: 0px; padding: 10px; display: none;">
                             Mostrando los resultado para '<label id="filtro"></label>'.
                         </p>
-                        <p class="numRegistros pull-right col-xs-6" style="font-size: 12px; margin-bottom: 0px; padding: 0px; text-align: right">
+                        <p class="numRegistros pull-right col-xs-6" style="font-size: 12px; margin-bottom: 0px; padding: 10px; text-align: right">
                             Mostrando <label class="filtroRegistros"></label> resultados de <label class="totalRegistros"></label>
                         </p>
                     </div>
                     <!-- item 1 -->
 
-                    <div id="registros" class="xs">
+                    <div id="registros" class="xs" style="margin-top:-1px;">
                         
                     </div>
                     <!-- Paginado -->
@@ -167,42 +160,38 @@
             </div>
         </div>
         
-        
-        
-        
-        
-        
+        {# Movil *****************************************************************************************#}
+        {# Movil *****************************************************************************************#}
         <div class="container movil hidden-lg hidden-md hidden-sm" style=" margin-bottom: 0px;">
-            
-            
-            
-            
-            
-            
-		
-            
-                <button id="volverIni" style="padding: 5px; font-size: 13px; margin-top: 50px; text-align: center; width: 100%; border: 1px solid #c3c3c3; color: #fff; background-color: #263345;" class="sans">
+                <div class="" id="volverIni"></div>
+                {#Al mostrar este boton en movil los registros del directorio se adaptan a movil, sino salen en desktop#}
+                {#<button id="volverIni"  style=" display: none;padding: 5px; font-size: 13px; margin-top: 50px; text-align: center; width: 100%; border: 1px solid #c3c3c3; color: #fff; background-color: #263345;" class="sans">
                         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <strong>Regresar atras</strong>
-                </button>
+                </button>#}
             
                 <!-- Buscador -->
-                
-		<div class="row hidden-md hidden-lg hidden-md hidden-sm" style="position: relative;margin-bottom:10px;margin-top: 0px;">
+                <div class="clearfix"></div>
+		<div class="row hidden-md hidden-lg hidden-md hidden-sm" style="position: relative;margin-bottom:10px;margin-top: 50px;">
                     
                     <div class="col-xs-8" style="padding-right: 2px; margin-bottom: ">
                             <input value="{{busqueda|trim}}" id="searchBoxMov" class="sans" placeholder="Realiza tu búsqueda..." style="font-size: 13px; padding-left: 0px; margin-top: 10px; border: 1px solid #c3c3c3; border-radius: 2px; width: 100%; height: 30px;">
                     </div>
                     
                     <div class="col-xs-2" style="padding-left: 2px; padding-right: 2px;">
-                            <button id="searchButton" class="sans" style="font-size: 13px; margin-top: 10px; border: 1px solid #c3c3c3; border-radius: 2px; height: 30px; width: 100%;">
+                            <button id="searchButtonMov" class="sans" style="font-size: 13px; margin-top: 10px; border: 1px solid #c3c3c3; border-radius: 2px; height: 30px; width: 100%;">
                                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                             </button>
                     </div>
                     <div class="col-xs-2" style="padding-left: 2px;">
-                            <button class="sans" style="font-size: 13px; margin-top: 10px; border: 1px solid #c3c3c3; border-radius: 2px; height: 30px; width: 100%;">
+                            <button id="busquedaAvanzada" class="sans" style="font-size: 13px; margin-top: 10px; border: 1px solid #c3c3c3; border-radius: 2px; height: 30px; width: 100%;">
                                     <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
                             </button>
                     </div>
+                    <div class="clearfix"></div>
+                    <div class="col-xs-12">
+                            <input value="{{ciudad}}" id="searchInputDeptMov" class="sans" placeholder="Ciudad, depto" style="display:none;font-size: 13px; padding-left: 0px; margin-top: 10px; border: 1px solid #c3c3c3; border-radius: 2px; width: 100%; height: 30px;padding-right: 2px;">
+                    </div>
+                    
 		</div>
             
             
@@ -225,15 +214,15 @@
                             <img src="{{asset('')}}{{ prom1[0].src}}" style="width: 100%; max-width: 100%;" id="fotocambia">
                         {% endif %}
                     </div>
-                    <form class="form-inline hidden-xs hidden-md hidden-sm">
+                    {#<form class="form-inline hidden-xs hidden-md hidden-sm">
                         <div class="item-directorio" style="margin-top: 5px !important; padding: 10px;">
                             <div class="row no-padding" >
                                 <div class="col-md-7 col-xs-8" style="padding-right: 5px;">
-                                    <input value="{{busqueda|trim}}" id="searchBox" maxlength="140" {#class="searchbox"#} style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; text-decoration: none;" placeholder="Buscar por asunto legal o nombre de abogado/firma" oninvalid="this.setCustomValidity('Porfavor ingrese el nombre de un Abogado, Bufete, Firma o Problema Legal')" > </input>
-                                    <input type="hidden" id="randomDir" value="">
+                                    <input value="{{busqueda|trim}}" id="searchBox" maxlength="140" class="searchbox" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; text-decoration: none;" placeholder="Buscar por asunto legal o nombre de abogado/firma" oninvalid="this.setCustomValidity('Porfavor ingrese el nombre de un Abogado, Bufete, Firma o Problema Legal')" > </input>
+                                    {#<input type="hidden" id="randomDir" value="">
                                 </div>
                                 <div class="col-md-3 hidden-xs  col-xs-5" style=" padding-left: 5px;padding-right: 5px;">
-                                    <input class="search" value="{{ciudad}}" id="searchInputDept" name="txtlugar" style="border: 1px solid #d2d6de; border-radius: 0;  height: 34px; width: 100%; text-decoration: none;" placeholder="Cuidad, Dept">
+                                    <input class="search" value="{{ciudad}}" id="searchInputDeptMov" name="txtlugar" style="border: 1px solid #d2d6de; border-radius: 0;  height: 34px; width: 100%; text-decoration: none;" placeholder="Cuidad, Dept">
                                 </div>
                                 <div class="col-md-2 hidden-xs col-xs-2" style="padding-left: 5px;">
                                     <button id="searchButton" type="submit" class="searchbotondir input-group btn btn-xs" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; background-color: #F42; color: #fff; font-weight: 600;">Buscar</button>
@@ -244,7 +233,7 @@
                             </div>
                         </div>
                         <input type="hidden" value="0" id="inicioInput">
-                    </form>
+                    </form>#}
                     <div class="item-directorio-nexo" style="height: 20px; border:0px solid #FFF;">
                         <p class="pull-left col-xs-6" id="mesaje_busqueda" style="font-size: 12px; margin-bottom: 0px; padding: 0px; display: none;">
                             Mostrando los resultado para '<label id="filtro"></label>'.
@@ -404,11 +393,37 @@
                 else{
                     $('.numRegistros,.anteriorMov,.siguienteMov,.numeroPaginas').hide();
                 }
-                $(document).on('click', '#searchButton, #searchButtonMov', function () {
+                
+                
+                if($('#searchInputDeptMov').val()!==''){
+                    console.log('Hacer click!');
+                    
+                    $('#searchInputDeptMov').slideToggle('fast');
+                }
+                
+                
+                //desktop
+                $(document).on('click', '#searchButton', function () {
                     $('#randomDir').val('');
                     inicio = $('#inicioInput').val(); //numero de registros que se van a mostrar
                     busqueda = $('#searchBox').val();
+                    $('#searchBoxMov').val('');
+                    $('#searchInputDeptMov').val('');
+                    console.log(busqueda);
                     longitud = 10; //numero de registros que se van a mostrar
+                    paginaActual = 1; //numero de registros que se van a mostrar
+                    buscar(busqueda, inicio, longitud, paginaActual,orderBy);
+                    return false;
+                });
+                //movil
+                $(document).on('click', '#searchButtonMov', function () {
+                    $('#randomDir').val('');
+                    inicio = $('#inicioInput').val(); //numero de registros que se van a mostrar
+                    busqueda = $('#searchBoxMov').val();
+                    $('#searchBox').val('');
+                    
+                    $('#searchInputDept').val($('#searchInputDeptMov').val());
+                    longitud = 6; //numero de registros que se van a mostrar
                     paginaActual = 1; //numero de registros que se van a mostrar
                     buscar(busqueda, inicio, longitud, paginaActual,orderBy);
                     return false;
@@ -417,8 +432,10 @@
 
                 $(document).on('input', '#searchBoxMov', function () {
                     var valorMov = $(this).val();
-                    $('#searchBox').val(valorMov);
+                    //$('#searchBox').val(valorMov);
+                    
                 });
+                
                 $(document).on('click', '.paginas', function () {
                     paginaActual = $(this).attr('id');
                     console.log("Página actual enviada: " + paginaActual);
@@ -441,6 +458,12 @@
                         buscar(busqueda, inicio, longitud, paginaActual,orderBy);
                     }
                 });
+                
+                $(document).on('click', '#busquedaAvanzada', function () {
+                    //$('#searchInputDeptMov').val('');
+                    $('#searchInputDeptMov').slideToggle('fast');
+                });
+                
                 $(document).on('click', '#volverIni', function () {
                     window.history.back();
                 });
@@ -471,7 +494,7 @@
                     });
 
                 });
-                if($('#encabezado').is(':visible')){
+                if(!$('#volverIni').is(':visible')){
                     setInterval(cambia, 4000);
                 }
                 
@@ -488,15 +511,20 @@
                 $('#registrosMov').html('<div style="text-align:center;margin-top:20px;" class="col-md-12 col-xs-12 pull-right"><i class="fa fa-circle-o-notch fa-spin fa-1x fa-fw"></i>Buscando...</div>');
                 //return false;
                 orderBy=$('#randomDir').val();
+                console.log(orderBy);
+                //return false;
                 //numero de registros por página
-                if($('#volverIni').is(':visible')){
+                {#if($('#volverIni').is(':visible')){
                     longitud=6;//movil
                 }
                 else{
                     longitud=10;//desktop
-                }
+                }#}
                 //  var deptoId = $('#filtrarDepartamento').val();
                 var munId = $('#searchInputDept').val();
+                if(munId===''){
+                    munId = $('#searchInputDeptMov').val();
+                }
                 var cadenaPaginas = "";
                 // ERAAAAAAAAAAAA (busqueda != "")
                 if (busqueda == "" || busqueda != "") {

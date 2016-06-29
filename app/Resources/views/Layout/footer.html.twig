@@ -5,7 +5,7 @@
             <p class="text-center">
             <a href="{{path('soy_abogado')}}" style="color: #fff; border: 1px solid #c3c3c3; padding: 10px; border-radius: 2px; background-color: transparent;font-family: 'Montserrat', sans-serif;">Soy un abogado</a>
             <button style="margin-left: 10px; color: #fff; border: 1px solid #c3c3c3; padding: 10px; border-radius: 2px; background-color: transparent;font-family: 'Montserrat', sans-serif;">Soy una firma</button>
-            <a href="{{path('abogado_login')}}" style="margin-left: 10px; color: #fff; border: 1px solid #c3c3c3; padding: 10px; border-radius: 2px; background-color: transparent;font-family: 'Montserrat', sans-serif;">Login</a>
+            <a class="hidden-xs hidden-sm" href="{{path('abogado_login')}}" style="margin-left: 10px; color: #fff; border: 1px solid #c3c3c3; padding: 10px; border-radius: 2px; background-color: transparent;font-family: 'Montserrat', sans-serif;">Login</a>
             </p>
             <p class="sans text-center" style="color: #fff; margin-bottom: 5px; font-size: 13px; margin-top: 10px;">
                 <a style="text-decoration: none;color:#FFF;" href="{{path('index')}}" >Inicio</a> |
@@ -13,18 +13,18 @@
                 <a style="text-decoration: none;color:#FFF;" href="{{path('index')}}" >Políticas de privacidad</a> |
                 <a style="text-decoration: none;color:#FFF;" href="{{path('index')}}" >Términos de uso</a> |
                 <a style="text-decoration: none;color:#FFF;" href="{{path('index')}}" >Uso de cookies</a> |
-                <a style="text-decoration: none;color:#FFF;" href="{{path('index')}}" >Contáctanos</a> |
+                <a style="text-decoration: none;color:#FFF;" href="{{path('index')}}" >Contáctanos</a>
             </p>
             <!-- <hr style="margin-top: 10px; margin-bottom: 10px;"> -->
             <p class="sans" style="color: #fff; margin-bottom: 0px; font-size: 13px; color: #777777;">Aviso: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
             tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
             quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p>
             <hr style="margin-top: 10px; margin-bottom: 10px; border: 0.2px solid #fff;">
-            <p class="text-left" style="color: #fff; font-family: 'Montserrat', sans-serif; font-size: 12px; margin-bottom: 0px;">Todos los derechos reservados <?php echo date("Y"); ?> &copy;</p>
+            <p class="text-left" style="color: #fff; font-family: 'Montserrat', sans-serif; font-size: 12px; margin-bottom: 0px;">Todos los derechos reservados {{ "now"|date("Y") }} &copy;</p>
     </div>
 </div>
 
-<div class="container-fluid" style="background-color: #051A30; padding-top: 15px; padding-bottom: 15px;">
+<div class="hidden-xs hidden-sm container-fluid" style="background-color: #051A30; padding-top: 15px; padding-bottom: 15px;">
 		<div class="container">
 			<div class="row">
                             <a href="http://abogados.com.sv">

@@ -31,6 +31,9 @@ class DefaultController extends Controller
         $rsm4->addScalarResult('foto','foto');
         $rsm4->addScalarResult('url','url');
         $rsm4->addScalarResult('especialidad','especialidad');
+        $rsm4->addScalarResult('titulo','titulo');
+        $rsm4->addScalarResult('cargo','cargo');
+        $rsm4->addScalarResult('genero','genero');
         
         $usuarios = $em->createNativeQuery($sql4, $rsm4)
                                   ->getResult();
