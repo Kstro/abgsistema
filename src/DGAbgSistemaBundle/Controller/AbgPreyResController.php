@@ -3,6 +3,7 @@
 namespace DGAbgSistemaBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -11,6 +12,7 @@ use DGAbgSistemaBundle\Entity\AbgPregunta;
 use Doctrine\ORM\Query\ResultSetMapping;
 use DGAbgSistemaBundle\Entity\AbgSubespecialidad;
 use DGAbgSistemaBundle\Entity\CtlEspecialidad;
+
 
 /**
  * Success controller.
@@ -76,6 +78,46 @@ class AbgPreyResController extends Controller {
                     'prom4' => $prom4,
                     'ctlEspecialidad' => $ctlespecialidad,
                     'top' => $topUsuarios));
+    }
+
+    /**
+     * Valida si una especialida tiene abogados registrados
+     *
+     * @Route("/preg_categoria", name="preg_categoria", options={"expose"=true})
+     * @Method({"GET", "POST"})
+     * @Template()
+     */
+    public function PregCategoriaAction() {
+
+        try {
+
+            $em = $this->getDoctrine()->getManager();
+            $request = $this->getRequest();
+            $sql = "SELECT abg_persona.correoelectronico FROM 
+                       ctl_usuario
+                JOIN    abg_persona
+                       on  ctl_usuario.rh_persona_id=abg_persona.id AND ctl_usuario.notificacion=1 AND abg_persona.estado IN(0,1)
+                JOIN ctl_rol_usuario
+                ON ctl_usuario.id=ctl_rol_usuario.ctl_usuario_id 
+                          AND ctl_rol_usuario.ctl_rol_id=2
+                JOIN abg_persona_especialidad 
+                ON abg_persona_especialidad.abg_persona_id=abg_persona.id 
+                AND abg_persona_especialidad.ctl_especialidad_id=" . $request->get('cat');
+            $em = $this->getDoctrine()->getManager();
+            $stmt = $em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $coenv = $stmt->fetchAll();
+
+            if (count($coenv) > 0) {
+                $data['value']=true;
+            } else {
+                  $data['value']=false;
+            }
+              return new Response(json_encode($data));
+        } catch (Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
     }
 
     /**
@@ -179,23 +221,9 @@ class AbgPreyResController extends Controller {
                                         </table>
                                     ");
                 }
-                return $this->render('enviopregsuccess/success.html.twig');
-            } else {
-            //    echo' <link rel="stylesheet" href="/Resources/lobibox-master/dist/css/lobibox.min.css">';
-             //   echo '<script src="/Resources/lobibox-master/dist/js/lobibox.min.js"></script>';
-                echo '<script type="text/javascript">';
-                echo 'alert("Pregunta no enviada. No hay abogados disponibles en esta especialidad, seleccione otra especialidad");';
-          //      echo'Lobibox.notify("warning", {size: "mini",msg: "<p>Pregunta no enviada. No hay abogados disponibles en esta especialidad, seleccione otra especialidad</p>"});';
-                echo '</script>';
-
-                return $this->render('preyres/pregunta_detalle.html.twig', array('pregunta' => $pregunta,
-                            'prom1' => $prom,
-                            'prom2' => $prom2,
-                            'prom3' => $prom3,
-                            'prom4' => $prom4,
-                            'ctlEspecialidad' => $ctlespecialidad,
-                            'top' => $topUsuarios));
-            }
+              
+            } 
+              return $this->render('enviopregsuccess/success.html.twig');
         } catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
