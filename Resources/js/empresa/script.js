@@ -705,10 +705,10 @@ function addEspecialidad()
         var datos;
         $.ajax({
             type: "GET",
-            url: Routing.generate('subespecialidad'),
-            data: {empresaId: $('input#empresaId').val(), DataEspecialida: DataEspecialida, dato: $("#fEspecialida").serialize()},
             async: false,
             dataType: 'json',
+            url: Routing.generate('subespecialidad'),
+            data: {empresaId: $('input#empresaId').val(), DataEspecialida: DataEspecialida, dato: $("#fEspecialida").serialize()},
             success: function (data)
             {
                 if (data.msj !== false) {

@@ -155,7 +155,7 @@
                                                         $("#divMuni").empty();
                                                         estado = '<div class="col-sm-6 col-xs-6"  > ';
                                                         estado += '<label>Municipio</label>';
-                                                        estado += '<select  style="width:100%;" class="form-control input-sm Smunicipio"  name="Smunicipio" id="Smunicipio" >';
+                                                        estado += '<select  style="width:100%;" class="form-control input-sm Smunicipio"  name="Smunicipio" id="Smunicipio" data-rule-required="true" data-rule-select="true">';
                                                         estado += '<option value="">- Seleccione -</option>';
                                                         $.each(data.ciudad, function (indice, val) {
                                                             estado += '<option value="' + val.id + '">' + val.nombre + '</option>';

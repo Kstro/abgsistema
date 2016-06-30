@@ -548,10 +548,10 @@ function addEspecialida()
         var datos;
         $.ajax({
             type: "GET",
-            url: Routing.generate('subespecialida'),
-            data: {hPersona: $('input#hPersona').val(), DataEspecialida: DataEspecialida, dato: $("#fEspecialida").serialize()},
             async: false,
             dataType: 'json',
+            url: Routing.generate('subespecialida'),
+            data: {hPersona: $('input#hPersona').val(), DataEspecialida: DataEspecialida, dato: $("#fEspecialida").serialize()},
             success: function (data)
             {
                 if (data.msj !== false) {

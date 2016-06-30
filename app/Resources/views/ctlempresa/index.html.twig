@@ -68,7 +68,7 @@
                                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                                 </div>
                                 <div class="form-group">
-                                    <button  type="submit" class="btn btn-primary btn-flat" onClick="enviar()"  >Registrarme</button>
+                                    <button  type="submit" class="btn btn-primary btn-flat" onClick="enviar()" id="bntenviar" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Enviando">Registrarme</button>
                                     <a href="{{ path('abogado_login') }}" class="button">
                                         <button class="btn btn-social btn-facebook btn-flat" style="background-color: #3a5795; color: #FFFFFF"><i class="fa fa-facebook"></i> Conectar con Facebook</button>
                                     </a>
@@ -83,7 +83,7 @@
     <script src="{{asset('Resources/AdminLTE-2.3.0/plugins/jQuery/jQuery-2.1.4.min.js')}}"></script>
     <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
     <script src="{{asset('Resources/src/js/menu_movil.js')}}"></script>
-   
+    <script  src="{{asset('Resources/AdminLTE-2.3.0/bootstrap/js/bootstrap.min.js')}}"></script>
 
     <script type="text/javascript">
 
@@ -94,6 +94,8 @@
                                             {
                                                 $("#frmEmpresaUsuarioPersona").submit(
                                                         function (event) {
+                                                            $("#bntenviar").button('loading');
+                                                            $("#bntenviar").prop("disabled", true);
                                                             $.ajax({
                                                                 data: {dato: $("#frmEmpresaUsuarioPersona").serialize()},
                                                                 url: Routing.generate('validar_correo'),
@@ -112,11 +114,11 @@
                                                                             success: function (data)
                                                                             {
                                                                                 console.log(data.estado);
-                                                                                
+
                                                                                 if (data.estado == true) {
-                                                                                    
-                                                                                 var url = Routing.generate('confirma_cuenta');
-                                                                                ///        var url = Routing.generate('perfil');
+
+                                                                                    var url = Routing.generate('confirma_cuenta');
+                                                                                    ///        var url = Routing.generate('perfil');
                                                                                     //var url = Routing.generate('abogado_login');
                                                                                     window.open(url, "_self");
                                                                                     Lobibox.notify("success", {
@@ -130,6 +132,10 @@
                                                                                         msg: 'Error al ingresar los datos'
                                                                                     });
                                                                                 }
+
+                                                                                $("#bntenviar").prop("disabled", false);
+                                                                                $("#bntenviar").button('reset');
+
                                                                                 return false;
                                                                             }
                                                                         });
@@ -146,6 +152,7 @@
                                                         });
 
                                             }
+
                                         }
     </script>
 {% endblock %}

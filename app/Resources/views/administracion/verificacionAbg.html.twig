@@ -76,6 +76,7 @@
 
             function AbgVerificar()
             {
+              
                 $.ajax({
                     type: 'GET',
                     async: false,
@@ -90,7 +91,7 @@
                             datos += '<td><a href="#">' + val.nombre + '</a></td>';
                             datos += '<td align ="center"></strong>&nbsp;<i class="fa  fa-paperclip fa-lg text-aqua"></i></td>';
                             datos += '<td align ="center"> <div class = "bloque-ocultar ">';
-                            datos += '<img src ="/Resources/src/img/verified.png"';
+                            datos += '<img src ="{{ asset('Photos/defecto/noVerificado.png') }}"';
                             datos += 'disabled ="disabled" style="width: 15px; height: 15px; -webkit-filter: grayscale(80%);" id="botonModalP" title="Cambiar foto de perfil">';
                             datos += '</td>';
                             datos += '</tr>';
@@ -114,6 +115,22 @@
                     data: {abg: $('#Sabogado').val()},
                     success: function (data)
                     {
+                                    var datos;
+                        $("#idtbody").empty();
+                        $.each($(data.datosP), function (indice, val) {
+                            datos = '<tr style="font-size: 15px" onClick="vericarAbg(' + val.id + ')">';
+                            datos += '<td><a href="#">' + val.nombre + '</a></td>';
+                            datos += '<td align ="center"></strong>&nbsp;<i class="fa  fa-paperclip fa-lg text-aqua"></i></td>';
+                            datos += '<td align ="center"> <div class = "bloque-ocultar ">';
+                            datos += '<img src ="{{ asset('Photos/defecto/noVerificado.png') }}"';
+                            datos += 'disabled ="disabled" style="width: 15px; height: 15px; -webkit-filter: grayscale(80%);" id="botonModalP" title="Cambiar foto de perfil">';
+                            datos += '</td>';
+                            datos += '</tr>';
+
+                            $("#idtbody").append(datos);
+                            });
+                           
+                            {#
                         $("#divVerificar").empty(datos);
                         var datos;
                         //if (data.msj == "undefined") {
@@ -171,7 +188,8 @@
                         });
                         $("#divVerificar").append(datos);
                         $("#divVerificar").show();
-                        //     }
+                        #}
+                        
                     },
                     error: function (errors)
                     {
@@ -205,7 +223,9 @@
                                                     <select id="Sabogado" name="Sabogado" class="form-control" onChange="consultarAbg()">
                                                         <option value="0" >Seleccione un cliente</option>
                                                     </select>
+                                                    
                                                 </div>
+                                                <div class="col-md-1"><a class=" btn btn-flat btn-default" style="  margin-top: 25px;" onClick="AbgVerificar()"><i class=" fa fa-refresh"></i></a></div>
                                             </div>   </div>
                                             {%if solicitVerificacion|default is not empty %}
                                             <div class="form-group table-responsive mailbox-messages" id="contenedor">
@@ -219,7 +239,7 @@
                                                                 <td ><a href="#" >{{datos.nombre}}</a></td>
                                                                 <td align="center"> </strong>&nbsp;<i class="fa  fa-paperclip fa-lg text-aqua"></i></td>
                                                                 <td align="center">  <div class="bloque-ocultar ">
-                                                                        <img src="{{ asset('Resources/src/img/verified.png') }}" disabled="disabled" style="width: 15px; height: 15px; -webkit-filter: grayscale(80%);" id="botonModalP" title="Cambiar foto de perfil" >
+                                                                        <img src="{{ asset('Photos/defecto/noVerificado.png') }}" disabled="disabled" style="width: 15px; height: 15px; -webkit-filter: grayscale(80%);" id="botonModalP" title="Cambiar foto de perfil" >
                                                                         </td>
                                                                         </tr>
                                                                     {%endfor%}
@@ -259,7 +279,7 @@
                                                                 $(document).on('ready', function () {
                                                                     $('#Sabogado').select2({
                                                                         ajax: {
-                                                                            url: Routing.generate('abogados'),
+                                                                            url: Routing.generate('abogados_solverificacion'),
                                                                             dataType: 'json',
                                                                             delay: 250,
                                                                             data: function (params) {

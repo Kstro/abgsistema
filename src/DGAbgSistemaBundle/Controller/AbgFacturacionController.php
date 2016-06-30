@@ -301,10 +301,10 @@ class AbgFacturacionController extends Controller {
     }
 
     /**
-     * @Route("/abogados/get", name="abogados", options={"expose"=true})
+     * @Route("/abogados_solverificacion/get", name="abogados_solverificacion", options={"expose"=true})
      * @Method("GET")
      */
-    public function getAbogadosAction() {
+    public function getAbogadosSolverificacionAction() {
         $request = $this->getRequest();
         $busqueda = $request->query->get('q');
 
@@ -318,6 +318,8 @@ class AbgFacturacionController extends Controller {
                 ->setParameters(array('busqueda' => "%" . $busqueda . "%"))
                 ->setMaxResults(10)
                 ->getResult();
+        
+    
         if (count($array > 0)) {
             $data['data'] = $array;
         } else {

@@ -2,39 +2,15 @@
 
 {% block descripcion_y_acciones %}
 
-
-    {% block descripcion %}
-
-    {% endblock%}
-    {% block acciones %}
-
-    {% endblock %}
-
 {% endblock %}
 {% block js_extend %}
-    <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
+ 
     <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
-
-
-   
-
+        <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
+ 
+    
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="{{ asset('Resources/jquery/jquery.js')}}"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            alert("hsaidhcsla");
-            var max_chars = 35;
-
-            $('#max').html(max_chars);
-
-            $('#txtpregunta').keyup(function () {
-                var chars = $(this).val().length;
-                var diff = max_chars - chars;
-                $('#contador').html(diff);
-            });
-        });
-    </script>
-
+    
 
 
 
@@ -62,7 +38,7 @@
                     <form action="{{ path('envio_pregunta') }}" method="POST">
                         <label class="sans" style="margin-top: 20px;">Escriba su pregunta</label>
                         <p class="sans" style="font-size: 13px;">Estas a 30 segundos de realizar tu pregunta gratis y encontrar el abogado perfecto para tu situacion legal.</p>
-                        <textarea id="txtpregunta" name="pregunta" type="text" maxlength="150"  style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; width: 100%; font-size: 14px;" class="sans" rows="3" placeholder="Escribe tu pregunta aqui..">{%if pregunta|default is not empty %}{{pregunta|trim}}{%endif%}</textarea>
+                        <textarea id="txtpregunta" name="pregunta" type="text" maxlength="150"  style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; width: 100%; font-size: 14px;" class="sans" rows="3" placeholder="Escribe tu pregunta aqui.." required>{%if pregunta|default is not empty %}{{pregunta|trim}}{%endif%}</textarea>
                         <p class="sans" style="font-size: 13px; color: #999999;" id="contador">0 d 150 Charattters</p>
 
                         <label class="sans" style="margin-top: 15px;">Detalles adicionales</label>
@@ -81,12 +57,13 @@
                                 {% endfor %}  
                             </select>
                         </div>
+                        <p class="sans" style="margin-top:2px;font-size: 13px; color: #CA2121;" id="validarcat"></p>
 
                         <label class="sans" style="margin-top: 15px;">Correo Elecotrnico</label>
                         <p class="sans" style="font-size: 13px;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
                             tempor incididunt ut labore et dolore magna aliqua.</p>
                         <div style="width: 35%;">
-                            <input type="text" id="" name="email" type="email" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; width: 100%; font-size: 14px;" class="sans" rows="3" placeholder="Email" required>
+                            <input type="email" id="" name="email" type="email" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; width: 100%; font-size: 14px;" class="sans" rows="3" placeholder="Email" required pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}">
                         </div>
                         <div class="checkbox" style="margin-top: 15px;">
                             <label>
@@ -94,7 +71,7 @@
                                 un aviso de que la pregunta ya tiene respuesta de parte de nuestros abogados.
                             </label>
 
-                            <button type="submit"  class="btn btn-primary sans" style="margin-top: 20px; border-radius: 0;">Enviar pregunta</button>
+                            <button type="submit"  class="btn btn-primary sans" style="margin-top: 20px; border-radius: 0;" id="btnenviar">Enviar pregunta</button>
                             <a href="{{ path('pregunta_index') }}" style="margin-top: 20px; border-radius: 0;" class="btn btn-default sans">Regresar
                             </a> </div>
                     </form>
@@ -171,8 +148,27 @@
 
 
     {% block js_template %}
+        <script src="{{ asset('Resources/jquery/jquery.js')}}"></script>
+        <script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
+        
+    <script type="text/javascript">
+     /*   $(document).ready(function () {
+     
+            var max_chars = 35;
+
+            $('#max').html(max_chars);
+
+            $('#txtpregunta').keyup(function () {
+                var chars = $(this).val().length;
+                var diff = max_chars - chars;
+                $('#contador').html(diff);
+            });
+        });*/
+    </script>
+
         <script type="text/javascript">
             $(document).ready(function () {
+              
                 $('#contador').html({{pregunta|length }}+" out of 150 characters");
                 var max_chars = 150;
                 var max_chars_detalle = 300;
@@ -189,7 +185,35 @@
                     $('#contador_detalle').html(diff + " out of 300 characters");
                 });
             });
+            /*
+function validarCategoria()
+{
 
+        $.ajax({
+        type: "GET",
+        url: Routing.generate('preg_categoria'),
+        async: false,
+        dataType: 'json',
+        data: {cat:$("#categoria").val()},
+        success: function (data)
+        {
+            if(data.value==false)
+            {
+            $("#validarcat").text('Categoria sin abogados registrados. Seleccione otra categoria.');
+            $('#btnenviar').attr("disabled", true);
+        }
+        else if(data.value==true)
+            {
+            $("#validarcat").text('');
+            $('#btnenviar').attr("disabled", false);
+        }
+        },
+        error: function (errors)
+        {
+
+        }
+    });
+}*/
         </script>
         <script type="text/javascript">
             var imagenes = new Array();
