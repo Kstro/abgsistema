@@ -275,7 +275,7 @@ class AbgPersonaController extends Controller {
         }
     }
 
-    
+  
 
     /**
      * @Route("/perfil/", name="perfil", options={"expose"=true})
@@ -1337,7 +1337,7 @@ class AbgPersonaController extends Controller {
 
     /**
      * @Route("/subespecialida", name="subespecialida", options={"expose"=true})
-     * @Method("GET")
+     * @Method({"GET", "POST"})
      */
     public function SubespecialidaAction() {
         try {

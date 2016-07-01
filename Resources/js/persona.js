@@ -547,7 +547,7 @@ function addEspecialida()
         var Esp, n = 0;
         var datos;
         $.ajax({
-            type: "GET",
+            type: "POST",
             async: false,
             dataType: 'json',
             url: Routing.generate('subespecialida'),
@@ -664,6 +664,7 @@ function addExperiencia()
                                             datos += '<img src="/' + val.src + '" style="max-width:50px;max-height:50px;"></a>';
                                         } else
                                         {
+
                                             datos += '<img src="/Resources/src/img/empresa/empresa.png" style="max-width:50px;max-height:50px;">';
                                         }
                                         datos += '</div>';
