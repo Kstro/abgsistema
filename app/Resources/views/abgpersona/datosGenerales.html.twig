@@ -1,27 +1,50 @@
-{% extends ':Layout:layout2.html.twig' %}
-{% block js_extend %}
-    <link href="{{asset('Resources/src/css/bootstrap.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
-    <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Directorio de Abogados de El Salvador | Primero y unico directorio de abogados de El Salvador | Abogados.com.sv</title>
+        <meta name="robots" content="noindex">
 
-    <link href="{{asset('Resources/jquery-validation-1.15.0/demo/css/screen.css')}}" rel="stylesheet">
-    <script src="{{ asset('Resources/jquery-validation-1.15.0/dist/jquery.validate.js')}}"></script>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+        <!-- fosjsrouting -->
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
 
-    <script type = "text/javascript" >
-        $(document).ready(function () {
-            $("#fgeneral").validate({
+
+        <!-- Stylesheet Personales -->
+        <link href="{{asset('Resources/src/css/style.css')}}" rel="stylesheet">
+
+        <!-- bootstrap -->
+        <script src="{{ asset('Resources/src/js/jquery-2.0.3.min.js')}}"></script>
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{{asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css')}}">
+        <link href="{{asset('Resources/src/css/menu_movil.css')}}" rel="stylesheet">
+
+        <link href="{{asset('Resources/src/css/bootstrap.css')}}" rel="stylesheet">
+
+        <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
+        <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
+
+        <link href="{{asset('Resources/jquery-validation-1.15.0/demo/css/screen.css')}}" rel="stylesheet">
+        <script src="{{ asset('Resources/jquery-validation-1.15.0/dist/jquery.validate.js')}}"></script>
+
+        <script type = "text/javascript" >
+            $(document).ready(function () {
+                $("#fgeneral").validate({
+                });
             });
-        });
-    </script>  
-{% endblock %}
-{% block cuerpo %}
-    {% for datos in abgPersona %} 
+        </script>  
 
-        <div class="container" style=" margin-left:0px; margin-right:0px; padding: 15px;">
+        {% for datos in abgPersona %} 
+        </head>
+        <body>
+            <div class="container" >
 
-            <section >
                 <div class="row" >
                     <!-- LADO IZQUIERDO -->
                     <div class="col-md-9 col-sm-9 col-xs-12" style="">
@@ -131,13 +154,13 @@
                             </form>
                     </div>
                 </div>
-        </div>
-    </section>
-</div>
+            </div>
 
 
-<script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
-<script type="text/javascript">
+
+
+            <script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
+            <script type="text/javascript">
                                                 var Especialida = [];
                                                 var DataEspecialida = [];
                                                 var EspecialidaSelect = [];
@@ -183,7 +206,6 @@
                                                 }
                                                 function especialidadS(idcheckbox)
                                                 {
-
                                                     if (Especialida.indexOf(idcheckbox) === -1)
                                                     {
                                                         if (Especialida.length < 3)
@@ -193,14 +215,15 @@
                                                             $.each($('.Especialida'), function (indice, val) {
                                                                 if ($(this).is(':checked')) {
                                                                     Especialida.push(parseInt($(this).attr('id')));
-                                                                    //        EspecialidaSelect.push(parseInt($(this).attr('id')));
-                                                                    // EspecialidaSelect.push('txt' + parseInt($(this).attr('id')));
+                                                                    EspecialidaSelect.push(parseInt($(this).attr('id')));
+                                                                    //   EspecialidaSelect.push('txt' + parseInt($(this).attr('id')));
+                                                                    DataEspecialida.push(EspecialidaSelect);
+                                                                    EspecialidaSelect = [];
 
-                                                                    if (EspecialidaSelect.length % 2 === 0)
-                                                                    {
-                                                                        DataEspecialida.push(Especialida);
-                                                                        Especialida = [];
-                                                                    }
+                                                                    /*          if (EspecialidaSelect.length % 2 === 0)
+                                                                     {
+                                                                     
+                                                                     }*/
                                                                     //     document.getElementById('div' + parseInt($(this).attr('id'))).style.display = 'block';
                                                                 } else {
                                                                     //       document.getElementById('div' + parseInt($(this).attr('id'))).style.display = 'none';
@@ -224,15 +247,16 @@
 
                                                                 if (Especialida.indexOf(parseInt($(this).attr('name'))) === -1)
                                                                 {
-                                                                    Especialida.push(parseInt($(this).attr('name')));
-                                                                    //   EspecialidaSelect.push(parseInt($(this).attr('id')));
+                                                                    // Especialida.push(parseInt($(this).attr('name')));
+                                                                    EspecialidaSelect.push(parseInt($(this).attr('id')));
                                                                     //  EspecialidaSelect.push('txt' + parseInt($(this).attr('id')));
-
-                                                                    if (EspecialidaSelect.length % 2 === 0)
-                                                                    {
-                                                                        DataEspecialida.push(Especialida);
-                                                                        Especialida = [];
-                                                                    }
+                                                                    DataEspecialida.push(EspecialidaSelect);
+                                                                    EspecialidaSelect = [];
+                                                                    /*     if (EspecialidaSelect.length % 2 === 0)
+                                                                     {
+                                                                     DataEspecialida.push(EspecialidaSelect);
+                                                                     EspecialidaSelect = [];
+                                                                     }*/
                                                                     //      document.getElementById('div' + parseInt($(this).attr('id'))).style.display = 'block';
                                                                 }
 
@@ -244,54 +268,63 @@
                                                 }
                                                 function enviar()
                                                 {
-                                                    alert($('input:radio[name=rGenero]:checked').val());
-                                                    //            alert(DataEspecialida.length);
-                                                    /*   if (parseInt(DataEspecialida.length) >= 0)
-                                                     {
-                                                     if ( $("#txtnombre").val() !== "" && $("#txtapellido").val() !== "" && ($("#Smunicipio").val() !== "") && ($('input:radio[name=rGenero]:checked').val() !== ""))
-                                                     {
-                                                     $("#fgeneral").submit(
-                                                     function (event) {
-                                                     
-                                                     $.ajax({
-                                                     type: "POST",
-                                                     async: false,
-                                                     dataType: 'json',
-                                                     url: Routing.generate('informacion_general'),
-                                                     data: {datos: $("#fgeneral").serialize(), esp: DataEspecialida, genero: $('input:radio[name=rGenero]:checked').val(),codigo:$('input#hcodigo').val()},
-                                                     success: function (data)
-                                                     {
-                                                     
-                                                     if (data.msj !== "") {
-                                                     Lobibox.notify("success", {
-                                                     size: 'mini',
-                                                     msg: "<p>" + data.msj + "</p>"
-                                                     });
-                                                     var url = Routing.generate('perfil');
-                                                     window.open(url, "_self");
-                                                     
-                                                     } else if (data.error !== "") {
-                                                     Lobibox.notify("warning", {
-                                                     size: 'mini',
-                                                     msg: "<p>" + data.error + "</p>"
-                                                     });
-                                                     }
-                                                     },
-                                                     error: function (errors)
-                                                     {
-                                                     
-                                                     }
-                                                     });
-                                                     event.preventDefault();
-                                                     });
-                                                     
-                                                     }
-                                                     }*/
+                                                    //   alert($('input:radio[name=rGenero]:checked').val());
+
+
+                                                    if (parseInt(DataEspecialida.length) > 0)
+                                                    {
+                                                        if ($("#txtnombre").val() !== "" && $("#txtapellido").val() !== "" && ($("#Smunicipio").val() !== "") && ($('input:radio[name=rGenero]:checked').val() !== ""))
+                                                        {
+                                                            $("#fgeneral").submit(
+                                                                    function (event) {
+
+                                                                        $.ajax({
+                                                                            type: "POST",
+                                                                            async: false,
+                                                                            dataType: 'json',
+                                                                            url: Routing.generate('informacion_general'),
+                                                                            data: {datos: $("#fgeneral").serialize(), esp: DataEspecialida, genero: $('input:radio[name=rGenero]:checked').val(), codigo: $('input#hcodigo').val()},
+                                                                            success: function (data)
+                                                                            {
+
+                                                                                if (data.msj !== "") {
+                                                                                    Lobibox.notify("success", {
+                                                                                        size: 'mini',
+                                                                                        msg: "<p>" + data.msj + "</p>"
+                                                                                    });
+                                                                                    var url = Routing.generate('perfil');
+                                                                                    window.open(url, "_self");
+
+                                                                                } else if (data.error !== "") {
+                                                                                    Lobibox.notify("warning", {
+                                                                                        size: 'mini',
+                                                                                        msg: "<p>" + data.error + "</p>"
+                                                                                    });
+                                                                                }
+                                                                            },
+                                                                            error: function (errors)
+                                                                            {
+
+                                                                            }
+                                                                        });
+                                                                        event.preventDefault();
+                                                                    });
+
+                                                        }
+                                                    } else {
+
+                                                        Lobibox.notify("warning", {
+                                                            size: 'mini',
+                                                            msg: "<p> Seleccione almenos una especialidad.</p>"
+                                                        });
+                                                    }
                                                 }
 
-</script>
-{% endfor %}
-{% endblock %}
+            </script>
+        {% endfor %}
+
+    </body>
+</html>
 
 
 
