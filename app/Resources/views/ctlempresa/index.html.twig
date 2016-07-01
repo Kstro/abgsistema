@@ -22,7 +22,7 @@
     {# <link rel="stylesheet" media="screen" type="text/css" href="{{ asset('Resources/colorpicker/css/colorpicker.css') }}" />
     <script type="text/javascript" src="{{ asset('Resources/colorpicker/js/colorpicker.js') }}"></script>#}
 
-    <link href="{{asset('Resources/jquery-validation-1.15.0/demo/css/screen.css')}}" rel="stylesheet">
+    {#<link href="{{asset('Resources/jquery-validation-1.15.0/demo/css/screen.css')}}" rel="stylesheet">#}
     <script src="{{ asset('Resources/jquery-validation-1.15.0/dist/jquery.validate.js')}}"></script>
     <script type = "text/javascript" >
         $(document).on('ready', function () {
@@ -30,6 +30,12 @@
             });
         });
     </script>  
+    <style>
+        .error{
+            color:#F00;
+            font-style: italic;
+        }
+    </style>
 {% endblock %} 
 {% block navegacion_Y_body %}
 {% block navegacion %}{% endblock %}

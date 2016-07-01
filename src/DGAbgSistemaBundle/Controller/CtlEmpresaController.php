@@ -2193,5 +2193,122 @@ class CtlEmpresaController extends Controller {
             return new Response(json_encode($data));
         }
     }
+    
+    
+    
+    /**
+     * @Route("/departamento", name="departamento", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function DepartamentoAction() {
+        try {
+
+            $em = $this->getDoctrine()->getManager();
+            $dql_departamento = "SELECT  d.id AS id, d.nombreEstado AS nombre"
+                    . " FROM DGAbgSistemaBundle:CtlEstado d";
+            $data['depto'] = $em->createQuery($dql_departamento)->getArrayResult();
+
+            return new Response(json_encode($data));
+        } catch (Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
+    }
+
+    /**
+     * @Route("/ciudad/data", name="ciudad", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function CiudadAction() {
+        try {
+            $request = $this->getRequest();
+            $em = $this->getDoctrine()->getManager();
+            $dql_departamento = "SELECT  c.id AS id, c.nombreCiudad AS nombre"
+                    . " FROM DGAbgSistemaBundle:CtlCiudad c WHERE c.ctlEstado=" . $request->get('estado');
+            $data['ciudad'] = $em->createQuery($dql_departamento)->getArrayResult();
+
+            return new Response(json_encode($data));
+        } catch (Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
+    }
+    
+    
+    
+    
+    
+    /**
+     * @Route("/informacion_general/continuar/info", name="informacion_general", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function InformacionGeneralAction() {
+        try {
+            $this->authenticateUser($ctlUsuario[0]);
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction();
+            $request = $this->getRequest();
+            parse_str($request->get('datos'), $datos);
+
+
+            $array = $request->get('esp');
+            $data['msj'] = "";
+
+            $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+            $username = $this->container->get('security.context')->getToken()->getUser()->getId();
+            $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($idPersona);
+            $Ciudad = $em->getRepository("DGAbgSistemaBundle:CtlCiudad")->find($datos['Smunicipio']);
+
+            $ctlUsuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->find($username);
+            $ctlUsuario->setEstadoCorreo(1);
+            $em->merge($ctlUsuario);
+            $em->flush();
+
+            $Persona->setNombres($datos['txtnombre']);
+            $Persona->setApellido($datos['txtapellido']);
+            $Persona->setTituloProfesional($datos['Stitulo']);
+            $Persona->setCtlCiudad($Ciudad);
+            $Persona->setGenero($request->get('genero'));
+
+            $em->merge($Persona);
+            $em->flush();
+
+            $RepositorioEsp = $em->getRepository("DGAbgSistemaBundle:AbgPersonaEspecialida");
+
+
+            if (is_null($RepositorioEsp->findByAbgPersona($idPersona))) {
+                
+            } else {
+                $PersonaEsp = $RepositorioEsp->findByAbgPersona($idPersona);
+
+                foreach ($PersonaEsp as $obj) {
+                    $em->remove($obj);
+                    $em->flush();
+                }
+            }
+
+            if (is_null($array)) {
+                
+            } else {
+                foreach ($array as $obj) {
+                    $PersonaEspecialidad = new AbgPersonaEspecialida();
+                    $idSub = $em->getRepository("DGAbgSistemaBundle:CtlEspecialidad")->find(intval($obj['0']));
+                    $PersonaEspecialidad->setAbgPersona($Persona);
+                    $PersonaEspecialidad->setCtlEspecialidad($idSub);
+                    $em->persist($PersonaEspecialidad);
+                    $em->flush();
+                }
+            }
+            $em->getConnection()->commit();
+            $em->close();
+            $data['msj'] = "Datos actualizados.";
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+            $data['error'] = $e->getMessage();
+            $em->getConnection()->rollback();
+            $em->close();
+            return new Response(json_encode($data));
+        }
+    }
 
 }
