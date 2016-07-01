@@ -26,6 +26,7 @@ class DefaultController extends Controller
                 order by id desc 
                 limit 0, 5";
 
+        //$sql4 = "select * from aboregistrados order by id desc limit 0, 5";
         $rsm4->addScalarResult('nombres','nombres');
         $rsm4->addScalarResult('apellido','apellido');
         $rsm4->addScalarResult('foto','foto');
@@ -34,6 +35,7 @@ class DefaultController extends Controller
         $rsm4->addScalarResult('titulo','titulo');
         $rsm4->addScalarResult('cargo','cargo');
         $rsm4->addScalarResult('genero','genero');
+        $rsm4->addScalarResult('estadoabo','estadoabo');
         
         $usuarios = $em->createNativeQuery($sql4, $rsm4)
                                   ->getResult();
