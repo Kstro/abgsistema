@@ -704,7 +704,7 @@ function addEspecialidad()
         var Esp, n = 0;
         var datos;
         $.ajax({
-            type: "GET",
+            type: "POST",
             async: false,
             dataType: 'json',
             url: Routing.generate('subespecialidad'),
