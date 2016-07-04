@@ -860,13 +860,18 @@ function removeEdu(val)
     });
 }
 function addOrganizacion() {
-    if ($("#txtOrg").val() !== "" && $("#txtPuestoOrg").val() !== "" && $("#txtFechIniOrg").val() !== "")
+    
+
+    
+    if ($("#txtOrg").val() !== "" && $("#txtPuestoOrg").val() !== "" && $("#txtFechIniOrg").val() !== "" )
     {
+            var fechafin = new Date($("#txtFechFinOrg").val());
+            var fechain = new Date($("#txtFechIniOrg").val());
         var datos;
         $("#fOrg").submit(
                 function (event) {
                     var datos;
-                    if ($("#txtFechFinOrg").val() < $("#txtFechIniOrg").val())
+                    if (fechafin< fechain )
                     {
                         Lobibox.notify("warning", {
                             size: 'mini',
@@ -1023,13 +1028,14 @@ function addCertificacion() {
 
     if ($("#txtCerti").val() !== "" && $("#txtAutorida").val() !== "" && $("#txtFechIniC").val() !== "" && $("#txtFechFinC").val() !== "")
     {
-
+  var fechafin = new Date($("#txtFechFinC").val());
+            var fechain = new Date($("#txtFechIniC").val());
         var datos;
         $("#fCerti").submit(
                 function (event) {
 
                     var datos;
-                       if ($("#txtFechFinC").val() < $("#txtFechIniC").val())
+                       if (fechafin < fechain)
                     {
                         Lobibox.notify("warning", {
                             size: 'mini',
@@ -1155,11 +1161,13 @@ function editCertificacion(val)
 function addCurso() {
     if ($("#txtCurso").val() !== "" && $("#txtAutoridaCM").val() !== "" && $("#txtFechIniCM").val() !== "" && $("#txtFechFinCM").val() !== "")
     {
+         var fechafin = new Date($("#txtFechFinCM").val());
+            var fechain = new Date($("#txtFechIniCM").val());
         var datos;
         $("#fCurso").submit(
                 function (event) {
                     var datos;
-                          if ($("#txtFechFinCM").val() < $("#txtFechIniCM").val())
+                          if (fechafin< fechain)
                     {
                         Lobibox.notify("warning", {
                             size: 'mini',
