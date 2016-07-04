@@ -2137,7 +2137,6 @@ class AbgPersonaController extends Controller {
                 $AbgCertificacion->setFechaInicio($fechaIni);
                 $AbgCertificacion->setInstitucion($datos['txtAutorida']);
 
-
                 $em->persist($AbgCertificacion);
                 $em->flush();
                 $data['msj'] = "Certificación registrada";
