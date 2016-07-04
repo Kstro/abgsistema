@@ -2291,9 +2291,9 @@ class CtlEmpresaController extends Controller {
             $this->authenticateUser($ctlUsuario[0]);
             parse_str($request->get('datos'), $datos);
        
-
+            
             $array = $request->get('esp');
-           
+   
             
             $data['msj'] = "";
 

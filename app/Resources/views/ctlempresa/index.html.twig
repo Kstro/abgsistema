@@ -23,7 +23,7 @@
     {# <link rel="stylesheet" media="screen" type="text/css" href="{{ asset('Resources/colorpicker/css/colorpicker.css') }}" />
     <script type="text/javascript" src="{{ asset('Resources/colorpicker/js/colorpicker.js') }}"></script>#}
 
-    <link href="{{asset('Resources/jquery-validation-1.15.0/demo/css/screen.css')}}" rel="stylesheet">
+    {#<link href="{{asset('Resources/jquery-validation-1.15.0/demo/css/screen.css')}}" rel="stylesheet">#}
     <script src="{{ asset('Resources/jquery-validation-1.15.0/dist/jquery.validate.js')}}"></script>
     <script src="{{ asset('Resources/sweetalert-master/dist/sweetalert.min.js') }}"></script>
 
@@ -33,6 +33,12 @@
             });
         });
     </script>  
+    <style>
+        .error{
+            color:#F00;
+            font-style: italic;
+        }
+    </style>
 {% endblock %} 
 {% block navegacion_Y_body %}
 {% block navegacion %}{% endblock %}
@@ -132,7 +138,7 @@
                                                                                     window.open(url, "_self");
                                                                                     Lobibox.notify("success", {
                                                                                         size: 'mini',
-                                                                                        msg: 'Registro exitoso, espere un momento5555'
+                                                                                        msg: 'Registro exitoso, espere un momento'
                                                                                     });
                                                                                 } else {
 
@@ -151,7 +157,7 @@
                                                                     } else {
                                                                         Lobibox.notify("error", {
                                                                             size: 'mini',
-                                                                            msg: 'Correo ya existente, intenete con otro sdbhjbwjdbwhwb.'
+                                                                            msg: 'Correo ya existente, intente con otro.'
                                                                         });
                                                                         $("#bntenviar").prop("disabled", false);
                                                                         $("#bntenviar").button('reset');

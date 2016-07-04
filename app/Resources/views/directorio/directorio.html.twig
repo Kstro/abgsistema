@@ -380,19 +380,30 @@
 
             $(document).ready(function () {
                 $('#randomDir').val('');
-                var inicio = $('#inicioInput').val(); //numero de registros que se van a mostrar
+                var inicio = $('#inicioInput').val(); 
                 var busqueda = $('#searchBox').val();
                 var longitud = 10; //numero de registros que se van a mostrar
                 var paginaActual = 1; //primer registro a mostrar
                 var numPages = 0;
                 var orderBy="";
                 //var contenidoOriginal = $('#registros').html();
-                if($('#searchBox').val()!='' || $('#searchBoxMov').val()!=''){
+                if($('#searchBox').val()!=''){
+                    busqueda=$('#searchBox').val();
                     buscar(busqueda, inicio, longitud, paginaActual,orderBy);
                 }
                 else{
                     $('.numRegistros,.anteriorMov,.siguienteMov,.numeroPaginas').hide();
                 }
+                
+                if($('#searchBoxMov').val()!=''){
+                    busqueda=$('#searchBoxMov').val();
+                    buscar(busqueda, inicio, longitud, paginaActual,orderBy);
+                }
+                else{
+                    $('.numRegistros,.anteriorMov,.siguienteMov,.numeroPaginas').hide();
+                }
+                
+                
                 
                 
                 if($('#searchInputDeptMov').val()!==''){
@@ -669,8 +680,8 @@
                                             cadena = '<div class=\"item-directorio-movil\" style=\"margin-top: -1px !important;\">';
                                         }
                                             
-                                        
-                                        cadena +='<div class=\"row hidden-lg hidden-md hidden-sm\"><!-- Foto -->\n\
+                                        if(data.data[i].estadoabo==1){
+                                            cadena +='<div class=\"row hidden-lg hidden-md hidden-sm\"><!-- Foto -->\n\
                                                     <div class=\"col-xs-3\" style=\"padding-right: 5px;\">\n\
                                                         <a href=\"../' + data.data[i].url + '\">\n\
                                                             <img src=\"{{asset('')}}' + data.data[i].foto + '\" style=\"max-width: 100%; width: 100%; padding: 3px;\">\n\
@@ -698,7 +709,32 @@
                                                     </a>\n\
                                                     </div>\n\
                                                 </div></div>';
-    
+                                        }
+                                        else{
+                                            cadena +='<div class=\"row hidden-lg hidden-md hidden-sm\"><!-- Foto -->\n\
+                                                    <div class=\"col-xs-3\" style=\"padding-right: 5px;\">\n\
+                                                        <img src=\"{{asset('')}}' + data.data[i].foto + '\" style=\"max-width: 100%; width: 100%; padding: 3px;\">\n\
+                                                    </div>\n\
+                                                    <!-- Contacto+Info -->\n\
+                                                    <div class=\"col-xs-9\" style=\"padding-left: 0px;\">\n\
+                                                        <p style=\"margin-top: 5px; font-size: 1em; margin-bottom: 0px; font-size: 12px;\" class=\"sans\"><strong>' + busquedaNombre +'</strong></p>\n\
+                                                        <p style=\"color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 10px;\" class=\"sans\">'+busquedaCargo+'</p>\n\
+                                                        <p class=\"sans\" style=\"font-size: 11px; margin-bottom: 0px; margin-top: 1px;\"><strong>Especialidades:</strong> '+especialidades+'</p>\n\
+                                                    </div>\n\
+                                                </div> <!-- end row -->\n\
+                                                <div class=\"row hidden-md hidden-lg hidden-sm\" style=\"padding: 2px;\">\n\
+                                                    <div class=\"col-xs-4\" style=\"padding-right: 2px;\">\n\
+                                                        <button class=\"sans borded\"><span class=\"glyphicon glyphicon-earphone\" aria-hidden=\"true\"></span> \n\
+                                                            <strong>Llamar</strong>\n\
+                                                        </button>\n\
+                                                    </div>\n\
+                                                    <div class="col-xs-4" style=\"padding-left: 2px;\">\n\
+                                                        <button class=\"sans disable borded\"><span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></span>\n\
+                                                            <strong>Perfil</strong>\n\
+                                                        </button>\n\
+                                                    </div>\n\
+                                                </div></div>';
+                                        }
                                     }
                                     else{
                                         if(i===0){//evalua si pintar un borde superior en el primer elemento de la busqueda
@@ -707,19 +743,34 @@
                                         else{
                                             cadena = '<div class=\"item-directorio-nexo\" style=\"width: 100%;\"> <div class=\"clearfix\"></div><div class=\"row\">';
                                         }
-                                        
-                                        cadena+='<div class=\"col-xs-3 col-sm-3 col-md-3 col-lg-2\"><img id=\"busquedaImagen' + (i + 1) + '\" src=\"{{asset('')}}' + data.data[i].foto + '\" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">\n\
-                                        </div><div class=" col-xs-9 col-sm-9 col-md-9 col-lg-10"><p id=\"busquedaNombre' + (i + 1) + '\" style=\"margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;\" class=\"sans\"><strong>' + busquedaNombre + '</strong>' + verificado + '</p>\n\
-                                        <p id=\"busquedaCargo' + (i + 1) + '\" style=\"color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;\" class=\"sans\">' + busquedaCargo + '</p>\n\
-                                        <div class=\"row\" style=\"margin-top: 2px; margin-bottom: 15px;\"><div class=\" hidden-xs col-sm-4 col-xs-12\"><p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Telefono</strong></p><p id=\"busquedaTelefono1\" style=\"font-size: 11px; margin-bottom: 0px;\">' + telefonos + ' </p>\n\
-                                        </div><div class=\"hidden-xs col-sm-4 col-xs-12\"><p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p><p id="busquedaCorreo' + (i + 1) + '" style="font-size: 11px; margin-bottom: 0px;">' + busquedaCorreo + '</p></div>\n\
-                                        <div class=\"hidden-xs col-sm-4 col-xs-12\"><p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Sitio Web</strong></p>\n\
-                                        <p id=\"busquedaSitioWeb' + (i + 1) + '\" style=\"font-size: 11px; margin-bottom: 0px;\"><a href=\"http://' + busquedaSitioWeb + '\" target=\"_blank\">' + busquedaSitioWeb + '</a></p></div>\n\
-                                        <div class=\"col-sm-12\"><span style=\"color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;\"><strong>Especialidades:</strong> </span>\n\
-                                        <span id=\"busquedaEspecialidades' + (i + 1) + '\" style=\"font-size: 11px;\">' + especialidades + '</span>\n\
-                                        </div><div class=\"hidden-xs col-sm-12\" style=\"margin-top: -0px;\"><span style=\"font-size: 11px;\"><a href=\"../' + data.data[i].url + '\">Ver perfil</a></span>\n\
-                                        <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"{{path('contacto')}}?correo=' + busquedaCorreo + '\">Contactar</a></span>\n\
-                                        <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"{{path('recomendacion')}}?correo=' + busquedaCorreo + '\">Recomendar</a></span></div></div></div></div><div class=\"row hidden-md hidden-lg hidden-sm\" style=\"padding: 2px;\"><div class="col-xs-4" style="padding-right: 2px;"><button class="sans borded"><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> <strong>Llamar</strong></button></div><div class="col-xs-4" style="padding-left: 2px; "><button class="sans borded"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <strong>Perfil</strong></button></div></div></div>';
+                                        if(data.data[i].estadoabo==1){
+                                            cadena+='<div class=\"col-xs-3 col-sm-3 col-md-3 col-lg-2\"><img id=\"busquedaImagen' + (i + 1) + '\" src=\"{{asset('')}}' + data.data[i].foto + '\" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">\n\
+                                            </div><div class=" col-xs-9 col-sm-9 col-md-9 col-lg-10"><p id=\"busquedaNombre' + (i + 1) + '\" style=\"margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;\" class=\"sans\"><strong>' + busquedaNombre + '</strong>' + verificado + '</p>\n\
+                                            <p id=\"busquedaCargo' + (i + 1) + '\" style=\"color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;\" class=\"sans\">' + busquedaCargo + '</p>\n\
+                                            <div class=\"row\" style=\"margin-top: 2px; margin-bottom: 15px;\"><div class=\" hidden-xs col-sm-4 col-xs-12\"><p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Telefono</strong></p><p id=\"busquedaTelefono1\" style=\"font-size: 11px; margin-bottom: 0px;\">' + telefonos + ' </p>\n\
+                                            </div><div class=\"hidden-xs col-sm-4 col-xs-12\"><p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p><p id="busquedaCorreo' + (i + 1) + '" style="font-size: 11px; margin-bottom: 0px;">' + busquedaCorreo + '</p></div>\n\
+                                            <div class=\"hidden-xs col-sm-4 col-xs-12\"><p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Sitio Web</strong></p>\n\
+                                            <p id=\"busquedaSitioWeb' + (i + 1) + '\" style=\"font-size: 11px; margin-bottom: 0px;\"><a href=\"http://' + busquedaSitioWeb + '\" target=\"_blank\">' + busquedaSitioWeb + '</a></p></div>\n\
+                                            <div class=\"col-sm-12\"><span style=\"color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;\"><strong>Especialidades:</strong> </span>\n\
+                                            <span id=\"busquedaEspecialidades' + (i + 1) + '\" style=\"font-size: 11px;\">' + especialidades + '</span>\n\
+                                            </div><div class=\"hidden-xs col-sm-12\" style=\"margin-top: -0px;\"><span style=\"font-size: 11px;\"><a href=\"../' + data.data[i].url + '\">Ver perfil</a></span>\n\
+                                            <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"{{path('contacto')}}?correo=' + busquedaCorreo + '\">Contactar</a></span>\n\
+                                            <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"{{path('recomendacion')}}?correo=' + busquedaCorreo + '\">Recomendar</a></span></div></div></div></div><div class=\"row hidden-md hidden-lg hidden-sm\" style=\"padding: 2px;\"><div class="col-xs-4" style="padding-right: 2px;"><button class="sans borded"><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> <strong>Llamar</strong></button></div><div class="col-xs-4" style="padding-left: 2px; "><button class="sans borded"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <strong>Perfil</strong></button></div></div></div>';
+                                        }
+                                        else{
+                                            cadena+='<div class=\"col-xs-3 col-sm-3 col-md-3 col-lg-2\"><img id=\"busquedaImagen' + (i + 1) + '\" src=\"{{asset('')}}' + data.data[i].foto + '\" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">\n\
+                                            </div><div class=" col-xs-9 col-sm-9 col-md-9 col-lg-10"><p id=\"busquedaNombre' + (i + 1) + '\" style=\"margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;\" class=\"sans\"><strong>' + busquedaNombre + '</strong>' + verificado + '</p>\n\
+                                            <p id=\"busquedaCargo' + (i + 1) + '\" style=\"color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;\" class=\"sans\">' + busquedaCargo + '</p>\n\
+                                            <div class=\"row\" style=\"margin-top: 2px; margin-bottom: 15px;\"><div class=\" hidden-xs col-sm-4 col-xs-12\"><p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Telefono</strong></p><p id=\"busquedaTelefono1\" style=\"font-size: 11px; margin-bottom: 0px;\">' + telefonos + ' </p>\n\
+                                            </div><div class=\"hidden-xs col-sm-4 col-xs-12\"><p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p><p id="busquedaCorreo' + (i + 1) + '" style="font-size: 11px; margin-bottom: 0px;">' + busquedaCorreo + '</p></div>\n\
+                                            <div class=\"hidden-xs col-sm-4 col-xs-12\"><p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Sitio Web</strong></p>\n\
+                                            <p id=\"busquedaSitioWeb' + (i + 1) + '\" style=\"font-size: 11px; margin-bottom: 0px;\"><a href=\"http://' + busquedaSitioWeb + '\" target=\"_blank\">' + busquedaSitioWeb + '</a></p></div>\n\
+                                            <div class=\"col-sm-12\"><span style=\"color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;\"><strong>Especialidades:</strong> </span>\n\
+                                            <span id=\"busquedaEspecialidades' + (i + 1) + '\" style=\"font-size: 11px;\">' + especialidades + '</span>\n\
+                                            </div><div class=\"hidden-xs col-sm-12\" style=\"margin-top: -0px;\"><span style=\"font-size: 11px;\">{#<a href=\"../' + data.data[i].url + '\">Ver perfil</a>#}</span>\n\
+                                            {#<span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span>#}<span style=\"font-size: 11px;\"><a href=\"{{path('contacto')}}?correo=' + busquedaCorreo + '\">Contactar</a></span>\n\
+                                            <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"{{path('recomendacion')}}?correo=' + busquedaCorreo + '\">Recomendar</a></span></div></div></div></div><div class=\"row hidden-md hidden-lg hidden-sm\" style=\"padding: 2px;\"><div class="col-xs-4" style="padding-right: 2px;"><button class="sans borded"><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> <strong>Llamar</strong></button></div><div class="col-xs-4" style="padding-left: 2px; "><button class="sans borded"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <strong>Perfil</strong></button></div></div></div>';
+                                        }
                                     }
                                     $(busquedaImagen).attr('src', "{{asset('')}}" + data.data[i].foto);
                                     $(busquedaImagen).load();
