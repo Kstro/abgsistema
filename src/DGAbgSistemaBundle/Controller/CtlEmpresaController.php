@@ -344,7 +344,7 @@ class CtlEmpresaController extends Controller {
             $em->getConnection()->beginTransaction();
 
             parse_str($request->get('dato'), $datos);
-            
+             $idFacebook=0;
             if (count($datos)!=0){
                 
                 
@@ -462,7 +462,7 @@ class CtlEmpresaController extends Controller {
             $ctlUsuario->setNotificacion(1);
             
             //Se setea los valores de id de facebook
-            if ($idFacebook){
+            if ($idFacebook!=0){
                  $ctlUsuario->setIdFacebook($idFacebook);
             }
             
@@ -566,9 +566,9 @@ class CtlEmpresaController extends Controller {
             $em->close();
             $data['username'] = $ctlUsuario->getUsername();
             
-            if ($idFacebook){
-            $data['estado'] = true;
-            $data['md5']=$var_md5;
+            if ($idFacebook!=0){
+                $data['estado'] = true;
+                $data['md5']=$var_md5;
                 }else{
                   $data['estado'] = true;
                 $this->get('new_usuario')->sendEmail($correoUsuario, "", "", "", "
@@ -759,7 +759,7 @@ class CtlEmpresaController extends Controller {
                     $direccion = str_replace("\\", "", $direccion);
                     $direccion = str_replace("Photos/Perfil/", "", $direccion);
 
-                    if ($direccion != '' && $direccion != 'Photos/defecto/defecto.png') {
+                    if ($direccion != '' && $direccion != 'Photos/defecto/empresa.png') {
                         $eliminacionRegistroExixtente = unlink($path1 . $direccion);
 
                         if ($eliminacionRegistroExixtente) {

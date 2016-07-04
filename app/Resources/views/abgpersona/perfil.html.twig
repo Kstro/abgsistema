@@ -86,15 +86,70 @@
         $("#gif").hide();
         $(document).on("click", "#botonModalP", function() {
         $("#idModalFotoP").modal();
+
+        
         });
-        });
+        
+          var flag=true;
+          var Extension="";
+          
+          $(document).on("change", "#input", function() {
+                 //obtenemos un array con los datos del archivo
+        var file = $(this)[0].files[0];
+        //obtenemos el nombre del archivo
+        var fileName = file.name;
+        //obtenemos la extensión del archivo
+        Extension = fileName.substring(fileName.lastIndexOf('.') + 1);
+        //obtenemos el tamaño del archivo
+        var fileSize = file.size;
+        //obtenemos el tipo de archivo image/png ejemplo
+        var fileType = file.type;
+      
+        if ( Extension == "png" || Extension == "bmp"
+                    || Extension == "jpeg" || Extension == "jpg" || Extension == "JPG" || Extension == "PNG" || Extension == "JPEG" ||
+                    Extension == "BMP") {
+        	flag = true;
+               
+                 
+             
+        }else{
+            
+        	flag = false;
+                  Lobibox.notify("error", {
+                size: 'mini',
+                        msg: 'Tipo de archivo invalido'
+                });
+                  $(this).val("");
+                   $('#idModalFotoP').modal('toggle');
+                  
+        }
+        
+
+          });
+        
+        
+
         $(function editarFoto() {
 
-        $('.image-editor').cropit();
+        $('.image-editor').cropit({ smallImage: 'allow',
+                    minZoom: 'fill',
+                    maxZoom: 1,
+                     quality: .100,
+                     imageBackground: false
+        });
         $('form').submit(function() {
 
         // Move cropped image data to hidden input
-        var imageData = $('.image-editor').cropit('export');
+        var imageData = $('.image-editor').cropit('export',
+                { smallImage: 'allow',
+                    minZoom: 'fill',
+                    maxZoom: 1,
+                     quality: .100,
+                     imageBackground: false
+        });
+        
+        
+        
         $('.hidden-image-data').val(imageData);
         //alert(imageData);
         var usuario = $("#usuario").val();
@@ -139,7 +194,10 @@
         // Prevent the form from actually submitting
         return false;
         });
+        
         });
+        
+     });
     </script>
 {% endblock %} 
 
@@ -956,7 +1014,7 @@
                                             {% if abgFoto %}
                                                 <div class="image-editor" >
                                                     <center>
-                                                        <div class="cropit-preview" style="z-index: 3; background-image:url({{ asset('') }}{{ abgFoto[0].src}}) ; border-color:white; " ></div>
+                                                        <div class="cropit-preview" style="z-index: 3; background-image:url({{ asset('') }}{{ abgFoto[0].src}}) ; border-color:black; " ></div>
                                                     </center>
                                                     <div class="image-upload" >
                                                         <label for="input" >
