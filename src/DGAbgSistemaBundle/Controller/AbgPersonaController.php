@@ -347,10 +347,10 @@ class AbgPersonaController extends Controller {
 
 
 
-                $sqlEdu = "SELECT e.id AS idEs, e.institucion AS institucion, e.titulo AS titulo, e.anio_inicio AS anioIni, e.anio_graduacion AS anio, tp.abg_titulocol AS disciplina "
+                $sqlEdu = "SELECT e.id AS idEs, e.institucion AS institucion, e.titulo AS titulo, e.anio_inicio AS anioIni, e.anio_graduacion AS anio "
                         . " FROM abg_estudio e "
-                        . " JOIN  abg_persona p ON e.abg_persona_id=p.id AND e.abg_persona_id=" . $idPersona
-                        . " JOIN ctl_titulo_profesional tp ON tp.id=e.abg_titulo_profesional_id";
+                        . " JOIN  abg_persona p ON e.abg_persona_id=p.id AND e.abg_persona_id=" . $idPersona;
+ 
                 $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                 $stm->execute();
                 $Edu = $stm->fetchAll();
@@ -738,7 +738,6 @@ class AbgPersonaController extends Controller {
                     $sqlEdu = "SELECT e.id AS idEs, e.institucion AS institucion, e.titulo AS titulo, e.anio_inicio AS anioIni, e.anio_graduacion AS anio, tp.abg_titulocol AS disciplina "
                             . " FROM  abg_estudio e "
                             . " JOIN   abg_persona p ON e.abg_persona_id=p.id AND e.abg_persona_id=" . $idPersona
-                            . " JOIN  ctl_titulo_profesional tp ON tp.id=e.abg_titulo_profesional_id "
                             . " ORDER BY e.anio_inicio Asc";
                     $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                     $stm->execute();
@@ -883,7 +882,6 @@ class AbgPersonaController extends Controller {
             $sqlEdu = "SELECT e.id AS idEs, e.institucion AS institucion, e.titulo AS titulo, e.anio_inicio AS anioIni, e.anio_graduacion AS anio, tp.abg_titulocol AS disciplina "
                     . " FROM abg_estudio e "
                     . " JOIN  abg_persona p ON e.abg_persona_id=p.id AND e.abg_persona_id=" . $idPersona
-                    . " JOIN ctl_titulo_profesional tp ON tp.id=e.abg_titulo_profesional_id "
                     . " ORDER BY e.anio_inicio Asc";
             $stm = $this->container->get('database_connection')->prepare($sqlEdu);
             $stm->execute();
@@ -1372,7 +1370,8 @@ class AbgPersonaController extends Controller {
                     $em->persist($PersonaEspecialidad);
                     $em->flush();
                 }
-                $data['msj'] = "Especialida registrada";
+                $data['msj'] = "Cambios guardados ";
+                
                 $dql_especialida = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre, pe.descripcion AS descripcion "
                         . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
                         . "JOIN DGAbgSistemaBundle:AbgPersonaEspecialida pe WHERE e.id=pe.ctlEspecialidad AND pe.abgPersona=" . $request->get('hPersona')
@@ -2057,10 +2056,9 @@ class AbgPersonaController extends Controller {
                 $data['msj'] = "Educación actualizada";
             }
 
-            $sqlEdu = "SELECT e.id AS idEs, e.institucion AS institucion, e.titulo AS titulo, e.anio_inicio AS anioIni, e.anio_graduacion AS anio, tp.abg_titulocol AS disciplina "
+            $sqlEdu = "SELECT e.id AS idEs, e.institucion AS institucion, e.titulo AS titulo, e.anio_inicio AS anioIni, e.anio_graduacion AS anio "
                     . " FROM abg_estudio e "
                     . " JOIN  abg_persona p ON e.abg_persona_id=p.id AND e.id=" . $IdEducacion . " AND e.abg_persona_id=" . $request->get('hPersona')
-                    . " JOIN ctl_titulo_profesional tp ON tp.id=e.abg_titulo_profesional_id "
                     . " ORDER BY e.anio_inicio ";
             $stm = $this->container->get('database_connection')->prepare($sqlEdu);
             $stm->execute();
@@ -2123,10 +2121,14 @@ class AbgPersonaController extends Controller {
             $data['error'] = false;
 
 
-
+if($datos['txtFechIniC']=="" && $datos['txtFechFinC'] ==""){
+    $fechaIni = null;
+            $fechaFin = null;
+}
+else{
             $fechaIni = date_create($datos['txtFechIniC']);
             $fechaFin = date_create($datos['txtFechFinC']);
-
+}
             if ((($datos['hidCert'] == ""))) {
 
                 $AbgCertificacion = new AbgCertificacion();
