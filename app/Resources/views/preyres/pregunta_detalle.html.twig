@@ -30,7 +30,7 @@
                         <textarea id="txtpregunta" name="pregunta" type="text" maxlength="150"  style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; width: 100%; font-size: 14px;" class="sans" rows="3" placeholder="Escribe tu pregunta aqui.." required>{%if pregunta|default is not empty %}{{pregunta|trim}}{%endif%}</textarea>
                         <p class="sans" style="font-size: 13px; color: #999999;" id="contador">0 d 150 Charattters</p>
 
-                        <label class="sans" style="margin-top: 15px;">Detalles adicionales</label>
+                        <label class="sans" style="margin-top: 15px;">Detalles adicionales</label> <label class="sans" style="margin-top: 20px;color:#F00;">*</label>
                         <p class="sans" style="font-size: 13px;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, se.</p>
                         <textarea name="detalle"  maxlength="300" id="txtdetalle" type="text" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; width: 100%; font-size: 14px;" class="sans" rows="3" placeholder="Escribe tu pregunta aqui.." required></textarea>
                         <p class="sans" id="contador_detalle" style="font-size: 13px; color: #999999;">0 d 300 Charattters</p>
@@ -205,14 +205,14 @@
                     console.log("acuerdo: "+acuerdo);
                     console.log("capctcha: "+capctha);#}
                     
-                    if(pregunta==='' || {#detPregunta==='' || #}categoria==='' || correo===''){
+                    if(pregunta==='' || detPregunta==='' || categoria==='' || correo===''){
                         Lobibox.notify("error", {
                             size: 'mini',
                             msg: 'Complete los campos requeridos (*)!'
                         });
                         return false;
                     }
-                    if(!acuerdo==='' ){
+                    if(!acuerdo){
                         Lobibox.notify("error", {
                             size: 'mini',
                             msg: 'Debe aceptar los términos y condiciones!'
