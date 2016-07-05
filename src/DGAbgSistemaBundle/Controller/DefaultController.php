@@ -15,7 +15,7 @@ class DefaultController extends Controller
      * @Route("/", name="index")
      */
     public function indexAction()
-    {
+    {           
         $em = $this->getDoctrine()->getManager();
 //        $especialidades = $em->getRepository('DGAbgSistemaBundle:CtlEspecialidad')->findAll();
         $rsm4 = new ResultSetMapping();
@@ -24,7 +24,7 @@ class DefaultController extends Controller
                 from directorio
                 where tipo = 1
                 order by id desc 
-                limit 0, 5";
+                limit 0, 6";
 
         //$sql4 = "select * from aboregistrados order by id desc limit 0, 5";
         $rsm4->addScalarResult('nombres','nombres');
@@ -69,7 +69,7 @@ class DefaultController extends Controller
                 . " JOIN abg_persona per ON usu.rh_persona_id = per.id "
                 . " JOIN abg_url_personalizada uper ON uper.abg_persona_id = per.id "
                 . "  JOIN abg_foto fot "
-                . " ON fot.abg_persona_id=per.id AND fot.tipo_foto=0 AND fot.tipo_foto <> 5 "
+                . " ON fot.abg_persona_id=per.id AND fot.tipo_foto=0 AND fot.tipo_foto <> 5 AND uper.estado=1 "
                 . " ORDER BY  pre.id desc "
                 . " LIMIT 0, 4 ";
         $stm = $this->container->get('database_connection')->prepare($sql_preguntas_resiente);
