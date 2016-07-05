@@ -4,6 +4,7 @@
 
 <link href="{{asset('Resources/jquery-validation-1.15.0/demo/css/screen.css')}}" rel="stylesheet">
 <script src="{{ asset('Resources/jquery-validation-1.15.0/dist/jquery.validate.js')}}"></script>
+ <script src="{{asset('Resources/js/enviarDatos.js')}}"></script>
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -14,17 +15,13 @@
                 },
                 txtAutorida: {
                     required: 'Requerido!'
-                },
-                txtFechIniC:
-                        {required: 'Requerido!'}
-            },
-            txtFechFinC: {
-                required: 'Requerido!'}
+                }
+            }
         });
         $('.txtFechaIni').Zebra_DatePicker({
             months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
             days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-            format: 'd-m-Y',
+            format: 'Y-m-d',
             direction: false,
             show_clear_date: false,
             show_select_today: "Hoy",
@@ -34,7 +31,7 @@
         $('.txtFechaFin').Zebra_DatePicker({
             months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
             days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-            format: 'd-m-Y',
+             format: 'Y-m-d',
             // direction:false,
             show_clear_date: false,
             show_select_today: "Hoy",
@@ -65,27 +62,28 @@
         <div class="form-group">
             <label for="ejemplo_password_1">Autoridad emisora de la certificación</label>
             <input type="text" class="form-control  input-sm"  id="txtAutorida" name="txtAutorida" 
-                   placeholder="Nombre de autoridad emisora" value="{{datos.institucion}}" data-rule-required="true">
+                   placeholder="Nombre de autoridad emisora" value="{{datos.institucion}}" >
         </div>
         <div class="form-group ">
             <label for="Fecha_inicio">Periodo</label>
              <div class="row">
                 <div class="col-sm-2 col-xs-3">
                     <input type="text" class="form-control txtFechaIni  input-sm" 
-                           placeholder="Fecha inicio de labor"  id="txtFechIniC" name="txtFechIniC"  value="{{datos.fechaIn}}" data-rule-required="true">
+                           placeholder="Fecha inicio de labor"  id="txtFechIniC" name="txtFechIniC"  value="{{datos.fechaIn}}" >
                 </div>
                 <div  id="fechafin">
                     <div class="col-sm-2 col-xs-3"  >
                         <input type="text" class="form-control txtFechaFin  input-sm" 
-                               placeholder="Fecha fin de labor"  id="txtFechFinC" name="txtFechFinC" value="{{datos.fechaFin}}" data-rule-required="true">
+                               placeholder="Fecha fin de labor"  id="txtFechFinC" name="txtFechFinC" value="{{datos.fechaFin}}" >
                     </div>
                 </div>
             </div>
+                     <p style=" color: #F00;" id="Pcer" calss="sans"></p>
         </div>       
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-sm btn-flat"  onclick="addCertificacion()">Guardar</button> <button type="button" class="btn btn-default btn-sm btn-flat" id="cancel">Cancelar</button>
+                    <button type="submit" class="btn btn-primary btn-sm btn-flat"  id="addCertificacion">Guardar</button> <button type="button" class="btn btn-default btn-sm btn-flat" id="cancel">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -108,20 +106,21 @@
              <div class="row">
                 <div class="col-sm-2 col-xs-6">
                     <input type="text" class="form-control txtFechaIni  input-sm" 
-                           placeholder="Fecha inicio de labor"  id="txtFechIniC" name="txtFechIniC" data-rule-required="true">
+                           placeholder="Fecha inicio de labor"  id="txtFechIniC" name="txtFechIniC" >
                 </div>
                 <div  id="fechafin">
                     <div class="col-sm-2 col-xs-6"  >
                         <input type="text" class="form-control txtFechaFin  input-sm" 
-                               placeholder="Fecha fin de labor"  id="txtFechFinC" name="txtFechFinC" data-rule-required="true">
+                               placeholder="Fecha fin de labor"  id="txtFechFinC" name="txtFechFinC" >
                     </div>
                 </div>
             </div>
+             <p style=" color: #F00;" id="Pcer" calss="sans"></p>
         </div>
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-sm btn-flat"  onclick="addCertificacion()">Guardar</button> <button type="button" class="btn btn-default btn-sm btn-flat" id="cancel">Cancelar</button>
+                    <button type="submit" class="btn btn-primary btn-sm btn-flat"  id="addCertificacion">Guardar</button> <button type="button" class="btn btn-default btn-sm btn-flat" id="cancel">Cancelar</button>
                 </div>
             </div>
         </div>

@@ -178,12 +178,12 @@ class SecuredController extends Controller
         $mensajeCliente=$parameters['mensajeCliente'];
         $emailAbogado=str_replace(" ", "", $emailAbogado);
         
-       
+        
       
         $em = $this->getDoctrine()->getManager();
         $usuario = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->findOneBy(array('correoelectronico' => $emailAbogado));  
     
-
+        
   //$usuario->getRhPersona()->getId()
         $this->get('envio_correo')->sendEmail($emailAbogado, "", "", "",
                     "
@@ -193,7 +193,7 @@ class SecuredController extends Controller
                             <center>
                               <img style=\"width:50%;\" src=\"http://www.abogados.com.sv/badge1.png\">
                             </center>
-                                <p>"."Hola " . $usuario->getRhPersona() . " esperamos la estes pasando bien dentro de nuestra plataforma, queremos notificarte que : <b>".$nombreCliente. "</b>  esta solicitando tus servicios profesionales, enviandote el siguiente mensaje.</p>  
+                                <p>"."Hola " . $usuario->getNombres() . " esperamos la estes pasando bien dentro de nuestra plataforma, queremos notificarte que : <b>".$nombreCliente. "</b>  esta solicitando tus servicios profesionales, enviandote el siguiente mensaje.</p>  
                                 <p>" .'"'. $mensajeCliente .'"'. "</p>
                                 <p> Puedes ponerte en contacto al siguiente correo: " . $emailCliente . "</p>
                                 <p>Gracias, por utilizar los servicios de abogados.com.sv  </p> 

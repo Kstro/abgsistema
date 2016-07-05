@@ -3,18 +3,7 @@
 {% block descripcion_y_acciones %}
 
 {% endblock %}
-{% block js_extend %}
- 
-    <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
- 
-    
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    
 
-
-
-{% endblock %} 
 
 {% block navegacion_Y_body %}
 
@@ -35,8 +24,8 @@
                     <p class="sans text-uppercase" style="font-size: 30px; margin-top: 16px; font-weight: 600; margin-bottom: 0px;">
                         ESTAS A UN PASO MAS DE TU SOLUCION LEGAL
                     </p>
-                    <form action="{{ path('envio_pregunta') }}" method="POST">
-                        <label class="sans" style="margin-top: 20px;">Escriba su pregunta</label>
+                    <form action="{{ path('envio_pregunta') }}" method="POST" id="formPreg">
+                        <label class="sans" style="margin-top: 20px;">Escriba su pregunta</label> <label class="sans" style="margin-top: 20px;color:#F00;">*</label>
                         <p class="sans" style="font-size: 13px;">Estas a 30 segundos de realizar tu pregunta gratis y encontrar el abogado perfecto para tu situacion legal.</p>
                         <textarea id="txtpregunta" name="pregunta" type="text" maxlength="150"  style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; width: 100%; font-size: 14px;" class="sans" rows="3" placeholder="Escribe tu pregunta aqui.." required>{%if pregunta|default is not empty %}{{pregunta|trim}}{%endif%}</textarea>
                         <p class="sans" style="font-size: 13px; color: #999999;" id="contador">0 d 150 Charattters</p>
@@ -46,7 +35,7 @@
                         <textarea name="detalle"  maxlength="300" id="txtdetalle" type="text" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; width: 100%; font-size: 14px;" class="sans" rows="3" placeholder="Escribe tu pregunta aqui.." required></textarea>
                         <p class="sans" id="contador_detalle" style="font-size: 13px; color: #999999;">0 d 300 Charattters</p>
 
-                        <label class="sans" style="margin-top: 15px;">Categoria de tu pregunta</label>
+                        <label class="sans" style="margin-top: 15px;">Categoria de tu pregunta</label> <label class="sans" style="margin-top: 20px;color:#F00;">*</label>
                         <p class="sans" style="font-size: 13px;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
                             tempor incididunt ut labore et dolore magna aliqua.</p>
                         <div style="width: 35%;">
@@ -59,22 +48,27 @@
                         </div>
                         <p class="sans" style="margin-top:2px;font-size: 13px; color: #CA2121;" id="validarcat"></p>
 
-                        <label class="sans" style="margin-top: 15px;">Correo Elecotrnico</label>
+                        <label class="sans" style="margin-top: 15px;">Correo Electronico</label> <label class="sans" style="margin-top: 20px;color:#F00;">*</label>
                         <p class="sans" style="font-size: 13px;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
                             tempor incididunt ut labore et dolore magna aliqua.</p>
                         <div style="width: 35%;">
-                            <input type="email" id="" name="email" type="email" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; width: 100%; font-size: 14px;" class="sans" rows="3" placeholder="Email" required pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}">
+                            <input type="email" id="correo" name="email" type="email" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; width: 100%; font-size: 14px;" class="sans" rows="3" placeholder="Email" required pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}">
                         </div>
                         <div class="checkbox" style="margin-top: 15px;">
                             <label>
-                                <input type="checkbox" required> Al hacer click estar de acuerdo con los <a href="#">Termino y Condiciones</a>. Tu privacidad sera respesta y tu correo electronico es solamente para dar
+                                <input id="acuerdo" name="acuerdoTer" type="checkbox" required> Al hacer click estar de acuerdo con los <a href="#">Termino y Condiciones</a>. Tu privacidad sera respesta y tu correo electronico es solamente para dar
                                 un aviso de que la pregunta ya tiene respuesta de parte de nuestros abogados.
                             </label>
 
-                            <button type="submit"  class="btn btn-primary sans" style="margin-top: 20px; border-radius: 0;" id="btnenviar">Enviar pregunta</button>
-                            <a href="{{ path('pregunta_index') }}" style="margin-top: 20px; border-radius: 0;" class="btn btn-default sans">Regresar
-                            </a> </div>
+                        </div>
+                        <div class="g-recaptcha" data-sitekey="6Lc1QyQTAAAAAPOLibXnni_MgVU_vwbBRfKoNjVC"></div>
+                        
+                        <button class="btn btn-primary sans" style="margin-top: 20px; border-radius: 0;" id="btnenviar1">Enviar pregunta</button>
+                        <a href="{{ path('pregunta_index') }}" style="margin-top: 20px; border-radius: 0;" class="btn btn-default sans">Regresar
+                        </a>
                     </form>
+                    
+                        
                 </div>
                 <div class="col-md-3">
                     {#      <div class="box box-widget">
@@ -145,12 +139,16 @@
         <div style="height: 10px;"></div>
 
     {% endblock %}
+{% endblock %}
 
 
     {% block js_template %}
-        <script src="{{ asset('Resources/jquery/jquery.js')}}"></script>
+{#        <script src="{{ asset('Resources/jquery/jquery.js')}}"></script>#}
+        <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
         <script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
-        
+        <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
+        <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
+        <script src='https://www.google.com/recaptcha/api.js'></script>
     <script type="text/javascript">
      /*   $(document).ready(function () {
      
@@ -169,6 +167,7 @@
         <script type="text/javascript">
             $(document).ready(function () {
               
+                $('#categoria').select2();
                 $('#contador').html({{pregunta|length }}+" out of 150 characters");
                 var max_chars = 150;
                 var max_chars_detalle = 300;
@@ -184,6 +183,45 @@
                     var diff = max_chars_detalle - chars;
                     $('#contador_detalle').html(diff + " out of 300 characters");
                 });
+                
+                {#$( "#formPreg" ).submit(function( event ) {
+                    alert( "Handler for .submit() called." );
+                    event.preventDefault();
+                });#}
+                var cont=0;
+                
+                $('#btnenviar1').on('click',function(){
+                    var pregunta = $('#txtpregunta').val();
+                    var detPregunta = $('#txtdetalle').val();
+                    var categoria = $('#categoria').val();
+                    var correo = $('#correo').val();
+                    var acuerdo = $('#acuerdo').is(':checked');
+                    var capctha = $('#recaptcha-token').val();
+                    
+                    console.log("Pregunta: "+pregunta);
+                    console.log("Detalle: "+detPregunta);
+                    console.log("Categoria: "+categoria);
+                    console.log("correo: "+correo);
+                    console.log("acuerdo: "+acuerdo);
+                    console.log("capctcha: "+capctha);
+                    
+                    if(pregunta==='' || detPregunta==='' || categoria==='' || correo===''){
+                        Lobibox.notify("error", {
+                            size: 'mini',
+                            msg: 'Complete los campos requeridos (*)!'
+                        });
+                    }
+                    if(!acuerdo==='' ){
+                        Lobibox.notify("error", {
+                            size: 'mini',
+                            msg: 'Debe aceptar los términos y condiciones!'
+                        });
+                    }
+                    
+                    return false;
+                });
+                
+               
             });
             /*
 function validarCategoria()
@@ -319,7 +357,6 @@ function validarCategoria()
                     }
                 }
         </script>
-    {% endblock js_template %}
 {% endblock %}
 
 

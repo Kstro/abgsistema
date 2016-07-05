@@ -1,13 +1,13 @@
-$(document).ready(function() {
-var flag=true;
-var Extension="";
- $("#enviarImagenV").hide();
- $("#prevVerificacion").hide();
- $("#cancelarImagenV").hide();
+$(document).ready(function () {
+    var flag = true;
+    var Extension = "";
+    $("#enviarImagenV").hide();
+    $("#prevVerificacion").hide();
+    $("#cancelarImagenV").hide();
 
-$(document).on("change","#imagenV",function()
+    $(document).on("change", "#imagenV", function ()
     {
-         readURL(this);
+        readURL(this);
         //obtenemos un array con los datos del archivo
         var file = $(this)[0].files[0];
         //obtenemos el nombre del archivo
@@ -18,111 +18,114 @@ $(document).on("change","#imagenV",function()
         var fileSize = file.size;
         //obtenemos el tipo de archivo image/png ejemplo
         var fileType = file.type;
-      
-        if ( Extension == "png" || Extension == "bmp"
-                    || Extension == "jpeg" || Extension == "jpg") {
-        	flag = true;
-             
-        }else{
-        	flag = false;
+
+        if (Extension == "png" || Extension == "bmp"
+                || Extension == "jpeg" || Extension == "jpg") {
+            flag = true;
+
+        } else {
+            flag = false;
         }
-        
-        
-        if(flag==true){
-           
+
+
+        if (flag == true) {
+
             $("#prevVerificacion").show();
             $("#cancelarImagenV").show();
             $("#enviarImagenV").show();
-            
-        }else{
+
+        } else {
             $("#enviarImagenV").hide();
             $("#imagenV").val("");
-              Lobibox.notify("error", {
-                                        size: 'mini',
-                                        msg: 'Seleccione una imagen.' });
+            Lobibox.notify("error", {
+                size: 'mini',
+                msg: 'Seleccione una imagen.'});
 
         }
     });
 
 
-$(document).on("click","#enviarImagenV",function() {
-	
-  var frm = new FormData($("#frmVerificacion")[0]);
-        
-  if (flag==true) {
-            
-     $.ajax({ 
-            data:frm,
-             dataType: 'json',
-            url:Routing.generate('verficacionAbogado'),
-            type: 'POST',
-            cache: false,
-            contentType: false,
-            processData: false,
-                success: function(data){
+    $(document).on("click", "#enviarImagenV", function () {
+
+        var frm = new FormData($("#frmVerificacion")[0]);
+
+        if (flag == true) {
+            $("#enviarImagenV").button('loading');
+            $("#enviarImagenV").prop("disabled", true);
+            $.ajax({
+                data: frm,
+                dataType: 'json',
+                url: Routing.generate('verficacionAbogado'),
+                type: 'POST',
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
 
                     if (data.estado == true) {
 
-                         Lobibox.notify("success", {
-                                        size: 'mini',
-                                        msg: '<p>Su solicitud de verificación se ha enviado.</p>' });
-                    }else{
+                        Lobibox.notify("success", {
+                            size: 'mini',
+                            msg: '<p>Su solicitud de verificación se ha enviado.</p>'});
+                    } else {
                         Lobibox.notify("error", {
-                                        size: 'mini',
-                                        msg: 'Lo sentimos, ocurrio un error, intentelo mas tarde.' });
+                            size: 'mini',
+                            msg: 'Lo sentimos, ocurrio un error, intentelo mas tarde.'});
                     }
+                      $("#enviarImagenV").prop("disabled", false);
+            $("#enviarImagenV").button('reset');
                 }
-        });
+            });
+          
+        } else {
 
-    	}else{
-            
             alert("Acm1pt");
-            
-            
-    	}
-	
-});
-    
-    
-    
-    
-    
-    $(document).on("click","#cancelarImagenV",function(e) {
-        
-        cancelar();
-        
-        
+
+
+        }
+
     });
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+    $(document).on("click", "#cancelarImagenV", function (e) {
+
+        cancelar();
+
+
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 });
 function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
 
-            reader.onload = function (e) {
-                $('#prevVerificacion').attr('src', e.target.result);
-            }
-
-            reader.readAsDataURL(input.files[0]);
+        reader.onload = function (e) {
+            $('#prevVerificacion').attr('src', e.target.result);
         }
-    }
 
-   function cancelar(){
-        $("#enviarImagenV").hide();
- $("#prevVerificacion").hide();
- $("#cancelarImagenV").hide();
-        $("#imagenV").val("");
-   }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function cancelar() {
+    $("#enviarImagenV").hide();
+    $("#prevVerificacion").hide();
+    $("#cancelarImagenV").hide();
+    $("#imagenV").val("");
+}

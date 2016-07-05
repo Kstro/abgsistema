@@ -344,10 +344,32 @@ class CtlEmpresaController extends Controller {
             $em->getConnection()->beginTransaction();
 
             parse_str($request->get('dato'), $datos);
+             $idFacebook=0;
+            if (count($datos)!=0){
+                
+                
+            $contrasenha = $datos['contrasenha'];
+            $nombreAbogado = $datos['txtnombre'];
+            $apellidoAbogado = $datos['txtapellido'];
+            $correoUsuario = $datos['correoEmpresa'];
 
-
-
-            /*         $isAjax = $this->get('Request')->isXMLhttpRequest();
+            }else{
+               
+            
+                $isAjax = $this->get('Request')->isXMLhttpRequest();
+                   if ($isAjax) {
+                        $idFacebook = $request->get("contrasenhaFacebook");
+                        $correoUsuario = $request->get("correoFeacebook");
+                        $nombreAbogado = $request->get("nombres");
+                        $apellidoAbogado = $request->get("apellido");
+                        $contrasenha = $request->get("contrasenhaFacebook");
+                        
+                   }
+        }
+                
+        
+            
+              /* $isAjax = $this->get('Request')->isXMLhttpRequest();
               if ($isAjax) {
               $em = $this->getDoctrine()->getManager();
               $datos = $this->get('request')->request->get('frm');
@@ -366,10 +388,6 @@ class CtlEmpresaController extends Controller {
               $correoUsuario = $request->get('email'); */
 
 
-            $contrasenha = $datos['contrasenha'];
-            $nombreAbogado = $datos['txtnombre'];
-            $apellidoAbogado = $datos['txtapellido'];
-            $correoUsuario = $datos['correoEmpresa'];
             /*     } else {
               $nombreAbogado = $frm->txtnombre;
               $apellidoAbogado = $frm->txtapellido;
@@ -433,7 +451,7 @@ class CtlEmpresaController extends Controller {
             $var_md5 = md5($zonahoraria);
 
             $ctlUsuario->setUsername($correoUsuario);
-
+            
             $ctlUsuario->setEstado(0);
             $ctlUsuario->setRhPersona($idPersona);
             $ctlUsuario->setCtlEmpresa($idEmpresa);
@@ -442,7 +460,13 @@ class CtlEmpresaController extends Controller {
 
             $ctlUsuario->setCodigoConfirmar($var_md5);
             $ctlUsuario->setNotificacion(1);
-
+            
+            //Se setea los valores de id de facebook
+            if ($idFacebook!=0){
+                 $ctlUsuario->setIdFacebook($idFacebook);
+            }
+            
+            
 
             if ($request->get('id')) {
                 $ctlUsuario->setIdFacebook($request->get('id'));
@@ -541,9 +565,13 @@ class CtlEmpresaController extends Controller {
             $em->getConnection()->commit();
             $em->close();
             $data['username'] = $ctlUsuario->getUsername();
-            $data['estado'] = true;
-
-            $this->get('new_usuario')->sendEmail($correoUsuario, "", "", "", "
+            
+            if ($idFacebook!=0){
+                $data['estado'] = true;
+                $data['md5']=$var_md5;
+                }else{
+                  $data['estado'] = true;
+                $this->get('new_usuario')->sendEmail($correoUsuario, "", "", "", "
                     <table style=\"width: 540px; margin: 0 auto;\">
                       <tr>
                         <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
@@ -562,6 +590,7 @@ class CtlEmpresaController extends Controller {
 
             $session = new Session();
             $session->invalidate();
+            }
             return new Response(json_encode($data));
             /* } else {
               $data['estado'] = false;
@@ -585,14 +614,26 @@ class CtlEmpresaController extends Controller {
 
         $request = $this->getRequest();
         parse_str($request->get('dato'), $datos);
-
-        //   $isAjax = $this->get('Request')->isXMLhttpRequest();
         $em = $this->getDoctrine()->getManager();
+        
+        
+        
+        if (count($datos)!=0){
+            $correo = $datos['correoEmpresa'];
+        }
+        else{
+            
+                $isAjax = $this->get('Request')->isXMLhttpRequest();
+                   if ($isAjax) {
+                       
+                        $correo = $request->get("correoFeacebook");
+                   }
+        }
 
         try {
             ///   if ($request->get('id')) {
             ///     $contrasenha = $request->get('id');
-            $correo = $datos['correoEmpresa'];
+            
 
             $dqlEmp = "SELECT COUNT(emp.id) AS res FROM DGAbgSistemaBundle:CtlEmpresa emp WHERE"
                     . " emp.correoelectronico = :correo ";
@@ -718,7 +759,7 @@ class CtlEmpresaController extends Controller {
                     $direccion = str_replace("\\", "", $direccion);
                     $direccion = str_replace("Photos/Perfil/", "", $direccion);
 
-                    if ($direccion != '' && $direccion != 'Photos/defecto/defecto.png') {
+                    if ($direccion != '' && $direccion != 'Photos/defecto/empresa.png') {
                         $eliminacionRegistroExixtente = unlink($path1 . $direccion);
 
                         if ($eliminacionRegistroExixtente) {
@@ -2110,7 +2151,7 @@ class CtlEmpresaController extends Controller {
     }
 
     /**
-     * @Route("confirmar/{id}", name="confirmarcorreo", options={"expose"=true})
+     * @Route("confirmar/data/{id}", name="confirmarcorreo", options={"expose"=true})
      * @Method("GET")
      */
     public function ConfirmarAction(Request $request) {
@@ -2197,7 +2238,7 @@ class CtlEmpresaController extends Controller {
         }
     }
 /**
-     * @Route("/departamento", name="departamento", options={"expose"=true})
+     * @Route("/departamento/data_dept", name="departamento", options={"expose"=true})
      * @Method("GET")
      */
     public function DepartamentoAction() {
@@ -2320,4 +2361,86 @@ class CtlEmpresaController extends Controller {
             return new Response(json_encode($data));
         }
     }
+    
+     
+    
+      /**
+     * @Route("/data/login/usuarioFacebook/", name="login_usuario_data", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function LoginUsuarioFacebookAction() {
+        try {
+            $isAjax = $this->get('Request')->isXMLhttpRequest();
+              if ($isAjax) {
+
+                    $request = $this->getRequest();
+                    $em = $this->getDoctrine()->getManager();
+                    
+                    $correoUsuario = $request->get("correoFeacebook");
+                    
+                    $ctlUsuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($correoUsuario);
+                    
+                    $this->authenticateUser($ctlUsuario[0]);
+
+                    if ($ctlUsuario[0]->getId()!=""){
+                        
+                        $data['estado']=true;
+                        
+                    }else{
+                          $data['estado']=false;
+                    }
+     
+
+             }
+            
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+
+            $data['error'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
+    }
+   
+    
+        /**
+     * @Route("/validacion/permiso/login/facebook/", name="validacion_permiso_login_facebook", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function PermisoFacebookAction() {
+        try {
+            $isAjax = $this->get('Request')->isXMLhttpRequest();
+              if ($isAjax) {
+
+                    $request = $this->getRequest();
+                    $em = $this->getDoctrine()->getManager();
+                    
+                    $idFacebook = $request->get("contrasenhaFacebook");
+
+                   $ctlUsuario = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByIdFacebook($idFacebook);
+                   
+                  $numero = $ctlUsuario[0]->getId();
+         
+                    if ($numero!=0){
+                        
+                        $data['estado']=true;
+                        
+                    }else{
+                          $data['estado']=false;
+                    }
+                    
+
+             }
+            
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+
+            $data['estado'] = false; //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
+    }
+    
+    
+    
+    
+    
 }

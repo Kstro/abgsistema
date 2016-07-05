@@ -91,7 +91,7 @@ class CtlUsuario implements AdvancedUserInterface, \Serializable
         /**
      * @var integer
      *
-     * @ORM\Column(name="id_facebook", type="integer", nullable=true)
+     * @ORM\Column(name="id_facebook", type="bigint", nullable=true)
      */
     private $idFacebook;
     

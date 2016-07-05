@@ -13,135 +13,34 @@
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css')}}">
+        <link rel="stylesheet" href="{{ asset('Resources/sweetalert-master/dist/sweetalert.css')}}"> 
 
     <link rel="stylesheet" href="{{asset('Resources/AdminLTE-2.3.0/plugins/iCheck/square/blue.css')}}">
     <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
       <link href="{{asset('Resources/src/css/menu_movil.css')}}" rel="stylesheet">
     <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
+           <script src="{{ asset('Resources/sweetalert-master/dist/sweetalert.min.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
-    <script>
-        $(document).on('ready', function () {
-            $(".pluginLoginButton").css("width", "100%");
-        });
-    </script>
+      <script>
+         $(document).ready(function(){
+             
+              var estado =  FB.getLoginStatus(function(response) {
+                   statusChangeCallback(response);
+                   
+               });
+  
+             
+              
+               
+               
+
+        });    
+  </script>
+    
 
 {% endblock %} 
 {% block cuerpo %}
-    <script>
-        /*
-        window.fbAsyncInit = function () {
-            FB.init({
-                appId: '254758488249381',
-                cookie: true, // enable cookies to allow the server to access 
-                // the session
-                xfbml: true, // parse social plugins on this page
-                version: 'v2.2' // use version 2.2
-            });
-*/
-            FB.getLoginStatus(function (response) {
-                if (response.status === 'connected') {
-                    FB.api('/me','get', {"fields": "email,first_name,last_name,id,gender"}, function (response)
-                    {
-                        console.log(response);
-                        $.ajax({
-                            data: {id: response.id, email: response.email},
-                            url: Routing.generate('validar_correo'),
-                            type: 'POST',
-                            dataType: 'json',
-                            success: function (data) {
-                                if (data == true) {
-                                    $.ajax({
-                                        data: {id: response.id, nombre: response.first_name, apellido: response.last_name, email: response.email},
-                                        url: Routing.generate('ingresar_usuarioEmpresa'),
-                                        type: 'POST',
-                                        dataType: 'json',
-                                        success: function (data) {
-                                            if (data.estado == true) {
-                                                var url = Routing.generate('perfil');
-                                                window.open(url, "_self");
-                                                Lobibox.notify("success", {
-                                                    size: 'mini',
-                                                    msg: 'Registro exitoso, espere un momento'
-                                                });
-                                            } else {
-                                                Lobibox.notify("error", {
-                                                    size: 'mini',
-                                                    msg: 'Error al ingresar los datos'
-                                                });
-                                            }
-                                        }
-                                    });
-                                } else {
-
-                                    $("#username").val(response.email);
-                                    $("#contrasenha").val(response.id);
-                                    $("#frmLogin").submit();
-                                }
-                            }
-                        });
-                    });
-                    //
-                } else {
-                    FB.login();
-                }
-            });
-        };
-
-        // Load the SDK asynchronously
-        (function (d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id))
-                return;
-            js = d.createElement(s);
-            js.id = id;
-            js.src = "//connect.facebook.net/es_ES/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-
-        function iniciaAPI() {
-            FB.api('/me', {"fields": "email,first_name,last_name,id,gender"}, function (response)
-            {
-                
-                conosle.log(response);
-                $.ajax({
-                    data: {id: response.id, email: response.email},
-                    url: Routing.generate('validar_correo'),
-                    type: 'POST',
-                    dataType: 'json',
-                    success: function (data) {
-                        if (data == true) {
-                            $.ajax({
-                                data: {id: response.id, nombre: response.first_name, apellido: response.last_name, email: response.email
-                                },
-                                url: Routing.generate('ingresar_usuarioEmpresa'),
-                                type: 'POST',
-                                dataType: 'json',
-                                success: function (data) {
-                                    if (data.estado == true) {
-                                        var url = Routing.generate('perfil');
-                                        window.open(url, "_self");
-                                        Lobibox.notify("success", {
-                                            size: 'mini',
-                                            msg: 'Registro exitoso, espere un momento'
-                                        });
-                                    } else {
-                                        Lobibox.notify("error", {
-                                            size: 'mini',
-                                            msg: 'Error al ingresar los datos'
-                                        });
-                                    }
-                                }
-                            });
-                        } else {
-
-                            $("#frmLogin").submit();
-                        }
-                    }
-                });
-            });
-        }
-                
-    </script>
+   
      <div id="page-content">
          <div class="container">
     <div class="login-box"  style="margin-top: 70px;box-shadow: 3px 3px 2px #888888; border: 1px solid #e0e0e0;">
@@ -172,17 +71,15 @@
                         <button type="submit" class="btn btn-primary btn-block btn-flat" ><b>Iniciar sesión</b></button>
                     </div><!-- /.col -->
                 </div>
+                    <input type="hidden" id="correoFeacebook" value="0">
+                    <input type="hidden" id="contraFacebook" value="0">
             </form>
-                    {#
-            <div class="social-auth-links text-center">
-                <p>- OR -</p>
-              
-                <div class="fb-login-button btn-flat" style=" width:220px;" data-max-rows="2" data-size="large" data-show-faces="false" data-auto-logout-link="false">Iniciar sesión </div>
-	
-            </div><!-- /.social-auth-links -->
+                <fb:login-button size="small" scope="public_profile,email" onlogin="checkLoginState();">
+                    Iniciar Sesión
+                </fb:login-button><br>
 
-#}
 
+                    
             {% block alert -%}
                 {% if error %}
                     <div style="color:red;margin-bottom: 20px;">{{ error.message }}</div>
@@ -193,6 +90,180 @@
             <a href="register.html" class="text-center">Registrar una nueva membresía</a>
 
         </div><!-- /.login-box-body -->
+         <script>
+  // This is called with the results from from FB.getLoginStatus().
+  
+                function statusChangeCallback(response) {
+            
+                  // The response object is returned with a status field that lets the
+                  // app know the current login status of the person.
+                  // Full docs on the response object can be found in the documentation
+                  // for FB.getLoginStatus().
+                  if (response.status === 'connected') {
+                     
+                    var contrasenhaFacebook= response.authResponse.userID;
+                    
+                    //Aqui viene el dato de la  utorizacion
+                    testAPI();
+                     FB.api('/me/permissions', function(response) {
+            {#  console.log(JSON.stringify(response));#}
+                            });
+
+                     FB.api('/me', { locale: 'en_US', fields: 'name, email' },
+                      function(response) {
+                        
+                            var correoFeacebook=response.email;
+                                                            $.ajax({
+                                                                            data: {contrasenhaFacebook:contrasenhaFacebook},
+                                                                            url: Routing.generate('validacion_permiso_login_facebook'),
+                                                                            type: 'POST',
+                                                                            dataType: 'json',
+                                                                            success: function (data)
+                                                                            {
+                                                                               
+                                                                                if (data.estado == true) {
+                                                                                    
+                                                                                    swal({
+                                                                                            title: "Session de facebook iniciada",
+                                                                                            text: "Ya te encuentras con tu sesion de facebook iniciada, ¿quieres iniciar sesión dentro de abogados con las mismas credenciales?",
+                                                                                            type: "info",
+                                                                                            showCancelButton: true,
+                                                                                            cancelButtonText: "No",
+                                                                                            confirmButtonText: "Si",
+                                                                                            confirmButtonColor: "#00A59D",
+                                                                                            closeOnConfirm: true,
+                                                                                            closeOnCancel: true
+                                                                                        },
+                                                                                            function (isConfirm) {
+                                                                                                if (isConfirm) {
+
+
+                                                                                                           $.ajax({
+                                                                                                                data: {correoFeacebook:correoFeacebook,contrasenhaFacebook:contrasenhaFacebook},
+                                                                                                                url: Routing.generate('login_usuario_data'),
+                                                                                                                type: 'POST',
+                                                                                                                dataType: 'json',
+                                                                                                                success: function (data)
+                                                                                                                {
+                                                                                                                    console.log(data.estado);
+                                                                                                                    if (data.estado == true) {
+                                                                                                                        var url = Routing.generate('perfil');
+                                                                                                                                    window.open(url, "_self");
+
+                                                                                                                                } else {
+
+                                                                                                                                    Lobibox.notify("error", {
+                                                                                                                                        size: 'mini',
+                                                                                                                                        msg: 'Error al ingresar los datos'
+                                                                                                                                    });
+                                                                                                                                }
+
+                                                                                                                                $("#bntenviar").prop("disabled", false);
+                                                                                                                                $("#bntenviar").button('reset');
+
+                                                                                                                                return false;
+                                                                                                                            }
+                                                                                                                        });
+
+
+
+                                                                                                                    } else {
+
+                                                                                                                    console.log("Numero de identificacion ya existente dentro del sistema");
+
+                                                                                                                    }
+
+
+                                                                                                                });
+
+                                                                                }
+                                                                    }
+                                                        });
+
+
+                                                    }
+                                            );
+
+
+
+                  } else if (response.status === 'not_authorized') {
+
+                    
+
+                  }
+                  else if (response.status === 'unknown') {
+
+                    
+                  }else {
+                      FB.login();
+                  }
+                }
+
+  // This function is called when someone finishes with the Login
+  // Button.  See the onlogin handler attached to it in the sample
+  // code below.
+  function checkLoginState() {
+    FB.getLoginStatus(function(response) {
+      statusChangeCallback(response);
+    });
+  }
+
+  window.fbAsyncInit = function() {
+  FB.init({
+    appId      : '1057084397714243',
+    cookie     : true,  // enable cookies to allow the server to access 
+                        // the session
+    xfbml      : true,  // parse social plugins on this page
+    version    : 'v2.5' // use version 2.2
+  });
+
+  // Now that we've initialized the JavaScript SDK, we call 
+  // FB.getLoginStatus().  This function gets the state of the
+  // person visiting this page and can return one of three states to
+  // the callback you provide.  They can be:
+  //
+  // 1. Logged into your app ('connected')
+  // 2. Logged into Facebook, but not your app ('not_authorized')
+  // 3. Not logged into Facebook and can't tell if they are logged into
+  //    your app or not.
+  //
+  // These three cases are handled in the callback function.
+
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
+
+  };
+
+  // Load the SDK asynchronously
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "https://connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
+  // Here we run a very simple test of the Graph API after login is
+  // successful.  See statusChangeCallback() for when this call is made.
+  function testAPI() {
+   
+    FB.api('/me', function(response) {
+     
+    });
+  }
+</script>
+
+<!--
+  Below we include the Login Button social plugin. This button uses
+  the JavaScript SDK to present a graphical Login button that triggers
+  the FB.login() function when clicked.
+-->
+
+   
+        
+        
+        
     </div><!-- /.login-box -->
   </div>
             </div>
