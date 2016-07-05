@@ -34,7 +34,7 @@
           <div class="col-md-9">
             
               <center> <h3 style="margin-top: 90px;font-family: cursive; ">Formulario de contacto</h3></center>
-              <form class="form-horizontal" role="form" method="post" action="{{ path('correoContacto') }}" >
+              <form class="form-horizontal" role="form" method="post" action="{{ path('contacto',{correo:correoAbogado}) }}" >
                     <input type="hidden" name="correoAbogado" value="{{correoAbogado}}">
 	<div class="form-group">
 		<label for="name" class="col-sm-2 control-label">Nombre</label>

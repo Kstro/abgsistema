@@ -226,8 +226,8 @@
                                     <div class="row">
 
                                         {%if datos.movil|default is not empty or datos.Tfijo|default is not empty%}
-                                            <div class="col-sm-3  col-xs-6">
-                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono(s)</strong></p>
+                                            <div class="col-sm-3 col-md-6 col-xs-6">
+                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Teléfono(s)</strong></p>
                                                 <p style="font-size: 11px; margin-bottom: 0px;">
 
                                                     {%if datos.movil|default is not empty %}
@@ -245,7 +245,7 @@
                                             </div>
                                         {%endif %}
                                         {%if datos.correo|default is not empty %}
-                                            <div class="col-sm-3 col-xs-6">
+                                            <div class="col-sm-3 col-md-6 col-xs-6">
                                                 <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email(s)</strong></p>
                                                 <p style="font-size: 11px; margin-bottom: 0px;">
                                                     {{datos.correo}}
@@ -257,7 +257,7 @@
                                 <div class=" col-sm-6 col-xs-12">
                                     <div class=" row">
                                         {%if datos.direccion|default is not empty %}
-                                            <div class="col-sm-3 col-xs-6">
+                                            <div class="col-sm-3 col-md-6 col-xs-6">
                                                 <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Dirección</strong></p>
                                                 <p style="font-size: 11px; margin-bottom: 0px;">
                                                     {{datos.direccion}}
@@ -265,7 +265,7 @@
                                             </div>
                                         {%endif%}
                                         {%if sitio|default is not empty %}
-                                            <div class="col-sm-3 col-xs-6">
+                                            <div class="col-sm-3 col-md-6 col-xs-6">
                                                 <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio web</strong></p>
                                                 <p style="font-size: 11px; margin-bottom: 0px;">
                                                     {% for datos in sitio %}
