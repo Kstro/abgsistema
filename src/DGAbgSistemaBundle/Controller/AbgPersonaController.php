@@ -1370,7 +1370,8 @@ class AbgPersonaController extends Controller {
                     $em->persist($PersonaEspecialidad);
                     $em->flush();
                 }
-                $data['msj'] = "Especialida registrada";
+                $data['msj'] = "Cambios guardados ";
+                
                 $dql_especialida = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre, pe.descripcion AS descripcion "
                         . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
                         . "JOIN DGAbgSistemaBundle:AbgPersonaEspecialida pe WHERE e.id=pe.ctlEspecialidad AND pe.abgPersona=" . $request->get('hPersona')
