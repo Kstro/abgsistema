@@ -198,27 +198,29 @@
                     var acuerdo = $('#acuerdo').is(':checked');
                     var capctha = $('#recaptcha-token').val();
                     
-                    console.log("Pregunta: "+pregunta);
+                    {#console.log("Pregunta: "+pregunta);
                     console.log("Detalle: "+detPregunta);
                     console.log("Categoria: "+categoria);
                     console.log("correo: "+correo);
                     console.log("acuerdo: "+acuerdo);
-                    console.log("capctcha: "+capctha);
+                    console.log("capctcha: "+capctha);#}
                     
-                    if(pregunta==='' || detPregunta==='' || categoria==='' || correo===''){
+                    if(pregunta==='' || {#detPregunta==='' || #}categoria==='' || correo===''){
                         Lobibox.notify("error", {
                             size: 'mini',
                             msg: 'Complete los campos requeridos (*)!'
                         });
+                        return false;
                     }
                     if(!acuerdo==='' ){
                         Lobibox.notify("error", {
                             size: 'mini',
                             msg: 'Debe aceptar los términos y condiciones!'
                         });
+                        return false;
                     }
                     
-                    return false;
+                    //return false;
                 });
                 
                
