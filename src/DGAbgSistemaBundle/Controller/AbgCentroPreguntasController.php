@@ -380,7 +380,7 @@ class AbgCentroPreguntasController extends Controller {
                     'prom2' => $prom2, 'prom3' => $prom3,
                     'prom4' => $prom4, 'pregunta' => $pregunta,
                     'respuestas' => $respuestas));
-    }
+    }        
 
     /**
      * 

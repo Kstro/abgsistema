@@ -2238,7 +2238,7 @@ class CtlEmpresaController extends Controller {
         }
     }
 /**
-     * @Route("/departamento", name="departamento", options={"expose"=true})
+     * @Route("/departamento/data_dept", name="departamento", options={"expose"=true})
      * @Method("GET")
      */
     public function DepartamentoAction() {

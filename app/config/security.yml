@@ -12,11 +12,13 @@ security:
     firewalls:
         #Firewalls para ingreso al Sistema de Directorio de Abogados
         login_:
-            pattern:  ^/secured/login$
+            pattern:  ^/$
             security: false
+            context: primary_auth
             anonymous: ~
         secured_area_:
             pattern: ^/
+            context: primary_auth
             switch_user: { role: ROLE_ADMIN, parameter: _change }
             form_login:
                 login_path: /secured/login
@@ -31,7 +33,7 @@ security:
             anonymous: ~                         
             
     access_control:
-        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/usuario/registeruser/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/usuario/account/created, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/*, role:  [ROLE_USER, ROLE_ADMIN]} 
