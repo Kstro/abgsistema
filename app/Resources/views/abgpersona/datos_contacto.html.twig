@@ -1,5 +1,6 @@
 <link href="{{asset('Resources/jquery-validation-1.15.0/demo/css/screen.css')}}" rel="stylesheet">
 <script src="{{ asset('Resources/jquery-validation-1.15.0/dist/jquery.validate.js')}}"></script>
+
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -23,7 +24,7 @@
             }
         });
 
-        $("#cancel").click(function () {
+        $("#cancelContacto").click(function () {
             $("#datosContacto").show();
           
             $("#div001").remove();
@@ -45,11 +46,11 @@
                 <div class="row">
                     <div class="col-sm-2">
                         <input type="text" class="form-control input-sm" 
-                               placeholder="Oficina"  id="txtFijo" name="txtFijo" value="{{datos.Tfijo}}" data-rule-required="true">
+                               placeholder="2222-2222"  id="txtFijo" name="txtFijo" value="{{datos.Tfijo}}" data-rule-required="true">
                     </div>
                     <div class="col-sm-2">
                         <input type="text" class="form-control input-sm" 
-                               placeholder="Movil"  id="txtMovil" name="txtMovil" value="{{datos.movil}}">
+                               placeholder="7777-7777"  id="txtMovil" name="txtMovil" value="{{datos.movil}}">
                     </div>
                 </div>
             </div>
@@ -86,7 +87,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-sm"  onclick="editDatosContacto()">Guardar</button> <button type="button" class="btn btn-default btn-sm" id="cancel">Cancelar</button>
+                        <button type="submit" class="btn btn-primary btn-sm btn-flat"  onclick="editDatosContacto()">Guardar</button> <button type="button" class="btn btn-default btn-sm btn-flat" id="cancelContacto">Cancelar</button>
                     </div>
                 </div>
             </div>

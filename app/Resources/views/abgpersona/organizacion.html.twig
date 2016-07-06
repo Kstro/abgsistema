@@ -3,6 +3,7 @@
 <script type="text/javascript" src="{{ asset('Resources/zebra/js/zebra_datepicker.js')}}" ></script>
 <link href="{{asset('Resources/jquery-validation-1.15.0/demo/css/screen.css')}}" rel="stylesheet">
 <script src="{{ asset('Resources/jquery-validation-1.15.0/dist/jquery.validate.js')}}"></script>
+ <script src="{{asset('Resources/js/enviarDatos.js')}}"></script>
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -26,7 +27,7 @@
         $('.fechIniOrg').Zebra_DatePicker({
             months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
             days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-            format: 'd-m-Y',
+               format: 'Y-m-d',
             direction: false,
             show_clear_date: false,
             show_select_today: "Hoy",
@@ -37,7 +38,7 @@
         $('.fechFinOrg').Zebra_DatePicker({
             months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
             days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-            format: 'd-m-Y',
+                format: 'Y-m-d',
             // direction:false,
             show_clear_date: false,
             show_select_today: "Hoy",
@@ -45,8 +46,8 @@
 
             });
 
-            $("#cancel").click(function () {
-                $('div.organiza').children('br').remove();
+            $("#cancelOrg").click(function () {
+                   $('div.organiz').children('br').remove();
                 $("#Org" + editEdu).show();
                 $("#div5").remove();
             });
@@ -105,6 +106,7 @@
                                placeholder="Fecha fin"  id="txtFechFinOrg" name="txtFechFinOrg"  value="{{datos.fechaFin}}" data-rule-required="true">
                     </div>
                 </div>
+                    <p style=" color: #F00;" id="Porg" calss="sans"></p>
             </div>
             <!--div class="form-group">
                 <div class="row">
@@ -118,7 +120,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-sm btn-flat"  onclick="addOrganizacion()">Guardar</button> <button type="button" class="btn btn-default btn-sm btn-flat" id="cancel">Cancelar</button>
+                        <button type="submit" class="btn btn-primary btn-sm btn-flat"  id="addOrganizacion">Guardar</button> <button type="button" class="btn btn-default btn-sm btn-flat" id="cancelOrg">Cancelar</button>
                     </div>
                 </div>
             </div>
@@ -151,6 +153,7 @@
                            placeholder="Fecha fin"  id="txtFechFinOrg" name="txtFechFinOrg" data-rule-required="true">
                 </div>
             </div>
+            <p style=" color: #F00;" id="Porg" calss="sans"></p>
         </div>
         <div class="form-group">
             <label for="ejemplo_password_1">Función del puesto</label>
@@ -159,7 +162,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-sm btn-flat"  onclick="addOrganizacion()">Guardar</button> <button type="button" class="btn btn-default btn-sm btn-flat" id="cancel">Cancelar</button>
+                    <button type="submit" class="btn btn-primary btn-sm btn-flat"  id="addOrganizacion">Guardar</button> <button type="button" class="btn btn-default btn-sm btn-flat" id="cancelOrg">Cancelar</button>
                 </div>
             </div>
         </div>
