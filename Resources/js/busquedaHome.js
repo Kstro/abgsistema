@@ -19,7 +19,7 @@
             var ciudad = $('.ciudad').val();
             console.log(busqueda);
             console.log(ciudad);
-            return false;
+            //return false;
             window.location = Routing.generate("directorio_index")+"?busqueda="+busqueda+"&ciu="+ciudad;
         });
         $(document).on('click','#buscarMov', function(){
