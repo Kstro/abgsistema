@@ -780,6 +780,48 @@
             "time": "2015-08-31 13:19:01"
         },
         {
+            "name": "excelwebzone/recaptcha-bundle",
+            "version": "v1.4.1",
+            "target-dir": "EWZ/Bundle/RecaptchaBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/excelwebzone/EWZRecaptchaBundle.git",
+                "reference": "3ebd8fec320c5346814601086894f79c141dd077"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/excelwebzone/EWZRecaptchaBundle/zipball/3ebd8fec320c5346814601086894f79c141dd077",
+                "reference": "3ebd8fec320c5346814601086894f79c141dd077",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/framework-bundle": "~2.4"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "EWZ\\Bundle\\RecaptchaBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael H. Arieli",
+                    "email": "excelwebzone@gmail.com",
+                    "homepage": "http://excelwebzone.com/"
+                }
+            ],
+            "description": "This bundle provides easy reCAPTCHA form field integration",
+            "homepage": "https://github.com/excelwebzone/EWZRecaptchaBundle",
+            "keywords": [
+                "recaptcha"
+            ],
+            "time": "2015-07-31 23:57:07"
+        },
+        {
             "name": "friendsofsymfony/jsrouting-bundle",
             "version": "1.6.0",
             "source": {

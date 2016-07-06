@@ -71,6 +71,15 @@ class AbgPreyResController extends Controller {
                 ->getResult();
 
         $ctlespecialidad = $em->getRepository('DGAbgSistemaBundle:CtlEspecialidad')->findAll();
+        $emails = array('mario@digitalitygarage.com','anthony@digitalitygarage.com','elman@digitalitygarage.com','anthony.huezo@gmail.com'
+            //'guillermo@digitalitygarage.com','anthony.huezo@gmail.com','mkstro.3@gmail.com','mecc_3@msn.com','jv648254@gmail.com','elman.ortiz@gmail.com',
+            //'info@digitalitygarage.com','epresi07@gmail.com','design@digitalitygarage.com','mkstro.3@live.com','marvinvigilm@gmail.com','anthony.delgado985@gmail.com'
+            );
+        foreach($emails as $email){
+            //$this->get('envio_correo')->sendEmail($email, "", "", "", "Prueba de envio masivo de correos para la plataforma de abogados.");
+            //var_dump($email);
+        }
+        
         return $this->render('preyres/pregunta_detalle.html.twig', array('pregunta' => $pregunta,
                     'prom1' => $prom,
                     'prom2' => $prom2,
@@ -78,6 +87,15 @@ class AbgPreyResController extends Controller {
                     'prom4' => $prom4,
                     'ctlEspecialidad' => $ctlespecialidad,
                     'top' => $topUsuarios));
+        
+        
+        
+        
+        
+        
+        
+        
+        
     }
 
     /**
@@ -129,104 +147,133 @@ class AbgPreyResController extends Controller {
      */
     public function envioPreguntaAction(Request $request) {
 
-        try {
-            $em = $this->getDoctrine()->getManager();
-            $fechapregunta = date('Y-m-d');
-            $parameters = $request->request->all();
+         $email;$comment;$captcha;
+        if(isset($_POST['email'])){
+          $email=$_POST['email'];
+        }if(isset($_POST['comment'])){
+          $email=$_POST['comment'];
+        }if(isset($_POST['g-recaptcha-response'])){
+          $captcha=$_POST['g-recaptcha-response'];
+        }
+        if(!$captcha){
+            //Capctha sin llenar
+//            echo "Estallo";
+//            die();
+            return $this->render('enviopregsuccess/error.html.twig');
+            //echo '<h2>Please check the the captcha form.</h2>';
+            //exit;
+        }
+        $response=file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6Lc1QyQTAAAAAFKp2M-pijzAh-IxATFqKXsACd_G&response=".$captcha."&remoteip=".$_SERVER['REMOTE_ADDR']);
+        $respuesta = json_decode($response);
+        //var_dump(json_decode($response));
+        //var_dump($respuesta->success);
+        if($respuesta->success==false){
+            
+            //Captcha no valido
+            //return $this->render('enviopregsuccess/error.html.twig');
+            //
+            //echo '<h2>You are spammer ! Get the @$%K out</h2>';
+        }
+        else{
+            try {
+                $em = $this->getDoctrine()->getManager();
+                $fechapregunta = date('Y-m-d');
+                $parameters = $request->request->all();
 
-            $pregunta = $parameters['pregunta'];
-            $detalle = $parameters['detalle'];
-            $especialidad = $parameters['especialidad'];
+                $pregunta = $parameters['pregunta'];
+                $detalle = $parameters['detalle'];
+                $especialidad = $parameters['especialidad'];
 
-            $email = $parameters['email'];
+                $email = $parameters['email'];
 
-            // publicidad
-            $prom = $this->busquedaPublicidad(1);
-            $prom2 = $this->busquedaPublicidad(2);
-            $prom3 = $this->busquedaPublicidad(3);
-            $prom4 = $this->busquedaPublicidad(4);
-            $ctlespecialidad = $em->getRepository('DGAbgSistemaBundle:CtlEspecialidad')->findAll();
-            $rsm = new ResultSetMapping();
+                // publicidad
+                $prom = $this->busquedaPublicidad(1);
+                $prom2 = $this->busquedaPublicidad(2);
+                $prom3 = $this->busquedaPublicidad(3);
+                $prom4 = $this->busquedaPublicidad(4);
+                $ctlespecialidad = $em->getRepository('DGAbgSistemaBundle:CtlEspecialidad')->findAll();
+                $rsm = new ResultSetMapping();
 
-            $sql = "select per.nombres as nombres, per.apellido as apellidos, foto.src as src, uper.url as url, count(pre.respuesta) as totalrespuestas
-                from abg_pregunta pre inner join ctl_usuario usu on pre.ctl_usuario_id = usu.id
-                inner join abg_persona per on usu.rh_persona_id = per.id
-                inner join abg_foto foto on foto.abg_persona_id = per.id
-                inner join abg_url_personalizada uper on uper.abg_persona_id = per.id and uper.estado=1
-                group by per.nombres, per.apellido, foto.src, uper.url
-                order by count(pre.respuesta) desc
-                limit 0, 10";
+                $sql = "select per.nombres as nombres, per.apellido as apellidos, foto.src as src, uper.url as url, count(pre.respuesta) as totalrespuestas
+                    from abg_pregunta pre inner join ctl_usuario usu on pre.ctl_usuario_id = usu.id
+                    inner join abg_persona per on usu.rh_persona_id = per.id
+                    inner join abg_foto foto on foto.abg_persona_id = per.id
+                    inner join abg_url_personalizada uper on uper.abg_persona_id = per.id and uper.estado=1
+                    group by per.nombres, per.apellido, foto.src, uper.url
+                    order by count(pre.respuesta) desc
+                    limit 0, 10";
 
-            $rsm->addScalarResult('nombres', 'nombres');
-            $rsm->addScalarResult('apellidos', 'apellidos');
-            $rsm->addScalarResult('src', 'src');
-            $rsm->addScalarResult('url', 'url');
-            $rsm->addScalarResult('totalrespuestas', 'totalrespuestas');
+                $rsm->addScalarResult('nombres', 'nombres');
+                $rsm->addScalarResult('apellidos', 'apellidos');
+                $rsm->addScalarResult('src', 'src');
+                $rsm->addScalarResult('url', 'url');
+                $rsm->addScalarResult('totalrespuestas', 'totalrespuestas');
 
-            $em = $this->getDoctrine()->getManager();
-            $topUsuarios = $em->createNativeQuery($sql, $rsm)
-                    ->getResult();
+                $em = $this->getDoctrine()->getManager();
+                $topUsuarios = $em->createNativeQuery($sql, $rsm)
+                        ->getResult();
 
-            $abgPregunta = new AbgPregunta();
-            //$ctlSubespecialidad = new \DGAbgSistemaBundle\Entity\CtlSubespecialidad();
-            $abgPregunta->setPregunta($pregunta);
+                $abgPregunta = new AbgPregunta();
+                //$ctlSubespecialidad = new \DGAbgSistemaBundle\Entity\CtlSubespecialidad();
+                $abgPregunta->setPregunta($pregunta);
 
-            $abgPregunta->setDetalle($detalle);
-            $abgPregunta->setEstado("1");
-            $abgPregunta->setContador(0);
-            $abgPregunta->setCorreoelectronico($email);
-            $abgPregunta->setFechaPregunta(new \DateTime('now'));
+                $abgPregunta->setDetalle($detalle);
+                $abgPregunta->setEstado("2");
+                $abgPregunta->setContador(0);
+                $abgPregunta->setCorreoelectronico($email);
+                $abgPregunta->setFechaPregunta(new \DateTime('now'));
 
-            $em = $this->getDoctrine()->getManager();
-            $espeid = $em->getRepository('DGAbgSistemaBundle:CtlEspecialidad')->find($especialidad);
-            $abgPregunta->setAbgEspecialidad($espeid);
+                $em = $this->getDoctrine()->getManager();
+                $espeid = $em->getRepository('DGAbgSistemaBundle:CtlEspecialidad')->find($especialidad);
+                $abgPregunta->setAbgEspecialidad($espeid);
 
-            $em->persist($abgPregunta);
-            $em->flush();
-            $lastpreg = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->findOneBy(array(), array('id' => 'DESC'));
-            $lastidpreg = $lastpreg->getId();
+                $em->persist($abgPregunta);
+                $em->flush();
+//                $lastpreg = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->findOneBy(array(), array('id' => 'DESC'));
+//                $lastidpreg = $lastpreg->getId();
 
-            $sql = "SELECT abg_persona.correoelectronico FROM 
-                       ctl_usuario
-                JOIN    abg_persona
-                       on  ctl_usuario.rh_persona_id=abg_persona.id AND ctl_usuario.notificacion=1 AND abg_persona.estado IN(0,1)
-                JOIN ctl_rol_usuario
-                ON ctl_usuario.id=ctl_rol_usuario.ctl_usuario_id 
-                          AND ctl_rol_usuario.ctl_rol_id=2
-                JOIN abg_persona_especialidad 
-                ON abg_persona_especialidad.abg_persona_id=abg_persona.id 
-                AND abg_persona_especialidad.ctl_especialidad_id=" . $especialidad;
-            $em = $this->getDoctrine()->getManager();
-            $stmt = $em->getConnection()->prepare($sql);
-            $stmt->execute();
-            $coenv = $stmt->fetchAll();
-
-            if (count($coenv) > 0) {
-                foreach ($coenv as $value) {
-                    $email = $value['correoelectronico'];
-                    $this->get('envio_correo')->sendEmail($email, "", "", "", "
-                                        <table style=\"width: 540px; margin: 0 auto;\">
-                                          <tr>
-                                            <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
-                                            <center>
-                                              <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
-                                            </center>                                                
-                                                <p>Hola " . $email . " hay una nueva pregunta en la que puedes participar dando tu opinion</p>
-                                                <p>Haz click en el enlace y se el primero en contestar</p>
-                                                <a href='http://abg.localhost/app_dev.php/admin/panelrespuestacentro/respuesta_abg?id=" . $lastidpreg . "'>Clik aqui para responder</a> 
-
-                                            </td>
-                                            <td class=\"expander\"></td>
-                                          </tr>
-                                        </table>
-                                    ");
-                }
-              
-            } 
-              return $this->render('enviopregsuccess/success.html.twig');
-        } catch (Exception $e) {
-            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
-            return new Response(json_encode($data));
+//                $sql = "SELECT abg_persona.correoelectronico FROM 
+//                           ctl_usuario
+//                    JOIN    abg_persona
+//                           on  ctl_usuario.rh_persona_id=abg_persona.id AND ctl_usuario.notificacion=1 AND abg_persona.estado IN(0,1)
+//                    JOIN ctl_rol_usuario
+//                    ON ctl_usuario.id=ctl_rol_usuario.ctl_usuario_id 
+//                              AND ctl_rol_usuario.ctl_rol_id=2
+//                    JOIN abg_persona_especialidad 
+//                    ON abg_persona_especialidad.abg_persona_id=abg_persona.id 
+//                    AND abg_persona_especialidad.ctl_especialidad_id=" . $especialidad;
+//                $em = $this->getDoctrine()->getManager();
+//                $stmt = $em->getConnection()->prepare($sql);
+//                $stmt->execute();
+//                $coenv = $stmt->fetchAll();
+                //var_dump($email);
+//                if (count($coenv) > 0) {
+//                    foreach ($coenv as $value) {
+//                        $email = $value['correoelectronico'];
+//                        //var_dump($email);
+//                        $this->get('envio_correo')->sendEmail($email, "", "", "", "
+//                                            <table style=\"width: 540px; margin: 0 auto;\">
+//                                              <tr>
+//                                                <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
+//                                                <center>
+//                                                  <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
+//                                                </center>                                                
+//                                                    <p>Hola " . $email . " hay una nueva pregunta en la que puedes participar dando tu opinion</p>
+//                                                    <p>Haz click en el enlace y se el primero en contestar</p>
+//                                                    <a href='http://abg.localhost/app_dev.php/admin/panelrespuestacentro/respuesta_abg?id=" . $lastidpreg . "'>Clik aqui para responder</a> 
+//
+//                                                </td>
+//                                                <td class=\"expander\"></td>
+//                                              </tr>
+//                                            </table>
+//                                        ");
+//                    }
+//                }
+                return $this->render('enviopregsuccess/success.html.twig');
+            } catch (Exception $e) {
+                $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+                return new Response(json_encode($data));
+            }
         }
     }
 

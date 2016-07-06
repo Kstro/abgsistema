@@ -6,11 +6,12 @@
 <link href="{{asset('Resources/jquery-validation-1.15.0/demo/css/screen.css')}}" rel="stylesheet">
 <script src="{{ asset('Resources/jquery-validation-1.15.0/dist/jquery.validate.js')}}"></script>
 <script src="{{ asset('Resources/select2/dist/js/select2.min_1.js') }}"></script>
+ <script src="{{asset('Resources/js/enviarDatos.js')}}"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
-        
-          
+
+
         $("#fExperiencia").validate({
             messages: {
                 txthubicacion: {
@@ -22,47 +23,68 @@
                 txtEditEmpresa: {required: 'Requerido!'}
             }
         });
-var fecha =new   Date();
-var dia = fecha.getDate();
-var mes = fecha.getMonth();
-var anho = fecha.getFullYear();
+        var fecha = new Date();
+        var dia = fecha.getDate();
+        var mes = fecha.getMonth();
+        var anho = fecha.getFullYear();
 
-    if (mes<10){
-        mes=mes+1;
-    }
+        if (mes < 10) {
+            mes = mes + 1;
+        }
 
-
- var fechaFinal = dia+"-"+"0"+mes+"-"+anho;
-        $('.txtFechaIni').Zebra_DatePicker({
-            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-            format: 'd-m-Y',
-            direction: -1,
-        // show_clear_date: true,
-       //     show_select_today: "Hoy",
-            pair: $('.txtFechaFin'),
-           show_icon: false
-        });
-        $('.txtFechaFin').Zebra_DatePicker({
-            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-            format: 'd-m-Y',
-           direction:[true,fechaFinal],
-            show_icon: false
+       
+         var fecha =new   Date();
+         var dia = fecha.getDate();
+         var mes = fecha.getMonth();
+         var anho = fecha.getFullYear();
          
+         if (mes<10){
+         mes=mes+1;
+         }
+         var fechaFinal = anho+"-"+"0"+mes+"-"+dia;
+          /*
+         $('#txtFechaInicio').Zebra_DatePicker({
+         format: 'Y-m-d',
+         direction: -1,
+         pair: $('#txtFechaFin')
+         });
+         
+         $('#txtFechaFin').Zebra_DatePicker({
+         format: 'Y-m-d',
+         direction: [true, fechaFinal]
+         });      
+         */
+
+        $('#txtFechaIni').Zebra_DatePicker({
+            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            format: 'Y-m-d',
+            direction: -1,
+             show_icon: false
+//
+//             pair: $('#txtFechaFin')
         });
-        
-        $("#cancel").click(function () {
-             $('div.experienc').children('br').remove();
+        $('#txtFechaFin').Zebra_DatePicker({
+            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            format: 'Y-m-d',
+         direction: -1,
+          show_icon: false
+        });
+
+        $("#cancelExp").click(function () {
+            $('div.experienc').children('br').remove();
             $("#" + editExp).show();
             $("#div1").remove();
         });
+        
     });
 
     $('#checkActual').change(function () {
         if ($('#checkActual').is(":checked")) {
             $('#fechafin').hide();
-            $('#txtFechaFin').val(null);   $('#txtFechaFin').val(null);
+            $('#txtFechaFin').val(null);
+            $('#txtFechaFin').val(null);
         } else {
             $('#fechafin').show();
         }
@@ -129,16 +151,16 @@ var anho = fecha.getFullYear();
 
 <form role="form" id="fExperiencia" >
     {%if Experiencia|default is not empty %}
-<script type="text/javascript">
-    $(document).ready(function () {
-        
+        <script type="text/javascript">
+            $(document).ready(function () {
+
             {%if fechaFin|default is not empty %}
-                    {%else%}
-                       $('#fechafin').css("display","none");
-                   $('#txtFechaFin').val(null);
-        {% endif  %}
-              });
-            </script>
+            {%else%}
+                                    $('#fechafin').css("display", "none");
+                                    $('#txtFechaFin').val(null);
+            {% endif  %}
+                    });
+        </script>
         {% for datos in Experiencia %}
 
             <input type="hidden" name="hidExp" id="hidExp" value="{{datos.id}}">
@@ -182,21 +204,22 @@ var anho = fecha.getFullYear();
                                placeholder="Fecha inicio de labor"  id="txtFechaIni" name="txtFechaIni" value="{{datos.fechaIn}}" data-rule-required="true">
                     </div>
                     {%if(datos.fechaFin|default is not empty)%}
-                         <div  id="fechafin">
-                        <div class="col-sm-4 col-xs-6"  >
-                            <input type="text" class="form-control txtFechaFin  input-sm" 
-                                   placeholder="Fecha fin de labor"  id="txtFechaFin" name="txtFechaFin" value="{{datos.fechaFin}}" data-rule-required="true">
+                        <div  id="fechafin">
+                            <div class="col-sm-4 col-xs-6"  >
+                                <input type="text" class="form-control txtFechaFin  input-sm" 
+                                       placeholder="Fecha fin de labor"  id="txtFechaFin" name="txtFechaFin" value="{{datos.fechaFin}}" data-rule-required="true">
+                            </div>
                         </div>
-                    </div>
-              {%else%}
-                    <div  id="fechafin" style=" display: none">
-                        <div class="col-sm-4 col-xs-6"  >
-                            <input type="text" class="form-control txtFechaFin  input-sm" 
-                                   placeholder="Fecha fin de labor"  id="txtFechaFin" name="txtFechaFin" value="{{datos.fechaFin}}" data-rule-required="true">
+                    {%else%}
+                        <div  id="fechafin" style=" display: none">
+                            <div class="col-sm-4 col-xs-6"  >
+                                <input type="text" class="form-control txtFechaFin  input-sm" 
+                                       placeholder="Fecha fin de labor"  id="txtFechaFin" name="txtFechaFin" value="{{datos.fechaFin}}" data-rule-required="true">
+                            </div>
                         </div>
-                    </div>
-                        {%endif%}
+                    {%endif%}
                 </div>
+                <p style=" color: #F00;" id="Pexp" calss="sans"></p>
             </div>
             <div class="form-group">
                 <div class="row">
@@ -212,7 +235,7 @@ var anho = fecha.getFullYear();
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-sm btn-flat"  onclick="addExperiencia()">Guardar</button> <button type="button" class="btn btn-default btn-sm btn-flat" id="cancel">Cancelar</button>
+                            <button type="submit" class="btn btn-primary btn-sm btn-flat"  id="btnEnviarExp" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Enviando">Guardar</button> <button type="button" class="btn btn-default btn-sm btn-flat" id="cancelExp">Cancelar</button>
                         </div>
                     </div>
                 </div>
@@ -220,7 +243,7 @@ var anho = fecha.getFullYear();
                     {%else%}
 
                         <input type="hidden" name="hidExp" id="hidExp" value="">
-                         <input type="hidden" name="hidEmp" id="hidEmp" value="">
+                        <input type="hidden" name="hidEmp" id="hidEmp" value="">
                         <div class="form-group" >
                             <label for="nombreEmpleado">Nombre de la Empresa</label>
                             <div  class="form-group " id="cambioEmpresa">
@@ -263,6 +286,7 @@ var anho = fecha.getFullYear();
                                     </div>
                                 </div>
                             </div>
+                              <p style=" color: #F00;" id="Pexp" calss="sans"></p>
                         </div>
                         <div class="form-group">
                             <div class="row">
@@ -277,12 +301,14 @@ var anho = fecha.getFullYear();
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary btn-sm btn-flat" onClick="addExperiencia()">Guardar</button> <button type="button" class="btn btn-default btn-sm btn-flat" id="cancel">Cancelar</button>
+                                    <!-- onClick="addExperiencia()"-->
+                                    <button type="submit" class="btn btn-primary btn-sm btn-flat"  id="btnEnviarExp" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Enviando">Guardar</button> <button type="button" class="btn btn-default btn-sm btn-flat" id="cancelExp">Cancelar</button>
                                 </div>
                             </div>
                         </div>
                         {%endif%}
                         </form>
+                            <script  src="{{asset('Resources/AdminLTE-2.3.0/bootstrap/js/bootstrap.min.js')}}"></script>
                         <script type="text/javascript">
 
                             $('#ScambioEmpresa').select2({

@@ -28,8 +28,8 @@
                     {
                         $("#divVerificar").empty();
                         $("#divVerificar").append(data);
-                        $("#divVerificar").show()
-                        $("#divLista").hide()
+                        $("#divVerificar").show();
+                        $("#divLista").hide();
 
                     },
                     error: function (errors)
@@ -76,7 +76,7 @@
 
             function AbgVerificar()
             {
-              
+
                 $.ajax({
                     type: 'GET',
                     async: false,
@@ -115,7 +115,7 @@
                     data: {abg: $('#Sabogado').val()},
                     success: function (data)
                     {
-                                    var datos;
+                        var datos;
                         $("#idtbody").empty();
                         $.each($(data.datosP), function (indice, val) {
                             datos = '<tr style="font-size: 15px" onClick="vericarAbg(' + val.id + ')">';
@@ -128,68 +128,68 @@
                             datos += '</tr>';
 
                             $("#idtbody").append(datos);
-                            });
-                           
-                            {#
-                        $("#divVerificar").empty(datos);
-                        var datos;
-                        //if (data.msj == "undefined") {
-                        $.each($(data.datosP), function (indice, val) {
-
-                            datos = '<div class ="item-directorio">';
-                            datos += '<div class ="row">';
-                            datos += '<div class ="col-xs-2 ">';
-                            datos += '<img src ="/' + data.foto + '" style ="width: 100%; height:135px;margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">';
-                            datos += '</div>';
-                            datos += '<div class="col-xs-6"><div class ="row"><div class="col-xs-6">';
-                            datos += '<p style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class ="sans"><strong>' + val.nombre + " " + val.apellido + '</strong></p>';
-                            datos += '<p style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">' + val.tituloProfesional + '</p></div></div>';
-
-                            datos += '<div class ="row"  style="margin-top: 10px;"><div class="col-sm-4" >';
-                            datos += '<p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Telefonos </strong></p >';
-                            datos += '<p style ="font-size: 11px; margin-bottom: 0px;"> + 503 ' + val.movil + "</br>+ 503 " + val.Tfijo + '</p>';
-                            datos += '</div>';
-                            datos += '<div class="col-sm-4 " >';
-                            datos += '<p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Email </strong></p>';
-                            datos += '<p style ="font-size: 11px; margin-bottom: 0px;">' + val.correo + '</p>';
-                            datos += '</div>';
-                            datos += '<div class="col-sm-4 ">';
-                            datos += '<p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"> <strong> Sitio Web </strong></p>';
-                            datos += '<p style="font-size: 11px; margin-bottom: 0px;"><a href = "" target = "_blank">' + data.sitioweb + '</a></p>';
-
-                            datos += '</div></div>';
-                            datos += '<div class="row"><div class = "col-sm-12" style="margin-top: -0px;">';
-                            datos += '<span style ="font-size: 11px;"><a href=""> Ver perfill </a></span>';
-                            datos += '<span style ="color: #777777; margin-left: 5px; margin-right: 5px;"> | </span>';
-                            datos += '<span style ="font-size: 11px;"><a href="">Contactar</a></span></div></div></div>';
-
-                            datos += '<div class="col-xs-4" >';
-                            datos += '<div class="row"><div class="col-xs-12 "><div class="bloque-ocultar ">';
-                            datos += '<div class="clearfix"></div>';
-                            datos += '<div class="bloque-ocultar ">';
-                            datos += '<p class="text-center" >Verificar&nbsp;<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="Oculte su perfil mientras lo actualize. Mida el nivel de completacion con el icono de abajo."></i></p>';
-                            datos += '<div class="onoffswitch" style="margin-left: auto; margin-right: auto;">';
-                            datos += '<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox  myonoffswitch" id="myonoffswitch" ';
-                            if (val.verificado === 1) {
-                                datos += 'checked>';
-                            } else {
-                                datos += '>';
-                            }
-                            datos += '<label class="onoffswitch-label" for="myonoffswitch">';
-                            datos += '<span class="onoffswitch-inner"></span>';
-                            datos += '<span class="onoffswitch-switch"></span>';
-                            datos += '</label>';
-                            datos += '</div>';
-                            datos += '</div>';
-                            datos += '  </div></div></div></div>';
-                            datos += ' </div>';
-
-
                         });
-                        $("#divVerificar").append(datos);
-                        $("#divVerificar").show();
-                        #}
-                        
+
+            {#
+        $("#divVerificar").empty(datos);
+        var datos;
+        //if (data.msj == "undefined") {
+        $.each($(data.datosP), function (indice, val) {
+
+            datos = '<div class ="item-directorio">';
+            datos += '<div class ="row">';
+            datos += '<div class ="col-xs-2 ">';
+            datos += '<img src ="/' + data.foto + '" style ="width: 100%; height:135px;margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">';
+            datos += '</div>';
+            datos += '<div class="col-xs-6"><div class ="row"><div class="col-xs-6">';
+            datos += '<p style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class ="sans"><strong>' + val.nombre + " " + val.apellido + '</strong></p>';
+            datos += '<p style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">' + val.tituloProfesional + '</p></div></div>';
+
+            datos += '<div class ="row"  style="margin-top: 10px;"><div class="col-sm-4" >';
+            datos += '<p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Telefonos </strong></p >';
+            datos += '<p style ="font-size: 11px; margin-bottom: 0px;"> + 503 ' + val.movil + "</br>+ 503 " + val.Tfijo + '</p>';
+            datos += '</div>';
+            datos += '<div class="col-sm-4 " >';
+            datos += '<p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Email </strong></p>';
+            datos += '<p style ="font-size: 11px; margin-bottom: 0px;">' + val.correo + '</p>';
+            datos += '</div>';
+            datos += '<div class="col-sm-4 ">';
+            datos += '<p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"> <strong> Sitio Web </strong></p>';
+            datos += '<p style="font-size: 11px; margin-bottom: 0px;"><a href = "" target = "_blank">' + data.sitioweb + '</a></p>';
+
+            datos += '</div></div>';
+            datos += '<div class="row"><div class = "col-sm-12" style="margin-top: -0px;">';
+            datos += '<span style ="font-size: 11px;"><a href=""> Ver perfill </a></span>';
+            datos += '<span style ="color: #777777; margin-left: 5px; margin-right: 5px;"> | </span>';
+            datos += '<span style ="font-size: 11px;"><a href="">Contactar</a></span></div></div></div>';
+
+            datos += '<div class="col-xs-4" >';
+            datos += '<div class="row"><div class="col-xs-12 "><div class="bloque-ocultar ">';
+            datos += '<div class="clearfix"></div>';
+            datos += '<div class="bloque-ocultar ">';
+            datos += '<p class="text-center" >Verificar&nbsp;<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="Oculte su perfil mientras lo actualize. Mida el nivel de completacion con el icono de abajo."></i></p>';
+            datos += '<div class="onoffswitch" style="margin-left: auto; margin-right: auto;">';
+            datos += '<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox  myonoffswitch" id="myonoffswitch" ';
+            if (val.verificado === 1) {
+                datos += 'checked>';
+            } else {
+                datos += '>';
+            }
+            datos += '<label class="onoffswitch-label" for="myonoffswitch">';
+            datos += '<span class="onoffswitch-inner"></span>';
+            datos += '<span class="onoffswitch-switch"></span>';
+            datos += '</label>';
+            datos += '</div>';
+            datos += '</div>';
+            datos += '  </div></div></div></div>';
+            datos += ' </div>';
+
+
+        });
+        $("#divVerificar").append(datos);
+        $("#divVerificar").show();
+        #}
+
                     },
                     error: function (errors)
                     {
@@ -200,12 +200,16 @@
             }
 
         </script>
-        <div class="row" style=" margin-left:0px; margin-right:0px;">
-            <section class="col-lg-12 connectedSortable ui-sortable">
+        <div class="row" style=" margin-left:15px; margin-right:15px; ">
+            <div class="box box-widget">
+                <div class="box-body">
+                    <div class="page-header">
+                        <h3>Verificación de abogados</h3>
+                    </div>
                 <div class="nav-tabs-custom" style="cursor: move;">
                     <ul class="nav nav-tabs  ui-sortable-handle">
-                        <li class="active"><a href="#revenue-chart" data-toggle="tab" onClick="AbgVerificar()">Verificar Abogado</a></li>
-                        <li><a href="#divVerificados" data-toggle="tab" onClick="AbgVerificados()">Abogados verificados</a></li>
+                        <li class="active"><a href="#revenue-chart" data-toggle="tab" onClick="AbgVerificar();">Abogados pendientes de verificar</a></li>
+                        <li><a href="#divVerificados" data-toggle="tab" onClick="AbgVerificados();">Abogados verificados</a></li>
                         <li class="pull-left header">
                     </ul>
                     <div class="tab-content no-padding">
@@ -223,38 +227,36 @@
                                                     <select id="Sabogado" name="Sabogado" class="form-control" onChange="consultarAbg()">
                                                         <option value="0" >Seleccione un cliente</option>
                                                     </select>
-                                                    
+
                                                 </div>
-                                                <div class="col-md-1"><a class=" btn btn-flat btn-default" style="  margin-top: 25px;" onClick="AbgVerificar()"><i class=" fa fa-refresh"></i></a></div>
+                                                <div class="col-md-1"><a class=" btn btn-flat btn-default" style="  margin-top: 25px;" onClick="AbgVerificar();"><i class=" fa fa-refresh"></i></a></div>
                                             </div>   </div>
                                             {%if solicitVerificacion|default is not empty %}
-                                            <div class="form-group table-responsive mailbox-messages" id="contenedor">
-                                                <table id="tabla" class="table table-hover table-striped" style="font-size:13px;" >
-                                                    <thead>
-                                                    <br>
-                                                    </thead>
-                                                    <tbody style="min-height: 350px;" id="idtbody">
-                                                        {% for datos in solicitVerificacion %}
-                                                            <tr style=" font-size: 15px" onClick="vericarAbg({{datos.id}})">
-                                                                <td ><a href="#" >{{datos.nombre}}</a></td>
-                                                                <td align="center"> </strong>&nbsp;<i class="fa  fa-paperclip fa-lg text-aqua"></i></td>
-                                                                <td align="center">  <div class="bloque-ocultar ">
+                                                <div class="form-group table-responsive mailbox-messages" id="contenedor">
+                                                    <table id="tabla" class="table table-hover table-striped" style="font-size:13px;" >
+                                                        <thead>
+                                                        <br>
+                                                        </thead>
+                                                        <tbody style="min-height: 350px;" id="idtbody">
+                                                            {% for datos in solicitVerificacion %}
+                                                                <tr style=" font-size: 15px" onClick="vericarAbg({{datos.id}})">
+                                                                    <td ><a href="#" >{{datos.nombre}}</a></td>
+                                                                    <td align="center"> </strong>&nbsp;<i class="fa  fa-paperclip fa-lg text-aqua"></i></td>
+                                                                    <td align="center">  <div class="bloque-ocultar ">
                                                                         <img src="{{ asset('Photos/defecto/noVerificado.png') }}" disabled="disabled" style="width: 15px; height: 15px; -webkit-filter: grayscale(80%);" id="botonModalP" title="Cambiar foto de perfil" >
-                                                                        </td>
-                                                                        </tr>
-                                                                    {%endfor%}
-                                                                    </tbody>
-                                                                    </table> 
-                                                                </div>
-                                                            {%endif%}
-                                                            </div>
-                                                            <div id="divVerificar" style="min-height:175px; display: none;">
+                                                                    </td>
+                                                                </tr>
+                                                            {%endfor%}
+                                                        </tbody>
+                                                    </table> 
+                                                </div>
+                                            {%endif%}
+                                            </div>
+                                            <div id="divVerificar" style="min-height:175px; display: none;"></div>
+                                </form>
+    </div>
 
-                                                            </div>
-                                                            </form>
-                                                            </div>
-
-                                                            </div>
+                            </div>
                                                             <div class="chart tab-pane" id="divVerificados" style=" padding: 15px;" >
                                                                 <div class="row">
                                                                     <div class="form-group">
@@ -272,8 +274,10 @@
                                                             </div>
                                                             </div>
                                                             </div>
-                                                            </section>
-                                                            </div>
+                                                            
+                </div>                    
+                </div>                    
+            </div>
                                                             <!-- ####################################################### -->
                                                             <script type="text/javascript">
                                                                 $(document).on('ready', function () {
@@ -351,7 +355,7 @@
                                                                                     size: 'mini',
                                                                                     msg: "<p>" + data.msj + "</p>"
                                                                                 });
-                                                                                 AbgVerificar();
+                                                                                AbgVerificar();
                                                                             } else
                                                                             {
                                                                                 Lobibox.notify("warning", {

@@ -1,0 +1,106 @@
+{% extends ':Layout:layout3.html.twig' %}
+
+
+{% block js_extend %}
+    <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
+    <link rel="stylesheet" href="{{asset('Resources/AdminLTE-2.3.0/bootstrap/css/bootstrap.min.css')}}">
+    <style>
+        .jumbotron-primary p {
+            color: #f7f7f7;
+        }
+        .jumbotron {
+            background-color: #eeeeee;
+            color: inherit;
+            margin-bottom: 40px;
+
+        }
+        .jumbotron h1, .jumbotron .h1 {
+            color: inherit;
+        }
+        .jumbotron p {
+            font-size: 21px;
+            font-weight: 200;
+            margin-bottom: 20px;
+        }
+        .jumbotron > hr {
+            border-top-color: #d5d5d5;
+        }
+        .container .jumbotron, .container-fluid .jumbotron {
+            border-radius: 0;
+        }
+        .jumbotron .container {
+            max-width: 100%;
+        }
+        @media screen and (min-width: 768px) {
+            .jumbotron {
+                padding: 64px 0;
+            }
+            .container .jumbotron, .container-fluid .jumbotron {
+                padding-left: 80px;
+                padding-right: 80px;
+            }
+            .jumbotron h1, .jumbotron .h1 {
+                font-size: 63px;
+            }
+        }
+        .jumbotron::before, .jumbotron::after {
+            content: " ";
+            display: table;
+        }
+        .jumbotron::after {
+            clear: both;
+        }
+        .jumbotron h1, .jumbotron h2, .jumbotron h3 {
+            margin-top: 0;
+        }
+        .jumbotron p {
+            color: #000;
+        }
+        .jumbotron p:last-child {
+            margin-bottom: 0;
+        }
+
+
+        .jumbotron-primary {
+            background-color: #C3C3C3;
+        }
+        .jumbotron-primary h1, .jumbotron-primary h2, .jumbotron-primary h3 {
+            color: #ffffff;
+        }
+        .jumbotron-primary p {
+            color: #000;
+        }
+
+    </style>
+{% endblock %} 
+{% block cuerpo %}
+{% embed ':Layout:head.html.twig' %}{% endembed %}
+<div class="row " style="background-color:#fff; height: 100%; padding: 20px;">
+    <div class="col-md-12" style="background-color:#fff; height: 100%; padding: 20px;">
+        <div class="no-padding" style="margin-top: 1px;">
+            <div class="custom row-feature-primary ">
+                <div class="jumbotron jumbotron-primary " >
+                    <h1 style=" padding-left: 20px;">Error...</h1>
+                    <p style=" padding-left: 20px;">Complete el captcha antes de eviar su pregunta...</p>
+                </div></div>
+        </div>
+        {#<span style="  color: #F33; font-size: -webkit-xxx-large; float: left; margin-right: 26px;padding-left: 20px;" class="glyphicon glyphicon-left-arrow"></span>#}
+        <a style="cursor:pointer;" id="volverPreg"><i class="fa fa-arrow-left"> Volver</i></a>
+        {#<h1 >Muy pronto te responderemos</h1>#}
+        {#<h1 ><small>ponte atento en tu bandeja de entrada de email...</small></h1>#}
+        {#<a href="{{ path('pregunta_index') }}" class="button">
+            <button class="btn btn-bitbucket btn-flat pull-right" style="margin-top: 10px;">Regresar a centro de preguntas</button>
+        </a>#}
+    </div>
+</div>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                
+                $(document).on('click','#volverPreg',function(){
+                    window.history.back();
+                });
+                
+            });
+        </script>
+{% endblock %}

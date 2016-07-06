@@ -19,12 +19,12 @@ var arrayEspecialidad = [];
  });
  */
 /*$(document).on('click', "#txtNombres", function (e) {
-    $('.popover-content').css("width", "350px");
-    $('.popover-content').css("height", "85px");
-    $('.popover-content').css("resize", "auto");
-
-});
-*/
+ $('.popover-content').css("width", "350px");
+ $('.popover-content').css("height", "85px");
+ $('.popover-content').css("resize", "auto");
+ 
+ });
+ */
 $(document).ready(function () {
 
     //toggle `popup` / `inline` mode
@@ -44,39 +44,46 @@ $(document).ready(function () {
 
     });
 
-   
     $('#txtTituloProfesional').editable({
-       validate: function (value) {
+        validate: function (value) {
             if (value === "")
                 return 'requerido';
         },
         source: [
-               {value: '3', text: 'Doctorado'},
-               {value: '1', text: 'Licenciatura'},
-               {value: '2', text: 'Magíster'}
-           ]
+            {value: '3', text: 'Doctorado'},
+            {value: '4', text: 'Estudiante'},
+            {value: '1', text: 'Licenciatura'},
+            {value: '2', text: 'Magíster'}
+        ]
 
     });
-    
-$('#txtGenero').editable({
-      validate: function (value) {
+    $('#txtTituloU').editable({
+        validate: function (value) {
+            if (value === "")
+                return 'requerido';
+        }
+    });
+
+    $('#txtGenero').editable({
+        validate: function (value) {
             if (value === "")
                 return 'requerido';
         },
         source: [
-              {value: 'F', text: 'Mujer'},
-              {value: 'M', text: 'Hombre'}
-           ]
+            {value: 'F', text: 'Femenino'},
+            {value: 'M', text: 'Masculino'}
+        ]
     });
 
     $('#txtMovil').editable({
         validate: function (value) {
             if (value === "")
-            {return 'requerido';}
-              else if(value.length<9)
-        {
-              return 'Formato no valido. ej. 7777-7777';
-        }
+            {
+                return 'requerido';
+            } else if (value.length < 9)
+            {
+                return 'Formato no valido. ej. 7777-7777';
+            }
         },
         type: 'text',
         name: 'zip',
@@ -88,11 +95,12 @@ $('#txtGenero').editable({
     $('#txtOficina').editable({
         validate: function (value) {
             if (value === "")
-            {   return 'requerido'; }
-             else if(value.length<9)
-        {
-              return 'Formato no valido. ej. 2222-2222';
-        }
+            {
+                return 'requerido';
+            } else if (value.length < 9)
+            {
+                return 'Formato no valido. ej. 2222-2222';
+            }
         },
         type: 'text',
         name: 'zip',
@@ -102,12 +110,18 @@ $('#txtGenero').editable({
 
     });
     $('#txtDireccion').editable({
+        type: 'text',
+        title: 'Enter username',
         validate: function (value) {
             if (value === "")
                 return 'requerido';
         }
 
     });
+
+
+
+
     $('#txtCorreo').editable({
         validate: function (value) {
             if (value === "")
@@ -138,16 +152,16 @@ $('#txtGenero').editable({
                 }
 
             });
-            /*
-    $('#txtMunicipio').editable({
-        // url: '/post',
-        title: 'Departamento ',
-        value: {
-            SDepartamento: "Moscow",
-            sEstado: "Lenina"
-        }
-
-    });*/
+    /*
+     $('#txtMunicipio').editable({
+     // url: '/post',
+     title: 'Departamento ',
+     value: {
+     SDepartamento: "Moscow",
+     sEstado: "Lenina"
+     }
+     
+     });*/
 
 
     $('#txtUnpoco').editable({
@@ -189,7 +203,7 @@ $('#txtGenero').editable({
         {
         } else
         {
-         
+
             $.ajax({
                 type: 'POST',
                 async: false,
@@ -198,32 +212,10 @@ $('#txtGenero').editable({
                 url: Routing.generate('edit_persona'),
                 success: function (data)
                 {
-
-                },
-                error: function (xhr, status)
-                {
-                    alert('Disculpe, existió un problema');
-                }
-            });
-        }
-    });
-    $('#txtGenero').on('save', function (e, params) {
-      
-        if ((params.newValue["txtGenero"] === ""))
-        {
-           
-        } else
-        {
-
-            $.ajax({
-                type: 'POST',
-                async: false,
-                dataType: 'json',
-                data: {genero: params.newValue, hPersona: $('input#hPersona').val(), n:11},
-                url: Routing.generate('edit_persona'),
-                success: function (data)
-                {
-
+         //   alert('Saved value: ' + params.newValue);
+            
+               
+                $('#txtTituloProfesional').editable('setValue',params.newValue);
                 },
                 error: function (xhr, status)
                 {
@@ -233,6 +225,61 @@ $('#txtGenero').editable({
         }
     });
     
+ /*   $('#txtTituloProfesional').on('hidden', function(e, reason) {
+         $('#txtTituloProfesional').editable('setValue', 'nvdsk');
+});*/
+
+    $('#txtTituloU').on('save', function (e, params) {
+        if ((params.newValue["txtTituloU"] === ""))
+        {
+        } else
+        {
+
+            $.ajax({
+                type: 'POST',
+                async: false,
+                dataType: 'json',
+                data: {tituloPuesto: params.newValue, hPersona: $('input#hPersona').val(), n: 13},
+                url: Routing.generate('edit_persona'),
+                success: function (data)
+                {
+
+                },
+                error: function (xhr, status)
+                {
+                    alert('Disculpe, existió un problema');
+                }
+            });
+        }
+    });
+
+
+    $('#txtGenero').on('save', function (e, params) {
+
+        if ((params.newValue["txtGenero"] === ""))
+        {
+
+        } else
+        {
+
+            $.ajax({
+                type: 'POST',
+                async: false,
+                dataType: 'json',
+                data: {genero: params.newValue, hPersona: $('input#hPersona').val(), n: 11},
+                url: Routing.generate('edit_persona'),
+                success: function (data)
+                {
+
+                },
+                error: function (xhr, status)
+                {
+                    alert('Disculpe, existió un problema');
+                }
+            });
+        }
+    });
+
     $('#checkEspecialida').editable({
         source: eval(arrayEspecialidad),
         display: function (value, sourceData) {
@@ -300,41 +347,41 @@ $('#txtGenero').editable({
         });
 
     });
-/*
-    $('#txtMunicipio').on('save', function (e, params) {
-
-        $.ajax({
-            type: 'POST',
-            async: false,
-            dataType: 'json',
-            data: {ciudad: $("#sCiuda").val(), hPersona: $('input#hPersona').val(), n: 9},
-            url: Routing.generate('edit_persona'),
-            success: function (data)
-            {
-//$("#txtMunicipio").text($("#sCiuda").val());
-
-                $("#divMunicipiox").empty();
-                $("#txtMunicipio").remove();
-                var datos;
-                datos = '<p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">';
-                datos += '<a href="#" id="txtMunicipio" data-type="address" data-pk="1" data-title="Departamento, municipio" data-placement="right" class="editable editable-click" ><b>' + data.dept + '</b> |' + data.ciu + '</a></p>';
-                $("#divMunicipiox").append(datos);
-
-                $('#txtMunicipio').editable({
-                    title: 'Departamento ',
-                    value: {
-                        SDepartamento: "Moscow",
-                        sEstado: $("#sCiuda").val()
-                    }
-                });
-            },
-            error: function (xhr, status)
-            {
-                alert('Disculpe, existió un problema');
-            }
-        });
-
-    });*/
+    /*
+     $('#txtMunicipio').on('save', function (e, params) {
+     
+     $.ajax({
+     type: 'POST',
+     async: false,
+     dataType: 'json',
+     data: {ciudad: $("#sCiuda").val(), hPersona: $('input#hPersona').val(), n: 9},
+     url: Routing.generate('edit_persona'),
+     success: function (data)
+     {
+     //$("#txtMunicipio").text($("#sCiuda").val());
+     
+     $("#divMunicipiox").empty();
+     $("#txtMunicipio").remove();
+     var datos;
+     datos = '<p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" class="sansli">';
+     datos += '<a href="#" id="txtMunicipio" data-type="address" data-pk="1" data-title="Departamento, municipio" data-placement="right" class="editable editable-click" ><b>' + data.dept + '</b> |' + data.ciu + '</a></p>';
+     $("#divMunicipiox").append(datos);
+     
+     $('#txtMunicipio').editable({
+     title: 'Departamento ',
+     value: {
+     SDepartamento: "Moscow",
+     sEstado: $("#sCiuda").val()
+     }
+     });
+     },
+     error: function (xhr, status)
+     {
+     alert('Disculpe, existió un problema');
+     }
+     });
+     
+     });*/
 
     $('#sitioweb').on('save', function (e, params) {
 

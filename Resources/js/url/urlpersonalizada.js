@@ -74,83 +74,91 @@ $(document).ready(function() {
   
   //Para los Abogados
   $(document).on("click","#cmdInsertarUrl",function() {
-	 
-       var url= $("#UrlPersonalizada").val();
-         $.ajax({
-            type: 'POST',
-            async: false,
-            dataType: 'json',
-            data: {url:url},
-            url: Routing.generate('validarUrlPersonalizada'),
-            success: function (data)
-            {
-                   console.log(data);
-                   
-                   if (data.registro){
-                       
-                       if(data.estado){
-                           
-                     
-                            $.ajax({
-                                    type: 'POST',
-                                    async: false,
-                                    dataType: 'json',
-                                    data: {url:url},
-                                    url: Routing.generate('insertarUrl'),
-                                    success: function (data)
-                                    {
-                                        if (data.estados){
-                                            Lobibox.notify("success", {
-                                                                size: 'mini',
-                                                                msg: 'Url modificada con exito,espere un momento'
-                                                            });  
-                                          $("#urlform").hide();
-                                          $("#UrlPersonalizada").val("");
+	
+        
+        var url= $("#UrlPersonalizada").val();
+        if(url!=''){
+            $.ajax({
+                type: 'POST',
+                async: false,
+                dataType: 'json',
+                data: {url:url},
+                url: Routing.generate('validarUrlPersonalizada'),
+                success: function (data)
+                {
+                       console.log(data);
+
+                       if (data.registro){
+
+                           if(data.estado){
+
+
+                                $.ajax({
+                                        type: 'POST',
+                                        async: false,
+                                        dataType: 'json',
+                                        data: {url:url},
+                                        url: Routing.generate('insertarUrl'),
+                                        success: function (data)
+                                        {
+                                            if (data.estados){
+                                                Lobibox.notify("success", {
+                                                                    size: 'mini',
+                                                                    msg: 'Url modificada con exito,espere un momento'
+                                                                });  
+                                              $("#urlform").hide();
+                                              $("#UrlPersonalizada").val("");
+                                            }
+
+                                        },
+                                        error: function (xhr, status)
+                                        {
+                                             Lobibox.notify("error", {
+                                                                    size: 'mini',
+                                                                    msg: 'Lo sentimos, ocurrio un error dentro del sistema'
+                                                                });
+                                                $("#UrlPersonalizada").val("");
                                         }
-                                          
-                                    },
-                                    error: function (xhr, status)
-                                    {
-                                         Lobibox.notify("error", {
-                                                                size: 'mini',
-                                                                msg: 'Lo sentimos, ocurrio un error dentro del sistema'
-                                                            });
-                                            $("#UrlPersonalizada").val("");
-                                    }
-                                });
-
-
-                            }else{
-
-                                  Lobibox.notify("error", {
-                                                size: 'mini',
-                                                msg: 'Lo sentimos, ese nombre de url ya existente, intente con otro'
-                                            });
-                                   $("#UrlPersonalizada").val("");         
-
-                                }
-
-
-                    }else{
-
-                           Lobibox.notify("error", {
-                                         size: 'mini',
-                                         msg: 'Lo sentimos,usted ya ha cambiado su URL el numero de veces pertmitido.'
-                                     });
-                           $("#UrlPersonalizada").val("");
-                    }
-                     
-            },
-            error: function (xhr, status)
-            {
-                 Lobibox.notify("error", {
-                                        size: 'mini',
-                                        msg: 'Lo sentimos, ocurrio un error'
                                     });
-                 $("#UrlPersonalizada").val("");
-            }
-        });
-      
+
+
+                                }else{
+
+                                      Lobibox.notify("error", {
+                                                    size: 'mini',
+                                                    msg: 'Lo sentimos, ese nombre de url ya existente, intente con otro'
+                                                });
+                                       $("#UrlPersonalizada").val("");         
+
+                                    }
+
+
+                        }else{
+
+                               Lobibox.notify("error", {
+                                             size: 'mini',
+                                             msg: 'Lo sentimos,usted ya ha cambiado su URL el numero de veces pertmitido.'
+                                         });
+                               $("#UrlPersonalizada").val("");
+                        }
+
+                },
+                error: function (xhr, status)
+                {
+                     Lobibox.notify("error", {
+                                            size: 'mini',
+                                            msg: 'Lo sentimos, ocurrio un error'
+                                        });
+                     $("#UrlPersonalizada").val("");
+                }
+            });
+        }
+        else{
+            Lobibox.notify("info", {
+                size: 'mini',
+                msg: 'Debe ingresar una url!'
+            });
+        }
       
       
       
@@ -161,83 +169,90 @@ $(document).ready(function() {
   
    $(document).on("click","#cmdInsertarUrlEmp",function() {
 	 
-       var url1= $("#UrlPersonalizadaEmp").val();
-         $.ajax({
-            type: 'POST',
-            async: false,
-            dataType: 'json',
-            data: {url:url1},
-            url: Routing.generate('validarUrlPersonalizadaEmpresa'),
-            success: function (data)
-            {
-                   console.log(data);
-                   
-                   if (data.registro){
-                       
-                       if(data.estado){
-                           
-                     
-                            $.ajax({
-                                    type: 'POST',
-                                    async: false,
-                                    dataType: 'json',
-                                    data: {url:url1},
-                                    url: Routing.generate('insertarUrlEmpresa'),
-                                    success: function (data)
-                                    {
-                                        if (data.estados){
-                                            Lobibox.notify("success", {
-                                                                size: 'mini',
-                                                                msg: 'Url modificada con exito,espere un momento'
-                                                            });  
-                                          $("#urlform").hide();
-                                          $("#UrlPersonalizadaEmp").val("");
+        if(url!=''){
+            var url1= $("#UrlPersonalizadaEmp").val();
+            $.ajax({
+                type: 'POST',
+                async: false,
+                dataType: 'json',
+                data: {url:url1},
+                url: Routing.generate('validarUrlPersonalizadaEmpresa'),
+                success: function (data)
+                {
+                       console.log(data);
+
+                       if (data.registro){
+
+                           if(data.estado){
+
+
+                                $.ajax({
+                                        type: 'POST',
+                                        async: false,
+                                        dataType: 'json',
+                                        data: {url:url1},
+                                        url: Routing.generate('insertarUrlEmpresa'),
+                                        success: function (data)
+                                        {
+                                            if (data.estados){
+                                                Lobibox.notify("success", {
+                                                                    size: 'mini',
+                                                                    msg: 'Url modificada con exito,espere un momento'
+                                                                });  
+                                              $("#urlform").hide();
+                                              $("#UrlPersonalizadaEmp").val("");
+                                            }
+
+                                        },
+                                        error: function (xhr, status)
+                                        {
+                                             Lobibox.notify("error", {
+                                                                    size: 'mini',
+                                                                    msg: 'Lo sentimos, ocurrio un error dentro del sistema'
+                                                                });
+                                                $("#UrlPersonalizadaEmp").val("");
                                         }
-                                          
-                                    },
-                                    error: function (xhr, status)
-                                    {
-                                         Lobibox.notify("error", {
-                                                                size: 'mini',
-                                                                msg: 'Lo sentimos, ocurrio un error dentro del sistema'
-                                                            });
-                                            $("#UrlPersonalizadaEmp").val("");
-                                    }
-                                });
-
-
-                            }else{
-
-                                  Lobibox.notify("error", {
-                                                size: 'mini',
-                                                msg: 'Lo sentimos, ese nombre de url ya existente, intente con otro'
-                                            });
-                                   $("#UrlPersonalizadaEmp").val("");         
-
-                                }
-
-
-                    }else{
-
-                           Lobibox.notify("error", {
-                                         size: 'mini',
-                                         msg: 'Lo sentimos,usted ya ha cambiado su URL el numero de veces pertmitido.'
-                                     });
-                           $("#UrlPersonalizadaEmp").val("");
-                    }
-                     
-            },
-            error: function (xhr, status)
-            {
-                 Lobibox.notify("error", {
-                                        size: 'mini',
-                                        msg: 'Lo sentimos, ocurrio un error'
                                     });
-                 $("#UrlPersonalizadaEmp").val("");
-            }
-        });
+
+
+                                }else{
+
+                                      Lobibox.notify("error", {
+                                                    size: 'mini',
+                                                    msg: 'Lo sentimos, ese nombre de url ya existente, intente con otro'
+                                                });
+                                       $("#UrlPersonalizadaEmp").val("");         
+
+                                    }
+
+
+                        }else{
+
+                               Lobibox.notify("error", {
+                                             size: 'mini',
+                                             msg: 'Lo sentimos,usted ya ha cambiado su URL el numero de veces pertmitido.'
+                                         });
+                               $("#UrlPersonalizadaEmp").val("");
+                        }
+
+                },
+                error: function (xhr, status)
+                {
+                     Lobibox.notify("error", {
+                                            size: 'mini',
+                                            msg: 'Lo sentimos, ocurrio un error'
+                                        });
+                     $("#UrlPersonalizadaEmp").val("");
+                }
+            });
     
-      
+        }
+        else{
+            Lobibox.notify("info", {
+                size: 'mini',
+                msg: 'Debe ingresar una url!'
+            });
+        }
       
       
     });

@@ -28,41 +28,42 @@ class SecuredController extends Controller
      */ 
     public function loginAction(Request $request)
     {
-        $session = $request->getSession();
-        if (class_exists('\Symfony\Component\Security\Core\Security')) {
-            $authErrorKey = Security::AUTHENTICATION_ERROR;
-            $lastUsernameKey = Security::LAST_USERNAME;
+        if ($this->container->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirect($this->generateUrl('perfil'));
         } else {
-            // BC for SF < 2.6
-            $authErrorKey = SecurityContextInterface::AUTHENTICATION_ERROR;
-            $lastUsernameKey = SecurityContextInterface::LAST_USERNAME;
-        }
-        // get the error if any (works with forward and redirect -- see below)
-        if ($request->attributes->has($authErrorKey)) {
-            $error = $request->attributes->get($authErrorKey);
-        } elseif (null !== $session && $session->has($authErrorKey)) {
-            $error = $session->get($authErrorKey);
-            $session->remove($authErrorKey);
-        } else {
-            $error = null;
-        }
-        if (!$error instanceof AuthenticationException) {
-            $error = null; // The value does not come from the security component.
-        }
-        // last username entered by the user
-        $lastUsername = (null === $session) ? '' : $session->get($lastUsernameKey);
-
-        //ladybug_dump($error);
-        return array(
-            'last_username' => $lastUsername,
-            'error' => $error,
+        
+            $session = $request->getSession();
+            if (class_exists('\Symfony\Component\Security\Core\Security')) {
+                $authErrorKey = Security::AUTHENTICATION_ERROR;
+                $lastUsernameKey = Security::LAST_USERNAME;
+            } else {
+                // BC for SF < 2.6
+                $authErrorKey = SecurityContextInterface::AUTHENTICATION_ERROR;
+                $lastUsernameKey = SecurityContextInterface::LAST_USERNAME;
+            }
+            // get the error if any (works with forward and redirect -- see below)
+            if ($request->attributes->has($authErrorKey)) {
+                $error = $request->attributes->get($authErrorKey);
+            } elseif (null !== $session && $session->has($authErrorKey)) {
+                $error = $session->get($authErrorKey);
+                $session->remove($authErrorKey);
+            } else {
+                $error = null;
+            }
+            if (!$error instanceof AuthenticationException) {
+                $error = null; // The value does not come from the security component.
+            }
+            // last username entered by the user
+            $lastUsername = (null === $session) ? '' : $session->get($lastUsernameKey);
             
-        );
-        /*ladybug_dump($error);
-        return array(
-            'last_username' => $request->getSession()->get(SecurityContext::LAST_USERNAME),
-            'errors'         => $error,
-        );*/
+            
+            
+            return array(
+                'last_username' => $lastUsername,
+                'error' => $error,
+
+            );
+        }
     }
 
     /**
@@ -109,7 +110,7 @@ class SecuredController extends Controller
                           <tr>
                             <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
                             <center>
-                              <img style=\"width:50%;\" src=\"http://www.abogados.com.sv/badge1.png\">
+                              <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
                             </center>
                                 <p>Hola " . $usuario->getRhPersona() . ", tu has recibido una solicitud para reestablecer tu contraseña.</p>
                                 <p> Usuario: " . $usuario->getUsername() . "</p>
@@ -177,12 +178,12 @@ class SecuredController extends Controller
         $mensajeCliente=$parameters['mensajeCliente'];
         $emailAbogado=str_replace(" ", "", $emailAbogado);
         
-       
+        
       
         $em = $this->getDoctrine()->getManager();
         $usuario = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->findOneBy(array('correoelectronico' => $emailAbogado));  
     
-
+        
   //$usuario->getRhPersona()->getId()
         $this->get('envio_correo')->sendEmail($emailAbogado, "", "", "",
                     "
@@ -192,7 +193,7 @@ class SecuredController extends Controller
                             <center>
                               <img style=\"width:50%;\" src=\"http://www.abogados.com.sv/badge1.png\">
                             </center>
-                                <p>"."Hola " . $usuario->getRhPersona() . " esperamos la estes pasando bien dentro de nuestra plataforma, queremos notificarte que : <b>".$nombreCliente. "</b>  esta solicitando tus servicios profesionales, enviandote el siguiente mensaje.</p>  
+                                <p>"."Hola " . $usuario->getNombres() . " esperamos la estes pasando bien dentro de nuestra plataforma, queremos notificarte que : <b>".$nombreCliente. "</b>  esta solicitando tus servicios profesionales, enviandote el siguiente mensaje.</p>  
                                 <p>" .'"'. $mensajeCliente .'"'. "</p>
                                 <p> Puedes ponerte en contacto al siguiente correo: " . $emailCliente . "</p>
                                 <p>Gracias, por utilizar los servicios de abogados.com.sv  </p> 

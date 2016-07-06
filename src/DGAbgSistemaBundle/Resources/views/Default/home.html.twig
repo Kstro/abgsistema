@@ -343,6 +343,23 @@
                             </div>
                             <div class="col-md-3" style="margin-top: 20px;">
                                     <p class="text-left" style="font-size: 15px; margin-bottom: 0px; font-family: 'Montserrat', sans-serif; padding-top: 5px;">
+                                    	{%if usuario.titulo==1 %} 
+                                        	{%if usuario.genero=='M' %} 
+                                                	Lic.
+                                                {%else%}
+                                                	Licda.
+                                                {% endif %}
+                                        {%else%}
+	                                        {%if usuario.titulo==2 %} 
+	                                        	Máster
+		                                {%else%}
+			                                {%if usuario.genero=='M' %} 
+	                                                	Dr.
+	                                                {%else%}
+	                                                	Dra.
+	                                                {% endif %}
+	                                        {% endif %}
+                                        {% endif %}
                                         {{usuario.nombres}} {{usuario.apellido}}
                                     </p>
                                     <p class="sans" style="font-size: 12px;">Especialidades: {{usuario.especialidad}}</p>
@@ -354,6 +371,23 @@
                             </div>
                             <div class="col-md-3" style="margin-top: 20px;">
                                     <p class="text-left" style="font-size: 15px; margin-bottom: 0px; font-family: 'Montserrat', sans-serif; padding-top: 5px;">
+                                    	{%if usuario.titulo==1 %} 
+                                        	{%if usuario.genero=='M' %} 
+                                                	Lic.
+                                                {%else%}
+                                                	Licda.
+                                                {% endif %}
+                                        {%else%}
+	                                        {%if usuario.titulo==2 %} 
+	                                        	Máster
+		                                {%else%}
+			                                {%if usuario.genero=='M' %} 
+	                                                	Dr.
+	                                                {%else%}
+	                                                	Dra.
+	                                                {% endif %}
+	                                        {% endif %}
+                                        {% endif %}
                                         {{usuario.nombres}} {{usuario.apellido}}
                                     </p>
                                     <p class="sans" style="font-size: 12px;">Especialidades: {{usuario.especialidad}}</p>
@@ -361,7 +395,11 @@
                         
                         
                     {% endif %}
+                    {% if loop.index is divisible by(3)%}
+                    	<div class="clearfix"></div>
+                    {% endif %}
                 {% endfor %}
+                
             </div>
 	</div>
 

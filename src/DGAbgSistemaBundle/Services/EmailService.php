@@ -21,7 +21,7 @@ class EmailService
       
         $this->mail   = $mail;
         $this->subject = 'Abogados de el El Salvador';
-        $this->from   = 'system@digitalitygarage.com'; //Cambiar este correo tambien
+        $this->from   = 'info@abogados.com.sv'; //Cambiar este correo tambien
     }  
     
     public function setEmail($to,$bcc=null){
@@ -45,7 +45,7 @@ class EmailService
         if($replay != null ){
         $email->setReplyTo($replay);
         }else{
-        $email->setReplyTo('system@digitalitygarage.com');            
+        $email->setReplyTo('info@abogados.com.sv');            
         }
         if($bcc != null ){
         $email->setBcc($bcc);
