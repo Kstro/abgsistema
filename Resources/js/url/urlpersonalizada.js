@@ -168,9 +168,9 @@ $(document).ready(function() {
   
   
    $(document).on("click","#cmdInsertarUrlEmp",function() {
-	 
-        if(url!=''){
-            var url1= $("#UrlPersonalizadaEmp").val();
+	  var url1= $("#UrlPersonalizadaEmp").val();
+        if(url1!=''){
+           
             $.ajax({
                 type: 'POST',
                 async: false,
