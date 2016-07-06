@@ -286,9 +286,11 @@ class AdministracionController extends Controller {
                                   ->getResult();
         
         $pregPtes = array();
+        
         foreach ($resultadoSql as $key => $value) {
-            $correlativo = $key + 1;
-            $pregPtes['corr'] = '<div class="text-center">' . $correlativo . '</div>';
+            $start++;
+            
+            $pregPtes['corr'] = '<div class="text-center">' . $start . '</div>';
             $pregPtes['pregunta'] = $value['pregunta'];
             $pregPtes['tiempo'] = '<div class="text-center">' . $this->tiempo_transcurrido($value['fechapregunta']) . '</div>';
             $pregPtes['link'] = '<div class="text-center"><button type="button" class="btn btn-success btn-xs aprobar" style="margin-right: 3px" data-toggle="tooltip"  data-container="body" title="Aprobar" id="' .$value['preguntaId'] . '"><span class="glyphicon glyphicon-ok"></span></button>'
