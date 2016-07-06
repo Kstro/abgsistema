@@ -89,6 +89,8 @@ swiftmailer:
     encryption: ssl
     auth_mode: login
     spool:     { type: memory }
+#    auth_mode: login
+#    encryption: ssl
 
 
     
