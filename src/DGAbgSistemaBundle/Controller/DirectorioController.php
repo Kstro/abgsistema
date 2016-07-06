@@ -133,9 +133,21 @@ class DirectorioController extends Controller {
                 $newOrderBy.="'".$row."',";
             }
         }
+        //var_dump($orderBy);
+        $busquedaWords = explode(' ',$busqueda);
+        $busquedaString="";
+        foreach($busquedaWords as $key=>$word){
+            if($key<(count($busquedaWords)-1)){
+                $busquedaString.="CONCAT(upper(nombres),' ',upper(apellido)) LIKE '%".$word."%' OR ";
+                
+            }
+            else{
+                $busquedaString.=" CONCAT(upper(nombres),' ',upper(apellido)) LIKE '%".$word."%' ";
+            }
+        }
         
-        //echo $newOrderBy;
-        //var_dump($data);
+        //echo $busquedaString;
+        //var_dump($busquedaString);
         //die();
 
         //var_dump($orderBy);
@@ -145,7 +157,8 @@ class DirectorioController extends Controller {
             $reg['numRegistros'] = 0;
             if ($deptoId == "") {
                 //            echo "sin filtro";
-                $sql = "SELECT * FROM directorio WHERE orden in ($newOrderBy) AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub),' ',upper(especialidad)) LIKE '%" . strtoupper($busqueda) . "%' ORDER BY FIELD(orden,$newOrderBy) LIMIT " . $inicioRegistro . "," . $longitud;
+                //$sql = "SELECT * FROM directorio WHERE orden in ($newOrderBy) AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub),' ',upper(especialidad)) LIKE '%" . strtoupper($busqueda) . "%' ORDER BY FIELD(orden,$newOrderBy) LIMIT " . $inicioRegistro . "," . $longitud;
+                $sql = "SELECT * FROM directorio WHERE orden in ($newOrderBy) AND CONCAT(upper(sub),' ',upper(especialidad)) LIKE '%" . strtoupper($busqueda) . "%' OR ".strtoupper($busquedaString)." ORDER BY FIELD(orden,$newOrderBy) LIMIT " . $inicioRegistro . "," . $longitud;
                 //            $sql = "SELECT estado,ciudad,url,nombres,apellido,correoelectronico,telefono_fijo,telefono_movil,tipo,id,foto,group_concat(sub) FROM directorio WHERE CONCAT(upper(nombres),' ',upper(apellido),' ', upper(sub)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT ".$inicioRegistro.",".$longitud;
                 //echo $sql;
                 $stmt = $em->getConnection()->prepare($sql);
@@ -153,7 +166,8 @@ class DirectorioController extends Controller {
                 $reg['data'] = $stmt->fetchAll();
                 //var_dump($reg);
                 //            $sql = "SELECT COUNT(*) as total FROM directorio WHERE CONCAT(upper(nombres),' ',upper(apellido)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
-                $sql = "SELECT COUNT(*) as total FROM directorio WHERE orden in($newOrderBy) AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub),' ',upper(especialidad) ) LIKE '%" . strtoupper($busqueda) . "%' ORDER BY FIELD(orden,$newOrderBy) LIMIT 0,".$longitud;
+                //$sql = "SELECT COUNT(*) as total FROM directorio WHERE orden in($newOrderBy) AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub),' ',upper(especialidad) ) LIKE '%" . strtoupper($busqueda) . "%' ORDER BY FIELD(orden,$newOrderBy) LIMIT 0,".$longitud;
+                $sql = "SELECT COUNT(*) as total FROM directorio WHERE orden in($newOrderBy) AND CONCAT(upper(sub),' ',upper(especialidad) ) LIKE '%" . strtoupper($busqueda) . "%' OR ".strtoupper($busquedaString)." ORDER BY FIELD(orden,$newOrderBy) LIMIT 0,".$longitud;
                 $stmt = $em->getConnection()->prepare($sql);
                 $stmt->execute();
                 $totales = $stmt->fetchAll();
@@ -163,7 +177,7 @@ class DirectorioController extends Controller {
                 if ($deptoId != "") {
                     //                echo "busqueda depto";
                     $sql = "SELECT * FROM directorio "
-                            . " WHERE orden in($newOrderBy) AND UCASE(departamento) LIKE '%" . strtoupper(trim($deptoId)) . "' AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub),' ',upper(especialidad)) LIKE '%" . strtoupper($busqueda) . "%' ORDER BY FIELD(orden,$newOrderBy) LIMIT " . $inicioRegistro . "," . $longitud;
+                            . " WHERE orden in($newOrderBy) AND UCASE(departamento) LIKE '%" . strtoupper(trim($deptoId)) . "' AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub),' ',upper(especialidad)) LIKE '%" . strtoupper($busqueda) . "%' OR ".strtoupper($busquedaString)." ORDER BY FIELD(orden,$newOrderBy) LIMIT " . $inicioRegistro . "," . $longitud;
                     //                $sql = "SELECT estado,ciudad,url,nombres,apellido,correoelectronico,telefono_fijo,telefono_movil,tipo,id,foto,GROUP_concat(sub) FROM directorio WHERE estado=".$deptoId." AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT ".$inicioRegistro.",".$longitud;
                     //echo $sql;
                     
@@ -172,7 +186,7 @@ class DirectorioController extends Controller {
                     $reg['data'] = $stmt->fetchAll();
                     //var_dump($reg);
                     //                $sql = "SELECT COUNT(*) as total FROM directorio WHERE estado=".$deptoId." AND CONCAT(upper(nombres),' ',upper(apellido)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
-                    $sql = "SELECT COUNT(*) as total FROM directorio WHERE orden in($newOrderBy) AND UCASE(departamento) LIKE '%" . trim($deptoId) . "'  AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub),' ',upper(especialidad)) LIKE '%" . strtoupper($busqueda) . "%' ORDER BY FIELD(orden,$newOrderBy) LIMIT 0,".$longitud;
+                    $sql = "SELECT COUNT(*) as total FROM directorio WHERE orden in($newOrderBy) AND UCASE(departamento) LIKE '%" . trim($deptoId) . "'  AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub),' ',upper(especialidad)) LIKE '%" . strtoupper($busqueda) . "%' OR ".strtoupper($busquedaString)." ORDER BY FIELD(orden,$newOrderBy) LIMIT 0,".$longitud;
 
                     $em = $this->getDoctrine()->getManager();
                     $stmt = $em->getConnection()->prepare($sql);
@@ -204,7 +218,7 @@ class DirectorioController extends Controller {
         } else if ($busqueda != "" && $deptoId != "") {
 
             $sql = "SELECT * FROM directorio "
-                    . " WHERE orden in($newOrderBy) AND UCASE(departamento) LIKE '%" . strtoupper(trim($deptoId)) . "%' AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub),' ',upper(especialidad)) LIKE '%" . strtoupper(trim($busqueda)) . "%' ORDER BY FIELD(orden,$newOrderBy) LIMIT " . $inicioRegistro . "," . $longitud;
+                    . " WHERE orden in($newOrderBy) AND UCASE(departamento) LIKE '%" . strtoupper(trim($deptoId)) . "%' AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub),' ',upper(especialidad)) LIKE '%" . strtoupper(trim($busqueda)) . "%' OR ".strtoupper($busquedaString)." ORDER BY FIELD(orden,$newOrderBy) LIMIT " . $inicioRegistro . "," . $longitud;
 
 
             
@@ -212,7 +226,7 @@ class DirectorioController extends Controller {
             $stmt->execute();
             $reg['data'] = $stmt->fetchAll();
 
-            $sql = "SELECT COUNT(*) as total FROM directorio WHERE UCASE(departamento) LIKE '%" . strtoupper(trim($deptoId)) . "%'  AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub),' ',upper(especialidad)) LIKE '%" . strtoupper(trim($busqueda)) . "%' ORDER BY FIELD(orden,$newOrderBy) ASC LIMIT 0,".$longitud;
+            $sql = "SELECT COUNT(*) as total FROM directorio WHERE UCASE(departamento) LIKE '%" . strtoupper(trim($deptoId)) . "%'  AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub),' ',upper(especialidad)) LIKE '%" . strtoupper(trim($busqueda)) . "%' OR ".strtoupper($busquedaString)." ORDER BY FIELD(orden,$newOrderBy) ASC LIMIT 0,".$longitud;
 
             
             $stmt = $em->getConnection()->prepare($sql);

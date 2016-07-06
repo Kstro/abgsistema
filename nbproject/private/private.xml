@@ -3,31 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/var/www/html/abgsistema/src/DGAbgSistemaBundle/Service/EmailResService.php</file>
-            <file>file:/var/www/html/abgsistema/src/DGAbgSistemaBundle/Controller/AbgPanelCentroRespuestaController.php</file>
-            <file>file:/var/www/html/abgsistema/app/config/security.yml</file>
-            <file>file:/var/www/html/abgsistema/app/Resources/views/Layout/barra_lateral_principal.html.twig</file>
-            <file>file:/var/www/html/abgsistema/src/DGAbgSistemaBundle/Controller/AdministracionController.php</file>
-            <file>file:/var/www/html/abgsistema/app/Resources/views/Layout/footer.html.twig</file>
-            <file>file:/var/www/html/abgsistema/src/DGAbgSistemaBundle/Entity/AbgPregunta.php</file>
-            <file>file:/var/www/html/abgsistema/src/DGAbgSistemaBundle/Resources/views/Default/home.html.twig</file>
-            <file>file:/var/www/html/abgsistema/app/Resources/views/centropreg/pendienteAprobacion.html.twig</file>
-            <file>file:/var/www/html/abgsistema/app/Resources/views/panelcentropregabog/panelistpreguntas.html.twig</file>
-            <file>file:/var/www/html/abgsistema/src/DGAbgSistemaBundle/Controller/DefaultController.php</file>
-            <file>file:/var/www/html/abgsistema/src/DGAbgSistemaBundle/Controller/SecuredController.php</file>
-            <file>file:/var/www/html/abgsistema/src/DGAbgSistemaBundle/Controller/AdmPromocionesController.php</file>
-            <file>file:/var/www/html/abgsistema/src/DGAbgSistemaBundle/Controller/AbgFacturacionController.php</file>
-            <file>file:/var/www/html/abgsistema/src/DGAbgSistemaBundle/Entity/AbgPersonaEspecialida.php</file>
-            <file>file:/var/www/html/abgsistema/src/DGAbgSistemaBundle/Resources/views/Secured/login.html.twig</file>
-            <file>file:/var/www/html/abgsistema/src/DGAbgSistemaBundle/Services/EmailServiceRe.php</file>
-            <file>file:/var/www/html/abgsistema/src/DGAbgSistemaBundle/Service/EmailService.php</file>
-            <file>file:/var/www/html/abgsistema/app/Resources/views/panelcentropregabog/listapreguntas.html.twig</file>
-            <file>file:/var/www/html/abgsistema/app/config/parameters.yml</file>
-            <file>file:/var/www/html/abgsistema/app/Resources/views/Layout/head.html.twig</file>
-            <file>file:/var/www/html/abgsistema/src/DGAbgSistemaBundle/Controller/AbgPersonaController.php</file>
-            <file>file:/var/www/html/abgsistema/src/DGAbgSistemaBundle/Controller/AbgPreyResController.php</file>
-            <file>file:/var/www/html/abgsistema/app/Resources/views/admpromociones/promociones.html.twig</file>
-            <file>file:/var/www/html/abgsistema/src/DGAbgSistemaBundle/Services/EmailService.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Services/EmailService.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/verificarmeAbg.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Resources/views/Secured/login.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/Layout/layout2.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Services/EmailServiceRe.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/preyres/pregunta_detalle.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Service/EmailResService.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Service/EmailService.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/config/parameters.yml</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/verificacion.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/AbgPreyResController.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/enviopregsuccess/success.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/config/config.yml</file>
         </group>
     </open-files>
 </project-private>
