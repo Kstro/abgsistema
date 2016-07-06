@@ -1,82 +1,10 @@
-{% extends ':Layout:layout3.html.twig' %}
+{% extends ':Layout:layout2.html.twig' %}
 
 
-{% block js_extend %}
-    <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
-    <link rel="stylesheet" href="{{asset('Resources/AdminLTE-2.3.0/bootstrap/css/bootstrap.min.css')}}">
-    <style>
-        .jumbotron-primary p {
-            color: #f7f7f7;
-        }
-        .jumbotron {
-            background-color: #eeeeee;
-            color: inherit;
-            margin-bottom: 40px;
 
-        }
-        .jumbotron h1, .jumbotron .h1 {
-            color: inherit;
-        }
-        .jumbotron p {
-            font-size: 21px;
-            font-weight: 200;
-            margin-bottom: 20px;
-        }
-        .jumbotron > hr {
-            border-top-color: #d5d5d5;
-        }
-        .container .jumbotron, .container-fluid .jumbotron {
-            border-radius: 0;
-        }
-        .jumbotron .container {
-            max-width: 100%;
-        }
-        @media screen and (min-width: 768px) {
-            .jumbotron {
-                padding: 64px 0;
-            }
-            .container .jumbotron, .container-fluid .jumbotron {
-                padding-left: 80px;
-                padding-right: 80px;
-            }
-            .jumbotron h1, .jumbotron .h1 {
-                font-size: 63px;
-            }
-        }
-        .jumbotron::before, .jumbotron::after {
-            content: " ";
-            display: table;
-        }
-        .jumbotron::after {
-            clear: both;
-        }
-        .jumbotron h1, .jumbotron h2, .jumbotron h3 {
-            margin-top: 0;
-        }
-        .jumbotron p {
-            color: #666666;
-        }
-        .jumbotron p:last-child {
-            margin-bottom: 0;
-        }
-
-
-        .jumbotron-primary {
-            background-color: #0077bb;
-        }
-        .jumbotron-primary h1, .jumbotron-primary h2, .jumbotron-primary h3 {
-            color: #ffffff;
-        }
-        .jumbotron-primary p {
-            color: #bbe6ff;
-        }
-
-    </style>
-{% endblock %} 
-{% block cuerpo %}
-{% embed ':Layout:head.html.twig' %}{% endembed %}
-<div class="row " style="background-color:#fff; height: 100%; padding: 20px;">
+{% block body %}
+    {{parent()}}
+{#<div class="row " style="background-color:#fff; height: 100%; padding: 20px;">
     <div class="col-md-12" style="background-color:#fff; height: 100%; padding: 20px;">
         <div class="no-padding" style="margin-top: 1px;">
             <div class="custom row-feature-primary ">
@@ -92,5 +20,70 @@
             <button class="btn btn-bitbucket btn-flat pull-right" style="margin-top: 10px;">Regresar a centro de preguntas</button>
         </a>
     </div>
+</div>#}
+
+
+
+
+
+    <!-- Perfil Desktop -->
+<div class="hidden-xs hidden-sm">
+
+    <!-- Navbar -->
+    
+
+    <div class="container" style="padding-bottom: 50px; padding-top: 50px;">
+            <div class="row">
+                    <p class="text-center">
+                            <img src="{{asset('Resources/src/img/pregunta.png')}}" style="width: 250px;">
+                    </p>
+                    <p class="text-center" style="font-size: 40px; font-family: 'Montserrat', sans-serif; font-weight: 700; color: #082242;">¡Pregunta Enviada!</p>
+                    <p class="text-center" style="font-size: 13px; font-family: 'Montserrat', sans-serif; font-weight: 700; color: #082242;">
+                            Muchas gracias por utilizar nuestros servicio de consultoría gratuito.
+                    </p>
+            </div>
+    </div>
+    <div class="container-fluid" style="padding-top: 30px; padding-bottom: 30px; background-color: #BFDBEF;">
+            <p class="text-center" style="font-size: 30px; font-family: 'Montserrat', sans-serif; font-weight: 700; color: #082242; margin-bottom: 0px;">¿Ahora qué?</p>
+    </div>
+    <div class="container-fluid" style="background-color: #ffffff; padding-top: 30px; padding-bottom: 30px;">
+            <div class="container">
+                    <div class="row">
+                            <div class="col-md-6 col-md-offset-3">
+                                    <p class="text-center sans" style="font-size: 20px; margin-bottom: 0px;">
+                                            <strong>1.</strong> Hemos enviado tu pregunta a todos los abogados de la especialidad que tú seleccionaste.
+                                    </p>
+                                    <p class="text-center sans" style="font-size: 20px; margin-bottom: 0px;">
+                                            <strong>2.</strong> Cuando un abogado responda tu pregunta, te enviaremos un correo para que entres a ver la respuesta.
+                                    </p>
+                                    <p class="text-center sans" style="font-size: 20px; margin-bottom: 0px;">
+                                            <strong>3.</strong> Tú seleccionas el abogado que más sientas adecuado para tu solución legal. 
+                                    </p>
+                                    <p class="text-center" style="margin-top: 35px; margin-bottom: 15px;">
+                                        <a href="{{path('preg_deta')}}">
+                                            <button style="width: 250px; height: 30px; background-color: #F42; border-radius: 2px; border: 0; color: #fff;" class="sans">
+                                                <strong>Realizar otra pregunta</strong>
+                                            </button>
+                                        </a>
+                                    </p>					
+                            </div>
+                    </div>
+            </div>
+    </div>
+
+    <!-- Aviso -->
+    <div class="container-fluid" style="background-color: #f2f2f2; padding-top: 30px; padding-bottom: 30px;">
+            <div class="container">
+                    <p class="text-center" style="margin-bottom: 0px;">
+                            <strong>Aviso Importante: </strong> </br>Somos una herramienta intermediaria para tu selección de abogado, no somos responsables ni moderamos las respuestas de los abogados. Al contratar a un abogado por medio de nuestra plataforma, nos eximimos de toda responsabilidad entre el acuerdo del solicitante del servicio y del abogado. 
+                            </br><strong>Para más información: <a href="#">Términos de uso</a></strong>
+                    </p>
+            </div>
+    </div>
+
+    <!-- Navbar -->
+    {#<?php include ('src/includes/footer.php'); ?>#}
+
 </div>
+    {% embed ':Layout:footer.html.twig' %}{% endembed %}
 {% endblock %}
