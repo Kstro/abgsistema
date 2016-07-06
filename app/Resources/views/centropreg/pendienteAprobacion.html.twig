@@ -144,6 +144,45 @@
             $(document).on("click", ".aprobar", function(){
                 var id = $(this).attr('id');
                 
+                swal({
+                    text: "¿Está seguro de aprobar la pregunta?",
+                    type: "info",
+                    showCancelButton: true,
+                    confirmButtonColor: "#1D234D",
+                    confirmButtonText: "Aceptar",
+                    cancelButtonText: "Cancelar",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                }).then(function(isConfirm) {
+                    if (isConfirm) {                
+                        var data = {
+                            idpreg : id
+                        };
+
+                        $.ajax({
+                            type: 'POST',
+                            data: data,
+                            url: Routing.generate('aprobar_pregunta'),
+                            success: function (response)
+                            {
+
+
+                                table.ajax.reload();
+
+                                swal('','La pregunta ha sido aprobada','success');
+
+                                return false;
+                            },
+                            error: function (xhr, status){
+                                swal('','Lo sentimos, ocurrio un error','error');
+
+                                return false;
+                            }
+                        });
+                    } else {
+                        
+                    }
+                });
             });
             
             // Al momento de hacer click en Rechazar una pregunta
@@ -151,8 +190,8 @@
                 var id = $(this).attr('id');
                 
                 swal({
-                    title: "Confirmación de rechazo de una pregunta",
-                    text: "¿Esta seguro de eliminar la pregunta?",
+                    //title: "Confirmación de eliminación de la pregunta",
+                    text: "¿Está seguro de eliminar la pregunta?",
                     type: "info",
                     showCancelButton: true,
                     confirmButtonColor: "#1D234D",
@@ -162,6 +201,26 @@
                     closeOnCancel: false
                 }).then(function(isConfirm) {
                     if (isConfirm) {
+                        var data = {
+                            idpreg : id
+                        };
+
+                        $.ajax({
+                            type: 'POST',
+                            data: data,
+                            url: Routing.generate('rechazar_pregunta'),
+                            success: function (response)
+                            {
+                                table.ajax.reload();
+                                swal('','La pregunta ha sido eliminada','success');
+                                return false;
+                            },
+                            error: function (xhr, status){
+                                swal('','Lo sentimos, ocurrio un error','error');
+
+                                return false;
+                            }
+                        });
                         
                         return false;  
                     } else {
