@@ -1266,8 +1266,9 @@ class CtlEmpresaController extends Controller {
             $username = $this->container->get('security.context')->getToken()->getUser();
             $abgPersonaId = $username->getRhPersona();
 
-
+            
             $entity = $em->getRepository('DGAbgSistemaBundle:AbgUrlPersonalizada')->findBy(array("abgPersona" => $abgPersonaId, "estado" => 1));
+            
             $entity[0]->setEstado(0);
             $em->merge($entity[0]);
             $em->flush();
