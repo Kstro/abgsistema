@@ -34,103 +34,75 @@ class AbgPanelCentroRespuestaController extends Controller {
 
         try {
             $em = $this->getDoctrine()->getManager();
-            $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
-            $username = $this->container->get('security.context')->getToken()->getUser();
-            $id = $request->get('id');
             $pregunta = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->find($id);
-            $persona = $em->getRepository('DGAbgSistemaBundle:AbgPersonaEspecialida')->findByAbgPersona($idPersona);
+            //var_dump($result_persona[0]);
+            
+            ////////////////////////////////////////////////////////////////////
+            //Verificacion que la pregunta pertenece a la categoria del abogado que esta logueado.            
+            $abogadoEspecialidad = $em->getRepository('DGAbgSistemaBundle:AbgPersonaEspecialida')->findBy(array('abgPersona'=>$result_persona[0]['id']));
+                        
+            $especialidadMatch=false;
+            foreach($abogadoEspecialidad as $row){
+                if($pregunta->getAbgEspecialidad()->getId()==$row->getCtlEspecialidad()->getId()){
+                    $especialidadMatch=true;
+                }
+                
+            }
+            //var_dump($especialidadMatch);
+            ////////////////////////////////////////////////////////////////////
+            
+            $username = $this->container->get('security.context')->getToken()->getUser();
+            $personaId = $username->getRhPersona();
+            $abgfoto = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findOneBy(array('abgPersona' => $personaId));
+            
+            $abgRespuestaPregunta = $em->getRepository('DGAbgSistemaBundle:AbgRespuestaPregunta');
+                
+            $Respuesta = $abgRespuestaPregunta->findBy(array('abgPregunta' => $id, 'ctlUsuario' => $username));
 
-            $dqlEspecialida = "SELECT pesp.id, esp.id AS idEspecialidad "
-                    . " FROM DGAbgSistemaBundle:AbgPersonaEspecialida pesp "
-                    . " JOIN DGAbgSistemaBundle:CtlEspecialidad esp WHERE pesp.ctlEspecialidad=esp.id AND pesp.abgPersona=" . $idPersona;
-            $result_especialida = $em->createQuery($dqlEspecialida)->getArrayResult();
+            $respuesta="";
+            $estado="";
+            $tiempoRes="";
 
-            $Especialida_persona = false;
+            if(! empty($Respuesta)){
+                $estado=1;
+                $respuesta=$Respuesta[0]->getRespuesta();
+            }
+            else{
+                $estado=0; 
+            }
+            if ($pregunta->getFechaPregunta() != NULL) {
 
-            foreach ($result_especialida as $obj) {
-                if ($pregunta->getAbgEspecialidad()->getId() == $obj['idEspecialidad']) {
-                    $Especialida_persona = true;
+             //         array_push($tiemposRespuesta, $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s')));
+                $tiempo = $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s'));
+            }else{
+                $tiempo = NULL;
+            }
+            if(! empty($Respuesta)){
+                if ($Respuesta[0]->getFechaRespuesta() != NULL){
+                    //array_push($tiemposRespuesta, $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s')));
+                    $tiempoRes = $this->tiempo_transcurrido($Respuesta[0]->getFechaRespuesta()->format('Y-m-d H:i:s'));
+                } else{
+                    $tiempoRes = NULL;
                 }
             }
-            if ($Especialida_persona) {
-                $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
-                        . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.codigo as codigo "
-                        . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
-                $result_persona = $em->createQuery($dql_persona)->getArrayResult();
-                $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
-
-                $dqlfoto = "SELECT fot.src as src "
-                        . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
-                $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
-
-
-                $dqlfoto = "SELECT fot.src as src, fot.estado As estado "
-                        . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=1 ";
-                $fotoP = $em->createQuery($dqlfoto)->getArrayResult();
-
-
-
-
-
-                $username = $this->container->get('security.context')->getToken()->getUser();
-                $personaId = $username->getRhPersona();
-                $abgfoto = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findOneBy(array('abgPersona' => $personaId));
-
-                $abgRespuestaPregunta = $em->getRepository('DGAbgSistemaBundle:AbgRespuestaPregunta');
-
-                $Respuesta = $abgRespuestaPregunta->findBy(array('abgPregunta' => $id, 'ctlUsuario' => $username));
-
-                $respuesta = "";
-                $estado = "";
-                $tiempoRes = "";
-
-                if (!empty($Respuesta)) {
-                    $estado = 1;
-                    $respuesta = $Respuesta[0]->getRespuesta();
-                } else {
-                    $estado = 0;
-                }
-                if ($pregunta->getFechaPregunta() != NULL) {
-
-                    //         array_push($tiemposRespuesta, $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s')));
-                    $tiempo = $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s'));
-                } else {
-                    $tiempo = NULL;
-                }
-                if (!empty($Respuesta)) {
-
-                    if ($Respuesta[0]->getFechaRespuesta() != NULL) {
-
-                        //         array_push($tiemposRespuesta, $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s')));
-                        $tiempoRes = $this->tiempo_transcurrido($Respuesta[0]->getFechaRespuesta()->format('Y-m-d H:i:s'));
-                    } else {
-                        $tiempoRes = NULL;
-                    }
-                }
-                $srcfoto = $abgfoto->getSrc();
-                return $this->render('panelcentropregabog/panelRespuestaPregunta.html.twig', array('pregunta' => $pregunta,
-                            'nombreCorto' => $nombreCorto,
-                            'srcfoto' => $srcfoto,
-                            'nombres' => $personaId->getNombres(),
-                            'apellidos' => $personaId->getApellido(),
-                            'abgPersona' => $result_persona,
-                            'usuario' => $idPersona,
-                            'abgFoto' => $result_foto,
-                            'estado' => $estado,
-                            'respuesta' => $respuesta,
-                            'tiempo' => $tiempo,
-                            'tiempoRes' => $tiempoRes));
-            } else {
-                $msj = " No puedes acceder a la pregunta.";
-                $msj2 = "La pregunta a la que quieres acceder es de una especialidad a la que usted no perteneces. ";
-                return $this->render('abgpersona/error.html.twig', array('msj' => $msj, 'msj2' => $msj2));
-            }
-        } catch (Exception $e) {
+            $srcfoto = $abgfoto->getSrc();
+            return $this->render('panelcentropregabog/panelRespuestaPregunta.html.twig', array('pregunta' => $pregunta,
+                'nombreCorto'=>$nombreCorto,
+                'srcfoto' => $srcfoto,
+                'nombres' => $personaId->getNombres(),
+                'apellidos' => $personaId->getApellido(),
+                'abgPersona' => $result_persona,
+                'usuario' => $idPersona,
+                'abgFoto' => $result_foto,
+                'estado'=>$estado,
+                'especialidadMatch'=>$especialidadMatch,
+                'respuesta'=>$respuesta,
+                'tiempo'=>$tiempo,
+                'tiempoRes'=>$tiempoRes));
+        }catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
-
             $em->close();
-
             // echo $e->getMessage();   
         }
     }
