@@ -291,9 +291,20 @@ class AbgPersonaController extends Controller {
 
         try {
             if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+                
                 $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
                 $username = $this->container->get('security.context')->getToken()->getUser()->getId();
+                $Usuario = $this->container->get('security.context')->getToken()->getUser();
+            
+                $userEstadoCorreo=$Usuario->getEstadoCorreo();
 
+                       if($userEstadoCorreo==0)
+                {
+                    return $this->redirect($this->generateUrl('confirmarcorreo', array('id'=>$Usuario->getCodigoConfirmar())));
+                }
+else
+{
+                
                 $sqlRol = "SELECT  r.id As id, r.rol As rol"
                         . " FROM  ctl_rol_usuario ru "
                         . " JOIN ctl_rol r ON r.id=ru.ctl_rol_id AND ru.ctl_usuario_id=" . $username;
@@ -302,7 +313,7 @@ class AbgPersonaController extends Controller {
                 $stm->execute();
                 $RolUser = $stm->fetchAll();
 
-
+     
                 $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
                         . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.tituloProfesional AS tprofesional, p.verificado As verificado, "
                         . " p.genero AS genero, p.tituloPuesto As tituloPuesto "
@@ -321,6 +332,7 @@ class AbgPersonaController extends Controller {
 
 
                 $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
+
 
 
                 $dql_ciudad = "SELECT c.nombreCiudad As nombre, es.nombreEstado estado"
@@ -489,6 +501,7 @@ class AbgPersonaController extends Controller {
                     'suscripcion'=>$suscripcion
                                 // 'ru'=>$RolUser[0]['id']
                 ));
+}
             } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
                 $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
 

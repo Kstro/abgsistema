@@ -2162,22 +2162,23 @@ class CtlEmpresaController extends Controller {
                 $codigo=$request->get('id');
                 $em = $this->getDoctrine()->getManager();
                 $ctlUsuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByCodigoConfirmar($request->get('id'));
-            
-               
+
                 if ($ctlUsuario != null) {
                     $this->authenticateUser($ctlUsuario[0]);
-          
 
                     $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
                     $username = $this->container->get('security.context')->getToken()->getUser()->getId();
-       
+
                     if ($ctlUsuario[0]->getEstadoCorreo()) {
-                    
+
                         return $this->redirect($this->generateUrl('abogado_login'));
                         //return $this->render('DGAbgSistemaBundle:Secured:login.html.twig');
                     } else {
                       
-
+           $ctlUsuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->find($username);
+            $ctlUsuario->setEstado(1);
+            $em->merge($ctlUsuario);
+            $em->flush();
                         $sqlRol = "SELECT  r.id As id, r.rol As rol"
                                 . " FROM  ctl_rol_usuario ru "
                                 . " JOIN ctl_rol r ON r.id=ru.ctl_rol_id AND ru.ctl_usuario_id=" . $username;

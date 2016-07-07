@@ -149,6 +149,7 @@
                                     <div class="row">
                                         <div class="col-sm-12" style=" margin-top: 10px;">
                                             <button type="submit" class="btn btn-primary btn-sm btn-flat" id="enviar">Continuar</button>
+                                            <button type="button" class="btn btn-default btn-sm btn-flat" id="btnCerrar">Cerrar sesión</button>
                                         </div>
                                     </div>
                                 </div>
@@ -269,10 +270,10 @@
 
            $(document).on('click', '#enviar', function () {
                                                             
-                                                            alert($('input:radio[name=rGenero]:checked').val());
+                                                          
                                                                     if (parseInt(DataEspecialida.length) > 0)
                                                             {
-                                                            if ($("#txtnombre").val() !== "" && $("#txtapellido").val() !== "" && ($("#Smunicipio").val() !== "") && ($('input:radio[name=rGenero]:checked').val() !== ""))
+                                                            if ($("#txtnombre").val() !== "" && $("#txtapellido").val() !== "" && ($("#Smunicipio").val() !== "") && ($('input:radio[name=rGenero]:checked').val() !==undefined))
                                                             {
                                                             $("#fgeneral").submit(
                                                                     function (event) {
@@ -316,6 +317,12 @@
                                                             });
                                                             }
                                                             });
+                                                            
+                                                               $(document).on('click', '#btnCerrar', function () {
+                                                                   var url = Routing.generate('abogado_logout');
+                                                                                    window.open(url, "_self");
+                                                                    });
+                                                               
             </script>
         {% endfor %}
 
