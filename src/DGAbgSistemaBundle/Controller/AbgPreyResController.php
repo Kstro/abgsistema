@@ -149,11 +149,11 @@ class AbgPreyResController extends Controller {
 
          $email;$comment;$captcha;
         if(isset($_POST['email'])){
-          $email=$_POST['email'];
+            $email=$_POST['email'];
         }if(isset($_POST['comment'])){
-          $email=$_POST['comment'];
+            $email=$_POST['comment'];
         }if(isset($_POST['g-recaptcha-response'])){
-          $captcha=$_POST['g-recaptcha-response'];
+            $captcha=$_POST['g-recaptcha-response'];
         }
         if(!$captcha){
             //Capctha sin llenar

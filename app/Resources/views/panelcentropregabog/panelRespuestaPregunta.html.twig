@@ -41,6 +41,7 @@
 
                                         <h3 class="box-title">RESPONDER PREGUNTA</h3>
                                         <br>    
+                                        {% if especialidadMatch %}
                                         <input name="idpreg" class="hidden" type="text" value="{{pregunta.id}}">  
                                         {% if pregunta.estado == 0 %}
                                             <div class="alert alert-info alert-dismissible" role="alert">
@@ -81,27 +82,23 @@
                                             {% if (respuesta | default is not empty)%}
                                             {% else %}
                                                 <div class="row " >
-
-
                                                     {% if pregunta.estado == 1 %}
                                                         <p style="font-size:15px;">Respuesta:</p>
-                                                        Aun sin responder, puedes responderlo ahora!!!!!
-
+                                                        Aun sin responder, puedes responderlo ahora!
                                                         <textarea id="" name="respuesta" class="form-control textarea" placeholder="Agregue su respuesta aqui..." style="max-width: 100%; min-width: 515px; width:100%; max-height: 150px; min-height: 150px; height: 150px;" required></textarea>
-
-
                                                     {% endif %} 
                                                 </div>
                                             {% endif %}     
                                             <div class="row " style=" margin-top: 9px;">
-
                                                 {% if pregunta.estado == 1 %}
                                                     <button type="submit" class="btn btn-primary btn-sm btn-flat"  {% if (respuesta | default is not empty)%}style=" display: none;{%endif%}">Enviar Respuesta</button>                     
                                                 {% endif %}
-                                                <a class="btn btn-default btn-sm btn-flat" href="{{ path('panel_list_pregunta')}}">Centro de preguntas</a>     
-
+                                                <a class="btn btn-default btn-sm btn-flat" href="{{ path('panel_list_pregunta')}}">Centro de preguntas</a>
                                             </div>
                                         </div>
+                                    {% else %}
+                                        Lo sentimos, usted no puede responder esta pregunta porque su especialidad no coincide con la de la pregunta. 
+                                    {% endif %} 
 
                                 </form> 
                             </div>
