@@ -44,7 +44,7 @@ $(document).ready(function () {
 
     });
 
-    $('#txtTituloProfesional').editable({
+  /*  $('#txtTituloProfesional').editable({
         validate: function (value) {
             if (value === "")
                 return 'requerido';
@@ -56,7 +56,7 @@ $(document).ready(function () {
             {value: '2', text: 'Magíster'}
         ]
 
-    });
+    });*/
     $('#txtTituloU').editable({
         validate: function (value) {
             if (value === "")
@@ -197,7 +197,7 @@ $(document).ready(function () {
             });
         }
     });
-
+/*
     $('#txtTituloProfesional').on('save', function (e, params) {
         if ((params.newValue["txtTituloProfesional"] === ""))
         {
@@ -212,10 +212,10 @@ $(document).ready(function () {
                 url: Routing.generate('edit_persona'),
                 success: function (data)
                 {
-         //   alert('Saved value: ' + params.newValue);
-            
-               
-                $('#txtTituloProfesional').editable('setValue',params.newValue);
+          alert('Saved value: ' + params.newValue);
+            $(this).editable('setValue', params.newValue);
+       
+           //    $('#txtTituloProfesional').editable({text:"vkjdasnvs"});
                 },
                 error: function (xhr, status)
                 {
@@ -223,10 +223,13 @@ $(document).ready(function () {
                 }
             });
         }
-    });
-    
- /*   $('#txtTituloProfesional').on('hidden', function(e, reason) {
-         $('#txtTituloProfesional').editable('setValue', 'nvdsk');
+    });*/
+ /*   
+  $('#txtTituloProfesional').on('hidden', function(e, reason) {
+
+      
+               $(this).editable('setValue', 'gsgsgs');
+
 });*/
 
     $('#txtTituloU').on('save', function (e, params) {

@@ -309,6 +309,15 @@ class AbgPersonaController extends Controller {
                         . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
                 $result_persona = $em->createQuery($dql_persona)->getArrayResult();
 
+                $sqlPersona = "select per.id AS idAbg, date_format(fac.fecha_pago, '%d/%m/%Y') AS fechaPago, fac.servicio AS servicio, fac.plazo,TIMESTAMPDIFF(DAY,CURDATE(),fac.fecha_pago) AS caducidad, fac.monto AS monto, 
+                        fac.descripcion As descripcion
+                        from abg_persona per  "
+                       . " inner join abg_facturacion fac on per.id=" . $idPersona ." and per.id=fac.abg_persona_id and fac.servicio <> 'Espacio publicitario'";
+
+                $stm = $this->container->get('database_connection')->prepare($sqlPersona);
+                $stm->execute();
+                $suscripcion = $stm->fetchAll();
+
 
 
                 $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
@@ -476,7 +485,8 @@ class AbgPersonaController extends Controller {
                             'abgFoto' => $result_foto,
                             'cumplimiento' => $cumplimiento,
                             'NNotificaciones' => $NNotificaciones[0][1],
-                            'trabajo' => $trabajo
+                            'trabajo' => $trabajo,
+                    'suscripcion'=>$suscripcion
                                 // 'ru'=>$RolUser[0]['id']
                 ));
             } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
@@ -851,7 +861,7 @@ class AbgPersonaController extends Controller {
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
                     . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado,  p.tituloProfesional AS tprofesional,"
-                    . " p.verificado As verificado, p.genero AS genero "
+                    . " p.verificado As verificado, p.genero AS genero, p.tituloPuesto As tituloPuesto "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
 
@@ -885,7 +895,7 @@ class AbgPersonaController extends Controller {
             $stm->execute();
             $Experiencia = $stm->fetchAll();
 
-            $sqlEdu = "SELECT e.id AS idEs, e.institucion AS institucion, e.titulo AS titulo, e.anio_inicio AS anioIni, e.anio_graduacion AS anio, tp.abg_titulocol AS disciplina "
+            $sqlEdu = "SELECT e.id AS idEs, e.institucion AS institucion, e.titulo AS titulo, e.anio_inicio AS anioIni, e.anio_graduacion AS anio "
                     . " FROM abg_estudio e "
                     . " JOIN  abg_persona p ON e.abg_persona_id=p.id AND e.abg_persona_id=" . $idPersona
                     . " ORDER BY e.anio_inicio Asc";
@@ -1072,7 +1082,7 @@ class AbgPersonaController extends Controller {
 
                 case 3:
                     $Persona->setTituloProfesional($request->get('tituloProfesional'));
-
+                    $data['val'] = $request->get('tituloProfesional');
                     break;
                 case 4:
                     $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
@@ -1450,7 +1460,7 @@ class AbgPersonaController extends Controller {
 
             $idEmpresa = "";
             $IdExperiencia = "";
-            $puesto="";
+            $puesto = "";
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
             $fechaIni = date_create($datos['txtFechaIni']);
 
@@ -1520,22 +1530,22 @@ class AbgPersonaController extends Controller {
                                     $AbgPersonaEmpresa->setCtlEmpresa($Empresa);
                                     $em->persist($AbgPersonaEmpresa);
                                     $em->flush();
-                                    
-                                 if ($Persona->getTituloPuesto() == null) {
-                                    $Persona->setTituloPuesto($datos['txtpuesto']);
-                                    $em->merge($Persona);
-                                    $em->flush();
-                                    
-                                    $data['puesto']=$Persona->getTituloPuesto();
-                                }
+
+                                    if ($Persona->getTituloPuesto() == null) {
+                                        $Persona->setTituloPuesto($datos['txtpuesto']);
+                                        $em->merge($Persona);
+                                        $em->flush();
+
+                                        $data['puesto'] = $Persona->getTituloPuesto();
+                                    }
                                 }
                             } else {
                                 if ($Persona->getTituloPuesto() == null) {
                                     $Persona->setTituloPuesto($datos['txtpuesto']);
                                     $em->merge($Persona);
                                     $em->flush();
-                                     
-                                     $data['puesto']=$Persona->getTituloPuesto();
+
+                                    $data['puesto'] = $Persona->getTituloPuesto();
                                 }
                             }
                         } catch (Exception $e) {

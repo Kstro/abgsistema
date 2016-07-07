@@ -2156,6 +2156,7 @@ class CtlEmpresaController extends Controller {
      */
     public function ConfirmarAction(Request $request) {
         try {
+       
             if ($request->get('id') !== null) {
                 $codigo=$request->get('id');
                 $em = $this->getDoctrine()->getManager();
