@@ -147,12 +147,16 @@ class AbgPersona
         /**
      * @var string
      *
-     * @ORM\Column(name="titulo_profesional", type="string", length=45, nullable=true)
+     * @ORM\Column(name="titulo_profesional", type="string", length=100, nullable=true)
      */
     private $tituloProfesional;
     
-    
-
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="titulo_puesto", type="string", length=100, nullable=true)
+     */
+   private $tituloPuesto;
     /**
      * Constructor
      */
@@ -582,6 +586,30 @@ class AbgPersona
     public function getTituloProfesional()
     {
         return $this->tituloProfesional;
+    }
+    
+    
+     /**
+     * Set tituloPuesto
+     *
+     * @param string  $tituloPuesto
+     * @return AbgPersona
+     */
+    public function setTituloPuesto($tituloPuesto)
+    {
+        $this->tituloPuesto =  $tituloPuesto;
+
+        return $this;
+    }
+
+    /**
+     * Get tituloPuesto
+     *
+     * @return string
+     */
+    public function getTituloPuesto()
+    {
+        return $this->tituloPuesto;
     }
     
      public function __toString() {

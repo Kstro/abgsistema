@@ -275,8 +275,6 @@ class AbgPersonaController extends Controller {
         }
     }
 
-  
-
     /**
      * @Route("/perfil/", name="perfil", options={"expose"=true})
      * @Method("GET")
@@ -307,7 +305,7 @@ class AbgPersonaController extends Controller {
 
                 $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
                         . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.tituloProfesional AS tprofesional, p.verificado As verificado, "
-                        . " p.genero AS genero "
+                        . " p.genero AS genero, p.tituloPuesto As tituloPuesto "
                         . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
                 $result_persona = $em->createQuery($dql_persona)->getArrayResult();
 
@@ -343,6 +341,12 @@ class AbgPersonaController extends Controller {
                 $stm = $this->container->get('database_connection')->prepare($sql);
                 $stm->execute();
                 $Experiencia = $stm->fetchAll();
+                $trabajo = "";
+                foreach ($Experiencia as $row) {
+                    if ($row['fechaFin'] == null) {
+                        $trabajo = $row['fechaFin'];
+                    }
+                }
 
 
 
@@ -350,7 +354,7 @@ class AbgPersonaController extends Controller {
                 $sqlEdu = "SELECT e.id AS idEs, e.institucion AS institucion, e.titulo AS titulo, e.anio_inicio AS anioIni, e.anio_graduacion AS anio "
                         . " FROM abg_estudio e "
                         . " JOIN  abg_persona p ON e.abg_persona_id=p.id AND e.abg_persona_id=" . $idPersona;
- 
+
                 $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                 $stm->execute();
                 $Edu = $stm->fetchAll();
@@ -452,6 +456,7 @@ class AbgPersonaController extends Controller {
 
                     $cumplimiento = $cumplimiento + 10;
                 }
+
                 return $this->render('abgpersona/panelAdministrativoAbg.html.twig', array(
                             'nombreCorto' => $nombreCorto,
                             'abgPersona' => $result_persona,
@@ -471,6 +476,7 @@ class AbgPersonaController extends Controller {
                             'abgFoto' => $result_foto,
                             'cumplimiento' => $cumplimiento,
                             'NNotificaciones' => $NNotificaciones[0][1],
+                            'trabajo' => $trabajo
                                 // 'ru'=>$RolUser[0]['id']
                 ));
             } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
@@ -1108,12 +1114,11 @@ class AbgPersonaController extends Controller {
                     $data['msj'] = "Dato actualizado";
                     break;
                 case 12:
-                    
                     $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hpersona'));
                     $Usuario = $em->getRepository("DGAbgSistemaBundle:CtlUsuario")->findByRhPersona($Persona);
-       
+
                     $Persona->setEstado($request->get('estado'));
-          
+
                     if ($request->get('estado') == '4') {
                         $Usuario[0]->setEstado(0);
                         $data['msj'] = "Abogado deshabilitado";
@@ -1121,9 +1126,13 @@ class AbgPersonaController extends Controller {
                         $Usuario[0]->setEstado(1);
                         $data['msj'] = "Abogado habilitado";
                     }
-         
+
                     $em->merge($Usuario[0]);
                     $em->flush();
+                    break;
+                case 13:
+                    $Persona->setTituloPuesto($request->get('tituloPuesto'));
+                    $data['msj'] = "Dato actualizado";
                     break;
             }
 
@@ -1287,8 +1296,6 @@ class AbgPersonaController extends Controller {
         }
     }
 
-    
-
     /**
      * @Route("/especialida", name="especialida", options={"expose"=true})
      * @Method("GET")
@@ -1371,7 +1378,7 @@ class AbgPersonaController extends Controller {
                     $em->flush();
                 }
                 $data['msj'] = "Cambios guardados ";
-                
+
                 $dql_especialida = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre, pe.descripcion AS descripcion "
                         . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
                         . "JOIN DGAbgSistemaBundle:AbgPersonaEspecialida pe WHERE e.id=pe.ctlEspecialidad AND pe.abgPersona=" . $request->get('hPersona')
@@ -1436,13 +1443,14 @@ class AbgPersonaController extends Controller {
             $request = $this->getRequest();
 
             parse_str($request->get('dato'), $datos);
-     //   var_dump($datos);
-      //  exit();
             $Empresa = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa");
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+            $PersonaData = $em->getRepository("DGAbgSistemaBundle:AbgPersona");
+            $Persona = $PersonaData->find($idPersona);
 
             $idEmpresa = "";
             $IdExperiencia = "";
+            $puesto="";
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
             $fechaIni = date_create($datos['txtFechaIni']);
 
@@ -1473,7 +1481,9 @@ class AbgPersonaController extends Controller {
                     $data['msj'] = "Actualmente Trabaja en " . $compania;
                     $data['val'] = 1;
                 } else {
-                      $Experiencia = new AbgExperienciaLaboral();
+
+                    $Experiencia = new AbgExperienciaLaboral();
+
                     $Experiencia->setAbgPersona($Persona);
                     $Experiencia->setCompania($nombre);
                     $Experiencia->setFachaInicio($fechaIni);
@@ -1481,9 +1491,7 @@ class AbgPersonaController extends Controller {
                     $Experiencia->setFuncion($datos['txtfuncion']);
                     $Experiencia->setPuesto($datos['txtpuesto']);
                     $Experiencia->setUbicacion($datos['txthubicacion']);
-                    if ($datos['txtFechaFin'] != ""  && date_create($datos['txtFechaFin']) >$fechaIni) 
-                    {
-                 
+
                     if (($datos['txtFechaFin']) != "") {
                         $fechaFin = date_create($datos['txtFechaFin']);
                         $Experiencia->setFechaFin($fechaFin);
@@ -1501,73 +1509,41 @@ class AbgPersonaController extends Controller {
                     $IdExperiencia = $Experiencia->getId();
 
                     if ($Experiencia->getFechaFin() == null) {
-                         if ($datos['hidEmp'] != "") {
-                        
                         try {
                             $AbgPersonaEmpresa = new AbgPersonaEmpresa();
-                            $Empresa = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($idEmpresa->getId());
 
-                            if ($Empresa) {
-                                $AbgPersonaEmpresa->setAbgPersona($Persona);
-                                $AbgPersonaEmpresa->setCtlEmpresa($Empresa);
-                                $em->persist($AbgPersonaEmpresa);
-                                $em->flush();
+                            if ($idEmpresa !== "") {
+                                $Empresa = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($idEmpresa->getId());
+
+                                if ($Empresa) {
+                                    $AbgPersonaEmpresa->setAbgPersona($Persona);
+                                    $AbgPersonaEmpresa->setCtlEmpresa($Empresa);
+                                    $em->persist($AbgPersonaEmpresa);
+                                    $em->flush();
+                                    
+                                 if ($Persona->getTituloPuesto() == null) {
+                                    $Persona->setTituloPuesto($datos['txtpuesto']);
+                                    $em->merge($Persona);
+                                    $em->flush();
+                                    
+                                    $data['puesto']=$Persona->getTituloPuesto();
+                                }
+                                }
+                            } else {
+                                if ($Persona->getTituloPuesto() == null) {
+                                    $Persona->setTituloPuesto($datos['txtpuesto']);
+                                    $em->merge($Persona);
+                                    $em->flush();
+                                     
+                                     $data['puesto']=$Persona->getTituloPuesto();
+                                }
                             }
                         } catch (Exception $e) {
                             $data['error'] = $e->getMessage(); //"Falla al Registrar ";
                             return new Response(json_encode($data));
                         }
-                           }
                     }
                     $data['msj'] = "Experiencia registrada";
-                    
-                    }
-                    else if ($datos['txtFechaFin'] != ""  && date_create($datos['txtFechaFin']) <$fechaIni) 
-                    {
-                        $data['msj'] = false;
-                            $data['error'] = "Fecha inicio mayor a fecha fin";
-                    }
-                    else
-                    {
-                           if (($datos['txtFechaFin']) != "") {
-                        $fechaFin = date_create($datos['txtFechaFin']);
-                        $Experiencia->setFechaFin($fechaFin);
-                    } else {
-                        $fechaFin = null;
-                        $Experiencia->setFechaFin($fechaFin);
-                    }
-                    if ($idEmpresa != null) {
-
-                        $Empresa = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($idEmpresa->getId());
-                        $Experiencia->setCtlEmpresa($Empresa);
-                    }
-                    $em->persist($Experiencia);
-                    $em->flush();
-                    $IdExperiencia = $Experiencia->getId();
-
-                    if ($Experiencia->getFechaFin() == null) {
-                         if ($datos['hidEmp'] != "") {
-                        
-                        try {
-                            $AbgPersonaEmpresa = new AbgPersonaEmpresa();
-                            $Empresa = $em->getRepository("DGAbgSistemaBundle:CtlEmpresa")->find($idEmpresa->getId());
-
-                            if ($Empresa) {
-                                $AbgPersonaEmpresa->setAbgPersona($Persona);
-                                $AbgPersonaEmpresa->setCtlEmpresa($Empresa);
-                                $em->persist($AbgPersonaEmpresa);
-                                $em->flush();
-                            }
-                        } catch (Exception $e) {
-                            $data['error'] = $e->getMessage(); //"Falla al Registrar ";
-                            return new Response(json_encode($data));
-                        }
-                           }
-                    }
-                    $data['msj'] = "Experiencia registrada";
-                    }
-                    
-                    
                 }
             }// Actualizar 
             else {
@@ -2016,7 +1992,7 @@ class AbgPersonaController extends Controller {
 
             parse_str($request->get('dato'), $datos);
             $Disciplina = $em->getRepository("DGAbgSistemaBundle:CtlTituloProfesional");
-      //      $idDisciplina = $Disciplina->find(intval($datos['Sdisciplina']));
+            //      $idDisciplina = $Disciplina->find(intval($datos['Sdisciplina']));
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
 
             $IdEducacion = "";
@@ -2028,7 +2004,7 @@ class AbgPersonaController extends Controller {
                 $Estudio = new AbgEstudio();
 
                 $Estudio->setAbgPersona($Persona);
-            //    $Estudio->setAbgTituloProfesional($idDisciplina);
+                //    $Estudio->setAbgTituloProfesional($idDisciplina);
                 $Estudio->setAnioGraduacion(strval($datos['txtAnioFin']));
                 $Estudio->setInstitucion($datos['txtCentro']);
                 $Estudio->setTitulo($datos['txtTitulo']);
@@ -2043,7 +2019,7 @@ class AbgPersonaController extends Controller {
 
                 $Estudio = $em->getRepository("DGAbgSistemaBundle:AbgEstudio")->find($datos['hidEdu']);
                 $Estudio->setAbgPersona($Persona);
-          //      $Estudio->setAbgTituloProfesional($idDisciplina);
+                //      $Estudio->setAbgTituloProfesional($idDisciplina);
 
                 $Estudio->setInstitucion($datos['txtCentro']);
                 $Estudio->setAnioInicio($datos['txtAnioIni']);
@@ -2121,14 +2097,13 @@ class AbgPersonaController extends Controller {
             $data['error'] = false;
 
 
-if($datos['txtFechIniC']=="" && $datos['txtFechFinC'] ==""){
-    $fechaIni = null;
-            $fechaFin = null;
-}
-else{
-            $fechaIni = date_create($datos['txtFechIniC']);
-            $fechaFin = date_create($datos['txtFechFinC']);
-}
+            if ($datos['txtFechIniC'] == "" && $datos['txtFechFinC'] == "") {
+                $fechaIni = null;
+                $fechaFin = null;
+            } else {
+                $fechaIni = date_create($datos['txtFechIniC']);
+                $fechaFin = date_create($datos['txtFechFinC']);
+            }
             if ((($datos['hidCert'] == ""))) {
 
                 $AbgCertificacion = new AbgCertificacion();
@@ -2364,7 +2339,7 @@ else{
             $request = $this->getRequest();
 
             parse_str($request->get('dato'), $datos);
-         
+
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
 
             $IdEducacion = "";
@@ -2373,7 +2348,7 @@ else{
 
             $fechaIni = date_create($datos['txtFechIniOrg']);
             $fechaFin = date_create($datos['txtFechFinOrg']);
-   
+
             if ((($datos['hidOrg'] == ""))) {
 
                 $AbgOrganizacion = new AbgOrganizacion();
@@ -2403,7 +2378,6 @@ else{
                     $data['Organizacion'] = $stm->fetchAll();
                 } else {
                     $data['error'] = "Fecha fin menor a fecha inicio.";
-             
                 }
             } else {
                 if ($fechaIni < $fechaFin) {
@@ -2513,10 +2487,6 @@ else{
                 
             } else {
                 $PersonaIdioma = $RepositorioPI->findBy(array('abgPersona' => $request->get('hPersona')));
-                foreach ($PersonaIdioma as $objPersonaIdioma) {
-                    $em->remove($objPersonaIdioma);
-                    $em->flush();
-                }
             }
 
             if (is_null($array)) {

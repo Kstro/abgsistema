@@ -86,15 +86,11 @@
         $("#gif").hide();
         $(document).on("click", "#botonModalP", function() {
         $("#idModalFotoP").modal();
-
-        
         });
-        
-          var flag=true;
-          var Extension="";
-          
-          $(document).on("change", "#input", function() {
-                 //obtenemos un array con los datos del archivo
+        var flag = true;
+        var Extension = "";
+        $(document).on("change", "#input", function() {
+        //obtenemos un array con los datos del archivo
         var file = $(this)[0].files[0];
         //obtenemos el nombre del archivo
         var fileName = file.name;
@@ -104,52 +100,41 @@
         var fileSize = file.size;
         //obtenemos el tipo de archivo image/png ejemplo
         var fileType = file.type;
-      
-        if ( Extension == "png" || Extension == "bmp"
-                    || Extension == "jpeg" || Extension == "jpg" || Extension == "JPG" || Extension == "PNG" || Extension == "JPEG" ||
-                    Extension == "BMP") {
-        	flag = true;
-               
-                 
-             
-        }else{
-            
-        	flag = false;
-                  Lobibox.notify("error", {
-                size: 'mini',
-                        msg: 'Tipo de archivo invalido'
-                });
-                  $(this).val("");
-                   $('#idModalFotoP').modal('toggle');
-                  
+        if (Extension == "png" || Extension == "bmp"
+                || Extension == "jpeg" || Extension == "jpg" || Extension == "JPG" || Extension == "PNG" || Extension == "JPEG" ||
+                Extension == "BMP") {
+        flag = true;
+        } else{
+
+        flag = false;
+        Lobibox.notify("error", {
+        size: 'mini',
+                msg: 'Tipo de archivo invalido'
+        });
+        $(this).val("");
+        $('#idModalFotoP').modal('toggle');
         }
-        
 
-          });
-        
-        
 
+        });
         $(function editarFoto() {
 
         $('.image-editor').cropit({ smallImage: 'allow',
-                    minZoom: 'fill',
-                    maxZoom: 1,
-                     quality: .100,
-                     imageBackground: false
+                minZoom: 'fill',
+                maxZoom: 1,
+                quality: .100,
+                imageBackground: false
         });
         $('form').submit(function() {
 
         // Move cropped image data to hidden input
         var imageData = $('.image-editor').cropit('export',
-                { smallImage: 'allow',
-                    minZoom: 'fill',
-                    maxZoom: 1,
-                     quality: .100,
-                     imageBackground: false
+        { smallImage: 'allow',
+                minZoom: 'fill',
+                maxZoom: 1,
+                quality: .100,
+                imageBackground: false
         });
-        
-        
-        
         $('.hidden-image-data').val(imageData);
         //alert(imageData);
         var usuario = $("#usuario").val();
@@ -194,440 +179,428 @@
         // Prevent the form from actually submitting
         return false;
         });
-        
         });
-        
-     });
+        });
     </script>
 {% endblock %} 
 
-{% block navegacion_Y_body %}
 
-    {% block navegacion %}
+{% block cuerpo %}
 
-    {% endblock %}
-    {% block cuerpo %}
+    <!-- PRIMERA BLOQUE CON FOTO DE PERFIL -->
 
-        <!-- PRIMERA BLOQUE CON FOTO DE PERFIL -->
+    <div id="verPerfil"> </div>
+    <div id="editarPerfil"> 
+        <div class="row" style=" margin-left:15px; margin-right:15px; ">
+            <div class="box box-widget">
+                <div class="box-body">
 
-        <div id="verPerfil"> </div>
-        <div id="editarPerfil"> 
-            <div class="row" style=" margin-left:15px; margin-right:15px; ">
-                <div class="box box-widget">
-                    <div class="box-body">
-
-                        <div class="row" >
-                            <div class="col-md-9 col-xs-7" >
-
-                                <div class="row" >
-                                    <div class="col-sm-4 col-xs-8" >
-                                        <input type="hidden" id="hPersona"  value="{{datos.id}}">
-                                        <form id="frmPersonaConFoto"  enctype="multipart/form-data" method="POST" class=" no-padding">
-                                            {% if abgFoto %}   
-
-                                                <div style="margin-top:0;margin-left:0;" style="height:200px;width:200px; ">
-                                                    <img src="{{ asset('Resources/icons/photo.png') }}" style="width: 25px; height: 25px; margin-left: 5px; margin-top:10px; position: absolute; " id="botonModalP" title="Cambiar foto de perfil" >
-
-
-                                                    <img id="prevP" src="{{ asset('') }}{{abgFoto[0].src}}" class="img-responsive" alt="Imagen responsive"/>
-
-                                                </div>     
-
-                                            {%endif%}                
-                                        </form>
-                                    </div>
-
-                                    <div class="col-sm-8 col-xs-12" >
-                                        <div class="row " >
-                                            <div class="col-xs-12">
-                                                <p style="margin-top: 0px; font-size: 23px; margin-bottom: 4px; " >
-                                                    <strong>  
-                                                        <a href="#" id="txtNombres" data-type="addnombres" data-pk="1" 
-                                                           data-title="Nombres | Apellidos " data-placement="right" class="editable editable-click" > {{datos.nombre~' '~datos.apellido}}
-                                                        </a>
-                                                    </strong>
-                                                    {%if(datos.verificado==1)%}
-                                                        <img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom:0px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado">
-                                                    {%endif%}
-                                                </p>
-                                            </div></div>
-                                        <div class="row" >
-                                            <div class="col-xs-6 col-sm-3" >
-                                                <p style="color: #777777;margin-top: -3px; margin-bottom: 0px;" >
-                                                    <a href="#" id="txtTituloProfesional" data-type="select" data-pk="1" data-title="Nombre" data-placement="right" class="editable editable-click" title="Título Profesional">
-                                                        {%if datos.tprofesional|default is not empty %}{%if(datos.tprofesional=="1")%}Licenciatura{%elseif(datos.tprofesional=="2")%}Magíster{%elseif(datos.tprofesional=="3")%}Doctorado
-                                                            {%endif%}
-                                                        {%else%}
-                                                            Título Profesional
-                                                        {%endif%}
-                                                    </a>
-                                                </p>
-                                            </div>
-                                            <div class="col-xs-6 col-sm-3" >
-                                                <p style="color: #777777;margin-top: -3px; margin-bottom: 0px;" >
-                                                    <a href="#" id="txtGenero" data-type="select" data-pk="1" data-title="Genero" data-placement="right" class="editable editable-click sans" title="Genero">
-                                                        {%if datos.genero|default is not empty %}{%if(datos.genero=="F")%}Mujer{%elseif(datos.genero=="M")%}Hombre
-                                                            {%endif%}
-                                                        {%else%}
-                                                            Genero
-                                                        {%endif%}
-                                                    </a>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="row" >
-                                            <div class="col-xs-12 col-sm-12" >
-                                                {%if ciuda|default is not empty %}
-                                                    <div  id="divMunicipiox">
-                                                        <p style="color: 5555555;  font-size: 12px; margin-bottom: 5px;" >
-                                                            <a id="txtDepMun" title="Departamento | Municipio" class="depto_muni">
-                                                                {% for datos in ciuda %}
-                                                                    <b> {{datos.estado}} </b> | {{datos.nombre}} 
-                                                                {%endfor%}
-                                                            </a>
-                                                        </p>
-                                                    </div>
-                                                {%else%}
-                                                    <div id="divMunicipiox">
-                                                        <p style="color: 5555555; margin-left: 11px; font-size: 12px; margin-bottom: 5px;" >
-                                                            <a href="#" id="txtDepMun" title="Departamento | Municipio" class="depto_muni">
-                                                                <b>Departamento</b> | Municipio
-                                                            </a>
-                                                        </p>
-                                                    </div>
-                                                {%endif%}
-                                                <div id="txtDepMun-content" style=" display: none; ">
-                                                    <div class="row">
-                                                        <div class="col-sm-7 col-xs-7">
-                                                            <div id="divD" class="row">
-                                                                <div class=" col-sm-12 col-xs-12">
-                                                                    <select style="width:100%;" class="form-control input-sm" name="SDepartamento" id="SDepartamento" >
-                                                                        <option></option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div id="divC" class="row">
-                                                                <div class=" col-sm-12 col-xs-12">
-                                                                    <select style="width:100%;"  class="form-control input-sm  select3" name="sCiuda" id="sCiuda">
-                                                                        <option value="0">Seleccione ciudad</option>
-                                                                    </select>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-5 col-xs-5">
-                                                            <div class="row">
-                                                                <div class="col-sm-12 col-xs-12">
-                                                                    <button type="button" class="btn btn-primary btn-sm "  onclick="bntMunicipio()"><i class="glyphicon glyphicon-ok"></i></button>
-                                                                    <button class="btn btn-default btn-sm editable-cancel" type="button" onClick="bntCancelDepMun()"><i class="glyphicon glyphicon-remove"></i></button>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- ESPECIALIDAD(ES) -->
-                                                <div class="row" >
-                                                    <div class="col-xs-4 col-sm-3" >
-                                                        <span style="color: #4444444; font-size: 11px; ">Especialidades</span>
-                                                    </div>
-                                                    <div class="col-xs-8 col-ms-9">
-                                                        <span style="font-size:13px;">
-                                                            <a href="#Especialidades"  >
-                                                                {%if RegistroEspecialida|default is not empty %}
-                                                                    {%set esp=""%}
-                                                                    {% for datos in RegistroEspecialida %}
-                                                                        {%set esp=datos.nombre~", "~esp%}
-                                                                    {%endfor%}
-                                                                    {{esp|slice(0,-2)}}
-                                                                {%else%}
-                                                                    Añadir especialidades
+                    <div class="row" >
+                        <div class="col-md-9 col-xs-7" >
+                            <div class="row" >
+                                <div class="col-sm-4 col-xs-8" >
+                                    <input type="hidden" id="hPersona"  value="{{datos.id}}">
+                                    <form id="frmPersonaConFoto"  enctype="multipart/form-data" method="POST" class=" no-padding">
+                                        {% if abgFoto %}   
+                                            <div style="margin-top:0;margin-left:0;" style="height:200px;width:200px; ">
+                                                <img src="{{ asset('Resources/icons/photo.png') }}" style="width: 25px; height: 25px; margin-left: 5px; margin-top:10px; position: absolute; " id="botonModalP" title="Cambiar foto de perfil" >
+                                                <img id="prevP" src="{{ asset('') }}{{abgFoto[0].src}}" class="img-responsive" alt="Imagen responsive"/>
+                                            </div>     
+                                        {%endif%}                
+                                    </form>
+                                </div>
+                                <div class="col-sm-8 col-xs-12" >
+                                    <div class="row " >
+                                        <div class="col-xs-12">
+                                            <p style="margin-top: 0px; font-size: 23px; margin-bottom: 4px; " >
+                                                <strong>  
+                                                       <a href="#" id="txtTituloProfesional" data-type="select" data-pk="1" data-title="Nombre" data-placement="right" class="editable editable-click" title="Título Profesional">
+                                                    {%if datos.tprofesional|default is not empty %}{%if(datos.tprofesional=="1")%}{%if datos.genero|default is not empty %}{%if(datos.genero=="F")%}Licda.{%elseif(datos.genero=="M")%}Lic.
                                                                 {%endif%}
-                                                            </a>
-                                                        </span>
+                                                            {%endif%}
+                                                        {%elseif(datos.tprofesional=="2")%}Magíster.{%elseif(datos.tprofesional=="3")%}{%if datos.genero|default is not empty %}{%if(datos.genero=="F")%}Dra.{%elseif(datos.genero=="M")%}Dr.
+                                                                {%endif%}
+                                                            {%endif%}
+                                                        {%endif%}
+                                                    {%else%}
+                                                        Título Profesional
+                                                    {%endif%}
+                                                </a>
+                                                    <a href="#" id="txtNombres" data-type="addnombres" data-pk="1" 
+                                                       data-title="Nombres | Apellidos " data-placement="right" class="editable editable-click" title="Nombre y Apellido"> {{datos.nombre~' '~datos.apellido}}
+                                                    </a>
+                                                </strong>
+                                                {%if(datos.verificado==1)%}
+                                                    <img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom:0px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado">
+                                                {%endif%}
+                                            </p>
+                                        </div></div>
+                                    <div class="row" >
+                                        <div class="col-xs-6 col-sm-6" >
+                                            <p style="color: #777777;margin-top: -3px; margin-bottom: 0px;" >
+                                                <a href="#" id="txtTituloU" data-type="text" id="idpuesto" data-pk="1" data-title="Nombre" data-placement="right" class="editable editable-click" title="Título del puesto" data-placeholder='ej.Abogado y notario'>
+                                                {%if datos.tituloPuesto|default is not empty %}
+                                                    {{datos.tituloPuesto}}
+                                                    {%endif%}
+                                                </a>
+                                            </p>
+                                        </div>
+
+                                    </div>
+                                    <div class="row" >
+                                        <div class="col-xs-12 col-sm-12" >
+                                            {%if ciuda|default is not empty %}
+                                                <div  id="divMunicipiox">
+                                                    <p style="color: 5555555;  font-size: 12px; margin-bottom: 5px;" >
+                                                        <a id="txtDepMun" title="Departamento | Municipio" class="depto_muni">
+                                                            {% for datos in ciuda %}
+                                                                <b> {{datos.estado}} </b> | {{datos.nombre}} 
+                                                            {%endfor%}
+                                                        </a>
+                                                    </p>
+                                                </div>
+                                            {%else%}
+                                                <div id="divMunicipiox">
+                                                    <p style="color: 5555555; margin-left:0px; font-size: 12px; margin-bottom: 5px;" >
+                                                        <a href="#" id="txtDepMun" title="Departamento | Municipio" class="depto_muni">
+                                                            <b>Departamento</b> | Municipio
+                                                        </a>
+                                                    </p>
+                                                </div>
+                                            {%endif%}
+                                            <div id="txtDepMun-content" style=" display: none; ">
+                                                <div class="row">
+                                                    <div class="col-sm-7 col-xs-7">
+                                                        <div id="divD" class="row">
+                                                            <div class=" col-sm-12 col-xs-12">
+                                                                <select style="width:100%;" class="form-control input-sm" name="SDepartamento" id="SDepartamento" >
+                                                                    <option></option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div id="divC" class="row">
+                                                            <div class=" col-sm-12 col-xs-12">
+                                                                <select style="width:100%;"  class="form-control input-sm  select3" name="sCiuda" id="sCiuda">
+                                                                    <option value="0">Seleccione ciudad</option>
+                                                                </select>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-5 col-xs-5">
+                                                        <div class="row">
+                                                            <div class="col-sm-12 col-xs-12">
+                                                                <button type="button" class="btn btn-primary btn-sm "  onclick="bntMunicipio()"><i class="glyphicon glyphicon-ok"></i></button>
+                                                                <button class="btn btn-default btn-sm editable-cancel" type="button" onClick="bntCancelDepMun()"><i class="glyphicon glyphicon-remove"></i></button>
+                                                            </div>
+                                                        </div>
+
                                                     </div>
                                                 </div>
-                                                <!-- TRABAJO(S) ACTUAL -->
-                                                <div class="row" >
-                                                    <div class="col-xs-4 col-sm-3" >
-                                                        <span style="color: #4444444; font-size: 11px; ">Actual</span>
-                                                    </div>
-                                                    <div class="col-xs-8 col-sm-9">
-                                                        <span style="font-size:13px;">
-                                                            {%if RegistradaExperiencia|default is not empty %}
-                                                                {% for datos in RegistradaExperiencia %}
-                                                                    {%if datos.fechaFin|default is not empty %}
-                                                                        {%if loop.last %}
-                                                                            <a href="#Experiencia" id="experienciaActual">   Trabajas?</a>
-                                                                        {%endif%} 
+                                            </div>
+                                            <!-- ESPECIALIDAD(ES) -->
+                                            <div class="row" >
+                                                <div class="col-xs-4 col-sm-3" >
+                                                    <span style="color: #4444444; font-size: 11px; ">Especialidades</span>
+                                                </div>
+                                                <div class="col-xs-8 col-ms-9">
+                                                    <span style="font-size:13px;">
+                                                        <a href="#Especialidades"  >
+                                                            {%if RegistroEspecialida|default is not empty %}
+                                                                {%set esp=""%}
+                                                                {% for datos in RegistroEspecialida %}
+                                                                    {%set esp=datos.nombre~", "~esp%}
+                                                                {%endfor%}
+                                                                {{esp|slice(0,-2)}}
+                                                            {%else%}
+                                                                Añadir especialidades
+                                                            {%endif%}
+                                                        </a>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <!-- TRABAJO(S) ACTUAL -->
+                                            <div class="row" >
+                                                <div class="col-xs-4 col-sm-3" >
+                                                    <span style="color: #4444444; font-size: 11px; ">Actual</span>
+                                                </div>
+                                                <div class="col-xs-8 col-sm-9">
+                                                    <span style="font-size:13px;">
+                                                        {%if RegistradaExperiencia|default is not empty %}
+                                                            {% for datos in RegistradaExperiencia %}
+                                                                {%if datos.fechaFin|default is not empty %}
+                                                                   
+                                                                {%else%} 
+                                                                    {%if datos.url|default is not empty %}
+                                                                        <a href="{{path('busquedaPerfil', {url:datos.url})}}" id="experienciaActual">{{datos.empresa}}</a>
                                                                     {%else%} 
-                                                                        {%if datos.url|default is not empty %}
-                                                                            <a href="{{path('busquedaPerfil', {url:datos.url})}}" id="experienciaActual">{{datos.empresa}}</a>
-                                                                        {%else%} 
-                                                                            {{datos.empresa}}
-                                                                        {%endif%} 
+                                                                        {{datos.empresa}}
+                                                                    {%endif%} 
+                                                                {%endif%}
+                                                            {%endfor%}
+                                                           
+                                                        {%elseif(trabajo|default is empty)%}
+                                                            <a href="#Experiencia" id="experienciaActual">Trabajas?</a>
+                                                             {%else%}
+                                                            <a href="#Experiencia" id="experienciaActual"> Añadir experiencia </a>
+                                                        {%endif%}
+                                                       
+                                                        
+                                                       
+                                                       
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <!-- EDUCACION MAS RECIENTE -->
+                                            <div class="row">
+                                                <div class="col-xs-4 col-sm-3" >
+                                                    <span style="color: #4444444; font-size: 11px; ">Educación</span>
+                                                </div>
+                                                <div class="col-xs-8 col-sm-9" >
+                                                    <span style="font-size:13px;">
+                                                        <a href="#divEducacion" id="estudioActual">
+                                                            {%if Edu|default is not empty %}
+                                                                {%set edu=""%}
+                                                                {% for datos in Edu %}
+                                                                    {%if(datos.anio=='')%} 
+                                                                        {%set edu=datos.institucion~", "~edu%}
                                                                     {%endif%}
                                                                 {%endfor%}
+                                                                {{edu|slice(0,-2)}}
                                                             {%else%}
-                                                                <a href="#Experiencia" id="experienciaActual"> Añadir experiencia </a>
+                                                                Añadir educación
                                                             {%endif%}
-                                                            </a>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <!-- EDUCACION MAS RECIENTE -->
-                                                <div class="row">
-                                                    <div class="col-xs-4 col-sm-3" >
-                                                        <span style="color: #4444444; font-size: 11px; ">Educación</span>
-                                                    </div>
-                                                    <div class="col-xs-8 col-sm-9" >
-                                                        <span style="font-size:13px;">
-                                                            <a href="#divEducacion" id="estudioActual">
-                                                                {%if Edu|default is not empty %}
-                                                                    {%set edu=""%}
-                                                                    {% for datos in Edu %}
-                                                                        {%if(datos.anio=='')%} 
-                                                                            {%set edu=datos.institucion~", "~edu%}
-                                                                        {%endif%}
-                                                                    {%endfor%}
-                                                                    {{edu|slice(0,-2)}}
-                                                                {%else%}
-                                                                    Añadir educación
-                                                                {%endif%}
 
-                                                            </a>
-                                                        </span>
-                                                    </div>
+                                                        </a>
+                                                    </span>
                                                 </div>
-                                                <!-- EDUCACION MAS RECIENTE -->
-                                                <div class="row">
-                                                    <div class="col-xs-4 col-sm-3" >
-                                                        <span style="color: #4444444; font-size: 11px; ">Sitio Web</span>
-                                                    </div>
-                                                    <div class="col-xs-8 col-sm-9" >
-                                                        <span style="font-size:13px;">
-                                                            <a href="#" id="sitioweb" data-type="text" data-placement="right" data-pk="1"  data-title="Sitio web">
-                                                                {%if sitio|default is not empty %}
-                                                                    {% for datos in sitio %}
-                                                                        {{datos.nombre}} 
-                                                                    {%endfor%}
-                                                                {%else%}
-                                                                    Sitio web
+                                            </div>
+                                            <!-- EDUCACION MAS RECIENTE -->
+                                            <div class="row">
+                                                <div class="col-xs-4 col-sm-3" >
+                                                    <span style="color: #4444444; font-size: 12px; ">Genero</span>
+                                                </div>
+                                                <div class="col-xs-8 col-sm-9" >
+                                                    <span style="font-size:13px;">
+                                                        <a href="#" id="txtGenero" data-type="select" data-pk="1" data-title="Genero" data-placement="right" class="editable editable-click sans" title="Genero">
+                                                            {%if datos.genero|default is not empty %}{%if(datos.genero=="F")%}Mujer{%elseif(datos.genero=="M")%}Hombre
                                                                 {%endif%}
-                                                            </a>
-                                                        </span>
-                                                    </div>
+                                                            {%else%}
+                                                                Genero
+                                                            {%endif%}
+                                                        </a>
+                                                    </span>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-xs-2" style="padding-right: 0;margin-top:25px;">
-                                                        <span style="color: #4444444;">
-                                                            <i class="fa fa-eye fa-x3 btn  btnperfil btn-flat" id="btnVerperfil"> &nbsp;Ver perfil</i></span>
-                                                        </span>
-                                                    </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-2" style="padding-right: 0;margin-top:25px;">
+                                                    <span style="color: #4444444;">
+                                                        <i class="fa fa-eye fa-x3 btn  btnperfil btn-flat" id="btnVerperfil"> &nbsp;Ver perfil</i></span>
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-5 col-sm-3" style="margin-right :-20px;">
-                                <div class="row">
-                                    <div class="col-xs-12 ">
-                                        <div class="bloque-ocultar ">
-                                            <p class="text-center">Mostrar perfil <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" 
-                                                                                     title="Oculte su perfil mientras lo actualize. Mida el nivel de completacion con el icono de abajo."></i></p>
-                                            <div class="onoffswitch" style="margin-left: auto; margin-right: auto;">
-                                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox responsive" id="myonoffswitch" 
-                                                       {%if(datos.estado==1)%}checked{%endif%}{%if(datos.estado==2)%}disabled{%endif%}>
-                                                <label class="onoffswitch-label" for="myonoffswitch">
-                                                    <span class="onoffswitch-inner"></span>
-                                                    <span class="onoffswitch-switch"></span>
-                                                </label>
-                                            </div>
+                        </div>
+                        <div class="col-xs-5 col-sm-3" style="margin-right :-20px;">
+                            <div class="row">
+                                <div class="col-xs-12 ">
+                                    <div class="bloque-ocultar ">
+                                        <p class="text-center">Mostrar perfil <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" 
+                                                                                 title="Oculte su perfil mientras lo actualize. Mida el nivel de completacion con el icono de abajo."></i></p>
+                                        <div class="onoffswitch" style="margin-left: auto; margin-right: auto;">
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox responsive" id="myonoffswitch" 
+                                                   {%if(datos.estado==1)%}checked{%endif%}{%if(datos.estado==2)%}disabled{%endif%}>
+                                            <label class="onoffswitch-label" for="myonoffswitch">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-xs-12 responsive">
-                                        <center>
-                                            <section style=" margin-top: 10px;">
-                                                <div id="example1" class="example"></div>
-                                            </section>
-                                        </center>
-                                    </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 responsive">
+                                    <center>
+                                        <section style=" margin-top: 10px;">
+                                            <div id="example1" class="example"></div>
+                                        </section>
+                                    </center>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div> 
+                </div>
             </div> 
-            <div class="row" style="margin:0px;">
-                <div class="col-md-12">
-                    <div class="box box-widget">
-                        <div class="box-header with-border">
-                            <h3 class="box-title" style="margin-left: 10px;">DATOS DE CONTACTO</h3>
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool"  id="btnDatosContacto">
-                                    <i class="fa fa-cog pull-right"></i>
-                                </button>
+        </div> 
+        <div class="row" style="margin:0px;">
+            <div class="col-md-12">
+                <div class="box box-widget">
+                    <div class="box-header with-border">
+                        <h3 class="box-title" style="margin-left: 10px;">DATOS DE CONTACTO</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool"  id="btnDatosContacto">
+                                <i class="fa fa-cog pull-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="margin: 10px; padding-bottom: 20px;">
+                        <div class="row " id="datosContacto" >
+                            <div class=" col-sm-6 col-xs-12">
+                                <div class="row">
+                                    <div class="col-sm-6 col-xs-6">
+                                        <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono(s)</strong></p>
+                                        <p style="font-size: 11px; margin-bottom: 0px;">
+                                            +503  
+                                            <a href="#" id="txtMovil" data-type="text" data-placement="right" data-title="Telefono movil" data-placeholder='7777-7777'> {%if datos.movil|default is not empty %}{{datos.movil}}
+                                                {%else%}
+                                                    Movil
+                                                    {%endif%}</a>
+                                                    </br>+503 <a href="#" id="txtOficina" data-type="text" data-placement="right" data-title="Telefono de Oficina" data-placeholder='2222-2222'>
+                                                        {%if datos.Tfijo|default is not empty %}
+                                                            {{datos.Tfijo}}
+                                                        {%else%}
+                                                            Oficina
+                                                        {%endif %}
+                                                    </a></p>
+                                            </div>
+                                            <div class="col-sm-6  col-xs-6">
+                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email(s)</strong></p>
+                                                <p style="font-size: 11px; margin-bottom: 0px;">
+                                                    <a href="#" id="txtCorreo" data-type="text" data-placement="right" data-pk="1"  data-title="Email" data-placeholder='email@ejemplo.com'>
+                                                        {%if datos.correo|default is not empty %}
+                                                            {{datos.correo}}
+                                                        {%endif %}
+                                                    </a></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class=" col-sm-6 col-xs-12">
+                                        <div class=" row">
+                                            <div class="col-sm-6  col-xs-6">
+                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Dirección</strong></p>
+                                                <p style="font-size: 11px; margin-bottom: 0px;">
+                                                    <a href="#" id="txtDireccion" data-type="text" data-placement="right" data-title="Dirección" data-placeholder='Dirección' >
+                                                        {%if datos.direccion|default is not empty %}
+                                                            {{datos.direccion}}
+                                                        {%else%}
+
+                                                        {%endif%}</a>
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-6  col-xs-6">
+                                                <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio web</strong></p>
+                                                <p style="font-size: 11px; margin-bottom: 0px;">
+                                                    <a href="#" id="sitioweb2" data-type="text" data-placement="left" data-title="Sitio" data-placeholder='www.sitioweb.com'>
+                                                        {%if sitio|default is not empty %}
+                                                            {% for datos in sitio %}
+                                                                {{datos.nombre}} 
+                                                            {%endfor%}
+
+                                                        {%endif%}
+                                                    </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Fin -->
                             </div>
                         </div>
-                        <div class="box-body" style="margin: 10px; padding-bottom: 20px;">
-                            <div class="row " id="datosContacto" >
-                                <div class=" col-sm-6 col-xs-12">
-                                    <div class="row">
-                                        <div class="col-sm-6 col-xs-6">
-                                            <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono(s)</strong></p>
-                                            <p style="font-size: 11px; margin-bottom: 0px;">
-                                                +503  
-                                                <a href="#" id="txtMovil" data-type="text" data-placement="right" data-title="Telefono movil"> {%if datos.movil|default is not empty %}{{datos.movil}}
-                                                    {%else%}
-                                                        Movil
-                                                        {%endif%}</a>
-                                                        </br>+503 <a href="#" id="txtOficina" data-type="text" data-placement="right" data-title="Telefono de Oficina">
-                                                            {%if datos.Tfijo|default is not empty %}
-                                                                {{datos.Tfijo}}
-                                                            {%else%}
-                                                                Oficina
-                                                            {%endif %}
-                                                        </a></p>
-                                                </div>
-                                                <div class="col-sm-6  col-xs-6">
-                                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email(s)</strong></p>
-                                                    <p style="font-size: 11px; margin-bottom: 0px;">
-                                                        <a href="#" id="txtCorreo" data-type="text" data-placement="right" data-pk="1"  data-title="Sitio web">
-                                                            {%if datos.correo|default is not empty %}
-                                                                {{datos.correo}}
-                                                            {%endif %}
-                                                        </a></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class=" col-sm-6 col-xs-12">
-                                            <div class=" row">
-                                                <div class="col-sm-6  col-xs-6">
-                                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Dirección</strong></p>
-                                                    <p style="font-size: 11px; margin-bottom: 0px;">
-                                                        <a href="#" id="txtDireccion" data-type="text" data-placement="right" data-title="Dirección">
-                                                            {%if datos.direccion|default is not empty %}
-                                                                {{datos.direccion}}
-                                                            {%else%}
-                                                                Dirección
-                                                            {%endif%}</a>
-                                                    </p>
-                                                </div>
-                                                <div class="col-sm-6  col-xs-6">
-                                                    <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Sitio web</strong></p>
-                                                    <p style="font-size: 11px; margin-bottom: 0px;">
-                                                        <a href="#" id="sitioweb2" data-type="text" data-placement="left" data-title="Sitio">
-                                                            {%if sitio|default is not empty %}
-                                                                {% for datos in sitio %}
-                                                                    {{datos.nombre}} 
-                                                                {%endfor%}
-                                                            {%else%}
-                                                                Sitio web
-                                                            {%endif%}
-                                                        </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Fin -->
+                        <div class="box box-widget">
+                            <div class="box-header with-border">
+                                <h3 class="box-title"  style="margin-left: 10px;">UN POCO SOBRE MI </h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool"  id="btnUnpoco">
+                                        <i class="fa fa-cog pull-right"></i>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="box box-widget">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title"  style="margin-left: 10px;">UN POCO SOBRE MI </h3>
-                                    <div class="box-tools pull-right">
-                                        <button type="button" class="btn btn-box-tool"  id="btnUnpoco">
-                                            <i class="fa fa-cog pull-right"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="box-body"  style="padding-bottom: 20px;">
-                                    <div  id="conetenedorUnpoco">
-                                        <div  class="experiencia no-padding">
-                                            <a href="#" id="txtunpoco" onclick="Fsobremi()" >
-                                                {%if datos.descripcion|default is not empty %}{{datos.descripcion|raw}}{%else%}Un poco sobre mi{%endif%}</a>
+                            <div class="box-body"  style="padding-bottom: 20px;">
+                                <div  id="conetenedorUnpoco">
+                                    <div  class="experiencia no-padding">
+                                        <a href="#" id="txtunpoco" onclick="Fsobremi()" >
+                                            {%if datos.descripcion|default is not empty %}{{datos.descripcion|raw}}{%else%}Un poco sobre mi{%endif%}</a>
 
-                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="box box-widget" id="Especialidades">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title"style="margin-left: 10px;">ESPECIALIDADES LEGALES</h3>
-                                    <div class="box-tools pull-right">
-                                        <button type="button" class="btn btn-box-tool"  id="btnespecialida">
-                                            <i class="fa fa-cog pull-right"></i>
-                                        </button>
-                                    </div>
+                        </div>
+                        <div class="box box-widget" id="Especialidades">
+                            <div class="box-header with-border">
+                                <h3 class="box-title"style="margin-left: 10px;">ESPECIALIDADES LEGALES</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool"  id="btnespecialida">
+                                        <i class="fa fa-cog pull-right"></i>
+                                    </button>
                                 </div>
-                                <div class="box-body ">
-                                    <div   id="contenido" style=" padding: 10px;">
-                                        {%if RegistroEspecialida|default is not empty %}
-                                            {%set n = 0%}
-                                            {% for datos in RegistroEspecialida %}
-                                                {%set n =n +1%}
-                                                <div class="row">
-                                                    <div class="col-xs-12" style="margin-top: .5em; margin-bottom: .5em;">
-                                                        <strong><p>{{datos.nombre| upper }}<p  ></strong>
-                                                        <p style="text-align:justify;">{{datos.descripcion}}</p>
-                                                    </div>
-                                                    {%if ((n>0)and (n % 3== 0))%}
-                                                        <div class="clearfix"></div>
-                                                    {%endif%}  
+                            </div>
+                            <div class="box-body ">
+                                <div   id="contenido" style=" padding: 10px;">
+                                    {%if RegistroEspecialida|default is not empty %}
+                                        {%set n = 0%}
+                                        {% for datos in RegistroEspecialida %}
+                                            {%set n =n +1%}
+                                            <div class="row">
+                                                <div class="col-xs-12" style="margin-top: .5em; margin-bottom: .5em;">
+                                                    <strong><p>{{datos.nombre| upper }}<p  ></strong>
+                                                    <p style="text-align:justify;">{{datos.descripcion}}</p>
                                                 </div>
-                                            {%endfor%}
-                                            <div style=" margin:0px;">
-                                                <script type="text/javascript">
-                                                    $("#contenido").hover(
-                                                            function () {
-                                                            $(this).append($('<span><i class="fa fa-pencil fa-x2 btn btnperfil" onClick="editEspe()"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn btnperfil"  onClick="editEspe()">&nbsp;Eliminar</i></span>'));
-                                                            }, function () {
-                                                    $(this).find("span:last").remove();
-                                                    });
-                                                </script>
+                                                {%if ((n>0)and (n % 3== 0))%}
+                                                    <div class="clearfix"></div>
+                                                {%endif%}  
                                             </div>
-                                        {%endif%}
-                                    </div>
+                                        {%endfor%}
+                                        <div style=" margin:0px;">
+                                            <script type="text/javascript">
+                                                $("#contenido").hover(
+                                                        function () {
+                                                        $(this).append($('<span><i class="fa fa-pencil fa-x2 btn btnperfil" onClick="editEspe()"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn btnperfil"  onClick="editEspe()">&nbsp;Eliminar</i></span>'));
+                                                        }, function () {
+                                                $(this).find("span:last").remove();
+                                                });
+                                            </script>
+                                        </div>
+                                    {%endif%}
                                 </div>
                             </div>
-                            <div class="box box-widget" id="Experiencia">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title" style="margin-left: 10px;">EXPERIENCIA </h3>
-                                    <div class="box-tools pull-right">
-                                        <button type="button" class="btn btn-box-tool"  id="btnExperiencia">
-                                            <i class="fa fa-cog pull-right"></i>
-                                        </button>
-                                    </div>
+                        </div>
+                        <div class="box box-widget" id="Experiencia">
+                            <div class="box-header with-border">
+                                <h3 class="box-title" style="margin-left: 10px;">EXPERIENCIA </h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool"  id="btnExperiencia">
+                                        <i class="fa fa-cog pull-right"></i>
+                                    </button>
                                 </div>
-                                <div class="box-body experienc">
-                                    <div id="consultas" style="padding: 10px; " >
-                                        {%if RegistradaExperiencia|default is not empty %}
-                                            {% for datos in RegistradaExperiencia %}
-                                                <div class="row " id="Exp{{datos.id}}" style="margin-top: 2px; ">
-                                                    <div class="col-xs-2 col-sm-1" >
-                                                        {%if (datos.src is null)%}
-                                                            <img style="max-width:50px;max-height:50px;" src="{{asset('Resources/src/img/empresa/empresa.png') }}">
-                                                        {%else%}
-                                                            <a href="{{path('busquedaPerfil', {url:datos.url})}}">
-                                                                <img style="max-width:50px;max-height:50px;" src="{{asset('')}}{{datos.src}}">
-                                                            </a>
-                                                        {%endif%}
-                                                    </div>
-                                                    <div class="col-xs-10 col-sm-11">
-                                                        {%if datos.url|default is not empty %} 
-                                                            <a href="{{path('busquedaPerfil', {url:datos.url})}}"><span style="font-size: 16px;">{{datos.empresa}}</span>
-                                                                <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i>
-                                                            </a>
-                                                        {%else%}
-                                                            <span style="font-size: 16px;">{{datos.empresa}}</span>
-                                                        {%endif%}
-                                                        </br>
-                                                        <span style="font-size: 13px;">{{datos.puesto}}</br> 
-                                                            {%if (datos.dias is null)%}
-                                                                {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
+                            </div>
+                            <div class="box-body experienc">
+                                <div id="consultas" style="padding: 10px; " >
+                                    {%if RegistradaExperiencia|default is not empty %}
+                                        {% for datos in RegistradaExperiencia %}
+                                            <div class="row " id="Exp{{datos.id}}" style="margin-top: 2px; ">
+                                                <div class="col-xs-2 col-sm-1" >
+                                                    {%if (datos.src is null)%}
+                                                        <img style="max-width:50px;max-height:50px;" src="{{asset('Resources/src/img/empresa/empresa.png') }}">
+                                                    {%else%}
+                                                        <a href="{{path('busquedaPerfil', {url:datos.url})}}">
+                                                            <img style="max-width:50px;max-height:50px;" src="{{asset('')}}{{datos.src}}">
+                                                        </a>
+                                                    {%endif%}
+                                                </div>
+                                                <div class="col-xs-10 col-sm-11">
+                                                    {%if datos.url|default is not empty %} 
+                                                        <a href="{{path('busquedaPerfil', {url:datos.url})}}"><span style="font-size: 16px;">{{datos.empresa}}</span>
+                                                            <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Haz click en el nombre/foto de la empresa para ir a la Pagina de la Compañia"></i>
+                                                        </a>
+                                                    {%else%}
+                                                        <span style="font-size: 16px;">{{datos.empresa}}</span>
+                                                    {%endif%}
+                                                    </br>
+                                                    <span style="font-size: 13px;">{{datos.puesto}}</br> 
+                                                        {%if (datos.dias is null)%}
+                                                            {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
                                                                                                     'Jan'  : 'Enero',
                                                                                                     'Feb'  : 'Febrero',
                                                                                                     'Mar'  : 'Marzo',
@@ -641,8 +614,8 @@
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}} -  Actualmente
-                                                            {%else%}
-                                                                {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
+                                                        {%else%}
+                                                            {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
                                                                                                     'Jan'  : 'Enero',
                                                                                                     'Feb'  : 'Febrero',
                                                                                                     'Mar'  : 'Marzo',
@@ -669,178 +642,116 @@
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}} (&nbsp;{{(datos.dias/365)|round(0, 'floor')}} años {{(((datos.dias/365)-(datos.dias/365)|round(0, 'floor'))*12)|round(0, 'floor')}} meses) 
-                                                            {%endif%}| {{datos.hubicacion}} </span>
-                                                        </br><p style="width: 100%; margin-top: 5px;text-align:justify; ">{{datos.funcion}}</p>
-                                                    </div>
+                                                        {%endif%}| {{datos.hubicacion}} </span>
+                                                    </br><p style="width: 100%; margin-top: 5px;text-align:justify; ">{{datos.funcion}}</p>
                                                 </div>
-                                                <div class="row" style=" margin-bottom:5px;">
-                                                    <div >
+                                            </div>
+                                            <div class="row" style=" margin-bottom:5px;">
+                                                <div >
+                                                    <script type="text/javascript">
+                                                        $("#Exp" +{{datos.id}} ).hover(
+                                                                function () {
+                                                                $(this).append($('<span style="margin-left:95px;margin-bottom:9px;"><i class="fa fa-pencil fa-x3 btn  btnperfil" onclick="editExperiencia({{datos.id}})"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn  btnperfil" onclick="removeExperiencia({{datos.id}})">&nbsp;Eliminar</i></span>'));
+                                                                }, function () {
+                                                        $(this).find("span:last").remove();
+                                                        });
+                                                    </script>
+                                                </div>
+                                            </div>
+                                        {%endfor%}
+                                    {%endif%}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box box-widget" id="divEducacion">
+                            <div class="box-header with-border">
+                                <h3 class="box-title"  style="margin-left: 10px;">EDUCACION </h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool"  id="btnEducacion">
+                                        <i class="fa fa-cog pull-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="box-body education " >
+                                <div id="consultaEducacion"  style=" margin-left: 10px;  ">
+                                    {%if Edu|default is not empty %}
+                                        {% for datos in Edu %}
+                                            <div class="row " id="Edu{{datos.idEs}}" style="margin-top: 2px; ">
+                                                <div class="col-xs-11">
+                                                    <span style="font-size: 16px;">{{datos.institucion}}</span> 
+                                                    </br>
+                                                    <span style="font-size: 13px;">{{datos.titulo}}</br> {{datos.anioIni}} -  {%if datos.anio|default is not empty %}{{datos.anio}}{%else%}Actualmente{%endif%}</span>
+                                                    <div style=" padding: 5px;">
                                                         <script type="text/javascript">
-                                                            $("#Exp" +{{datos.id}} ).hover(
+                                                            $("#Edu" +{{datos.idEs}} ).hover(
                                                                     function () {
-                                                                    $(this).append($('<span style="margin-left:95px;margin-bottom:9px;"><i class="fa fa-pencil fa-x3 btn  btnperfil" onclick="editExperiencia({{datos.id}})"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn  btnperfil" onclick="removeExperiencia({{datos.id}})">&nbsp;Eliminar</i></span>'));
+                                                                    $(this).append($('<span style="margin-left:13px;"><i class="fa fa-pencil fa-x2 btn btnperfil" onclick="editEducacion({{datos.idEs}})"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn  btnperfil" onclick="removeEdu({{datos.idEs}})">&nbsp;Eliminar</i></span>'));
                                                                     }, function () {
                                                             $(this).find("span:last").remove();
                                                             });
                                                         </script>
                                                     </div>
                                                 </div>
-                                            {%endfor%}
-                                        {%endif%}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="box box-widget" id="divEducacion">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title"  style="margin-left: 10px;">EDUCACION </h3>
-                                    <div class="box-tools pull-right">
-                                        <button type="button" class="btn btn-box-tool"  id="btnEducacion">
-                                            <i class="fa fa-cog pull-right"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="box-body education " >
-                                    <div id="consultaEducacion"  style=" margin-left: 10px;  ">
-                                        {%if Edu|default is not empty %}
-                                            {% for datos in Edu %}
-                                                <div class="row " id="Edu{{datos.idEs}}" style="margin-top: 2px; ">
-                                                    <div class="col-xs-11">
-                                                        <span style="font-size: 16px;">{{datos.institucion}}</span> 
-                                                        </br>
-                                                        <span style="font-size: 13px;">{{datos.titulo}}</br> {{datos.anioIni}} -  {%if datos.anio|default is not empty %}{{datos.anio}}{%else%}Actualmente{%endif%}</span>
-                                                        <div style=" padding: 5px;">
-                                                            <script type="text/javascript">
-                                                                $("#Edu" +{{datos.idEs}} ).hover(
-                                                                        function () {
-                                                                        $(this).append($('<span style="margin-left:13px;"><i class="fa fa-pencil fa-x2 btn btnperfil" onclick="editEducacion({{datos.idEs}})"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn  btnperfil" onclick="removeEdu({{datos.idEs}})">&nbsp;Eliminar</i></span>'));
-                                                                        }, function () {
-                                                                $(this).find("span:last").remove();
-                                                                });
-                                                            </script>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            {%endfor%}
-                                        {%endif%}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="box box-widget">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title"  style="margin-left: 10px;">IDIOMAS</h3>
-                                    <div class="box-tools pull-right">
-                                        <button type="button" class="btn btn-box-tool"  id="btnIdioma">
-                                            <i class="fa fa-cog pull-right"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="box-body" >
-                                    <div id="consultaIdiomas" style=" padding: 10px;">
-                                        {%if Idiomas|default is not empty %}
-                                            <div class="row " id="Idioma">
-                                                {% for datos in Idiomas %}
-                                                    <div class="col-xs-3" style="margin-top: .5em; margin-bottom: .5em;" >
-                                                        <strong>{{datos.nombre}}</strong><br>
-                                                        {{datos.nivel}}
-
-                                                    </div>
-                                                {%endfor%}
-                                                <div class="clearfix"></div>
-                                                <script type="text/javascript">
-                                                    $("#Idioma").hover(
-                                                            function () {
-                                                            $(this).append($('<span style="margin-left:13px;"><i class="fa fa-pencil fa-x2 btn btnperfil" onClick="\
-                                                 editIdioma()"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn btnperfil" onClick="editIdioma()">&nbsp;Eliminar</i></span>'));
-                                                            }, function () {
-                                                    $(this).find("span:last").remove();
-                                                    });
-                                                </script>
                                             </div>
-                                        {%endif%}
-                                    </div>
+                                        {%endfor%}
+                                    {%endif%}
                                 </div>
                             </div>
-                            <div class="box box-widget">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title" style="margin-left: 10px;">ORGANIZACIONES</h3>
-                                    <div class="box-tools pull-right">
-                                        <button type="button" class="btn btn-box-tool"  id="btnOrganizacion">
-                                            <i class="fa fa-cog pull-right"></i>
-                                        </button>
-                                    </div>
+                        </div>
+                        <div class="box box-widget">
+                            <div class="box-header with-border">
+                                <h3 class="box-title"  style="margin-left: 10px;">IDIOMAS</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool"  id="btnIdioma">
+                                        <i class="fa fa-cog pull-right"></i>
+                                    </button>
                                 </div>
-                                <div class="box-body "style="margin: 10px;">
-                                    <div  id="contenidoOrg" class="organiza" >
-                                        <div id="consultaOrg" >
-                                            {%if Organizacion|default is not empty %}
-                                                {% for datos in Organizacion %}
-                                                    <div class="row no-padding" id="Org{{datos.id}}">
-                                                        <div class="col-xs-12">
-                                                            <span style="font-size: 16px;">{{datos.nombre}}</span> 
-                                                            <br>
-                                                            <span style="font-size: 13px;">{{datos.puesto}}</br> {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
-                                                                                                    'Jan'  : 'Enero',
-                                                                                                    'Feb'  : 'Febrero',
-                                                                                                    'Mar'  : 'Marzo',
-                                                                                                    'Apr'  : 'Abril',
-                                                                                                    'May'  : 'Mayo',
-                                                                                                    'Jun'  : 'Junio',
-                                                                                                    'Jul'  : 'Julio',
-                                                                                                    'Aug'  : 'Agosto',
-                                                                                                    'Sep'  : 'Septiembre',
-                                                                                                    'Oct'  : 'Octrube',
-                                                                                                    'Nov'  : 'Noviembre',
-                                                                                                    'Dec'  : 'Diciembre',
-                                                                                            })}} - {{datos.fechaFin|date("M Y", "America/El_Salvador")|replace({
-                                                                                                    'Jan'  : 'Enero',
-                                                                                                    'Feb'  : 'Febrero',
-                                                                                                    'Mar'  : 'Marzo',
-                                                                                                    'Apr'  : 'Abril',
-                                                                                                    'May'  : 'Mayo',
-                                                                                                    'Jun'  : 'Junio',
-                                                                                                    'Jul'  : 'Julio',
-                                                                                                    'Aug'  : 'Agosto',
-                                                                                                    'Sep'  : 'Septiembre',
-                                                                                                    'Oct'  : 'Octrube',
-                                                                                                    'Nov'  : 'Noviembre',
-                                                                                                    'Dec'  : 'Diciembre',
-                                                                                            })}}</span>
-                                                            <p style="width: 100%; margin-top: 5px;text-align:justify;">{{datos.descripcion}}</p>
-                                                            <script type="text/javascript">
-                                                                $("#Org" +{{datos.id}} ).hover(
-                                                                        function () {
-                                                                        $(this).append($('<span style="margin-left:13px;"><i class="fa fa-pencil fa-x2 btn btnperfil" onclick="editOrganizacion({{datos.id}})"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn btnperfil" onclick="removeOrg({{datos.id}})">&nbsp;Eliminar</i></span>'));
-                                                                        }, function () {
-                                                                $(this).find("span:last").remove();
-                                                                });
-                                                            </script>
-                                                        </div>
-                                                    </div>
-                                                    <p></p>
-                                                {%endfor%}
-                                            {%endif%}
+                            </div>
+                            <div class="box-body" >
+                                <div id="consultaIdiomas" style=" padding: 10px;">
+                                    {%if Idiomas|default is not empty %}
+                                        <div class="row " id="Idioma">
+                                            {% for datos in Idiomas %}
+                                                <div class="col-xs-3" style="margin-top: .5em; margin-bottom: .5em;" >
+                                                    <strong>{{datos.nombre}}</strong><br>
+                                                    {{datos.nivel}}
+
+                                                </div>
+                                            {%endfor%}
+                                            <div class="clearfix"></div>
+                                            <script type="text/javascript">
+                                                $("#Idioma").hover(
+                                                        function () {
+                                                        $(this).append($('<span style="margin-left:13px;"><i class="fa fa-pencil fa-x2 btn btnperfil" onClick="\
+                                             editIdioma()"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn btnperfil" onClick="editIdioma()">&nbsp;Eliminar</i></span>'));
+                                                        }, function () {
+                                                $(this).find("span:last").remove();
+                                                });
+                                            </script>
                                         </div>
-                                    </div>
+                                    {%endif%}
                                 </div>
                             </div>
-                            <div class="box box-widget">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title"  style="margin-left: 10px;">CERTIFICACIONES</h3>
-                                    <div class="box-tools pull-right">
-                                        <button type="button" class="btn btn-box-tool"  id="btnCertificacion">
-                                            <i class="fa fa-cog pull-right"></i>
-                                        </button>
-                                    </div>
+                        </div>
+                        <div class="box box-widget">
+                            <div class="box-header with-border">
+                                <h3 class="box-title" style="margin-left: 10px;">ORGANIZACIONES</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool"  id="btnOrganizacion">
+                                        <i class="fa fa-cog pull-right"></i>
+                                    </button>
                                 </div>
-                                <div class="box-body certif">
-                                    <div id="consultaCertificacion" style="padding-left: 10px; padding-right: 15px;">
-                                        {%if Certificacion|default is not empty %}
-                                            {% for datos in Certificacion %}
-                                                <div class="row " id="Cert{{datos.id}}">
-                                                    <div class="col-xs-11">
-                                                        <span style="font-size: 16px;">{{datos.institucion}}</span> 
-                                                        </br>
-                                                        <span style="font-size: 13px;">{{datos.nombre}}</br> {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
+                            </div>
+                            <div class="box-body organiz">
+                                {#  <div  id="contenidoOrg" class="organiza" > #}
+                                <div id="consultaOrg" style="padding-left: 10px; padding-right: 15px;">
+                                    {%if Organizacion|default is not empty %}
+                                        {% for datos in Organizacion %}
+                                            <div class="row no-padding" id="Org{{datos.id}}">
+                                                <div class="col-xs-12">
+                                                    <span style="font-size: 16px;">{{datos.nombre}}</span> 
+                                                    <br>
+                                                    <span style="font-size: 13px;">{{datos.puesto}}</br> {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
                                                                                                     'Jan'  : 'Enero',
                                                                                                     'Feb'  : 'Febrero',
                                                                                                     'Mar'  : 'Marzo',
@@ -867,42 +778,42 @@
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}}</span>
-                                                        <p style="width: 100%; margin-top: 5px;text-align:justify;"></p>
-                                                        <div>  <script type="text/javascript">
-                                                            $("#Cert" +{{datos.id}} ).hover(
-                                                                    function () {
-                                                                    $(this).append($('<span style="margin-left:13px;"><i class="fa fa-pencil fa-x2 btn btnperfil" onclick="editCertificacion({{datos.id}})"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn btnperfil" onclick="removeCertificacion({{datos.id}})">&nbsp;Eliminar</i></span>'));
-                                                                    }, function () {
-                                                            $(this).find("span:last").remove();
-                                                            });
-                                                            </script>
-                                                        </div>
-                                                    </div>
+                                                    <p style="width: 100%; margin-top: 5px;text-align:justify;">{{datos.descripcion}}</p>
+                                                    <script type="text/javascript">
+                                                        $("#Org" +{{datos.id}} ).hover(
+                                                                function () {
+                                                                $(this).append($('<span style="margin-left:13px;"><i class="fa fa-pencil fa-x2 btn btnperfil" onclick="editOrganizacion({{datos.id}})"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn btnperfil" onclick="removeOrg({{datos.id}})">&nbsp;Eliminar</i></span>'));
+                                                                }, function () {
+                                                        $(this).find("span:last").remove();
+                                                        });
+                                                    </script>
                                                 </div>
-                                                <p></p>
-                                            {%endfor%}
-                                        {%endif%}
-                                    </div>
+                                            </div>
+                                            <p></p>
+                                        {%endfor%}
+                                    {%endif%}
+                                </div>
+                                {#   </div> #}
+                            </div>
+                        </div>
+                        <div class="box box-widget">
+                            <div class="box-header with-border">
+                                <h3 class="box-title"  style="margin-left: 10px;">CERTIFICACIONES</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool"  id="btnCertificacion">
+                                        <i class="fa fa-cog pull-right"></i>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="box box-widget">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title"  style="margin-left: 10px;">CURSOS Y SEMINARIOS</h3>
-                                    <div class="box-tools pull-right">
-                                        <button type="button" class="btn btn-box-tool"  id="btnCurso">
-                                            <i class="fa fa-cog pull-right"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="box-body curso_semi"> 
-                                    <div id="consultaCurso" style="padding-left: 10px; padding-right: 15px;">
-                                        {%if Curso|default is not empty %}
-                                            {% for datos in Curso %}
-                                                <div class="row " id="CM{{datos.id}}">
-                                                    <div class="col-xs-11">
-                                                        <span style="font-size: 16px;">{{datos.institucion}}</span> 
-                                                        </br>
-                                                        <span style="font-size: 13px;">{{datos.nombre}}</br> {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
+                            <div class="box-body certif">
+                                <div id="consultaCertificacion" style="padding-left: 10px; padding-right: 15px;">
+                                    {%if Certificacion|default is not empty %}
+                                        {% for datos in Certificacion %}
+                                            <div class="row " id="Cert{{datos.id}}">
+                                                <div class="col-xs-11">
+                                                    <span style="font-size: 16px;">{{datos.institucion}}</span> 
+                                                    </br>
+                                                    <span style="font-size: 13px;">{{datos.nombre}}</br> {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
                                                                                                     'Jan'  : 'Enero',
                                                                                                     'Feb'  : 'Febrero',
                                                                                                     'Mar'  : 'Marzo',
@@ -929,130 +840,228 @@
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}}</span>
-                                                        <p style="width: 90%; margin-top: 5px;text-align:justify;">{{datos.descripcion}} </p>
-                                                        <div> <script type="text/javascript">
-                                                            $("#CM" +{{datos.id}} ).hover(
-                                                                    function () {
-                                                                    $(this).append($('<span style="margin-left:13px;"><i class="fa fa-pencil fa-x2 btn btnperfil" onclick="editCurso({{datos.id}})"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn btnperfil" onclick="removeSeminario({{datos.id}})">&nbsp;Eliminar</i></span>'));
-                                                                    }, function () {
-                                                            $(this).find("span:last").remove();
-                                                            });
-                                                            </script>
-                                                        </div>
+                                                    <p style="width: 100%; margin-top: 5px;text-align:justify;"></p>
+                                                    <div>  <script type="text/javascript">
+                                                        $("#Cert" +{{datos.id}} ).hover(
+                                                                function () {
+                                                                $(this).append($('<span style="margin-left:13px;"><i class="fa fa-pencil fa-x2 btn btnperfil" onclick="editCertificacion({{datos.id}})"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn btnperfil" onclick="removeCertificacion({{datos.id}})">&nbsp;Eliminar</i></span>'));
+                                                                }, function () {
+                                                        $(this).find("span:last").remove();
+                                                        });
+                                                        </script>
                                                     </div>
                                                 </div>
-                                                <p></p>
-                                            {%endfor%}
-                                        {%endif%}
-                                    </div>
+                                            </div>
+                                            <p></p>
+                                        {%endfor%}
+                                    {%endif%}
                                 </div>
-                                <div style="height: 10px; "></div>
                             </div>
+                        </div>
+                        <div class="box box-widget">
+                            <div class="box-header with-border">
+                                <h3 class="box-title"  style="margin-left: 10px;">CURSOS Y SEMINARIOS</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool"  id="btnCurso">
+                                        <i class="fa fa-cog pull-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="box-body curso_semi"> 
+                                <div id="consultaCurso" style="padding-left: 10px; padding-right: 15px;">
+                                    {%if Curso|default is not empty %}
+                                        {% for datos in Curso %}
+                                            <div class="row " id="CM{{datos.id}}">
+                                                <div class="col-xs-11">
+                                                    <span style="font-size: 16px;">{{datos.institucion}}</span> 
+                                                    </br>
+                                                    <span style="font-size: 13px;">{{datos.nombre}}</br> {{datos.fechaIn|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}} - {{datos.fechaFin|date("M Y", "America/El_Salvador")|replace({
+                                                                                                    'Jan'  : 'Enero',
+                                                                                                    'Feb'  : 'Febrero',
+                                                                                                    'Mar'  : 'Marzo',
+                                                                                                    'Apr'  : 'Abril',
+                                                                                                    'May'  : 'Mayo',
+                                                                                                    'Jun'  : 'Junio',
+                                                                                                    'Jul'  : 'Julio',
+                                                                                                    'Aug'  : 'Agosto',
+                                                                                                    'Sep'  : 'Septiembre',
+                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Nov'  : 'Noviembre',
+                                                                                                    'Dec'  : 'Diciembre',
+                                                                                            })}}</span>
+                                                    <p style="width: 90%; margin-top: 5px;text-align:justify;">{{datos.descripcion}} </p>
+                                                    <div> <script type="text/javascript">
+                                                        $("#CM" +{{datos.id}} ).hover(
+                                                                function () {
+                                                                $(this).append($('<span style="margin-left:13px;"><i class="fa fa-pencil fa-x2 btn btnperfil" onclick="editCurso({{datos.id}})"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn btnperfil" onclick="removeSeminario({{datos.id}})">&nbsp;Eliminar</i></span>'));
+                                                                }, function () {
+                                                        $(this).find("span:last").remove();
+                                                        });
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p></p>
+                                        {%endfor%}
+                                    {%endif%}
+                                </div>
+                            </div>
+                            <div style="height: 10px; "></div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <script type="text/javascript">
-                    $(function () {
-                    $('[data-toggle="tooltip"]').tooltip()
-                    })
-                            $(function () {
-                            $('[data-toggle="popover"]').popover();
-                            $("#txtDepMun").popover({
-                            html : true,
-                                    content: function() {
+            <script type="text/javascript">
+                $(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+                        $('a[href=#divEducacion]').click(function () {
+                if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')
+                        && location.hostname == this.hostname) {
+                var $target = $(this.hash);
+                $target = $target.length && $target || $('[name=' + this.hash.slice(1) + ']');
+                if ($target.length) {
+                var targetOffset = $target.offset().top;
+                $('html,body').animate({scrollTop: targetOffset}, 1000);
+                return false;
+                }
+                }
+                });
+                $('a[href=#Experiencia]').click(function () {
+                if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')
+                        && location.hostname == this.hostname) {
+                var $target = $(this.hash);
+                $target = $target.length && $target || $('[name=' + this.hash.slice(1) + ']');
+                if ($target.length) {
+                var targetOffset = $target.offset().top;
+                $('html,body').animate({scrollTop: targetOffset}, 1000);
+                return false;
+                }
+                }
+                });
+                   $('a[href=#Especialidades]').click(function () {
+                if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')
+                        && location.hostname == this.hostname) {
+                var $target = $(this.hash);
+                $target = $target.length && $target || $('[name=' + this.hash.slice(1) + ']');
+                if ($target.length) {
+                var targetOffset = $target.offset().top;
+                $('html,body').animate({scrollTop: targetOffset}, 1000);
+                return false;
+                }
+                }
+                });
+                })
+                        $(function () {
+                        $('[data-toggle="popover"]').popover();
+                        $("#txtDepMun").popover({
+                        html : true,
+                                content: function() {
 
-                                    return $("#txtDepMun-content").html();
-                                    }
+                                return $("#txtDepMun-content").html();
+                                }
 
 
-                            });
-                            $('#txtDepMun').on('shown.bs.popover', function () {
+                        });
+                        $('#txtDepMun').on('shown.bs.popover', function () {
 
-                            $('.popover').css("width", "600px");
-                            /*  $('.popover-content').css("width", "290px");
-                             $('.popover-content').css("height", "100px");*/
-                            });
-                            })
+                        $('.popover').css("width", "600px");
+                        /*  $('.popover-content').css("width", "290px");
+                         $('.popover-content').css("height", "100px");*/
+                        });
+                        })
 
-                            function bntMunicipio()
-                            {
-                               
-                          if($("#sEstado").val()==0){
-                              $("#pDepto").text(" Requerido!.");
-                          }
-                             else if ($("#sCiuda").val() == 0)
-                            {
-                                 console.log($("#sCiuda").val());
-                            $("#pMuni").text(" Requerido!.");
-                            }
-                            else
-                            {
-                            $.ajax({
-                            type: 'POST',
-                                    async: false,
-                                    dataType: 'json',
-                                    data: {ciudad: $("#sCiuda").val(), hPersona: $('input#hPersona').val(), n: 9},
-                                    url: Routing.generate('edit_persona'),
-                                    success: function (data)
-                                    {
-                                    $("#txtDepMun").html('<strong>' + data.dept + '</strong> |' + data.ciu);
-                                    $('#txtDepMun').popover('hide')
-                                    },
-                                    error: function (xhr, status)
-                                    {
-                                    alert('Disculpe, existió un problema');
-                                    }
-                            });
-                            }
-                            }
+                        function bntMunicipio()
+                        {
 
-                    function bntCancelDepMun()
-                    {
-                    $('#txtDepMun').popover('hide')
-                    }
-                </script>
+                        if ($("#sEstado").val() == 0){
+                        $("#pDepto").text(" Requerido!.");
+                        }
+                        else if ($("#sCiuda").val() == 0)
+                        {
+                        console.log($("#sCiuda").val());
+                        $("#pMuni").text(" Requerido!.");
+                        }
+                        else
+                        {
+                        $.ajax({
+                        type: 'POST',
+                                async: false,
+                                dataType: 'json',
+                                data: {ciudad: $("#sCiuda").val(), hPersona: $('input#hPersona').val(), n: 9},
+                                url: Routing.generate('edit_persona'),
+                                success: function (data)
+                                {
+                                $("#txtDepMun").html('<strong>' + data.dept + '</strong> |' + data.ciu);
+                                $('#txtDepMun').popover('hide')
+                                },
+                                error: function (xhr, status)
+                                {
+                                alert('Disculpe, existió un problema');
+                                }
+                        });
+                        }
+                        }
 
-                {% endblock %}
-                    {% endblock %}
-                        <div class="modal fade modal" id="idModalFotoP" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                            <form action="#" id="frmEmpresaConFoto" role="form" enctype="multipart/form-data" method="POST">
-                                <div class="modal-dialog modal-sm">
-                                    <div class="modal-content">
-                                        <div class="modal-header " Style="height:45px;">
-                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                                            <span class="robo" style="font-size: 20px; ">Editar foto de perfil</span>
-                                        </div>
-                                        <div class="modal-body" id="mbodyExperiencia" >
-                                            {% if abgFoto %}
-                                                <div class="image-editor" >
-                                                    <center>
-                                                        <div class="cropit-preview" style="z-index: 3; background-image:url({{ asset('') }}{{ abgFoto[0].src}}) ; border-color:black; " ></div>
-                                                    </center>
-                                                    <div class="image-upload" >
-                                                        <label for="input" >
-                                                            <img src="{{ asset('Resources/icons/photo.png') }}" style="width: 25px; height: 25px; margin-left: 45px; margin-top:-380px;; position: relative; z-index: 3; " title="Click para seleccionar una imagen" >
-                                                        </label>
-                                                        <input type="file" class="cropit-image-input" id="input">      
-                                                    </div>
-                                                    <center>
-                                                        <div class="image-size-label" id="labelid">
-                                                            Dimension de imagen
-                                                        </div>
-                                                        <input type="range" class="cropit-image-zoom-input" style="width: 140px;" id="idrange">
-                                                        <input type="hidden" name="image-data" class="hidden-image-data" />
-                                                        <input type="hidden" name="user" value="{{ usuario }}" id="usuario">
-                                                        <input type="hidden" id="hPersonaModal"  value="{{datos.id}}" name="personaId">
-                                                    </center>
-                                                </div>
-                                            {% endif %}
-                                        </div>
-                                        <div class="modal-footer" id="botomExperiencia" >
-                                            <img src='{{ asset('Resources/icons/transfer.gif') }}' style="width: 25px; height: 25px; margin-right:70px; " id="gif">
-                                            <button type="submit" id="cmd" class="btn btn-success">Cortar y Guardar</button>
-                                        </div>
-                                    </div>
+                function bntCancelDepMun()
+                {
+                $('#txtDepMun').popover('hide')
+                }
+            </script>
+
+            {% endblock %}
+
+                <div class="modal fade modal" id="idModalFotoP" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <form action="#" id="frmEmpresaConFoto" role="form" enctype="multipart/form-data" method="POST">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header " Style="height:45px;">
+                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                                    <span class="robo" style="font-size: 20px; ">Editar foto de perfil</span>
                                 </div>
-                            </form>
+                                <div class="modal-body" id="mbodyExperiencia" >
+                                    {% if abgFoto %}
+                                        <div class="image-editor" >
+                                            <center>
+                                                <div class="cropit-preview" style="z-index: 3; background-image:url({{ asset('') }}{{ abgFoto[0].src}}) ; border-color:black; " ></div>
+                                            </center>
+                                            <div class="image-upload" >
+                                                <label for="input" >
+                                                    <img src="{{ asset('Resources/icons/photo.png') }}" style="width: 25px; height: 25px; margin-left: 45px; margin-top:-380px;; position: relative; z-index: 3; " title="Click para seleccionar una imagen" >
+                                                </label>
+                                                <input type="file" class="cropit-image-input" id="input">      
+                                            </div>
+                                            <center>
+                                                <div class="image-size-label" id="labelid">
+                                                    Dimension de imagen
+                                                </div>
+                                                <input type="range" class="cropit-image-zoom-input" style="width: 140px;" id="idrange">
+                                                <input type="hidden" name="image-data" class="hidden-image-data" />
+                                                <input type="hidden" name="user" value="{{ usuario }}" id="usuario">
+                                                <input type="hidden" id="hPersonaModal"  value="{{datos.id}}" name="personaId">
+                                            </center>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="modal-footer" id="botomExperiencia" >
+                                    <img src='{{ asset('Resources/icons/transfer.gif') }}' style="width: 25px; height: 25px; margin-right:70px; " id="gif">
+                                    <button type="submit" id="cmd" class="btn btn-success">Cortar y Guardar</button>
+                                </div>
+                            </div>
                         </div>
+                    </form>
+                </div>
 
