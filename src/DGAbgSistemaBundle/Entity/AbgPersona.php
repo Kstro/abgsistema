@@ -157,6 +157,15 @@ class AbgPersona
      * @ORM\Column(name="titulo_puesto", type="string", length=100, nullable=true)
      */
    private $tituloPuesto;
+   
+     /**
+     * @var integer
+     *
+     * @ORM\Column(name="estado_metodo_pago", type="integer", nullable=false)
+     */
+   private $estadoMetodoPago;
+   
+   
     /**
      * Constructor
      */
@@ -174,6 +183,29 @@ class AbgPersona
     public function getId()
     {
         return $this->id;
+    }
+    
+        /**
+     * Set estadoMetodoPago
+     *
+     * @param integer $estadoMetodoPago
+     * @return AbgPersona
+     */
+    public function setEstadoMetodoPago($estadoMetodoPago)
+    {
+        $this->estadoMetodoPago = $estadoMetodoPago;
+
+        return $this;
+    }
+
+    /**
+     * Get estado_metodo_pago
+     *
+     * @return boolean 
+     */
+    public function getEstadoMetodoPago()
+    {
+        return $this->estadoMetodoPago;
     }
 
     /**

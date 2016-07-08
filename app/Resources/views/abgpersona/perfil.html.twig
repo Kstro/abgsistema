@@ -201,12 +201,12 @@
   
     <div id="verPerfil"> </div>
     <div id="editarPerfil"> 
-      
+       {% for datos in suscripcion %}
           <div class="alert alert-warning" style=" margin: 10px;">
-              {% for datos in suscripcion %}
+             
               {%if(datos.servicio=="Trial")%}
   <strong>Aviso!</strong>Suscribete por $10 | {{datos.servicio}}{{datos.caducidad}}
-</div>
+</div>  
   {%endif%}
 {%endfor%}
         <div class="row" style=" margin-left:15px; margin-right:15px; ">
@@ -236,7 +236,7 @@
                                                         {%if datos.tprofesional|default is not empty %}{%if(datos.tprofesional=="1")%}{%if datos.genero|default is not empty %}{%if(datos.genero=="F")%}Licda.{%elseif(datos.genero=="M")%}Lic.
                                                                     {%endif%}
                                                                 {%endif%}
-                                                            {%elseif(datos.tprofesional=="2")%}Magíster.{%elseif(datos.tprofesional=="3")%}{%if datos.genero|default is not empty %}{%if(datos.genero=="F")%}Dra.{%elseif(datos.genero=="M")%}Dr.
+                                                            {%elseif(datos.tprofesional=="2")%}Mgtr.{%elseif(datos.tprofesional=="3")%}{%if datos.genero|default is not empty %}{%if(datos.genero=="F")%}Dra.{%elseif(datos.genero=="M")%}Dr.
                                                                     {%endif%}
                                                             {%endif%}{%elseif(datos.tprofesional=="4")%}Br.{%endif%}
                                                         {%else%}

@@ -410,6 +410,7 @@ class CtlEmpresaController extends Controller {
             $abgPersona->setEstado(0);
             $abgPersona->setCodigo($codigo);
             $abgPersona->setVerificado(0);
+            $abgPersona->setEstadoMetodoPago(0);
             $em->persist($abgPersona);
 
             $em->flush();
@@ -479,7 +480,7 @@ class CtlEmpresaController extends Controller {
             $em->flush();
 
             // Suscripcion Gratis
-            $abgFacturacion = new AbgFacturacion();
+       /*     $abgFacturacion = new AbgFacturacion();
             $date = new \DateTime("now");
             $fechaPago = date_add($date, date_interval_create_from_date_string('30 days'));
             $abgFacturacion->setAbgPersona($idPersona);
@@ -491,7 +492,7 @@ class CtlEmpresaController extends Controller {
             $abgFacturacion->setServicio('Trial');
             $abgFacturacion->setDescripcion('30 dias de prueba');
             $em->persist($abgFacturacion);
-            $em->flush();
+            $em->flush();*/
 
             // Autenticando al usuario que se acaba de registrar
             $this->authenticateUser($ctlUsuario);
@@ -581,12 +582,12 @@ class CtlEmpresaController extends Controller {
                         <p>Bienvenido al directorio mas grande de abogados de El Salvador</p>
                          <p>Hola " . $nombreAbogado . " " . $apellidoAbogado . ", confirma tu correo para que puedas completar tu prefil.</p>
                             <p>Haz click en el enlace para verificar tu correo</p>
-                            <a href='http://abg.localhost/app_dev.php/confirmar/" . $var_md5 . "'>Clik aqui para verificarte</a> 
+                            <a href='http://abg.localhost/app_dev.php/confirmar/data/" . $var_md5 . "'>Clik aqui para verificarte</a> 
                         </td>
                         <td class=\"expander\"></td>
                       </tr>
                     </table>
-                ");
+                ","Confirmacion de correo");
 
             $session = new Session();
             $session->invalidate();
@@ -2151,7 +2152,7 @@ class CtlEmpresaController extends Controller {
     }
 
     /**
-     * @Route("confirmar/data/{id}", name="confirmarcorreo", options={"expose"=true})
+     * @Route("confirmar/correo/{id}", name="confirmarcorreo", options={"expose"=true})
      * @Method("GET")
      */
     public function ConfirmarAction(Request $request) {
@@ -2174,7 +2175,8 @@ class CtlEmpresaController extends Controller {
                         //return $this->render('DGAbgSistemaBundle:Secured:login.html.twig');
                     } else {
                       
-           $ctlUsuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->find($username);
+                       
+         $ctlUsuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->find($username);
             $ctlUsuario->setEstado(1);
             $em->merge($ctlUsuario);
             $em->flush();
@@ -2304,10 +2306,14 @@ class CtlEmpresaController extends Controller {
        
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($idPersona);
             $Ciudad = $em->getRepository("DGAbgSistemaBundle:CtlCiudad")->find($datos['Smunicipio']);
+             $Usuario = $this->container->get('security.context')->getToken()->getUser();
+            
+             
+                 $data['codigo'] = $Usuario->getCodigoConfirmar();
+            // Confirma el correo
 
             $ctlUsuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->find($username);
             $ctlUsuario->setEstadoCorreo(1);
-            $ctlUsuario->setEstado(1);
             $em->merge($ctlUsuario);
             $em->flush();
 
@@ -2352,6 +2358,7 @@ class CtlEmpresaController extends Controller {
             $em->getConnection()->commit();
             $em->close();
             $data['msj'] = "Datos actualizados.";
+            
             return new Response(json_encode($data));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage();
