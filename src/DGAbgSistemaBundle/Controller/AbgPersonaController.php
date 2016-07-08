@@ -22,6 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -3013,6 +3014,69 @@ else
             return new Response(json_encode($data));
 
 // echo $e->getMessage();   
+        }
+    }
+    
+    
+    
+    
+    
+    /**
+     * Rechazo de la solicitud de verificacion
+     *
+     * @Route("/verificar/abogado/aceptar/solicitud", name="verificar_abogado", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function aprobarVerificarAbogadoAction() {
+        
+        try {
+            $request = $this->getRequest();
+            $id= $request->get('id');
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction();
+            $abogado = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->find($id);
+            
+            $foto = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array('abgPersona'=>$abogado->getId(),'tipoFoto'=>5));
+            //var_dump($abogado->getId());
+            //die();
+            $email = $abogado->getCorreoelectronico();
+            //var_dump($email);
+            //die();
+            $this->get('envio_correo')->sendEmail($email, "", "", "", "
+                <table style=\"width: 540px; margin: 0 auto;\">
+                    <tr>
+                        <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
+                        <center>
+                            <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
+                        </center>                                                
+                            <p>Hola " . $email . " Por este medio queremos informarle que su solicitud de verificación a sido rechazada. Para más información contáctenos al teléfono +503 2512-0247.</p>
+                        </td>
+                        <td class=\"expander\"></td>
+                    </tr>
+                </table>
+            ");
+               
+            //var_dump($foto[0]);
+            $em->remove($foto[0]);
+            $em->flush();
+ 
+            $em->getConnection()->commit();
+            
+            $response = new JsonResponse();
+            $response->setData(array(
+                                  'exito'   => '1',                                  
+                               ));  
+            
+            return $response;            
+            
+        } catch (Exception $e) {
+            $em = $this->getDoctrine()->getManager();
+            
+            $em->getConnection()->rollback();
+            $em->close();
+
+            $data['msj'] = $e->getMessage();
+            return new Response(json_encode($data));
         }
     }
 
