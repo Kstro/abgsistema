@@ -84,16 +84,43 @@
                                 <tr>
                                     <th class="text-center">Correlativo</th>
                                     <th class="text-center">Pregunta</th>
+                                    <th class="text-center">Especialidad</th>
                                     <th class="text-center">Tiempo transcurrido</th>
                                     <th class="text-center">Acciones</th>
                                 </tr>
                             </thead>                            
                         </table>
                     </div>
-                    <div class="row" style="margin-top: 50px;"></div>  
-                </div>
-            </div>
-        </div>        
+                    <div class="row" style="margin-top: 50px;"></div> 
+                    <div class="modal fade modal" id="idModalFormAprobarPregunta" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-md">
+                            <div class="modal-content">
+                                <div class="modal-header " Style="height:45px;">
+                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                                    <span class="robo" style="font-size: 20px;">Aprobar pregunta</span>
+                                </div>
+                                <div class="modal-body" id="mbodyPregunta" >                
+                                    <div id="detallePregunta" class="row" style=" margin-left:0px; margin-right:0px;">
+                                        
+                                    </div>
+                                </div>
+                                <div class="modal-footer" id="botomPregunta" >
+                                    <div class="text-right">
+                                        <button type="button" class="btn btn-success btn aprobar" style="margin-right: 3px" data-toggle="tooltip"  data-container="body" title="">
+                                            <span class="glyphicon glyphicon-ok"></span> Aprobar
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn rechazar" data-toggle="tooltip"  data-container="body" title="" >
+                                            <span class="glyphicon glyphicon-remove"></span> Eliminar
+                                        </button> 
+                                    </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>                    
+                </div>                
+            </div>            
+        </div>   
+        
     {% endblock %}
 {% endblock %}
 {% block javascripts_step %}
@@ -117,13 +144,15 @@
                 "columns": [
                     { "data": "corr" },                       
                     { "data": "pregunta" },
+                    { "data": "especialidad" },
                     { "data": "tiempo" },
                     { "data": "link" }
                 ],
                 "columnDefs": [
                        { "orderable": false, "targets": 0 },
                        { "orderable": false, "targets": 1 },
-                       { "orderable": false, "targets": 3 }
+                       { "orderable": false, "targets": 3 },
+                       { "orderable": false, "targets": 4 }
 
                 ],
                 "language": {
@@ -142,6 +171,7 @@
         
             // Al momento de hacer click en Aprobar una pregunta
             $(document).on("click", ".aprobar", function(){
+                $('.close').click();
                 var id = $(this).attr('id');
                 
                 swal({
@@ -187,6 +217,7 @@
             
             // Al momento de hacer click en Rechazar una pregunta
             $(document).on("click", ".rechazar", function(){
+                $('.close').click();
                 var id = $(this).attr('id');
                 
                 swal({
@@ -227,6 +258,41 @@
                         
                     }
                 });
+            });
+            
+            // Al momento de hacer click en Mostrar detalle una pregunta
+            $(document).on("click", ".detalle", function(){
+                var id = $(this).attr('id');
+                
+                var data = {
+                            idpreg : id
+                        };
+                
+                $.ajax({
+                    type: 'GET',
+                    data: data,
+                    url: Routing.generate('aprobacion_busqueda_pregunta'),
+                    success: function (response)
+                    {
+                        $('.aprobar').attr('id', id);
+                        $('.rechazar').attr('id', id);
+                        
+                        var draw = '';
+                        draw+='<h4>'+response.pregunta.pregunta+'</h4>';
+                        draw+='<p>'+response.pregunta.detalle+'</p>';
+                        draw+='<p>'+response.pregunta.fecha+'</p>';
+                        
+                        
+                        $('#detallePregunta').html(draw);
+                        $("#idModalFormAprobarPregunta").modal(); 
+                        return false;
+                    },
+                    error: function (xhr, status){
+                        swal('','Lo sentimos, ocurrio un error','error');
+
+                        return false;
+                    }
+                });                                
             });
         });
    </script>

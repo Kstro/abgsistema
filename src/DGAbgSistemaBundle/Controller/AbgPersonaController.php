@@ -1080,6 +1080,24 @@ class AbgPersonaController extends Controller {
                     $Persona->setVerificado($request->get('estado'));
                     if ($request->get('estado') === '1') {
                         $data['msj'] = "Abogado verificado";
+                        
+                        $email = $Persona->getCorreoelectronico();
+                        
+                        $this->get('envio_correo')->sendEmail($email, "", "", "", "
+                                    <table style=\"width: 540px; margin: 0 auto;\">
+                                        <tr>
+                                            <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
+                                            <center>
+                                                <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
+                                            </center>                                                
+                                                <p>Hola " . $Persona->getNombres() ." ". $Persona->getApellido() . ".</p>
+                                                <p>La solicitud de verificación como abogado ha sido aprobada.</p>
+                                            </td>
+                                            <td class=\"expander\"></td>
+                                        </tr>
+                                    </table>
+                                ");
+                        
                     } else {
                         $data['msj'] = "Abogado no verificado";
                     }
