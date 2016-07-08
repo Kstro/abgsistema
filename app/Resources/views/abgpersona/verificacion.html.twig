@@ -5,7 +5,7 @@
     <section class="col-lg-12 connectedSortable ui-sortable">
         <div class="box box-widget">
             <div class="box-header with-border">
-                <h3 class="box-title">VERIFICARME COMO ABOGADO</h3>
+                <h3 class="box-title">VERIFICACIÓN COMO ABOGADO</h3>
             </div>
             <div class="box-body">
              
@@ -13,26 +13,79 @@
                 <div class="row">
                     <!-- AJUSTES GENERALES -->
                     <div class="col-md-12 col-xs-12" style="margin-top: 10px;">
-                    <p style="font-size: 15px;">Bienvenido a la sección de verificación de abogado.</p>
-                    <small style="font-size: 100%; font-size: 14px;">
-                        Por favor selecciona la imagen de tu carnet de verificación de abogado, para que de esta forma tu perfil pueda estar verificado.
-                    </small>
+                        <p style="font-size: 17px;">Bienvenido a la sección en dónde puedes verificarte como abogado.</p>
+                        
+                        {% if estadoVerificacion is empty %}
+                            <small style="font-size: 100%; font-size: 14px;">
+                                Por favor selecciona la imagen de tu carnet de verificación de abogado, para que de esta forma tu perfil pueda estar verificado.
+                            </small>
+                        {% else %}
+                            <hr>
+                            <small style="font-size: 100%; font-size: 13px;">
+                                Aquí puedes ver el estado en el que se encuentra su solicitud de verificación como abogado.
+                            </small>
+                        {% endif %}
                     </div>
                  </div>
                   <div class="row">
-                    <div class="col-ms-12 col-xs-12" style="margin-top: 12px;">
-                        <form id="frmVerificacion" role="form" enctype="multipart/form-data">
+                      {% if estadoVerificacion is empty %}
+                         <div class="col-ms-12 col-xs-12" style="margin-top: 12px;">
+                            <form id="frmVerificacion" role="form" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <img src="" style="max-height: 100%;max-width: 100%;" id="prevVerificacion" >
+                                    <input type="file" name="imagen" class="filestyle" id="imagenV" >
+                                </div>
+                            </form>
                             <div class="form-group">
-                                <img src="" style="max-height: 100%;max-width: 100%;" id="prevVerificacion" >
-                                <input type="file" name="imagen" class="filestyle" id="imagenV" >
+                                <button class="btn btn-primary btn-flat btn-sm" style="margin-top: 30px;" id="enviarImagenV" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Enviando">Guardar</button>
+                                <button class="btn btn-default btn-flat btn-sm" style="margin-top: 30px;" id="cancelarImagenV">Cancelar</button>
                             </div>
-                        </form>
-                        <div class="form-group">
-                            <button class="btn btn-primary btn-flat btn-sm" style="margin-top: 30px;" id="enviarImagenV" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Enviando">Guardar</button>
-                            <button class="btn btn-default btn-flat btn-sm" style="margin-top: 30px;" id="cancelarImagenV">Cancelar</button>
-                        </div>
-                    </div>
-                    <div class="col-md-1" style="margin-top: 12px;"></div>	
+                         </div>
+                         <div class="col-md-1" style="margin-top: 12px;"></div>	
+                      {% else %}
+                          <div class="col-md-3 col-xs-12">
+                              <div class="row">
+                                  <div class="col-md-offset-1 col-md-11" style="margin-top: 12px;">
+                                    <table class="table table-bordered table-hover table-condensed">
+                                        <tr>
+                                            <th></th><th class="text-center">Estado de verificación</th>                           
+                                        </tr>
+                                        <tr class="warning">
+                                            <td class="text-center">En espera de verificación</td><td class="text-center"><img src="{{ asset('Photos/defecto/proceso.png')}}" style="width: 75px; height: 75px;" class="pull-center"></td>
+                                        </tr>
+                                        <tr class="success">
+                                            <td class="text-center">Verificado</td><td class="text-center"><img src="{{ asset('Photos/defecto/aprobado.png')}}" style="width: 75px; height: 75px;" class="pull-center"></td>
+                                        </tr> 
+                                    </table> 
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-md-9 col-xs-12">
+                              <div class="row">
+                                  <div class="row">
+                                      <div class=" col-md-11" style="margin-top: 12px;">
+                                          <table class="table table-bordered table-hover table-condensed">
+                                              <tr>
+                                                  <th class="text-center">Nombre de abogado</th>
+                                                  <th class="text-center">Estado</th>
+                                                  <th class="text-center">Imagen</th>
+                                              </tr>
+                                              <tr {% if estadoVerificacion[0].verificado == 1 %} class="success" {% else %} class="warning" {% endif %}>
+                                                  <td>{{ abgPersona[0].nombre }} {{ abgPersona[0].apellido }}</td>
+                                                  <td class="text-center">
+                                                      {% if estadoVerificacion[0].verificado == 1 %}  
+                                                          <img src="{{ asset('Photos/defecto/aprobado.png')}}" style="width: 75px; height: 90px;" class="pull-center">
+                                                      {% else %} 
+                                                          <img src="{{ asset('Photos/defecto/proceso.png')}}" style="width: 75px; height: 90px;" class="pull-center"> 
+                                                      {% endif %}
+                                                  </td>
+                                                  <td class="text-center"><img src="{{asset('')}}{{ estadoVerificacion[0].src }}" style="width: 200px; height: 150px;" class="img-responsive" ></td>
+                                              </tr>
+                                          </table>
+                                      </div>                                  
+                              </div>
+                          </div>
+                      {% endif %}  
                 </div>
             </div>
         </div>

@@ -2733,12 +2733,22 @@ else
 
             switch ($RolUser[0]['rol']) {
                 case 'ROLE_USER':
+                    $sqlEstadoVerificacion = "SELECT per.verificado, fot.src "
+                                            . "FROM abg_foto fot "
+                                            . "JOIN abg_persona per ON per.id = fot.abg_persona_id AND fot.tipo_foto = 5 "
+                                            . "WHERE per.id=" . $idPersona;
+                    
+                    $stm = $this->container->get('database_connection')->prepare($sqlEstadoVerificacion);
+                    $stm->execute();
+                    $estadoVerificacion = $stm->fetchAll();
+                    
                     return $this->render(':abgpersona:panelVerificacion.html.twig', array(
                                 'nombreCorto' => $nombreCorto,
                                 'abgPersona' => $result_persona,
                                 'usuario' => $idPersona,
                                 'TipoPago' => $TipoPago,
                                 'abgFoto' => $result_foto,
+                                'estadoVerificacion' => $estadoVerificacion
                     ));
 
                     break;
@@ -2752,10 +2762,6 @@ else
                     $stm = $this->container->get('database_connection')->prepare($sqlverificacion);
                     $stm->execute();
                     $solicitud_verificacion = $stm->fetchAll();
-
-
-
-
 
                     return $this->render(':administracion:panelVerificacion.html.twig', array(
                                 'nombreCorto' => $nombreCorto,
