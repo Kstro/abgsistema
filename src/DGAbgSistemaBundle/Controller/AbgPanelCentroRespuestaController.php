@@ -34,19 +34,36 @@ class AbgPanelCentroRespuestaController extends Controller {
 
         try {
             $em = $this->getDoctrine()->getManager();
+            $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+            $username= $this->container->get('security.context')->getToken()->getUser();
+           
+            $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
+                    . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.codigo as codigo "
+                    . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
+            $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+            $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_persona[0]['apellido'])[0];
+            
+            $dqlfoto = "SELECT fot.src as src "
+                    . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
+            $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+            $dqlfoto = "SELECT fot.src as src, fot.estado As estado "
+                    . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=1 ";
+            $fotoP = $em->createQuery($dqlfoto)->getArrayResult();
+            $id = $request->get('id');
+            
             $pregunta = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->find($id);
             //var_dump($result_persona[0]);
             
             ////////////////////////////////////////////////////////////////////
             //Verificacion que la pregunta pertenece a la categoria del abogado que esta logueado.            
             $abogadoEspecialidad = $em->getRepository('DGAbgSistemaBundle:AbgPersonaEspecialida')->findBy(array('abgPersona'=>$result_persona[0]['id']));
-                        
+            //var_dump($pregunta->getAbgEspecialidad()->getId());
             $especialidadMatch=false;
             foreach($abogadoEspecialidad as $row){
                 if($pregunta->getAbgEspecialidad()->getId()==$row->getCtlEspecialidad()->getId()){
                     $especialidadMatch=true;
                 }
-                
+                //var_dump($row->getCtlEspecialidad()->getId());
             }
             //var_dump($especialidadMatch);
             ////////////////////////////////////////////////////////////////////
