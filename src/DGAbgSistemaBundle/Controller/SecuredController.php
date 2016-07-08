@@ -76,7 +76,7 @@ class SecuredController extends Controller
     }
 
     /**
-     * @Route("/logout", name="abogado_logout")
+     * @Route("/logout", name="abogado_logout" , options={"expose"=true})
      */
     public function logoutAction()
     {

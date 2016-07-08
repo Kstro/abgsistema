@@ -6,7 +6,7 @@
 <link href="{{asset('Resources/jquery-validation-1.15.0/demo/css/screen.css')}}" rel="stylesheet">
 <script src="{{ asset('Resources/jquery-validation-1.15.0/dist/jquery.validate.js')}}"></script>
 <script src="{{ asset('Resources/select2/dist/js/select2.min_1.js') }}"></script>
- <script src="{{asset('Resources/js/enviarDatos.js')}}"></script>
+<script src="{{asset('Resources/js/enviarDatos.js')}}"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -29,47 +29,28 @@
         var anho = fecha.getFullYear();
 
         if (mes < 10) {
-            mes = mes + 1;
+            mes = "0" + (mes + 1);
+        }
+        if (dia < 10) {
+            dia = "0" + dia;
         }
 
-       
-         var fecha =new   Date();
-         var dia = fecha.getDate();
-         var mes = fecha.getMonth();
-         var anho = fecha.getFullYear();
-         
-         if (mes<10){
-         mes=mes+1;
-         }
-         var fechaFinal = anho+"-"+"0"+mes+"-"+dia;
-          /*
-         $('#txtFechaInicio').Zebra_DatePicker({
-         format: 'Y-m-d',
-         direction: -1,
-         pair: $('#txtFechaFin')
-         });
-         
-         $('#txtFechaFin').Zebra_DatePicker({
-         format: 'Y-m-d',
-         direction: [true, fechaFinal]
-         });      
-         */
+        var fechaFinal = anho + "-" + mes + "-" + dia;
 
         $('#txtFechaIni').Zebra_DatePicker({
             months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
             days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
             format: 'Y-m-d',
             direction: -1,
-             show_icon: false
-//
-//             pair: $('#txtFechaFin')
+            show_icon: false,
+            pair: $('#txtFechaFin')
         });
         $('#txtFechaFin').Zebra_DatePicker({
             months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
             days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
             format: 'Y-m-d',
-         direction: -1,
-          show_icon: false
+            direction: [true, fechaFinal],
+            show_icon: false
         });
 
         $("#cancelExp").click(function () {
@@ -77,7 +58,7 @@
             $("#" + editExp).show();
             $("#div1").remove();
         });
-        
+
     });
 
     $('#checkActual').change(function () {
@@ -156,10 +137,10 @@
 
             {%if fechaFin|default is not empty %}
             {%else%}
-                                    $('#fechafin').css("display", "none");
-                                    $('#txtFechaFin').val(null);
+                    $('#fechafin').css("display", "none");
+                    $('#txtFechaFin').val(null);
             {% endif  %}
-                    });
+                });
         </script>
         {% for datos in Experiencia %}
 
@@ -286,7 +267,7 @@
                                     </div>
                                 </div>
                             </div>
-                              <p style=" color: #F00;" id="Pexp" calss="sans"></p>
+                            <p style=" color: #F00;" id="Pexp" calss="sans"></p>
                         </div>
                         <div class="form-group">
                             <div class="row">
@@ -308,72 +289,72 @@
                         </div>
                         {%endif%}
                         </form>
-                            <script  src="{{asset('Resources/AdminLTE-2.3.0/bootstrap/js/bootstrap.min.js')}}"></script>
+                        <script  src="{{asset('Resources/AdminLTE-2.3.0/bootstrap/js/bootstrap.min.js')}}"></script>
                         <script type="text/javascript">
 
-                            $('#ScambioEmpresa').select2({
-                                ajax: {
-                                    url: Routing.generate('empresas'),
-                                    dataType: 'json',
-                                    delay: 250,
-                                    data: function (params) {
-                                        return {
-                                            q: params.term,
-                                            page: params.page
-                                        };
-                                    },
-                                    processResults: function (data, params) {
+                    $('#ScambioEmpresa').select2({
+                        ajax: {
+                            url: Routing.generate('empresas'),
+                            dataType: 'json',
+                            delay: 250,
+                            data: function (params) {
+                                return {
+                                    q: params.term,
+                                    page: params.page
+                                };
+                            },
+                            processResults: function (data, params) {
 
-                                        var select2Data = $.map(data.data, function (obj) {
-                                            obj.id = obj.idEmp;
-                                            obj.text = obj.nombre;
+                                var select2Data = $.map(data.data, function (obj) {
+                                    obj.id = obj.idEmp;
+                                    obj.text = obj.nombre;
 
-                                            return obj;
-                                        });
+                                    return obj;
+                                });
 
-                                        return {
-                                            results: select2Data
-                                        };
-                                    },
-                                    cache: true
-                                },
-                                escapeMarkup: function (markup) {
-                                    return markup;
-                                },
-                                minimumInputLength: 1,
-                                templateResult: formatRepo,
-                                templateSelection: formatRepoSelection
-                            });
-                            if (actExp === 1)
-                            {
-                                document.getElementById('cambioEmpresa').style.display = 'none';
-                            }
+                                return {
+                                    results: select2Data
+                                };
+                            },
+                            cache: true
+                        },
+                        escapeMarkup: function (markup) {
+                            return markup;
+                        },
+                        minimumInputLength: 1,
+                        templateResult: formatRepo,
+                        templateSelection: formatRepoSelection
+                    });
+                    if (actExp === 1)
+                    {
+                        document.getElementById('cambioEmpresa').style.display = 'none';
+                    }
 
-                            function formatRepo(data) {
-                                if (data.nombre) {
-                                    //    var img = '/abgsistema/web/' + data.src;
+                    function formatRepo(data) {
+                        if (data.nombre) {
+                            //    var img = '/abgsistema/web/' + data.src;
 
-                                    var markup = "<div class='select2-result-repository clearfix'>" +
-                                            "<div class='select2-result-repository__avatar'><img style='max-width:25px;max-height:25px;' src='{{asset('')}}" + data.src + "'/></div>" +
-                                            "<div class='select2-result-repository__meta'>" +
-                                            "<div class='select2-result-repository__title'>" + data.nombre + "</div>" +
-                                            "</div></div>";
-                                } else {
-                                    markup = "<div class='select2-result-repository clearfix'>" +
-                                            "<div class='select2-result-repository__meta'>" +
-                                            "<div class='select2-result-repository__title'><a onclick='CambioEmp()'>+ Nueva empresa</a></div>" +
-                                            "</div></div>";
-                                }
+                            var markup = "<div class='select2-result-repository clearfix'>" +
+                                    "<div class='select2-result-repository__avatar'><img style='max-width:25px;max-height:25px;' src='{{asset('')}}" + data.src + "'/></div>" +
+                                    "<div class='select2-result-repository__meta'>" +
+                                    "<div class='select2-result-repository__title'>" + data.nombre + "</div>" +
+                                    "</div></div>";
+                        } else {
+                            markup = "<div class='select2-result-repository clearfix'>" +
+                                    "<div class='select2-result-repository__meta'>" +
+                                    "<div class='select2-result-repository__title'><a onclick='CambioEmp()'>+ Nueva empresa</a></div>" +
+                                    "</div></div>";
+                        }
 
-                                return markup;
-                            }
+                        return markup;
+                    }
 
-                            function formatRepoSelection(data) {
-                                if (data.nombre) {
-                                    return data.nombre;
-                                } else {
-                                    return "Seleccione una opción";
-                                }
-                            }
+                    function formatRepoSelection(data) {
+                        if (data.nombre) {
+                            return data.nombre;
+                        } else {
+                            return "Seleccione una opción";
+                        }
+                    }
 
                         </script>

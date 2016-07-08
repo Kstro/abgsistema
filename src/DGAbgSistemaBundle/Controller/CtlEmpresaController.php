@@ -1266,8 +1266,9 @@ class CtlEmpresaController extends Controller {
             $username = $this->container->get('security.context')->getToken()->getUser();
             $abgPersonaId = $username->getRhPersona();
 
-
+            
             $entity = $em->getRepository('DGAbgSistemaBundle:AbgUrlPersonalizada')->findBy(array("abgPersona" => $abgPersonaId, "estado" => 1));
+            
             $entity[0]->setEstado(0);
             $em->merge($entity[0]);
             $em->flush();
@@ -1759,7 +1760,7 @@ class CtlEmpresaController extends Controller {
                 try {
                     $idPersona = $ObjetoUrl[0]->getAbgPersona()->getId();
                     $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
-                            . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado,  p.tituloProfesional AS tprofesional,"
+                            . " p.direccion AS direccion, p.tituloProfesional as titulo, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado,  p.tituloProfesional AS tprofesional,"
                             . " p.verificado As verificado, p.genero AS genero "
                             . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
                     $result_persona = $em->createQuery($dql_persona)->getArrayResult();
@@ -2156,26 +2157,28 @@ class CtlEmpresaController extends Controller {
      */
     public function ConfirmarAction(Request $request) {
         try {
+       
             if ($request->get('id') !== null) {
                 $codigo=$request->get('id');
                 $em = $this->getDoctrine()->getManager();
                 $ctlUsuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByCodigoConfirmar($request->get('id'));
-            
-               
+
                 if ($ctlUsuario != null) {
                     $this->authenticateUser($ctlUsuario[0]);
-          
 
                     $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
                     $username = $this->container->get('security.context')->getToken()->getUser()->getId();
-       
+
                     if ($ctlUsuario[0]->getEstadoCorreo()) {
-                    
+
                         return $this->redirect($this->generateUrl('abogado_login'));
                         //return $this->render('DGAbgSistemaBundle:Secured:login.html.twig');
                     } else {
                       
-
+           $ctlUsuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->find($username);
+            $ctlUsuario->setEstado(1);
+            $em->merge($ctlUsuario);
+            $em->flush();
                         $sqlRol = "SELECT  r.id As id, r.rol As rol"
                                 . " FROM  ctl_rol_usuario ru "
                                 . " JOIN ctl_rol r ON r.id=ru.ctl_rol_id AND ru.ctl_usuario_id=" . $username;
