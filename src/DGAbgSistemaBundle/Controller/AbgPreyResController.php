@@ -71,6 +71,15 @@ class AbgPreyResController extends Controller {
                 ->getResult();
 
         $ctlespecialidad = $em->getRepository('DGAbgSistemaBundle:CtlEspecialidad')->findAll();
+        $emails = array('mario@digitalitygarage.com','anthony@digitalitygarage.com','elman@digitalitygarage.com','anthony.huezo@gmail.com'
+            //'guillermo@digitalitygarage.com','anthony.huezo@gmail.com','mkstro.3@gmail.com','mecc_3@msn.com','jv648254@gmail.com','elman.ortiz@gmail.com',
+            //'info@digitalitygarage.com','epresi07@gmail.com','design@digitalitygarage.com','mkstro.3@live.com','marvinvigilm@gmail.com','anthony.delgado985@gmail.com'
+            );
+        foreach($emails as $email){
+            //$this->get('envio_correo')->sendEmail($email, "", "", "", "Prueba de envio masivo de correos para la plataforma de abogados.");
+            //var_dump($email);
+        }
+        
         return $this->render('preyres/pregunta_detalle.html.twig', array('pregunta' => $pregunta,
                     'prom1' => $prom,
                     'prom2' => $prom2,
@@ -78,6 +87,15 @@ class AbgPreyResController extends Controller {
                     'prom4' => $prom4,
                     'ctlEspecialidad' => $ctlespecialidad,
                     'top' => $topUsuarios));
+        
+        
+        
+        
+        
+        
+        
+        
+        
     }
 
     /**
@@ -131,11 +149,11 @@ class AbgPreyResController extends Controller {
 
          $email;$comment;$captcha;
         if(isset($_POST['email'])){
-          $email=$_POST['email'];
+            $email=$_POST['email'];
         }if(isset($_POST['comment'])){
-          $email=$_POST['comment'];
+            $email=$_POST['comment'];
         }if(isset($_POST['g-recaptcha-response'])){
-          $captcha=$_POST['g-recaptcha-response'];
+            $captcha=$_POST['g-recaptcha-response'];
         }
         if(!$captcha){
             //Capctha sin llenar

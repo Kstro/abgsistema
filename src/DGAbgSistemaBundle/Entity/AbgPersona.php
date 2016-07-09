@@ -147,12 +147,25 @@ class AbgPersona
         /**
      * @var string
      *
-     * @ORM\Column(name="titulo_profesional", type="string", length=45, nullable=true)
+     * @ORM\Column(name="titulo_profesional", type="string", length=100, nullable=true)
      */
     private $tituloProfesional;
     
-    
-
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="titulo_puesto", type="string", length=100, nullable=true)
+     */
+   private $tituloPuesto;
+   
+     /**
+     * @var integer
+     *
+     * @ORM\Column(name="estado_metodo_pago", type="integer", nullable=false)
+     */
+   private $estadoMetodoPago;
+   
+   
     /**
      * Constructor
      */
@@ -170,6 +183,29 @@ class AbgPersona
     public function getId()
     {
         return $this->id;
+    }
+    
+        /**
+     * Set estadoMetodoPago
+     *
+     * @param integer $estadoMetodoPago
+     * @return AbgPersona
+     */
+    public function setEstadoMetodoPago($estadoMetodoPago)
+    {
+        $this->estadoMetodoPago = $estadoMetodoPago;
+
+        return $this;
+    }
+
+    /**
+     * Get estado_metodo_pago
+     *
+     * @return boolean 
+     */
+    public function getEstadoMetodoPago()
+    {
+        return $this->estadoMetodoPago;
     }
 
     /**
@@ -582,6 +618,30 @@ class AbgPersona
     public function getTituloProfesional()
     {
         return $this->tituloProfesional;
+    }
+    
+    
+     /**
+     * Set tituloPuesto
+     *
+     * @param string  $tituloPuesto
+     * @return AbgPersona
+     */
+    public function setTituloPuesto($tituloPuesto)
+    {
+        $this->tituloPuesto =  $tituloPuesto;
+
+        return $this;
+    }
+
+    /**
+     * Get tituloPuesto
+     *
+     * @return string
+     */
+    public function getTituloPuesto()
+    {
+        return $this->tituloPuesto;
     }
     
      public function __toString() {

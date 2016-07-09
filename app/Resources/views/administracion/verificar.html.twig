@@ -1,6 +1,7 @@
 {% block js_extend %}
 
-
+    <link rel="stylesheet" href="{{ asset('Resources/swal/sweetalert2.min.css') }}">
+    <script src="{{ asset('Resources/swal/sweetalert2.min.js') }}"></script>
 {% endblock%}
 {% block navegacion_Y_body %}
 
@@ -56,7 +57,20 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div></div>
+                                </div>
+                                                    <div class="row">
+                                    <div class="col-xs-12 "><div class="bloque-ocultar ">
+                                            <div class="clearfix"></div>
+                                            <div class="bloque-ocultar ">
+                                                {#<p class="text-center" style ="color: #4444444;"><strong>Verificado</strong>&nbsp;</p>#}
+                                                <div class="onoffswitch" style="margin-left: auto; margin-right: auto;" >
+                                                    <button class="btn btn-danger" id="rechazarSolicitudVerificado"><i class="fa fa-times" aria-hidden="true"></i> Rechazar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -78,8 +92,8 @@
     {% endblock%}
     <script type="text/javascript">
         $(document).on('click', '#btnLista', function () {
-            $("#divLista").show()
-            $("#divVerificar").hide()
+            $("#divLista").show();
+            $("#divVerificar").hide();
         });
 
         $(document).on('click', '.myonoffswitch', function () {
@@ -103,8 +117,8 @@
                             size: 'mini',
                             msg: "<p>" + data.msj + "</p>"
                         });
-                        $("#divLista").show()
-                        $("#divVerificar").hide()
+                        $("#divLista").show();
+                        $("#divVerificar").hide();
                         AbgVerificar();
                     } else
                     {
@@ -119,6 +133,54 @@
                     alert('Disculpe, existió un problema');
                 }
             });
+        });
+        
+        
+        
+        
+        $(document).on('click', '#rechazarSolicitudVerificado', function () {
+            var idAbogado=$('#hPersona').val();
+            console.log('Solicitud click');
+            swal({
+                    //title: "Confirmación de eliminación de la pregunta",
+                    text: "¿Está seguro que desea rechazar la solicitud?",
+                    type: "info",
+                    showCancelButton: true,
+                    confirmButtonColor: "#1D234D",
+                    confirmButtonText: "Aceptar",
+                    cancelButtonText: "Cancelar",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                }).then(function(isConfirm) {
+                    if (isConfirm) {
+                        console.log('if');
+                        var data = {
+                            id : idAbogado
+                        };
+
+                        $.ajax({
+                            type: 'POST',
+                            data: data,
+                            url: Routing.generate('verificar_abogado'),
+                            success: function (response)
+                            {
+                                console.log('Solicitud aprobada');
+                                swal('','Solicitud rechazada!','success');
+                                $('#btnLista').click();
+                                return false;
+                            },
+                            error: function (xhr, status){
+                                swal('','Lo sentimos, ocurrió un error','error');
+                                return false;
+                            }
+                        });
+                        console.log('fin de if');
+                        //return false;  
+                    } else {
+                        console.log('else');
+                    }
+                });
+                return false;
         });
 
     </script>

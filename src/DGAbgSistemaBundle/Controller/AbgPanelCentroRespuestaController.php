@@ -30,9 +30,10 @@ class AbgPanelCentroRespuestaController extends Controller {
      * @Method("GET")
      */
     public function PreguntaRespuestaAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-       
+
+
         try {
+            $em = $this->getDoctrine()->getManager();
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $username= $this->container->get('security.context')->getToken()->getUser();
            
@@ -45,77 +46,80 @@ class AbgPanelCentroRespuestaController extends Controller {
             $dqlfoto = "SELECT fot.src as src "
                     . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
             $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
-
-
             $dqlfoto = "SELECT fot.src as src, fot.estado As estado "
                     . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=1 ";
             $fotoP = $em->createQuery($dqlfoto)->getArrayResult();
-
             $id = $request->get('id');
-
-            $em = $this->getDoctrine()->getManager();
-            $pregunta = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->find($id);
             
-
+            $pregunta = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->find($id);
+            //var_dump($result_persona[0]);
+            
+            ////////////////////////////////////////////////////////////////////
+            //Verificacion que la pregunta pertenece a la categoria del abogado que esta logueado.            
+            $abogadoEspecialidad = $em->getRepository('DGAbgSistemaBundle:AbgPersonaEspecialida')->findBy(array('abgPersona'=>$result_persona[0]['id']));
+            //var_dump($pregunta->getAbgEspecialidad()->getId());
+            $especialidadMatch=false;
+            foreach($abogadoEspecialidad as $row){
+                if($pregunta->getAbgEspecialidad()->getId()==$row->getCtlEspecialidad()->getId()){
+                    $especialidadMatch=true;
+                }
+                //var_dump($row->getCtlEspecialidad()->getId());
+            }
+            //var_dump($especialidadMatch);
+            ////////////////////////////////////////////////////////////////////
+            
             $username = $this->container->get('security.context')->getToken()->getUser();
             $personaId = $username->getRhPersona();
             $abgfoto = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findOneBy(array('abgPersona' => $personaId));
             
-                  $abgRespuestaPregunta = $em->getRepository('DGAbgSistemaBundle:AbgRespuestaPregunta');
+            $abgRespuestaPregunta = $em->getRepository('DGAbgSistemaBundle:AbgRespuestaPregunta');
                 
             $Respuesta = $abgRespuestaPregunta->findBy(array('abgPregunta' => $id, 'ctlUsuario' => $username));
-       
-      $respuesta="";
-      $estado="";
-      $tiempoRes="";
-    
-      if(! empty($Respuesta))
-      {
-      $estado=1;
-      $respuesta=$Respuesta[0]->getRespuesta();
-      
-      }
-      else
-      {
-           $estado=0; 
-      }
-      if ($pregunta->getFechaPregunta() != NULL) {
-        
-       //         array_push($tiemposRespuesta, $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s')));
-             $tiempo = $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s'));
-        } else {
-            $tiempo = NULL;
-        }
-         if(! empty($Respuesta))
-      {
-            
-            if ($Respuesta[0]->getFechaRespuesta() != NULL) {
-        
-       //         array_push($tiemposRespuesta, $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s')));
-             $tiempoRes = $this->tiempo_transcurrido($Respuesta[0]->getFechaRespuesta()->format('Y-m-d H:i:s'));
-        } else {
-            $tiempoRes = NULL;
-        }
-         }
+
+            $respuesta="";
+            $estado="";
+            $tiempoRes="";
+
+            if(! empty($Respuesta)){
+                $estado=1;
+                $respuesta=$Respuesta[0]->getRespuesta();
+            }
+            else{
+                $estado=0; 
+            }
+            if ($pregunta->getFechaPregunta() != NULL) {
+
+             //         array_push($tiemposRespuesta, $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s')));
+                $tiempo = $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s'));
+            }else{
+                $tiempo = NULL;
+            }
+            if(! empty($Respuesta)){
+                if ($Respuesta[0]->getFechaRespuesta() != NULL){
+                    //array_push($tiemposRespuesta, $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s')));
+                    $tiempoRes = $this->tiempo_transcurrido($Respuesta[0]->getFechaRespuesta()->format('Y-m-d H:i:s'));
+                } else{
+                    $tiempoRes = NULL;
+                }
+            }
             $srcfoto = $abgfoto->getSrc();
             return $this->render('panelcentropregabog/panelRespuestaPregunta.html.twig', array('pregunta' => $pregunta,
-            'nombreCorto'=>$nombreCorto,
-                        'srcfoto' => $srcfoto,
-                        'nombres' => $personaId->getNombres(),
-                        'apellidos' => $personaId->getApellido(),
-                        'abgPersona' => $result_persona,
-                        'usuario' => $idPersona,
-                        'abgFoto' => $result_foto,
-                        'estado'=>$estado,
+                'nombreCorto'=>$nombreCorto,
+                'srcfoto' => $srcfoto,
+                'nombres' => $personaId->getNombres(),
+                'apellidos' => $personaId->getApellido(),
+                'abgPersona' => $result_persona,
+                'usuario' => $idPersona,
+                'abgFoto' => $result_foto,
+                'estado'=>$estado,
+                'especialidadMatch'=>$especialidadMatch,
                 'respuesta'=>$respuesta,
                 'tiempo'=>$tiempo,
                 'tiempoRes'=>$tiempoRes));
-        } catch (Exception $e) {
+        }catch (Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
-     
             $em->close();
-
             // echo $e->getMessage();   
         }
     }
@@ -130,29 +134,28 @@ class AbgPanelCentroRespuestaController extends Controller {
 
         $em = $this->getDoctrine()->getManager();
         $pregunta = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->find($id);
-    $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+        $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
         $username = $this->container->get('security.context')->getToken()->getUser();
         $personaId = $username->getRhPersona();
         $persona = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->find($idPersona)->getEstado();
-     
+
         $abgfoto = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findOneBy(array('abgPersona' => $personaId));
-        
-     $tiemposRespuesta = array();
+
+        $tiemposRespuesta = array();
         if ($pregunta->getFechaPregunta() != NULL) {
-        
-       //array_push($tiemposRespuesta, $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s')));
-             $tiempo = $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s'));
+
+            //array_push($tiemposRespuesta, $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s')));
+            $tiempo = $this->tiempo_transcurrido($pregunta->getFechaPregunta()->format('Y-m-d H:i:s'));
         } else {
             $tiempo = NULL;
         }
         $srcfoto = $abgfoto->getSrc();
-        return $this->render('panelcentropregabog/panelrespuestacentro.html.twig', 
-                array('pregunta' => $pregunta,
+        return $this->render('panelcentropregabog/panelrespuestacentro.html.twig', array('pregunta' => $pregunta,
                     'srcfoto' => $srcfoto,
-                    'nombres' => $personaId->getNombres(), 
+                    'nombres' => $personaId->getNombres(),
                     'apellidos' => $personaId->getApellido(),
-                'tiempo'=>$tiempo,
-                'estado'=>$persona));
+                    'tiempo' => $tiempo,
+                    'estado' => $persona));
     }
 
     /**
@@ -210,7 +213,7 @@ class AbgPanelCentroRespuestaController extends Controller {
                         </center>
                             <p>Hola " . $correo_anonimo . ", tu pregunta ha sido respondida</p>
                             <p>Haz click en el enlace para ver la respuesta</p>
-                            <a href='http://abg.localhost/app_dev.php/preguntascentro/respuestas_pregunta/" .$idpreg ."'>Clik aqui para ver la respuesta</a> 
+                            <a href='http://abg.localhost/app_dev.php/preguntascentro/respuestas_pregunta/" . $idpreg . "'>Clik aqui para ver la respuesta</a> 
                         </td>
                         <td class=\"expander\"></td>
                       </tr>
@@ -257,9 +260,9 @@ class AbgPanelCentroRespuestaController extends Controller {
                 . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.tituloProfesional AS tprofesional, p.verificado As verificado "
                 . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
         $result_persona = $em->createQuery($dql_persona)->getArrayResult();
-        
-        $nombreCorto=split(" ",$result_persona[0]['nombre'])[0]." ".split(" ",$result_persona[0]['apellido'])[0];
-  
+
+        $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
+
 
         $dqlfoto = "SELECT fot.src as src "
                 . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
@@ -285,35 +288,39 @@ class AbgPanelCentroRespuestaController extends Controller {
         $stmt = $em->getConnection()->prepare($sql);
         $stmt->execute();
         $totsincont = $stmt->fetchAll();
-        
-        $sql = "SELECT preg.id as idpreg, preg.pregunta, preg.fechapregunta AS fecha, resp.id 
+
+
+//        var_dump($username->getId());
+//        var_dump($personaId->getId());
+//        var_dump($idPersona);
+
+        $sql = "SELECT preg.id as idpreg, preg.pregunta, preg.fechapregunta AS fecha, resp.id
                 FROM abg_pregunta preg LEFT JOIN abg_respuesta_pregunta resp on preg.id=resp.abg_pregunta 
                 JOIN ctl_especialidad esp ON esp.id=preg.ctl_especialidad 
-                JOIN abg_persona_especialidad pe ON pe.ctl_especialidad_id=esp.id AND pe.abg_persona_id = ".$idPersona."
-                WHERE preg.estado=1 and preg.contador < 3 and (resp.ctl_usuario_id <> ".$username->getId()." or resp.id is null)  
-                ORDER BY preg.fechapregunta DESC";
-        
+                JOIN abg_persona_especialidad pe ON pe.ctl_especialidad_id=esp.id AND pe.abg_persona_id = " . $idPersona . "
+                WHERE resp.respuesta is null AND preg.estado=1 and preg.contador < 3 and (resp.ctl_usuario_id <> " . $username->getId() . " or resp.id is null)  
+                ORDER BY preg.fechapregunta ASC";
+
         $em = $this->getDoctrine()->getManager();
         $stmt = $em->getConnection()->prepare($sql);
         $stmt->execute();
         $preguntas = $stmt->fetchAll();
-        
-        
-  
+
+
+
         $fecha = array();
         foreach ($preguntas as $key => $value) {
             $fechaRespuesta = $this->tiempo_transcurrido($value['fecha']);
             array_push($fecha, $fechaRespuesta);
-        }            
-        
-        
-        return $this->render('panelcentropregabog/panelistpreguntas.html.twig', 
-                array('fechaRespuesta' => $fecha,
-                    'nombreCorto'=>$nombreCorto,
-                    'abgPersona' => $result_persona, 
+        }
+
+
+        return $this->render('panelcentropregabog/panelistpreguntas.html.twig', array('fechaRespuesta' => $fecha,
+                    'nombreCorto' => $nombreCorto,
+                    'abgPersona' => $result_persona,
                     'abgFoto' => $result_foto,
-                    'ciuda' => $result_ciuda, 
-                    'usuario' => $username, 
+                    'ciuda' => $result_ciuda,
+                    'usuario' => $username,
                     'preguntas' => $preguntas,
                     'totsincont' => $totsincont[0]['total']));
     }
@@ -340,22 +347,22 @@ class AbgPanelCentroRespuestaController extends Controller {
                      JOIN abg_persona_especialidad pe 
                      ON pe.ctl_especialidad_id=esp.id AND pe.abg_persona_id=" . $idPersona . "
                      ORDER BY  resp.fecha_respuesta DESC ";
-            
+
             $em = $this->getDoctrine()->getManager();
             $stmt = $em->getConnection()->prepare($sql);
             $stmt->execute();
-           
+
             $data['Respreguntas'] = $stmt->fetchAll();
-           
-            
+
+
             $fecha = array();
             foreach ($data['Respreguntas'] as $key => $value) {
                 $fechaRespuesta = $this->tiempo_transcurrido($value['frespuesta']);
                 array_push($fecha, $fechaRespuesta);
-            }            
-        
+            }
+
             $data['fechasRespuesta'] = $fecha;
-            
+
             return new Response(json_encode($data));
         } catch (\Exception $e) {
             $data['error'] = $e->getMessage();
@@ -398,71 +405,71 @@ class AbgPanelCentroRespuestaController extends Controller {
 //            $stmt = $em->getConnection()->prepare($sql);
 //            $stmt->execute();
 //            $data['Respreguntas'] = $stmt->fetchAll(); 
-            
+
             $abgRespuestaPregunta = $em->getRepository('DGAbgSistemaBundle:AbgRespuestaPregunta');
             $Respreguntas = $abgRespuestaPregunta->findOneBy(array('abgPregunta' => $id, 'ctlUsuario' => $user));
 
             $data['fechaPregunta'] = $Respreguntas->getPregunta()->getFechaPregunta()->format('Y-m-d H:i:s');
             $data['pregunta'] = $Respreguntas->getPregunta()->getPregunta();
             $data['tiempoPregunta'] = $this->tiempo_transcurrido($data['fechaPregunta']);
-            
+
             $data['fechaRespuesta'] = $Respreguntas->getFechaRespuesta()->format('Y-m-d H:i:s');
             $data['respuesta'] = $Respreguntas->getRespuesta();
             $data['tiempoRespuesta'] = $this->tiempo_transcurrido($data['fechaRespuesta']);
-                    
-            return new Response(json_encode($data));           
+
+            return new Response(json_encode($data));
         } catch (\Exception $e) {
-            $data['error'] = $e->getMessage();            
+            $data['error'] = $e->getMessage();
             return new Response(json_encode($data));
         }
     }
 
-    function tiempo_transcurrido($fecha) 
-    {
-        if(empty($fecha)) {
+    function tiempo_transcurrido($fecha) {
+        if (empty($fecha)) {
             return "No hay fecha";
         }
 
         $intervalos = array("segundo", "minuto", "hora", "día", "semana", "mes", "año");
-        $duraciones = array("60","60","24","7","4.35","12");
+        $duraciones = array("60", "60", "24", "7", "4.35", "12");
 
         $ahora = time();
         $Fecha_Unix = strtotime($fecha);
 
-        if(empty($Fecha_Unix)) {   
+        if (empty($Fecha_Unix)) {
             return "Fecha incorrecta";
         }
-        if($ahora > $Fecha_Unix) {   
+        if ($ahora > $Fecha_Unix) {
             $diferencia = $ahora - $Fecha_Unix;
             $tiempo = "Hace";
         } else {
-            $diferencia = $Fecha_Unix -$ahora;
+            $diferencia = $Fecha_Unix - $ahora;
             $tiempo = "Dentro de";
         }
-        for($j = 0; $diferencia >= $duraciones[$j] && $j < count($duraciones)-1; $j++) {
+        for ($j = 0; $diferencia >= $duraciones[$j] && $j < count($duraciones) - 1; $j++) {
             $diferencia /= $duraciones[$j];
         }
 
         $diferencia = round($diferencia);
 
-        if($diferencia != 1) {
+        if ($diferencia != 1) {
             $intervalos[5].="e"; //MESES
             $intervalos[$j].="s";
         }
-        
-        
-        if($intervalos[$j] == 'meses' and $diferencia >= 12){
+
+
+        if ($intervalos[$j] == 'meses' and $diferencia >= 12) {
             $diferencia /= $duraciones[$j];
             $j++;
             $diferencia = round($diferencia);
-            
-            if($diferencia != 1) {
+
+            if ($diferencia != 1) {
                 $intervalos[$j].="s";
             }
         }
 
         return "$tiempo $diferencia $intervalos[$j]";
     }
+
 }
 
 //FIN DEL CONTROLADOR

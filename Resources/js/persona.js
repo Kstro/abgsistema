@@ -864,6 +864,7 @@ function removeEdu(val)
         }
     });
 }
+/*
 function addOrganizacion() {
 
 
@@ -940,7 +941,7 @@ function addOrganizacion() {
                 });
 
     }
-}
+}*/
 function removeOrg(val)
 {
     $.ajax({

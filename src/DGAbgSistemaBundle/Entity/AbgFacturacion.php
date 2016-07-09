@@ -116,7 +116,12 @@ class AbgFacturacion
      * @ORM\Column(name="id_user", type="integer", nullable=false)
      */
     private $idUser;
-
+ /**
+     * @var string
+     *
+     * @ORM\Column(name="comprobante", type="string", length=100, nullable=true)
+     */
+    private $comprobante;
 
     /**
      * Get id
@@ -127,7 +132,28 @@ class AbgFacturacion
     {
         return $this->id;
     }
+        /**
+     * Set servicio
+     *
+     * @param string $comprobante
+     * @return AbgFacturacion
+     */
+    public function setComprobante($comprobante)
+    {
+        $this->comprobante = $comprobante;
 
+        return $this;
+    }
+
+    /**
+     * Get comprobante
+     *
+     * @return string 
+     */
+    public function getComprobante()
+    {
+        return $this->comprobante;
+    }
     /**
      * Set fechaPago
      *

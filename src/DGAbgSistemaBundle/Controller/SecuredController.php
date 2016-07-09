@@ -76,7 +76,7 @@ class SecuredController extends Controller
     }
 
     /**
-     * @Route("/logout", name="abogado_logout")
+     * @Route("/logout", name="abogado_logout" , options={"expose"=true})
      */
     public function logoutAction()
     {
@@ -110,7 +110,7 @@ class SecuredController extends Controller
                           <tr>
                             <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
                             <center>
-                              <img style=\"width:50%;\" src=\"http://www.abogados.com.sv/badge1.png\">
+                              <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
                             </center>
                                 <p>Hola " . $usuario->getRhPersona() . ", tu has recibido una solicitud para reestablecer tu contraseña.</p>
                                 <p> Usuario: " . $usuario->getUsername() . "</p>

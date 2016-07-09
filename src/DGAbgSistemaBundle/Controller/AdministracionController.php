@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * AbgPersona controller.
@@ -122,6 +123,136 @@ class AdministracionController extends Controller {
     }
     
     /**
+     * Aprobación de la pregunta seleccionada
+     *
+     * @Route("/aprobarpregunta", name="aprobar_pregunta", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function aprobarPreguntaAction() {
+        
+        try {
+            $request = $this->getRequest();
+            $idpreg = $request->get('idpreg');
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction();
+            $abgPregunta = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->find($idpreg);
+            
+            $especialidad = $abgPregunta->getAbgEspecialidad()->getId();
+            
+            $sql = "SELECT abg_persona.correoelectronico 
+                    FROM ctl_usuario JOIN    abg_persona
+                      on  ctl_usuario.rh_persona_id=abg_persona.id AND ctl_usuario.notificacion=1 AND abg_persona.estado IN(0,1)
+                    JOIN ctl_rol_usuario
+                      ON ctl_usuario.id=ctl_rol_usuario.ctl_usuario_id AND ctl_rol_usuario.ctl_rol_id = 2
+                    JOIN abg_persona_especialidad 
+                      ON abg_persona_especialidad.abg_persona_id=abg_persona.id 
+                    AND abg_persona_especialidad.ctl_especialidad_id=" . $especialidad;
+            
+            $stmt = $em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $coenv = $stmt->fetchAll();
+            
+            $abgPregunta->setEstado(1);
+            $abgPregunta->setContador(0);
+            $em->merge($abgPregunta);
+            $em->flush();
+
+             if (count($coenv) > 0) {
+                foreach ($coenv as $value) {
+                    $email = $value['correoelectronico'];            
+                    $this->get('envio_correo')->sendEmail($email, "", "", "", "
+                        <table style=\"width: 540px; margin: 0 auto;\">
+                            <tr>
+                                <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
+                                <center>
+                                    <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
+                                </center>                                                
+                                    <p>Hola " . $email . " hay una nueva pregunta en la que puedes participar dando tu opinion</p>
+                                    <p>Haz click en el enlace y sé el primero en contestar</p>
+                                    <a href='http://abg.localhost/app_dev.php/admin/panelrespuestacentro/respuesta_abg?id=" . $idpreg . "'>Haz clik aquí para responder</a> 
+                                </td>
+                                <td class=\"expander\"></td>
+                            </tr>
+                        </table>
+                    ");
+                }
+             }
+            $em->getConnection()->commit();
+            
+            $response = new JsonResponse();
+            $response->setData(array(
+                                  'exito'   => '1',                                  
+                               ));  
+            
+            return $response;            
+            
+        } catch (Exception $e) {
+            $em->getConnection()->rollback();
+            $em->close();
+
+            $data['msj'] = $e->getMessage();
+            return new Response(json_encode($data));
+        }
+    }
+    
+    /**
+     * Rechazo de la pregunta seleccionada
+     *
+     * @Route("/rechazarpregunta", name="rechazar_pregunta", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function rechazarPreguntaAction() {
+        
+        try {
+            $request = $this->getRequest();
+            $idpreg = $request->get('idpreg');
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction();
+            $abgPregunta = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->find($idpreg);
+            
+            
+            $email = $abgPregunta->getCorreoelectronico();
+            
+            $this->get('envio_correo')->sendEmail($email, "", "", "", "
+                <table style=\"width: 540px; margin: 0 auto;\">
+                    <tr>
+                        <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
+                        <center>
+                            <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
+                        </center>                                                
+                            <p>Hola " . $email . " La pregunta que haz realizado no ha sido aprobada.</p>
+                            <p>Por tratarse de una pregunta con contenido inapropiado.</p>
+                        </td>
+                        <td class=\"expander\"></td>
+                    </tr>
+                </table>
+            ");
+               
+            
+            $em->remove($abgPregunta);
+            $em->flush();
+ 
+            $em->getConnection()->commit();
+            
+            $response = new JsonResponse();
+            $response->setData(array(
+                                  'exito'   => '1',                                  
+                               ));  
+            
+            return $response;            
+            
+        } catch (Exception $e) {
+            $em = $this->getDoctrine()->getManager();
+            
+            $em->getConnection()->rollback();
+            $em->close();
+
+            $data['msj'] = $e->getMessage();
+            return new Response(json_encode($data));
+        }
+    }
+    
+    /**
      * 
      *
      * @Route("/aprobacion/preguntaspendientes/data", name="preguntas_pendientes_data", options={"expose"=true})
@@ -141,27 +272,31 @@ class AdministracionController extends Controller {
         $busqueda['value'] = str_replace(' ', '%', $busqueda['value']);
         $rsm = new ResultSetMapping();
 
-        $sql = "SELECT preg.id as preguntaId, preg.pregunta, preg.estado, preg.fechapregunta "
-                . "FROM abg_pregunta preg "
+        $sql = "SELECT preg.id as preguntaId, preg.pregunta, preg.estado, preg.fechapregunta, esp.nombre_especialidad as especialidad "
+                . "FROM abg_pregunta preg INNER JOIN ctl_especialidad esp on preg.ctl_especialidad = esp.id "
                 . "WHERE preg.estado = 2 "
-                . "ORDER BY preg.fechapregunta DESC LIMIT $start, $longitud ";
+                . "ORDER BY preg.fechapregunta ASC LIMIT $start, $longitud ";
         
         $rsm->addScalarResult('preguntaId','preguntaId');
         $rsm->addScalarResult('pregunta','pregunta');
         $rsm->addScalarResult('estado','estado');
         $rsm->addScalarResult('fechapregunta','fechapregunta');
+        $rsm->addScalarResult('especialidad','especialidad');
 
         $resultadoSql = $em->createNativeQuery($sql, $rsm)
                                   ->getResult();
         
         $pregPtes = array();
+        
         foreach ($resultadoSql as $key => $value) {
-            $correlativo = $key + 1;
-            $pregPtes['corr'] = '<div class="text-center">' . $correlativo . '</div>';
+            $start++;
+            //var_dump($value);
+            $pregPtes['corr'] = '<div class="text-center">' . $start . '</div>';
             $pregPtes['pregunta'] = $value['pregunta'];
             $pregPtes['tiempo'] = '<div class="text-center">' . $this->tiempo_transcurrido($value['fechapregunta']) . '</div>';
-            $pregPtes['link'] = '<div class="text-center"><button type="button" class="btn btn-success btn-xs aprobar" style="margin-right: 3px" data-toggle="tooltip"  data-container="body" title="Aprobar" id="' .$value['preguntaId'] . '"><span class="glyphicon glyphicon-ok"></span></button>'
-                                . '<button type="button" class="btn btn-danger btn-xs rechazar" data-toggle="tooltip"  data-container="body" title="Rechazar" id="' .$value['preguntaId'] . '"><span class="glyphicon glyphicon-remove"></span></button></div>';
+            $pregPtes['especialidad'] = '<div class="text-center">' . $value['especialidad'] . '</div>';
+            $pregPtes['link'] = '<div class="text-center"><button type="button" class="btn btn-default btn-xs detalle" style="margin-right: 3px" data-toggle="tooltip"  data-container="body" title="Mostrar detalle" id="' .$value['preguntaId'] . '"><span class="glyphicon glyphicon-eye-open"></span></button>';
+                                //. '<button type="button" class="btn btn-danger btn-xs rechazar" data-toggle="tooltip"  data-container="body" title="Eliminar" id="' .$value['preguntaId'] . '"><span class="glyphicon glyphicon-remove"></span></button></div>';
             
             array_push($preguntas['data'], $pregPtes);
         }
@@ -170,6 +305,38 @@ class AdministracionController extends Controller {
         $preguntas['recordsFiltered']= count($preguntasPendientes);
         
         return new Response(json_encode($preguntas));
+    }
+    
+    /**
+     * @Route("/aprobacion/busqueda/pregunta/", name="aprobacion_busqueda_pregunta", options={"expose"=true})
+     * @Method("GET")
+     * 
+     */
+    public function busquedaPreguntaAAprobarAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+        $id = $request->query->get('idpreg');
+        
+        $abgPregunta = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->find($id);  
+        
+        $pregunta = array();
+        
+        $pregunta['pregunta'] = $abgPregunta->getPregunta();
+        $pregunta['email'] = $abgPregunta->getCorreoelectronico();
+        $pregunta['detalle'] = $abgPregunta->getDetalle();
+        $pregunta['fecha'] = $abgPregunta->getFechaPregunta()->format('d/m/Y');
+        $pregunta['especialidad'] = $abgPregunta->getAbgEspecialidad()->getNombreEspecialidad();
+        
+        $response = new JsonResponse();
+        $response->setData(array(
+                              'pregunta'  => $pregunta,
+                           ));  
+            
+        return $response; 
+        
+        
+        return new Response(json_encode($pregunta));
     }
     
     function tiempo_transcurrido($fecha) 
