@@ -40,6 +40,11 @@
         });
     </script>
     <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+    <script>
         function mostrarImagen(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
@@ -230,7 +235,10 @@
                                                         <td>{{ row.blog }}</td>
                                                         <td class="text-center">{{ row.nombre }}</td>
                                                         <td class="text-center">
-                                                            <a href="{{ path('admin_showBlog', { 'id': row.id }) }}">Ver detalles</a>
+                                                            {#<a href="{{ path('admin_showBlog', { 'id': row.id }) }}">Ver detalles</a>#}
+                                                            <a href="{{ path('admin_showBlog', { 'id': row.id }) }}" style="margin: 2px;"><span class="glyphicon glyphicon-eye-open" data-toggle="tooltip" title="Ver entrada" aria-hidden="true"></span></a>
+                                                            <a href="{{ path('admin_showBlog', { 'id': row.id }) }}" style="margin: 2px;"><span class="glyphicon glyphicon-remove" data-toggle="tooltip" title="Eliminar entrada" aria-hidden="true"></span></a>
+                                                            <a href="{{ path('admin_showBlog', { 'id': row.id }) }}" style="margin: 2px;"><span class="glyphicon glyphicon-pencil" data-toggle="tooltip" title="Editar entrada" aria-hidden="true"></span></a>
                                                         </td>
                                                     </tr>
                                                 {% endfor %}
@@ -248,7 +256,7 @@
                                         <h3 class="box-title">ENTRADA DE BLOG </h3>
                                     </div>
                                     <div class="box-body">
-                                        <form role="form" id="endatos">
+                                        <form role="form" id="endatos" >
                                             <div class="form-group">
                                                 <label for="nombreEmpleado">Título de la entrada</label>
                                                 <input type="text" value="" class="form-control" id="txttitulo" name="titulo"
