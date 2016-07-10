@@ -41,7 +41,10 @@ class DirectorioController extends Controller {
         } else {
             $ciudad = "";
         }
-
+        
+        $url = $this->generateUrl('directorio_index');
+        //var_dump($url);
+        
         //var_dump($busqueda);
         return $this->render('directorio/directorio.html.twig', array(
 //            'ciudades' => $ctlCiudads,
@@ -139,7 +142,6 @@ class DirectorioController extends Controller {
         foreach($busquedaWords as $key=>$word){
             if($key<(count($busquedaWords)-1)){
                 $busquedaString.="CONCAT(upper(nombres),' ',upper(apellido)) LIKE '%".$word."%' OR ";
-                
             }
             else{
                 $busquedaString.=" CONCAT(upper(nombres),' ',upper(apellido)) LIKE '%".$word."%' ";

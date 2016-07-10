@@ -54,6 +54,15 @@
             text-overflow: ellipsis;
             word-wrap: break-word;
         }
+        #column-left {
+  
+    float: right;
+    position: fixed;
+
+    
+    overflow: hidden;
+
+}
     </style>
     <script type="text/javascript">
         $(document).ready(function() {
@@ -188,9 +197,18 @@
 {% block cuerpo %}
 
     <!-- PRIMERA BLOQUE CON FOTO DE PERFIL -->
-
+    
+  
     <div id="verPerfil"> </div>
     <div id="editarPerfil"> 
+       {% for datos in suscripcion %}
+          <div class="alert alert-warning" style=" margin: 10px;">
+             
+              {%if(datos.servicio=="Trial")%}
+  <strong>Aviso!</strong>Suscribete por $10 | {{datos.servicio}}{{datos.caducidad}}
+</div>  
+  {%endif%}
+{%endfor%}
         <div class="row" style=" margin-left:15px; margin-right:15px; ">
             <div class="box box-widget">
                 <div class="box-body">
@@ -214,18 +232,17 @@
                                         <div class="col-xs-12">
                                             <p style="margin-top: 0px; font-size: 23px; margin-bottom: 4px; " >
                                                 <strong>  
-                                                       <a href="#" id="txtTituloProfesional" data-type="select" data-pk="1" data-title="Nombre" data-placement="right" class="editable editable-click" title="Título Profesional">
-                                                    {%if datos.tprofesional|default is not empty %}{%if(datos.tprofesional=="1")%}{%if datos.genero|default is not empty %}{%if(datos.genero=="F")%}Licda.{%elseif(datos.genero=="M")%}Lic.
+                                                    <a href="#" id="txtTituloProfesional"  title="Título Profesional">
+                                                        {%if datos.tprofesional|default is not empty %}{%if(datos.tprofesional=="1")%}{%if datos.genero|default is not empty %}{%if(datos.genero=="F")%}Licda.{%elseif(datos.genero=="M")%}Lic.
+                                                                    {%endif%}
                                                                 {%endif%}
-                                                            {%endif%}
-                                                        {%elseif(datos.tprofesional=="2")%}Magíster.{%elseif(datos.tprofesional=="3")%}{%if datos.genero|default is not empty %}{%if(datos.genero=="F")%}Dra.{%elseif(datos.genero=="M")%}Dr.
-                                                                {%endif%}
-                                                            {%endif%}
+                                                            {%elseif(datos.tprofesional=="2")%}Mgtr.{%elseif(datos.tprofesional=="3")%}{%if datos.genero|default is not empty %}{%if(datos.genero=="F")%}Dra.{%elseif(datos.genero=="M")%}Dr.
+                                                                    {%endif%}
+                                                            {%endif%}{%elseif(datos.tprofesional=="4")%}Br.{%endif%}
+                                                        {%else%}
+                                                            Título Profesional
                                                         {%endif%}
-                                                    {%else%}
-                                                        Título Profesional
-                                                    {%endif%}
-                                                </a>
+                                                    </a>
                                                     <a href="#" id="txtNombres" data-type="addnombres" data-pk="1" 
                                                        data-title="Nombres | Apellidos " data-placement="right" class="editable editable-click" title="Nombre y Apellido"> {{datos.nombre~' '~datos.apellido}}
                                                     </a>
@@ -239,8 +256,8 @@
                                         <div class="col-xs-6 col-sm-6" >
                                             <p style="color: #777777;margin-top: -3px; margin-bottom: 0px;" >
                                                 <a href="#" id="txtTituloU" data-type="text" id="idpuesto" data-pk="1" data-title="Nombre" data-placement="right" class="editable editable-click" title="Título del puesto" data-placeholder='ej.Abogado y notario'>
-                                                {%if datos.tituloPuesto|default is not empty %}
-                                                    {{datos.tituloPuesto}}
+                                                    {%if datos.tituloPuesto|default is not empty %}
+                                                        {{datos.tituloPuesto}}
                                                     {%endif%}
                                                 </a>
                                             </p>
@@ -329,7 +346,7 @@
                                                         {%if RegistradaExperiencia|default is not empty %}
                                                             {% for datos in RegistradaExperiencia %}
                                                                 {%if datos.fechaFin|default is not empty %}
-                                                                   
+
                                                                 {%else%} 
                                                                     {%if datos.url|default is not empty %}
                                                                         <a href="{{path('busquedaPerfil', {url:datos.url})}}" id="experienciaActual">{{datos.empresa}}</a>
@@ -338,16 +355,16 @@
                                                                     {%endif%} 
                                                                 {%endif%}
                                                             {%endfor%}
-                                                           
+
                                                         {%elseif(trabajo|default is empty)%}
                                                             <a href="#Experiencia" id="experienciaActual">Trabajas?</a>
-                                                             {%else%}
+                                                        {%else%}
                                                             <a href="#Experiencia" id="experienciaActual"> Añadir experiencia </a>
                                                         {%endif%}
-                                                       
-                                                        
-                                                       
-                                                       
+
+
+
+
                                                     </span>
                                                 </div>
                                             </div>
@@ -383,7 +400,7 @@
                                                 <div class="col-xs-8 col-sm-9" >
                                                     <span style="font-size:13px;">
                                                         <a href="#" id="txtGenero" data-type="select" data-pk="1" data-title="Genero" data-placement="right" class="editable editable-click sans" title="Genero">
-                                                            {%if datos.genero|default is not empty %}{%if(datos.genero=="F")%}Mujer{%elseif(datos.genero=="M")%}Hombre
+                                                            {%if datos.genero|default is not empty %}{%if(datos.genero=="F")%}Femenino{%elseif(datos.genero=="M")%}Masculino
                                                                 {%endif%}
                                                             {%else%}
                                                                 Genero
@@ -924,11 +941,39 @@
                     </div>
                 </div>
             </div>
+            <!-- popover Titulo Universitario -->
+            <div id="txtTituloProfesional-content" style=" display: none; ">
+                <div class="row">
+                    <div class="col-sm-7 col-xs-7">
+                        <div id="divT" class="row">
+                            <div class=" col-sm-12 col-xs-12">
+                                <select style="width:100%;" class="form-control input-sm" name="STituloProfesional" id="STituloProfesional" >
+                                    <option value="0">-- Seleccione --</option>
+                                    <option value="3">Doctorado</option>
+                                    <option value="4">Estudiante</option>
+                                    <option value="1">Licenciatura</option>
+                                    <option value="2">Magíster</option>
+                                </select>
+                                <p style=" color: #FF0000;margin-top:2px;margin-bottom:0px;" id="ptitulo"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5 col-xs-5">
+                        <div class="row">
+                            <div class="col-sm-12 col-xs-12">
+                                <button type="button" class="btn btn-primary btn-sm "  onclick="bntTituloP()"><i class="glyphicon glyphicon-ok"></i></button>
+                                <button class="btn btn-default btn-sm editable-cancel" type="button" onClick="bntCancelTitulo()"><i class="glyphicon glyphicon-remove"></i></button>
+                            </div>
+                        </div>
 
+                    </div>
+                </div>
+            </div>
+            <!-- -->
             <script type="text/javascript">
                 $(function () {
                 $('[data-toggle="tooltip"]').tooltip();
-                        $('a[href=#divEducacion]').click(function () {
+                $('a[href=#divEducacion]').click(function () {
                 if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')
                         && location.hostname == this.hostname) {
                 var $target = $(this.hash);
@@ -952,7 +997,7 @@
                 }
                 }
                 });
-                   $('a[href=#Especialidades]').click(function () {
+                $('a[href=#Especialidades]').click(function () {
                 if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')
                         && location.hostname == this.hostname) {
                 var $target = $(this.hash);
@@ -976,11 +1021,18 @@
 
 
                         });
-                        $('#txtDepMun').on('shown.bs.popover', function () {
+                        $("#txtTituloProfesional").popover({
+                        html : true,
+                                content: function() {
 
+                                return $("#txtTituloProfesional-content").html();
+                                }
+                        });
+                        $('#txtDepMun').on('shown.bs.popover', function () {
                         $('.popover').css("width", "600px");
-                        /*  $('.popover-content').css("width", "290px");
-                         $('.popover-content').css("height", "100px");*/
+                        });
+                        $('#txtTituloProfesional').on('shown.bs.popover', function () {
+                        $('.popover').css("width", "600px");
                         });
                         })
 
@@ -1016,9 +1068,63 @@
                         }
                         }
 
+                function bntTituloP()
+                {
+
+                if ($("#STituloProfesional").val() == 0){
+                $("#ptitulo").text(" Requerido!.");
+                }
+                else
+                {
+                $.ajax({
+                type: 'POST',
+                        async: false,
+                        dataType: 'json',
+                        data: {tituloProfesional:$("#STituloProfesional").val(), hPersona: $('input#hPersona').val(), n: 3},
+                        url: Routing.generate('edit_persona'),
+                        success: function (data)
+                        {
+                        switch (data.val)
+                        {
+                        case "1":
+                                if (($("#txtGenero").text()).trim()== "Masculino")
+                        {
+                        $("#txtTituloProfesional").html('<strong>Lic.</strong>');
+                        }
+                        else{$("#txtTituloProfesional").html('<strong>Licda.</strong>'); }
+                        break;
+                        case "2":
+                                $("#txtTituloProfesional").html('<strong>Mgtr.</strong>');
+                        break;
+                        case "3":
+                                if (($("#txtGenero").text()).trim() == "Masculino")
+                        {
+                        $("#txtTituloProfesional").html('<strong>Dr.</strong>');
+                        } else
+                        { $("#txtTituloProfesional").html('<strong>Dra.</strong>'); }
+                        break;
+                        case "4":
+                                $("#txtTituloProfesional").html('<strong>Br.</strong>');
+                        break;
+                        }
+
+                        $('#txtTituloProfesional').popover('hide')
+                        },
+                        error: function (xhr, status)
+                        {
+                        alert('Disculpe, existió un problema');
+                        }
+                });
+                }
+                }
+
                 function bntCancelDepMun()
                 {
                 $('#txtDepMun').popover('hide')
+                }
+                function bntCancelTitulo()
+                {
+                $('#txtTituloProfesional').popover('hide')
                 }
             </script>
 

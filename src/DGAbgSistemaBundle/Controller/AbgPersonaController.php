@@ -22,6 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -291,9 +292,27 @@ class AbgPersonaController extends Controller {
 
         try {
             if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+                
                 $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
                 $username = $this->container->get('security.context')->getToken()->getUser()->getId();
+                $Usuario = $this->container->get('security.context')->getToken()->getUser();
+            
+                $userEstadoCorreo=$Usuario->getEstadoCorreo();
+                
+            $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($idPersona);
 
+
+                       if($userEstadoCorreo==0)
+                {
+                    return $this->redirect($this->generateUrl('confirmarcorreo', array('id'=>$Usuario->getCodigoConfirmar())));
+                }
+                elseif($Persona->getEstadoMetodoPago()==0)
+                {
+                      return $this->redirect($this->generateUrl('planpago', array('id'=>$Usuario->getCodigoConfirmar())));
+                }
+else
+{
+                
                 $sqlRol = "SELECT  r.id As id, r.rol As rol"
                         . " FROM  ctl_rol_usuario ru "
                         . " JOIN ctl_rol r ON r.id=ru.ctl_rol_id AND ru.ctl_usuario_id=" . $username;
@@ -302,16 +321,26 @@ class AbgPersonaController extends Controller {
                 $stm->execute();
                 $RolUser = $stm->fetchAll();
 
-
+     
                 $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
                         . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.tituloProfesional AS tprofesional, p.verificado As verificado, "
                         . " p.genero AS genero, p.tituloPuesto As tituloPuesto "
                         . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
                 $result_persona = $em->createQuery($dql_persona)->getArrayResult();
 
+                $sqlPersona = "select per.id AS idAbg, date_format(fac.fecha_pago, '%d/%m/%Y') AS fechaPago, fac.servicio AS servicio, fac.plazo,TIMESTAMPDIFF(DAY,CURDATE(),fac.fecha_pago) AS caducidad, fac.monto AS monto, 
+                        fac.descripcion As descripcion
+                        from abg_persona per  "
+                       . " inner join abg_facturacion fac on per.id=" . $idPersona ." and per.id=fac.abg_persona_id and fac.servicio <> 'Espacio publicitario'";
+
+                $stm = $this->container->get('database_connection')->prepare($sqlPersona);
+                $stm->execute();
+                $suscripcion = $stm->fetchAll();
+
 
 
                 $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
+
 
 
                 $dql_ciudad = "SELECT c.nombreCiudad As nombre, es.nombreEstado estado"
@@ -476,9 +505,11 @@ class AbgPersonaController extends Controller {
                             'abgFoto' => $result_foto,
                             'cumplimiento' => $cumplimiento,
                             'NNotificaciones' => $NNotificaciones[0][1],
-                            'trabajo' => $trabajo
+                            'trabajo' => $trabajo,
+                    'suscripcion'=>$suscripcion
                                 // 'ru'=>$RolUser[0]['id']
                 ));
+}
             } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
                 $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
 
@@ -851,7 +882,7 @@ class AbgPersonaController extends Controller {
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
                     . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado,  p.tituloProfesional AS tprofesional,"
-                    . " p.verificado As verificado, p.genero AS genero "
+                    . " p.verificado As verificado, p.genero AS genero, p.tituloPuesto As tituloPuesto "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
 
@@ -885,7 +916,7 @@ class AbgPersonaController extends Controller {
             $stm->execute();
             $Experiencia = $stm->fetchAll();
 
-            $sqlEdu = "SELECT e.id AS idEs, e.institucion AS institucion, e.titulo AS titulo, e.anio_inicio AS anioIni, e.anio_graduacion AS anio, tp.abg_titulocol AS disciplina "
+            $sqlEdu = "SELECT e.id AS idEs, e.institucion AS institucion, e.titulo AS titulo, e.anio_inicio AS anioIni, e.anio_graduacion AS anio "
                     . " FROM abg_estudio e "
                     . " JOIN  abg_persona p ON e.abg_persona_id=p.id AND e.abg_persona_id=" . $idPersona
                     . " ORDER BY e.anio_inicio Asc";
@@ -1072,7 +1103,7 @@ class AbgPersonaController extends Controller {
 
                 case 3:
                     $Persona->setTituloProfesional($request->get('tituloProfesional'));
-
+                    $data['val'] = $request->get('tituloProfesional');
                     break;
                 case 4:
                     $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
@@ -1080,6 +1111,24 @@ class AbgPersonaController extends Controller {
                     $Persona->setVerificado($request->get('estado'));
                     if ($request->get('estado') === '1') {
                         $data['msj'] = "Abogado verificado";
+                        
+                        $email = $Persona->getCorreoelectronico();
+                        
+                        $this->get('envio_correo')->sendEmail($email, "", "", "", "
+                                    <table style=\"width: 540px; margin: 0 auto;\">
+                                        <tr>
+                                            <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
+                                            <center>
+                                                <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
+                                            </center>                                                
+                                                <p>Hola " . $Persona->getNombres() ." ". $Persona->getApellido() . ".</p>
+                                                <p>La solicitud de verificación como abogado ha sido aprobada.</p>
+                                            </td>
+                                            <td class=\"expander\"></td>
+                                        </tr>
+                                    </table>
+                                ");
+                        
                     } else {
                         $data['msj'] = "Abogado no verificado";
                     }
@@ -1409,7 +1458,7 @@ class AbgPersonaController extends Controller {
             $fechaFin = "";
             if ((($request->get('experiencia') != null))) {
                 $sql = "SELECT  el.id AS id, el.puesto AS puesto, el.compania AS empresa, el.funcion AS funcion, em.id idEmp, "
-                        . " f.src AS src, date_format(el.facha_inicio, '%d-%m-%Y') As fechaIn, date_format(el.fecha_fin, '%d-%m-%Y') As fechaFin, "
+                        . " f.src AS src, el.facha_inicio As fechaIn, el.fecha_fin As fechaFin, "
                         . " el.ubicacion AS hubicacion "
                         . " FROM  abg_experiencia_laboral el "
                         . " JOIN abg_persona p on p.id=el.abg_persona_id AND  el.id=" . $request->get('experiencia')
@@ -1450,7 +1499,7 @@ class AbgPersonaController extends Controller {
 
             $idEmpresa = "";
             $IdExperiencia = "";
-            $puesto="";
+            $puesto = "";
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
             $fechaIni = date_create($datos['txtFechaIni']);
 
@@ -1520,22 +1569,22 @@ class AbgPersonaController extends Controller {
                                     $AbgPersonaEmpresa->setCtlEmpresa($Empresa);
                                     $em->persist($AbgPersonaEmpresa);
                                     $em->flush();
-                                    
-                                 if ($Persona->getTituloPuesto() == null) {
-                                    $Persona->setTituloPuesto($datos['txtpuesto']);
-                                    $em->merge($Persona);
-                                    $em->flush();
-                                    
-                                    $data['puesto']=$Persona->getTituloPuesto();
-                                }
+
+                                    if ($Persona->getTituloPuesto() == null) {
+                                        $Persona->setTituloPuesto($datos['txtpuesto']);
+                                        $em->merge($Persona);
+                                        $em->flush();
+
+                                        $data['puesto'] = $Persona->getTituloPuesto();
+                                    }
                                 }
                             } else {
                                 if ($Persona->getTituloPuesto() == null) {
                                     $Persona->setTituloPuesto($datos['txtpuesto']);
                                     $em->merge($Persona);
                                     $em->flush();
-                                     
-                                     $data['puesto']=$Persona->getTituloPuesto();
+
+                                    $data['puesto'] = $Persona->getTituloPuesto();
                                 }
                             }
                         } catch (Exception $e) {
@@ -2475,7 +2524,7 @@ class AbgPersonaController extends Controller {
      */
     public function RegistraIdiomaAction() {
 
-        try {
+    try {
             $em = $this->getDoctrine()->getManager();
             $request = $this->getRequest();
 
@@ -2487,6 +2536,10 @@ class AbgPersonaController extends Controller {
                 
             } else {
                 $PersonaIdioma = $RepositorioPI->findBy(array('abgPersona' => $request->get('hPersona')));
+                foreach ($PersonaIdioma as $objPersonaIdioma) {
+                    $em->remove($objPersonaIdioma);
+                    $em->flush();
+                }
             }
 
             if (is_null($array)) {
@@ -2692,12 +2745,22 @@ class AbgPersonaController extends Controller {
 
             switch ($RolUser[0]['rol']) {
                 case 'ROLE_USER':
+                    $sqlEstadoVerificacion = "SELECT per.verificado, fot.src "
+                                            . "FROM abg_foto fot "
+                                            . "JOIN abg_persona per ON per.id = fot.abg_persona_id AND fot.tipo_foto = 5 "
+                                            . "WHERE per.id=" . $idPersona;
+                    
+                    $stm = $this->container->get('database_connection')->prepare($sqlEstadoVerificacion);
+                    $stm->execute();
+                    $estadoVerificacion = $stm->fetchAll();
+                    
                     return $this->render(':abgpersona:panelVerificacion.html.twig', array(
                                 'nombreCorto' => $nombreCorto,
                                 'abgPersona' => $result_persona,
                                 'usuario' => $idPersona,
                                 'TipoPago' => $TipoPago,
                                 'abgFoto' => $result_foto,
+                                'estadoVerificacion' => $estadoVerificacion
                     ));
 
                     break;
@@ -2711,10 +2774,6 @@ class AbgPersonaController extends Controller {
                     $stm = $this->container->get('database_connection')->prepare($sqlverificacion);
                     $stm->execute();
                     $solicitud_verificacion = $stm->fetchAll();
-
-
-
-
 
                     return $this->render(':administracion:panelVerificacion.html.twig', array(
                                 'nombreCorto' => $nombreCorto,
@@ -2966,6 +3025,69 @@ class AbgPersonaController extends Controller {
             return new Response(json_encode($data));
 
 // echo $e->getMessage();   
+        }
+    }
+    
+    
+    
+    
+    
+    /**
+     * Rechazo de la solicitud de verificacion
+     *
+     * @Route("/verificar/abogado/aceptar/solicitud", name="verificar_abogado", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function aprobarVerificarAbogadoAction() {
+        
+        try {
+            $request = $this->getRequest();
+            $id= $request->get('id');
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction();
+            $abogado = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->find($id);
+            
+            $foto = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findBy(array('abgPersona'=>$abogado->getId(),'tipoFoto'=>5));
+            //var_dump($abogado->getId());
+            //die();
+            $email = $abogado->getCorreoelectronico();
+            //var_dump($email);
+            //die();
+            $this->get('envio_correo')->sendEmail($email, "", "", "", "
+                <table style=\"width: 540px; margin: 0 auto;\">
+                    <tr>
+                        <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
+                        <center>
+                            <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
+                        </center>                                                
+                            <p>Hola " . $email . " Por este medio queremos informarle que su solicitud de verificación a sido rechazada. Para más información contáctenos al teléfono +503 2512-0247.</p>
+                        </td>
+                        <td class=\"expander\"></td>
+                    </tr>
+                </table>
+            ");
+               
+            //var_dump($foto[0]);
+            $em->remove($foto[0]);
+            $em->flush();
+ 
+            $em->getConnection()->commit();
+            
+            $response = new JsonResponse();
+            $response->setData(array(
+                                  'exito'   => '1',                                  
+                               ));  
+            
+            return $response;            
+            
+        } catch (Exception $e) {
+            $em = $this->getDoctrine()->getManager();
+            
+            $em->getConnection()->rollback();
+            $em->close();
+
+            $data['msj'] = $e->getMessage();
+            return new Response(json_encode($data));
         }
     }
 

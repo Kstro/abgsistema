@@ -272,8 +272,8 @@ class AdministracionController extends Controller {
         $busqueda['value'] = str_replace(' ', '%', $busqueda['value']);
         $rsm = new ResultSetMapping();
 
-        $sql = "SELECT preg.id as preguntaId, preg.pregunta, preg.estado, preg.fechapregunta "
-                . "FROM abg_pregunta preg "
+        $sql = "SELECT preg.id as preguntaId, preg.pregunta, preg.estado, preg.fechapregunta, esp.nombre_especialidad as especialidad "
+                . "FROM abg_pregunta preg INNER JOIN ctl_especialidad esp on preg.ctl_especialidad = esp.id "
                 . "WHERE preg.estado = 2 "
                 . "ORDER BY preg.fechapregunta ASC LIMIT $start, $longitud ";
         
@@ -281,6 +281,7 @@ class AdministracionController extends Controller {
         $rsm->addScalarResult('pregunta','pregunta');
         $rsm->addScalarResult('estado','estado');
         $rsm->addScalarResult('fechapregunta','fechapregunta');
+        $rsm->addScalarResult('especialidad','especialidad');
 
         $resultadoSql = $em->createNativeQuery($sql, $rsm)
                                   ->getResult();
@@ -289,12 +290,13 @@ class AdministracionController extends Controller {
         
         foreach ($resultadoSql as $key => $value) {
             $start++;
-            
+            //var_dump($value);
             $pregPtes['corr'] = '<div class="text-center">' . $start . '</div>';
             $pregPtes['pregunta'] = $value['pregunta'];
             $pregPtes['tiempo'] = '<div class="text-center">' . $this->tiempo_transcurrido($value['fechapregunta']) . '</div>';
-            $pregPtes['link'] = '<div class="text-center"><button type="button" class="btn btn-success btn-xs aprobar" style="margin-right: 3px" data-toggle="tooltip"  data-container="body" title="Aprobar" id="' .$value['preguntaId'] . '"><span class="glyphicon glyphicon-ok"></span></button>'
-                                . '<button type="button" class="btn btn-danger btn-xs rechazar" data-toggle="tooltip"  data-container="body" title="Eliminar" id="' .$value['preguntaId'] . '"><span class="glyphicon glyphicon-remove"></span></button></div>';
+            $pregPtes['especialidad'] = '<div class="text-center">' . $value['especialidad'] . '</div>';
+            $pregPtes['link'] = '<div class="text-center"><button type="button" class="btn btn-default btn-xs detalle" style="margin-right: 3px" data-toggle="tooltip"  data-container="body" title="Mostrar detalle" id="' .$value['preguntaId'] . '"><span class="glyphicon glyphicon-eye-open"></span></button>';
+                                //. '<button type="button" class="btn btn-danger btn-xs rechazar" data-toggle="tooltip"  data-container="body" title="Eliminar" id="' .$value['preguntaId'] . '"><span class="glyphicon glyphicon-remove"></span></button></div>';
             
             array_push($preguntas['data'], $pregPtes);
         }
@@ -303,6 +305,38 @@ class AdministracionController extends Controller {
         $preguntas['recordsFiltered']= count($preguntasPendientes);
         
         return new Response(json_encode($preguntas));
+    }
+    
+    /**
+     * @Route("/aprobacion/busqueda/pregunta/", name="aprobacion_busqueda_pregunta", options={"expose"=true})
+     * @Method("GET")
+     * 
+     */
+    public function busquedaPreguntaAAprobarAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+        $id = $request->query->get('idpreg');
+        
+        $abgPregunta = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->find($id);  
+        
+        $pregunta = array();
+        
+        $pregunta['pregunta'] = $abgPregunta->getPregunta();
+        $pregunta['email'] = $abgPregunta->getCorreoelectronico();
+        $pregunta['detalle'] = $abgPregunta->getDetalle();
+        $pregunta['fecha'] = $abgPregunta->getFechaPregunta()->format('d/m/Y');
+        $pregunta['especialidad'] = $abgPregunta->getAbgEspecialidad()->getNombreEspecialidad();
+        
+        $response = new JsonResponse();
+        $response->setData(array(
+                              'pregunta'  => $pregunta,
+                           ));  
+            
+        return $response; 
+        
+        
+        return new Response(json_encode($pregunta));
     }
     
     function tiempo_transcurrido($fecha) 
