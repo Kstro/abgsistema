@@ -191,7 +191,7 @@ class SecuredController extends Controller
                           <tr>
                             <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
                             <center>
-                              <img style=\"width:50%;\" src=\"http://www.abogados.com.sv/badge1.png\">
+                              <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
                             </center>
                                 <p>"."Hola " . $usuario->getNombres() . " esperamos la estes pasando bien dentro de nuestra plataforma, queremos notificarte que : <b>".$nombreCliente. "</b>  esta solicitando tus servicios profesionales, enviandote el siguiente mensaje.</p>  
                                 <p>" .'"'. $mensajeCliente .'"'. "</p>
@@ -210,12 +210,14 @@ class SecuredController extends Controller
          $error = null; // The value does not come from the security component.
         $lastUsername = null; 
          
-        return $this->render(':directorio:directorio.html.twig', array(
-            'redirect'=>'Login',
-            'error' => $error,
-            'last_username' => $lastUsername,
-            
-        ));    
+//        return $this->redirect(':directorio:directorio.html.twig', array(
+//            'redirect'=>'Login',
+//            'error' => $error,
+//            'last_username' => $lastUsername,
+//            
+//        ));    
+        
+       return $this->redirect($this->generateUrl('directorio_index'));
     }
     
     
@@ -236,6 +238,16 @@ class SecuredController extends Controller
         $nombrePersonaARecomendar=$parameters['nombrePersonaAaRecomendar'];
         $emailPersonaRecomendar=$parameters['correoPersonaARecomendar'];
         $emailAbogado=str_replace(" ", "", $emailAbogado);
+        
+        
+                $em = $this->getDoctrine()->getManager();
+                $sql = "SELECT url FROM directorio WHERE correoelectronico = '".$emailAbogado."'";
+
+                $stmt = $em->getConnection()->prepare($sql);
+                $stmt->execute();
+                $reg['data'] = $stmt->fetchAll();
+                $url =$reg['data'][0]['url'];
+
 
         $this->get('envio_correoRe')->sendEmail($emailPersonaRecomendar, "", "", "",
                     "
@@ -243,12 +255,12 @@ class SecuredController extends Controller
                           <tr>
                             <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
                             <center>
-                              <img style=\"width:50%;\" src=\"http://www.abogados.com.sv/badge1.png\">
+                              <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
                             </center>
-                                <p>"."Hola " . $nombrePersonaARecomendar. ",te saludamos de abogados.com.sv, queremos notificarte que : <b>".$nombreRecomandador. "</b>  quiere recomendarte a un abogado que se encuentra dentro de nuestra plataforma. </p>  
+                                <p>"."Hola " . $nombrePersonaARecomendar. ", te saludamos de abogados.com.sv, queremos notificarte que : <b>".$nombreRecomandador. "</b>  quiere recomendarte a un abogado que se encuentra dentro de nuestra plataforma. </p>  
            
                                 <p> Puedes ponerte en contacto al siguiente correo: " . $emailAbogado . "</p>
-                                <p> Tambien puedes visitar su perfil en esta direccion: abogados.com.sv/directorio/  </p>
+                                <p> Tambien puedes visitar su perfil en esta direccion: http://marvinvigil.info/directorio07/abgsistema2/".$url."  </p>
                                 <p>Gracias, por utilizar nuestros servicios</p> 
                                 <p>Saludos.</p>
                             </td>
@@ -263,12 +275,13 @@ class SecuredController extends Controller
          $error = null; // The value does not come from the security component.
         $lastUsername = null; 
          
-        return $this->render(':directorio:directorio.html.twig', array(
-            'redirect'=>'Login',
-            'error' => $error,
-            'last_username' => $lastUsername,
-            
-        ));    
+//        return $this->render(':directorio:directorio.html.twig', array(
+//            'redirect'=>'Login',
+//            'error' => $error,
+//            'last_username' => $lastUsername,
+//            
+//        ));    
+        return $this->redirect($this->generateUrl('directorio_index'));
     }
       
     private function authenticateUser(\DGAbgSistemaBundle\Entity\CtlUsuario $user)

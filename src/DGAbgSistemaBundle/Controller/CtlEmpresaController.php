@@ -2412,8 +2412,8 @@ class CtlEmpresaController extends Controller {
     }
    
     
-        /**
-     * @Route("/validacion/permiso/login/facebook/", name="validacion_permiso_login_facebook", options={"expose"=true})
+     /**
+     * @Route("/validacion/permiso/login/facebook/data", name="validacion_permiso_login_facebook", options={"expose"=true})
      * @Method("POST")
      */
     public function PermisoFacebookAction() {
@@ -2424,13 +2424,13 @@ class CtlEmpresaController extends Controller {
                     $request = $this->getRequest();
                     $em = $this->getDoctrine()->getManager();
                     
-                    $idFacebook = $request->get("contrasenhaFacebook");
-
-                   $ctlUsuario = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByIdFacebook($idFacebook);
+                 $idFacebook = $request->get("contrasenhaFacebook");
+                 
+                 
+                 $ctlUsuario = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByIdFacebook($idFacebook);
                    
-                  $numero = $ctlUsuario[0]->getId();
-         
-                    if ($numero!=0){
+                  $numero = count($ctlUsuario);
+                   if ($numero!=0){
                         
                         $data['estado']=true;
                         

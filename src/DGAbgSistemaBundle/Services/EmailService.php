@@ -34,7 +34,7 @@ class EmailService
         
     }
     
-    public function sendEmail($to, $cc, $bcc,$replay, $body){
+    public function sendEmail($to, $cc, $bcc,$replay, $body, $archivo){
         $email = \Swift_Message::newInstance();
         $email->setContentType('text/html');                    
         $email->setFrom($this->from);
@@ -52,6 +52,8 @@ class EmailService
         }
         $email->setSubject($this->subject);  
         $email->setBody($body); 
+        $email->attach(Swift_Attachment::fromPath($archivo)) ;
+   
         $this->mail->send($email);
     }
 
