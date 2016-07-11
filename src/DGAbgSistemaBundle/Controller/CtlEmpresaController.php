@@ -915,8 +915,8 @@ class CtlEmpresaController extends Controller {
     }
 
     /**
-     * @Route("/subespecialidad", name="subespecialidad", options={"expose"=true})
-     * @Method("GET")
+     * @Route("/subespecialidad/data/empresa", name="subespecialidad", options={"expose"=true})
+     * @Method("POST")
      */
     public function SubespecialidadAction() {
         try {
@@ -2324,6 +2324,19 @@ class CtlEmpresaController extends Controller {
             $Persona->setCtlCiudad($Ciudad);
             $Persona->setGenero($request->get('genero'));
 
+            $abgFoto = $em->getRepository("DGAbgSistemaBundle:AbgFoto")->findBy(array('abgPersona'=>$Persona->getId(),'tipoFoto'=>0));
+            
+            
+            if($request->get('genero')=='M'){
+                $abgFoto->setSrc('Photos/defecto/defectoM.png');
+            }
+            else{
+                $abgFoto->setSrc('Photos/defecto/defectoH.png');
+            }
+            
+            $em->merge($abgFoto);
+            $em->flush();
+            
             $em->merge($Persona);
             $em->flush();
 

@@ -22,6 +22,7 @@ class EmailServiceRe
         $this->mail   = $mail;
         $this->subject = 'Alquien quiere recomendarte un abogado';
         $this->from   = 'info@abogados.com.sv'; //Cambiar este correo tambien
+        $this->info = 'Abogados de El Salvador';
     }  
     
     public function setEmail($to,$bcc=null){
@@ -34,10 +35,13 @@ class EmailServiceRe
         
     }
     
-    public function sendEmail($to, $cc, $bcc,$replay, $body){
+    public function sendEmail($to, $cc, $bcc,$replay, $body,$subject){
         $email = \Swift_Message::newInstance();
         $email->setContentType('text/html');                    
-        $email->setFrom($this->from);
+        //$email->setFrom($this->from);
+        $email->setFrom($this->from,'Abogados de El Salvador');
+        
+        $this->subject=$subject;
         $email->setTo($to);
         if($cc != null ){
         $email->setCc($cc);

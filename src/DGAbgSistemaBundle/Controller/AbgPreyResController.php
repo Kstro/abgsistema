@@ -170,7 +170,7 @@ class AbgPreyResController extends Controller {
         if($respuesta->success==false){
             
             //Captcha no valido
-            //return $this->render('enviopregsuccess/error.html.twig');
+            return $this->render('enviopregsuccess/error.html.twig');
             //
             //echo '<h2>You are spammer ! Get the @$%K out</h2>';
         }
@@ -229,46 +229,6 @@ class AbgPreyResController extends Controller {
 
                 $em->persist($abgPregunta);
                 $em->flush();
-//                $lastpreg = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->findOneBy(array(), array('id' => 'DESC'));
-//                $lastidpreg = $lastpreg->getId();
-
-//                $sql = "SELECT abg_persona.correoelectronico FROM 
-//                           ctl_usuario
-//                    JOIN    abg_persona
-//                           on  ctl_usuario.rh_persona_id=abg_persona.id AND ctl_usuario.notificacion=1 AND abg_persona.estado IN(0,1)
-//                    JOIN ctl_rol_usuario
-//                    ON ctl_usuario.id=ctl_rol_usuario.ctl_usuario_id 
-//                              AND ctl_rol_usuario.ctl_rol_id=2
-//                    JOIN abg_persona_especialidad 
-//                    ON abg_persona_especialidad.abg_persona_id=abg_persona.id 
-//                    AND abg_persona_especialidad.ctl_especialidad_id=" . $especialidad;
-//                $em = $this->getDoctrine()->getManager();
-//                $stmt = $em->getConnection()->prepare($sql);
-//                $stmt->execute();
-//                $coenv = $stmt->fetchAll();
-                //var_dump($email);
-//                if (count($coenv) > 0) {
-//                    foreach ($coenv as $value) {
-//                        $email = $value['correoelectronico'];
-//                        //var_dump($email);
-//                        $this->get('envio_correo')->sendEmail($email, "", "", "", "
-//                                            <table style=\"width: 540px; margin: 0 auto;\">
-//                                              <tr>
-//                                                <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
-//                                                <center>
-//                                                  <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
-//                                                </center>                                                
-//                                                    <p>Hola " . $email . " hay una nueva pregunta en la que puedes participar dando tu opinion</p>
-//                                                    <p>Haz click en el enlace y se el primero en contestar</p>
-//                                                    <a href='http://abg.localhost/app_dev.php/admin/panelrespuestacentro/respuesta_abg?id=" . $lastidpreg . "'>Clik aqui para responder</a> 
-//
-//                                                </td>
-//                                                <td class=\"expander\"></td>
-//                                              </tr>
-//                                            </table>
-//                                        ");
-//                    }
-//                }
                 return $this->render('enviopregsuccess/success.html.twig');
             } catch (Exception $e) {
                 $data['msj'] = $e->getMessage(); //"Falla al Registrar ";

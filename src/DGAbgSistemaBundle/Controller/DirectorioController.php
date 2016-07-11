@@ -285,6 +285,20 @@ class DirectorioController extends Controller {
             $reg['filtroRegistros'] = 0;
             $reg['data'] = array();
             $reg['pages'] = 0;
+//            $sql = "SELECT * FROM directorio ORDER BY FIELD(orden,$newOrderBy) LIMIT " . $inicioRegistro . "," . $longitud;
+//            //            $sql = "SELECT estado,ciudad,url,nombres,apellido,correoelectronico,telefono_fijo,telefono_movil,tipo,id,foto,group_concat(sub) FROM directorio WHERE CONCAT(upper(nombres),' ',upper(apellido),' ', upper(sub)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT ".$inicioRegistro.",".$longitud;
+//            //echo $sql;
+//            $stmt = $em->getConnection()->prepare($sql);
+//            $stmt->execute();
+//            $reg['data'] = $stmt->fetchAll(); $reg['filtroRegistros'] = count($reg['data']);
+//            //var_dump($reg);
+//            //            $sql = "SELECT COUNT(*) as total FROM directorio WHERE CONCAT(upper(nombres),' ',upper(apellido)) LIKE '%".strtoupper($busqueda)."%' ORDER BY nombres ASC LIMIT 0,10";
+//            //$sql = "SELECT COUNT(*) as total FROM directorio WHERE orden in($newOrderBy) AND CONCAT(upper(nombres),' ',upper(apellido),' ',upper(sub),' ',upper(especialidad) ) LIKE '%" . strtoupper($busqueda) . "%' ORDER BY FIELD(orden,$newOrderBy) LIMIT 0,".$longitud;
+//            $sql = "SELECT COUNT(*) as total FROM directorio ORDER BY FIELD(orden,$newOrderBy) LIMIT 0,".$longitud;
+//            $stmt = $em->getConnection()->prepare($sql);
+//            $stmt->execute();
+//            $totales = $stmt->fetchAll();
+//            $reg['numRegistros'] = $totales[0]['total'];
         }
 
 
@@ -373,7 +387,8 @@ class DirectorioController extends Controller {
      * @Method({"GET", "POST"})
      */
     public function SoyAbogadoAction() {
-        return $this->render('Layout/abogado_landing.html.twig');
+        //return $this->render('Layout/abogado_landing.html.twig');
+        return $this->render('ctlempresa/index.html.twig');
     }
 
 //    /**

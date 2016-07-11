@@ -66,7 +66,7 @@
                                     <input type="hidden" id="randomDir" value="">
                                 </div>
                                 <div class="col-md-3 col-sm-3 hidden-xs  col-xs-5" style=" padding-left: 5px;padding-right: 5px;">
-                                    <input class="ssearch" value="{{ciudad}}" id="searchInputDept" name="txtlugar" style="border: 1px solid #d2d6de; border-radius: 0;  height: 34px; width: 100%; text-decoration: none;" placeholder="Cuidad, Dept">
+                                    <input class="ssearch" value="{{ciudad}}" id="searchInputDept" name="txtlugar" style="border: 1px solid #d2d6de; border-radius: 0;  height: 34px; width: 100%; text-decoration: none;" placeholder="Ciudad, Dept">
                                 </div>
                                 <div class="col-md-2 col-sm2 hidden-xs col-xs-2" style="padding-left: 5px;">
                                     <button id="searchButton" type="submit" class="searchbotondir input-group btn btn-xs" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%; background-color: #F42; color: #fff; font-weight: 600;">Buscar</button>
@@ -392,6 +392,10 @@
                     buscar(busqueda, inicio, longitud, paginaActual,orderBy);
                 }
                 else{
+                    //busqueda=" ";
+                    //inicio=0;
+                    //paginaActual=1;
+                    buscar(busqueda, inicio, longitud, paginaActual,orderBy);
                     $('.numRegistros,.anteriorMov,.siguienteMov,.numeroPaginas').hide();
                 }
                 
@@ -523,14 +527,19 @@
                 //return false;
                 orderBy=$('#randomDir').val();
                 console.log(orderBy);
+                
+                if(busqueda==''){
+                    busqueda=" ";
+                }
+                
                 //return false;
                 //numero de registros por página
-                {#if($('#volverIni').is(':visible')){
+                if($('#volverIni').is(':visible')){
                     longitud=6;//movil
                 }
                 else{
                     longitud=10;//desktop
-                }#}
+                }
                 //  var deptoId = $('#filtrarDepartamento').val();
                 var munId = $('#searchInputDept').val();
                 if(munId===''){
@@ -550,8 +559,9 @@
                             $('#registros').html('');
                             $('#registrosMov').html('');
                             $('.numRegistros').show();
-                            
-                            $("#mesaje_busqueda").css("display", "block");
+                            if($('#searchBox').val()!=''){
+                                $("#mesaje_busqueda").css("display", "block");
+                            }
                             if ($('#searchInputDept').val() !== "" && $('#searchBox').val() != "")
                             {
                                 $('#filtro').text($('#searchBox').val() + '| ' + $('#searchInputDept').val());
@@ -568,7 +578,7 @@
                             $('.totalRegistros').html(data.numRegistros);
                             $('.filtroRegistros').html(data.filtroRegistros);
 
-                            if (data.data.length != 0) {
+                            {#if (data.data.length != 0) {#}
                                 $('.numRegistros,.anteriorMov,.siguienteMov,.numeroPaginas').show();
                                 $('#inicioInput').val((parseInt($('#inicioInput').val()) + 1));
                                 var cadena = "";
@@ -665,6 +675,16 @@
                                     } else {
                                         especialidades = "N/A";
                                     }
+                                    
+                                    if($('#volverIni').is(':visible')){
+                                        if(data.data[i].tipo==2){
+                                            especialidades = especialidades.slice(0,110)+"...";
+                                        }
+                                    }
+                                    {#else{
+                                        especialidades += data.data[i].especialidad;
+                                    }#}
+                                    
                                     var verificado = '';
                                     if (data.data[i].verificado == 1) {
                                         verificado = '<img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 0px;margin-left:1px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>';
@@ -744,8 +764,8 @@
                                             cadena = '<div class=\"item-directorio-nexo\" style=\"width: 100%;\"> <div class=\"clearfix\"></div><div class=\"row\">';
                                         }
                                         if(data.data[i].estadoabo==1){
-                                            cadena+='<div class=\"col-xs-3 col-sm-3 col-md-3 col-lg-2\"><img id=\"busquedaImagen' + (i + 1) + '\" src=\"{{asset('')}}' + data.data[i].foto + '\" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">\n\
-                                            </div><div class=" col-xs-9 col-sm-9 col-md-9 col-lg-10"><p id=\"busquedaNombre' + (i + 1) + '\" style=\"margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;\" class=\"sans\"><strong>' + busquedaNombre + '</strong>' + verificado + '</p>\n\
+                                            cadena+='<div class=\"col-xs-3 col-sm-3 col-md-3 col-lg-2\"><a href=\"../' + data.data[i].url + '\"><img id=\"busquedaImagen' + (i + 1) + '\" src=\"{{asset('')}}' + data.data[i].foto + '\" style="max-width: 100%; width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;"></a>\n\
+                                            </div><div class=" col-xs-9 col-sm-9 col-md-9 col-lg-10"><p id=\"busquedaNombre' + (i + 1) + '\" style=\"margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;\" class=\"sans\"><strong><a href=\"../' + data.data[i].url + '\">' + busquedaNombre + '</a></strong>' + verificado + '</p>\n\
                                             <p id=\"busquedaCargo' + (i + 1) + '\" style=\"color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;\" class=\"sans\">' + busquedaCargo + '</p>\n\
                                             <div class=\"row\" style=\"margin-top: 2px; margin-bottom: 15px;\"><div class=\" hidden-xs col-sm-4 col-xs-12\"><p style=\"color: #4444444; font-size: 11px; margin-bottom: 0px;\"><strong>Telefono</strong></p><p id=\"busquedaTelefono1\" style=\"font-size: 11px; margin-bottom: 0px;\">' + telefonos + ' </p>\n\
                                             </div><div class=\"hidden-xs col-sm-4 col-xs-12\"><p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Email</strong></p><p id="busquedaCorreo' + (i + 1) + '" style="font-size: 11px; margin-bottom: 0px;">' + busquedaCorreo + '</p></div>\n\
@@ -867,7 +887,7 @@
                                     
                                     //$('#registros').html('prueba');
                                 }//fin for
-                            }//fin if
+                            {# }//fin if
                             else {
                                 cadenaPaginas = '';
                                 $('.numeroPaginas').html('');
@@ -886,7 +906,7 @@
                                 $('#mesaje_busqueda').hide();
                                 //$('#busquedaVacia').show();
 
-                            }
+                            }#}
 
                         },
                         error: function (data) {
