@@ -25,6 +25,7 @@ class EmailResService {
         $this->mail   = $mail;
         $this->subject = 'Abogados.com.sv';
         $this->from   = 'info@abogados.com.sv'; 
+        $this->info = 'Abogados de El Salvador';
     }  
     
     public function setEmail($to,$bcc=null){
@@ -37,21 +38,23 @@ class EmailResService {
         
     }
     
-    public function sendEmail($to, $cc, $bcc,$replay, $body){
+    public function sendEmail($to, $cc, $bcc,$replay, $body,$subject){
         $email = \Swift_Message::newInstance();
         $email->setContentType('text/html');                    
-        $email->setFrom($this->from);
+        //$email->setFrom(array($this->from=> 'Abogados de El Salvador'));
+        $email->setFrom($this->from,'Abogados de El Salvador');
+        $this->subject=$subject;
         $email->setTo($to);
         if($cc != null ){
-        $email->setCc($cc);
+            $email->setCc($cc);
         }
         if($replay != null ){
-        $email->setReplyTo($replay);
+            $email->setReplyTo($replay);
         }else{
-        $email->setReplyTo('info@abogados.com.sv');            
+            $email->setReplyTo('info@abogados.com.sv');            
         }
         if($bcc != null ){
-        $email->setBcc($bcc);
+            $email->setBcc($bcc);
         }
         $email->setSubject($this->subject);  
         $email->setBody($body); 

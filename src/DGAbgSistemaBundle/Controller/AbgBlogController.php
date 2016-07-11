@@ -76,7 +76,8 @@ class AbgBlogController extends Controller{
                 . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.tituloProfesional AS tprofesional, p.verificado As verificado "
                 . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
         $result_persona = $em->createQuery($dql_persona)->getArrayResult();
-
+        $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
+        
         $dqlfoto = "SELECT fot.src as src "
                     . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
         $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
@@ -101,7 +102,8 @@ class AbgBlogController extends Controller{
                     'abgFoto' => $result_foto,
                     'usuario' => $username,
                     'detalleblog'=>$parametros, 
-                    'ctlCategoriasBlog'=>$ctlCategoriasBlog
+                    'ctlCategoriasBlog'=>$ctlCategoriasBlog,
+                    'nombreCorto' => $nombreCorto
                  ));
     }
     

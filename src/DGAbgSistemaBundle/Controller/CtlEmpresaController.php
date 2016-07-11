@@ -916,8 +916,8 @@ class CtlEmpresaController extends Controller {
     }
 
     /**
-     * @Route("/subespecialidad", name="subespecialidad", options={"expose"=true})
-     * @Method("GET")
+     * @Route("/subespecialidad/data/empresa", name="subespecialidad", options={"expose"=true})
+     * @Method("POST")
      */
     public function SubespecialidadAction() {
         try {
@@ -2325,6 +2325,19 @@ class CtlEmpresaController extends Controller {
             $Persona->setCtlCiudad($Ciudad);
             $Persona->setGenero($request->get('genero'));
 
+            $abgFoto = $em->getRepository("DGAbgSistemaBundle:AbgFoto")->findBy(array('abgPersona'=>$Persona->getId(),'tipoFoto'=>0));
+            
+            
+            if($request->get('genero')=='M'){
+                $abgFoto->setSrc('Photos/defecto/defectoM.png');
+            }
+            else{
+                $abgFoto->setSrc('Photos/defecto/defectoH.png');
+            }
+            
+            $em->merge($abgFoto);
+            $em->flush();
+            
             $em->merge($Persona);
             $em->flush();
 
@@ -2413,8 +2426,8 @@ class CtlEmpresaController extends Controller {
     }
    
     
-        /**
-     * @Route("/validacion/permiso/login/facebook/", name="validacion_permiso_login_facebook", options={"expose"=true})
+     /**
+     * @Route("/validacion/permiso/login/facebook/data", name="validacion_permiso_login_facebook", options={"expose"=true})
      * @Method("POST")
      */
     public function PermisoFacebookAction() {
@@ -2425,13 +2438,13 @@ class CtlEmpresaController extends Controller {
                     $request = $this->getRequest();
                     $em = $this->getDoctrine()->getManager();
                     
-                    $idFacebook = $request->get("contrasenhaFacebook");
-
-                   $ctlUsuario = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByIdFacebook($idFacebook);
+                 $idFacebook = $request->get("contrasenhaFacebook");
+                 
+                 
+                 $ctlUsuario = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByIdFacebook($idFacebook);
                    
-                  $numero = $ctlUsuario[0]->getId();
-         
-                    if ($numero!=0){
+                  $numero = count($ctlUsuario);
+                   if ($numero!=0){
                         
                         $data['estado']=true;
                         
