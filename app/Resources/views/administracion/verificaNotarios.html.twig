@@ -3,12 +3,8 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
     <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
-
-
     <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
     <script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
-
 {% endblock%}
 {% block navegacion_Y_body %}
     {% block navegacion %}
@@ -22,7 +18,7 @@
             function vericarAbg(val) {
                 $.ajax({
                     type: "GET",
-                    url: Routing.generate('verificar'),
+                    url: Routing.generate('verificar_notarios'),
                     data: {abg: val},
                     success: function (data)
                     {
@@ -30,7 +26,6 @@
                         $("#divVerificar").append(data);
                         $("#divVerificar").show();
                         $("#divLista").hide();
-
                     },
                     error: function (errors)
                     {
@@ -42,7 +37,7 @@
                 $("#idtbody").empty();
                 $.ajax({
                     type: "GET",
-                    url: Routing.generate('verificar'),
+                    url: Routing.generate('verificar_notarios'),
                     data: {abg: val, ban: ban},
                     success: function (data)
                     {
@@ -61,7 +56,7 @@
 
                 $.ajax({
                     type: "GET",
-                    url: Routing.generate('verificados'),
+                    url: Routing.generate('notarios_verificados'),
                     success: function (data)
                     {
                         $("#contVerificados").empty();
@@ -81,7 +76,7 @@
                     type: 'GET',
                     async: false,
                     dataType: 'json',
-                    url: Routing.generate('solicitud_verificar'),
+                    url: Routing.generate('solicitud_verificar_notario'),
                     success: function (data)
                     {
                         var datos;
@@ -105,13 +100,13 @@
                     }
                 });
             }
-            function consultarAbg()
-            {
+            
+            function consultarAbg() {
                 $.ajax({
                     type: 'GET',
                     async: false,
                     dataType: 'json',
-                    url: Routing.generate('cons_abg'),
+                    url: Routing.generate('cons_notarios'),
                     data: {abg: $('#Sabogado').val()},
                     success: function (data)
                     {
@@ -130,86 +125,23 @@
                             $("#idtbody").append(datos);
                         });
 
-            {#
-        $("#divVerificar").empty(datos);
-        var datos;
-        //if (data.msj == "undefined") {
-        $.each($(data.datosP), function (indice, val) {
-
-            datos = '<div class ="item-directorio">';
-            datos += '<div class ="row">';
-            datos += '<div class ="col-xs-2 ">';
-            datos += '<img src ="/' + data.foto + '" style ="width: 100%; height:135px;margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">';
-            datos += '</div>';
-            datos += '<div class="col-xs-6"><div class ="row"><div class="col-xs-6">';
-            datos += '<p style="margin-top: 10px; font-size: 1.3em; margin-bottom: 0px;" class ="sans"><strong>' + val.nombre + " " + val.apellido + '</strong></p>';
-            datos += '<p style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">' + val.tituloProfesional + '</p></div></div>';
-
-            datos += '<div class ="row"  style="margin-top: 10px;"><div class="col-sm-4" >';
-            datos += '<p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Telefonos </strong></p >';
-            datos += '<p style ="font-size: 11px; margin-bottom: 0px;"> + 503 ' + val.movil + "</br>+ 503 " + val.Tfijo + '</p>';
-            datos += '</div>';
-            datos += '<div class="col-sm-4 " >';
-            datos += '<p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Email </strong></p>';
-            datos += '<p style ="font-size: 11px; margin-bottom: 0px;">' + val.correo + '</p>';
-            datos += '</div>';
-            datos += '<div class="col-sm-4 ">';
-            datos += '<p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"> <strong> Sitio Web </strong></p>';
-            datos += '<p style="font-size: 11px; margin-bottom: 0px;"><a href = "" target = "_blank">' + data.sitioweb + '</a></p>';
-
-            datos += '</div></div>';
-            datos += '<div class="row"><div class = "col-sm-12" style="margin-top: -0px;">';
-            datos += '<span style ="font-size: 11px;"><a href=""> Ver perfill </a></span>';
-            datos += '<span style ="color: #777777; margin-left: 5px; margin-right: 5px;"> | </span>';
-            datos += '<span style ="font-size: 11px;"><a href="">Contactar</a></span></div></div></div>';
-
-            datos += '<div class="col-xs-4" >';
-            datos += '<div class="row"><div class="col-xs-12 "><div class="bloque-ocultar ">';
-            datos += '<div class="clearfix"></div>';
-            datos += '<div class="bloque-ocultar ">';
-            datos += '<p class="text-center" >Verificar&nbsp;<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="Oculte su perfil mientras lo actualize. Mida el nivel de completacion con el icono de abajo."></i></p>';
-            datos += '<div class="onoffswitch" style="margin-left: auto; margin-right: auto;">';
-            datos += '<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox  myonoffswitch" id="myonoffswitch" ';
-            if (val.verificado === 1) {
-                datos += 'checked>';
-            } else {
-                datos += '>';
-            }
-            datos += '<label class="onoffswitch-label" for="myonoffswitch">';
-            datos += '<span class="onoffswitch-inner"></span>';
-            datos += '<span class="onoffswitch-switch"></span>';
-            datos += '</label>';
-            datos += '</div>';
-            datos += '</div>';
-            datos += '  </div></div></div></div>';
-            datos += ' </div>';
-
-
-        });
-        $("#divVerificar").append(datos);
-        $("#divVerificar").show();
-        #}
-
                     },
-                    error: function (errors)
-                    {
+                    error: function (errors) {
 
                     }
-                }
-                );
+                });
             }
-
         </script>
         <div class="row" style=" margin-left:15px; margin-right:15px; ">
             <div class="box box-widget">
                 <div class="box-body">
                     <div class="page-header">
-                        <h3>Verificación de abogados</h3>
+                        <h3>Verificación de abogados como notarios</h3>
                     </div>
                 <div class="nav-tabs-custom" style="cursor: move;">
                     <ul class="nav nav-tabs  ui-sortable-handle">
-                        <li class="active"><a href="#revenue-chart" data-toggle="tab" onClick="AbgVerificar();">Abogados pendientes de verificar</a></li>
-                        <li><a href="#divVerificados" data-toggle="tab" onClick="AbgVerificados();">Abogados verificados</a></li>
+                        <li class="active"><a href="#revenue-chart" data-toggle="tab" onClick="AbgVerificar();">Pendientes de verificar</a></li>
+                        <li><a href="#divVerificados" data-toggle="tab" onClick="AbgVerificados();">Verificados</a></li>
                         <li class="pull-left header">
                     </ul>
                     <div class="tab-content no-padding">
@@ -223,9 +155,9 @@
                                         <div class="row">
                                             <div class="form-group">
                                                 <div class="col-md-5">
-                                                    <label for="nombreEmpleado">Cliente </label>
-                                                    <select id="Sabogado" name="Sabogado" class="form-control" onChange="consultarAbg()">
-                                                        <option value="0" >Seleccione un cliente</option>
+                                                    <label for="nombreEmpleado">Abogado </label>
+                                                    <select id="Sabogado" name="Sabogado" class="form-control" onChange="consultarAbg();">
+                                                        <option value="0" >Seleccione un abogado</option>
                                                     </select>
 
                                                 </div>
@@ -261,7 +193,7 @@
                                                                 <div class="row">
                                                                     <div class="form-group">
                                                                         <div class="col-md-5">
-                                                                            <label for="nombreEmpleado">Lista de Abogados verificados</label>
+                                                                            <label for="nombreEmpleado">Lista de Notarios verificados</label>
 
                                                                         </div>
                                                                     </div>   </div>
@@ -331,45 +263,9 @@
                                                                     if (data.nombre) {
                                                                         return data.nombre;
                                                                     } else {
-                                                                        return "Seleccione un cliente";
+                                                                        return "Seleccione un abogado";
                                                                     }
-                                                                }
-                                                                {#$(document).on('click', '.myonoffswitch', function () {
-                                                                    var estado;
-                                                                    if ($('.myonoffswitch').is(":checked")) {
-                                                                        estado = 1;
-                                                                    } else {
-                                                                        estado = 0;
-                                                                    }
-                                                                    $.ajax({
-                                                                        type: 'POST',
-                                                                        async: false,
-                                                                        dataType: 'json',
-                                                                        data: {estado: estado, hPersona: $('input#hPersona').val(), n: 4},
-                                                                        url: Routing.generate('edit_persona'),
-                                                                        success: function (data)
-                                                                        {
-                                                                            if (data.msj !== false)
-                                                                            {
-                                                                                Lobibox.notify("success", {
-                                                                                    size: 'mini',
-                                                                                    msg: "<p>" + data.msj + "</p>"
-                                                                                });
-                                                                                AbgVerificar();
-                                                                            } else
-                                                                            {
-                                                                                Lobibox.notify("warning", {
-                                                                                    size: 'mini',
-                                                                                    msg: "<p>" + data.error + "</p>"
-                                                                                });
-                                                                            }
-                                                                        },
-                                                                        error: function (xhr, status)
-                                                                        {
-                                                                            alert('Disculpe, existió un problema');
-                                                                        }
-                                                                    });
-                                                                });#}
+                                                                }                                                                
                                                             </script>
                                                         {% endblock%}
 

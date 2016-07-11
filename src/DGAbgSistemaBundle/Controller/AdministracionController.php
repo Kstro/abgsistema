@@ -140,8 +140,8 @@ class AdministracionController extends Controller {
             $especialidad = $abgPregunta->getAbgEspecialidad()->getId();
             
             $sql = "SELECT abg_persona.correoelectronico 
-                    FROM ctl_usuario JOIN    abg_persona
-                      on  ctl_usuario.rh_persona_id=abg_persona.id AND ctl_usuario.notificacion=1 AND abg_persona.estado IN(0,1)
+                    FROM ctl_usuario JOIN abg_persona
+                      on  ctl_usuario.rh_persona_id=abg_persona.id AND ctl_usuario.notificacion = 1 AND abg_persona.estado IN(0,1)
                     JOIN ctl_rol_usuario
                       ON ctl_usuario.id=ctl_rol_usuario.ctl_usuario_id AND ctl_rol_usuario.ctl_rol_id = 2
                     JOIN abg_persona_especialidad 
