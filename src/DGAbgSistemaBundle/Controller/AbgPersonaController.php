@@ -298,10 +298,17 @@ class AbgPersonaController extends Controller {
                 $Usuario = $this->container->get('security.context')->getToken()->getUser();
             
                 $userEstadoCorreo=$Usuario->getEstadoCorreo();
+                
+            $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($idPersona);
+
 
                        if($userEstadoCorreo==0)
                 {
                     return $this->redirect($this->generateUrl('confirmarcorreo', array('id'=>$Usuario->getCodigoConfirmar())));
+                }
+                elseif($Persona->getEstadoMetodoPago()==0)
+                {
+                      return $this->redirect($this->generateUrl('planpago', array('id'=>$Usuario->getCodigoConfirmar())));
                 }
 else
 {
@@ -1451,7 +1458,7 @@ else
             $fechaFin = "";
             if ((($request->get('experiencia') != null))) {
                 $sql = "SELECT  el.id AS id, el.puesto AS puesto, el.compania AS empresa, el.funcion AS funcion, em.id idEmp, "
-                        . " f.src AS src, date_format(el.facha_inicio, '%d-%m-%Y') As fechaIn, date_format(el.fecha_fin, '%d-%m-%Y') As fechaFin, "
+                        . " f.src AS src, el.facha_inicio As fechaIn, el.fecha_fin As fechaFin, "
                         . " el.ubicacion AS hubicacion "
                         . " FROM  abg_experiencia_laboral el "
                         . " JOIN abg_persona p on p.id=el.abg_persona_id AND  el.id=" . $request->get('experiencia')
@@ -2517,7 +2524,7 @@ else
      */
     public function RegistraIdiomaAction() {
 
-        try {
+    try {
             $em = $this->getDoctrine()->getManager();
             $request = $this->getRequest();
 
@@ -2529,6 +2536,10 @@ else
                 
             } else {
                 $PersonaIdioma = $RepositorioPI->findBy(array('abgPersona' => $request->get('hPersona')));
+                foreach ($PersonaIdioma as $objPersonaIdioma) {
+                    $em->remove($objPersonaIdioma);
+                    $em->flush();
+                }
             }
 
             if (is_null($array)) {

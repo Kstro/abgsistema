@@ -1,4 +1,4 @@
-{% extends ':Layout:layout3.html.twig' %}
+{% extends ':Layout:layout2.html.twig' %}
 {% block css %}
     {{parent()}}
 
@@ -138,7 +138,7 @@
 {% endblock %} 
 
 {% block cuerpo %}
-{% embed ':Layout:head.html.twig' %}{% endembed %}
+
 {# {% for datos in abgPersona %}#}
   <div id="page-content">
 <div class="row" >
@@ -151,10 +151,10 @@
         </div> 
     </div>
 </div>
-<div class="row contenedor-perfil" style=" padding: 10px; background-color:#ecf0f5;">
+<div class="row contenedor-perfil" style=" padding: 10px; ">
     <div class=" col-md-9 col-xs-12" >
         {% for datos in ctlEmpresa %}
-            <div class="box box-widget btn-flat">
+            <div class="box box-widget btn-flat" style="border: 1px solid #e0e0e0;">
                 <div class="box-body">
                     <input type="hidden" id=""  value="{{ctlEmpresaId }}" name="empresaId">
                     <div class="cover" id="" >
@@ -218,7 +218,7 @@
 
 
 
-            <div class="box box-widget">
+            <div class="box box-widget" style="border: 1px solid #e0e0e0;">
                 <div class="box-header with-border">
                     <h3 class="box-title"  style="margin-left: 10px;">DATOS DE CONTACTO</h3>
                 </div>
@@ -337,7 +337,7 @@
             </div>   
 
             {% if (empleados | default is not empty)%}
-                <div class="box box-widget">
+                <div class="box box-widget" style="border: 1px solid #e0e0e0;">
                     <div class="box-header with-border">
                         <h3 class="box-title"  style="margin-left: 10px;">ABOGADOS TRABAJANDO EN NUESTRO BUFETE</h3>
                     </div>
@@ -417,7 +417,7 @@
 
         {%if RegistroEspecialida| default is not empty %}
             <div class="box box-widget">
-                <div class="box-header with-border">
+                <div class="box-header with-border" style="border: 1px solid #e0e0e0;">
                     <h3 class="box-title" style=" margin-left: 10px;">ESPECIALIDADES</h3>
                 </div>
                 <div class="box-body" style="margin: 10px; padding-bottom: 20px;">
@@ -498,7 +498,7 @@
                     var y = parseFloat({{datos.longitude}});
                     
                    
-                    $(document).ready(function () 
+                    $(document).ready(function () {
   
                         $('#us3').locationpicker('autosize');
 

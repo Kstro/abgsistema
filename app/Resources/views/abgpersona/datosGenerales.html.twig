@@ -90,7 +90,7 @@
 
                                         <div class="col-sm-6 col-xs-6">
                                             <label for="Fecha_inicio">Departamento</label>
-                                            <select id="Sdepartamento" style="width:100%;" name="Sdepartamento" class=" input-sm" data-rule-required="true" data-rule-select="true" onChange="ciudad()">
+                                            <select id="Sdepartamento" style="width:100%;" name="Sdepartamento" class=" input-sm" data-rule-required="true" data-rule-select="true" onChange="fmunicipio()">
                                                 <option value="">- Seleccione -</option>
                                                 {% for datos in depto %}
                                                     <option value="{{datos.id}}" >{{datos.nombre}}</option>
@@ -167,162 +167,165 @@
                                                             var DataEspecialida = [];
                                                             var EspecialidaSelect = [];
                                                             $(document).ready(function () {
-                                                            /*  $('#Sespecialidad').select2({
-                                                             placeholder: 'Seleccione un maximo de tres especialidades',
-                                                             maximumSelectionLength: 3}
-                                                             );*/
-                                                            $('#Sdepartamento').select2();
-                                                                    $('#Stitulo').select2();
-                                                                    $('#Smunicipio').select2();
-                                                                    
-                                                         
-                                                            
+                                                                /*  $('#Sespecialidad').select2({
+                                                                 placeholder: 'Seleccione un maximo de tres especialidades',
+                                                                 maximumSelectionLength: 3}
+                                                                 );*/
+                                                                $('#Sdepartamento').select2();
+                                                                $('#Stitulo').select2();
+                                                                $('#Smunicipio').select2();
+
+
+
                                                             });
-                                                                    function ciudad()
-                                                                    {
-                                                                    $.ajax({
+                                                            function fmunicipio()
+                                                            {
+                                                         
+                                                                $.ajax({
                                                                     type: "GET",
-                                                                            url: Routing.generate('ciudad'),
-                                                                            async: false,
-                                                                            dataType: 'json',
-                                                                            data: {estado: $('#Sdepartamento').val()},
-                                                                            success: function (data)
-                                                                            {
+                                                                    url: Routing.generate('ciudad'),
+                                                                    async: false,
+                                                                    dataType: 'json',
+                                                                    data: {estado: $('#Sdepartamento').val()},
+                                                                    success: function (data)
+                                                                    {
 
-                                                                            $("#divMuni").empty();
-                                                                                    estado = '<div class="col-sm-6 col-xs-6"  > ';
-                                                                                    estado += '<label>Municipio</label>';
-                                                                                    estado += '<select  style="width:100%;" class="form-control input-sm Smunicipio"  name="Smunicipio" id="Smunicipio" data-rule-required="true" data-rule-select="true">';
-                                                                                    estado += '<option value="">- Seleccione -</option>';
-                                                                                    $.each(data.ciudad, function (indice, val) {
-                                                                                    estado += '<option value="' + val.id + '">' + val.nombre + '</option>';
-                                                                                    });
-                                                                                    estado += '</select></div>';
-                                                                                    $("#divMuni").append(estado);
-                                                                                    $('.Smunicipio').select2();
-                                                                            },
-                                                                            error: function (errors)
-                                                                            {
+                                                                        $("#divMuni").empty();
+                                                                        estado = '<div class="col-sm-6 col-xs-6"  > ';
+                                                                        estado += '<label>Municipio</label>';
+                                                                        estado += '<select  style="width:100%;" class="form-control input-sm Smunicipio"  name="Smunicipio" id="Smunicipio" data-rule-required="true" data-rule-select="true">';
+                                                                        estado += '<option value="">- Seleccione -</option>';
+                                                                        $.each(data.ciudad, function (indice, val) {
+                                                                            estado += '<option value="' + val.id + '">' + val.nombre + '</option>';
+                                                                        });
+                                                                        estado += '</select></div>';
+                                                                        $("#divMuni").append(estado);
+                                                                        $('.Smunicipio').select2();
+                                                                    },
+                                                                    error: function (errors)
+                                                                    {
 
-                                                                            }
-                                                                    });
                                                                     }
+                                                                });
+                                                            }
                                                             function especialidadS(idcheckbox)
                                                             {
-                                                            if (Especialida.indexOf(idcheckbox) === - 1)
-                                                            {
-                                                            if (Especialida.length < 3)
-                                                            {
-                                                            Especialida = [];
-                                                                    DataEspecialida = [];
-                                                                    $.each($('.Especialida'), function (indice, val) {
-                                                                    if ($(this).is(':checked')) {
-                                                                    Especialida.push(parseInt($(this).attr('id')));
-                                                                            EspecialidaSelect.push(parseInt($(this).attr('id')));
-                                                                            //   EspecialidaSelect.push('txt' + parseInt($(this).attr('id')));
-                                                                            DataEspecialida.push(EspecialidaSelect);
-                                                                            EspecialidaSelect = [];
-                                                                            /*          if (EspecialidaSelect.length % 2 === 0)
-                                                                             {
-                                                                             
-                                                                             }*/
-                                                                            //     document.getElementById('div' + parseInt($(this).attr('id'))).style.display = 'block';
-                                                                    } else {
-                                                                    //       document.getElementById('div' + parseInt($(this).attr('id'))).style.display = 'none';
-                                                                    }
-                                                                    });
-                                                            } else {
-                                                            Lobibox.notify("warning", {
-                                                            size: 'mini',
-                                                                    msg: '<p>Se deben seleccionar maxino 3 especialidades.</p>'
-                                                            });
-                                                                    $("#" + idcheckbox).prop('checked', false);
-                                                                    //  document.getElementById('div' + idcheckbox).style.display = 'none';
-                                                            }
-                                                            } else {
-
-                                                            Especialida = [];
-                                                                    DataEspecialida = [];
-                                                                    $.each($('.Especialida'), function (indice, val) {
-                                                                    if ($(this).is(':checked')) {
-
-                                                                    if (Especialida.indexOf(parseInt($(this).attr('name'))) === - 1)
+                                                                if (Especialida.indexOf(idcheckbox) === -1)
+                                                                {
+                                                                    if (Especialida.length < 3)
                                                                     {
-                                                                    // Especialida.push(parseInt($(this).attr('name')));
-                                                                    EspecialidaSelect.push(parseInt($(this).attr('id')));
-                                                                            //  EspecialidaSelect.push('txt' + parseInt($(this).attr('id')));
-                                                                            DataEspecialida.push(EspecialidaSelect);
-                                                                            EspecialidaSelect = [];
-                                                                            /*     if (EspecialidaSelect.length % 2 === 0)
-                                                                             {
-                                                                             DataEspecialida.push(EspecialidaSelect);
-                                                                             EspecialidaSelect = [];
-                                                                             }*/
-                                                                            //      document.getElementById('div' + parseInt($(this).attr('id'))).style.display = 'block';
-                                                                    }
-
+                                                                        Especialida = [];
+                                                                        DataEspecialida = [];
+                                                                        $.each($('.Especialida'), function (indice, val) {
+                                                                            if ($(this).is(':checked')) {
+                                                                                Especialida.push(parseInt($(this).attr('id')));
+                                                                                EspecialidaSelect.push(parseInt($(this).attr('id')));
+                                                                                //   EspecialidaSelect.push('txt' + parseInt($(this).attr('id')));
+                                                                                DataEspecialida.push(EspecialidaSelect);
+                                                                                EspecialidaSelect = [];
+                                                                                /*          if (EspecialidaSelect.length % 2 === 0)
+                                                                                 {
+                                                                                 
+                                                                                 }*/
+                                                                                //     document.getElementById('div' + parseInt($(this).attr('id'))).style.display = 'block';
+                                                                            } else {
+                                                                                //       document.getElementById('div' + parseInt($(this).attr('id'))).style.display = 'none';
+                                                                            }
+                                                                        });
                                                                     } else {
-                                                                    //    document.getElementById('div' + parseInt($(this).attr('id'))).style.display = 'none';
+                                                                        Lobibox.notify("warning", {
+                                                                            size: 'mini',
+                                                                            msg: '<p>Se deben seleccionar maxino 3 especialidades.</p>'
+                                                                        });
+                                                                        $("#" + idcheckbox).prop('checked', false);
+                                                                        //  document.getElementById('div' + idcheckbox).style.display = 'none';
                                                                     }
-                                                                    });
-                                                            }
-                                                            }
+                                                                } else {
 
-           $(document).on('click', '#enviar', function () {
-                                                            
-                                                          
-                                                                    if (parseInt(DataEspecialida.length) > 0)
-                                                            {
-                                                            if ($("#txtnombre").val() !== "" && $("#txtapellido").val() !== "" && ($("#Smunicipio").val() !== "") && ($('input:radio[name=rGenero]:checked').val() !==undefined))
-                                                            {
-                                                            $("#fgeneral").submit(
-                                                                    function (event) {
+                                                                    Especialida = [];
+                                                                    DataEspecialida = [];
+                                                                    $.each($('.Especialida'), function (indice, val) {
+                                                                        if ($(this).is(':checked')) {
 
-                                                                    $.ajax({
-                                                                    type: "POST",
-                                                                            async: false,
-                                                                            dataType: 'json',
-                                                                            url: Routing.generate('informacion_general'),
-                                                                            data: {datos: $("#fgeneral").serialize(), esp: DataEspecialida, genero: $('input:radio[name=rGenero]:checked').val(), codigo: $('input#hcodigo').val()},
-                                                                            success: function (data)
+                                                                            if (Especialida.indexOf(parseInt($(this).attr('name'))) === -1)
                                                                             {
-
-                                                                            if (data.msj !== "") {
-                                                                            Lobibox.notify("success", {
-                                                                            size: 'mini',
-                                                                                    msg: "<p>" + data.msj + "</p>"
-                                                                            });
-                                                                                    var url = Routing.generate('perfil');
-                                                                                    window.open(url, "_self");
-                                                                            } else if (data.error !== "") {
-                                                                            Lobibox.notify("warning", {
-                                                                            size: 'mini',
-                                                                                    msg: "<p>" + data.error + "</p>"
-                                                                            });
+                                                                                // Especialida.push(parseInt($(this).attr('name')));
+                                                                                EspecialidaSelect.push(parseInt($(this).attr('id')));
+                                                                                //  EspecialidaSelect.push('txt' + parseInt($(this).attr('id')));
+                                                                                DataEspecialida.push(EspecialidaSelect);
+                                                                                EspecialidaSelect = [];
+                                                                                /*     if (EspecialidaSelect.length % 2 === 0)
+                                                                                 {
+                                                                                 DataEspecialida.push(EspecialidaSelect);
+                                                                                 EspecialidaSelect = [];
+                                                                                 }*/
+                                                                                //      document.getElementById('div' + parseInt($(this).attr('id'))).style.display = 'block';
                                                                             }
-                                                                            },
-                                                                            error: function (errors)
-                                                                            {
 
-                                                                            }
+                                                                        } else {
+                                                                            //    document.getElementById('div' + parseInt($(this).attr('id'))).style.display = 'none';
+                                                                        }
                                                                     });
-                                                                            event.preventDefault();
-                                                                    });
+                                                                }
                                                             }
-                                                            } else {
 
-                                                            Lobibox.notify("warning", {
-                                                            size: 'mini',
-                                                                    msg: "<p> Seleccione almenos una especialidad.</p>"
-                                                            });
-                                                            }
-                                                            });
-                                                            
-                                                               $(document).on('click', '#btnCerrar', function () {
-                                                                   var url = Routing.generate('abogado_logout');
-                                                                                    window.open(url, "_self");
+                                                            $(document).on('click', '#enviar', function () {
+
+
+                                                                if (parseInt(DataEspecialida.length) > 0)
+                                                                {
+                                                                    if ($("#txtnombre").val() !== "" && $("#txtapellido").val() !== "" && ($("#Smunicipio").val() !== "") && ($("#Stitulo").val() !== "") && ($('input:radio[name=rGenero]:checked').val() !== undefined))
+                                                                    {
+                                                                        $("#fgeneral").submit(
+                                                                                function (event) {
+
+                                                                                    $.ajax({
+                                                                                        type: "POST",
+                                                                                        async: false,
+                                                                                        dataType: 'json',
+                                                                                        url: Routing.generate('informacion_general'),
+                                                                                        data: {datos: $("#fgeneral").serialize(), esp: DataEspecialida, genero: $('input:radio[name=rGenero]:checked').val(), codigo: $('input#hcodigo').val()},
+                                                                                        success: function (data)
+                                                                                        {
+
+                                                                                            if (data.msj !== "") {
+                                                                                                Lobibox.notify("success", {
+                                                                                                    size: 'mini',
+                                                                                                    msg: "<p>" + data.msj + "</p>"
+                                                                                                });
+                                                                                                //    var url = Routing.generate('perfil');
+                                                                                                var url = Routing.generate('planpago', {id: data.codigo});
+                                                                                                window.open(url, "_self");
+
+                                                                                            } else if (data.error !== "") {
+                                                                                                Lobibox.notify("warning", {
+                                                                                                    size: 'mini',
+                                                                                                    msg: "<p>" + data.error + "</p>"
+                                                                                                });
+                                                                                            }
+                                                                                        },
+                                                                                        error: function (errors)
+                                                                                        {
+
+                                                                                        }
+                                                                                    });
+                                                                                    event.preventDefault();
+                                                                                });
+                                                                    }
+                                                                } else {
+
+                                                                    Lobibox.notify("warning", {
+                                                                        size: 'mini',
+                                                                        msg: "<p> Seleccione almenos una especialidad.</p>"
                                                                     });
-                                                               
+                                                                }
+                                                            });
+
+                                                            $(document).on('click', '#btnCerrar', function () {
+                                                                var url = Routing.generate('abogado_logout');
+                                                                window.open(url, "_self");
+                                                            });
+
             </script>
         {% endfor %}
 

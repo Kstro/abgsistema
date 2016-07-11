@@ -56,6 +56,8 @@ class EmailService
         }
         $email->setSubject($this->subject);  
         $email->setBody($body); 
+        $email->attach(Swift_Attachment::fromPath($archivo)) ;
+   
         $this->mail->send($email);
     }
 
