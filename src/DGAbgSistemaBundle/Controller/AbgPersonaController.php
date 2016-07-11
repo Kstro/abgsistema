@@ -3054,7 +3054,7 @@ else
                         <td class=\"expander\"></td>
                     </tr>
                 </table>
-            ");
+            ","Rechazo de verificación de abogado");
                
             //var_dump($foto[0]);
             $em->remove($foto[0]);
