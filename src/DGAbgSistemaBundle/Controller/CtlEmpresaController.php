@@ -410,6 +410,7 @@ class CtlEmpresaController extends Controller {
             $abgPersona->setEstado(0);
             $abgPersona->setCodigo($codigo);
             $abgPersona->setVerificado(0);
+            $abgPersona->setVerificaNotario(0);
             $abgPersona->setEstadoMetodoPago(0);
             $em->persist($abgPersona);
 
@@ -2024,8 +2025,8 @@ class CtlEmpresaController extends Controller {
                 $extension = explode('/', $tipo);
                 $nombreimagen2.="." . $extension[1];
                 $fecha = date('Y-m-dHis');
-                $nombreArchivo = $nombreimagen . "-" . $fecha . $nombreimagen2;
-                $nombreSERVER = str_replace(" ", "", $nombreArchivo);
+                $nombreArchivo = $nombreimagen . "-" . $fecha . $nombreimagen2;                
+                $nombreSERVER = "solicitud_verificacion_" . $fecha . $nombreimagen2;
 
                 $resultados = move_uploaded_file($_FILES["imagen"]["tmp_name"], $path2 . $nombreSERVER);
 
@@ -2035,8 +2036,8 @@ class CtlEmpresaController extends Controller {
                     $AbgFoto = new AbgFoto();
 
                     $path = "Photos/verificacion/";
-                    $nombreBASE = $path . $nombreArchivo;
-
+                    $nombreBASE = $path . "solicitud_verificacion_" . $fecha . $nombreimagen2;
+                                        
                     $AbgFoto->setAbgPersona($Persona);
                     $AbgFoto->setTipoFoto(5);
                     $AbgFoto->setCtlEmpresa(null);
