@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Membresia| Directorio de Abogados de El Salvador | Primero y unico directorio de abogados de El Salvador | Abogados.com.sv</title>
+        <meta name="robots" content="noindex">
+
+        <!-- Stylesheet de Bootstrap -->
+        <link href="{{asset('Resources/src/css/bootstrap.css')}}" rel="stylesheet">
+        <link href="{{asset('Resources/src/css/movilcss.css')}}" rel="stylesheet">
+
+        <!-- Stylesheet Personales -->
+        <link href="{{asset('Resources/src/css/style.css')}}" rel="stylesheet">
+          <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
+        
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+
+        <!-- Favicon (Icono Pequeño) -->
+        <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+        <link rel="icon" href="favicon.png" type="image/x-icon">
+
+        <style type="text/css">
+            table { table-layout: fixed; }
+            td { width: 33%; }
+            .shadow {
+                -moz-box-shadow:    3px 3px 5px 6px #ccc;
+                -webkit-box-shadow: 3px 3px 5px 6px #ccc;
+                box-shadow:         3px 3px 5px 6px #ccc;
+
+            }
+            .crop{
+                float:left;
+                margin:.5em 10px .5em 0;
+                overflow:hidden; /* this is important */
+                position:relative; /* this is important too */
+                border:1px solid #ccc;
+                width:150px;
+                height:90px;
+            }
+            /* position the image using negative top and left values */
+            .crop img{
+                position:absolute;
+                top:-20px;
+                left:-55px;
+            }
+            .check-select{
+                padding:1px;
+                border:1px solid #00b300;
+                background-color:#f2f2f2;
+
+            }
+
+            img.check {
+                background-image: url("{{ asset('Photos/defecto/check.png') }}");
+                width: 25px; height: 25px;
+            }
+            #content {
+                position: relative;
+            }
+            #content img {
+                position: absolute;
+                top: 0px;
+                right: 0px;
+            }
+            .ribbon {
+                position: relative;
+                width: 30px;
+                top: -16px;
+                right: -706px;
+                background-image: url("{{ asset('Photos/defecto/check.png') }}");
+            }
+        </style>
+
+    </head>
+    <body>
+
+        <div class="container" style="padding-top: 20px;">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="{{asset('Resources/src/img/logogris.png')}}" style="width: 250px;">		
+                </div>
+                <div class="col-md-6">
+
+                </div>
+            </div>
+            <hr>
+            <p class="text-center">
+
+            </p>
+            <div class="row">
+                <div class="col-md-7">
+                    <div style="border: 1px solid #c3c3c3; background-color: #fbfbfb; border-radius: 3px; padding: 15px;">
+                        <p class="text-left" style="margin-bottom: 0px; font-family: 'Montserrat', sans-serif;">1. Seleccione su plan</p>
+                        <div style="background-color: #fff; margin-top: 10px;">
+                            <input type="hidden" id="hmetodo" name="hmetodo" >
+                            <table style="width:100%; border: 1px solid #c3c3c3; border-radius: 3px;">
+                                <tr style="border: 1px solid #c3c3c3; border-radius: 3px;">
+                                    <th class="text-center" style="padding: 10px; font-size: 13px; border: 1px solid #c3c3c3; font-weight: 600; font-family: 'Montserrat', sans-serif;">Mensual</th>
+                                    <th class="text-center" style="padding: 10px; font-size: 13px; border: 1px solid #c3c3c3; font-weight: 600; font-family: 'Montserrat', sans-serif;">Trimestral</th>
+                                    <th class="text-center" style="padding: 10px; font-size: 13px; border: 1px solid #c3c3c3; font-weight: 600; font-family: 'Montserrat', sans-serif;">Semestral</th>
+                                    <th class="text-center" style="padding: 10px; font-size: 13px; border: 1px solid #c3c3c3; font-weight: 600; font-family: 'Montserrat', sans-serif;">Anual</th>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #c3c3c3; font-size: 13px;" class="sans">
+                                        <div class="row">
+                                            <div class="col-xs-2" style="padding-left: 15px; padding-right: 8px;">
+                                                <input type="radio" name="optionsRadios" id="optionsRadios1" style="height: 7px;" value="1" >
+                                            </div>
+
+                                            <div class="col-xs-10" style="padding-left: 8px; padding-right: 8px;">
+                                                <span style="font-size: 12px;" class="sans radios0">$9.99 / por mes</span></br>
+                                                <span style="font-size: 12px;" class="sans radios0">Cobro mensual</span>
+                                            </div>
+
+                                        </div>
+                                    </td>
+                                    <td style="padding: 10px; border: 1px solid #c3c3c3; font-size: 13px;" class="sans">
+                                        <div class="row">
+                                            <div class="col-xs-2" style="padding-left: 15px; padding-right: 8px;">
+                                                <input type="radio" name="optionsRadios" id="optionsRadios1" style="height: 7px;" value="2">
+                                            </div>
+                                            <div class="col-xs-10" style="padding-left: 8px; padding-right: 8px;">
+                                                <span style="font-size: 12px;" class="sans radios1">$9.33 / por mes</span></br>
+                                                <span style="font-size: 12px;" class="sans radios1">Total por $27.99</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="padding: 10px; border: 1px solid #c3c3c3; font-size: 13px;" class="sans">
+                                        <div class="row">
+                                            <div class="col-xs-2" style="padding-left: 15px; padding-right: 8px;">
+                                                <input type="radio" name="optionsRadios" id="optionsRadios1" style="height: 7px;" value="3">
+                                            </div>
+                                            <div class="col-xs-10" style="padding-left: 8px; padding-right: 8px;">
+                                                <span style="font-size: 12px;" class="sans radios2">$9.16 / por mes</span></br>
+                                                <span style="font-size: 12px;" class="sans radios2">Total por $54.96</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="padding: 10px; border: 1px solid #c3c3c3; font-size: 13px;" class="sans">
+                                        <div class="row">
+                                            <div class="col-xs-2" style="padding-left: 15px; padding-right: 8px;">
+                                                <input type="radio" name="optionsRadios" id="optionsRadios1" style="height: 7px;" value="4">
+                                            </div>
+                                            <div class="col-xs-10" style="padding-left: 8px; padding-right: 8px;">
+                                                <span style="font-size: 12px;" class="sans radios3">$8.33 / por mes</span></br>
+                                                <span style="font-size: 12px;" class="sans radios3">Total por $99.99</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table> 
+                        </div>
+                        <!-- Fin -->
+                        <p class="text-left" style="margin-bottom: 0px; margin-top: 15px; font-family: 'Montserrat', sans-serif;">2. Metodo de pago</p>
+                        
+                            <div class="row" style="margin-top: 15px;">
+                                {%for datos in tipoPago %}
+                                <div class="col-xs-4" style=" margin-bottom:17px;">
+                                    <div class="shadow">
+                                        {#  <img src="{{ asset('Photos/defecto/check.png') }}" class="img_check " id="checkBa" style="width: 25px; height: 25px; margin-left: 169px; margin-top:-10px; position: absolute;">#}
+{{datos.nombre}}
+                                        <img src="{{ asset('Resources/src/img/metodoPago/agricola.png') }}" class="img_check " id="{{datos.id}}" style="width: 100%; max-width: 100%; padding: 15px;">
+                                    </div>
+                                </div>
+                               {# <div class="col-xs-4">
+                                    <div  class="shadow">
+                                        <img src="{{ asset('Photos/defecto/check.png') }}" style="width: 25px; height: 25px; margin-left: 169px; margin-top:-10px; position: absolute;display:none;" id="checkTg" >
+
+                                        <img src="{{ asset('Resources/src/img/metodoPago/tigo.png') }}" class="img_check " id="imgTg" style="width: 100%; max-width: 100%; padding: 15px;">
+                                    </div>
+                                </div>
+                                <div class="col-xs-4">
+                                    <div class="shadow">
+                                        <img src="{{ asset('Resources/src/img/metodoPago/pagadito.jpg') }}" class="img_check " id="imgPg" style="width: 100%; max-width: 100%; padding: 15px;">
+                                    </div>
+                                </div>#}
+                           
+                                         {% if loop.index is divisibleby(3) %}
+                                    <div class="clearfix"></div>
+                                {% endif %} 
+                        {%endfor%}
+                         </div>
+                        <!-- Fin -->
+                        <p class="text-left" style="margin-bottom: 0px; margin-top: 15px; font-family: 'Montserrat', sans-serif;">3. Metodo de pago</p>
+                        <div class="row" style="margin-top: 15px;">
+                            <div class="col-xs-12">
+                                <div   style="height: 70px;">
+                                    
+                                    <div></div>
+                                </div>
+                            </div>
+                   
+                        </div>
+                  
+                                 <a class=" btn btn-sm btn-primary btn-flat" style=" margin-top: 25px;" id="btnEnviar"> Enviar</a>    
+                    </div>
+                </div>
+                <div class="col-md-5">
+
+                </div>
+            </div>
+        </div>
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="{{asset('Resources/src/js/bootstrap.js')}}"></script>
+        <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
+        <script type="text/javascript">
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+
+
+            })
+            $(document).on('click', '.radios0', function () {
+                $('input:radio[name=optionsRadios]')[0].checked = true;
+               
+            });
+            $(document).on('click', '.radios1', function () {
+                $('input:radio[name=optionsRadios]')[1].checked = true;
+            });
+            $(document).on('click', '.radios2', function () {
+                $('input:radio[name=optionsRadios]')[2].checked = true;
+            });
+            $(document).on('click', '.radios3', function () {
+                $('input:radio[name=optionsRadios]')[3].checked = true;
+            });
+            
+            $(document).on('click', '.img_check', function () {
+                var id = $(this).attr('id');
+
+
+                $('input#hmetodo').val(id);
+              //  alert($('input#hmetodo').val());
+                $(".img_check").removeClass('check-select');
+                $("#" + id).addClass('check');
+
+                $("#" + id).addClass("check-select");
+                $("#checkBa").css('dispaly', 'blok');
+
+            });
+
+            $(document).on('click', '#btnEnviar', function () {
+              //  $('input#hplan').val(1);
+         //      alert($('input:radio[name=optionsRadios]:checked').val());
+           
+            $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: Routing.generate('metodo_pago'),
+                    data:{hplan:$('input:radio[name=optionsRadios]:checked').val(),rMetodo:$('input#hmetodo').val()},
+                    success: function (data) {
+
+                        if (data.estado == true) {
+
+                            Lobibox.notify("success", {
+                                size: 'mini',
+                                msg: '<p>Su solicitud de verificación se ha enviado.</p>'});
+                            var url = Routing.generate('perfil');
+                            window.open(url, "_self");
+                        } else {
+                            Lobibox.notify("error", {
+                                size: 'mini',
+                                msg: 'Lo sentimos, ocurrio un error, intentelo mas tarde.'});
+                        }
+                        //     $("#enviarImagenV").prop("disabled", false);
+                        //    $("#enviarImagenV").button('reset');
+                    }
+                });
+
+            });
+        </script>
+
+
+    </body>
+</html>

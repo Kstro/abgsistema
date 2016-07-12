@@ -399,11 +399,24 @@ class AbgFacturacionController extends Controller {
      */
     public function PlanPagoAction(Request $request) {
         try {
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
+            $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $codigo = $request->get('id');
 
 
-            return $this->render('abgfacturacion/planPago.html.twig');
+            $dql_departamento = "SELECT  tp.id AS id, tp.tipoPago AS nombre"
+                    . " FROM DGAbgSistemaBundle:CtlTipoPago tp WHERE tp.id  <> 5";
+            $tipoPago = $em->createQuery($dql_departamento)->getArrayResult();
+
+
+            $comprobante = $em->getRepository("DGAbgSistemaBundle:AbgFacturacion")->findByAbgPersona($idPersona);
+            $trial = 0;
+            if ($comprobante) {
+                $trial = $comprobante[0]->getAbgTipoPago()->getId();
+            }
+
+            //     return $this->render('abgfacturacion/planPago.html.twig', array('tipoPago' => $tipoPago,'trial'=>$trial));
+            return $this->render('abgfacturacion/pay.html.twig', array('tipoPago' => $tipoPago, 'trial' => $trial));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
@@ -419,118 +432,195 @@ class AbgFacturacionController extends Controller {
         try {
             $em = $this->getDoctrine()->getManager();
             $request = $this->getRequest();
+
+
+            /*    var_dump($request->get('hplan'));
+              var_dump($request->get('rMetodo'));
+              exit(); */
+
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $idUser = $this->container->get('security.context')->getToken()->getUser()->getId();
 
 
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($idPersona);
             $Usuario = $em->getRepository("DGAbgSistemaBundle:CtlUsuario")->find($idUser);
-            //  $comprobante = $em->getRepository("DGAbgSistemaBundle:AbgFacturacion")->findBy($idPersona);
+
+            $factura = $em->getRepository("DGAbgSistemaBundle:AbgFacturacion")->findByAbgPersona($idPersona);
+          
+            $abgFacturacionTrial = new AbgFacturacion();
             $abgFacturacion = new AbgFacturacion();
-            /*
-              $nombreimagen2 = "";
-              //     if (count($comprobante) == 0) {
-              $path2 = $this->container->getParameter('photo.verificacion');
 
-              $nombreimagen = $_FILES['imagen']['name'];
-
-
-              $tipo = $_FILES['imagen']['type'];
-              $extension = explode('/', $tipo);
-              $nombreimagen2.="." . $extension[1];
-              $fecha = date('Y-m-dHis');
-              $nombreArchivo = $nombreimagen . "-" . $fecha . $nombreimagen2;
-              $nombreSERVER = str_replace(" ", "", $nombreArchivo);
-
-              $resultados = move_uploaded_file($_FILES["imagen"]["tmp_name"], $path2 . $nombreSERVER);
-
-              if ($resultados) {
-              $path = "Photos/comprobante/";
-              $nombreBASE = $path . $nombreArchivo; */
+            $nombreimagen2 = "";
+            //     if (count($comprobante) == 0) {
+            $path2 = $this->container->getParameter('photo.comprobante');
 
             $date = new \DateTime("now");
-            $fechaPago = date_add($date, date_interval_create_from_date_string('30 days'));
+
+
             $abgFacturacion->setAbgPersona($Persona);
-            $abgFacturacion->setAbgTipoPago(null);
-            $abgFacturacion->setFechaPago($fechaPago);
             $abgFacturacion->setIdUser(null);
+            $abgFacturacion->setFechaRegistro(new \DateTime("now"));
+            // 14 dias gratis
+            if (count($factura) == 0) {
+             /*   var_dump(count($factura));
+            exit();*/
+                $tipo_pago = $em->getRepository("DGAbgSistemaBundle:CtlTipoPago")->find(5);
+                $fechaPago = date_add($date, date_interval_create_from_date_string('14 days'));
+           $abgFacturacionTrial->setAbgPersona($Persona);
+            $abgFacturacionTrial->setIdUser(null);
+            $abgFacturacionTrial->setFechaRegistro(new \DateTime("now"));
+                $abgFacturacionTrial->setFechaPago($fechaPago);
+                $abgFacturacionTrial->setAbgTipoPago($tipo_pago);
+                $abgFacturacionTrial->setMonto(00.00);
+                $abgFacturacionTrial->setPlazo(14);
+                $abgFacturacionTrial->setServicio('Bienvenida');
+                $abgFacturacionTrial->setDescripcion('Directorio de abogados de El Salvador te regala 14 dias de bienvenida por la suscripcion dentro del periodo de ..');
+                $abgFacturacionTrial->setComprobante(null);
+                $abgFacturacionTrial->setAprobado(1);
+               $em->persist($abgFacturacionTrial);
+                $em->flush();
+            }
+         $abgFacturacion->setAbgPersona($Persona);
+            $abgFacturacion->setIdUser(null);
+            $abgFacturacion->setFechaRegistro(new \DateTime("now"));
+            if ($request->get('hplan') != null) {
+                switch ($request->get('hplan')) {
+                    /* case 1:
+                      $tipo_pago = $em->getRepository("DGAbgSistemaBundle:CtlTipoPago")->find(5);
+                      $fechaPago = date_add($date, date_interval_create_from_date_string('14 days'));
 
-            $abgFacturacion->setDescripcion('30 dias de prueba');
-            $abgFacturacion->getComprobante(null);
-            $abgFacturacion->setMonto(00.00);
-            $abgFacturacion->setPlazo(30);
-            $abgFacturacion->setServicio('Trial');
+                      $abgFacturacion->setFechaPago($fechaPago);
+                      $abgFacturacion->setAbgTipoPago($tipo_pago);
+                      $abgFacturacion->setMonto(00.00);
+                      $abgFacturacion->setPlazo(14);
+                      $abgFacturacion->setServicio('Bienvenida');
+                      $abgFacturacion->setDescripcion('14 dias de bienvenida');
+                      $abgFacturacion->setComprobante(null);
+                      $abgFacturacion->setAprobado(1);
+
+                      break; */
+                    case 1:
+                        $tipo_pago = $em->getRepository("DGAbgSistemaBundle:CtlTipoPago")->find($request->get('rMetodo'));
+                        // $fechaPago = date_add($date, date_interval_create_from_date_string('90 days'));
+                      /*  $nombreimagen = $_FILES['imagen']['name'];
+                        $tipo = $_FILES['imagen']['type'];
+                        $extension = explode('/', $tipo);
+                        $nombreimagen2.="." . $extension[1];
+                        $fecha = date('Y-m-dHis');
+                        $nombreArchivo = $nombreimagen . "-" . $fecha . $nombreimagen2;
+                        $nombreSERVER = str_replace(" ", "", $nombreArchivo);
+
+                        $resultados = move_uploaded_file($_FILES["imagen"]["tmp_name"], $path2 . $nombreSERVER);
+                        if ($resultados) {
+                            $path = "Photos/comprobante/";
+                            $nombreBASE = $path . $nombreArchivo;
+                        }*/
+                       $abgFacturacion->setFechaPago(null);
+                        $abgFacturacion->setAbgTipoPago($tipo_pago);
+                        $abgFacturacion->setMonto(09.99);
+                        $abgFacturacion->setPlazo(30);
+                        $abgFacturacion->setServicio('Personal');
+                        $abgFacturacion->setDescripcion('Suscripcion por un periodo de 30 dias');
+                     //   $abgFacturacion->setComprobante($nombreBASE);
+                        $abgFacturacion->setAprobado(0);
+
+                        break;
+                    case 2:
+
+                        $tipo_pago = $em->getRepository("DGAbgSistemaBundle:CtlTipoPago")->find($request->get('rMetodo'));
+                       /* $nombreimagen = $_FILES['imagen']['name'];
+                        $tipo = $_FILES['imagen']['type'];
+                        $extension = explode('/', $tipo);
+                        $nombreimagen2.="." . $extension[1];
+                        $fecha = date('Y-m-dHis');
+                        $nombreArchivo = $nombreimagen . "-" . $fecha . $nombreimagen2;
+                        $nombreSERVER = str_replace(" ", "", $nombreArchivo);
+
+                        $resultados = move_uploaded_file($_FILES["imagen"]["tmp_name"], $path2 . $nombreSERVER);
+                        if ($resultados) {
+                            $path = "Photos/comprobante/";
+                            $nombreBASE = $path . $nombreArchivo;
+                        }
+                     */
+                        $abgFacturacion->setAbgTipoPago($tipo_pago);
+                        $abgFacturacion->setMonto(27.99);
+                        $abgFacturacion->setPlazo(90);
+                        $abgFacturacion->setServicio('Personal');
+                        $abgFacturacion->setDescripcion('Suscripcion por un periodo de 90 dias');
+                      //  $abgFacturacion->setComprobante($nombreBASE);
+                        $abgFacturacion->setAprobado(0);
+                        break;
+
+                    case 3:
+
+                   /*     $tipo_pago = $em->getRepository("DGAbgSistemaBundle:CtlTipoPago")->find($request->get('rMetodo'));
+                        $nombreimagen = $_FILES['imagen']['name'];
+                        $tipo = $_FILES['imagen']['type'];
+                        $extension = explode('/', $tipo);
+                        $nombreimagen2.="." . $extension[1];
+                        $fecha = date('Y-m-dHis');
+                        $nombreArchivo = $nombreimagen . "-" . $fecha . $nombreimagen2;
+                        $nombreSERVER = str_replace(" ", "", $nombreArchivo);
+
+                        $resultados = move_uploaded_file($_FILES["imagen"]["tmp_name"], $path2 . $nombreSERVER);
+                        if ($resultados) {
+                            $path = "Photos/comprobante/";
+                            $nombreBASE = $path . $nombreArchivo;
+                        }
+*/
+                        $abgFacturacion->setAbgTipoPago($tipo_pago);
+                        $abgFacturacion->setMonto(54.96);
+                        $abgFacturacion->setPlazo(180);
+                        $abgFacturacion->setServicio('Personal');
+                        $abgFacturacion->setDescripcion('Suscripcion por un periodo de 180 dias');
+                  //     $abgFacturacion->setComprobante($nombreBASE);
+                        $abgFacturacion->setAprobado(0);
+
+                        break;
+                    case 4:
+
+                   /*     $tipo_pago = $em->getRepository("DGAbgSistemaBundle:CtlTipoPago")->find($request->get('rMetodo'));
+                        $nombreimagen = $_FILES['imagen']['name'];
+                        $tipo = $_FILES['imagen']['type'];
+                        $extension = explode('/', $tipo);
+                        $nombreimagen2.="." . $extension[1];
+                        $fecha = date('Y-m-dHis');
+                        $nombreArchivo = $nombreimagen . "-" . $fecha . $nombreimagen2;
+                        $nombreSERVER = str_replace(" ", "", $nombreArchivo);
+
+                        $resultados = move_uploaded_file($_FILES["imagen"]["tmp_name"], $path2 . $nombreSERVER);
+                        if ($resultados) {
+                            $path = "Photos/comprobante/";
+                            $nombreBASE = $path . $nombreArchivo;
+                        }
+*/
+                        $abgFacturacion->setAbgTipoPago($tipo_pago);
+                        $abgFacturacion->setMonto(99.99);
+                        $abgFacturacion->setPlazo(360);
+                        $abgFacturacion->setServicio('Personal');
+                        $abgFacturacion->setDescripcion('Suscripcion por un periodo de 360 dias');
+                //        $abgFacturacion->setComprobante($nombreBASE);
+                        $abgFacturacion->setAprobado(0);
+
+                        break;
+                }
+                $em->persist($abgFacturacion);
+                $em->flush();
+
+                $Persona->setEstadoMetodoPago(1);
+                $em->merge($Persona);
+                $em->flush();
+
+                $Usuario->setEstadoCorreo(1);
+                $em->merge($Usuario);
+                $em->flush();
+
+                $data['estado'] = true;
+            } else {
+                $data['estado'] = false;
+            }
 
 
-
-            /*    switch ($request->get('')) {
-              case 0:
-              $abgFacturacion->setMonto(00.00);
-              $abgFacturacion->setPlazo(30);
-              $abgFacturacion->setServicio('Trial');
-              break;
-              case 2:
-              $abgFacturacion->setMonto(09.99);
-              $abgFacturacion->setPlazo(30);
-              $abgFacturacion->setServicio('Personal');
-              break;
-              case 3:
-              $abgFacturacion->setMonto(59.94);
-              $abgFacturacion->setPlazo(180);
-              $abgFacturacion->setServicio('Personal');
-              break;
-              }
-             */
-            $em->persist($abgFacturacion);
-            $em->flush();
-
-            $Persona->setEstadoMetodoPago(1);
-            $em->merge($Persona);
-            $em->flush();
-
-            $Usuario->setEstadoCorreo(1);
-            $em->merge($Usuario);
-            $em->flush();
-
-            $data['estado'] = true;
-            /*   } else {
-              $data['estado'] = false;
-              } */
-            /*   } else {
-
-              $AbgFoto = $em->getRepository("DGAbgSistemaBundle:AbgFoto")->find($carnet[0]->getIdargFoto());
-              $path2 = $this->container->getParameter('photo.verificacion');
-              $nombreimagen = $_FILES['imagen']['name'];
-
-              $tipo = $_FILES['imagen']['type'];
-              $extension = explode('/', $tipo);
-              $nombreimagen2.="." . $extension[1];
-              $fecha = date('Y-m-dHis');
-              $nombreArchivo = $nombreimagen . "-" . $fecha . $nombreimagen2;
-              $nombreSERVER = str_replace(" ", "", $nombreArchivo);
-
-              $resultados = move_uploaded_file($_FILES["imagen"]["tmp_name"], $path2 . $nombreSERVER);
-
-              if ($resultados) {
-
-              // registar solicitud de verificacion
-
-              $path = "Photos/verificacion/";
-              $nombreBASE = $path . $nombreArchivo;
-              $AbgFoto->setCtlEmpresa(null);
-
-              $AbgFoto->setSrc($nombreBASE);
-              $AbgFoto->setFechaRegistro(new \DateTime("now"));
-              $AbgFoto->setFechaExpiracion(null);
-              $AbgFoto->setEstado(0);
-              $em->persist($AbgFoto);
-              $em->flush();
-
-              $data['estado'] = true;
-              } else {
-              $data['estado'] = false;
-              }
-              } */
             return new Response(json_encode($data));
         } catch (\Exception $e) {
             $data['error'] = $e->getMessage(); //"Falla al Registrar ";

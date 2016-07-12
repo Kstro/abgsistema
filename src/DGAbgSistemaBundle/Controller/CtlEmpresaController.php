@@ -583,12 +583,12 @@ class CtlEmpresaController extends Controller {
                         <p>Bienvenido al directorio mas grande de abogados de El Salvador</p>
                          <p>Hola " . $nombreAbogado . " " . $apellidoAbogado . ", confirma tu correo para que puedas completar tu prefil.</p>
                             <p>Haz click en el enlace para verificar tu correo</p>
-                            <a href='http://abg.localhost/app_dev.php/confirmar/data/" . $var_md5 . "'>Clik aqui para verificarte</a> 
+                            <a href='http://abg.localhost/app_dev.php/confirmar/correo/" . $var_md5 . "'>Clik aqui para verificarte</a> 
                         </td>
                         <td class=\"expander\"></td>
                       </tr>
                     </table>
-                ","Confirmacion de correo");
+                ");
 
             $session = new Session();
             $session->invalidate();
