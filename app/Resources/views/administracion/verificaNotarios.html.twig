@@ -7,9 +7,7 @@
     <script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
 {% endblock%}
 {% block navegacion_Y_body %}
-    {% block navegacion %}
-
-    {% endblock %}
+    {% block navegacion %}{% endblock %}
     {% block cuerpo %}
 
         <script type="text/javascript">
@@ -93,7 +91,6 @@
 
                             $("#idtbody").append(datos);
                         });
-
                     },
                     error: function (errors)
                     {
@@ -145,7 +142,6 @@
                         <li class="pull-left header">
                     </ul>
                     <div class="tab-content no-padding">
-
                         <div class="chart tab-pane active" id="revenue-chart" >
                             <br>
                             <div style=" padding: 15px;" >
@@ -162,112 +158,107 @@
 
                                                 </div>
                                                 <div class="col-md-1"><a class=" btn btn-flat btn-default" style="  margin-top: 25px;" onClick="AbgVerificar();"><i class=" fa fa-refresh"></i></a></div>
-                                            </div>   </div>
-                                            {%if solicitVerificacion|default is not empty %}
-                                                <div class="form-group table-responsive mailbox-messages" id="contenedor">
-                                                    <table id="tabla" class="table table-hover table-striped" style="font-size:13px;" >
-                                                        <thead>
-                                                        <br>
-                                                        </thead>
-                                                        <tbody style="min-height: 350px;" id="idtbody">
-                                                            {% for datos in solicitVerificacion %}
-                                                                <tr style=" font-size: 15px" onClick="vericarAbg({{datos.id}})">
-                                                                    <td ><a href="#" >{{datos.nombre}}</a></td>
-                                                                    <td align="center"> </strong>&nbsp;<i class="fa  fa-paperclip fa-lg text-aqua"></i></td>
-                                                                    <td align="center">  <div class="bloque-ocultar ">
-                                                                        <img src="{{ asset('Photos/defecto/noVerificado.png') }}" disabled="disabled" style="width: 15px; height: 15px; -webkit-filter: grayscale(80%);" id="botonModalP" title="Cambiar foto de perfil" >
-                                                                    </td>
-                                                                </tr>
-                                                            {%endfor%}
-                                                        </tbody>
-                                                    </table> 
-                                                </div>
-                                            {%endif%}
+                                            </div>   
+                                        </div>
+                                        {%if solicitVerificacion|default is not empty %}
+                                            <div class="form-group table-responsive mailbox-messages" id="contenedor">
+                                                <table id="tabla" class="table table-hover table-striped" style="font-size:13px;" >
+                                                    <thead>
+                                                    <br>
+                                                    </thead>
+                                                    <tbody style="min-height: 350px;" id="idtbody">
+                                                        {% for datos in solicitVerificacion %}
+                                                            <tr style=" font-size: 15px" onClick="vericarAbg({{datos.id}})">
+                                                                <td ><a href="#" >{{datos.nombre}}</a></td>
+                                                                <td align="center"> </strong>&nbsp;<i class="fa  fa-paperclip fa-lg text-aqua"></i></td>
+                                                                <td align="center">  <div class="bloque-ocultar ">
+                                                                    <img src="{{ asset('Photos/defecto/noVerificado.png') }}" disabled="disabled" style="width: 15px; height: 15px; -webkit-filter: grayscale(80%);" id="botonModalP" title="Cambiar foto de perfil" >
+                                                                </td>
+                                                            </tr>
+                                                        {%endfor%}
+                                                    </tbody>
+                                                </table> 
                                             </div>
-                                            <div id="divVerificar" style="min-height:175px; display: none;"></div>
+                                        {%endif%}
+                                    </div>
+                                    <div id="divVerificar" style="min-height:175px; display: none;"></div>
                                 </form>
-    </div>
-
                             </div>
-                                                            <div class="chart tab-pane" id="divVerificados" style=" padding: 15px;" >
-                                                                <div class="row">
-                                                                    <div class="form-group">
-                                                                        <div class="col-md-5">
-                                                                            <label for="nombreEmpleado">Lista de Notarios verificados</label>
-
-                                                                        </div>
-                                                                    </div>   </div>
-                                                                <div class="form-group table-responsive mailbox-messages" id="contVerificados">
-
-                                                                </div>
-                                                                <div  id="contNoVerificado">
-
-                                                                </div>
-                                                            </div>
-                                                            </div>
-                                                            </div>
+                        </div>
+                        <div class="chart tab-pane" id="divVerificados" style=" padding: 15px;" >
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-5">
+                                        <label for="nombreEmpleado">Lista de Notarios verificados</label>
+                                    </div>
+                                </div>   
+                            </div>
+                            <div class="form-group table-responsive mailbox-messages" id="contVerificados"></div>
+                            <div  id="contNoVerificado"></div>
+                        </div>
+                    </div>
+                </div>
                                                             
-                </div>                    
-                </div>                    
-            </div>
-                                                            <!-- ####################################################### -->
-                                                            <script type="text/javascript">
-                                                                $(document).on('ready', function () {
-                                                                    $('#Sabogado').select2({
-                                                                        ajax: {
-                                                                            url: Routing.generate('abogados_solverificacion'),
-                                                                            dataType: 'json',
-                                                                            delay: 250,
-                                                                            data: function (params) {
-                                                                                return {
-                                                                                    q: params.term,
-                                                                                    page: params.page
-                                                                                };
-                                                                            },
-                                                                            processResults: function (data, params) {
+            </div>                    
+        </div>                    
+    </div>
+        <!-- ####################################################### -->
+        <script type="text/javascript">
+            $(document).on('ready', function () {
+                $('#Sabogado').select2({
+                    ajax: {
+                        url: Routing.generate('abogados_solverificacion'),
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return {
+                                q: params.term,
+                                page: params.page
+                            };
+                        },
+                        processResults: function (data, params) {
 
-                                                                                var select2Data = $.map(data.data, function (obj) {
-                                                                                    obj.id = obj.idAbg;
-                                                                                    obj.text = obj.nombre;
-                                                                                    return obj;
-                                                                                });
-                                                                                return {
-                                                                                    results: select2Data
-                                                                                };
-                                                                            },
-                                                                            cache: true
-                                                                        },
-                                                                        escapeMarkup: function (markup) {
-                                                                            return markup;
-                                                                        },
-                                                                        minimumInputLength: 1,
-                                                                        templateResult: formatRepo,
-                                                                        templateSelection: formatRepoSelection
-                                                                    });
-                                                                });
-                                                                function formatRepo(data) {
-                                                                    if (data.nombre) {
+                            var select2Data = $.map(data.data, function (obj) {
+                                obj.id = obj.idAbg;
+                                obj.text = obj.nombre;
+                                return obj;
+                            });
+                            return {
+                                results: select2Data
+                            };
+                        },
+                        cache: true
+                    },
+                    escapeMarkup: function (markup) {
+                        return markup;
+                    },
+                    minimumInputLength: 1,
+                    templateResult: formatRepo,
+                    templateSelection: formatRepoSelection
+                });
+            });
+            function formatRepo(data) {
+                if (data.nombre) {
 
-                                                                        var markup = "<div class='select2-result-repository clearfix'>" +
-                                                                                "<div class='select2-result-repository__meta'>" +
-                                                                                "<div class='select2-result-repository__title'>" + data.nombre + "</div>" +
-                                                                                "</div></div>";
-                                                                    } else {
-                                                                        markup = "Seleccione un cliente ";
-                                                                    }
+                    var markup = "<div class='select2-result-repository clearfix'>" +
+                            "<div class='select2-result-repository__meta'>" +
+                            "<div class='select2-result-repository__title'>" + data.nombre + "</div>" +
+                            "</div></div>";
+                } else {
+                    markup = "Seleccione un cliente ";
+                }
 
-                                                                    return markup;
-                                                                }
+                return markup;
+            }
 
-                                                                function formatRepoSelection(data) {
-                                                                    if (data.nombre) {
-                                                                        return data.nombre;
-                                                                    } else {
-                                                                        return "Seleccione un abogado";
-                                                                    }
-                                                                }                                                                
-                                                            </script>
-                                                        {% endblock%}
-
-                                                    {% endblock%}
+            function formatRepoSelection(data) {
+                if (data.nombre) {
+                    return data.nombre;
+                } else {
+                    return "Seleccione un abogado";
+                }
+            }                                                                
+        </script>
+    {% endblock%}
+{% endblock%}
 
