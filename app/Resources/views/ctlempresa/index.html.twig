@@ -728,7 +728,34 @@
 </script>
 
     
-    
+    <script type="text/javascript">
+	window.onload = function () {
+	  var chart = new CanvasJS.Chart("chartContainer",
+	  {
+	    data: [
+
+	    {
+	      dataPoints: [
+	      { x: 10, y: 6750, label: "May 2015"},
+	      { x: 20, y: 6450,  label: "Jun 2015" },
+	      { x: 30, y: 5860,  label: "Jul 2015"},
+	      { x: 40, y: 6780,  label: "Ago 2015"},
+	      { x: 50, y: 7502,  label: "Sept 2015"},
+	      { x: 60, y: 5500, label: "Oct 2015"},
+	      { x: 70, y: 3450,  label: "Nov 2015"},
+	      { x: 80, y: 3200,  label: "Dic 2015"},
+	      { x: 90, y: 7550,  label: "Ene 2016"},
+	      { x: 100, y: 11350,  label: "Feb 2016"},
+	      { x: 110, y: 8560,  label: "Mar 2016"},
+	      ]
+	    }
+	    ]
+	  });
+
+	  chart.render();
+	}
+	</script>
+	<script type="text/javascript" src="{{asset('Resources/js/canvasjs.min.js')}}"></script>
     
     
     

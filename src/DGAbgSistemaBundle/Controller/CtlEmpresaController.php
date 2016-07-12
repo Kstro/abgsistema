@@ -2329,13 +2329,13 @@ class CtlEmpresaController extends Controller {
             
             
             if($request->get('genero')=='M'){
-                $abgFoto->setSrc('Photos/defecto/defectoM.png');
+                $abgFoto[0]->setSrc('Photos/defecto/defectoH.png');
             }
             else{
-                $abgFoto->setSrc('Photos/defecto/defectoH.png');
+                $abgFoto[0]->setSrc('Photos/defecto/defectoM.png');
             }
             
-            $em->merge($abgFoto);
+            $em->merge($abgFoto[0]);
             $em->flush();
             
             $em->merge($Persona);
