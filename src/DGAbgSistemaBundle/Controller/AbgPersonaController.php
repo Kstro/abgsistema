@@ -15,6 +15,7 @@ use DGAbgSistemaBundle\Entity\AbgSitioWeb;
 use DGAbgSistemaBundle\Entity\AbgUrlPersonalizada;
 use DGAbgSistemaBundle\Entity\CtlUsuario;
 use DGAbgSistemaBundle\Entity\Seminario;
+use DGAbgSistemaBundle\Entity\AbgFoto;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -1193,6 +1194,35 @@ class AbgPersonaController extends Controller {
                 case 13:
                     $Persona->setTituloPuesto($request->get('tituloPuesto'));
                     $data['msj'] = "Dato actualizado";
+                    break;
+                case 14:
+                    $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
+
+                    $Persona->setVerificaNotario($request->get('estado'));
+                    if ($request->get('estado') === '1') {
+                        $data['msj'] = "Abogado verificado como notario";
+                        
+                        $email = $Persona->getCorreoelectronico();
+                        
+                        $this->get('envio_correo')->sendEmail($email, "", "", "", "
+                                    <table style=\"width: 540px; margin: 0 auto;\">
+                                        <tr>
+                                            <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
+                                            <center>
+                                                <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
+                                            </center>                                                
+                                                <p>Hola " . $Persona->getNombres() ." ". $Persona->getApellido() . ".</p>
+                                                <p>La solicitud de verificación como notario ha sido aprobada.</p>
+                                            </td>
+                                            <td class=\"expander\"></td>
+                                        </tr>
+                                    </table>
+                                ");
+                        
+                    } else {
+                        $data['msj'] = "No fue verificado como notario";
+                    }
+                    
                     break;
             }
 
@@ -2806,6 +2836,111 @@ class AbgPersonaController extends Controller {
                     'abgFacturacions' => $abgFacturacions,
         ));
     }
+    
+    /**
+     * @Route("/verificarNotario", name="verificar_notario", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function VerificarNotarioAction() {
+        $em = $this->getDoctrine()->getManager();
+
+        $request = $this->getRequest();
+        $result_sub = "";
+        $result_especialida = "";
+        $Experiencia = "";
+        $Certificacion = "";
+        $Curso = "";
+        try {
+            $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+            $username = $this->container->get('security.context')->getToken()->getUser()->getId();
+
+            $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
+                    . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado "
+                    . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
+            $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+            $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
+
+            $dql_solict_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
+                    . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado "
+                    . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.verificado=0 AND p.id=" . $idPersona;
+            $result_solict_persona = $em->createQuery($dql_solict_persona)->getArrayResult();
+
+
+            $dql_tipoPago = "SELECT p.id as id, p.tipoPago As nombre "
+                    . " FROM DGAbgSistemaBundle:CtlTipoPago p ORDER BY p.tipoPago ASC";
+            $TipoPago = $em->createQuery($dql_tipoPago)->getArrayResult();
+
+
+            $dqlfoto = "SELECT fot.src as src "
+                    . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
+            $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+
+
+            $dqlfoto = "SELECT fot.src as src, fot.estado As estado "
+                    . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=1 ";
+            $fotoP = $em->createQuery($dqlfoto)->getArrayResult();
+
+
+            $sqlRol = "SELECT  r.id As id, r.rol As rol"
+                    . " FROM  ctl_rol_usuario ru "
+                    . " JOIN ctl_rol r ON r.id=ru.ctl_rol_id AND ru.ctl_usuario_id=" . $username;
+            $stm = $this->container->get('database_connection')->prepare($sqlRol);
+            $stm->execute();
+            $RolUser = $stm->fetchAll();
+
+            switch ($RolUser[0]['rol']) {
+                case 'ROLE_USER':
+                    $sqlEstadoVerificacion = "SELECT per.verifica_notario as verificado, fot.src "
+                                            . "FROM abg_foto fot "
+                                            . "JOIN abg_persona per ON per.id = fot.abg_persona_id AND fot.tipo_foto = 6 "
+                                            . "WHERE per.id=" . $idPersona;
+                    
+                    $stm = $this->container->get('database_connection')->prepare($sqlEstadoVerificacion);
+                    $stm->execute();
+                    $estadoVerificacion = $stm->fetchAll();
+                    
+                    return $this->render(':abgpersona:panelNotarios.html.twig', array(
+                                'nombreCorto' => $nombreCorto,
+                                'abgPersona' => $result_persona,
+                                'usuario' => $idPersona,
+                                'TipoPago' => $TipoPago,
+                                'abgFoto' => $result_foto,
+                                'estadoVerificacion' => $estadoVerificacion
+                    ));
+
+                    break;
+                case 'ROLE_ADMIN':
+
+                    $sqlverificacion = "SELECT p.id AS id, CONCAT(p.nombres, '  ', p.apellido)   AS nombre, fot.src AS src, "
+                            . " p.direccion AS direccion, p.telefono_fijo AS Tfijo, p.telefono_movil AS movil, p.correoelectronico AS correo, "
+                            . " p.titulo_profesional AS tituloProfesional "
+                            . " FROM  abg_foto fot"
+                            . " JOIN abg_persona p ON p.id=fot.abg_persona_id AND p.verifica_notario=0 AND fot.tipo_foto = 6 ";
+                    $stm = $this->container->get('database_connection')->prepare($sqlverificacion);
+                    $stm->execute();
+                    $solicitud_verificacion = $stm->fetchAll();
+                    //var_dump($solicitud_verificacion);
+
+                    return $this->render(':administracion:panelNotarios.html.twig', array(
+                                'nombreCorto' => $nombreCorto,
+                                'abgPersona' => $result_solict_persona,
+                                'usuario' => $idPersona,
+                                'TipoPago' => $TipoPago,
+                                'abgFoto' => $result_foto,
+                                'solicitVerificacion' => $solicitud_verificacion,
+                    ));
+                    break;
+            }
+        } catch (Exception $e) {
+
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
+
+//        return $this->render('abgfacturacion/panelFacturacion.html.twig', array(
+//                    'abgFacturacions' => $abgFacturacions,
+//        ));
+    }
 
     /**
      * @Route("/solicitud_verificar/get", name="solicitud_verificar", options={"expose"=true})
@@ -2820,6 +2955,30 @@ class AbgPersonaController extends Controller {
                     . " p.titulo_profesional AS tituloProfesional "
                     . " FROM  abg_foto fot"
                     . " JOIN abg_persona p ON p.id=fot.abg_persona_id AND p.verificado=0 AND fot.tipo_foto=5 ";
+            $stm = $this->container->get('database_connection')->prepare($sqlverificacion);
+            $stm->execute();
+            $data['solverificado'] = $stm->fetchAll();
+
+            return new Response(json_encode($data));
+        } catch (Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
+    }
+    
+    /**
+     * @Route("/solicitud-verificar/notario/get", name="solicitud_verificar_notario", options={"expose"=true})
+     * @Method("GET")
+     */
+    function SolicitudVerificarNotarioAction() {
+
+        try {
+
+            $sqlverificacion = "SELECT p.id AS id, CONCAT(p.nombres, '  ', p.apellido)   AS nombre, fot.src AS src, "
+                    . " p.direccion AS direccion, p.telefono_fijo AS Tfijo, p.telefono_movil AS movil, p.correoelectronico AS correo, "
+                    . " p.titulo_profesional AS tituloProfesional "
+                    . " FROM  abg_foto fot"
+                    . " JOIN abg_persona p ON p.id=fot.abg_persona_id AND p.verifica_notario = 0 AND fot.tipo_foto = 6 ";
             $stm = $this->container->get('database_connection')->prepare($sqlverificacion);
             $stm->execute();
             $data['solverificado'] = $stm->fetchAll();
@@ -2846,6 +3005,59 @@ class AbgPersonaController extends Controller {
                     . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil,p.estado As estado, p.tituloProfesional AS tituloProfesional, "
                     . " p.verificado As verificado "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona . " AND p.verificado=0";
+            $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+
+//Esta consulta  es la que jala el src de la foto dejela
+            $dqlfoto = "SELECT fot.src as src "
+                    . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
+            $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+
+
+            $dql_especialida = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre, pe.descripcion AS descripcion "
+                    . " FROM  DGAbgSistemaBundle:CtlEspecialidad e "
+                    . " JOIN DGAbgSistemaBundle:AbgPersonaEspecialida pe WHERE e.id=pe.ctlEspecialidad AND pe.abgPersona=" . $idPersona
+                    . " GROUP by e.id "
+                    . " ORDER BY e.nombreEspecialidad";
+            $result_especialida = $em->createQuery($dql_especialida)->getArrayResult();
+
+            $dql_sitio = "SELECT  w.id AS id, w.nombre AS nombre "
+                    . " FROM  DGAbgSistemaBundle:AbgSitioWeb w "
+                    . " JOIN DGAbgSistemaBundle:AbgPersona p WHERE p.id=w.abgPersona AND p.id=" . $idPersona;
+            $sitio = $em->createQuery($dql_sitio)->getArrayResult();
+
+            $dql_url = "SELECT  u.id AS id, u.url AS url "
+                    . " FROM  DGAbgSistemaBundle:AbgUrlPersonalizada u "
+                    . " JOIN DGAbgSistemaBundle:AbgPersona p WHERE p.id=u.abgPersona AND u.abgPersona=" . $idPersona;
+            $url = $em->createQuery($dql_url)->getArrayResult();
+
+            $data['datosP'] = $result_persona;
+            $data['especialida'] = $sitio;
+//  $data['sitioweb'] = $sitio[0]['nombre'];
+            $data['foto'] = $result_foto[0]['src'];
+
+
+            return new Response(json_encode($data));
+        } catch (Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
+    }
+    
+    /**
+     * @Route("/cons_notarios/get", name="cons_notarios", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function getConsNotariosAction() {
+        try {
+            $em = $this->getDoctrine()->getEntityManager();
+            $request = $this->getRequest();
+            $idPersona = $request->get('abg');
+
+//    $idPersona = $this->container->get('security.context')->getToken()->getUser()->getId();
+            $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
+                    . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil,p.estado As estado, p.tituloProfesional AS tituloProfesional, "
+                    . " p.verifica_notario As verificado "
+                    . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona . " AND p.verifica_notario = 0";
             $result_persona = $em->createQuery($dql_persona)->getArrayResult();
 
 //Esta consulta  es la que jala el src de la foto dejela
@@ -2936,6 +3148,57 @@ class AbgPersonaController extends Controller {
     }
 
     /**
+     * @Route("/verificar/notarios/get", name="verificar_notarios", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function getVerificarNotariosAction() {
+        try {
+            $em = $this->getDoctrine()->getEntityManager();
+            $request = $this->getRequest();
+            $idPersona = $request->get('abg');
+
+
+
+
+//    $idPersona = $this->container->get('security.context')->getToken()->getUser()->getId();
+
+            $sqlverificacion = "SELECT p.id AS id, CONCAT(p.nombres, '  ', p.apellido)   AS nombre, fot.src AS src, "
+                    . " p.direccion AS direccion, p.telefono_fijo AS Tfijo, p.telefono_movil AS movil, p.correoelectronico AS correo, "
+                    . " p.titulo_profesional AS tituloProfesional, p.verifica_notario  AS verificado"
+                    . " FROM  abg_foto fot"
+                    . " JOIN abg_persona p ON p.id=fot.abg_persona_id and fot.tipo_foto=6 AND p.id=" . $idPersona;
+            $stm = $this->container->get('database_connection')->prepare($sqlverificacion);
+            $stm->execute();
+            $solicitud_verificacion = $stm->fetchAll();
+
+            $dqlfoto = "SELECT fot.src as src "
+                    . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
+            $fotoPerfil = $em->createQuery($dqlfoto)->getArrayResult();
+
+            $dqlfoto = "SELECT fot.src as src "
+                    . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " AND fot.tipoFoto = 6";
+            $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+
+            if ($request->get('ban') != null) {
+                return $this->render('administracion/detalleVerificado.html.twig', array(
+                            'datosP' => $solicitud_verificacion,
+                            'carnet' => $result_foto[0]['src'],
+                            'fotoPerfil' => $fotoPerfil
+                ));
+            } else {
+                return $this->render('administracion/verificar.html.twig', array(
+                            'datosP' => $solicitud_verificacion,
+                            'carnet' => $result_foto[0]['src'],
+                            'fotoPerfil' => $fotoPerfil
+                ));
+            }
+        } catch (Exception $e) {
+            $data['msj'] = $e->getMessage();
+            return new Response(json_encode($data));
+        }
+    }
+    
+    /**
      * @Route("/verificados/get", name="verificados", options={"expose"=true})
      * @Method("GET")
      */
@@ -2953,6 +3216,33 @@ class AbgPersonaController extends Controller {
             $verificados = $stm->fetchAll();
 
             return $this->render(':administracion:verificados.html.twig', array(
+                        'verificados' => $verificados,
+                        'val' => 1
+            ));
+        } catch (Exception $e) {
+            $data['msj'] = $e->getMessage();
+            return new Response(json_encode($data));
+        }
+    }
+    
+    /**
+     * @Route("/notarios-verificados/get", name="notarios_verificados", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function getNotariosVerificadosAction() {
+        try {
+
+
+            $sqlverificados = "SELECT p.id AS id, CONCAT(p.nombres, '  ', p.apellido)   AS nombre, fot.src AS src, "
+                    . " p.direccion AS direccion, p.telefono_fijo AS Tfijo, p.telefono_movil AS movil, p.correoelectronico AS correo, "
+                    . " p.titulo_profesional AS tituloProfesional "
+                    . " FROM  abg_foto fot"
+                    . " JOIN abg_persona p ON p.id=fot.abg_persona_id and fot.tipo_foto = 6 AND p.verifica_notario = 1 ";
+            $stm = $this->container->get('database_connection')->prepare($sqlverificados);
+            $stm->execute();
+            $verificados = $stm->fetchAll();
+
+            return $this->render(':administracion:notariosverificados.html.twig', array(
                         'verificados' => $verificados,
                         'val' => 1
             ));
@@ -3067,7 +3357,7 @@ class AbgPersonaController extends Controller {
                         <center>
                             <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
                         </center>                                                
-                            <p>Hola " . $email . " Por este medio queremos informarle que su solicitud de verificación a sido rechazada. Para más información contáctenos al teléfono +503 2512-0247.</p>
+                            <p>Hola " . $email . " Por este medio queremos informarle que su solicitud de verificación ha sido rechazada. Para más información contáctenos al teléfono +503 2512-0247.</p>
                         </td>
                         <td class=\"expander\"></td>
                     </tr>
@@ -3093,6 +3383,100 @@ class AbgPersonaController extends Controller {
             $em->close();
 
             $data['msj'] = $e->getMessage();
+            return new Response(json_encode($data));
+        }
+    }
+    
+    /**
+     * @Route("/solicitudVerficacionNotario/get", name="verficacionNotario", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function VerificacionAbogadoAction(Request $request) {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+            $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($idPersona);
+            $carnet = $em->getRepository("DGAbgSistemaBundle:AbgFoto")->findBy(array('abgPersona' => $idPersona, 'tipoFoto' => 6));
+
+            $nombreimagen2 = "";
+            if (count($carnet) == 0) {
+                $path2 = $this->container->getParameter('photo.verificacion');
+
+                $nombreimagen = $_FILES['imagen']['name'];
+
+                $tipo = $_FILES['imagen']['type'];
+                $extension = explode('/', $tipo);
+                $nombreimagen2.="." . $extension[1];
+                $fecha = date('Y-m-dHis');
+                $nombreArchivo = $nombreimagen . "-" . $fecha . $nombreimagen2;                
+                $nombreSERVER = "solicitud_verificacion_" . $fecha . $nombreimagen2;
+
+                $resultados = move_uploaded_file($_FILES["imagen"]["tmp_name"], $path2 . $nombreSERVER);
+
+                if ($resultados) {
+
+                    // registar solicitud de verificacion
+                    $AbgFoto = new AbgFoto();
+
+                    $path = "Photos/verificacion/";
+                    $nombreBASE = $path . "solicitud_verificacion_" . $fecha . $nombreimagen2;
+                                        
+                    $AbgFoto->setAbgPersona($Persona);
+                    $AbgFoto->setTipoFoto(6);
+                    $AbgFoto->setCtlEmpresa(null);
+
+                    $AbgFoto->setSrc($nombreBASE);
+                    $AbgFoto->setFechaRegistro(new \DateTime("now"));
+                    $AbgFoto->setFechaExpiracion(null);
+                    $AbgFoto->setEstado(0);
+                    $em->persist($AbgFoto);
+                    $em->flush();
+
+                    $data['estado'] = true;
+                } else {
+                    $data['estado'] = false;
+                }
+            } else {
+
+                $AbgFoto = $em->getRepository("DGAbgSistemaBundle:AbgFoto")->find($carnet[0]->getIdargFoto());
+                $path2 = $this->container->getParameter('photo.verificacion');
+                $nombreimagen = $_FILES['imagen']['name'];
+
+                $tipo = $_FILES['imagen']['type'];
+                $extension = explode('/', $tipo);
+                $nombreimagen2.="." . $extension[1];
+                $fecha = date('Y-m-dHis');
+                //$nombreArchivo = $nombreimagen . "-" . $fecha . $nombreimagen2;
+                //$nombreSERVER = str_replace(" ", "", $nombreArchivo);
+                $nombreSERVER = "solicitud_verificacion_" . $fecha . $nombreimagen2;
+                
+                $resultados = move_uploaded_file($_FILES["imagen"]["tmp_name"], $path2 . $nombreSERVER);
+
+                if ($resultados) {
+
+                    // registar solicitud de verificacion
+
+                    $path = "Photos/verificacion/";
+//                    $nombreBASE = $path . $nombreArchivo;
+                    $nombreBASE = $path . "solicitud_verificacion_" . $fecha . $nombreimagen2;
+                    
+                    $AbgFoto->setCtlEmpresa(null);
+
+                    $AbgFoto->setSrc($nombreBASE);
+                    $AbgFoto->setFechaRegistro(new \DateTime("now"));
+                    $AbgFoto->setFechaExpiracion(null);
+                    $AbgFoto->setEstado(0);
+                    $em->persist($AbgFoto);
+                    $em->flush();
+
+                    $data['estado'] = true;
+                } else {
+                    $data['estado'] = false;
+                }
+            }
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+            $data['error'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
     }

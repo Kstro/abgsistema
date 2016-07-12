@@ -40,10 +40,366 @@
         }
     </style>
 {% endblock %} 
-{% block navegacion_Y_body %}
-{% block navegacion %}{% endblock %}
-{% block cuerpo %}
-    <div id="page-content">
+
+{#{% block navegacion_Y_body %}#}
+{#{% block navegacion %}{% endblock %}#}
+{% block body %}
+    
+    
+    <div class="hidden-xs hidden-sm">
+	
+
+	<!-- Imagen + buscador -->
+	<div class="container-fluid heromainabl banner">
+		
+
+		<div class="hidden-xs hidden-sm">
+
+		<!-- Barra de Navegacion -->
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4">
+					<a href="{{path('index')}}"><img style="width: 300px; margin-top: 20px; max-width: 100%;" src="{{ asset('Resources/src/img/logowhite.png') }}"></a>
+				</div> <!-- end md 4 -->
+				<div class="col-md-8">
+					<ul class="pull-right text-uppercase" style="display:inline; list-style: none; color: #fff; font-weight: 700; margin-top: 50px;">
+						<a class="nodeco" href="{{path('abogado_login')}}"><li class="sans" style="display: inline; padding: 15px 15px;">LOGIN</li></a>
+						<li class="sans" style="display: inline; padding: 15px 15px;">Call center: +503 2512 6247</li>
+						<!-- <li style="display: inline; padding: 15px 15px;" class="sans">soy un abogado</li> -->
+						<!-- <li style="display: inline; padding: 15px 15px;" class="sans">contacto</li> -->
+					</ul>
+				</div> <!-- end md 8 -->
+			</div> <!-- end row -->
+		</div> <!-- End Barra de Navegacion -->
+
+		<div class="clearfix"></div>
+
+		</div>
+
+		<!-- logo movil -->
+		<div class="hidden-md hidden-lg">
+			<a href="{{path('directorio_index')}}"><p class="text-center"><img style="width: 250px; max-width: 100%; margin-top: 20px; max-width: 100%;" src="{{ asset('Resources/src/img/logowhite.png') }}"></p>
+			</a>
+		</div>
+		
+		<!-- Barra Buscadora + Slogan -->
+		<div style="margin-top: 25px;" class="container">
+			<div class="row">
+				<div class="col-md-6">
+					<div style="margin-top: 70px;" class="hidden-xs hidden-sm">
+					<p style="font-weight: 600; color: #fff; margin-bottom: 10px; font-size: 20px;" class="text-left sans">DIRECTORIO DE ABOGADOS DE EL SALVADOR</p>
+					<p style="font-weight: 700; color: #fff; font-size: 50px; line-height: 1.1em; margin-bottom: 0px; margin-top: -10px;" class="text-left sans">¿Eres profesional del derecho?</p>
+					<p style="font-size: 16px; font-weight: 300; color: #fff; margin-top: 0px; margin-bottom: 10px;" class="text-left sans">
+						Anúnciese <strong>económicamente</strong>, llegando a un público <strong>masivo</strong> y sobre todo un público <strong> interesado </strong>.
+					</p>
+					<!-- facebook -->
+					<div class="text-left" style="margin-top: 8px;">
+						<div data-share="false" data-show-faces="false" data-action="like" data-layout="button_count" data-href="https://business.facebook.com/Abogadoscomsv-953460784737301/?business_id=925554047540608&amp;ref=bookmarks" class="fb-like fb_iframe_widget" fb-xfbml-state="rendered" fb-iframe-plugin-query="action=like&amp;app_id=&amp;container_width=555&amp;href=https%3A%2F%2Fbusiness.facebook.com%2FAbogadoscomsv-953460784737301%2F%3Fbusiness_id%3D925554047540608%26ref%3Dbookmarks&amp;layout=button_count&amp;locale=en_US&amp;sdk=joey&amp;share=false&amp;show_faces=false"><span style="vertical-align: bottom; width: 76px; height: 20px;"><iframe width="1000px" height="1000px" frameborder="0" name="f3c9fe4881dda2" allowtransparency="true" allowfullscreen="true" scrolling="no" title="fb:like Facebook Social Plugin" style="border: medium none; visibility: visible; width: 76px; height: 20px;" src="https://www.facebook.com/v2.6/plugins/like.php?action=like&amp;app_id=&amp;channel=http%3A%2F%2Fstaticxx.facebook.com%2Fconnect%2Fxd_arbiter.php%3Fversion%3D42%23cb%3Df2648db32113a68%26domain%3Dmarvinvigil.info%26origin%3Dhttp%253A%252F%252Fmarvinvigil.info%252Ff10a8386ef7ac34%26relation%3Dparent.parent&amp;container_width=555&amp;href=https%3A%2F%2Fbusiness.facebook.com%2FAbogadoscomsv-953460784737301%2F%3Fbusiness_id%3D925554047540608%26ref%3Dbookmarks&amp;layout=button_count&amp;locale=en_US&amp;sdk=joey&amp;share=false&amp;show_faces=false" class=""></iframe></span></div>
+					</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div style="margin-top: 10px;" class="hidden-xs hidden-sm"></div>
+					<div class="row">
+						<div class="col-md-8 col-md-offset-2">
+							<div style="background-color: #fff; border-radius: 2px;">
+								<p style="padding-top: 20px; margin: 10px; font-size: 16px;" class="text-center sans">Registrese hoy mismo en el directorio de abogados de El Salvador</p>
+                                                                <form style="width: 100% !important;" id="frmEmpresaUsuarioPersona" >
+                                                                    
+                                                                    {#<div class="col-md-12" style="margin-top: -35px;">
+                                                                        <!-- general form elements -->
+                                                                        <div class="login-box">
+                                                                            <div class="login-box-body" style="box-shadow: 3px 3px 2px #888888;">
+                                                                                <p class="login-box-msg text-success" style="font-size: 1.17em;">Ingreso de datos generales</p>
+                                                                                <div class="form-group has-feedback">#}
+                                                                                    {#<label for="nombreEmpleado">Nombres</label>#}
+                                                                                    <input type="text" required class="form-control" id="txtnombre" name="txtnombre" placeholder="Nombres *" data-rule-required="true" style="font-size: 13px; margin: 5px 10px 5px 10px; border-radius: 2px;  width: 94%; border: 1px solid #c3c3c3;" class="search sans">
+                                                                                    {#<span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                                                                </div>
+                                                                                <div class="form-group has-feedback">#}
+                                                                                    {#<label for="ejemplo_password_1">Apellidos</label>#}
+                                                                                    <input type="text" required class="form-control"  id="txtapellido" name="txtapellido" placeholder="Apellidos *" data-rule-required="true" style="font-size: 13px; margin: 5px 10px 5px 10px; border-radius: 2px;  width: 94%; border: 1px solid #c3c3c3;" class="search sans">
+                                                                                    {#<span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                                                                </div>
+                                                                                <div class="form-group has-feedback">#}
+                                                                                    {#<label for="correoEmpresa">Correo electronico :</label>#}
+                                                                                    <input type="email" class="form-control correo" id="correoEmpresa" name="correoEmpresa" data-rule-email="true"  required placeholder="Email *" style="font-size: 13px; margin: 5px 10px 5px 10px; border-radius: 2px;  width: 94%; border: 1px solid #c3c3c3;" class="search sans">
+                                                                                {#    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                                                                                </div>
+                                                                                <div class="form-group has-feedback">#}
+                                                                                    {#<label for="correoEmpresa">Contraseña:</label>#}
+                                                                                    <input type="password" required class="form-control" id="contrasenha" name="contrasenha" placeholder="Contraseña *" data-rule-required="true" style="font-size: 13px; margin: 5px 10px 5px 10px; border-radius: 2px;  width: 94%; border: 1px solid #c3c3c3;" class="search sans">
+                                                                                    {#<span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                                                                                </div>
+                                                                                <div class="form-group">#}
+                                                                                    
+                                                                                   {# <a href="{{ path('abogado_login') }}" class="button">
+                                                                                        <button class="btn btn-social btn-facebook btn-flat" style="background-color: #3a5795; color: #FFFFFF"><i class="fa fa-facebook"></i> Conectar con Facebook</button>
+                                                                                    </a>#}
+                                                                                    <div style="{#margin-left:125px;#}" class="col-md-12">
+                                                                                        <div class="col-md-6"><p><button  type="submit" class=" btn btn-danger btn-flat submitsearch" onClick="enviar()" id="bntenviar" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Enviando">Registrarme</button></p></div>
+                                                                                        <div class="col-md-6" style="margin-top:10px;">
+                                                                                            <fb:login-button size="medium" scope="public_profile,email" onlogin="checkLoginState();" class="pull-right">
+                                                                                                Registrarme con Facebook
+                                                                                            </fb:login-button>
+                                                                                        </div>
+                                                                                        
+                                                                                    </div>
+                                                                                    <div class="col-md-12"></div>
+                                                                                    <p style="font-size: 13px; margin: 15px;" class="text-center sans">Todos los campos son obligatorios, revisar su SPAM si el correo no llega.</p>
+                                                                                {#</div>#}
+                                                                            {#</div>
+                                                                        </div>
+                                                                    </div>#}
+                                                                </form> 
+                                                                
+                                                                {#<form style="width: 100% !important;" action="controller/suscripcion.php" method="post">#}
+									{#<input type="text" required="" oninvalid="this.setCustomValidity('Favor ingresar su nombre')" placeholder="Nombres*" name="nombre" id="nombre" style="font-size: 13px; margin: 5px 10px 5px 10px; border-radius: 2px;  width: 94%; border: 1px solid #c3c3c3;" class="search sans">#}
+									{#<input type="text" required="" oninvalid="this.setCustomValidity('Favor ingresar apellido')" placeholder="Apellidos*" name="apellido" id="apellido" style="font-size: 13px; margin: 5px 10px 5px 10px; border-radius: 2px;  width: 94%; border: 1px solid #c3c3c3;" class="search sans">
+									<input type="email" required="" oninvalid="this.setCustomValidity('Favor ingrese su email')" placeholder="Email*" name="email" id="email" style="font-size: 13px; margin: 5px 10px 5px 10px; border-radius: 2px;  width: 94%; border: 1px solid #c3c3c3;" class="search sans">
+									<input type="text" required="" oninvalid="this.setCustomValidity('Favor ingrese su telefono')" placeholder="Telefono Celular*" name="telefono" id="telefono" style="font-size: 13px; margin: 5px 10px 5px 10px; border-radius: 2px;  width: 94%; border: 1px solid #c3c3c3;" class="search sans">#}
+									{#<p style="font-size: 13px; margin: 15px;" class="text-center sans">Todos los campos son obligatorios, revisar su SPAM si el correo no llega.</p>#}
+									{#<p class="text-center"><input type="submit" style="margin-bottom: 20px;" class="submitsearch sans" value="Registrarme"></p>#}
+								{#</form>#}
+                                                                
+                                                                {#<form style="width: 100% !important;" action="controller/suscripcion.php" method="post">
+									<input type="text" required="" oninvalid="this.setCustomValidity('Favor ingresar su nombre')" placeholder="Nombres*" name="nombre" id="nombre" style="font-size: 13px; margin: 5px 10px 5px 10px; border-radius: 2px;  width: 94%; border: 1px solid #c3c3c3;" class="search sans">
+									<input type="text" required="" oninvalid="this.setCustomValidity('Favor ingresar apellido')" placeholder="Apellidos*" name="apellido" id="apellido" style="font-size: 13px; margin: 5px 10px 5px 10px; border-radius: 2px;  width: 94%; border: 1px solid #c3c3c3;" class="search sans">
+									<input type="email" required="" oninvalid="this.setCustomValidity('Favor ingrese su email')" placeholder="Email*" name="email" id="email" style="font-size: 13px; margin: 5px 10px 5px 10px; border-radius: 2px;  width: 94%; border: 1px solid #c3c3c3;" class="search sans">
+									<input type="text" required="" oninvalid="this.setCustomValidity('Favor ingrese su telefono')" placeholder="Telefono Celular*" name="telefono" id="telefono" style="font-size: 13px; margin: 5px 10px 5px 10px; border-radius: 2px;  width: 94%; border: 1px solid #c3c3c3;" class="search sans">
+									<p style="font-size: 13px; margin: 15px;" class="text-center sans">Todos los campos son obligatorios, revisar su SPAM si el correo no llega.</p>
+									<p class="text-center"><input type="submit" style="margin-bottom: 20px;" class="submitsearch sans" value="Registrarme"></p>
+								</form>#}
+							</div>
+							<!-- <form method="post" action="controller/suscripcion.php"> 
+							<input class="search sans" style="max-width: 100%; width: 100%;" id="email" type="email" name="email" placeholder="Ingrese su email..." oninvalid="this.setCustomValidity('Por favor ingrese el nombre de un Abogado, Bufete, Firma o Problema Legal')" required> 
+							<p class="text-center"><input type="submit" value="Solicitar acceso" class="submitsearch sans"></p>
+							<div id="resultado" class="resultado">
+								
+							</div>
+							</form> -->
+							<div style="height: 20px;" class="hidden-md hidden-lg"></div>
+						</div>
+					</div>  <!--end row inside of col-md-6 -->
+				</div>	
+			</div>
+		</div> <!-- End Barra Buscadora + Slogan -->
+
+	</div> <!-- End Imagen + Buscador -->
+
+	<!-- QUE SOMOS -->
+	<div style="background-color: #BFDBEF; padding-top: 30px; padding-bottom: 30px;" class="container-fluid">
+		<!-- <p class="text-center sans" style="color: #262626; margin-bottom: 0px; font-size: 1.3em;">¿QUE SOMOS?</p> -->
+		<p style="font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 2em;" class="text-center">DIRECTORIO DE ABOGADOS WEB</p>
+	</div>
+
+	<!-- Modulos de plataforma -->
+		<div style="padding-top: 70px; padding-bottom: 70px;" class="container">
+			<p style="font-weight: 300; padding: 30px 0px 0px 0px; text-shadow: 1px 1px 2px rgba(0, 0, 0, .2); font-size: 28px;" class="text-center sans">Módulos de nuestra plataforma</p>
+			<p style="font-size: 13px; margin-bottom: 35px; font-weight: 400; color: #888888;" class="text-center sans">Esto es solo un poco de lo que podrás realizar en nuestra plataforma, nuestro <br> objetivo es la generación de ventas y posicionamiento de nombre/marca.</p>
+			<div class="row">
+				<div class="col-md-3 text-center"> 
+					<img style="width: 70px; max-width: 100%; margin-bottom: 8px;" onmouseout="this.src='{{ asset('Resources/src/img/iconos/13.png') }}'" onmouseover="this.src='{{ asset('Resources/src/img/iconos/13-13.png') }}'" src="{{ asset('Resources/src/img/iconos/13.png') }}">
+					<p style="font-weight: 400; margin-bottom: 5px;" class="text-center sans">
+						Directorio de abogados
+					</p>
+					<div style="border-top: 2px solid #09F; width: 70px; margin-left: auto; margin-right: auto; margin-bottom: 10px;"></div>
+					<p style="font-weight: 300; font-size: 13px;" class="text-center sans">Directorio de abogados, búsqueda eficiente para encontrar el abogado indicado a tu problema legal.</p>
+				</div>
+				<div class="col-md-3 text-center">
+					<img style="width: 70px; max-width: 100%; margin-bottom: 8px;" onmouseout="this.src='{{ asset('Resources/src/img/iconos/14.png') }}'" onmouseover="this.src='{{ asset('Resources/src/img/iconos/14-14.png') }}'" src="{{ asset('Resources/src/img/iconos/14.png') }}">
+					<p style="font-weight: 400; margin-bottom: 5px;" class="text-center sans">
+						Perfil Profesional
+					</p>
+					<div style="border-top: 2px solid #09F; width: 70px; margin-left: auto; margin-right: auto; margin-bottom: 10px;"></div>
+					<p style="font-weight: 300; font-size: 13px;" class="text-center sans">Demuestra tus habilidades, estudios, cursos, historial laboral para incrementar tu nivel de perfil.</p>
+				</div>
+				<div class="col-md-3 text-center">
+					<img style="width: 70px; max-width: 100%; margin-bottom: 8px;" onmouseout="this.src='{{ asset('Resources/src/img/iconos/15.png') }}'" onmouseover="this.src='{{ asset('Resources/src/img/iconos/15-15.png') }}'" src="{{ asset('Resources/src/img/iconos/15.png') }}">
+					<p style="font-weight: 400; margin-bottom: 5px;" class="text-center sans">
+						Página de Empresas
+					</p>
+					<div style="border-top: 2px solid #09F; width: 70px; margin-left: auto; margin-right: auto; margin-bottom: 10px;"></div>
+					<p style="font-weight: 300; font-size: 13px;" class="text-center sans">Si tienes un equipo contigo, realiza una página de empresas, y demostrar el profesionalismo de tu firma.</p>
+				</div>
+				<div class="col-md-3 text-center"> 
+					<img style="width: 70px; max-width: 100%; margin-bottom: 8px;" onmouseout="this.src='{{ asset('Resources/src/img/iconos/16.png') }}'" onmouseover="this.src='{{ asset('Resources/src/img/iconos/16-16.png') }}'" src="{{ asset('Resources/src/img/iconos/16.png') }}">
+					<p style="font-weight: 400; margin-bottom: 5px;" class="text-center sans">
+						Centro de Preguntas
+					</p>
+					<div style="border-top: 2px solid #09F; width: 70px; margin-left: auto; margin-right: auto; margin-bottom: 10px;"></div>
+					<p style="font-weight: 300; font-size: 13px;" class="text-center sans">Los usuarios preguntan gratis, abogados responden a los usuarios anónimos y los usuarios escogen.</p>
+				</div>
+			</div>
+		</div>
+	<!-- / Modulos de plataforma -->
+
+	<!-- <div class="container-fluid" style="border-bottom: 1px solid #c3c3c3;">
+		<div class="container" style="padding-bottom: 70px;">
+			<h2 class="sans text-center" style="font-weight: 300; padding: 40px 0px 5px 0px; text-shadow: 1px 1px 2px rgba(0, 0, 0, .2); font-size: 28px;"> ¿Cómo funciona? </h2>
+			<p class="text-center sans" style="color: #888888; padding-bottom: 40px; font-weight: 400;">Abogados.com.sv es la primera plataforma para abogados en El Salvador, permitiendo exponer</br> sus servicios y habilidades de una manera muy dinámica y tecnológica.</p>
+
+			<div class="row">
+				<div class="col-md-6">
+					<img src="src/img/gif-directorio.gif" style="width: 100%; max-width: 100%;">
+				</div>
+				<div class="col-md-6">
+					<h2 class="sans text-left" style="padding: 30px 0px; margin-bottom: 0px; padding-bottom: 10px !important; text-shadow: 1px 1px 2px rgba(0, 0, 0, .2); font-size: 25px;"> Directorio de Abogados </h2> 
+					<p class="text-left sans" style="font-size: 18px; color: #666666; font-weight: 400;"> 
+					Busqueda de abogados por nombre o especialidad legal, resultados por nombre son ordenados aleatoriamente para tener una plataforma justa y dar una oportunidad por igual.</p>
+				</div>
+			</div>
+
+			<div class="row" style="margin-top: 30px;">
+				<div class="col-md-6">
+					<h2 class="sans text-right" style="padding: 30px 20px; margin-bottom: 0px; padding-bottom: 10px !important; text-shadow: 1px 1px 2px rgba(0, 0, 0, .2); font-size: 25px;"> Perfil Profesional </h2> 
+					<p class="text-right sans" style="font-size: 18px; color: #666666; padding: 0px 20px; font-weight: 400;"> 
+					Demuestre su experiencia, educacion, especialidades legales, escriba un extracto, metodos de contacto para que los clientes puedan ver su perfil y optar por su profesionalismo/experiencia. Ademas
+					tenemos un servicio gratuito de verificacion de abogados para incluir una insignia en su perfil de 'abogado verificado'.</p>
+				</div>
+				<div class="col-md-6">
+					<img src="src/img/gif-perfil.gif" style="width: 100%; max-width: 100%;">
+				</div>
+			</div>
+
+			<div class="row" style="margin-top: 30px;">
+				<div class="col-md-6">
+					<img src="src/img/gif-company.gif" style="width: 100%; max-width: 100%;">
+				</div>
+				<div class="col-md-6">
+					<h2 class="sans text-left" style="padding: 30px 0px; margin-bottom: 0px; padding-bottom: 10px !important; text-shadow: 1px 1px 2px rgba(0, 0, 0, .2); font-size: 25px;"> Pagina de Empresas </h2> 
+					<p class="text-left sans" style="font-size: 18px; color: #666666; font-weight: 400;"> 
+					Liste su empresa/bufete/firma para poder tener presencia y facilitar a los usuarios el contacto y ubicacion. Ademas tiene la opcion de listar los abogados que ya esten inscritos en la plataforma a su pagina de empresa para generar confianza y profesionalismo.</p>
+				</div>
+			</div>
+
+			<div class="row" style="margin-top: 30px;">
+				<div class="col-md-6">
+					<h2 class="sans text-right" style="padding: 30px 20px; margin-bottom: 0px; padding-bottom: 10px !important; text-shadow: 1px 1px 2px rgba(0, 0, 0, .2); font-size: 25px;"> Espacio publicitarios </h2> 
+					<p class="text-right sans" style="font-size: 18px; color: #666666; padding: 0px 20px; font-weight: 400;"> 
+					Anunciese con nosotros y mejore su <span data-toggle="tooltip" data-placement="top" title="ROI - 'Return of Investment' termino utilizado para medir el regreso de la inversion de anuncios." style="border-bottom: 1px dashed #999;">ROI</span>. 
+					Anúnciese económicamente, llegando a un público masivo y sobre todo un público interesado. No gaste dinero invirtiendo en publicidad en el cual mas del 80% de su publico no va a estar intersado. </p>
+				</div>
+				<div class="col-md-6">
+					<img src="src/img/gif-pub.gif" style="width: 100%; max-width: 100%;">
+				</div>
+			</div>
+
+		</div>
+	</div> -->
+
+	<!-- ESTADISTICAS -->
+	<div style="padding: 50px 0px; background-color: #263345; border-bottom: 1px solid #c3c3c3;" class="container-fluid">
+		<div class="container">
+			<h2 style="color: #fff; font-weight: 300; padding: 30px 0px 0px 0px; text-shadow: 1px 1px 2px rgba(0, 0, 0, .2); font-size: 28px;" class="sans text-center"> Estadísticas de búsquedas</h2>
+			<p style="color: #f2f2f2; padding-bottom: 30px; font-weight: 400;" class="text-center sans">
+				Durante Mayo 2015-Marzo 2016, en El Salvador un promedio de 5,000 búsquedas mensuales <br> han sido realizadas en búsqueda de abogados y soluciones legales.
+			</p>
+				<div class="row">
+					<div class="col-md-10 col-md-offset-1">
+					<div style="height: 300px; width: 100%; margin-bottom: 70px;" id="chartContainer"><div class="canvasjs-chart-container" style="position: relative; text-align: left; cursor: auto;"><canvas class="canvasjs-chart-canvas" width="945" height="300" style="position: absolute;"></canvas><canvas class="canvasjs-chart-canvas" width="945" height="300" style="position: absolute;"></canvas><div class="canvasjs-chart-toolbar" style="position: absolute; right: 1px; top: 1px;"></div><div class="canvasjs-chart-tooltip" style="position: absolute; height: auto; box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.1); z-index: 1000; display: none; border-radius: 5px;"><div style=" width: auto;height: auto;min-width: 50px;line-height: auto;margin: 0px 0px 0px 0px;padding: 5px;font-family: Calibri, Arial, Georgia, serif;font-weight: normal;font-style: italic;font-size: 14px;color: #000000;text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);text-align: left;border: 2px solid gray;background: rgba(255,255,255,.9);text-indent: 0px;white-space: nowrap;border-radius: 5px;-moz-user-select:none;-khtml-user-select: none;-webkit-user-select: none;-ms-user-select: none;user-select: none;} "> Sample Tooltip</div></div><a class="canvasjs-chart-credit" style="outline:none;margin:0px;position:absolute;right:3px;top:286px;color:dimgrey;text-decoration:none;font-size:10px;font-family:Lucida Grande, Lucida Sans Unicode, Arial, sans-serif" tabindex="-1" target="_blank" href="https://adwords.google.com/ko/KeywordPlanner">Datos oficiales de Google hasta la fecha de 4/4/2016</a></div></div>
+					</div>
+				</div>
+		</div>
+	</div> <!-- Fin de Estadisticas -->
+
+	<div style="padding: 50px 0px;" class="container">
+		<h2 style="font-weight: 300; padding: 30px 0px 10px 0px; text-shadow: 1px 1px 2px rgba(0, 0, 0, .2); font-size: 28px;" class="sans text-center"> Características &amp; usabilidad de la plataforma</h2>
+		<h3 style="font-weight: 600; font-size: 18px; margin-bottom: 30px !important; padding: 0px 20px;" class="mth sans text-center">Abogados.com.sv es la herramienta ideal para:</h3>
+		<div class="row hidden-md hidden-lg">
+			<p style="font-size: 17px; margin-bottom: 0px;" class="text-center"><img style="margin-top: -4px; padding-right: 10px;" src="src/img/list-icon-good.png"> Abogados </p>
+			<p style="font-size: 17px; margin-bottom: 0px; margin-top: 25px;" class="text-center"><img style="margin-top: -4px; padding-right: 10px;" src="src/img/list-icon-good.png"> Notarios </p>
+			<p style="font-size: 17px; margin-bottom: 0px; margin-top: 25px;" class="text-center"><img style="margin-top: -4px; padding-right: 10px;" src="src/img/list-icon-good.png"> Firmas/bufetes </p>
+		</div>
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2 col-xs-8 hidden-xs hidden-sm">
+				<div class="col-md-4">
+					<div id="ideal-for-container">
+						<ul class="professions text-center">
+		          <li>Abogados</li>
+		        </ul>
+	        </div>
+				</div>
+				<div class="col-md-4">
+					<div id="ideal-for-container">
+						<ul class="professions text-center">
+							<li>Notarios</li>
+		        </ul>
+	        </div>
+				</div>
+				<div class="col-md-4">
+					<div id="ideal-for-container">
+						<ul class="professions text-center">
+		            <li>Firmas/Bufetes</li>
+		        </ul>
+	        </div>
+				</div>
+			</div> <!-- End Container for 3 items -->
+			<div class="clearfix"></div>
+			<div id="ideal-for-container">
+				<h3 style="font-weight: 600; font-size: 18px; margin-bottom: 20px !important;" class="mth sans text-center">Características de la plataforma:</h3>
+				<div class="row">
+					<div style="padding: 0px 45px;" class="col-md-6 col-md-offset-3">
+						<ul style=" font-weight: 400;" class="examples">
+							<li style="font-size: 15px;" class="sans">Busqueda de abogados por nombre y/o apellido</li>
+							<li style="font-size: 15px;" class="sans">Búsqueda de firmas/bufetes por nombre</li>
+							<li style="font-size: 15px;" class="sans">Crear y actualizar perfil profesional</li>
+							<li style="font-size: 15px;" class="sans">Creación de página de empresa con toda la información</li>
+							<li style="font-size: 15px;" class="sans">Verificación de abogados con insignia en perfil para mas credibilidad</li>
+							<li style="font-size: 15px;" class="sans">Blog comunitario para demostrar conocimientos y habilidades</li>
+							<li style="font-size: 15px;" class="sans">Centro de preguntas anónimas para generar posibles clientes</li>
+							<li style="font-size: 15px;" class="sans">URL de perfil personalizado (Ej. www.abogados.com.sv/minombrepersonal)</li>
+							<li style="font-size: 15px;" class="sans">Servicios de publicidad interna disponible (limitada)</li>
+							<li style="font-size: 15px;" class="sans">Directorio posicionado en Google AdWords &amp; AdSense, medio nacionales, periódicos digitales, Facebook</li>
+							<li style="font-size: 15px;" class="sans"> Programación de Última tecnología para los mejores resultados de SEO</li>
+							<li style="font-size: 15px;" class="sans">Adaptación a dispositivos móviles, tabletas y computadores personales</li>
+							<li style="font-size: 15px;" class="sans">Código QR personal</li>
+							<li style="font-size: 15px;" class="sans">Generador de CV profesional</li>
+						</ul>
+					</div>
+					<div class="col-md-4"></div>
+					</div> <!-- Row end -->
+			</div> <!-- Ideal End -->
+		</div>
+	</div> <!-- Fin de Carateristicas  -->
+
+	<div style="background-color: #f4f4f4; padding-top: 50px; padding-bottom: 50px; border-top: 1px solid #c3c3c3;" class="container-fluid">
+		<div class="container">
+			<h2 style="font-weight: 300; text-shadow: 1px 1px 2px rgba(0, 0, 0, .2); font-size: 28px;" class="sans text-center">Costo de membresía</h2>
+			<h3 style="font-weight: 600; font-size: 18px;" class="mth sans text-center">¡Tener su propio espacio publicitario personal nunca fue tan fácil y económico!</h3>
+			<div style="margin-top: 30px;" class="row">
+				<div class="col-md-offset-3 col-md-3">
+					<p class="text-right"><img style="max-width: 100%;" src="{{ asset('Resources/src/img/cup.png') }}"></p>
+				</div>
+				<!-- ESTE CODIGO ES PARA PC -->
+				<div class="col-md-3 hidden-xs hidden-sm">
+					<p style="font-weight: 300 !important; margin-top: 18px;" class="text-left">
+					<span style="font-size: 26px; color: #159F5C; font-weight: 700; letter-spacing: -1px;">$9.99 / por mes</span><br><br>
+						Por lo que cuesta en promedio tres tazas de café al mes, usted tiene la oportunidad de llegar a gran un número de clientes. <br><br> Sin costos escondidos o costos extras.
+					</p>
+					<button style="font-weight: 600; border-radius: 0px; margin-top: 25px;" class="text-center btn btn-primary sans scrollup">¡Solicitar acceso ahora!</button>
+				</div> <!-- ESTE CODIGO ES PARA PC -->
+				<!-- ESTE CODIGO ES PARA MOVIL -->
+				<div class="col-md-3 hidden-md hidden-lg">
+					<p style="font-weight: 300 !important; margin-top: 18px;" class="text-center">
+					<span style="font-size: 26px; color: #159F5C; font-weight: 700; letter-spacing: -1px;">$9.99 / por mes</span><br><br>
+						Por lo que cuesta en promedio tres tazas de café al mes, usted tiene la oportunidad de llegar a gran un número de clientes. <br><br> Sin costos escondidos o costos extras.
+					</p>
+					<div class="text-center"><a class="scrollup" href="#"><button style="font-weight: 600; border-radius: 0px; margin-top: 15px;" class="text-center btn btn-primary sans">¡Solicitar acceso ahora!</button></a>
+					</div>
+				</div> <!-- FIN ESTE CODIGO ES PARA MOVIL -->
+			</div>
+			<div class="text-center">
+			
+			</div>
+		</div>
+	</div>
+</div>
+{% embed ':Layout:footer.html.twig' %}{% endembed %}
+
+    
+    
+    {#<div id="page-content">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -57,23 +413,23 @@
                             <div class="login-box-body" style="box-shadow: 3px 3px 2px #888888;">
                                 <p class="login-box-msg text-success" style="font-size: 1.17em;">Ingreso de datos generales</p>
                                 <div class="form-group has-feedback">
-                                    <label for="nombreEmpleado">Nombres</label>
-                                    <input type="text" required class="form-control" id="txtnombre" name="txtnombre" placeholder="Nombres" data-rule-required="true" >
+                                    {#<label for="nombreEmpleado">Nombres</label>#}
+                                    {#<input type="text" required class="form-control" id="txtnombre" name="txtnombre" placeholder="Nombres" data-rule-required="true" >
                                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
                                 </div>
                                 <div class="form-group has-feedback">
-                                    <label for="ejemplo_password_1">Apellidos</label>
-                                    <input type="text" required class="form-control"  id="txtapellido" name="txtapellido" placeholder="Apellidos" data-rule-required="true" >
+                                    {#<label for="ejemplo_password_1">Apellidos</label>#}
+                                    {#<input type="text" required class="form-control"  id="txtapellido" name="txtapellido" placeholder="Apellidos" data-rule-required="true" >
                                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
                                 </div>
                                 <div class="form-group has-feedback">
-                                    <label for="correoEmpresa">Correo electronico :</label>
-                                    <input type="email" class="form-control correo" id="correoEmpresa" name="correoEmpresa" data-rule-email="true"  required placeholder="ejemplo@ejemplo.com" >
+                                    {#<label for="correoEmpresa">Correo electronico :</label>#}
+                                    {#<input type="email" class="form-control correo" id="correoEmpresa" name="correoEmpresa" data-rule-email="true"  required placeholder="ejemplo@ejemplo.com" >
                                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                                 </div>
                                 <div class="form-group has-feedback">
-                                    <label for="correoEmpresa">Contraseña:</label>
-                                    <input type="password" required class="form-control" id="contrasenha" name="contrasenha" placeholder="Contraseña" data-rule-required="true" >
+                                    {#<label for="correoEmpresa">Contraseña:</label>#}
+                                    {#<input type="password" required class="form-control" id="contrasenha" name="contrasenha" placeholder="Contraseña" data-rule-required="true" >
                                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                                 </div>
                                 <div class="form-group">
@@ -81,7 +437,7 @@
                                    {# <a href="{{ path('abogado_login') }}" class="button">
                                         <button class="btn btn-social btn-facebook btn-flat" style="background-color: #3a5795; color: #FFFFFF"><i class="fa fa-facebook"></i> Conectar con Facebook</button>
                                     </a>#}
-                                   <div  style="margin-left:125px;margin-top:-30px;">
+                                   {#<div  style="margin-left:125px;margin-top:-30px;">
                                         <fb:login-button size="large" scope="public_profile,email" onlogin="checkLoginState();">
                                              Registrarme con Facebook
                                         </fb:login-button>
@@ -94,7 +450,7 @@
                 </form>  
             </div> 
         </div> 
-    </div> 
+    </div>#} 
     <script src="{{asset('Resources/AdminLTE-2.3.0/plugins/jQuery/jQuery-2.1.4.min.js')}}"></script>
     <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
     <script src="{{asset('Resources/src/js/menu_movil.js')}}"></script>
@@ -381,6 +737,6 @@
     
     
     
-    
-{% endblock %}
+
+{#{% endblock %}#}
 {% endblock %}

@@ -63,7 +63,9 @@ $(document).ready(function () {
                 success: function (data) {
 
                     if (data.estado == true) {
-
+                        $("#cancelarImagenV").hide();
+                        $("#enviarImagenV").hide();
+                                                
                         Lobibox.notify("success", {
                             size: 'mini',
                             msg: '<p>Su solicitud de verificación se ha enviado.</p>'});

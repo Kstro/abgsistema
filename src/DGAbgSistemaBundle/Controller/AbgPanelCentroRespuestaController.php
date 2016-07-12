@@ -294,11 +294,19 @@ class AbgPanelCentroRespuestaController extends Controller {
 //        var_dump($personaId->getId());
 //        var_dump($idPersona);
 
+//        $sql = "SELECT preg.id as idpreg, preg.pregunta, preg.fechapregunta AS fecha, resp.id
+//                FROM abg_pregunta preg LEFT JOIN abg_respuesta_pregunta resp on preg.id=resp.abg_pregunta 
+//                JOIN ctl_especialidad esp ON esp.id=preg.ctl_especialidad 
+//                JOIN abg_persona_especialidad pe ON pe.ctl_especialidad_id=esp.id AND pe.abg_persona_id = " . $idPersona . "
+//                WHERE resp.respuesta is null AND preg.estado=1 and preg.contador < 3 and (resp.ctl_usuario_id <> " . $username->getId() . " or resp.id is null)  
+//                ORDER BY preg.fechapregunta ASC";
+        
         $sql = "SELECT preg.id as idpreg, preg.pregunta, preg.fechapregunta AS fecha, resp.id
                 FROM abg_pregunta preg LEFT JOIN abg_respuesta_pregunta resp on preg.id=resp.abg_pregunta 
                 JOIN ctl_especialidad esp ON esp.id=preg.ctl_especialidad 
                 JOIN abg_persona_especialidad pe ON pe.ctl_especialidad_id=esp.id AND pe.abg_persona_id = " . $idPersona . "
-                WHERE resp.respuesta is null AND preg.estado=1 and preg.contador < 3 and (resp.ctl_usuario_id <> " . $username->getId() . " or resp.id is null)  
+                WHERE preg.estado=1 and preg.contador < 3 and (resp.ctl_usuario_id <> " . $username->getId() . " or resp.id is null)  
+                GROUP BY preg.id
                 ORDER BY preg.fechapregunta ASC";
 
         $em = $this->getDoctrine()->getManager();

@@ -43,7 +43,12 @@
                     <span>Verificarme como  abogado</span>
                 </a>
             </li>
-
+            <li class="treeview">
+                <a href="{{ path('verificar_notario') }}">
+                    <i class="fa fa-certificate"></i>
+                    <span>Verificarme como  notario</span>
+                </a>
+            </li>
             <li class="treeview">
                <a href="{{ path('suscripcion_abg')}}">
                     <i class="fa fa-credit-card"></i>
@@ -62,11 +67,11 @@
                     <i class="fa fa-wrench"></i> <span>Ajustes</span>
                 </a>
             </li>
-            {# <li class="treeview">
+             <li class="treeview">
                 <a href="{{ path('entrada_index')}}">
                     <i class="fa fa-rss"></i> <span>Blog Comunitario</span>
                 </a>
-            </li>#}
+            </li>
              <li>
             <a href="{{ path('panel_list_pregunta')}}">
                 <i class="fa fa-tasks"></i> <span>Centro de Preguntas</span>
@@ -123,7 +128,7 @@
              <li class="treeview">
                 <a href="{{ path('verificar_abg') }}">
                     <i class="fa fa-certificate"></i>
-                    <span>Verificar  abogado</span>
+                    <span>Verificar  abogados</span>
                   {#%if NNotificaciones|default is not empty %}
                          <small class="label pull-right bg-red ">
                         {%if (NNotificaciones|number_format!=0)%} {{NNotificaciones|number_format}} {%endif%}
@@ -131,9 +136,15 @@
                         {%endif%#}
                 </a>
             </li>
+            <li class="treeview">
+                <a href="{{ path('verificar_notario') }}">
+                    <i class="fa fa-check-square-o"></i>
+                    <span>Verificar  notarios</span>                  
+                </a>
+            </li>
             <li>
                 <a href="{{path('admin_promociones_index')}}">
-                    <i class="fa  fa-newspaper-o"></i> <span>Facturación</span> 
+                    <i class="fa  fa-newspaper-o"></i> <span>Facturación / Ventas</span> 
                 </a>
             </li>
             <li>

@@ -111,6 +111,13 @@ class AbgPersona
      * @ORM\Column(name="verificado", type="integer", nullable=false)
      */
     private $verificado;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="verifica_notario", type="boolean", nullable=false)
+     */
+    private $verificaNotario;
 
     /**
      * @var string
@@ -506,7 +513,8 @@ class AbgPersona
     {
         return $this->verificado;
     }
- /**
+    
+    /**
      * Set verificado
      *
      * @param string $verificado
@@ -518,6 +526,31 @@ class AbgPersona
 
         return $this;
     }
+    
+    /**
+     * Set verificaNotario
+     *
+     * @param boolean $verificaNotario
+     * 
+     * @return AbgPersona
+     */
+    public function setVerificaNotario($verificaNotario)
+    {
+        $this->verificaNotario = $verificaNotario;
+
+        return $this;
+    }
+    
+    /**
+     * Get verificaNotario
+     *
+     * @return boolean 
+     */
+    public function getVerificaNotario()
+    {
+        return $this->verificaNotario;
+    }
+    
     /**
      * Set codigo
      *

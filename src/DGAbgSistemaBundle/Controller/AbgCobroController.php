@@ -298,8 +298,21 @@ class AbgCobroController extends Controller{
      * @Method({"POST","GET"})
      * 
      */
-    public function programarCobroAction(request $request)
+    public function seleccionarPlanAction(request $request)
     {
-                         
+        return $this->render('ctlempresa/paneladministrativoempresa.html.twig', array(
+                    'nombreCorto' => $nombreCorto,
+                    'ctlEmpresa' => $result_empresa,
+                    'abgFotoEmp' => $result_fotoEmp,
+                    'ctlEmpresaId' => $ctlEmpresaId,
+                    'empleados' => $registro_empleados,
+                    'tipoEmpresa' => $registro_tipoempresa,
+                    'usuario' => $username,
+                    'abgPersona' => $result_persona,
+                    //     'abgFotoP' => $result_fotoAbogado,
+                    'abgFoto' => $result_foto,
+                    'url' => $result_url,
+                    'RegistroEspecialida' => $result_especialida,
+        ));
     }//Fin retornoPagoAction    
 }
