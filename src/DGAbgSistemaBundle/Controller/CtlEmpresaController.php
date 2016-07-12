@@ -1079,11 +1079,13 @@ class CtlEmpresaController extends Controller {
 
                     $direccion = $src[0]->getSrc();
 
+                    
                     $direccion = str_replace("\\", "", $direccion);
                     $direccion = str_replace("Photos/Perfil/", "", $direccion);
+                    //echo $direccion;
+                    if ($direccion != "" && ($direccion != 'Photos/defecto/defectoH.png' && $direccion != 'Photos/defecto/defectoM.png' )) {
 
-                    if ($direccion != "" && $direccion != 'Photos/defecto/defecto.png') {
-
+                        
                         $eliminacionRegistroExixtente = unlink($path1 . $direccion);
 
                         if ($eliminacionRegistroExixtente) {
