@@ -210,36 +210,36 @@
                         {% else %}    
                             <div class="row">
                                 <!-- Foto -->
-                                    <div class="col-xs-3" style="padding-right: 5px;">
-                                            <img src="{{asset('')}}{{usuario.foto}}" style="max-width: 100%; width: 100%; padding: 3px;">
-                                    </div>
+                                <div class="col-xs-3" style="padding-right: 5px;">
+                                        <img src="{{asset('')}}{{usuario.foto}}" style="max-width: 100%; width: 100%; padding: 3px;">
+                                </div>
                                 <!-- Contacto+Info -->
-                                    <div class="col-xs-9" style="padding-left: 0px;">
-                                            <p style="margin-top: 5px; font-size: 1em; margin-bottom: 0px; font-size: 12px;" class="sans">
-                                                    <strong>
-                                                        {%if usuario.titulo==1 %} 
-                                                            {%if usuario.genero=='M' %} 
-                                                                Lic.
-                                                            {%else%}
-                                                                Licda.
-                                                            {% endif %}
+                                <div class="col-xs-9" style="padding-left: 0px;">
+                                        <p style="margin-top: 5px; font-size: 1em; margin-bottom: 0px; font-size: 12px;" class="sans">
+                                                <strong>
+                                                    {%if usuario.titulo==1 %} 
+                                                        {%if usuario.genero=='M' %} 
+                                                            Lic.
                                                         {%else%}
-                                                            {%if usuario.titulo==2 %} 
-                                                                Máster
+                                                            Licda.
+                                                        {% endif %}
+                                                    {%else%}
+                                                        {%if usuario.titulo==2 %} 
+                                                            Máster
+                                                        {%else%}
+                                                            {%if usuario.genero=='M' %} 
+                                                                Dr.
                                                             {%else%}
-                                                                {%if usuario.genero=='M' %} 
-                                                                    Dr.
-                                                                {%else%}
-                                                                    Dra.
-                                                                {% endif %}
+                                                                Dra.
                                                             {% endif %}
                                                         {% endif %}
-                                                            {{usuario.nombres}} {{usuario.apellido}}
-                                                    </strong>
-                                                </p>
-                                            <p style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 10px;" class="sans">{{usuario.cargo}}</p>
-                                            <p class="sans" style="font-size: 11px; margin-bottom: 0px; margin-top: 1px;"><strong>Especialidades:</strong> {{usuario.especialidad}}</p>
-                                    </div>
+                                                    {% endif %}
+                                                        {{usuario.nombres}} {{usuario.apellido}}
+                                                </strong>
+                                            </p>
+                                        <p style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 10px;" class="sans">{{usuario.cargo}}</p>
+                                        <p class="sans" style="font-size: 11px; margin-bottom: 0px; margin-top: 1px;"><strong>Especialidades:</strong> {{usuario.especialidad}}</p>
+                                </div>
 
                             </div> <!-- end row -->
                         {% endif %}
@@ -280,6 +280,7 @@
 					    <a href="{{ path('directorio_index') }}?busqueda=Derecho migratorio" style="line-height: 20px; font-size: 13px;" class="sans text-capitalize">Derecho migratorio</a>
 					    <a href="{{ path('directorio_index') }}?busqueda=Derecho constitucional" style="line-height: 20px; font-size: 13px;" class="sans text-capitalize">Derecho constitucional</a>
 					    <a href="{{ path('directorio_index') }}?busqueda=Derecho aduanero" style="line-height: 20px; font-size: 13px;" class="sans text-capitalize">Derecho aduanero</a>
+                                            <a href="{{ path('directorio_index') }}?busqueda=Derecho%20penal" style="line-height: 20px; font-size: 13px;" class="text-capitalize">Derecho penal</a>
 					    <a href="{{ path('directorio_index') }}?busqueda=Derecho internacional" style="line-height: 20px; font-size: 13px;" class="sans text-capitalize">Derecho internacional</a>
 					  </div>
 						<a href="{{path('pregunta_index')}}" class="nodeco"><li style="display: inline; padding: 15px 15px;" class="sans">PREGUNTAR GRATIS</li></a>

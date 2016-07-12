@@ -7,7 +7,6 @@
         <title>Directorio de Abogados de El Salvador | Primero y unico directorio de abogados de El Salvador | Abogados.com.sv</title>
         <meta name="robots" content="noindex">
 
-        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
         <!-- fosjsrouting -->
         <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
         <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
@@ -19,19 +18,16 @@
         <!-- bootstrap -->
         <script src="{{ asset('Resources/src/js/jquery-2.0.3.min.js')}}"></script>
 
-        <!-- Font Awesome -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
         <link rel="stylesheet" href="{{asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css')}}">
-        <link href="{{asset('Resources/src/css/menu_movil.css')}}" rel="stylesheet">
+ 
 
         <link href="{{asset('Resources/src/css/bootstrap.css')}}" rel="stylesheet">
 
-        <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
+
         <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
         <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
 
-        <link href="{{asset('Resources/jquery-validation-1.15.0/demo/css/screen.css')}}" rel="stylesheet">
-        <script src="{{ asset('Resources/jquery-validation-1.15.0/dist/jquery.validate.js')}}"></script>
 
         <script type = "text/javascript" >
             $(document).ready(function () {
@@ -55,7 +51,7 @@
                         <p class="sans text-uppercase" style="font-size: 20px; margin-top: 16px;  margin-bottom: 20px;">Elije el plan que mejor...</p>
                         <div id="divPlan" >
                             <input type="hidden" id="hcodigo"  value=" ">
-
+{%if(trial==0)%}
                             <div class="form-column col-sm-4 col-md-4" >
                                 <div class="box box-widget " style="border: 1px solid #aeb3b9;">
                                     <div class="box-header with-border" style=" background: #aeb3b9;">
@@ -93,6 +89,7 @@
 
 
                             </div>
+                            {%endif%}
                             <div class="form-column col-sm-4 col-md-4">
 
                                 <div class="box box-widget" style="border: 1px solid  #4cae4c;">
@@ -179,37 +176,40 @@
                                         <h3 class="box-title" style=" margin-left: 10px;font-size: 25px;">Selecciona un metodod e pago</h3>
                                     </div>
                                     <div class="box-body" >
-                                         <form id="frmVerificacion" role="form" enctype="multipart/form-data">
-                                             <input type="hidden" id="hplan"  >
-                                        <ul class="products-list product-list-in-box">
-                                            <li class="item">
-                                                <input type="radio"  name="rMetodo"  value="1" class="rMetodo"  id="metodo_agr" required/>  <img src="{{ asset('Resources/src/img/metodoPago/agricola.png') }}" style="width: 40%; height:40%; margin-top: -20px; padding: 5px;" alt="Banco Agicola">
-                                                <div id="divComprobante1" role="form" enctype="multipart/form-data" style=" display:none;">
+                                        <form id="frmVerificacion" role="form" enctype="multipart/form-data">
+                                            <input type="hidden" id="hplan" name="hplan" >
+                                            <ul class="products-list product-list-in-box">
+                                                {%for datos in tipoPago %}
+                                                    <li class="item">
+                                                        {%if (datos.id==1)%}
+                                                            <input type="radio"  name="rMetodo"  value="{{datos.id}}" class="{{datos.id}}"  id="metodo_agr" required/>  <img src="{{ asset('Resources/src/img/metodoPago/agricola.png') }}" style="width: 50%; height:50%; margin-top: -20px; padding: 5px;" alt="Banco Agicola">
+                                                            <div id="divComprobante1" role="form" enctype="multipart/form-data" style=" display:none;">
+                                                                <img src="" style="max-height: 100%;max-width: 100%;" id="prevVerificacion" >
+                                                                <input type="file" name="imagen"  id="imagenV" >
+                                                            </div>
+                                                        {%elseif(datos.id==2)%}
+                                                            <input type="radio"  name="rMetodo"  value="2" class="rMetodo"  id="metodo_tigo" required/><img src="{{ asset('Resources/src/img/metodoPago/tigo.png') }}" style="width:70%; height:70%; padding: 5px;" alt="BancoAgricola">
+                                                          {#<div id="divComprobante1" role="form" enctype="multipart/form-data" style=" display:none;">
+                                                                <img src="" style="max-height: 100%;max-width: 100%;" id="prevVerificacion" >
+                                                                <input type="file" name="imagen"  id="imagenV" >
+                                                            </div>#}
+                                                        {%elseif(datos.id==3)%}
+                                                            <input type="radio"  name="rMetodo"  value="2" class="rMetodo"  id="metodo_tigo" required/><img src="{{ asset('Resources/src/img/metodoPago/pagadito.jpg') }}" style="width:60%; height:60%;padding: 5px;" alt="Tigomoney">
+                                                        {%elseif(datos.id==4)%}
+                                                            <input type="radio"  name="rMetodo"  value="2" class="rMetodo"  id="metodo_tigo" required/><img src="{{ asset('Resources/src/img/metodoPago/paypal.png') }}" style="width:55%; height:55%;padding: 5px;" alt="Tigomoney">
+                                                        {%endif%}
+                                                    </li>
+                                                {%endfor%}
 
-                                                    <img src="" style="max-height: 100%;max-width: 100%;" id="prevVerificacion" >
-                                                    <input type="file" name="imagen"  id="imagenV" >
 
-                                                </div>
-                                            </li>
-                                            <li class="item">
-                                                <input type="radio"  name="rMetodo"  value="2" class="rMetodo"  id="metodo_tigo" required/><img src="{{ asset('Resources/src/img/metodoPago/tigo.png') }}" style="width:60%; height:60%;" alt="Tigomoney">
-                                            <li class="item">
-                                                <input type="radio"  name="rMetodo"  value="3" class="rMetodo"  id="metodo_pagadito" required/> <label for="Femenino">Pagadito</label>  
+                                                <li class="item">
+                                                    <a  id="btnRegresarBasico" class="btn btn-primary btn-sm" style="text-decoration: none;" href="#">Regresar</a>
+                                                    <a  id="btnEnviar" class="btn btn-primary btn-sm" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Enviando">Continuar</a>
 
-                                            </li>
-                                            <li class="item">
+                                                </li>
 
-                                                <input type="radio"  name="rMetodo"  value="4" class="rMetodo"  id="metodo_pp" required/> <label for="Femenino">Pay pal</label>  
-
-                                            </li>
-
-                                            <li class="item">
-                                                <a  id="btnRegresarBasico" class="btn btn-primary btn-sm" style="text-decoration: none;" href="#">Regresar</a>
-                                                <a  id="btnEnviar" class="btn btn-primary btn-sm" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Enviando">Continuar</a>
-
-                                            </li>
-                                        </ul>
-                                         </form>
+                                            </ul>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -217,7 +217,7 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-sm-12" style=" margin-top: 10px;">
-                                    <button type="submit" class="btn btn-primary btn-sm btn-flat" id="enviar">Continuar</button>
+
                                     <button type="button" class="btn btn-default btn-sm btn-flat" id="btnCerrar">Cerrar sesión</button>
                                 </div>
                             </div>
@@ -229,99 +229,95 @@
 
 
 
-
-        <script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
         <script type="text/javascript">
             $("#prevVerificacion").hide();
             $("#cancelarImagenV").hide();
 
-             $(document).on('click', '#btnplan1', function () {
-                $('input#hplan').val(1);
-                $("#divPlan").css('display', 'none');
-                $("#divMetodo").css('display', 'block');
-
-            });
-             $(document).on('click', '#btnplan2', function () {
+            $(document).on('click', '#btnplan1', function () {
                 $('input#hplan').val(2);
                 $("#divPlan").css('display', 'none');
                 $("#divMetodo").css('display', 'block');
 
             });
+            $(document).on('click', '#btnplan2', function () {
+                $('input#hplan').val(3);
+                $("#divPlan").css('display', 'none');
+                $("#divMetodo").css('display', 'block');
+
+            });
             $(document).on('click', '#btnRegresarBasico', function () {
-                
+
                 $("#divPlan").css('display', 'block');
                 $("#divMetodo").css('display', 'none');
                 location.reload();
             });
 
-    $(document).on('click', '#btnTrial', function () {
-              
-                    $.ajax({
-                        dataType: 'json',
-                        url: Routing.generate('metodo_pago'),
-                        type: 'POST',
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        success: function (data) {
+            $(document).on('click', '#btnTrial', function () {
+                $('input#hplan').val(1);
+           
+                $.ajax({
+                    dataType: 'json',
+                    url: Routing.generate('metodo_pago'),
+                    type: 'POST',
+                   //cache: false,
+                //    contentType: false,
+                    data:{hplan:$('input#hplan').val()},
+                    success: function (data) {
 
-                            if (data.estado == true) {
+                        if (data.estado == true) {
 
-                                Lobibox.notify("success", {
-                                    size: 'mini',
-                                    msg: '<p>Su solicitud de verificación se ha enviado.</p>'});
-                               var url = Routing.generate('perfil');
-                                          window.open(url, "_self");
-                            } else {
-                                Lobibox.notify("error", {
-                                    size: 'mini',
-                                    msg: 'Lo sentimos, ocurrio un error, intentelo mas tarde.'});
-                            }
-                       //     $("#enviarImagenV").prop("disabled", false);
-                        //    $("#enviarImagenV").button('reset');
+                            Lobibox.notify("success", {
+                                size: 'mini',
+                                msg: '<p>Su solicitud de verificación se ha enviado.</p>'});
+                            var url = Routing.generate('perfil');
+                            window.open(url, "_self");
+                        } else {
+                            Lobibox.notify("error", {
+                                size: 'mini',
+                                msg: 'Lo sentimos, ocurrio un error, intentelo mas tarde.'});
                         }
-                    });
+                        //     $("#enviarImagenV").prop("disabled", false);
+                        //    $("#enviarImagenV").button('reset');
+                    }
+                });
 
             });
 
-            
+
             $(document).on('click', '#btnEnviar', function () {
                 var frm = new FormData($("#frmVerificacion")[0]);
 
-                if (flag == true) {
-      //              $("#btnEnviar").button('loading');
-              //      $("#btnEnviar").prop("disabled", true);
-                    $.ajax({
-                        data: frm,
-                        dataType: 'json',
-                        url: Routing.generate('metodo_pago'),
-                        type: 'POST',
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        success: function (data) {
 
-                            if (data.estado == true) {
+                //              $("#btnEnviar").button('loading');
+                //      $("#btnEnviar").prop("disabled", true);
+                $.ajax({
+                    data: frm,
+                    dataType: 'json',
+                    url: Routing.generate('metodo_pago'),
+                    type: 'POST',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
 
-                                Lobibox.notify("success", {
-                                    size: 'mini',
-                                    msg: '<p>Su solicitud de verificación se ha enviado.</p>'});
-                            } else {
-                                Lobibox.notify("error", {
-                                    size: 'mini',
-                                    msg: 'Lo sentimos, ocurrio un error, intentelo mas tarde.'});
-                            }
-                       //     $("#enviarImagenV").prop("disabled", false);
-                        //    $("#enviarImagenV").button('reset');
+                        if (data.estado == true) {
+
+                            Lobibox.notify("success", {
+                                size: 'mini',
+                                msg: '<p>Suscripción registrada.</p>'});
+                             var url = Routing.generate('perfil');
+                            window.open(url, "_self");
+                        } else {
+                            Lobibox.notify("error", {
+                                size: 'mini',
+                                msg: 'Lo sentimos, ocurrio un error, intentelo mas tarde.'});
                         }
-                    });
+                        //     $("#enviarImagenV").prop("disabled", false);
+                        //    $("#enviarImagenV").button('reset');
+                    }
+                });
 
-                } else {
 
-                    alert("Acm1pt");
-
-
-                }
             });
 
 
@@ -341,10 +337,11 @@
                         $("#divComprobante1").css('display', 'none');
                     } else if ($(this).val() == 3)
                     {
+                        $("#divComprobante1").css('display', 'block');
 
                     } else if ($(this).val() == 4)
                     {
-
+                        $("#divComprobante1").css('display', 'block');
                     }
                 });
             });
@@ -398,10 +395,10 @@
                     reader.readAsDataURL(input.files[0]);
                 }
             }
-              $(document).on('click', '#btnCerrar', function () {
-                                                                   var url = Routing.generate('abogado_logout');
-                                                                                    window.open(url, "_self");
-                                                                    });
+            $(document).on('click', '#btnCerrar', function () {
+                var url = Routing.generate('abogado_logout');
+                window.open(url, "_self");
+            });
         </script>
 
 

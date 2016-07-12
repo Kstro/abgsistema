@@ -678,7 +678,7 @@
                                     
                                     if($('#volverIni').is(':visible')){
                                         if(data.data[i].tipo==2){
-                                            especialidades = especialidades.slice(0,110)+"...";
+                                            especialidades = especialidades.slice(0,110)+"...";//Evita que las especialidades de la empresa deforme e estilo de cada item del directorio
                                         }
                                     }
                                     {#else{
@@ -787,8 +787,8 @@
                                             <p id=\"busquedaSitioWeb' + (i + 1) + '\" style=\"font-size: 11px; margin-bottom: 0px;\"><a href=\"http://' + busquedaSitioWeb + '\" target=\"_blank\">' + busquedaSitioWeb + '</a></p></div>\n\
                                             <div class=\"col-sm-12\"><span style=\"color: #4444444; font-size: 11px; margin-bottom: 0px; padding-right: 10px;\"><strong>Especialidades:</strong> </span>\n\
                                             <span id=\"busquedaEspecialidades' + (i + 1) + '\" style=\"font-size: 11px;\">' + especialidades + '</span>\n\
-                                            </div><div class=\"hidden-xs col-sm-12\" style=\"margin-top: -0px;\"><span style=\"font-size: 11px;\">{#<a href=\"../' + data.data[i].url + '\">Ver perfil</a>#}</span>\n\
-                                            {#<span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span>#}<span style=\"font-size: 11px;\"><a href=\"{{path('contacto')}}?correo=' + busquedaCorreo + '\">Contactar</a></span>\n\
+                                            </div><div class=\"hidden-xs col-sm-12\" style=\"margin-top: -0px;\"><span style=\"font-size: 11px;\"><a href=\"../' + data.data[i].url + '\">Ver perfil</a></span>\n\
+                                            <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"{{path('contacto')}}?correo=' + busquedaCorreo + '\">Contactar</a></span>\n\
                                             <span style=\"color: #777777; margin-left: 5px; margin-right: 5px;\">|</span><span style=\"font-size: 11px;\"><a href=\"{{path('recomendacion')}}?correo=' + busquedaCorreo + '\">Recomendar</a></span></div></div></div></div><div class=\"row hidden-md hidden-lg hidden-sm\" style=\"padding: 2px;\"><div class="col-xs-4" style="padding-right: 2px;"><button class="sans borded"><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> <strong>Llamar</strong></button></div><div class="col-xs-4" style="padding-left: 2px; "><button class="sans borded"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <strong>Perfil</strong></button></div></div></div>';
                                         }
                                     }

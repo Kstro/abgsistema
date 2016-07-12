@@ -41,9 +41,8 @@
     <script>
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
-        });
-    </script>
-    <script>
+
+
         function mostrarImagen(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
@@ -57,10 +56,31 @@
         $("#file").change(function () {
             mostrarImagen(this);
         });
+        
+        
+         function mostrarImagen2(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#img_destinoE').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
+        
+        
+        $(document).on("change","#fileE",function() {
+           mostrarImagen2(this);
+        });
+        
+     });
     </script>
 
     <script>
         $(document).ready(function(){
+            $("#tabEdicionBlog").hide();
+            
             $('#entradasBlog').DataTable({ 
                 searching:true,
                 "order":[[1,"desc"]],
@@ -83,6 +103,97 @@
             });
         
             $('#busqueda_categoriablog').select2();
+            
+            
+            var nEdicion = 0;
+              $(document).on("click", ".editarEntradaBlog", function () {
+                  nEdicion=1;
+                  
+                  var idEditar = $(this).attr("id");
+                  
+                                                                $.ajax({
+                                                                    type: 'POST',
+                                                                    async: false,
+                                                                    dataType: 'json',
+                                                                    data: {idEditar:idEditar},
+                                                                    url: Routing.generate('seleccionarDatosEdicionEntrada'),
+                                                                    success: function (data)
+                                                                    {
+                                                                        if(data.estado == true){
+                                                                             $.each(data.datos, function( key, value ) {         
+                                                                            var formulario ='<div class="box box-widget">\n\
+                                                                                <div class="box-header with-border">\n\
+                                                                                    <h3 class="box-title">ENTRADA DE BLOG </h3>\n\
+                                                                                </div>\n\
+                                                                                <div class="box-body">\n\
+                                                                                    <form role="form" id="edicionEntrada" >\n\
+                                                                                        <div class="form-group"><input type="hidden" name="idRegistro" value="'+value.id+'">\n\
+                                                                                            <label for="nombreEmpleado">Título de la entrada</label>\n\
+                                                                                            <input type="text"  class="form-control" id="txttitulo" name="tituloE"\n\
+                                                                                                   placeholder="Titulo de la entrada" value="'+value.titulo+'" required>\n\
+                                                                                        </div>\n\
+                                                                                        <div class="form-group">\n\
+                                                                                            <label for="exampleInputEmail1">Contenido de la entrada</label>\n\
+                                                                                            <textarea name="contenidoE" class="form-control" rows="3" placeholder="Ingrese el contenido de la entrada...">'+value.contenido+'</textarea>\n\
+                                                                                        </div\n\
+                                                                                        <div class="form-group">\n\
+                                                                                            <label for="nombreEmpleado">Categoria de la entrada</label>\n\
+                                                                                                <select class="form-control" id="categoria" name="categoriaE" placeholder=categoria" required>';
+        
+                                                                                                $.each(data.categorias, function( key, val ) {
+                                                                                                    if(val.id == value.categoriaId){
+                                                                                                          formulario+='<option value="'+val.id+'" selected style="margin-bottom: 10px;">'+val.nombre+'</option>';
+                                                                                                    }else{
+                                                                                                         formulario+='<option value="'+val.id+'"  style="margin-bottom: 10px;">'+val.nombre+'</option>';
+                                                                                                    }
+                                                                                                        
+                                                                                                }); 
+                                                                        
+                                                                        formulario+='</select>\n\
+                                                                                        <div class="form-group">\n\
+                                                                                            <img id="img_destinoE" src="/abgsistema/Photos/entrada/'+value.src+'" style="max-width: 100%; width: 100%; margin-top: 30px;">\n\
+                                                                                        </div>\n\
+                                                                                        <input id="fileE" type="file" name="fileE">\n\
+                                                                                        <br>\n\
+                                                                                        <input type="hidden" name="idRegistroImagen" value="'+value.idImagen+'">\n\
+                                                                                        <button type="submit" class="btn btn-primary btn-sm">Guardar</button>\n\
+                                                                                        <button type="reset" class="btn btn-default btn-sm" id="idCancelarEdicion">Cancelar</button>\n\
+                                                                                    </form>\n\
+                                                                                </div>\n\
+                                                                            </div>';
+                                                                         $("#edicionBlog").append(formulario);
+                                                                             });
+                                                                             
+                                                                                tinymce.init({
+                                                                                selector: 'textarea',
+                                                                                height: 500,
+                                                                                plugins: ['advlist autolink lists link image charmap print preview anchor', 'searchreplace visualblocks code fullscreen', 'insertdatetime media table contextmenu paste code'],
+                                                                                toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+                                                                                content_css: ['//fast.fonts.net/cssapi/e6dc9b99-64fe-4292-ad98-6974f93cd2a2.css', '//www.tinymce.com/css/codepen.min.css']
+                                                                            });
+                                                                      
+                                                                           $("#tabEdicionBlog").show();
+                                                                           $("#tabEdicionBlog").click();
+                                                                            
+                                                                        }
+                                                                       
+                                                                        
+                                                                     },
+                                                                        error: function (xhr, status)
+                                                                        {
+
+                                                                        }
+                                                                });
+ 
+                  
+              });
+              
+              
+             $(document).on("click", "#idCancelarEdicion", function () {
+                 
+                 location.reload();
+                 
+             });
             
             $(document).on("click", ".eliminarEntrada", function () {
                 
@@ -113,7 +224,16 @@
                                                                     {
                                                                         if(data.estado == true){
                                                                             
-                                                                            location.reload();
+                                                                                  Lobibox.notify("success", {
+                                                                                    size: 'mini',
+                                                                                    msg: "<p>Registro eliminado exitosamente!.</p>"
+                                                                                });
+
+                                                                            setTimeout( function(){ 
+                                                                                   location.reload();
+                                                                             }  , 1000 );
+                                                                            
+                                                                     
                                                                         }
                                                                        
                                                                         
@@ -133,25 +253,110 @@
             });
             
             
+            $(document).on("click", "#tabentradoBlogs", function () {
+                
+                if(nEdicion!=0){
+                    $("#tabEdicionBlog").click();
+                    swal("Accion invalida!", "Tienes que guardar ó cancelar los datos que se encuentran editando.", "info");
+                    
+                }
+                
+                
+                
+            });
+            
+            
+            
+              $(document).on("click", "#tablistaBlogs", function () {
+                
+                if(nEdicion!=0){
+                      $("#tabEdicionBlog").click();
+                    swal("Accion invalida!", "Tienes que guardar ó cancelar los datos que se encuentran editando.", "info");
+                }
+                
+                
+                
+            });
+            
           //Fin del document Ready
             
         });
         
         //Este es el codigo que me permite enviar la imagen con todo!!
 
-        $(document).on("submit", "#endatos", function (e) {
-            //alert("asdasd");
-            e.preventDefault();
-            //información del formulario
-            var frm = new FormData($(this)[0]);
-            //console.log(frm);      
-        {#if (flag != false) {#}
+        $(document).on("click", "#enviar", function () {
+       
+            var titulo = $("#txttitulo").val();
+            var file= $("#file").val();
+            
+            
+             var text = tinyMCE.activeEditor.getContent({
+                format: 'text'
+            });
+            //alert(text);
+            
+            if( titulo !="" && text!="" && file!=""){
+                
+        
+
+                  var frm = new FormData($("#endatos")[0]);
+
                 if (1 == 1) {
-                    console.log('aqui llega');
+                   
                     $.ajax({
                         data: frm,
                         url: Routing.generate('ingresar_entrada'),
-        {#url: {{path('ingresar_entrada')}},   #}             
+      
+                        type: 'POST',
+                        //necesario para subir archivos via ajax
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        //una vez finalizado correctamente
+
+                        success: function (data) {
+                            data = jQuery.parseJSON(data);//convirtiendo datos
+                            Lobibox.notify("success", {
+                                size: 'mini',
+                                msg: "<p>Los datos fueron ingresados correctamente.</p>"
+                            });
+                       
+                             var url = Routing.generate('entrada_index');
+                             window.open(url, '_self');
+                        }
+                    });
+
+                } else {
+                    var mensaje = "Los Datos no pueden ser Guardados. Formato de imagen no admitido";
+                    GetAlert("Error", mensaje, "../recursos/imagenes/error.png", 4000);
+                    
+          
+                } 
+ }else{
+        swal("Error!", "Todos los campos son requeridos.", "error");
+ }
+                  
+            });
+            
+           
+            
+            
+            //Para la edicion de los datos de la entrada del blog
+            
+            //Este es el codigo que me permite enviar la imagen con todo!!
+
+        $(document).on("submit", "#edicionEntrada", function (e) {
+
+            e.preventDefault();
+
+            var frm = new FormData($(this)[0]);
+
+                if (1 == 1) {
+                  
+                    $.ajax({
+                        data: frm,
+                        url: Routing.generate('edicion_entrada_blog'),
+              
                         type: 'POST',
                         //necesario para subir archivos via ajax
                         cache: false,
@@ -164,7 +369,7 @@
                             data = jQuery.parseJSON(data);//convirtiendo datos
                             Lobibox.notify("success", {
                                 size: 'mini',
-                                msg: "<p>Los datos fueron ingresados correctamente.</p>"
+                                msg: "<p>Los datos fueron modificados correctamente. Espere un momenro...</p>"
                             });
                             // alert("Los datos fueron ingresados correctamente");
                              var url = Routing.generate('entrada_index');
@@ -183,8 +388,6 @@
           
                 }                
             });
-        
-
 
     </script>
 
@@ -209,8 +412,9 @@
                     <div class="nav-tabs-custom" style="cursor: move;">
                         {# Aquí se colocan los nombres de cada sección (tabs) #}    
                         <ul class="nav nav-tabs  ui-sortable-handle">
-                            <li class="active fuente"><a data-toggle="tab" href="#listado-blogs">Lista de blogs</a></li>
-                            <li><a data-toggle="tab" href="#registros">Entrada de blog</a></li>
+                            <li class="active fuente"><a data-toggle="tab" href="#listado-blogs"  id="tablistaBlogs">Lista de blogs</a></li>
+                            <li><a data-toggle="tab" href="#registros" id="tabentradoBlogs">Entrada de blog</a></li>
+                            <li><a data-toggle="tab" href="#edicionBlog" id="tabEdicionBlog">Edicion Blog</a></li>
                         </ul>
                         {# Aquí se encuentran las secciones de las tabs #}    
                         <div class="tab-content no-padding">
@@ -233,7 +437,7 @@
                                                             <div id="tipos-servicios">
                                                                 <label>Categoria de blog:</label>
                                                                 <select id="busqueda_categoriablog" name="busqueda[categoriablog]" class="categoriablog" style="width: 100%">
-                                                                    <option value="0" disabled selected>Seleccione una categoria ...</option>
+                                                                    <option value="0" disabled >Seleccione una categoria ...</option>
                                                                     {% for ctlCategoriasBlog in ctlCategoriasBlog %}
                                                                         <option value="{{ ctlCategoriasBlog.id  }}">{{ctlCategoriasBlog.nombreCategoria }}</option>  
                                                                     {% endfor %}     
@@ -288,8 +492,8 @@
                                                         <td class="text-center">
                                                             {#<a href="{{ path('admin_showBlog', { 'id': row.id }) }}">Ver detalles</a>#}
                                                             <a href="{{ path('admin_showBlog', { 'id': row.id }) }}" style="margin: 2px;"><span class="glyphicon glyphicon-eye-open" data-toggle="tooltip" title="Ver entrada" aria-hidden="true"></span></a>
-                                                            <a href="#" id="{{row.id}}" style="margin: 2px;" class="eliminarEntrada"><span class="glyphicon glyphicon-remove" data-toggle="tooltip" title="Eliminar entrada" aria-hidden="true"></span></a>
-                                                            <a href="{{ path('admin_showBlog', { 'id': row.id }) }}" style="margin: 2px;"><span class="glyphicon glyphicon-pencil" data-toggle="tooltip" title="Editar entrada" aria-hidden="true"></span></a>
+                                                            <a href="#" ><span id="{{row.id}}" style="margin: 2px;" class="eliminarEntrada glyphicon glyphicon-remove" data-toggle="tooltip" title="Eliminar entrada" aria-hidden="true"></span></a>
+                                                            <a href="#"><span  id="{{row.id}}" style="margin: 2px;" class="editarEntradaBlog glyphicon glyphicon-pencil" data-toggle="tooltip" title="Edicion de entrada" aria-hidden="true"></span></a>
                                                         </td>
                                                     </tr>
                                                 {% endfor %}
@@ -310,20 +514,19 @@
                                             <div class="form-group">
                                                 <label for="nombreEmpleado">Título de la entrada</label>
                                                 <input type="text" value="" class="form-control" id="txttitulo" name="titulo"
-                                                       placeholder="Titulo de la entrada">
+                                                       placeholder="Titulo de la entrada" required>
                                             </div>
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Contenido de la entrada</label>
-                                                <textarea name="contenido" class="form-control" rows="3" placeholder="Ingrese el contenido de la entrada..." ></textarea>
+                                                <textarea name="contenido" class="form-control" rows="3" placeholder="Ingrese el contenido de la entrada..." id="contenido"></textarea>
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="nombreEmpleado">Categoria de la entrada</label>
 
-                                                <select class="form-control" id="categoria" name="categoria" placeholder=categoria">
-                                                    <option value="5" selected style="margin-bottom: 10px;">Seleccione una categoria</option>                           
+                                                <select class="form-control" id="categoria" name="categoria" placeholder=categoria" required>
                                                     {% for ctlCategoriasBlog in ctlCategoriasBlog %}
-                                                        <option value="{{ ctlCategoriasBlog.id  }}">{{ctlCategoriasBlog.nombreCategoria }}</option>  
+                                                        <option selected value="{{ ctlCategoriasBlog.id  }}">{{ctlCategoriasBlog.nombreCategoria }}</option>  
                                                     {% endfor %}          
                                                 </select>    
                                             </div>
@@ -332,20 +535,20 @@
                                                 <img id="img_destino" src="http://placehold.it/900x300" style="max-width: 100%; width: 100%; margin-top: 30px;">
 
                                             </div>
-                                            <input id="file" type="file" name="file">
+                                                <input id="file" type="file" name="file" required>
                                             <br>
-                                            <button type="submit" class="btn btn-primary btn-sm">Enviar</button>
+                                            <a  id="enviar" href="#" class="btn btn-primary btn-sm">Enviar</a>
                                             <button type="reset" class="btn btn-default btn-sm">Cancelar</button>
                                         </form>
                                     </div>
                                 </div>
                             </div>
                             {# Esta es la nueva tab de edicion #}
-                                                <div class="chart tab-pane" id="edicion">
+                             <div class="chart tab-pane" id="edicionBlog">
                                                     
                                                     
                                                     
-                                                </div>
+                             </div>
                     </div>
                 </div>
             </section>

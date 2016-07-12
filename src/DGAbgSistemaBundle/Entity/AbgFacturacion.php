@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="abg_facturacion", indexes={@ORM\Index(name="fk_abg_cargos_abg_persona1_idx", columns={"abg_persona_id"}), @ORM\Index(name="fk_abg_cargos_ctl_empresa1_idx", columns={"ctl_empresa_id"}), @ORM\Index(name="fk_abg_cargos_abg_tipo_pago1_idx", columns={"abg_tipo_pago_id"}), @ORM\Index(name="fk_abg_facturacion_ctl_promociones1_idx", columns={"ctl_promociones_id"})})
  * @ORM\Entity
  */
-class AbgFacturacion
-{
+class AbgFacturacion {
+
     /**
      * @var integer
      *
@@ -29,6 +29,13 @@ class AbgFacturacion
     private $fechaPago;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_registro", type="date", nullable=false)
+     */
+    private $fechaRegistro;
+
+    /**
      * @var float
      *
      * @ORM\Column(name="monto", type="float", precision=10, scale=0, nullable=false)
@@ -41,22 +48,22 @@ class AbgFacturacion
      * @ORM\Column(name="servicio", type="string", length=100, nullable=false)
      */
     private $servicio;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="referencia", type="string", length=200, nullable=true)
      */
     private $referencia;
-    
-      /**
+
+    /**
      * @var string
      *
      * @ORM\Column(name="descripcion", type="string", length=1500, nullable=false)
      */
     private $descripcion;
-    
-     /**
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="plazo", type="integer", nullable=false)
@@ -69,7 +76,7 @@ class AbgFacturacion
      * @ORM\Column(name="descuento", type="float", precision=10, scale=0, nullable=true)
      */
     private $descuento;
-    
+
     /**
      * @var \AbgPersona
      *
@@ -110,13 +117,14 @@ class AbgFacturacion
      */
     private $ctlPromociones;
 
-        /**
+    /**
      * @var integer
      *
      * @ORM\Column(name="id_user", type="integer", nullable=false)
      */
     private $idUser;
- /**
+
+    /**
      * @var string
      *
      * @ORM\Column(name="comprobante", type="string", length=100, nullable=true)
@@ -128,18 +136,25 @@ class AbgFacturacion
      *
      * @return integer 
      */
-    public function getId()
-    {
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="aprobado", type="integer", nullable=true)
+     */
+    private $aprobado;
+
+    public function getId() {
         return $this->id;
     }
-        /**
+
+    /**
      * Set servicio
      *
      * @param string $comprobante
      * @return AbgFacturacion
      */
-    public function setComprobante($comprobante)
-    {
+    public function setComprobante($comprobante) {
         $this->comprobante = $comprobante;
 
         return $this;
@@ -150,18 +165,17 @@ class AbgFacturacion
      *
      * @return string 
      */
-    public function getComprobante()
-    {
+    public function getComprobante() {
         return $this->comprobante;
     }
+
     /**
      * Set fechaPago
      *
      * @param \DateTime $fechaPago
      * @return AbgFacturacion
      */
-    public function setFechaPago($fechaPago)
-    {
+    public function setFechaPago($fechaPago) {
         $this->fechaPago = $fechaPago;
 
         return $this;
@@ -172,9 +186,29 @@ class AbgFacturacion
      *
      * @return \DateTime 
      */
-    public function getFechaPago()
-    {
+    public function getFechaPago() {
         return $this->fechaPago;
+    }
+
+    /**
+     * Set fechaPago
+     *
+     * @param \DateTime $fechaRegistro
+     * @return AbgFacturacion
+     */
+    public function setFechaRegistro($fechaRegistro) {
+        $this->fechaRegistro = $fechaRegistro;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaPago
+     *
+     * @return \DateTime 
+     */
+    public function getFechaRegistro() {
+        return $this->fechaRegistro;
     }
 
     /**
@@ -183,8 +217,7 @@ class AbgFacturacion
      * @param float $monto
      * @return AbgFacturacion
      */
-    public function setMonto($monto)
-    {
+    public function setMonto($monto) {
         $this->monto = $monto;
 
         return $this;
@@ -195,8 +228,7 @@ class AbgFacturacion
      *
      * @return float 
      */
-    public function getMonto()
-    {
+    public function getMonto() {
         return $this->monto;
     }
 
@@ -206,8 +238,7 @@ class AbgFacturacion
      * @param string $servicio
      * @return AbgFacturacion
      */
-    public function setServicio($servicio)
-    {
+    public function setServicio($servicio) {
         $this->servicio = $servicio;
 
         return $this;
@@ -218,19 +249,17 @@ class AbgFacturacion
      *
      * @return string 
      */
-    public function getServicio()
-    {
+    public function getServicio() {
         return $this->servicio;
     }
-    
+
     /**
      * Set referencia
      *
      * @param string $referencia
      * @return AbgFacturacion
      */
-    public function setReferencia($referencia)
-    {
+    public function setReferencia($referencia) {
         $this->referencia = $referencia;
 
         return $this;
@@ -241,19 +270,17 @@ class AbgFacturacion
      *
      * @return string 
      */
-    public function getReferencia()
-    {
+    public function getReferencia() {
         return $this->referencia;
     }
-    
-        /**
+
+    /**
      * Set servicio
      *
      * @param string $descripcion
      * @return AbgFacturacion
      */
-    public function setDescripcion($descripcion)
-    {
+    public function setDescripcion($descripcion) {
         $this->descripcion = $descripcion;
 
         return $this;
@@ -264,40 +291,38 @@ class AbgFacturacion
      *
      * @return string 
      */
-    public function getDescripcion()
-    {
+    public function getDescripcion() {
         return $this->descripcion;
     }
-   /**
+
+    /**
      * Set plazo
      *
      * @param float $plazo
      * @return AbgFacturacion
      */
-    public function setPlazo($plazo)
-    {
+    public function setPlazo($plazo) {
         $this->plazo = $plazo;
 
         return $this;
     }
+
     /**
      * Get plazo
      *
      * @return integer 
      */
-    public function getPlazo()
-    {
+    public function getPlazo() {
         return $this->plazo;
     }
-    
+
     /**
      * Set descuento
      *
      * @param float $descuento
      * @return AbgFacturacion
      */
-    public function setDescuento($descuento)
-    {
+    public function setDescuento($descuento) {
         $this->descuento = $descuento;
 
         return $this;
@@ -308,41 +333,59 @@ class AbgFacturacion
      *
      * @return float 
      */
-    public function getDescuento()
-    {
+    public function getDescuento() {
         return $this->descuento;
     }
-    
-     /**
+
+    /**
      * Set idUser
      *
      * @param float $idUser
      * @return AbgFacturacion
      */
-    public function setIdUser($idUser)
-    {
+    public function setIdUser($idUser) {
         $this->idUser = $idUser;
 
         return $this;
     }
+
     /**
      * Get idUser
      *
      * @return integer 
      */
-    public function getIdUser()
-    {
+    public function getIdUser() {
         return $this->idUser;
     }
-    
+
+    /**
+     * Set aprobado
+     *
+     * @param float $aprobado
+     * @return AbgFacturacion
+     */
+    public function setAprobado($aprobado) {
+        $this->aprobado = $aprobado;
+
+        return $this;
+    }
+
+    /**
+     * Get aprobado
+     *
+     * @return integer 
+     */
+    public function getAprobado() {
+        return $this->aprobado;
+    }
+
     /**
      * Set abgPersona
      *
      * @param \DGAbgSistemaBundle\Entity\AbgPersona $abgPersona
      * @return AbgFacturacion
      */
-    public function setAbgPersona(\DGAbgSistemaBundle\Entity\AbgPersona $abgPersona = null)
-    {
+    public function setAbgPersona(\DGAbgSistemaBundle\Entity\AbgPersona $abgPersona = null) {
         $this->abgPersona = $abgPersona;
 
         return $this;
@@ -353,8 +396,7 @@ class AbgFacturacion
      *
      * @return \DGAbgSistemaBundle\Entity\AbgPersona 
      */
-    public function getAbgPersona()
-    {
+    public function getAbgPersona() {
         return $this->abgPersona;
     }
 
@@ -364,8 +406,7 @@ class AbgFacturacion
      * @param \DGAbgSistemaBundle\Entity\CtlTipoPago $abgTipoPago
      * @return AbgFacturacion
      */
-    public function setAbgTipoPago(\DGAbgSistemaBundle\Entity\CtlTipoPago $abgTipoPago = null)
-    {
+    public function setAbgTipoPago(\DGAbgSistemaBundle\Entity\CtlTipoPago $abgTipoPago = null) {
         $this->abgTipoPago = $abgTipoPago;
 
         return $this;
@@ -376,8 +417,7 @@ class AbgFacturacion
      *
      * @return \DGAbgSistemaBundle\Entity\CtlTipoPago 
      */
-    public function getAbgTipoPago()
-    {
+    public function getAbgTipoPago() {
         return $this->abgTipoPago;
     }
 
@@ -387,8 +427,7 @@ class AbgFacturacion
      * @param \DGAbgSistemaBundle\Entity\CtlEmpresa $ctlEmpresa
      * @return AbgFacturacion
      */
-    public function setCtlEmpresa(\DGAbgSistemaBundle\Entity\CtlEmpresa $ctlEmpresa = null)
-    {
+    public function setCtlEmpresa(\DGAbgSistemaBundle\Entity\CtlEmpresa $ctlEmpresa = null) {
         $this->ctlEmpresa = $ctlEmpresa;
 
         return $this;
@@ -399,8 +438,7 @@ class AbgFacturacion
      *
      * @return \DGAbgSistemaBundle\Entity\CtlEmpresa 
      */
-    public function getCtlEmpresa()
-    {
+    public function getCtlEmpresa() {
         return $this->ctlEmpresa;
     }
 
@@ -410,8 +448,7 @@ class AbgFacturacion
      * @param \DGAbgSistemaBundle\Entity\AdmPromociones $ctlPromociones
      * @return AbgFacturacion
      */
-    public function setCtlPromociones(\DGAbgSistemaBundle\Entity\AdmPromociones $ctlPromociones = null)
-    {
+    public function setCtlPromociones(\DGAbgSistemaBundle\Entity\AdmPromociones $ctlPromociones = null) {
         $this->ctlPromociones = $ctlPromociones;
 
         return $this;
@@ -422,8 +459,8 @@ class AbgFacturacion
      *
      * @return \DGAbgSistemaBundle\Entity\AdmPromociones 
      */
-    public function getCtlPromociones()
-    {
+    public function getCtlPromociones() {
         return $this->ctlPromociones;
     }
+
 }
