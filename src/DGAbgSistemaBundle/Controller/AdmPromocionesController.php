@@ -256,6 +256,7 @@ class AdmPromocionesController extends Controller
             $abogado = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->find($id);
             $tipopago = $em->getRepository('DGAbgSistemaBundle:CtlTipoPago')->find($tipopagoId);
             $fecha = new \DateTime('now');
+            $fechafin = $fecha->add(new \DateInterval('P'.$plazo.'D'));
             
             if($servicio == 'Espacio publicitario'){
                 $nombreimagen2=" ";
@@ -268,7 +269,6 @@ class AdmPromocionesController extends Controller
                 $promocion->setEstado(1);
                 $promocion->setFechaInicio(new \DateTime ('now'));
 
-                $fechafin = $fecha->add(new \DateInterval('P'.$plazo.'D'));
                 $promocion->setFechaFin($fechafin);
 
                 $em->persist($promocion);
@@ -315,29 +315,36 @@ class AdmPromocionesController extends Controller
             $facturacion = new \DGAbgSistemaBundle\Entity\AbgFacturacion();
             $usuario= $this->get('security.token_storage')->getToken()->getUser();
             
+            $suscripciones = $em->getRepository('DGAbgSistemaBundle:AbgFacturacion')->findBy(array('abgPersona' => $abogado), array('fechaPago' => 'DESC'));            
+            
             if($servicio == 'Espacio publicitario'){
                 $facturacion->setCtlPromociones($promocion);
             } else {
                 $facturacion->setCtlPromociones(null);
             }
             
+            if($suscripciones != NULL) {
+                $facturacion->setFechaRegistro(new \DateTime ('now'));
+                $facturacion->setFechaPago($fechafin);
+                $facturacion->setPlazo($plazo);                                
+            } else {
+                $facturacion->setFechaRegistro(new \DateTime ('now'));
+                $facturacion->setFechaPago($fechafin);
+                $facturacion->setPlazo($plazo);    
+            }            
+            
             $facturacion->setAbgTipoPago($tipopago);
             $facturacion->setAbgPersona($abogado);
-            $facturacion->setFechaPago(new \DateTime ('now'));
-            $facturacion->setMonto($monto);
-            $facturacion->setPlazo($plazo);
+            $facturacion->setMonto($monto);                
             $facturacion->setDescripcion($descripcion);
             $facturacion->setIdUser($usuario->getId());
             $facturacion->setServicio($servicio);
             $facturacion->setCtlEmpresa(null);
             $facturacion->setReferencia($referencia);
             $facturacion->setDescuento($descuento);
-            
             $em->persist($facturacion);
             $em->flush();
-            
-            
-            
+                
             $response = new JsonResponse();
             $response->setData(array(
                                   'exito'   => '1',
