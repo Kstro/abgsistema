@@ -130,15 +130,15 @@
                                                                                         <div class="form-group"><input type="hidden" name="idRegistro" value="'+value.id+'">\n\
                                                                                             <label for="nombreEmpleado">Título de la entrada</label>\n\
                                                                                             <input type="text"  class="form-control" id="txttitulo" name="tituloE"\n\
-                                                                                                   placeholder="Titulo de la entrada" value="'+value.titulo+'">\n\
+                                                                                                   placeholder="Titulo de la entrada" value="'+value.titulo+'" required>\n\
                                                                                         </div>\n\
                                                                                         <div class="form-group">\n\
                                                                                             <label for="exampleInputEmail1">Contenido de la entrada</label>\n\
-                                                                                            <textarea name="contenidoE" class="form-control" rows="3" placeholder="Ingrese el contenido de la entrada..." >'+value.contenido+'</textarea>\n\
+                                                                                            <textarea name="contenidoE" class="form-control" rows="3" placeholder="Ingrese el contenido de la entrada...">'+value.contenido+'</textarea>\n\
                                                                                         </div\n\
                                                                                         <div class="form-group">\n\
                                                                                             <label for="nombreEmpleado">Categoria de la entrada</label>\n\
-                                                                                                <select class="form-control" id="categoria" name="categoriaE" placeholder=categoria">';
+                                                                                                <select class="form-control" id="categoria" name="categoriaE" placeholder=categoria" required>';
         
                                                                                                 $.each(data.categorias, function( key, val ) {
                                                                                                     if(val.id == value.categoriaId){
@@ -284,19 +284,29 @@
         
         //Este es el codigo que me permite enviar la imagen con todo!!
 
-        $(document).on("submit", "#endatos", function (e) {
-            //alert("asdasd");
-            e.preventDefault();
-            //información del formulario
-            var frm = new FormData($(this)[0]);
-            //console.log(frm);      
-        {#if (flag != false) {#}
+        $(document).on("click", "#enviar", function () {
+       
+            var titulo = $("#txttitulo").val();
+            var file= $("#file").val();
+            
+            
+             var text = tinyMCE.activeEditor.getContent({
+                format: 'text'
+            });
+            alert(text);
+            
+            if( titulo !="" && text!="" && file!=""){
+                
+        
+
+                  var frm = new FormData($("#endatos")[0]);
+
                 if (1 == 1) {
-                    console.log('aqui llega');
+                   
                     $.ajax({
                         data: frm,
                         url: Routing.generate('ingresar_entrada'),
-        {#url: {{path('ingresar_entrada')}},   #}             
+      
                         type: 'POST',
                         //necesario para subir archivos via ajax
                         cache: false,
@@ -305,18 +315,16 @@
                         //una vez finalizado correctamente
 
                         success: function (data) {
-                            //console.log(data);
                             data = jQuery.parseJSON(data);//convirtiendo datos
                             Lobibox.notify("success", {
                                 size: 'mini',
                                 msg: "<p>Los datos fueron ingresados correctamente.</p>"
                             });
-                            // alert("Los datos fueron ingresados correctamente");
+                       
                              var url = Routing.generate('entrada_index');
                              window.open(url, '_self');
             
 
-                            //return $this->redirect($this->generateUrl('entrada_index'));
 
                         }
                     });
@@ -326,10 +334,14 @@
                     GetAlert("Error", mensaje, "../recursos/imagenes/error.png", 4000);
                     
           
-                }                
+                } 
+ }else{
+        swal("Error!", "Todos los campos son requeridos.", "error");
+ }
+                  
             });
             
-            
+           
             
             
             //Para la edicion de los datos de la entrada del blog
@@ -509,7 +521,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Contenido de la entrada</label>
-                                                <textarea name="contenido" class="form-control" rows="3" placeholder="Ingrese el contenido de la entrada..."></textarea>
+                                                <textarea name="contenido" class="form-control" rows="3" placeholder="Ingrese el contenido de la entrada..." id="contenido"></textarea>
                                             </div>
 
                                             <div class="form-group">
@@ -528,7 +540,7 @@
                                             </div>
                                                 <input id="file" type="file" name="file" required>
                                             <br>
-                                            <button type="submit" class="btn btn-primary btn-sm">Enviar</button>
+                                            <a  id="enviar" href="#" class="btn btn-primary btn-sm">Enviar</a>
                                             <button type="reset" class="btn btn-default btn-sm">Cancelar</button>
                                         </form>
                                     </div>
