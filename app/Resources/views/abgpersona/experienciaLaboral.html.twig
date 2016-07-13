@@ -289,7 +289,7 @@
                         </div>
                         {%endif%}
                         </form>
-                        <script  src="{{asset('Resources/AdminLTE-2.3.0/bootstrap/js/bootstrap.min.js')}}"></script>
+                        {#<script  src="{{asset('Resources/AdminLTE-2.3.0/bootstrap/js/bootstrap.min.js')}}"></script>#}
                         <script type="text/javascript">
 
                     $('#ScambioEmpresa').select2({
@@ -342,7 +342,7 @@
                         } else {
                             markup = "<div class='select2-result-repository clearfix'>" +
                                     "<div class='select2-result-repository__meta'>" +
-                                    "<div class='select2-result-repository__title'><a onclick='CambioEmp()'>+ Nueva empresa</a></div>" +
+                                  "<div class='select2-result-repository__title'><i class='fa fa-circle-o-notch fa-spin'></i> Buscando...</div>" +
                                     "</div></div>";
                         }
 
