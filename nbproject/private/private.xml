@@ -1,17 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>app/Resources/views/administracion/verificacionAbg.html.twig</url>
+            <bookmark id="1">
+                <name/>
+                <line>377</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/AbgFacturacionController.php</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/perfil.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgfacturacion/planPago.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/CtlEmpresaController.php</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/Resources/js/enviarDatos.js</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/AbgCobroController.php</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgfacturacion/pay.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/AbgPersonaController.php</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/datosGenerales.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/verificarmeAbg.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/ctlempresa/especialidades_emp.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Entity/AbgPersonaEspecialida.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/Layout/footer.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/Layout/layout2.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/config/security.yml</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/AbgPanelCentroRespuestaController.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/Resources/js/empresa/script.js</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/Resources/src/css/style.css</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Entity/AbgFoto.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/Resources/js/busquedaHome.js</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/Resources/js/url/urlpersonalizada.js</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/Layout/head.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Entity/AbgPersona.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/administracion/verificar.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/Layout/encabezado.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/directorio/directorio.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Service/EmailService.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/verificacion.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/panelcentropregabog/panelRespuestaPregunta.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Services/EmailService.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/blog/index.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Resources/views/Secured/login.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/DirectorioController.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/preyres/pregunta_detalle.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/ctlempresa/index.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/AbgPersonaController.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/Layout/headmovil.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/AbgCentroPreguntasController.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/ajustes.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Resources/views/Default/landing.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/Layout/nav2.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/AbgPreyResController.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/DefaultController.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/Layout/abogado_landing.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/ctlempresa/perfilEmpresa.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Services/EmailServiceRe.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/panelcentropregabog/panelrespuestacentro.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/ctlempresa/gestionempresa.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Service/EmailResService.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Resources/views/Default/home.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/administracion/verificacionAbg.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/CtlEmpresaController.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/enviopregsuccess/success.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/perfilPublico.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/ctlempresa/paneladministrativoempresa.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/SecuredController.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/Resources/js/busquedaPregunta.js</file>
         </group>
     </open-files>
 </project-private>

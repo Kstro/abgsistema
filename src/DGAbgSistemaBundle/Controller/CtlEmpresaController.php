@@ -1076,11 +1076,13 @@ class CtlEmpresaController extends Controller {
 
                     $direccion = $src[0]->getSrc();
 
+                    
                     $direccion = str_replace("\\", "", $direccion);
                     $direccion = str_replace("Photos/Perfil/", "", $direccion);
+                    //echo $direccion;
+                    if ($direccion != "" && ($direccion != 'Photos/defecto/defectoH.png' && $direccion != 'Photos/defecto/defectoM.png' )) {
 
-                    if ($direccion != "" && $direccion != 'Photos/defecto/defecto.png') {
-
+                        
                         $eliminacionRegistroExixtente = unlink($path1 . $direccion);
 
                         if ($eliminacionRegistroExixtente) {
@@ -2314,15 +2316,17 @@ class CtlEmpresaController extends Controller {
             $Persona->setCtlCiudad($Ciudad);
             $Persona->setGenero($request->get('genero'));
 
-           $abgFoto = $em->getRepository("DGAbgSistemaBundle:AbgFoto")->findBy(array('abgPersona' => $Persona->getId(), 'tipoFoto' => 0));
-
-            if ($request->get('genero') == 'M') {
-                $abgFoto->setSrc('Photos/defecto/defectoM.png');
-            } else {
-                $abgFoto->setSrc('Photos/defecto/defectoH.png');
+            $abgFoto = $em->getRepository("DGAbgSistemaBundle:AbgFoto")->findBy(array('abgPersona'=>$Persona->getId(),'tipoFoto'=>0));
+            
+            
+            if($request->get('genero')=='M'){
+                $abgFoto[0]->setSrc('Photos/defecto/defectoH.png');
             }
-
-            $em->merge($abgFoto);
+            else{
+                $abgFoto[0]->setSrc('Photos/defecto/defectoM.png');
+            }
+            
+            $em->merge($abgFoto[0]);
             $em->flush();
 
             $em->merge($Persona);
