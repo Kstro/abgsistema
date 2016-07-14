@@ -21,7 +21,7 @@
 
         <!-- bootstrap -->
         <script src="{{ asset('Resources/src/js/jquery-2.0.3.min.js')}}"></script>
-           <script  src="{{asset('Resources/src/js/bootstrap.js')}}"></script>
+        <script  src="{{asset('Resources/src/js/bootstrap.js')}}"></script>
 
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -185,7 +185,7 @@
 
 
             <script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
-         
+
             <script type="text/javascript">
                                                     var Especialida = [];
                                                     var DataEspecialida = [];
@@ -301,53 +301,53 @@
                                                     var conta = 0;
 
                                                     $(document).on('click', '#enviar', function () {
-                                                  
+
 
                                                         if (parseInt(DataEspecialida.length) > 0)
                                                         {
                                                             if ($("#txtnombre").val() !== "" && $("#txtapellido").val() !== "" && ($("#Smunicipio").val() !== "") && ($("#Stitulo").val() !== "") && ($('input:radio[name=rGenero]:checked').val() !== undefined))
                                                             {
-                                                                 $("#enviar").prop("disabled", true);
-                                                          //      $("#fgeneral").submit(
-                                                            //            function (event) {
-                                                                       //     $("#enviar").button('loading');
-                                                                           
+                                                                     $("#fgeneral").submit(
+                                                                           function (event) {
+                                                                //     $("#enviar").button('loading');
+                                                                $("#enviar").prop("disabled", true);
+                                                                $.ajax({
+                                                                    type: "POST",
+                                                                    async: false,
+                                                                    dataType: 'json',
+                                                                    url: Routing.generate('informacion_general'),
+                                                                    data: {datos: $("#fgeneral").serialize(), esp: DataEspecialida, genero: $('input:radio[name=rGenero]:checked').val(), codigo: $('input#hcodigo').val()},
+                                                                    success: function (data)
+                                                                    {
 
-                                                                            $.ajax({
-                                                                                type: "POST",
-                                                                                async: false,
-                                                                                dataType: 'json',
-                                                                                url: Routing.generate('informacion_general'),
-                                                                                data: {datos: $("#fgeneral").serialize(), esp: DataEspecialida, genero: $('input:radio[name=rGenero]:checked').val(), codigo: $('input#hcodigo').val()},
-                                                                                success: function (data)
-                                                                                {
-
-                                                                                    if (data.msj !== "") {
-                                                                                        Lobibox.notify("success", {
-                                                                                            size: 'mini',
-                                                                                            msg: "<p>" + data.msj + "</p>"
-                                                                                        });
-                                                                                        var url = Routing.generate('perfil');
-                                                                                        window.open(url, "_self");
-                                                                               
-
-                                                                                    } else if (data.error !== "") {
-                                                                                        Lobibox.notify("warning", {
-                                                                                            size: 'mini',
-                                                                                            msg: "<p>" + data.error + "</p>"
-                                                                                        });
-                                                                                    }
-                                                                                    $("#enviar").prop("disabled", false);
-                                                                            
-                                                                                },
-                                                                                error: function (errors)
-                                                                                {
-
-                                                                                }
+                                                                        if (data.msj !== "") {
+                                                                            Lobibox.notify("success", {
+                                                                                size: 'mini',
+                                                                                msg: "<p>" + data.msj + "</p>"
                                                                             });
-                                                                      //      event.preventDefault();
-                                                                     //   });
+                                                                            var url = Routing.generate('perfil');
+                                                                            window.open(url, "_self");
+                                                                                $("#enviar").prop("disabled", false);
+                                                                        } else if (data.error !== "") {
+                                                                            Lobibox.notify("warning", {
+                                                                                size: 'mini',
+                                                                                msg: "<p>" + data.error + "</p>"
+                                                                            });
+                                                                                $("#enviar").prop("disabled", false);
+                                                                        }
+                                                                    
+
+                                                                    },
+                                                                    error: function (errors)
+                                                                    {
+
+                                                                    }
+                                                                });
+                                                                   event.preventDefault();
+                                                                   });
+
                                                             }
+
                                                         } else {
 
                                                             Lobibox.notify("warning", {
