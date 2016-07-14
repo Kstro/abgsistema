@@ -323,18 +323,37 @@ class AdmPromocionesController extends Controller
             }
             
             if($suscripciones != NULL && $servicio != 'Espacio publicitario') {
-                $fechaSuscripcion = $suscripciones[0]->getFechaPago()->format('Y-m-j');
-                
-                $aux = strtotime ('+'. $plazo .' day', strtotime ($fechaSuscripcion));
-                $fechaVencimiento = date ( 'Y-m-j' , $aux );
-                
-                $facturacion->setFechaRegistro($suscripciones[0]->getFechaPago());
-                $facturacion->setFechaPago(new \DateTime ($fechaVencimiento));
-                $facturacion->setPlazo($plazo);                                
+                $fechaActual = new \DateTime ('now');
+                if($suscripciones[0]->getFechaPago() > $fechaActual && $suscripciones[0]->getFechaPago() != NULL){
+                    $fechaSuscripcion = date('Y-m-j');
+                    
+                    //$fechaSuscripcion = $suscripciones[0]->getFechaPago()->format('Y-m-j');
+                    $aux = strtotime ('+'. $plazo .' day', strtotime ($fechaSuscripcion));
+                    $fechaVencimiento = date ( 'Y-m-j' , $aux );
+
+                    $facturacion->setFechaRegistro($fechaActual);
+                    $facturacion->setFechaPago(new \DateTime ($fechaVencimiento));   
+                    
+                    $exito = '1';
+                } elseif ($suscripciones[0]->getFechaPago() != NULL) {                
+                    $fechaSuscripcion = $suscripciones[0]->getFechaPago()->format('Y-m-j');
+                    $aux = strtotime ('+'. $plazo .' day', strtotime ($fechaSuscripcion));
+                    $fechaVencimiento = date ( 'Y-m-j' , $aux );
+
+                    $facturacion->setFechaRegistro($suscripciones[0]->getFechaPago());
+                    $facturacion->setFechaPago(new \DateTime ($fechaVencimiento));       
+                    
+                    $exito = '1';
+                } else {
+                    $exito = '0';
+                }                                
+                $facturacion->setPlazo($plazo);
             } else {
                 $facturacion->setFechaRegistro(new \DateTime ('now'));
                 $facturacion->setFechaPago($fechafin);
-                $facturacion->setPlazo($plazo);    
+                $facturacion->setPlazo($plazo);  
+                
+                $exito = '1';
             }            
             
             $facturacion->setAbgTipoPago($tipopago);
@@ -351,7 +370,7 @@ class AdmPromocionesController extends Controller
                 
             $response = new JsonResponse();
             $response->setData(array(
-                                  'exito'   => '1',
+                                  'exito'   => $exito,
                                   'imagen'  => $nombreSERVER,
                                ));  
             
