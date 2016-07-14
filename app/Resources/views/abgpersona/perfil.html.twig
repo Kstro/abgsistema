@@ -203,16 +203,17 @@
     <div id="editarPerfil"> 
 
        {# aprobado==1 #}
+       {#{plazo}#}
           {%if((plazo>0 and plazo<5) and (tipopago==1 or tipopago==2 or tipopago==5) )%}
-              <div class="alert alert-danger" style=" margin: 10px;">
-                    <strong>Aviso!</strong>Suscribete por $10 | {{plazo}}
+              <div class="alert alert-danger sans" style="margin: 10px; padding:10px;">
+                    <strong>Aviso! </strong>Tu suscripción esta por finalizar $9.99 | {{plazo}}
                     <div class="btn-group">
-                        <a href="{{ path('planpago', { 'id':codigo})}}" class=" btn btn-flat btn-primary btn-sm"><span>Suscribir</span></a>
+                        <a href="{{ path('planpago', { 'id':codigo})}}" class=" btn btn-flat btn-sm" style=" background-color: #800;"><span>Suscribir</span></a>
                     </div>
                 </div> 
             {%endif%}
        
-      
+
  
         <div class="row" style=" margin-left:15px; margin-right:15px; ">
             <div class="box box-widget">

@@ -31,8 +31,7 @@
             <link href="{{asset('Resources/src/css/style.css')}}" rel="stylesheet">
 
             <!-- Favicon (Icono Pequeño) -->
-            <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
-            <link rel="icon" href="favicon.png" type="image/x-icon">
+            
             
 
 
@@ -50,6 +49,11 @@
                             }
                 </style>
             {% endblock%}
+            
+            <!-- Favicon (Icono Pequeño) -->
+            <link rel="shortcut icon" href="{{asset('Photos/favicon.png')}}" type="image/x-icon">
+            <link rel="icon" href="{{asset('Photos/favicon.png')}}" type="image/x-icon">
+            
         {% endblock%}
     </head>
     <!-- ADD THE CLASS layout-boxed TO GET A BOXED LAYOUT -->

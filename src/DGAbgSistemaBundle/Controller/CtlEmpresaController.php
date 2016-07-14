@@ -344,32 +344,30 @@ class CtlEmpresaController extends Controller {
             $em->getConnection()->beginTransaction();
 
             parse_str($request->get('dato'), $datos);
-             $idFacebook=0;
-            if (count($datos)!=0){
-                
-                
-            $contrasenha = $datos['contrasenha'];
-            $nombreAbogado = $datos['txtnombre'];
-            $apellidoAbogado = $datos['txtapellido'];
-            $correoUsuario = $datos['correoEmpresa'];
+            $idFacebook = 0;
+            if (count($datos) != 0) {
 
-            }else{
-               
-            
+
+                $contrasenha = $datos['contrasenha'];
+                $nombreAbogado = $datos['txtnombre'];
+                $apellidoAbogado = $datos['txtapellido'];
+                $correoUsuario = $datos['correoEmpresa'];
+            } else {
+
+
                 $isAjax = $this->get('Request')->isXMLhttpRequest();
-                   if ($isAjax) {
-                        $idFacebook = $request->get("contrasenhaFacebook");
-                        $correoUsuario = $request->get("correoFeacebook");
-                        $nombreAbogado = $request->get("nombres");
-                        $apellidoAbogado = $request->get("apellido");
-                        $contrasenha = $request->get("contrasenhaFacebook");
-                        
-                   }
-        }
-                
-        
-            
-              /* $isAjax = $this->get('Request')->isXMLhttpRequest();
+                if ($isAjax) {
+                    $idFacebook = $request->get("contrasenhaFacebook");
+                    $correoUsuario = $request->get("correoFeacebook");
+                    $nombreAbogado = $request->get("nombres");
+                    $apellidoAbogado = $request->get("apellido");
+                    $contrasenha = $request->get("contrasenhaFacebook");
+                }
+            }
+
+
+
+            /* $isAjax = $this->get('Request')->isXMLhttpRequest();
               if ($isAjax) {
               $em = $this->getDoctrine()->getManager();
               $datos = $this->get('request')->request->get('frm');
@@ -453,7 +451,7 @@ class CtlEmpresaController extends Controller {
             $var_md5 = md5($zonahoraria);
 
             $ctlUsuario->setUsername($correoUsuario);
-            
+
             $ctlUsuario->setEstado(0);
             $ctlUsuario->setRhPersona($idPersona);
             $ctlUsuario->setCtlEmpresa($idEmpresa);
@@ -462,13 +460,13 @@ class CtlEmpresaController extends Controller {
 
             $ctlUsuario->setCodigoConfirmar($var_md5);
             $ctlUsuario->setNotificacion(1);
-            
+
             //Se setea los valores de id de facebook
-            if ($idFacebook!=0){
-                 $ctlUsuario->setIdFacebook($idFacebook);
+            if ($idFacebook != 0) {
+                $ctlUsuario->setIdFacebook($idFacebook);
             }
-            
-            
+
+
 
             if ($request->get('id')) {
                 $ctlUsuario->setIdFacebook($request->get('id'));
@@ -481,19 +479,19 @@ class CtlEmpresaController extends Controller {
             $em->flush();
 
             // Suscripcion Gratis
-       /*     $abgFacturacion = new AbgFacturacion();
-            $date = new \DateTime("now");
-            $fechaPago = date_add($date, date_interval_create_from_date_string('30 days'));
-            $abgFacturacion->setAbgPersona($idPersona);
-            $abgFacturacion->setAbgTipoPago(null);
-            $abgFacturacion->setFechaPago($fechaPago);
-            $abgFacturacion->setIdUser(null);
-            $abgFacturacion->setMonto(00.00);
-            $abgFacturacion->setPlazo(30);
-            $abgFacturacion->setServicio('Trial');
-            $abgFacturacion->setDescripcion('30 dias de prueba');
-            $em->persist($abgFacturacion);
-            $em->flush();*/
+            /*     $abgFacturacion = new AbgFacturacion();
+              $date = new \DateTime("now");
+              $fechaPago = date_add($date, date_interval_create_from_date_string('30 days'));
+              $abgFacturacion->setAbgPersona($idPersona);
+              $abgFacturacion->setAbgTipoPago(null);
+              $abgFacturacion->setFechaPago($fechaPago);
+              $abgFacturacion->setIdUser(null);
+              $abgFacturacion->setMonto(00.00);
+              $abgFacturacion->setPlazo(30);
+              $abgFacturacion->setServicio('Trial');
+              $abgFacturacion->setDescripcion('30 dias de prueba');
+              $em->persist($abgFacturacion);
+              $em->flush(); */
 
             // Autenticando al usuario que se acaba de registrar
             $this->authenticateUser($ctlUsuario);
@@ -567,12 +565,12 @@ class CtlEmpresaController extends Controller {
             $em->getConnection()->commit();
             $em->close();
             $data['username'] = $ctlUsuario->getUsername();
-            
-            if ($idFacebook!=0){
+
+            if ($idFacebook != 0) {
                 $data['estado'] = true;
-                $data['md5']=$var_md5;
-                }else{
-                  $data['estado'] = true;
+                $data['md5'] = $var_md5;
+            } else {
+                $data['estado'] = true;
                 $this->get('new_usuario')->sendEmail($correoUsuario, "", "", "", "
                     <table style=\"width: 540px; margin: 0 auto;\">
                       <tr>
@@ -590,8 +588,8 @@ class CtlEmpresaController extends Controller {
                     </table>
                 ");
 
-            $session = new Session();
-            $session->invalidate();
+                $session = new Session();
+                $session->invalidate();
             }
             return new Response(json_encode($data));
             /* } else {
@@ -617,25 +615,24 @@ class CtlEmpresaController extends Controller {
         $request = $this->getRequest();
         parse_str($request->get('dato'), $datos);
         $em = $this->getDoctrine()->getManager();
-        
-        
-        
-        if (count($datos)!=0){
+
+
+
+        if (count($datos) != 0) {
             $correo = $datos['correoEmpresa'];
-        }
-        else{
-            
-                $isAjax = $this->get('Request')->isXMLhttpRequest();
-                   if ($isAjax) {
-                       
-                        $correo = $request->get("correoFeacebook");
-                   }
+        } else {
+
+            $isAjax = $this->get('Request')->isXMLhttpRequest();
+            if ($isAjax) {
+
+                $correo = $request->get("correoFeacebook");
+            }
         }
 
         try {
             ///   if ($request->get('id')) {
             ///     $contrasenha = $request->get('id');
-            
+
 
             $dqlEmp = "SELECT COUNT(emp.id) AS res FROM DGAbgSistemaBundle:CtlEmpresa emp WHERE"
                     . " emp.correoelectronico = :correo ";
@@ -1079,11 +1076,13 @@ class CtlEmpresaController extends Controller {
 
                     $direccion = $src[0]->getSrc();
 
+                    
                     $direccion = str_replace("\\", "", $direccion);
                     $direccion = str_replace("Photos/Perfil/", "", $direccion);
+                    //echo $direccion;
+                    if ($direccion != "" && ($direccion != 'Photos/defecto/defectoH.png' && $direccion != 'Photos/defecto/defectoM.png' )) {
 
-                    if ($direccion != "" && $direccion != 'Photos/defecto/defecto.png') {
-
+                        
                         $eliminacionRegistroExixtente = unlink($path1 . $direccion);
 
                         if ($eliminacionRegistroExixtente) {
@@ -1268,9 +1267,9 @@ class CtlEmpresaController extends Controller {
             $username = $this->container->get('security.context')->getToken()->getUser();
             $abgPersonaId = $username->getRhPersona();
 
-            
+
             $entity = $em->getRepository('DGAbgSistemaBundle:AbgUrlPersonalizada')->findBy(array("abgPersona" => $abgPersonaId, "estado" => 1));
-            
+
             $entity[0]->setEstado(0);
             $em->merge($entity[0]);
             $em->flush();
@@ -1767,7 +1766,7 @@ class CtlEmpresaController extends Controller {
                             . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
                     $result_persona = $em->createQuery($dql_persona)->getArrayResult();
                     $Usuario = $em->getRepository("DGAbgSistemaBundle:CtlUsuario")->findByRhPersona($idPersona);
-                   $Uestado= $Usuario[0]->getEstado();
+                    $Uestado = $Usuario[0]->getEstado();
 
                     if (($result_persona[0]['estado'] == 1 ) || ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN'))) {
                         $dql_ciudad = "SELECT c.nombreCiudad As nombre, es.nombreEstado estado"
@@ -1882,29 +1881,22 @@ class CtlEmpresaController extends Controller {
                                     'prom1' => $prom,
                                     'prom2' => $prom2,
                                     'prom3' => $prom3,
-                                    'Uestado'=>$Uestado
+                                    'Uestado' => $Uestado
                                         //'prom4'   => $prom4
                         ));
-                        } 
-                        elseif ($result_persona[0]['estado'] == 2) 
-                        {
+                    } elseif ($result_persona[0]['estado'] == 2) {
                         $msj = " Perfil oculto";
                         $msj2 = "El abogado que intenta contactar tiene el perfil oculto, por lo que en estos momentos no es posible ver su perfil.";
                         return $this->render('abgpersona/error.html.twig', array('msj' => $msj, 'msj2' => $msj2));
-                    }
-                        elseif ($result_persona[0]['estado'] == 3) 
-                        {
-                         $msj = " Perfil oculto";
+                    } elseif ($result_persona[0]['estado'] == 3) {
+                        $msj = " Perfil oculto";
                         $msj2 = "El abogado que intenta contactar tiene el perfil oculto, por lo que en estos momentos no es posible ver su perfil.";
                         return $this->render('abgpersona/error.html.twig', array('msj' => $msj, 'msj2' => $msj2));
-                    }
-                    elseif ($result_persona[0]['estado'] == 4) 
-                        {
+                    } elseif ($result_persona[0]['estado'] == 4) {
                         $msj = " El abogado ya no existe";
                         $msj2 = "El abogado que intenta contactar tiene el perfil oculto, por lo que en estos momentos no es posible ver su perfil.";
                         return $this->render('abgpersona/error.html.twig', array('msj' => $msj, 'msj2' => $msj2));
-                    }
-                    elseif ($result_persona[0]['estado'] == 0) {
+                    } elseif ($result_persona[0]['estado'] == 0) {
                         $msj = " Perfil oculto";
                         $msj2 = "El abogado que intenta contactar tiene el perfil oculto, por lo que en estos momentos no es posible ver su perfil.";
                         return $this->render('abgpersona/error.html.twig', array('msj' => $msj, 'msj2' => $msj2));
@@ -2025,7 +2017,7 @@ class CtlEmpresaController extends Controller {
                 $extension = explode('/', $tipo);
                 $nombreimagen2.="." . $extension[1];
                 $fecha = date('Y-m-dHis');
-                $nombreArchivo = $nombreimagen . "-" . $fecha . $nombreimagen2;                
+                $nombreArchivo = $nombreimagen . "-" . $fecha . $nombreimagen2;
                 $nombreSERVER = "solicitud_verificacion_" . $fecha . $nombreimagen2;
 
                 $resultados = move_uploaded_file($_FILES["imagen"]["tmp_name"], $path2 . $nombreSERVER);
@@ -2037,7 +2029,7 @@ class CtlEmpresaController extends Controller {
 
                     $path = "Photos/verificacion/";
                     $nombreBASE = $path . "solicitud_verificacion_" . $fecha . $nombreimagen2;
-                                        
+
                     $AbgFoto->setAbgPersona($Persona);
                     $AbgFoto->setTipoFoto(5);
                     $AbgFoto->setCtlEmpresa(null);
@@ -2159,9 +2151,9 @@ class CtlEmpresaController extends Controller {
      */
     public function ConfirmarAction(Request $request) {
         try {
-       
+
             if ($request->get('id') !== null) {
-                $codigo=$request->get('id');
+                $codigo = $request->get('id');
                 $em = $this->getDoctrine()->getManager();
                 $ctlUsuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByCodigoConfirmar($request->get('id'));
 
@@ -2176,12 +2168,12 @@ class CtlEmpresaController extends Controller {
                         return $this->redirect($this->generateUrl('abogado_login'));
                         //return $this->render('DGAbgSistemaBundle:Secured:login.html.twig');
                     } else {
-                      
-                       
-         $ctlUsuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->find($username);
-            $ctlUsuario->setEstado(1);
-            $em->merge($ctlUsuario);
-            $em->flush();
+
+
+                        $ctlUsuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->find($username);
+                        $ctlUsuario->setEstado(1);
+                        $em->merge($ctlUsuario);
+                        $em->flush();
                         $sqlRol = "SELECT  r.id As id, r.rol As rol"
                                 . " FROM  ctl_rol_usuario ru "
                                 . " JOIN ctl_rol r ON r.id=ru.ctl_rol_id AND ru.ctl_usuario_id=" . $username;
@@ -2216,7 +2208,7 @@ class CtlEmpresaController extends Controller {
                                     'depto' => $depto,
                                     'abgFoto' => $result_foto,
                                     'especialida' => $result_especialida,
-                            'codigo'=> $codigo
+                                    'codigo' => $codigo
                         ));
                     }
                 } else {
@@ -2243,7 +2235,8 @@ class CtlEmpresaController extends Controller {
             return new Response(json_encode($data));
         }
     }
-/**
+
+    /**
      * @Route("/departamento/data_dept", name="departamento", options={"expose"=true})
      * @Method("GET")
      */
@@ -2280,38 +2273,36 @@ class CtlEmpresaController extends Controller {
             return new Response(json_encode($data));
         }
     }
-    
-      /**
+
+    /**
      * @Route("/informacion_general/data/info", name="informacion_general", options={"expose"=true})
      * @Method("POST")
      */
     public function InformacionGeneralAction() {
         try {
-               
+
             $em = $this->getDoctrine()->getManager();
             $em->getConnection()->beginTransaction();
             $request = $this->getRequest();
-        
-                      $ctlUsuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByCodigoConfirmar(trim($request->get('codigo')));
-                 
+
+            $ctlUsuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByCodigoConfirmar(trim($request->get('codigo')));
+
             $this->authenticateUser($ctlUsuario[0]);
             parse_str($request->get('datos'), $datos);
-       
-            
+        
             $array = $request->get('esp');
-   
-            
+
+
             $data['msj'] = "";
 
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $username = $this->container->get('security.context')->getToken()->getUser()->getId();
-       
+
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($idPersona);
             $Ciudad = $em->getRepository("DGAbgSistemaBundle:CtlCiudad")->find($datos['Smunicipio']);
-             $Usuario = $this->container->get('security.context')->getToken()->getUser();
-            
-             
-                 $data['codigo'] = $Usuario->getCodigoConfirmar();
+            $Usuario = $this->container->get('security.context')->getToken()->getUser();
+
+            $data['codigo'] = $Usuario->getCodigoConfirmar();
             // Confirma el correo
 
             $ctlUsuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->find($username);
@@ -2329,15 +2320,15 @@ class CtlEmpresaController extends Controller {
             
             
             if($request->get('genero')=='M'){
-                $abgFoto[0]->setSrc('Photos/defecto/defectoM.png');
-            }
-            else{
                 $abgFoto[0]->setSrc('Photos/defecto/defectoH.png');
             }
+            else{
+                $abgFoto[0]->setSrc('Photos/defecto/defectoM.png');
+            }
             
-            $em->merge($abgFoto);
+            $em->merge($abgFoto[0]);
             $em->flush();
-            
+
             $em->merge($Persona);
             $em->flush();
 
@@ -2359,64 +2350,79 @@ class CtlEmpresaController extends Controller {
                 
             } else {
                 foreach ($array as $obj) {
-                     
-          
+
+
                     $PersonaEspecialidad = new AbgPersonaEspecialida();
                     $idSub = $em->getRepository("DGAbgSistemaBundle:CtlEspecialidad")->find(intval($obj['0']));
                     $PersonaEspecialidad->setAbgPersona($Persona);
                     $PersonaEspecialidad->setCtlEspecialidad($idSub);
-                   $em->persist($PersonaEspecialidad);
-                 $em->flush();
+                    $em->persist($PersonaEspecialidad);
+                    $em->flush();
                 }
-             
             }
+            
+            $abgFacturacionTrial = new AbgFacturacion();
+            $tipo_pago = $em->getRepository("DGAbgSistemaBundle:CtlTipoPago")->find(5);
+            $fechaPago = date_add($date, date_interval_create_from_date_string('14 days'));
+            $abgFacturacionTrial->setAbgPersona($Persona);
+            $abgFacturacionTrial->setIdUser(null);
+            $abgFacturacionTrial->setFechaRegistro(new \DateTime("now"));
+            $abgFacturacionTrial->setFechaPago($fechaPago);
+            $abgFacturacionTrial->setAbgTipoPago($tipo_pago);
+            $abgFacturacionTrial->setMonto(00.00);
+            $abgFacturacionTrial->setPlazo(14);
+            $abgFacturacionTrial->setServicio('Bienvenida');
+            $abgFacturacionTrial->setDescripcion('Directorio de abogados de El Salvador te regala 14 dias de bienvenida por la suscripcion dentro del periodo de ..');
+            $abgFacturacionTrial->setComprobante(null);
+            $abgFacturacionTrial->setAprobado(1);
+            $em->persist($abgFacturacionTrial);
+            $em->flush();
+
+
+
             $em->getConnection()->commit();
             $em->close();
             $data['msj'] = "Datos actualizados.";
-            
+            $data['metodo'] =$datos['rMetodo'];
+
             return new Response(json_encode($data));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage();
             echo $e->getMessage();
-          //  var_dump( $e->getMessage());
-          //  exit();
+            //  var_dump( $e->getMessage());
+            //  exit();
             $em->getConnection()->rollback();
             $em->close();
             return new Response(json_encode($data));
         }
     }
-    
-     
-    
-      /**
+
+    /**
      * @Route("/data/login/usuarioFacebook/", name="login_usuario_data", options={"expose"=true})
      * @Method("POST")
      */
     public function LoginUsuarioFacebookAction() {
         try {
             $isAjax = $this->get('Request')->isXMLhttpRequest();
-              if ($isAjax) {
+            if ($isAjax) {
 
-                    $request = $this->getRequest();
-                    $em = $this->getDoctrine()->getManager();
-                    
-                    $correoUsuario = $request->get("correoFeacebook");
-                    
-                    $ctlUsuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($correoUsuario);
-                    
-                    $this->authenticateUser($ctlUsuario[0]);
+                $request = $this->getRequest();
+                $em = $this->getDoctrine()->getManager();
 
-                    if ($ctlUsuario[0]->getId()!=""){
-                        
-                        $data['estado']=true;
-                        
-                    }else{
-                          $data['estado']=false;
-                    }
-     
+                $correoUsuario = $request->get("correoFeacebook");
 
-             }
-            
+                $ctlUsuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername($correoUsuario);
+
+                $this->authenticateUser($ctlUsuario[0]);
+
+                if ($ctlUsuario[0]->getId() != "") {
+
+                    $data['estado'] = true;
+                } else {
+                    $data['estado'] = false;
+                }
+            }
+
             return new Response(json_encode($data));
         } catch (\Exception $e) {
 
@@ -2424,37 +2430,33 @@ class CtlEmpresaController extends Controller {
             return new Response(json_encode($data));
         }
     }
-   
-    
-     /**
+
+    /**
      * @Route("/validacion/permiso/login/facebook/data", name="validacion_permiso_login_facebook", options={"expose"=true})
      * @Method("POST")
      */
     public function PermisoFacebookAction() {
         try {
             $isAjax = $this->get('Request')->isXMLhttpRequest();
-              if ($isAjax) {
+            if ($isAjax) {
 
-                    $request = $this->getRequest();
-                    $em = $this->getDoctrine()->getManager();
-                    
-                 $idFacebook = $request->get("contrasenhaFacebook");
-                 
-                 
-                 $ctlUsuario = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByIdFacebook($idFacebook);
-                   
-                  $numero = count($ctlUsuario);
-                   if ($numero!=0){
-                        
-                        $data['estado']=true;
-                        
-                    }else{
-                          $data['estado']=false;
-                    }
-                    
+                $request = $this->getRequest();
+                $em = $this->getDoctrine()->getManager();
 
-             }
-            
+                $idFacebook = $request->get("contrasenhaFacebook");
+
+
+                $ctlUsuario = $this->getDoctrine()->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByIdFacebook($idFacebook);
+
+                $numero = count($ctlUsuario);
+                if ($numero != 0) {
+
+                    $data['estado'] = true;
+                } else {
+                    $data['estado'] = false;
+                }
+            }
+
             return new Response(json_encode($data));
         } catch (\Exception $e) {
 
@@ -2462,9 +2464,5 @@ class CtlEmpresaController extends Controller {
             return new Response(json_encode($data));
         }
     }
-    
-    
-    
-    
-    
+
 }

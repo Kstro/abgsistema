@@ -1,0 +1,291 @@
+
+{% block navegacion_Y_body %}
+    {% block navegacion %}
+
+    {% endblock %}
+    {% block cuerpo %}
+
+   
+        <div class="row" style=" margin-left:0px; margin-right:0px;">
+            <section class="col-lg-12 connectedSortable ui-sortable">
+                <div class="nav-tabs-custom" style="cursor: move;">
+                    <ul class="nav nav-tabs  ui-sortable-handle">
+                        <li class="active"><a href="#pagosPendientes" data-toggle="tab">Pagos pendientes</a></li>
+                        <li class=""><a href="#pagosAprobados" data-toggle="tab">Pagos aprobados</a></li>
+                    
+                        <li class="pull-left header">
+                    </ul>
+                    <div class="tab-content no-padding">
+
+                        <div class="chart tab-pane active" id="pagosPendientes" >
+                            <br>
+                            <div style=" padding: 15px;" >
+                                <form action="#" method="post">
+                                    <div id="divLista" style="min-height:175px;">
+                                        
+                                            <div class="form-group table-responsive mailbox-messages" id="contenedor">
+                                                <table id="tablaPendientes" class="table table-hover table-striped no-margin" style="font-size:13px;" >
+                                                    <thead>
+                                                        <tr style=" font-size: 15px; border: 1px solid #F4F4F4;" >
+                                                                <th width="5%">Código</th>
+                                                                <th width="30%">Nombre del abogado</th>
+                                                                <th width="15%" >Monto ($)</th>
+                                                                <th width="15%">Plazo (días)</th>    
+                                                                <th  width="12%" >Tipo pago</th>            
+                                                                <th width="10%">Servicio</th>
+                                                                <th width="13%">Link</th>
+                                                        </tr>
+                                                    </thead>
+                                                    {#<tbody style="min-height: 350px;" id="idtbody">
+                                                        {% for datos in abogados %}
+                                                            <tr style=" font-size: 15px" >
+                                                                <td width="5%"><a href="{{path('busquedaPerfil', {url:datos.url})}}" >{{datos.codigo}}</a></td>
+                                                                <td width="30%">{{datos.nombre}}</a></td>
+                                                                <td width="15%" > {{datos.fecha}}</td>
+                                                                 <td width="15%"> {{datos.servicio}}</td>    
+                                                                 <td  width="12%" > {{datos.plazo}} Dias</td>            
+                                                                 <td width="10%"> {{datos.fechaPago}}</td>
+                                                                 <td width="13%"> {%if(datos.caducidad<0)%}<span class="label label-danger" style=" font-size: 12px;">Finalizado</span>{%elseif(datos.caducidad==0)%}<span class="label label-warning" style=" font-size: 12px">Hoy</span>{%else%}<span class="label label-success" style=" font-size: 12px">{{datos.caducidad}} Dias</span>{%endif%}</td>
+                                                           
+                                                            </tr>
+                                                        {%endfor%}
+                                                    </tbody>#}                   
+                                                </table>
+                                            </div>
+                                        
+                                                            </div>
+                                                            
+                                                            </form>
+                                                            </div>
+
+                                                            </div>
+                                            <div class="chart tab-pane" id="pagosAprobados" style=" padding: 15px;" >
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            <table id="tablaAprobados" class="table table-hover table-striped no-margin" style="font-size:13px;width:100%;" >
+                                                                <thead>
+                                                                    <tr style=" font-size: 15px; border: 1px solid #F4F4F4;" >
+                                                                            <th >Código</th>
+                                                                            <th >Nombre del abogado</th>
+                                                                            <th >Monto ($)</th>
+                                                                            <th >Plazo (días)</th>    
+                                                                            <th >Tipo pago</th>            
+                                                                            <th >Servicio</th>
+{#                                                                            <th width="13%">Link</th>#}
+                                                                    </tr>
+                                                                </thead>
+                                                                {#<tbody style="min-height: 350px;" id="idtbody">
+                                                                    {% for datos in abogados %}
+                                                                        <tr style=" font-size: 15px" >
+                                                                            <td width="5%"><a href="{{path('busquedaPerfil', {url:datos.url})}}" >{{datos.codigo}}</a></td>
+                                                                            <td width="30%">{{datos.nombre}}</a></td>
+                                                                            <td width="15%" > {{datos.fecha}}</td>
+                                                                             <td width="15%"> {{datos.servicio}}</td>    
+                                                                             <td  width="12%" > {{datos.plazo}} Dias</td>            
+                                                                             <td width="10%"> {{datos.fechaPago}}</td>
+                                                                             <td width="13%"> {%if(datos.caducidad<0)%}<span class="label label-danger" style=" font-size: 12px;">Finalizado</span>{%elseif(datos.caducidad==0)%}<span class="label label-warning" style=" font-size: 12px">Hoy</span>{%else%}<span class="label label-success" style=" font-size: 12px">{{datos.caducidad}} Dias</span>{%endif%}</td>
+
+                                                                        </tr>
+                                                                    {%endfor%}
+                                                                </tbody>#}                   
+                                                            </table>
+
+                                                        </div>
+                                                    </div>   </div>
+                                                <div class="form-group table-responsive mailbox-messages" id="contVerificados">
+
+                                                </div>
+                                                <div  id="contNoVerificado">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                                            </div>
+                                                            </section>
+                                                            </div>
+                                                            <!-- ####################################################### -->
+                                                            
+                                                        {% endblock%}
+
+                                                    {% endblock%}
+
+
+
+
+    
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
+    <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
+    <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
+    <script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
+    <link href="{{asset('Resources/datatable/css/datatable2.css')}}" rel="stylesheet">
+    <script src="{{ asset('Resources/datatable/js/datatable.js') }}"></script>
+
+    
+    <link rel="stylesheet" href="{{ asset('Resources/swal/sweetalert2.min.css') }}">
+    <script src="{{ asset('Resources/swal/sweetalert2.min.js') }}"></script>
+    
+    <script>
+        $(document).ready(function(){
+            var url = Routing.generate('table_pagos_data');
+
+            var table = $('#tablaPendientes').DataTable({
+                        //searching:true,
+                        //"order":[[1,"desc"]],
+                        "dom": "tp",
+                        "processing": false,
+                        "serverSide": true,
+                        "ajax": {
+                            "url": url,
+                            {#"url": '{{path('admin_facturacion_data')}}',#}
+                            "type": 'GET'
+                        },
+                        "columns": [
+
+
+                            { "data": "codigo" },                       
+                            { "data": "nombre" },
+                            { "data": "monto" },
+                            { "data": "plazo" },
+                            { "data": "tipo_pago" },
+                            { "data": "servicio" },
+                            { "data": "link" }
+                        ],
+                            "columnDefs": [
+                                   { "orderable": false, "targets": 0 },
+                                   { "orderable": false, "targets": 2 },
+                                   { "orderable": false, "targets": 3 },
+                                   { "orderable": false, "targets": 4 },
+                                   { "orderable": false, "targets": 5 },
+                                   { "orderable": false, "targets": 6 }
+
+
+                                   //{ "orderData": [ 2, 3, 4 ], "targets": 2 }
+                            ],
+                        "language": {
+                        "info": "Mostrando página _PAGE_ de _PAGES_",
+                        "infoEmpty": "",
+                        "emptyTable": "No se encontraron registros",
+                        "paginate": { 
+                            "next": "Siguiente",
+                            "previous": "Anterior"
+                        },
+                        "processing": "Procesando petición...",
+                        "search": "Buscar registros:",
+                        "lengthMenu": "Mostrar _MENU_ registros"
+                    },   
+            });
+        
+            var url2 = Routing.generate('table_pagos_aprobados_data');
+            
+            var table2 = $('#tablaAprobados').DataTable({
+                        //searching:true,
+                        //"order":[[1,"desc"]],
+                        "dom": "tp",
+                        "processing": false,
+                        "serverSide": true,
+                        "ajax": {
+                            "url": url2,
+                            {#"url": '{{path('admin_facturacion_data')}}',#}
+                            "type": 'GET'
+                        },
+                        "columns": [
+
+
+                            { "data": "codigo" },                       
+                            { "data": "nombre" },
+                            { "data": "monto" },
+                            { "data": "plazo" },
+                            { "data": "tipo_pago" },
+                            { "data": "servicio"}{#,
+                            { "data": "link" }#}
+                        ],
+                            "columnDefs": [
+                                   { "orderable": false, "targets": 0 },
+                                   { "orderable": false, "targets": 2 },
+                                   { "orderable": false, "targets": 3 },
+                                   { "orderable": false, "targets": 4 },
+                                   { "orderable": false, "targets": 5 }{#,
+                                   { "orderable": false, "targets": 6 }#}
+
+
+                                   //{ "orderData": [ 2, 3, 4 ], "targets": 2 }
+                            ],
+                        "language": {
+                        "info": "Mostrando página _PAGE_ de _PAGES_",
+                        "infoEmpty": "",
+                        "emptyTable": "No se encontraron registros",
+                        "paginate": { 
+                            "next": "Siguiente",
+                            "previous": "Anterior"
+                        },
+                        "processing": "Procesando petición...",
+                        "search": "Buscar registros:",
+                        "lengthMenu": "Mostrar _MENU_ registros"
+                    },   
+            });
+        
+            
+            
+            
+            
+            $(document).on("click", ".pagoAprobado", function(){
+                //$('.close').click();
+                var id = $(this).attr('id');
+                
+                
+                
+                                        swal({
+                            title: "Esperando confirmación...",
+                            text: "¿Desea aprobar esta subscripción?",
+                            type: "info",
+                            showCancelButton: true,
+                            {#confirmButtonColor: "#1D234D",#}
+                            confirmButtonText: "Aceptar",
+                            cancelButtonText: "Cancelar",
+                            closeOnConfirm: false,
+                            closeOnCancel: false
+                        }).then(function(isConfirm) {
+                            if (isConfirm) {
+                                //console.log(result);
+                                $.ajax({
+                                    data:{id:id},
+                                    url:"{{path('aprobar_pago_abogado')}}",
+                                    type: "post",
+                                    success: function (data) {
+                                            //inicio = data.inicio++;
+                                            if(data!=0){
+                                                
+{#                                                bootbox.alert("Consulta registrada!", function() {});#}
+                                                {#alertify.success("Consulta registrada!");#}
+                                                swal('','¡Subscripción aprobada!','success');
+                                                table.ajax.reload();
+                                                table2.ajax.reload();
+                                                
+                                                
+                                                
+                                            }
+                                        },
+                                    error: function (data) {
+                                        
+                                        swal('','¡Ocurrió un error, intente de nuevo!','error');
+                                    }
+                                });
+                
+                            }
+                            });
+                
+                
+            });
+            
+            
+            
+        
+           
+        
+        
+        });
+    </script>
+    

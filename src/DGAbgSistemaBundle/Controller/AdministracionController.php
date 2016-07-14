@@ -443,4 +443,266 @@ class AdministracionController extends Controller {
 
         return "$tiempo $diferencia $intervalos[$j]";
     }
+    
+    
+    /**
+     * Lista de preguntas pendientes de Aprobacion 
+     *
+     * @Route("/pendientesaprobacion/lista/pago", name="lista_pagos_pendientes_aprobacion")
+     * @Method("GET")
+     */
+    public function listaPagosAprobacionAction() {
+        $em = $this->getDoctrine()->getManager();
+        
+        $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+
+        $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
+                . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.tituloProfesional AS tprofesional, p.verificado As verificado "
+                . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
+        $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+        $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
+
+        $dqlfoto = "SELECT fot.src as src "
+                . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
+        $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+        
+        //$preguntas = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->findBy(array('estado' => 2));
+        
+        return $this->render('administracion/panelPagos.html.twig', array(
+            /*'preguntas' => $preguntas,*/ 
+            'nombreCorto' => $nombreCorto, 
+            'abgFoto' => $result_foto, 
+            'usuario' => $idPersona,
+            'abgPersona' => $result_persona
+        ));
+    }
+    
+    
+    
+    
+    
+    //Recuperar los pagos no aprobados
+    /**
+     * 
+     *
+     * @Route("/facturacionData/table", name="table_pagos_data", options={"expose"=true})
+     */
+    public function dataFacturacionAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $start = $request->query->get('start');
+        $draw = $request->query->get('draw');
+        $longitud = $request->query->get('length');
+        $busqueda = $request->query->get('search');
+
+//        $abogado = $request->query->get('param1');
+//        $servicio = $request->query->get('param2');
+//        $fechaini = $request->query->get('param3');
+//        $fechafin = $request->query->get('param4');
+
+//        var_dump($abogado);
+//        var_dump($servicio);
+//        var_dump($fechaini);
+//        var_dump($fechafin);
+
+        $facturacionTotal = $em->getRepository('DGAbgSistemaBundle:AbgFacturacion')->findBy(array('aprobado'=>0));
+        
+        $facturacion['draw'] = $draw++;
+        $facturacion['data'] = array();
+
+        $busqueda['value'] = str_replace(' ', '%', $busqueda['value']);
+        $rsm = new ResultSetMapping();
+
+        $sql = "SELECT fac.id as facturacion, "
+                . "concat_ws(abo.codigo, '<div class=\"text-center\">', '</div>') as codigo, "
+                . "concat(abo.nombres,' ',abo.apellido) as nombre, "
+                . "concat_ws(fac.monto, '<div class=\"text-right\" style=\"margin-right:20px;\">', '</div>') as monto, "
+                //. "concat_ws(DATE_FORMAT(fac.fecha_pago,'%d-%m-%Y'), '<div class=\"text-center\">', '</div>') as fecha_pago, "
+                . "concat_ws(fac.plazo, '<div class=\"text-right\" style=\"margin-right:20px;\">', '</div>') as plazo, "
+                . "concat_ws(tip.tipo_pago, '<div class=\"text-center\">', '</div>') as tipo_pago, "
+                . "concat_ws(fac.servicio, '<div class=\"text-center\">', '</div>') as servicio, "
+                . "concat_ws(fac.id, '<a class=\"pagoAprobado\" id=\"', '\">Aprobar</a>') as link "
+                . "FROM abg_facturacion fac inner join abg_persona abo on fac.abg_persona_id = abo.id "
+                . "inner join ctl_tipo_pago tip on fac.abg_tipo_pago_id = tip.id "
+                . "WHERE 1 = 1 AND aprobado=0";
+        //var_dump($sql);
+        $rsm->addScalarResult('codigo', 'codigo');
+        $rsm->addScalarResult('nombre', 'nombre');
+        $rsm->addScalarResult('monto', 'monto');
+        $rsm->addScalarResult('plazo', 'plazo');
+        $rsm->addScalarResult('tipo_pago', 'tipo_pago');
+        $rsm->addScalarResult('servicio', 'servicio');
+        $rsm->addScalarResult('link', 'link');
+
+        $facturacion['data'] = $em->createNativeQuery($sql, $rsm)
+                ->getResult();
+
+        $rsm2 = new ResultSetMapping();
+
+        $facturacion['recordsTotal'] = count($facturacionTotal);
+        $facturacion['recordsFiltered'] = count($facturacion['data']);
+
+        return new Response(json_encode($facturacion));
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    //Recuperar los pagos aprobados
+    /**
+     * 
+     *
+     * @Route("/facturacionData/table/aprobado", name="table_pagos_aprobados_data", options={"expose"=true})
+     */
+    public function dataFacturacionAprobadoAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $start = $request->query->get('start');
+        $draw = $request->query->get('draw');
+        $longitud = $request->query->get('length');
+        $busqueda = $request->query->get('search');
+
+//        $abogado = $request->query->get('param1');
+//        $servicio = $request->query->get('param2');
+//        $fechaini = $request->query->get('param3');
+//        $fechafin = $request->query->get('param4');
+
+//        var_dump($abogado);
+//        var_dump($servicio);
+//        var_dump($fechaini);
+//        var_dump($fechafin);
+
+        $facturacionTotal = $em->getRepository('DGAbgSistemaBundle:AbgFacturacion')->findBy(array('aprobado'=>0));
+        
+        $facturacion['draw'] = $draw++;
+        $facturacion['data'] = array();
+
+        $busqueda['value'] = str_replace(' ', '%', $busqueda['value']);
+        $rsm = new ResultSetMapping();
+
+        $sql = "SELECT fac.id as facturacion, "
+                . "concat_ws(abo.codigo, '<div class=\"text-left\">', '</div>') as codigo, "
+                . "concat(abo.nombres,' ',abo.apellido) as nombre, "
+                . "concat_ws(fac.monto, '<div class=\"text-right\" style=\"margin-right:20px;\">', '</div>') as monto, "
+                //. "concat_ws(DATE_FORMAT(fac.fecha_pago,'%d-%m-%Y'), '<div class=\"text-center\">', '</div>') as fecha_pago, "
+                . "concat_ws(fac.plazo, '<div class=\"text-right\" style=\"margin-right:20px;\">', '</div>') as plazo, "
+                . "concat_ws(tip.tipo_pago, '<div class=\"text-center\">', '</div>') as tipo_pago, "
+                . "concat_ws(fac.servicio, '<div class=\"text-center\">', '</div>') as servicio "
+                //. "concat_ws(fac.id, '<a class=\"pagoAprobado\" id=\"', '\">Aprobar</a>') as link "
+                . "FROM abg_facturacion fac inner join abg_persona abo on fac.abg_persona_id = abo.id "
+                . "inner join ctl_tipo_pago tip on fac.abg_tipo_pago_id = tip.id "
+                . "WHERE 1 = 1 AND aprobado=1";
+        //var_dump($sql);
+        $rsm->addScalarResult('codigo', 'codigo');
+        $rsm->addScalarResult('nombre', 'nombre');
+        $rsm->addScalarResult('monto', 'monto');
+        $rsm->addScalarResult('plazo', 'plazo');
+        $rsm->addScalarResult('tipo_pago', 'tipo_pago');
+        $rsm->addScalarResult('servicio', 'servicio');
+        $rsm->addScalarResult('link', 'link');
+
+        $facturacion['data'] = $em->createNativeQuery($sql, $rsm)
+                ->getResult();
+
+        $rsm2 = new ResultSetMapping();
+
+        $facturacion['recordsTotal'] = count($facturacionTotal);
+        $facturacion['recordsFiltered'] = count($facturacion['data']);
+
+        return new Response(json_encode($facturacion));
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    /**
+     * Aprobación de la pregunta seleccionada
+     *
+     * @Route("/aprobarpago/abogado", name="aprobar_pago_abogado", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function aprobarPagoAbogadoAction() {
+        
+        try {
+            $request = $this->getRequest();
+            $id = $request->get('id');
+            //var_dump($id);
+            $em = $this->getDoctrine()->getManager();
+            //Al usar esta forma se debe usar el commit al final
+            $em->getConnection()->beginTransaction();
+            $abgFacturacion = $em->getRepository('DGAbgSistemaBundle:AbgFacturacion')->find($id);
+            
+            
+            $suscripciones = $em->getRepository('DGAbgSistemaBundle:AbgFacturacion')->findBy(array('abgPersona' => $abgFacturacion->getAbgPersona()->getId(),'aprobado'=>1), array('fechaPago' => 'DESC'));
+            //var_dump($suscripciones);
+            $fechaSuscripcion = $suscripciones[0]->getFechaPago()->format('Y-m-j');
+            //var_dump($fechaSuscripcion);
+            $plazo = $abgFacturacion->getPlazo();
+//            var_dump(strtotime ($fechaSuscripcion));
+//            var_dump($plazo);
+            $aux = strtotime ('+'. $plazo .' day', strtotime ($fechaSuscripcion));
+            //var_dump($aux);
+            $fechaVencimiento = date ( 'Y-m-j' , $aux );
+            //var_dump($fechaVencimiento);
+            //echo "llega";
+            //$facturacion->setFechaRegistro($suscripciones[0]->getFechaPago());
+            //$facturacion->setFechaPago(new \DateTime ($fechaVencimiento));
+            //$facturacion->setPlazo($plazo);
+            $abgFacturacion->setFechaPago(new \DateTime ($fechaVencimiento));
+            $abgFacturacion->setFechaRegistro(new \DateTime ('now'));
+            $abgFacturacion->setAprobado(1);
+            
+            //$abgPregunta->setContador(0);
+            $em->merge($abgFacturacion);
+            $em->flush();
+
+//             if (count($coenv) > 0) {
+//                foreach ($coenv as $value) {
+//                    $email = $value['correoelectronico'];            
+//                    $this->get('envio_correo')->sendEmail($email, "", "", "", "
+//                        <table style=\"width: 540px; margin: 0 auto;\">
+//                            <tr>
+//                                <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
+//                                <center>
+//                                    <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
+//                                </center>                                                
+//                                    <p>Hola " . $email . " hay una nueva pregunta en la que puedes participar dando tu opinion</p>
+//                                    <p>Haz click en el enlace y sé el primero en contestar</p>
+//                                    <a href='http://abg.localhost/app_dev.php/admin/panelrespuestacentro/respuesta_abg?id=" . $idpreg . "'>Haz clik aquí para responder</a> 
+//                                </td>
+//                                <td class=\"expander\"></td>
+//                            </tr>
+//                        </table>
+//                    ");
+//                }
+//             }
+            $em->getConnection()->commit();
+            
+            $response = new JsonResponse();
+            $response->setData(array(
+                                  'exito'   => '1',                                  
+                               ));  
+            
+            return $response;            
+            
+        } catch (Exception $e) {
+            $em->getConnection()->rollback();
+            $em->close();
+
+            $data['msj'] = $e->getMessage();
+            return new Response(json_encode($data));
+        }
+    }
+    
+    
+    
+    
+    
+    
 }
