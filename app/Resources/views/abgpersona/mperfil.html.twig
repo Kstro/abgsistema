@@ -109,7 +109,7 @@
                 <p class="sans" style="font-size: 12px; margin-bottom: 0px; margin-top: 3px;">
                     <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> &nbsp; {%if datos.direccion|default is not empty %}
                     {{datos.direccion}}
-                    {%endif%}, {% for datos in ciuda %}{{datos.estado}}{%endfor%}
+                    {%endif%},  {% for datos in ciuda %}{{datos.estado}}{%endfor%}
                     </p>
                     {%if sitio|default is not empty %}
                         <p class="sans" style="font-size: 12px; margin-bottom: 0px; margin-top: 3px;">

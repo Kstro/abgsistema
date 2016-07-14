@@ -48,16 +48,24 @@
         {% for datos in abgPersona %} 
         </head>
         <body>
-            <div class="container" >
+            <div class="container ">
+            
+          <div class="row ">
+                <div class="col-md-6">
+                    <img src="{{asset('Resources/src/img/logogris.png')}}" style="width: 250px; margin-left: -20px;">		
+                </div>
+                <div class="col-md-6">
 
+                </div>
+            </div>
                 <div class="row" >
                     <!-- LADO IZQUIERDO -->
-                    <div class="col-md-9 col-sm-9 col-xs-12" style="">
+                    <div class="col-md-9 col-sm-9 col-xs-12"  style="border: 1px solid #c3c3c3; background-color: #fbfbfb; border-radius: 3px; padding: 15px; margin-bottom:35px; margin-top: 20px;">
 
-                        <p class="sans text-uppercase" style="font-size: 30px; margin-top: 16px; font-weight: 600; margin-bottom: 0px;">
+                        <p class="sans text-uppercase" style="font-size: 22px; margin-top: 16px; font-weight: 600; margin-bottom: 0px;">
                             Bienvenido al directorio de abogados mas grande de El Salvador</p>
 
-                        <p class="sans text-uppercase" style="font-size: 20px; margin-top: 16px;  margin-bottom: 20px;">Estas a un paso de .... Complete su información personal</p>
+                        <p class="sans text-uppercase" style="font-size: 20px; margin-top: 16px;  margin-bottom: 20px;">Complete su información personal</p>
                         <form role="form" id="fgeneral" >
                             <input type="hidden" id="hcodigo" name="hcodigo" value=" {{codigo}}">
                             {#  <input type="hidden" id="hmetodo" name="hmetodo">#}

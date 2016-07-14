@@ -1231,8 +1231,7 @@ class AbgPersonaController extends Controller {
                                             </td>
                                             <td class=\"expander\"></td>
                                         </tr>
-                                    </table>
-                                ");
+                                    </table>","verificación");
                     } else {
                         $data['msj'] = "Abogado no verificado";
                     }
