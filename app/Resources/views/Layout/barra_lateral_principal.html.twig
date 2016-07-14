@@ -67,11 +67,11 @@
                     <i class="fa fa-wrench"></i> <span>Ajustes</span>
                 </a>
             </li>
-             <li class="treeview">
+             {#<li class="treeview">
                 <a href="{{ path('entrada_index')}}">
                     <i class="fa fa-rss"></i> <span>Blog Comunitario</span>
                 </a>
-            </li>
+            </li>#}
              <li>
             <a href="{{ path('panel_list_pregunta')}}">
                 <i class="fa fa-tasks"></i> <span>Centro de Preguntas</span>
@@ -119,9 +119,14 @@
                     <i class="fa fa-navicon"></i> <span>Inicio</span> 
                 </a>
             </li>
-               <li>
+            <li>
                 <a href="{{path('abogados')}}">
                     <i class="fa fa-group "></i><span>Abogados</span> 
+                </a>
+            </li>
+            <li>
+                <a href="{{path('lista_pagos_pendientes_aprobacion')}}">
+                    <i class="fa fa-money"></i> <span>Aprobación pagos</span> 
                 </a>
             </li>
          

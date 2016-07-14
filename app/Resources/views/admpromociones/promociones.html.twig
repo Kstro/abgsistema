@@ -54,7 +54,7 @@
                                         <div class="form-group">
                                             <div class="row" style="margin-right: 2px;">
                                                 <div class="col-sm-4"  >
-                                                    <label>Ingrese id de cliente:</label>
+                                                    <label>Ingrese id de abogado:</label>
                                                     <select id="busqueda-abogado" name="Sabogado" class="form-control input-sm " data-rule-required="true" style=" width: 100%;">
                                                         <option value="0" disabled selected>Seleccione un abogado ...</option>
                                                     </select> 
@@ -67,8 +67,8 @@
                                                         <select id="busqueda_tiposervicio" name="busqueda[tiposervicio]" class="espacio_tipo_servicio" style="width: 100%">
                                                             <option value="0" disabled selected>Seleccione un tipo de servicio ...</option>
                                                             <option value="Trial">Trial</option>
-                                                            <option value="Personal">Personal</option>
-                                                            <option value="Empresarial">Empresarial</option>
+                                                            <option value="Suscripcion">Suscripción</option>
+                                                            {#<option value="Empresarial">Empresarial</option>#}
                                                             <option value="Espacio publicitario">Espacio publicitario</option>
                                                         </select>  
 
@@ -113,21 +113,6 @@
                                                 <th class="text-center">Acciones</th>
                                             </tr>
                                         </thead>
-                                        {#<tbody>
-                                        {% for admPromocione in admPromociones %}
-                                            <tr>
-                                                <td class="text-center">{{ admPromocione.codigo }}</td>
-                                                <td class="text-center">{{ admPromocione.fechaPago|date('d/m/Y') }}</td>
-                                                <td class="text-center">{{ admPromocione.servicio }}</td>
-                                                <td class="text-center">{{ admPromocione.tipoPago }}</td>
-                                                <td class="text-right">{{ admPromocione.monto|number_format(2, '.', ',') }}</td>
-                                                <td class="text-center">{{ admPromocione.plazo }}</td>
-                                                <td>
-                                                    <a href="{{ path('admin_promociones_show', { 'id': admPromocione.id }) }}">Ver detalles</a>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                        </tbody>#}
                                     </table>
                                 </div>
                                 <div class="row" style="margin-top: 50px;"></div>          
@@ -147,7 +132,7 @@
                                             <div class="col-md-5">
                                                 {# Area en donde se selecciona  el abogado que esta solicitando el espacio publicitario #}  
                                                 <div id="abogados">
-                                                    <label>* Abogado (Ingrese Id de cliente)</label>
+                                                    <label>* Abogado (Ingrese Id de abogado)</label>
                                                     <select id="espaciop_abogado" name="espaciop[abogado]" class="espacio_abogado" style="width: 100%">
                                                         <option value="" disabled selected>Seleccione un abogado ...</option>
                                                     </select>  
@@ -177,8 +162,8 @@
                                                     <select id="espaciop_tiposervicio" name="espaciop[tiposervicio]" class="espacio_tipo_servicio" style="width: 100%">
                                                         <option value="0" disabled selected>Seleccione un tipo de servicio ...</option>
                                                         <option value="Trial">Trial</option>
-                                                        <option value="Personal">Personal</option>
-                                                        <option value="Empresarial">Empresarial</option>
+                                                        <option value="Suscripcion">Suscripción</option>
+                                                        {#<option value="Empresarial">Empresarial</option>#}
                                                         <option value="Espacio publicitario">Espacio publicitario</option>
                                                     </select>  
                                                 
@@ -423,16 +408,41 @@
             $(document).on("change", "#espaciop_tiposervicio", function(){
                 var tiposervicio = $('#espaciop_tiposervicio').val();
                 var promocion = document.getElementById('servicio-promocion');
+                console.log(tiposervicio);
                     
                 if (tiposervicio == 'Espacio publicitario'){
                     promocion.style.display = 'block';
+                    
+                    $('#espaciop_monto').prop('readonly', false);
+                    $('#espaciop_descuento').prop('readonly', false);
+                    $('#espaciop_tipopago').attr("disabled", false); 
+                    
+//                    $('#espaciop_monto').val('');
+                    $('#espaciop_tipopago').val('').change();
+                } else if(tiposervicio == 'Trial') { 
+                    $('#espaciop_monto').val(0);
+                    $('#espaciop_monto').prop('readonly', true);
+                    
+                    $('#espaciop_descuento').val(0);
+                    $('#espaciop_descuento').prop('readonly', true);
+                    
+                    $('#espaciop_tipopago').val(5).change();
+                    $('#espaciop_tipopago').attr("disabled", true); 
+                    
+                    promocion.style.display = 'none';
                 } else {
                     promocion.style.display = 'none';
+                    $('#espaciop_monto').prop('readonly', false);
+                    $('#espaciop_descuento').prop('readonly', false);
+                    $('#espaciop_tipopago').attr("disabled", false); 
+                    
+//                    $('#espaciop_monto').val('');
+                    $('#espaciop_tipopago').val('').change();
                 }
             });
             
             // Al momento de hacer click en Registrar un anuncio publicitario de un abogado
-            $(document).on("click", "#registro-venta", function(){
+            $(document).on("click", "#registro-venta", function(){                
                 var abogado = $('#espaciop_abogado').val();
                 var monto = $('#espaciop_monto').val();
                 var tipopago = $('#espaciop_tipopago').val();
@@ -454,7 +464,7 @@
                                 if(tipopago != null){
                                     if((tiposervicio == 'Espacio publicitario' && posicion != null) || tiposervicio != 'Espacio publicitario'){
                                         error.style.display = 'none';
-                                    
+                                        
                                         $.ajax({
                                             type: 'POST',
                                             async: false,
@@ -466,6 +476,8 @@
                                             processData: false,
                                             success: function (response)
                                             {
+                                                console.log('Llego aqui');
+                                                
                                                 table.ajax.reload();
                                                 $('#espaciop_abogado').val('').change();
                                                 $('#espaciop_monto').val('');

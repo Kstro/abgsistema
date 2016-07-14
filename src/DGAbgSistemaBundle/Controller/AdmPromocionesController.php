@@ -309,23 +309,27 @@ class AdmPromocionesController extends Controller
                     $em->flush();
                 }
             }
-                
-            
-                
+                                           
             $facturacion = new \DGAbgSistemaBundle\Entity\AbgFacturacion();
             $usuario= $this->get('security.token_storage')->getToken()->getUser();
-            
             $suscripciones = $em->getRepository('DGAbgSistemaBundle:AbgFacturacion')->findBy(array('abgPersona' => $abogado), array('fechaPago' => 'DESC'));            
             
             if($servicio == 'Espacio publicitario'){
+                $facturacion->setAprobado(null);
                 $facturacion->setCtlPromociones($promocion);
             } else {
                 $facturacion->setCtlPromociones(null);
+                $facturacion->setAprobado(1);
             }
             
-            if($suscripciones != NULL) {
-                $facturacion->setFechaRegistro(new \DateTime ('now'));
-                $facturacion->setFechaPago($fechafin);
+            if($suscripciones != NULL && $servicio != 'Espacio publicitario') {
+                $fechaSuscripcion = $suscripciones[0]->getFechaPago()->format('Y-m-j');
+                
+                $aux = strtotime ('+'. $plazo .' day', strtotime ($fechaSuscripcion));
+                $fechaVencimiento = date ( 'Y-m-j' , $aux );
+                
+                $facturacion->setFechaRegistro($suscripciones[0]->getFechaPago());
+                $facturacion->setFechaPago(new \DateTime ($fechaVencimiento));
                 $facturacion->setPlazo($plazo);                                
             } else {
                 $facturacion->setFechaRegistro(new \DateTime ('now'));
@@ -697,3 +701,4 @@ class AdmPromocionesController extends Controller
         } 
    }
 }
+	

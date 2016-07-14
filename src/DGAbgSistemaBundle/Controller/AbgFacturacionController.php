@@ -108,7 +108,7 @@ class AbgFacturacionController extends Controller {
 
         $sql = "SELECT fac.id as facturacion, "
                 . "concat_ws(fac.monto, '<div class=\"text-right\">', '</div>') as monto, "
-                . "concat_ws(DATE_FORMAT(fac.fecha_pago,'%d-%m-%Y'), '<div class=\"text-center\">', '</div>') as fecha_pago, "
+                . "concat_ws(DATE_FORMAT(fac.fecha_registro,'%d-%m-%Y'), '<div class=\"text-center\">', '</div>') as fecha_pago, "
                 . "concat_ws(abo.codigo, '<div class=\"text-center\">', '</div>') as codigo, "
                 . "concat_ws(fac.plazo, '<div class=\"text-center\">', '</div>') as plazo, "
                 . "concat_ws(tip.tipo_pago, '<div class=\"text-center\">', '</div>') as tipo_pago, "
