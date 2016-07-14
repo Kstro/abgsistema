@@ -13,10 +13,11 @@
 
         <!-- Stylesheet Personales -->
         <link href="{{asset('Resources/src/css/style.css')}}" rel="stylesheet">
-          <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
-        
+        <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
+
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 
         <!-- Favicon (Icono Pequeño) -->
         <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
@@ -57,6 +58,10 @@
                 background-image: url("{{ asset('Photos/defecto/check.png') }}");
                 width: 25px; height: 25px;
             }
+            img.check {
+                background-image: url("{{ asset('Photos/defecto/check.png') }}");
+                width: 25px; height: 25px;
+            }
             #content {
                 position: relative;
             }
@@ -91,9 +96,9 @@
 
             </p>
             <div class="row">
-                <div class="col-md-7">
-                    <div style="border: 1px solid #c3c3c3; background-color: #fbfbfb; border-radius: 3px; padding: 15px;">
-                        <p class="text-left" style="margin-bottom: 0px; font-family: 'Montserrat', sans-serif;">1. Seleccione su plan</p>
+                <div class="col-md-6">
+                    <div style="border: 1px solid #c3c3c3; background-color: #fbfbfb; border-radius: 3px; padding: 15px; margin-bottom:35px;">
+                        <p class="text-left" style="margin-bottom: 0px; font-family: 'Montserrat', sans-serif; font-size: 17px;">1. Seleccione tu plan</p>
                         <div style="background-color: #fff; margin-top: 10px;">
                             <input type="hidden" id="hmetodo" name="hmetodo" >
                             <table style="width:100%; border: 1px solid #c3c3c3; border-radius: 3px;">
@@ -154,51 +159,114 @@
                             </table> 
                         </div>
                         <!-- Fin -->
-                        <p class="text-left" style="margin-bottom: 0px; margin-top: 15px; font-family: 'Montserrat', sans-serif;">2. Metodo de pago</p>
-                        
-                            <div class="row" style="margin-top: 15px;">
-                                {%for datos in tipoPago %}
-                                <div class="col-xs-4" style=" margin-bottom:17px;">
-                                    <div class="shadow">
-                                        {#  <img src="{{ asset('Photos/defecto/check.png') }}" class="img_check " id="checkBa" style="width: 25px; height: 25px; margin-left: 169px; margin-top:-10px; position: absolute;">#}
-{{datos.nombre}}
-                                        <img src="{{ asset('Resources/src/img/metodoPago/agricola.png') }}" class="img_check " id="{{datos.id}}" style="width: 100%; max-width: 100%; padding: 15px;">
-                                    </div>
-                                </div>
-                               {# <div class="col-xs-4">
-                                    <div  class="shadow">
-                                        <img src="{{ asset('Photos/defecto/check.png') }}" style="width: 25px; height: 25px; margin-left: 169px; margin-top:-10px; position: absolute;display:none;" id="checkTg" >
+                        <p class="text-left" style="margin-bottom: 0px; margin-top: 15px; font-family: 'Montserrat', sans-serif; font-size: 17px;">2. Metodo de pago</p>
 
-                                        <img src="{{ asset('Resources/src/img/metodoPago/tigo.png') }}" class="img_check " id="imgTg" style="width: 100%; max-width: 100%; padding: 15px;">
+                        <div class="row">
+                            {%for datos in tipoPago %}
+                                <div class="col-xs-4" style=" margin-bottom:1px; padding: 2px;">
+                                    <div >
+                                        {%if (datos.id==1)%}
+                                            <img src="{{ asset('Resources/src/img/metodoPago/bac.png') }}" class="img_nocheck aaa" id="{{datos.id}}" style="width: 100%; max-width: 100%; padding: 5px;display:block;">
+                                            <img src="{{ asset('Resources/src/img/metodoPago/bac.2.png') }}" class="img_check bbb" id="mt{{datos.id}}" style="width: 100%; max-width: 100%; padding: 5px;display: none;">
+
+                                        {%elseif(datos.id==2)%}
+                                            <img src="{{ asset('Resources/src/img/metodoPago/tigo.png') }}" class="img_nocheck aaa" id="{{datos.id}}" style="width: 100%; max-width: 100%; padding: 5px;display:block;">
+                                            <img src="{{ asset('Resources/src/img/metodoPago/tigo.2.png') }}" class="img_check bbb" id="mt{{datos.id}}" style="width: 100%; max-width: 100%; padding: 5px;display: none;">
+
+                                        {%elseif(datos.id==3)%}
+                                            <img src="{{ asset('Resources/src/img/metodoPago/paga.png') }}" class="img_nocheck aaa" id="{{datos.id}}" style="width: 100%; max-width: 100%; padding: 5px;display:block;">
+                                            <img src="{{ asset('Resources/src/img/metodoPago/paga.2.png') }}" class="img_check bbb" id="mt{{datos.id}}" style="width: 100%; max-width: 100%; padding: 5px;display: none;">
+
+                                        {%elseif(datos.id==4)%}
+                                            <img src="{{ asset('Resources/src/img/metodoPago/paypal.png') }}" class="img_nocheck aaa" id="{{datos.id}}" style="width: 100%; max-width: 100%; padding: 5px;display:block;">
+                                            <img src="{{ asset('Resources/src/img/metodoPago/paypal.2.png') }}" class="img_check bbb" id="mt{{datos.id}}" style="width: 100%; max-width: 100%; padding: 5px;display: none;">
+
+                                        {%elseif(datos.id==6)%}
+                                            <img src="{{ asset('Resources/src/img/metodoPago/cp.png') }}" class="img_nocheck aaa" id="{{datos.id}}" style="width: 100%; max-width: 100%; padding: 5px;display:block;">
+                                            <img src="{{ asset('Resources/src/img/metodoPago/cp.2.png') }}" class="img_check bbb" id="mt{{datos.id}}" style="width: 100%; max-width: 100%; padding: 5px;display: none;">
+
+                                        {%elseif(datos.id==7)%}
+                                            <img src="{{ asset('Resources/src/img/metodoPago/domicilio.png') }}" class="img_nocheck aaa" id="{{datos.id}}" style="width: 100%; max-width: 100%; padding: 5px;display:block;">
+
+                                            <img src="{{ asset('Resources/src/img/metodoPago/domicilio.2.png') }}" class="img_check bbb" id="mt{{datos.id}}" style="width: 100%; max-width: 100%; padding: 5px;display: none;">
+
+                                        {%endif%}                                   
                                     </div>
                                 </div>
-                                <div class="col-xs-4">
-                                    <div class="shadow">
-                                        <img src="{{ asset('Resources/src/img/metodoPago/pagadito.jpg') }}" class="img_check " id="imgPg" style="width: 100%; max-width: 100%; padding: 15px;">
-                                    </div>
-                                </div>#}
-                           
-                                         {% if loop.index is divisibleby(3) %}
+                                {% if loop.index is divisibleby(3) %}
                                     <div class="clearfix"></div>
                                 {% endif %} 
-                        {%endfor%}
-                         </div>
+                            {%endfor%}
+                        </div>
                         <!-- Fin -->
-                        <p class="text-left" style="margin-bottom: 0px; margin-top: 15px; font-family: 'Montserrat', sans-serif;">3. Metodo de pago</p>
+                        <p class="text-left" style="margin-bottom: 0px; margin-top: 15px; font-family: 'Montserrat', sans-serif; font-size: 17px;">3. Instrucciones de pago</p>
                         <div class="row" style="margin-top: 15px;">
                             <div class="col-xs-12">
-                                <div   style="height: 70px;">
-                                    
+                                <div>
+                                    <div id="depositoBa" style=" display: none;">
+                                        <p class="text-left" style="margin-bottom: 10px; margin-top: 0px; font-family: 'Montserrat', sans-serif; font-size: 13px;">Pago desde BancoAgricola</p>
+
+                                        <ul style="list-style: none; padding-left: 10px;">
+                                            <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span>Para inscribirse</li>
+                                            <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Plataforma lider en centroamerica</li>
+                                            <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Obtenga clientes desde USA</li>
+                                            <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Perfil Profesional para mayor exposicion</li>
+                                            <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Plataforma lider en centroamerica</li>
+                                            <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Obtenga clientes desde USA</li>
+                                            <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Perfil Profesional para mayor exposicion</li>
+                                            <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Plataforma lider en centroamerica</li>
+                                        </ul>
+                                    </div>
+                                    <div id="depositoTg" style=" display: none;">
+                                        <ul style="list-style: none; padding-left: 10px;">
+                                            <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Perfil Profesional para mayor exposicion</li>
+                                            <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Plataforma lider en centroamerica</li>
+                                            <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Obtenga clientes desde USA</li>
+                                            <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Perfil Profesional para mayor exposicion</li>
+                                            <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Plataforma lider en centroamerica</li>
+                                            <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Obtenga clientes desde USA</li>
+                                            <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Perfil Profesional para mayor exposicion</li>
+                                            <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Plataforma lider en centroamerica</li>
+                                        </ul>
+                                    </div>
                                     <div></div>
                                 </div>
                             </div>
-                   
+
                         </div>
-                  
-                                 <a class=" btn btn-sm btn-primary btn-flat" style=" margin-top: 25px;" id="btnEnviar"> Enviar</a>    
+                        <div id="div-enviar" style=" display: none;">
+                            <a class=" btn btn-sm btn-primary btn-flat" style=" margin-top: 25px;" id="btnEnviar" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Enviando">Continuar</a>    </div>
+
+                        <div id="div-pagadito" style=" display: none;">
+                            <a class=" btn btn-sm btn-primary btn-flat" style=" margin-top: 25px;" id="btnPagadito" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Enviando"> Pagadito</a>    </div>
+
+                        <div id="div-paypal" style=" display: none;">
+                            <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                                <input type="hidden" name="cmd" value="_s-xclick">
+                                <input type="hidden" name="hosted_button_id" value="SNVE7ZXRZXDXL">
+                                <input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                                <img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                            </form>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-6">
+                    <p class="text-left" style="margin-bottom: 0px; margin-top: 15px; font-family: 'Montserrat', sans-serif; font-size: 17px;">Beneficios de la plataforma</p>
+                    <ul style="list-style: none; padding-left: 10px;">
+                        <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Perfil Profesional para mayor exposicion</li>
+                        <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Plataforma lider en centroamerica</li>
+                        <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Obtenga clientes desde USA</li>
+                        <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Perfil Profesional para mayor exposicion</li>
+                        <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Plataforma lider en centroamerica</li>
+                        <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Obtenga clientes desde USA</li>
+                        <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Perfil Profesional para mayor exposicion</li>
+                        <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Plataforma lider en centroamerica</li>
+                        <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Obtenga clientes desde USA</li>
+                        <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Perfil Profesional para mayor exposicion</li>
+                        <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Plataforma lider en centroamerica</li>
+                        <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Obtenga clientes desde USA</li>
+                        <li><span class="glyphicon glyphicon-ok" style="color: #009900;" aria-hidden="true"></span> Perfil Profesional para mayor exposicion</li>
+                    </ul>
 
                 </div>
             </div>
@@ -214,12 +282,9 @@
         <script type="text/javascript">
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip()
-
-
             })
             $(document).on('click', '.radios0', function () {
                 $('input:radio[name=optionsRadios]')[0].checked = true;
-               
             });
             $(document).on('click', '.radios1', function () {
                 $('input:radio[name=optionsRadios]')[1].checked = true;
@@ -230,30 +295,78 @@
             $(document).on('click', '.radios3', function () {
                 $('input:radio[name=optionsRadios]')[3].checked = true;
             });
-            
-            $(document).on('click', '.img_check', function () {
+
+            $(document).on('click', '.img_nocheck', function () {
                 var id = $(this).attr('id');
-
-
                 $('input#hmetodo').val(id);
-              //  alert($('input#hmetodo').val());
-                $(".img_check").removeClass('check-select');
-                $("#" + id).addClass('check');
+                console.log(id);
+                switch ($(this).attr('id')) {
+                    case '1':
+                        $("#div-enviar").css('display', 'block');
+                        $("#div-paypal").css('display', 'none');
+                        $("#div-pagadito").css('display', 'none');
+                        $("#depositoBa").css('display', 'block');
+                          $("#depositoTg").css('display', 'none');
+                        break;
+                    case '2':
+                        $("#div-enviar").css('display', 'block');
+                        $("#div-paypal").css('display', 'none');
+                        $("#div-pagadito").css('display', 'none');
+                        $("#depositoBa").css('display', 'none');
+                         $("#depositoTg").css('display', 'block');
+                        break;
+                    case '6':
+                    case '7':
+                        $("#div-enviar").css('display', 'block');
+                        $("#div-paypal").css('display', 'none');
+                        $("#div-pagadito").css('display', 'none');
 
-                $("#" + id).addClass("check-select");
-                $("#checkBa").css('dispaly', 'blok');
+                        break;
+                    case '3':
+                        $("#div-enviar").css('display', 'none');
+                        $("#div-paypal").css('display', 'none');
+                        $("#div-pagadito").css('display', 'block');
 
+                        break;
+                    case '4':
+                        $("#div-enviar").css('display', 'none');
+                        $("#div-pagadito").css('display', 'none');
+                        $("#div-paypal").css('display', 'block');
+                        break;
+                }
+                $(".bbb").css('display', 'none');
+                $(".aaa").css('display', 'block');
+                $(this).css('display', 'none');
+                $("#mt" + id).css('display', 'block');
+            });
+
+            $(document).on('click', '#btnPagadito', function () {
+
+                if ($('input:radio[name=optionsRadios]:checked').val() != undefined)
+                {
+                    $("#btnPagadito").button('loading');
+                    $("#btnPagadito").prop("disabled", true);
+                    var url = Routing.generate('cobro', {id: $('input:radio[name=optionsRadios]:checked').val()});
+                    window.open(url, "_self");
+                } else
+                {
+                    Lobibox.notify("warning", {
+                        size: 'mini',
+                        msg: 'Seleccione un plan de pago.'});
+                }
             });
 
             $(document).on('click', '#btnEnviar', function () {
-              //  $('input#hplan').val(1);
-         //      alert($('input:radio[name=optionsRadios]:checked').val());
-           
-            $.ajax({
+                $("#btnEnviar").button('loading');
+                $("#btnEnviar").prop("disabled", true);
+                //   $('input#hplan').val(1);
+                // alert($('input#hmetodo').val());
+
+                $.ajax({
                     type: 'POST',
                     dataType: 'json',
                     url: Routing.generate('metodo_pago'),
-                    data:{hplan:$('input:radio[name=optionsRadios]:checked').val(),rMetodo:$('input#hmetodo').val()},
+                    data: {hplan: $('input:radio[name=optionsRadios]:checked').val(), rMetodo: $('input#hmetodo').val()},
                     success: function (data) {
 
                         if (data.estado == true) {

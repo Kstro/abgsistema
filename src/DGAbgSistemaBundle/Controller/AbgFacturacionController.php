@@ -405,7 +405,7 @@ class AbgFacturacionController extends Controller {
 
 
             $dql_departamento = "SELECT  tp.id AS id, tp.tipoPago AS nombre"
-                    . " FROM DGAbgSistemaBundle:CtlTipoPago tp WHERE tp.id  <> 5";
+                    . " FROM DGAbgSistemaBundle:CtlTipoPago tp WHERE tp.id  <> 5 AND tp.id  <> 3 AND tp.id  <> 6 AND tp.id  <> 7";
             $tipoPago = $em->createQuery($dql_departamento)->getArrayResult();
 
 

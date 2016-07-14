@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Response;
 use DGAbgSistemaBundle\Entity\AbgPagadito;
 include_once 'src/DGAbgSistemaBundle/Resources/pagadito/config.php';
 include_once 'src/DGAbgSistemaBundle/Resources/pagadito/lib/Pagadito_php_1.6.php';
@@ -88,6 +89,28 @@ class AbgCobroController extends Controller{
             * referencia almacenada por el Pagadito Comercio.
             */
             //Generacion de ern 
+            $request = $this->getRequest();
+            $costo=0;
+              $descripcion="";
+              switch ($request->get('id')) {
+                  case 1:
+                      $costo=9.99;
+                    $descripcion="Pago mensual";
+                      break;
+                   case 2:
+                      $costo=27.99;
+                       $descripcion="Pago trimestral";
+                      break;
+                   case 3:
+                      $costo=54.96;
+                       $descripcion="Pago semestral";
+                      break;
+                   case 4:
+                      $costo=99.99;
+                       $descripcion="Pago anual";
+                      break;
+              }
+            
             $em = $this->getDoctrine()->getManager();
             $ern22 = $em->getRepository('DGAbgSistemaBundle:AbgPagadito')->find(1);
             //var_dump($ern22);
@@ -102,7 +125,7 @@ class AbgCobroController extends Controller{
             $ern = $ern->getValor();
 
                 $Pagadito->add_detail(1, "Inscripci&oacute;n", 0);
-                $Pagadito->add_detail(1, "Mensualidad",1.99);
+                $Pagadito->add_detail(1, $descripcion,$costo);
 
                 //Debe enviarse el cobro con fecha de hoy
                 $Pagadito->add_pending_charge($ern, "Pago por paquete premium", date("Y-m-d"));
