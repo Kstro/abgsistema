@@ -1,86 +1,99 @@
-{% extends ':Layout:layout2.html.twig' %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Membresia| Directorio de Abogados de El Salvador | Primero y unico directorio de abogados de El Salvador | Abogados.com.sv</title>
+        <meta name="robots" content="noindex">
 
-{% block descripcion_y_acciones %}
+        <!-- Stylesheet de Bootstrap -->
+        <link href="{{asset('Resources/src/css/bootstrap.css')}}" rel="stylesheet">
+        <link href="{{asset('Resources/src/css/movilcss.css')}}" rel="stylesheet">
+        <link href="{{asset('Resources/src/css/menu_movil.css')}}" rel="stylesheet">
 
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{{asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css')}}">
+        <!-- Stylesheet Personales -->
+        <link href="{{asset('Resources/src/css/style.css')}}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
 
-    
-        {% block descripcion %}
-            
-        {% endblock%}
-        {% block acciones %}
-                     
-        {% endblock %}
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 
-
-{% endblock %}
-{% block js_extend %}
-   
-
-      
-  {% endblock %} 
-
-{% block navegacion_Y_body %}
-  
-        {% block navegacion %}
-            
-        {% endblock %}
-        {% block cuerpo %}
-   
-            
-      
-   
-   <div class="row">
-			
-          <div class="col-md-9">
-            
-              <center> <h3 style="margin-top: 90px;font-family: cursive; ">Formulario de contacto</h3></center>
-              <form class="form-horizontal" role="form" method="post" action="{{ path('correoContacto',{correo:correoAbogado}) }}" >
-                    <input type="hidden" name="correoAbogado" value="{{correoAbogado}}">
-	<div class="form-group">
-		<label for="name" class="col-sm-2 control-label">Tu nombre</label>
-		<div class="col-sm-10">
-                    <input type="text" class="form-control" id="name" name="nombreCliente" placeholder="Nombre completo" required>
-		</div>
-	</div>
-	<div class="form-group">
-		<label for="email" class="col-sm-2 control-label">Tu email</label>
-		<div class="col-sm-10">
-                    <input type="email" class="form-control" value="" id="email" name="correoCliente" placeholder="example@domain.com" required>
-		</div>
-	</div>
-	<div class="form-group">
-		<label for="message" class="col-sm-2 control-label">Tu mensaje</label>
-		<div class="col-sm-10">
-			<textarea class="form-control" rows="4" name="mensajeCliente" required></textarea>
-		</div>
-	</div>
-	{#<div class="form-group">
-		<label for="human" class="col-sm-2 control-label">2 + 3 = ?</label>
-		<div class="col-sm-10">
-			<input type="text" class="form-control" id="human" name="human" placeholder="Your Answer">
-		</div>
-	</div>#}
-	<div class="form-group">
-		<div class="col-sm-10 col-sm-offset-2">
-			<input id="submit" name="submit" type="submit" value="Enviar" class="btn btn-primary btn-sm btn-flat">
-		</div>
-	</div>
-	
-              </form>
-                
-                </div>
-                  
-
-               
-             
-             
-  
-
-   </div>
-  
+        <!-- Favicon (Icono Pequeño) -->
+        <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+        <link rel="icon" href="favicon.png" type="image/x-icon">
+        {#% extends ':Layout:layout2.html.twig' %}
         
-        {% endblock %}
-{% endblock %}
+        
+        {% block navegacion_Y_body %}
+          
+        
+                {% block cuerpo %#}
+
+    </head>
+    <body>
+
+    {% embed ':Layout:head.html.twig' %}{% endembed %}
+    <div id="page-content">
+        <div id="container">
+           
+            <div class="row">
+  <div class="col-md-3 col-sm-2 col-xs-1" ></div>
+                <div class="col-md-7 col-sm-10  sans col-xs-10 col-lg-5 " style="border: 1px solid #c3c3c3; background-color: #fbfbfb; border-radius: 3px; padding: 15px; margin-bottom:35px; margin-top: 60px;">
+
+                    <center> <h3 style="margin-top: 20px;">Formulario de contacto</h3></center>
+                    <form class="form-horizontal" role="form" method="post" action="{{ path('correoContacto',{correo:correoAbogado}) }}" style=" margin: 10px;">
+                        <input type="hidden" name="correoAbogado" value="{{correoAbogado}}">
+                        <div class="form-group">
+                            <label for="name" class="col-sm-2 control-label">Tu nombre</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="name" name="nombreCliente" placeholder="Nombre completo" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="col-sm-2 control-label">Tu email</label>
+                            <div class="col-sm-10">
+                                <input type="email" class="form-control" value="" id="email" name="correoCliente" placeholder="example@domain.com" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="message" class="col-sm-2 control-label">Tu mensaje</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" rows="4" name="mensajeCliente" required></textarea>
+                            </div>
+                        </div>
+                        {#<div class="form-group">
+                                <label for="human" class="col-sm-2 control-label">2 + 3 = ?</label>
+                                <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="human" name="human" placeholder="Your Answer">
+                                </div>
+                        </div>#}
+                        <div class="form-group">
+                            <div class="col-sm-10 col-sm-offset-2">
+                                <input id="submit" name="submit" type="submit" value="Enviar" class="btn btn-primary btn-sm btn-flat" style="width: 80px;">
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+  <div class="col-md-3 col-sm-2 col-xs-1" ></div>
+
+            </div>
+        </div>
+    </div>
+    <script src="{{ asset('Resources/src/js/jquery-2.0.3.min.js')}}"></script>
+
+    <script src="{{asset('Resources/src/js/bootstrap.js')}}"></script>
+    <script src="{{asset('Resources/src/js/menu_movil.js')}}"></script>
+</body>
+</html>
+
+{#% endblock %}
+{% endblock %#}
 
 
 

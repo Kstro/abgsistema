@@ -149,13 +149,13 @@
                                     <div class="col-xs-10" style="padding-right: 0;">
                                         <p style="font-size: 23px; margin-bottom: 0px;" >
                                             <strong>
-                                                  {%if datos.tprofesional|default is not empty %}{%if(datos.tprofesional=="1")%}{%if datos.genero|default is not empty %}{%if(datos.genero=="F")%}Licda.{%elseif(datos.genero=="M")%}Lic.
-                                                                    {%endif%}
-                                                                {%endif%}
-                                                            {%elseif(datos.tprofesional=="2")%}Mgtr.{%elseif(datos.tprofesional=="3")%}{%if datos.genero|default is not empty %}{%if(datos.genero=="F")%}Dra.{%elseif(datos.genero=="M")%}Dr.
-                                                                    {%endif%}
-                                                            {%endif%}{%endif%}
-                                                        {%endif%}{{datos.nombre~' '~datos.apellido}}
+                                                {%if datos.tprofesional|default is not empty %}{%if(datos.tprofesional=="1")%}{%if datos.genero|default is not empty %}{%if(datos.genero=="F")%}Licda.{%elseif(datos.genero=="M")%}Lic.
+                                                            {%endif%}
+                                                        {%endif%}
+                                                    {%elseif(datos.tprofesional=="2")%}Mgtr.{%elseif(datos.tprofesional=="3")%}{%if datos.genero|default is not empty %}{%if(datos.genero=="F")%}Dra.{%elseif(datos.genero=="M")%}Dr.
+                                                            {%endif%}
+                                                    {%endif%}{%endif%}
+                                                {%endif%}{{datos.nombre~' '~datos.apellido}}
                                             </strong>
                                             {%if(datos.verificado==1)%}
                                                 <img src="{{asset('Resources/src/img/verified.png')}}" style="width: 25px; margin-bottom: 8px;" data-toggle="tooltip" data-placement="right" title="Abogado Verificado"></p>
@@ -163,13 +163,12 @@
 
                                     </div></div>
 
-                                {%if datos.tprofesional|default is not empty %}
+                                {%if datos.tituloPuesto|default is not empty %}
                                     <div class="row" >
 
-                                        <div class="col-xs-6 col-sm-3" style="padding-right: 0;">
+                                        <div class="col-xs-12 col-sm-12" style="padding-right: 0;">
                                             <p style="color: #777777;  margin-top: -3px; margin-bottom: 0px;" >
-                                                {%if(datos.tprofesional=="1")%}Licenciatura{%elseif(datos.tprofesional=="2")%}Magíster{%elseif(datos.tprofesional=="3")%}Doctorado
-                                                {%endif%}
+                                                {{datos.tituloPuesto}}
 
                                             </p>
                                         </div>
@@ -198,11 +197,11 @@
                                         </div>
                                         <div class="col-xs-8 col-sm-9" style="padding-left: 0;" >
                                             <span style="font-size:13px;">
-                                                    {%set esp=""%}
-                                                    {% for datos in RegistroEspecialida %}
-                                                        {%set esp=datos.nombre~", "~esp%}
-                                                    {%endfor%}
-                                                    {{esp|slice(0,-2)}}
+                                                {%set esp=""%}
+                                                {% for datos in RegistroEspecialida %}
+                                                    {%set esp=datos.nombre~", "~esp%}
+                                                {%endfor%}
+                                                {{esp|slice(0,-2)}}
                                             </span>
                                         </div>
                                     </div>
@@ -217,7 +216,12 @@
                                             <span style="font-size:13px;">
                                                 {% for datos in RegistradaExperiencia %}
                                                     {%if (datos.dias is null)%}
-                                                        <a href="{{path('busquedaPerfil', {url:datos.url})}}">{{datos.empresa}}</a>
+                                                        {%if datos.url|default is not empty %}
+                                                            <a href="{{path('busquedaPerfil', {url:datos.url})}}">{{datos.empresa}}</a>
+                                                        {%else%}
+                                                          {{datos.empresa}}
+
+                                                        {%endif%}
                                                     {%else%}
                                                     {%endif%}
                                                 {%endfor%}
@@ -698,11 +702,10 @@
                 </div>
 
             </div>
-        </div>
-        <div class="row">
+        <div class="row" >
             <div class=" col-xs-12">
 
-                <div class="mailbox-controls" style=" margin-left: 7px;">
+                <div class="mailbox-controls" style=" margin-left: 7px; padding-bottom: 20px;">
                     <div class="btn-group">
                         <button type="button" class="btn btn-default btn-sm" onclick="javascript:history.go(-1)"><i class="fa fa-chevron-left text-blue"> Atrás</i></button>
                     </div>
@@ -713,41 +716,42 @@
         </div>
         <script src="{{asset('Resources/src/js/menu_movil.js')}}"></script>
         <script type="text/javascript">
-                                    $(function () {
-                                        $('[data-toggle="tooltip"]').tooltip();
+                            $(function () {
+                                $('[data-toggle="tooltip"]').tooltip();
 
-                                        $('#myonoffswitch').change(function () {
-                                            var estado;
-                                            if ($('#myonoffswitch').is(":checked")) {
-                                                estado = 1;
-                                            } else {
-                                                estado = 4;
-                                            }
+                                $('#myonoffswitch').change(function () {
+                                    var estado;
+                                    if ($('#myonoffswitch').is(":checked")) {
+                                        estado = 1;
+                                    } else {
+                                        estado = 4;
+                                    }
 
-                                            $.ajax({
-                                                type: 'POST',
-                                                async: false,
-                                                dataType: 'json',
-                                                data: {estado: estado, hpersona: $('input#hPersona').val(), n: 12},
-                                                url: Routing.generate('edit_persona'),
-                                                success: function (data)
-                                                {
-                                                    Lobibox.notify("success", {
-                                                        size: 'mini',
-                                                        msg: "<p>" + data.msj + "</p>"
-                                                    });
-                                                },
-                                                error: function (xhr, status)
-                                                {
-                                                    alert('Disculpe, existió un problema');
-                                                }
+                                    $.ajax({
+                                        type: 'POST',
+                                        async: false,
+                                        dataType: 'json',
+                                        data: {estado: estado, hpersona: $('input#hPersona').val(), n: 12},
+                                        url: Routing.generate('edit_persona'),
+                                        success: function (data)
+                                        {
+                                            Lobibox.notify("success", {
+                                                size: 'mini',
+                                                msg: "<p>" + data.msj + "</p>"
                                             });
-
-                                        });
+                                        },
+                                        error: function (xhr, status)
+                                        {
+                                            alert('Disculpe, existió un problema');
+                                        }
                                     });
+
+                                });
+                            });
 
         </script>
     </div>
+            </div>
 {%endfor%}
 
 {% endblock %}

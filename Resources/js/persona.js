@@ -579,9 +579,9 @@ function addEspecialida()
                     var boton = '<div><p><script type="text/javascript">';
                     datos += '$("#Idioma").hover(';
                     datos += 'function(){';
-                    datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
-                    datos += 'onclick="editIdioma()"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
-                    datos += 'onclick="editIdioma()">&nbsp;Eliminar</i></span>\'));';
+                    datos += '$(this).append($(\'<span><a class ="fa fa-pencil fa-x2 btn btnperfil" ';
+                    datos += 'onclick="editIdioma()"> &nbsp; Editar </a>';
+                    datos += '</span>\'));';
                     datos += '},function(){';
                     datos += '$(this).find("span:last").remove();';
                     datos += '});';
@@ -634,7 +634,7 @@ function addExperiencia()
         {
             $("#fExperiencia").submit(
                     function (event) {
-                    
+
 
                         var empresa, tipo;
                         if ($('#cambioEmpresa').is(":visible")) {
@@ -696,9 +696,9 @@ function addExperiencia()
                                         datos += '<script type="text/javascript">';
                                         datos += '$("#Exp' + val.id + '").hover(';
                                         datos += 'function(){';
-                                        datos += '$(this).append($(\'<span  style="margin-left:83px;"><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
-                                        datos += 'onclick="editExperiencia(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn  btnperfil" ';
-                                        datos += 'onclick="removeExperiencia(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
+                                        datos += '$(this).append($(\'<span  style="margin-left:83px;"><a class="btn btn-primary  btn-sm btn-flat" style="width:80px;"';
+                                        datos += 'onclick="editExperiencia(' + val.id + ')"> &nbsp; Editar </a>&nbsp;<a class="btn btn-default  btn-sm btn-flat" style="width:80px;"';
+                                        datos += 'onclick="removeExperiencia(' + val.id + ')">&nbsp;Eliminar</a></span>\'));';
                                         datos += '},function(){';
                                         datos += '$(this).find("span:last").remove();';
                                         datos += '});';
@@ -745,92 +745,92 @@ function addExperiencia()
                         );
                         event.preventDefault();
                         return false;
-                          $(':submit').attr('disabled', 'disabled');
+                        $(':submit').attr('disabled', 'disabled');
                     });
         }
     }
-     return false;
+    return false;
 }
 /*
-function addEdu() {
-    if ($("#txtCentro").val() !== "" && $("#txtTitulo").val() !== "" && $("#Sdisciplina").val() !== "" && $("#txtAnioIni").val() !== "")
-    {
-        var datos;
-        $("#fEdu").submit(
-                function (event) {
-                    if (($("#txtAnioIni").val() > $("#txtAnioFin").val()) && ($("#txtAnioFin").val() != ""))
-                    {
-                        Lobibox.notify("warning", {
-                            size: 'mini',
-                            msg: "<p> Año fin menor que año inicio</p>"
-                        });
-                    } else
-                    {
-                        $.ajax({
-                            type: 'POST',
-                            async: false,
-                            dataType: 'json',
-                            url: Routing.generate('registrar_edu'),
-                            data: {hPersona: $('input#hPersona').val(), dato: $("#fEdu").serialize()},
-                            success: function (data)
-                            {
-                                $('div.education').children('br').remove();
-                                if (data.msj !== false) {
-                                    $.each($(data.Edu), function (indice, val) {
-                                        $("#Edu" + val.idEs).remove();
-                                        datos = '<div class="row" id="Edu' + val.idEs + '">';
-                                        datos += '<div class="col-xs-11" id="hfd">';
-                                        datos += '<span style="font-size: 15px;">' + val.institucion + '&nbsp;</span></br>';
-                                        datos += '<span style="font-size: 13px;">' + val.disciplina + ' | ' + val.titulo + ' </br>' + val.anioIni + ' - ' + val.anio + '</span>';
-
-                                        datos += '<div >';
-                                        datos += '<script type="text/javascript">';
-                                        datos += '$("#Edu' + val.idEs + '").hover(';
-                                        datos += 'function(){';
-                                        datos += '$(this).append($(\'<span style="width: 90%;margin:13px;margin-top:10px;margin-bottom:10px;"><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
-                                        datos += 'onclick="editEducacion(' + val.idEs + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
-                                        datos += 'onclick="removeEdu(' + val.idEs + ')">&nbsp;Eliminar</i></span>\'));';
-                                        datos += '},function(){';
-                                        datos += '$(this).find("span:last").remove();';
-                                        datos += '});';
-                                        datos += '</script></div>';
-                                        datos += '</div>';
-                                        datos += '</div>';
-
-                                        if (val.anio == "")
-                                        {
-                                            $('#estudioActual').text(val.institucion);
-
-                                        }
-                                    });
-                                    $("#consultaEducacion").append(datos);
-                                    Lobibox.notify("success", {
-                                        size: 'mini',
-                                        msg: "<p>" + data.msj + "</p>"
-                                    });
-                                    $("#div2").remove();
-
-
-                                } else {
-                                    Lobibox.notify("warning", {
-                                        size: 'mini',
-                                        msg: "<p>" + data.error + "</p>"
-                                    });
-                                }
-                            }
-                            ,
-                            error: function (errors)
-                            {
-
-                            }
-                        });
-                    }
-                    event.preventDefault();
-                });
-
-    }
-}
-*/
+ function addEdu() {
+ if ($("#txtCentro").val() !== "" && $("#txtTitulo").val() !== "" && $("#Sdisciplina").val() !== "" && $("#txtAnioIni").val() !== "")
+ {
+ var datos;
+ $("#fEdu").submit(
+ function (event) {
+ if (($("#txtAnioIni").val() > $("#txtAnioFin").val()) && ($("#txtAnioFin").val() != ""))
+ {
+ Lobibox.notify("warning", {
+ size: 'mini',
+ msg: "<p> Año fin menor que año inicio</p>"
+ });
+ } else
+ {
+ $.ajax({
+ type: 'POST',
+ async: false,
+ dataType: 'json',
+ url: Routing.generate('registrar_edu'),
+ data: {hPersona: $('input#hPersona').val(), dato: $("#fEdu").serialize()},
+ success: function (data)
+ {
+ $('div.education').children('br').remove();
+ if (data.msj !== false) {
+ $.each($(data.Edu), function (indice, val) {
+ $("#Edu" + val.idEs).remove();
+ datos = '<div class="row" id="Edu' + val.idEs + '">';
+ datos += '<div class="col-xs-11" id="hfd">';
+ datos += '<span style="font-size: 15px;">' + val.institucion + '&nbsp;</span></br>';
+ datos += '<span style="font-size: 13px;">' + val.disciplina + ' | ' + val.titulo + ' </br>' + val.anioIni + ' - ' + val.anio + '</span>';
+ 
+ datos += '<div >';
+ datos += '<script type="text/javascript">';
+ datos += '$("#Edu' + val.idEs + '").hover(';
+ datos += 'function(){';
+ datos += '$(this).append($(\'<span style="width: 90%;margin:13px;margin-top:10px;margin-bottom:10px;"><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
+ datos += 'onclick="editEducacion(' + val.idEs + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
+ datos += 'onclick="removeEdu(' + val.idEs + ')">&nbsp;Eliminar</i></span>\'));';
+ datos += '},function(){';
+ datos += '$(this).find("span:last").remove();';
+ datos += '});';
+ datos += '</script></div>';
+ datos += '</div>';
+ datos += '</div>';
+ 
+ if (val.anio == "")
+ {
+ $('#estudioActual').text(val.institucion);
+ 
+ }
+ });
+ $("#consultaEducacion").append(datos);
+ Lobibox.notify("success", {
+ size: 'mini',
+ msg: "<p>" + data.msj + "</p>"
+ });
+ $("#div2").remove();
+ 
+ 
+ } else {
+ Lobibox.notify("warning", {
+ size: 'mini',
+ msg: "<p>" + data.error + "</p>"
+ });
+ }
+ }
+ ,
+ error: function (errors)
+ {
+ 
+ }
+ });
+ }
+ event.preventDefault();
+ });
+ 
+ }
+ }
+ */
 function removeEdu(val)
 {
     $.ajax({
@@ -847,7 +847,7 @@ function removeEdu(val)
                     size: 'mini',
                     msg: "<p>" + data.msj + "</p>"
                 });
-
+        
                 $("#Edu" + val).remove();
             } else
             {
@@ -865,83 +865,83 @@ function removeEdu(val)
     });
 }
 /*
-function addOrganizacion() {
-
-
-
-    if ($("#txtOrg").val() !== "" && $("#txtPuestoOrg").val() !== "" && $("#txtFechIniOrg").val() !== "")
-    {
-        var fechafin = new Date($("#txtFechFinOrg").val());
-        var fechain = new Date($("#txtFechIniOrg").val());
-        var datos;
-        $("#fOrg").submit(
-                function (event) {
-                    var datos;
-                    if (fechafin < fechain)
-                    {
-                        Lobibox.notify("warning", {
-                            size: 'mini',
-                            msg: "<p>Fecha fin menor a fecha inicio.</p>"
-                        });
-                        event.preventDefault();
-                    } else
-                    {
-                        $.ajax({
-                            type: 'POST',
-                            async: false,
-                            dataType: 'json',
-                            url: Routing.generate('registrar_org'),
-                            data: {hPersona: $('input#hPersona').val(), dato: $("#fOrg").serialize()},
-                            success: function (data)
-                            {
-
-                                $('div.organiz').children('br').remove();
-                                if (data.msj !== false) {
-                                    $.each($(data.Organizacion), function (indice, val) {
-                                        $("#Org" + val.id).remove();
-                                        datos = '<div class="row" id="Org' + val.id + '">';
-                                        datos += '<div class="col-xs-12">';
-                                        datos += '<span style="font-size: 16px;">&nbsp;' + val.nombre + '&nbsp;</span></br>';
-                                        datos += '<span style="font-size: 13px;">' + val.puesto + ' </br>' + val.fechaIn + ' - ' + val.fechaFin + '</span>';
-                                        datos += '<p style = "width:100%; margin-top: 5px;text-align:justify;">' + val.descripcion + '</p>';
-                                        datos += '<script type="text/javascript">';
-                                        datos += '$("#Org' + val.id + '").hover(';
-                                        datos += 'function(){';
-                                        datos += '$(this).append($(\'<span style="margin-left:13px;"><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
-                                        datos += 'onclick="editOrganizacion(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
-                                        datos += 'onclick="removeOrg(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
-                                        datos += '},function(){';
-                                        datos += '$(this).find("span:last").remove();';
-                                        datos += '});';
-                                        datos += '</script>';
-                                        datos += '</div>';
-                                        datos += '</div>';
-                                    });
-                                    $("#consultaOrg").append(datos);
-
-                                    Lobibox.notify("success", {
-                                        size: 'mini',
-                                        msg: "<p>" + data.msj + "</p>"
-                                    });
-                                    $("#div5").remove();
-                                } else if (data.error !== false) {
-                                    Lobibox.notify("warning", {
-                                        size: 'mini',
-                                        msg: "<p>" + data.error + "</p>"
-                                    });
-                                }
-                            },
-                            error: function (errors)
-                            {
-                            }
-                        });
-                    }
-                    event.preventDefault();
-
-                });
-
-    }
-}*/
+ function addOrganizacion() {
+ 
+ 
+ 
+ if ($("#txtOrg").val() !== "" && $("#txtPuestoOrg").val() !== "" && $("#txtFechIniOrg").val() !== "")
+ {
+ var fechafin = new Date($("#txtFechFinOrg").val());
+ var fechain = new Date($("#txtFechIniOrg").val());
+ var datos;
+ $("#fOrg").submit(
+ function (event) {
+ var datos;
+ if (fechafin < fechain)
+ {
+ Lobibox.notify("warning", {
+ size: 'mini',
+ msg: "<p>Fecha fin menor a fecha inicio.</p>"
+ });
+ event.preventDefault();
+ } else
+ {
+ $.ajax({
+ type: 'POST',
+ async: false,
+ dataType: 'json',
+ url: Routing.generate('registrar_org'),
+ data: {hPersona: $('input#hPersona').val(), dato: $("#fOrg").serialize()},
+ success: function (data)
+ {
+ 
+ $('div.organiz').children('br').remove();
+ if (data.msj !== false) {
+ $.each($(data.Organizacion), function (indice, val) {
+ $("#Org" + val.id).remove();
+ datos = '<div class="row" id="Org' + val.id + '">';
+ datos += '<div class="col-xs-12">';
+ datos += '<span style="font-size: 16px;">&nbsp;' + val.nombre + '&nbsp;</span></br>';
+ datos += '<span style="font-size: 13px;">' + val.puesto + ' </br>' + val.fechaIn + ' - ' + val.fechaFin + '</span>';
+ datos += '<p style = "width:100%; margin-top: 5px;text-align:justify;">' + val.descripcion + '</p>';
+ datos += '<script type="text/javascript">';
+ datos += '$("#Org' + val.id + '").hover(';
+ datos += 'function(){';
+ datos += '$(this).append($(\'<span style="margin-left:13px;"><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
+ datos += 'onclick="editOrganizacion(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
+ datos += 'onclick="removeOrg(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
+ datos += '},function(){';
+ datos += '$(this).find("span:last").remove();';
+ datos += '});';
+ datos += '</script>';
+ datos += '</div>';
+ datos += '</div>';
+ });
+ $("#consultaOrg").append(datos);
+ 
+ Lobibox.notify("success", {
+ size: 'mini',
+ msg: "<p>" + data.msj + "</p>"
+ });
+ $("#div5").remove();
+ } else if (data.error !== false) {
+ Lobibox.notify("warning", {
+ size: 'mini',
+ msg: "<p>" + data.error + "</p>"
+ });
+ }
+ },
+ error: function (errors)
+ {
+ }
+ });
+ }
+ event.preventDefault();
+ 
+ });
+ 
+ }
+ }*/
 function removeOrg(val)
 {
     $.ajax({
@@ -1030,173 +1030,173 @@ function editEducacion(val)
 }
 
 /*
-function addCertificacion() {
-
-
-    if ($("#txtCerti").val() !== "" && $("#txtAutorida").val() !== "")
-    {
-        var fechafin, fechain;
-
-        var datos;
-      //  $("#fCerti").submit(
-        //        function (event) {
-
-                    var datos;
-                    if ($("#txtFechFinC").val() == "" && $("#txtFechIniC").val() !== "")
-                    {
-                        fechafin = new Date($("#txtFechFinC").val());
-                        fechain = new Date($("#txtFechIniC").val());
-                        Lobibox.notify("warning", {
-                            size: 'mini',
-                            msg: "<p>Seleccione fecha fin. </p>"
-                        });
-                    } else if ($("#txtFechFinC").val() !== "" && $("#txtFechIniC").val() == "")
-                    {
-                        Lobibox.notify("warning", {
-                            size: 'mini',
-                            msg: "<p>Seleccione fecha inicio. </p>"
-                        });
-                    } else if ($("#txtFechFinC").val() !== "" && $("#txtFechIniC").val() !== "")
-                    {
-                        fechafin = new Date($("#txtFechFinC").val());
-                        fechain = new Date($("#txtFechIniC").val());
-
-                     if  (fechafin < fechain)
-                    {
-                        Lobibox.notify("warning", {
-                            size: 'mini',
-                            msg: "<p>Fecha fin menor a fecha inicio. </p>"
-                        });
-                    } 
-                    else
-                    {
-                      
-                        $.ajax({
-                            type: 'POST',
-                            async: false,
-                            dataType: 'json',
-                            url: Routing.generate('registrar_certi'),
-                            data: {hPersona: $('input#hPersona').val(), dato: $("#fCerti").serialize()},
-                            success: function (data)
-                            {
-                                $('div.certif').children('br').remove();
-                                if (data.msj !== false) {
-
-                                    $.each($(data.Cert), function (indice, val) {
-                                        $("#Cert" + val.id).remove();
-                                        datos = '<div class="row" id="Cert' + val.id + '">';
-                                        datos += '<div class="col-xs-11">';
-                                        datos += '<span style="font-size: 15px;">' + val.institucion + '&nbsp;</span></br>';
-                                        datos += '<span style="font-size: 13px;">' + val.nombre + '</br>';
-                                        if (val.fechaIn != null)
-                                        {
-                                            datos += val.fechaIn + ' - ' + val.fechaFin;
-                                        }
-                                        datos += '</span>';
-                                        datos += '<p style = "width: 90%; margin-top: 5px;text-align:justify;">';
-                                        datos += '<script type="text/javascript">';
-                                        datos += '$("#Cert' + val.id + '").hover(';
-                                        datos += 'function(){';
-                                        datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
-                                        datos += 'onclick="editCertificacion(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
-                                        datos += 'onclick="removeCertificacion(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
-                                        datos += '},function(){';
-                                        datos += '$(this).find("span:last").remove();';
-                                        datos += '});';
-                                        datos += '</script></p>';
-                                        datos += '</div>';
-                                        datos += '</div>';
-                                    });
-                                    $("#consultaCertificacion").append(datos);
-                                    Lobibox.notify("success", {
-                                        size: 'mini',
-                                        msg: "<p>" + data.msj + "</p>"
-                                    });
-                                    $("#div6").remove();
-                                } else {
-                                    Lobibox.notify("warning", {
-                                        size: 'mini',
-                                        msg: "<p>" + data.error + "</p>"
-                                    });
-                                }
-
-                            }
-                            ,
-                            error: function (errors)
-                            {
-
-                            }
-                        });
-                    }
-                    }else if ($("#txtFechFinC").val() == "" && $("#txtFechIniC").val() == "")
-                    {
-                        $("#txtFechFinC").val(null);
-                        $("#txtFechIniC").val(null);
-                        $.ajax({
-                            type: 'POST',
-                            async: false,
-                            dataType: 'json',
-                            url: Routing.generate('registrar_certi'),
-                            data: {hPersona: $('input#hPersona').val(), dato: $("#fCerti").serialize()},
-                            success: function (data)
-                            {
-                                $('div.certif').children('br').remove();
-                                if (data.msj !== false) {
-
-                                    $.each($(data.Cert), function (indice, val) {
-                                        $("#Cert" + val.id).remove();
-                                        datos = '<div class="row" id="Cert' + val.id + '">';
-                                        datos += '<div class="col-xs-11">';
-                                        datos += '<span style="font-size: 15px;">' + val.institucion + '&nbsp;</span></br>';
-                                        datos += '<span style="font-size: 13px;">' + val.nombre + '</br>';
-                                        if (val.fechaIn != null)
-                                        {
-                                            datos += val.fechaIn + ' - ' + val.fechaFin;
-                                        }
-                                        datos += '</span>';
-                                        datos += '<p style = "width: 90%; margin-top: 5px;text-align:justify;">';
-                                        datos += '<script type="text/javascript">';
-                                        datos += '$("#Cert' + val.id + '").hover(';
-                                        datos += 'function(){';
-                                        datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
-                                        datos += 'onclick="editCertificacion(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
-                                        datos += 'onclick="removeCertificacion(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
-                                        datos += '},function(){';
-                                        datos += '$(this).find("span:last").remove();';
-                                        datos += '});';
-                                        datos += '</script></p>';
-                                        datos += '</div>';
-                                        datos += '</div>';
-                                    });
-                                    $("#consultaCertificacion").append(datos);
-                                    Lobibox.notify("success", {
-                                        size: 'mini',
-                                        msg: "<p>" + data.msj + "</p>"
-                                    });
-                                    $("#div6").remove();
-                                } else {
-                                    Lobibox.notify("warning", {
-                                        size: 'mini',
-                                        msg: "<p>" + data.error + "</p>"
-                                    });
-                                }
-
-                            }
-                            ,
-                            error: function (errors)
-                            {
-
-                            }
-                        });
-                    } 
-                     return false;
-               //     event.preventDefault();
-                  
-           //     });
-    }
-}
-
-*/
+ function addCertificacion() {
+ 
+ 
+ if ($("#txtCerti").val() !== "" && $("#txtAutorida").val() !== "")
+ {
+ var fechafin, fechain;
+ 
+ var datos;
+ //  $("#fCerti").submit(
+ //        function (event) {
+ 
+ var datos;
+ if ($("#txtFechFinC").val() == "" && $("#txtFechIniC").val() !== "")
+ {
+ fechafin = new Date($("#txtFechFinC").val());
+ fechain = new Date($("#txtFechIniC").val());
+ Lobibox.notify("warning", {
+ size: 'mini',
+ msg: "<p>Seleccione fecha fin. </p>"
+ });
+ } else if ($("#txtFechFinC").val() !== "" && $("#txtFechIniC").val() == "")
+ {
+ Lobibox.notify("warning", {
+ size: 'mini',
+ msg: "<p>Seleccione fecha inicio. </p>"
+ });
+ } else if ($("#txtFechFinC").val() !== "" && $("#txtFechIniC").val() !== "")
+ {
+ fechafin = new Date($("#txtFechFinC").val());
+ fechain = new Date($("#txtFechIniC").val());
+ 
+ if  (fechafin < fechain)
+ {
+ Lobibox.notify("warning", {
+ size: 'mini',
+ msg: "<p>Fecha fin menor a fecha inicio. </p>"
+ });
+ } 
+ else
+ {
+ 
+ $.ajax({
+ type: 'POST',
+ async: false,
+ dataType: 'json',
+ url: Routing.generate('registrar_certi'),
+ data: {hPersona: $('input#hPersona').val(), dato: $("#fCerti").serialize()},
+ success: function (data)
+ {
+ $('div.certif').children('br').remove();
+ if (data.msj !== false) {
+ 
+ $.each($(data.Cert), function (indice, val) {
+ $("#Cert" + val.id).remove();
+ datos = '<div class="row" id="Cert' + val.id + '">';
+ datos += '<div class="col-xs-11">';
+ datos += '<span style="font-size: 15px;">' + val.institucion + '&nbsp;</span></br>';
+ datos += '<span style="font-size: 13px;">' + val.nombre + '</br>';
+ if (val.fechaIn != null)
+ {
+ datos += val.fechaIn + ' - ' + val.fechaFin;
+ }
+ datos += '</span>';
+ datos += '<p style = "width: 90%; margin-top: 5px;text-align:justify;">';
+ datos += '<script type="text/javascript">';
+ datos += '$("#Cert' + val.id + '").hover(';
+ datos += 'function(){';
+ datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
+ datos += 'onclick="editCertificacion(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
+ datos += 'onclick="removeCertificacion(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
+ datos += '},function(){';
+ datos += '$(this).find("span:last").remove();';
+ datos += '});';
+ datos += '</script></p>';
+ datos += '</div>';
+ datos += '</div>';
+ });
+ $("#consultaCertificacion").append(datos);
+ Lobibox.notify("success", {
+ size: 'mini',
+ msg: "<p>" + data.msj + "</p>"
+ });
+ $("#div6").remove();
+ } else {
+ Lobibox.notify("warning", {
+ size: 'mini',
+ msg: "<p>" + data.error + "</p>"
+ });
+ }
+ 
+ }
+ ,
+ error: function (errors)
+ {
+ 
+ }
+ });
+ }
+ }else if ($("#txtFechFinC").val() == "" && $("#txtFechIniC").val() == "")
+ {
+ $("#txtFechFinC").val(null);
+ $("#txtFechIniC").val(null);
+ $.ajax({
+ type: 'POST',
+ async: false,
+ dataType: 'json',
+ url: Routing.generate('registrar_certi'),
+ data: {hPersona: $('input#hPersona').val(), dato: $("#fCerti").serialize()},
+ success: function (data)
+ {
+ $('div.certif').children('br').remove();
+ if (data.msj !== false) {
+ 
+ $.each($(data.Cert), function (indice, val) {
+ $("#Cert" + val.id).remove();
+ datos = '<div class="row" id="Cert' + val.id + '">';
+ datos += '<div class="col-xs-11">';
+ datos += '<span style="font-size: 15px;">' + val.institucion + '&nbsp;</span></br>';
+ datos += '<span style="font-size: 13px;">' + val.nombre + '</br>';
+ if (val.fechaIn != null)
+ {
+ datos += val.fechaIn + ' - ' + val.fechaFin;
+ }
+ datos += '</span>';
+ datos += '<p style = "width: 90%; margin-top: 5px;text-align:justify;">';
+ datos += '<script type="text/javascript">';
+ datos += '$("#Cert' + val.id + '").hover(';
+ datos += 'function(){';
+ datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
+ datos += 'onclick="editCertificacion(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
+ datos += 'onclick="removeCertificacion(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
+ datos += '},function(){';
+ datos += '$(this).find("span:last").remove();';
+ datos += '});';
+ datos += '</script></p>';
+ datos += '</div>';
+ datos += '</div>';
+ });
+ $("#consultaCertificacion").append(datos);
+ Lobibox.notify("success", {
+ size: 'mini',
+ msg: "<p>" + data.msj + "</p>"
+ });
+ $("#div6").remove();
+ } else {
+ Lobibox.notify("warning", {
+ size: 'mini',
+ msg: "<p>" + data.error + "</p>"
+ });
+ }
+ 
+ }
+ ,
+ error: function (errors)
+ {
+ 
+ }
+ });
+ } 
+ return false;
+ //     event.preventDefault();
+ 
+ //     });
+ }
+ }
+ 
+ */
 function removeCertificacion(val)
 {
     $.ajax({
@@ -1258,83 +1258,83 @@ function editCertificacion(val)
 }
 
 /*
-function addCurso() {
-    if ($("#txtCurso").val() !== "" && $("#txtAutoridaCM").val() !== "" && $("#txtFechIniCM").val() !== "" && $("#txtFechFinCM").val() !== "")
-    {
-        var fechafin = new Date($("#txtFechFinCM").val());
-        var fechaini = new Date($("#txtFechIniCM").val());
-
-
-        var datos;
-      //  $("#fCurso").submit(
-        //        function (event) {
-                    var datos;
-                    if (fechafin < fechaini)
-                    {
-                        Lobibox.notify("warning", {
-                            size: 'mini',
-                            msg: "<p>Fecha fin menor a fecha inicio. </p>",
-                        });
-                    } else
-                    {
-                        $.ajax({
-                            type: 'POST',
-                            async: false,
-                            dataType: 'json',
-                            url: Routing.generate('registrar_curso'),
-                            data: {hPersona: $('input#hPersona').val(), dato: $("#fCurso").serialize()},
-                            success: function (data)
-                            {
-                                if (data.msj !== false) {
-                                    $.each($(data.Curso), function (indice, val) {
-                                        $("#CM" + val.id).remove();
-                                        datos = '<div class="row" id="CM' + val.id + '">';
-                                        datos += '<div class="col-xs-11">';
-                                        datos += '<span style="font-size: 15px;">' + val.institucion + '&nbsp;</span></br>';
-                                        datos += '<span style="font-size: 13px;">' + val.nombre + '</br>' + val.fechaIn + ' - ' + val.fechaFin + '</span>';
-                                        datos += '<p style = "width: 90%; margin-top: 5px;text-align:justify;">' + val.descripcion;
-                                        datos += '<script type="text/javascript">';
-                                        datos += '$("#CM' + val.id + '").hover(';
-                                        datos += 'function(){';
-                                        datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
-                                        datos += 'onclick="editCurso(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
-                                        datos += 'onclick="removeSeminario(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
-                                        datos += '},function(){';
-                                        datos += '$(this).find("span:last").remove();';
-                                        datos += '});';
-                                        datos += '</script></p>';
-                                        datos += '</div>';
-                                        datos += '</div>';
-                                    });
-                                    $("#consultaCurso").append(datos);
-
-                                    Lobibox.notify("success", {
-                                        size: 'mini',
-                                        msg: "<p>" + data.msj + "</p>"
-                                    });
-                                    $("#div7").remove();
-                                } else {
-                                    Lobibox.notify("warning", {
-                                        size: 'mini',
-                                        msg: "<p>" + data.error + "</p>"
-                                    });
-                                }
-
-                            }
-                            ,
-                            error: function (errors)
-                            {
-
-                            }
-
-                        });
-                    }
-              //      event.preventDefault();
-             //   });
-               return false;
-    }
-  
-}*/
+ function addCurso() {
+ if ($("#txtCurso").val() !== "" && $("#txtAutoridaCM").val() !== "" && $("#txtFechIniCM").val() !== "" && $("#txtFechFinCM").val() !== "")
+ {
+ var fechafin = new Date($("#txtFechFinCM").val());
+ var fechaini = new Date($("#txtFechIniCM").val());
+ 
+ 
+ var datos;
+ //  $("#fCurso").submit(
+ //        function (event) {
+ var datos;
+ if (fechafin < fechaini)
+ {
+ Lobibox.notify("warning", {
+ size: 'mini',
+ msg: "<p>Fecha fin menor a fecha inicio. </p>",
+ });
+ } else
+ {
+ $.ajax({
+ type: 'POST',
+ async: false,
+ dataType: 'json',
+ url: Routing.generate('registrar_curso'),
+ data: {hPersona: $('input#hPersona').val(), dato: $("#fCurso").serialize()},
+ success: function (data)
+ {
+ if (data.msj !== false) {
+ $.each($(data.Curso), function (indice, val) {
+ $("#CM" + val.id).remove();
+ datos = '<div class="row" id="CM' + val.id + '">';
+ datos += '<div class="col-xs-11">';
+ datos += '<span style="font-size: 15px;">' + val.institucion + '&nbsp;</span></br>';
+ datos += '<span style="font-size: 13px;">' + val.nombre + '</br>' + val.fechaIn + ' - ' + val.fechaFin + '</span>';
+ datos += '<p style = "width: 90%; margin-top: 5px;text-align:justify;">' + val.descripcion;
+ datos += '<script type="text/javascript">';
+ datos += '$("#CM' + val.id + '").hover(';
+ datos += 'function(){';
+ datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
+ datos += 'onclick="editCurso(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
+ datos += 'onclick="removeSeminario(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
+ datos += '},function(){';
+ datos += '$(this).find("span:last").remove();';
+ datos += '});';
+ datos += '</script></p>';
+ datos += '</div>';
+ datos += '</div>';
+ });
+ $("#consultaCurso").append(datos);
+ 
+ Lobibox.notify("success", {
+ size: 'mini',
+ msg: "<p>" + data.msj + "</p>"
+ });
+ $("#div7").remove();
+ } else {
+ Lobibox.notify("warning", {
+ size: 'mini',
+ msg: "<p>" + data.error + "</p>"
+ });
+ }
+ 
+ }
+ ,
+ error: function (errors)
+ {
+ 
+ }
+ 
+ });
+ }
+ //      event.preventDefault();
+ //   });
+ return false;
+ }
+ 
+ }*/
 function removeSeminario(val)
 {
     $.ajax({
@@ -1427,9 +1427,9 @@ function addIdiomas() {
                                 datos += '<script type="text/javascript">';
                                 datos += '$("#Idioma").hover(';
                                 datos += 'function(){';
-                                datos += '$(this).append($(\'<span style="margin-left:13px;"><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
-                                datos += 'onclick="editIdioma()"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
-                                datos += 'onclick="editIdioma()">&nbsp;Eliminar</i></span>\'));';
+                                datos += '$(this).append($(\'<span style="margin-left:13px;"><a class="btn btn-primary  btn-sm btn-flat" style="width:80px;"  ';
+                                datos += 'onclick="editIdioma()"> &nbsp; Editar </a>';
+                                datos += '</span>\'));';
                                 datos += '},function(){';
                                 datos += '$(this).find("span:last").remove();';
                                 datos += '});';

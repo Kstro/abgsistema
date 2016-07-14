@@ -1076,13 +1076,13 @@ class CtlEmpresaController extends Controller {
 
                     $direccion = $src[0]->getSrc();
 
-                    
+
                     $direccion = str_replace("\\", "", $direccion);
                     $direccion = str_replace("Photos/Perfil/", "", $direccion);
                     //echo $direccion;
                     if ($direccion != "" && ($direccion != 'Photos/defecto/defectoH.png' && $direccion != 'Photos/defecto/defectoM.png' )) {
 
-                        
+
                         $eliminacionRegistroExixtente = unlink($path1 . $direccion);
 
                         if ($eliminacionRegistroExixtente) {
@@ -1762,7 +1762,7 @@ class CtlEmpresaController extends Controller {
                     $idPersona = $ObjetoUrl[0]->getAbgPersona()->getId();
                     $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
                             . " p.direccion AS direccion, p.tituloProfesional as titulo, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado,  p.tituloProfesional AS tprofesional,"
-                            . " p.verificado As verificado, p.genero AS genero "
+                            . " p.verificado As verificado, p.genero AS genero,  p.tituloPuesto As tituloPuesto "
                             . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
                     $result_persona = $em->createQuery($dql_persona)->getArrayResult();
                     $Usuario = $em->getRepository("DGAbgSistemaBundle:CtlUsuario")->findByRhPersona($idPersona);
@@ -2285,11 +2285,14 @@ class CtlEmpresaController extends Controller {
             $em->getConnection()->beginTransaction();
             $request = $this->getRequest();
 
+         
+            /*   var_dump($request->get('codigo'));
+              exit(); */
             $ctlUsuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByCodigoConfirmar(trim($request->get('codigo')));
 
             $this->authenticateUser($ctlUsuario[0]);
             parse_str($request->get('datos'), $datos);
-        
+
             $array = $request->get('esp');
 
 
@@ -2297,6 +2300,8 @@ class CtlEmpresaController extends Controller {
 
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $username = $this->container->get('security.context')->getToken()->getUser()->getId();
+               $facturacion = $em->getRepository("DGAbgSistemaBundle:AbgFacturacion")->findByAbgPersona($idPersona);
+      
 
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($idPersona);
             $Ciudad = $em->getRepository("DGAbgSistemaBundle:CtlCiudad")->find($datos['Smunicipio']);
@@ -2315,17 +2320,17 @@ class CtlEmpresaController extends Controller {
             $Persona->setTituloProfesional($datos['Stitulo']);
             $Persona->setCtlCiudad($Ciudad);
             $Persona->setGenero($request->get('genero'));
+            $Persona->setEstadoMetodoPago(1);
 
-            $abgFoto = $em->getRepository("DGAbgSistemaBundle:AbgFoto")->findBy(array('abgPersona'=>$Persona->getId(),'tipoFoto'=>0));
-            
-            
-            if($request->get('genero')=='M'){
+            $abgFoto = $em->getRepository("DGAbgSistemaBundle:AbgFoto")->findBy(array('abgPersona' => $Persona->getId(), 'tipoFoto' => 0));
+
+
+            if ($request->get('genero') == 'M') {
                 $abgFoto[0]->setSrc('Photos/defecto/defectoH.png');
-            }
-            else{
+            } else {
                 $abgFoto[0]->setSrc('Photos/defecto/defectoM.png');
             }
-            
+
             $em->merge($abgFoto[0]);
             $em->flush();
 
@@ -2360,8 +2365,12 @@ class CtlEmpresaController extends Controller {
                     $em->flush();
                 }
             }
-            
+
+
+if(empty($facturacion))
+{
             $abgFacturacionTrial = new AbgFacturacion();
+            $date = new \DateTime("now");
             $tipo_pago = $em->getRepository("DGAbgSistemaBundle:CtlTipoPago")->find(5);
             $fechaPago = date_add($date, date_interval_create_from_date_string('14 days'));
             $abgFacturacionTrial->setAbgPersona($Persona);
@@ -2378,19 +2387,19 @@ class CtlEmpresaController extends Controller {
             $em->persist($abgFacturacionTrial);
             $em->flush();
 
-
+}
 
             $em->getConnection()->commit();
             $em->close();
             $data['msj'] = "Datos actualizados.";
-            $data['metodo'] =$datos['rMetodo'];
+            //    $data['metodo'] =$datos['hmetodo'];
 
             return new Response(json_encode($data));
         } catch (\Exception $e) {
             $data['msj'] = $e->getMessage();
             echo $e->getMessage();
             //  var_dump( $e->getMessage());
-            //  exit();
+            //exit();
             $em->getConnection()->rollback();
             $em->close();
             return new Response(json_encode($data));

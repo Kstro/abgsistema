@@ -102,9 +102,9 @@ $(document).on('click', '#btnEnviarExp', function () {
                             datos += '<script type="text/javascript">';
                             datos += '$("#Exp' + val.id + '").hover(';
                             datos += 'function(){';
-                            datos += '$(this).append($(\'<span  style="margin-left:83px;"><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
-                            datos += 'onclick="editExperiencia(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn  btnperfil" ';
-                            datos += 'onclick="removeExperiencia(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
+                            datos += '$(this).append($(\'<span  style="margin-left:83px;"><a class="btn btn-primary  btn-sm btn-flat" style="width:80px;"';
+                            datos += 'onclick="editExperiencia(' + val.id + ')"> &nbsp; Editar </a>&nbsp;<a class="btn btn-default  btn-sm btn-flat" style="width:80px;"';
+                            datos += 'onclick="removeExperiencia(' + val.id + ')">&nbsp;Eliminar</a></span>\'));';
                             datos += '},function(){';
                             datos += '$(this).find("span:last").remove();';
                             datos += '});';
@@ -225,9 +225,9 @@ $(document).on('click', '#btnEnviarExp', function () {
                         datos += '<script type="text/javascript">';
                         datos += '$("#Exp' + val.id + '").hover(';
                         datos += 'function(){';
-                        datos += '$(this).append($(\'<span  style="margin-left:83px;"><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
-                        datos += 'onclick="editExperiencia(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn  btnperfil" ';
-                        datos += 'onclick="removeExperiencia(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
+                        datos += '$(this).append($(\'<span  style="margin-left:83px;"><a class="btn btn-primary  btn-sm btn-flat" style="width:80px;"';
+                        datos += 'onclick="editExperiencia(' + val.id + ')"> &nbsp; Editar </a>&nbsp;<a class="btn btn-default  btn-sm btn-flat" style="width:80px;"';
+                        datos += 'onclick="removeExperiencia(' + val.id + ')">&nbsp;Eliminar</a></span>\'));';
                         datos += '},function(){';
                         datos += '$(this).find("span:last").remove();';
                         datos += '});';
@@ -375,9 +375,9 @@ $(document).on('click', '#addCertificacion', function () {
                                 datos += '<script type="text/javascript">';
                                 datos += '$("#Cert' + val.id + '").hover(';
                                 datos += 'function(){';
-                                datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
-                                datos += 'onclick="editCertificacion(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
-                                datos += 'onclick="removeCertificacion(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
+                                datos += '$(this).append($(\'<span><a class="btn btn-primary  btn-sm btn-flat" style="width:80px;" ';
+                                datos += 'onclick="editCertificacion(' + val.id + ')"> &nbsp; Editar </a>&nbsp;<a class="btn btn-primary  btn-sm btn-flat" style="width:80px;"';
+                                datos += 'onclick="removeCertificacion(' + val.id + ')">&nbsp;Eliminar</a></span>\'));';
                                 datos += '},function(){';
                                 datos += '$(this).find("span:last").remove();';
                                 datos += '});';
@@ -440,9 +440,9 @@ $(document).on('click', '#addCertificacion', function () {
                             datos += '<script type="text/javascript">';
                             datos += '$("#Cert' + val.id + '").hover(';
                             datos += 'function(){';
-                            datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
-                            datos += 'onclick="editCertificacion(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
-                            datos += 'onclick="removeCertificacion(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
+                            datos += '$(this).append($(\'<span><a class="btn btn-primary  btn-sm btn-flat" style="width:80px;"';
+                            datos += 'onclick="editCertificacion(' + val.id + ')"> &nbsp; Editar </a>&nbsp;<a class="btn btn-default  btn-sm btn-flat" style="width:80px;"';
+                            datos += 'onclick="removeCertificacion(' + val.id + ')">&nbsp;Eliminar</a></span>\'));';
                             datos += '},function(){';
                             datos += '$(this).find("span:last").remove();';
                             datos += '});';
@@ -535,9 +535,9 @@ $(document).on('click', '#addEdu', function (e) {
                             datos += '<script type="text/javascript">';
                             datos += '$("#Edu' + val.idEs + '").hover(';
                             datos += 'function(){';
-                            datos += '$(this).append($(\'<span style="width: 90%;margin:13px;margin-top:10px;margin-bottom:10px;"><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
-                            datos += 'onclick="editEducacion(' + val.idEs + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
-                            datos += 'onclick="removeEdu(' + val.idEs + ')">&nbsp;Eliminar</i></span>\'));';
+                            datos += '$(this).append($(\'<span style="width: 90%;margin:13px;margin-top:10px;margin-bottom:10px;"><a class="btn btn-primary  btn-sm btn-flat" style="width:80px;"';
+                            datos += 'onclick="editEducacion(' + val.idEs + ')"> &nbsp; Editar </a>&nbsp;<a class="btn btn-default  btn-sm btn-flat" style="width:80px;"';
+                            datos += 'onclick="removeEdu(' + val.idEs + ')">&nbsp;Eliminar</a></span>\'));';
                             datos += '},function(){';
                             datos += '$(this).find("span:last").remove();';
                             datos += '});';
@@ -545,7 +545,7 @@ $(document).on('click', '#addEdu', function (e) {
                             datos += '</div>';
                             datos += '</div>';
 
-                            if (val.anio == "")
+                            if (val.anio ==null)
                             {
                                 $('#estudioActual').text(val.institucion);
 
@@ -614,9 +614,9 @@ $(document).on('click', '#addEdu', function (e) {
                             datos += '<script type="text/javascript">';
                             datos += '$("#Edu' + val.idEs + '").hover(';
                             datos += 'function(){';
-                            datos += '$(this).append($(\'<span style="width: 90%;margin:13px;margin-top:10px;margin-bottom:10px;"><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
-                            datos += 'onclick="editEducacion(' + val.idEs + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
-                            datos += 'onclick="removeEdu(' + val.idEs + ')">&nbsp;Eliminar</i></span>\'));';
+                            datos += '$(this).append($(\'<span style="width: 90%;margin:13px;margin-top:10px;margin-bottom:10px;"><a class="btn btn-primary  btn-sm btn-flat" style="width:80px;"  ';
+                            datos += 'onclick="editEducacion(' + val.idEs + ')"> &nbsp; Editar </a>&nbsp;<a class="btn btn-default  btn-sm btn-flat" style="width:80px;"  ';
+                            datos += 'onclick="removeEdu(' + val.idEs + ')">&nbsp;Eliminar</a></span>\'));';
                             datos += '},function(){';
                             datos += '$(this).find("span:last").remove();';
                             datos += '});';
@@ -718,9 +718,9 @@ $(document).on('click', '#addCurso', function (e) {
                             datos += '<script type="text/javascript">';
                             datos += '$("#CM' + val.id + '").hover(';
                             datos += 'function(){';
-                            datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
-                            datos += 'onclick="editCurso(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
-                            datos += 'onclick="removeSeminario(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
+                            datos += '$(this).append($(\'<span><a class="btn btn-primary  btn-sm btn-flat" style="width:80px;"';
+                            datos += 'onclick="editCurso(' + val.id + ')"> &nbsp; Editar </a>&nbsp;<a class="btn btn-default  btn-sm btn-flat" style="width:80px;"';
+                            datos += 'onclick="removeSeminario(' + val.id + ')">&nbsp;Eliminar</a></span>\'));';
                             datos += '},function(){';
                             datos += '$(this).find("span:last").remove();';
                             datos += '});';
@@ -814,9 +814,9 @@ $(document).on('click', '#addOrganizacion', function (e) {
                             datos += '<script type="text/javascript">';
                             datos += '$("#Org' + val.id + '").hover(';
                             datos += 'function(){';
-                            datos += '$(this).append($(\'<span style="margin-left:13px;"><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
-                            datos += 'onclick="editOrganizacion(' + val.id + ')"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
-                            datos += 'onclick="removeOrg(' + val.id + ')">&nbsp;Eliminar</i></span>\'));';
+                            datos += '$(this).append($(\'<span style="margin-left:13px;"><a class="btn btn-primary  btn-sm btn-flat" style="width:80px;"';
+                            datos += 'onclick="editOrganizacion(' + val.id + ')"> &nbsp; Editar </a>&nbsp;<a class="btn btn-default  btn-sm btn-flat" style="width:80px;"';
+                            datos += 'onclick="removeOrg(' + val.id + ')">&nbsp;Eliminar</a></span>\'));';
                             datos += '},function(){';
                             datos += '$(this).find("span:last").remove();';
                             datos += '});';
