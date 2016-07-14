@@ -334,24 +334,41 @@ class AbgPersonaController extends Controller {
                     $stm->execute();
                     $suscripcion = $stm->fetchAll();
                     $tiempo = 0;
-                    $aprobado=0;
-                    $tipopago="";
-                        foreach ($suscripcion as $row) {
-                            
-                            $tiempo = $tiempo + $row['caducidad'];
-                            if($row['fechaPago']==null)
-                            {
-                                $aprobado=$row['aprobado'];
-                               
-                            }
-                        //    var_dump( $row['caducidad']);
-                              $tipopago=$row['tipoPago'];
-                          
-                    //       var_dump($row['caducidad']);
+                    $aprobado = 0;
+                    $tipopago = "";
+                    
+                  /*    var_dump($suscripcion);
+                      exit();*/
+                      
+                    foreach ($suscripcion as $row) {
+
+                        $tiempo = $tiempo + $row['caducidad'];
+                        if ($row['fechaPago'] == null) {
+                            $aprobado = $row['aprobado'];
                         }
-                            //            var_dump($tipopago);
-                //    var_dump($tiempo);
-//exit();
+                        //    var_dump( $row['caducidad']);
+                        $tipopago = $row['tipoPago'];
+
+                        //       var_dump($row['caducidad']);
+                    }
+                    
+                 //    $pagoAprobado=0;
+                    $pagoAprobado=10000;// ahorita no se envia notificacion para usuario q han solicitado pago
+                        
+                         $PagoNoApro = $em->getRepository("DGAbgSistemaBundle:AbgFacturacion")->findBy(array('abgPersona'=>$idPersona,'aprobado'=>0));
+                   
+                  //$PagoNoApro[0]->getAprobado()
+                         if(empty($PagoNoApro))
+                         {
+                         
+                         }
+                         else
+                         {
+                          $pagoAprobado=$PagoNoApro[0]->getAprobado();
+                         
+                         }
+   
+
                     $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
                     $dql_ciudad = "SELECT c.nombreCiudad As nombre, es.nombreEstado estado"
                             . " FROM DGAbgSistemaBundle:AbgPersona p "
@@ -380,10 +397,25 @@ class AbgPersonaController extends Controller {
                     $stm = $this->container->get('database_connection')->prepare($sql);
                     $stm->execute();
                     $Experiencia = $stm->fetchAll();
-                    $trabajo = "";
-                    foreach ($Experiencia as $row) {
+
+                    $sql = "SELECT  el.id AS id, el.puesto AS puesto, el.compania AS empresa, el.funcion AS funcion,"
+                            . "f.src AS src, DATEDIFF(el.fecha_fin,el.facha_inicio) AS dias, date_format(el.facha_inicio, '%M %Y') As fechaIn, "
+                            . " date_format(el.fecha_fin, '%M %Y') As fechaFin, el.ubicacion AS hubicacion, urle.url AS url "
+                            . " FROM  abg_experiencia_laboral el "
+                            . " JOIN abg_persona p on p.id=el.abg_persona_id AND el.fecha_fin is null AND el.abg_persona_id=" . $idPersona
+                            . " left JOIN ctl_empresa em on em.id=el.ctl_empresa_id "
+                            . " left JOIN abg_foto AS f on f.ctl_empresa_id=em.id "
+                            . " left JOIN abg_url_personalizada urle ON em.id=urle.ctl_empresa_id and urle.estado=1 "
+                            . " GROUP by el.id,el.abg_persona_id,em.id"
+                            . " ORDER BY el.facha_inicio Desc";
+                    $stm = $this->container->get('database_connection')->prepare($sql);
+                    $stm->execute();
+                    $Rtrabajo = $stm->fetchAll();
+
+                    $trabajo = 0;
+                    foreach ($Rtrabajo as $row) {
                         if ($row['fechaFin'] == null) {
-                            $trabajo = $row['fechaFin'];
+                            $trabajo = 1;
                         }
                     }
 
@@ -393,10 +425,24 @@ class AbgPersonaController extends Controller {
                     $sqlEdu = "SELECT e.id AS idEs, e.institucion AS institucion, e.titulo AS titulo, e.anio_inicio AS anioIni, e.anio_graduacion AS anio "
                             . " FROM abg_estudio e "
                             . " JOIN  abg_persona p ON e.abg_persona_id=p.id AND e.abg_persona_id=" . $idPersona;
-
                     $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                     $stm->execute();
                     $Edu = $stm->fetchAll();
+
+                    $sqlEduAct = "SELECT e.id AS idEs, e.institucion AS institucion, e.titulo AS titulo, e.anio_inicio AS anioIni, e.anio_graduacion AS anio "
+                            . " FROM abg_estudio e "
+                            . " JOIN  abg_persona p ON e.abg_persona_id=p.id AND  e.anio_graduacion is null AND e.abg_persona_id=" . $idPersona;
+                    $stm = $this->container->get('database_connection')->prepare($sqlEduAct);
+                    $stm->execute();
+                    $EduAct = $stm->fetchAll();
+                    $EstudioAct = 0;
+                    foreach ($EduAct as $row) {
+                        if ($row['anio'] == null) {
+                            $EstudioAct = 1;
+                        }
+                    }
+
+
 
                     $sqlCert = "SELECT c.id AS id, c.certficacion_nombre AS nombre,c.institucion As institucion, "
                             . " date_format(c.fecha_inicio, '%M %Y') As fechaIn,date_format(c.fecha_fin, '%M %Y') AS fechaFin "
@@ -461,7 +507,12 @@ class AbgPersonaController extends Controller {
                             . " FROM DGAbgSistemaBundle:AbgFoto fot "
                             . " JOIN  DGAbgSistemaBundle:AbgPersona p WHERE p.id=fot.abgPersona  AND fot.tipoFoto=5 AND p.verificado=0";
                     $NNotificaciones = $em->createQuery($dqlNotificacion)->getArrayResult();
-
+                    $findme="defecto";
+                            $fotoDefecto = strpos($fotoP[0]['src'], $findme);
+            
+                    
+                         /*   var_dump($fotoDefecto);
+                            exit();*/
                     $cumplimiento = 0;
                     if (count($result_persona) >= 1) {
                         $cumplimiento = 10;
@@ -487,7 +538,7 @@ class AbgPersonaController extends Controller {
                     if (count($Idiomas) >= 1) {
                         $cumplimiento = $cumplimiento + 10;
                     }
-                    if (count($fotoP) >= 1) {
+                    if ($fotoDefecto ==false) {
                         $cumplimiento = $cumplimiento + 10;
                     }
 
@@ -495,7 +546,7 @@ class AbgPersonaController extends Controller {
 
                         $cumplimiento = $cumplimiento + 10;
                     }
-    
+
                     return $this->render('abgpersona/panelAdministrativoAbg.html.twig', array(
                                 'nombreCorto' => $nombreCorto,
                                 'abgPersona' => $result_persona,
@@ -518,9 +569,11 @@ class AbgPersonaController extends Controller {
                                 'trabajo' => $trabajo,
                                 'plazo' => $tiempo,
                                 'codigo' => $Usuario->getCodigoConfirmar(),
-                        'aprobado'=>$aprobado,
-                        'tipopago'=>$tipopago
-            
+                                'aprobado' => $aprobado,
+                                'tipopago' => $tipopago,
+                                'EstudioAct' => $EstudioAct,
+                                'EduAct' => $EduAct,
+                        'pagoAprobado'=>$pagoAprobado
                     ));
                 }
             } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
@@ -929,6 +982,28 @@ class AbgPersonaController extends Controller {
             $stm->execute();
             $Experiencia = $stm->fetchAll();
 
+            $sql = "SELECT  el.id AS id, el.puesto AS puesto, el.compania AS empresa, el.funcion AS funcion,"
+                    . "f.src AS src, DATEDIFF(el.fecha_fin,el.facha_inicio) AS dias, date_format(el.facha_inicio, '%M %Y') As fechaIn, "
+                    . " date_format(el.fecha_fin, '%M %Y') As fechaFin, el.ubicacion AS hubicacion, urle.url AS url "
+                    . " FROM  abg_experiencia_laboral el "
+                    . " JOIN abg_persona p on p.id=el.abg_persona_id AND el.fecha_fin is null AND el.abg_persona_id=" . $idPersona
+                    . " left JOIN ctl_empresa em on em.id=el.ctl_empresa_id "
+                    . " left JOIN abg_foto AS f on f.ctl_empresa_id=em.id "
+                    . " left JOIN abg_url_personalizada urle ON em.id=urle.ctl_empresa_id and urle.estado=1 "
+                    . " GROUP by el.id,el.abg_persona_id,em.id"
+                    . " ORDER BY el.facha_inicio Desc";
+            $stm = $this->container->get('database_connection')->prepare($sql);
+            $stm->execute();
+            $Rtrabajo = $stm->fetchAll();
+
+            $trabajo = 0;
+            foreach ($Rtrabajo as $row) {
+                if ($row['fechaFin'] == null) {
+                    $trabajo = 1;
+                }
+            }
+
+
             $sqlEdu = "SELECT e.id AS idEs, e.institucion AS institucion, e.titulo AS titulo, e.anio_inicio AS anioIni, e.anio_graduacion AS anio "
                     . " FROM abg_estudio e "
                     . " JOIN  abg_persona p ON e.abg_persona_id=p.id AND e.abg_persona_id=" . $idPersona
@@ -936,6 +1011,20 @@ class AbgPersonaController extends Controller {
             $stm = $this->container->get('database_connection')->prepare($sqlEdu);
             $stm->execute();
             $Edu = $stm->fetchAll();
+
+
+            $sqlEduAct = "SELECT e.id AS idEs, e.institucion AS institucion, e.titulo AS titulo, e.anio_inicio AS anioIni, e.anio_graduacion AS anio "
+                    . " FROM abg_estudio e "
+                    . " JOIN  abg_persona p ON e.abg_persona_id=p.id AND  e.anio_graduacion is null AND e.abg_persona_id=" . $idPersona;
+            $stm = $this->container->get('database_connection')->prepare($sqlEduAct);
+            $stm->execute();
+            $EduAct = $stm->fetchAll();
+            $EstudioAct = 0;
+            foreach ($EduAct as $row) {
+                if ($row['anio'] == null) {
+                    $EstudioAct = 1;
+                }
+            }
 
             $sqlCert = "SELECT c.id AS id, c.certficacion_nombre AS nombre,c.institucion As institucion, "
                     . " date_format(c.fecha_inicio, '%M %Y') As fechaIn,date_format(c.fecha_fin, '%M %Y') AS fechaFin "
@@ -1010,7 +1099,10 @@ class AbgPersonaController extends Controller {
                         'sitio' => $sitio,
                         'ciuda' => $result_ciuda,
                         'url' => $url,
-                        'abgFoto' => $result_foto
+                        'abgFoto' => $result_foto,
+                        'trabajo' => $trabajo,
+                        'EduAct' => $EduAct,
+                        'EstudioAct' => $EstudioAct
             ));
         } catch (Exception $e) {
             $data['msj'] = $e->getMessage();
@@ -1201,9 +1293,9 @@ class AbgPersonaController extends Controller {
                     $Persona->setVerificaNotario($request->get('estado'));
                     if ($request->get('estado') === '1') {
                         $data['msj'] = "Abogado verificado como notario";
-                        
+
                         $email = $Persona->getCorreoelectronico();
-                        
+
                         $this->get('envio_correo')->sendEmail($email, "", "", "", "
                                     <table style=\"width: 540px; margin: 0 auto;\">
                                         <tr>
@@ -1211,18 +1303,17 @@ class AbgPersonaController extends Controller {
                                             <center>
                                                 <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
                                             </center>                                                
-                                                <p>Hola " . $Persona->getNombres() ." ". $Persona->getApellido() . ".</p>
+                                                <p>Hola " . $Persona->getNombres() . " " . $Persona->getApellido() . ".</p>
                                                 <p>La solicitud de verificación como notario ha sido aprobada.</p>
                                             </td>
                                             <td class=\"expander\"></td>
                                         </tr>
                                     </table>
                                 ");
-                        
                     } else {
                         $data['msj'] = "No fue verificado como notario";
                     }
-                    
+
                     break;
             }
 
@@ -2020,11 +2111,9 @@ class AbgPersonaController extends Controller {
             $request = $this->getRequest();
             $Educacion = "";
             if ((($request->get('educacion') != null))) {
-                $sqlEdu = "SELECT e.id AS idEs, e.institucion AS institucion, e.titulo AS titulo, e.anio_inicio AS anioIni, e.anio_graduacion AS anio,"
-                        . " tp.abg_titulocol AS disciplina, tp.id idDis "
+                $sqlEdu = "SELECT e.id AS idEs, e.institucion AS institucion, e.titulo AS titulo, e.anio_inicio AS anioIni, e.anio_graduacion AS anio "
                         . " FROM abg_estudio e "
-                        . " JOIN  abg_persona p ON e.abg_persona_id=p.id AND e.id=" . $request->get('educacion')
-                        . " JOIN ctl_titulo_profesional tp ON tp.id=e.abg_titulo_profesional_id";
+                        . " JOIN  abg_persona p ON e.abg_persona_id=p.id AND e.id=" . $request->get('educacion');
                 $stm = $this->container->get('database_connection')->prepare($sqlEdu);
                 $stm->execute();
                 $Educacion = $stm->fetchAll();
@@ -2081,6 +2170,7 @@ class AbgPersonaController extends Controller {
             $request = $this->getRequest();
 
             parse_str($request->get('dato'), $datos);
+
             $Disciplina = $em->getRepository("DGAbgSistemaBundle:CtlTituloProfesional");
             //      $idDisciplina = $Disciplina->find(intval($datos['Sdisciplina']));
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hPersona'));
@@ -2095,7 +2185,12 @@ class AbgPersonaController extends Controller {
 
                 $Estudio->setAbgPersona($Persona);
                 //    $Estudio->setAbgTituloProfesional($idDisciplina);
-                $Estudio->setAnioGraduacion(strval($datos['txtAnioFin']));
+                if ($datos['txtAnioFin'] == "") {
+                    $Estudio->setAnioGraduacion(null);
+                } else {
+                    $Estudio->setAnioGraduacion(strval($datos['txtAnioFin']));
+                }
+
                 $Estudio->setInstitucion($datos['txtCentro']);
                 $Estudio->setTitulo($datos['txtTitulo']);
                 $Estudio->setAnioInicio($datos['txtAnioIni']);
@@ -2115,7 +2210,12 @@ class AbgPersonaController extends Controller {
                 $Estudio->setAnioInicio($datos['txtAnioIni']);
 
                 $Estudio->setTitulo($datos['txtTitulo']);
-                $Estudio->setAnioGraduacion(strval($datos['txtAnioFin']));
+                if ($datos['txtAnioFin'] == "") {
+                    $Estudio->setAnioGraduacion(null);
+                } else {
+                    $Estudio->setAnioGraduacion(strval($datos['txtAnioFin']));
+                }
+
                 $em->merge($Estudio);
                 $em->flush();
                 $IdEducacion = $Estudio->getId();
@@ -2836,7 +2936,7 @@ class AbgPersonaController extends Controller {
                     'abgFacturacions' => $abgFacturacions,
         ));
     }
-    
+
     /**
      * @Route("/verificarNotario", name="verificar_notario", options={"expose"=true})
      * @Method("GET")
@@ -2891,14 +2991,14 @@ class AbgPersonaController extends Controller {
             switch ($RolUser[0]['rol']) {
                 case 'ROLE_USER':
                     $sqlEstadoVerificacion = "SELECT per.verifica_notario as verificado, fot.src "
-                                            . "FROM abg_foto fot "
-                                            . "JOIN abg_persona per ON per.id = fot.abg_persona_id AND fot.tipo_foto = 6 "
-                                            . "WHERE per.id=" . $idPersona;
-                    
+                            . "FROM abg_foto fot "
+                            . "JOIN abg_persona per ON per.id = fot.abg_persona_id AND fot.tipo_foto = 6 "
+                            . "WHERE per.id=" . $idPersona;
+
                     $stm = $this->container->get('database_connection')->prepare($sqlEstadoVerificacion);
                     $stm->execute();
                     $estadoVerificacion = $stm->fetchAll();
-                    
+
                     return $this->render(':abgpersona:panelNotarios.html.twig', array(
                                 'nombreCorto' => $nombreCorto,
                                 'abgPersona' => $result_persona,
@@ -2965,7 +3065,7 @@ class AbgPersonaController extends Controller {
             return new Response(json_encode($data));
         }
     }
-    
+
     /**
      * @Route("/solicitud-verificar/notario/get", name="solicitud_verificar_notario", options={"expose"=true})
      * @Method("GET")
@@ -3042,7 +3142,7 @@ class AbgPersonaController extends Controller {
             return new Response(json_encode($data));
         }
     }
-    
+
     /**
      * @Route("/cons_notarios/get", name="cons_notarios", options={"expose"=true})
      * @Method("GET")
@@ -3197,7 +3297,7 @@ class AbgPersonaController extends Controller {
             return new Response(json_encode($data));
         }
     }
-    
+
     /**
      * @Route("/verificados/get", name="verificados", options={"expose"=true})
      * @Method("GET")
@@ -3224,7 +3324,7 @@ class AbgPersonaController extends Controller {
             return new Response(json_encode($data));
         }
     }
-    
+
     /**
      * @Route("/notarios-verificados/get", name="notarios_verificados", options={"expose"=true})
      * @Method("GET")
@@ -3291,19 +3391,19 @@ class AbgPersonaController extends Controller {
                     . " f.servicio As servicio, tp.tipo_pago As tipoPago, f.descripcion As descripcion, date_format(f.fecha_pago, '%d/%m/%Y') As fechaPago "
                     . " FROM abg_persona p "
                     . " JOIN abg_facturacion f"
-                    . " ON  p.id=f.abg_persona_id AND p.id=" . $idPersona
+                    . " ON  p.id=f.abg_persona_id AND f.aprobado=1 AND p.id=" . $idPersona
                     . " JOIN ctl_tipo_pago tp "
                     //   . " ON  tp.id=f.abg_tipo_pago_id"
                     . " ORDER BY p.nombres ASC ";
 
-            $sqlPersona = "select per.id AS idAbg, per.codigo AS codigo, CONCAT(per.nombres, '  ', per.apellido) as nombre, foto.src as src, uper.url as url, date_format(fecha_ingreso, '%d/%m/%Y') as fecha,
+            $sqlPersona = "select per.id AS idAbg, per.codigo AS codigo, CONCAT(per.nombres, '  ', per.apellido) as nombre, foto.src as src, uper.url as url, date_format(fac.fecha_registro, '%d/%m/%Y') as fecha,
         date_format(fac.fecha_pago, '%d/%m/%Y') AS fechaPago, fac.servicio AS servicio, fac.plazo,TIMESTAMPDIFF(DAY,CURDATE(),fac.fecha_pago) AS caducidad, fac.monto AS monto, 
         fac.descripcion As descripcion
                         from ctl_usuario usu 
                         inner join abg_persona per on usu.rh_persona_id = per.id AND per.id=" . $idPersona .
                     " inner join abg_foto foto on foto.abg_persona_id = per.id
                         inner join abg_url_personalizada uper on uper.abg_persona_id = per.id
-                        inner join abg_facturacion fac on per.id=fac.abg_persona_id 
+                        inner join abg_facturacion fac on per.id=fac.abg_persona_id AND fac.aprobado=1 
                        where foto.estado = 1 and uper.estado = 1
                         order by caducidad desc
                         limit 0, 12";
@@ -3362,7 +3462,7 @@ class AbgPersonaController extends Controller {
                         <td class=\"expander\"></td>
                     </tr>
                 </table>
-            ","Rechazo de verificación de abogado");
+            ", "Rechazo de verificación de abogado");
 
             //var_dump($foto[0]);
             $em->remove($foto[0]);
@@ -3386,7 +3486,7 @@ class AbgPersonaController extends Controller {
             return new Response(json_encode($data));
         }
     }
-    
+
     /**
      * @Route("/solicitudVerficacionNotario/get", name="verficacionNotario", options={"expose"=true})
      * @Method("POST")
@@ -3408,7 +3508,7 @@ class AbgPersonaController extends Controller {
                 $extension = explode('/', $tipo);
                 $nombreimagen2.="." . $extension[1];
                 $fecha = date('Y-m-dHis');
-                $nombreArchivo = $nombreimagen . "-" . $fecha . $nombreimagen2;                
+                $nombreArchivo = $nombreimagen . "-" . $fecha . $nombreimagen2;
                 $nombreSERVER = "solicitud_verificacion_" . $fecha . $nombreimagen2;
 
                 $resultados = move_uploaded_file($_FILES["imagen"]["tmp_name"], $path2 . $nombreSERVER);
@@ -3420,7 +3520,7 @@ class AbgPersonaController extends Controller {
 
                     $path = "Photos/verificacion/";
                     $nombreBASE = $path . "solicitud_verificacion_" . $fecha . $nombreimagen2;
-                                        
+
                     $AbgFoto->setAbgPersona($Persona);
                     $AbgFoto->setTipoFoto(6);
                     $AbgFoto->setCtlEmpresa(null);
@@ -3449,7 +3549,7 @@ class AbgPersonaController extends Controller {
                 //$nombreArchivo = $nombreimagen . "-" . $fecha . $nombreimagen2;
                 //$nombreSERVER = str_replace(" ", "", $nombreArchivo);
                 $nombreSERVER = "solicitud_verificacion_" . $fecha . $nombreimagen2;
-                
+
                 $resultados = move_uploaded_file($_FILES["imagen"]["tmp_name"], $path2 . $nombreSERVER);
 
                 if ($resultados) {
@@ -3459,7 +3559,7 @@ class AbgPersonaController extends Controller {
                     $path = "Photos/verificacion/";
 //                    $nombreBASE = $path . $nombreArchivo;
                     $nombreBASE = $path . "solicitud_verificacion_" . $fecha . $nombreimagen2;
-                    
+
                     $AbgFoto->setCtlEmpresa(null);
 
                     $AbgFoto->setSrc($nombreBASE);

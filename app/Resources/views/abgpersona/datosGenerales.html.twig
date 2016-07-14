@@ -21,6 +21,7 @@
 
         <!-- bootstrap -->
         <script src="{{ asset('Resources/src/js/jquery-2.0.3.min.js')}}"></script>
+           <script  src="{{asset('Resources/src/js/bootstrap.js')}}"></script>
 
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -36,7 +37,9 @@
         <script src="{{ asset('Resources/jquery-validation-1.15.0/dist/jquery.validate.js')}}"></script>
 
         <script type = "text/javascript" >
+
             $(document).ready(function () {
+
                 $("#fgeneral").validate({
                 });
             });
@@ -57,7 +60,7 @@
                         <p class="sans text-uppercase" style="font-size: 20px; margin-top: 16px;  margin-bottom: 20px;">Estas a un paso de .... Complete su información personal</p>
                         <form role="form" id="fgeneral" >
                             <input type="hidden" id="hcodigo" name="hcodigo" value=" {{codigo}}">
-                            <input type="hidden" id="hmetodo" name="hmetodo">
+                            {#  <input type="hidden" id="hmetodo" name="hmetodo">#}
 
                             <div class="form-group sans" >
                                 <label for="nombreEmpleado">Nombre </label>
@@ -152,19 +155,19 @@
                                 </div>
 
                             {%endfor%}
-                            <div class="form-group">
-                                <p class="text-left sans" style="margin-bottom: 0px; margin-top: 15px; font-size: 15px;"><strong>Metodo de pago</strong></p>
-                                <div class="row">
-                                    <div class="col-xs-12" >
-                                        <div class="bd-example" data-example-id="">
-                                            <p class="sans" >
-                                                <button type="button" class="btn btn-success-outline btn-sm"  id="metodo_trial" value="1" >Trial 14 dias</button>
-                                                <button type="button" class="btn btn-primary-outline btn-sm" id="metodo_pago" value="2">Comprar membresia</button>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {# <div class="form-group">
+                                 <p class="text-left sans" style="margin-bottom: 0px; margin-top: 15px; font-size: 15px;"><strong>Metodo de pago</strong></p>
+                                 <div class="row">
+                                     <div class="col-xs-12" >
+                                         <div class="bd-example" data-example-id="">
+                                             <p class="sans" >
+                                                 <button type="button" class="btn btn-success-outline btn-sm"  id="metodo_trial" value="1" >Trial 14 dias</button>
+                                                 <button type="button" class="btn btn-primary-outline btn-sm" id="metodo_pago" value="2">Comprar membresia</button>
+                                             </p>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div>#}
                             <div class="clearfix"></div>
                             <div class="form-group">
                                 <div class="row">
@@ -180,7 +183,9 @@
                 </div>
             </div>
 
+
             <script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
+         
             <script type="text/javascript">
                                                     var Especialida = [];
                                                     var DataEspecialida = [];
@@ -294,78 +299,63 @@
                                                         $('input#hmetodo').val($(this).val());
                                                     });
                                                     var conta = 0;
-                                                    
+
                                                     $(document).on('click', '#enviar', function () {
-                                                        conta = conta + 1;
+                                                  
 
                                                         if (parseInt(DataEspecialida.length) > 0)
                                                         {
-                                                            if ($("#txtnombre").val() !== "" && $("#txtapellido").val() !== "" && ($("#Smunicipio").val() !== "") && ($("#Stitulo").val() !== "") && ($('input:radio[name=rGenero]:checked').val() !== undefined) && ($('input#hmetodo').val() !== ""))
+                                                            if ($("#txtnombre").val() !== "" && $("#txtapellido").val() !== "" && ($("#Smunicipio").val() !== "") && ($("#Stitulo").val() !== "") && ($('input:radio[name=rGenero]:checked').val() !== undefined))
                                                             {
-                                                                //        $("#fgeneral").submit(
-                                                                //            function (event) {
-                                                                $("#enviar").button('loading');
-                                                                $("#enviar").prop("disabled", true);
+                                                                 $("#enviar").prop("disabled", true);
+                                                          //      $("#fgeneral").submit(
+                                                            //            function (event) {
+                                                                       //     $("#enviar").button('loading');
+                                                                           
 
-                                                                $.ajax({
-                                                                    type: "POST",
-                                                                    async: false,
-                                                                    dataType: 'json',
-                                                                    url: Routing.generate('informacion_general'),
-                                                                    data: {datos: $("#fgeneral").serialize(), esp: DataEspecialida, genero: $('input:radio[name=rGenero]:checked').val(), codigo: $('input#hcodigo').val()},
-                                                                    success: function (data)
-                                                                    {
+                                                                            $.ajax({
+                                                                                type: "POST",
+                                                                                async: false,
+                                                                                dataType: 'json',
+                                                                                url: Routing.generate('informacion_general'),
+                                                                                data: {datos: $("#fgeneral").serialize(), esp: DataEspecialida, genero: $('input:radio[name=rGenero]:checked').val(), codigo: $('input#hcodigo').val()},
+                                                                                success: function (data)
+                                                                                {
 
-                                                                        if (data.msj !== "") {
-                                                                            Lobibox.notify("success", {
-                                                                                size: 'mini',
-                                                                                msg: "<p>" + data.msj + "</p>"
+                                                                                    if (data.msj !== "") {
+                                                                                        Lobibox.notify("success", {
+                                                                                            size: 'mini',
+                                                                                            msg: "<p>" + data.msj + "</p>"
+                                                                                        });
+                                                                                        var url = Routing.generate('perfil');
+                                                                                        window.open(url, "_self");
+                                                                               
+
+                                                                                    } else if (data.error !== "") {
+                                                                                        Lobibox.notify("warning", {
+                                                                                            size: 'mini',
+                                                                                            msg: "<p>" + data.error + "</p>"
+                                                                                        });
+                                                                                    }
+                                                                                    $("#enviar").prop("disabled", false);
+                                                                            
+                                                                                },
+                                                                                error: function (errors)
+                                                                                {
+
+                                                                                }
                                                                             });
-
-                                                                            if (data.metodo == 1)
-                                                                            {
-                                                                                var url = Routing.generate('perfil');
-                                                                                window.open(url, "_self");
-                                                                            } else if (data.metodo == 2)
-                                                                            {
-                                                                                var url = Routing.generate('planpago', {id: data.codigo});
-                                                                                window.open(url, "_self");
-                                                                            }
-
-                                                                        } else if (data.error !== "") {
-                                                                            Lobibox.notify("warning", {
-                                                                                size: 'mini',
-                                                                                msg: "<p>" + data.error + "</p>"
-                                                                            });
-                                                                        }
-                                                                        $("#enviar").prop("disabled", false);
-                                                                        $("#enviar").button('reset');
-                                                                    },
-                                                                    error: function (errors)
-                                                                    {
-
-                                                                    }
-                                                                });
-                                                                //   event.preventDefault();
-                                                                //   });
+                                                                      //      event.preventDefault();
+                                                                     //   });
                                                             }
-                                                        } else if ($('input#hmetodo').val() == "") {
-
-                                                            Lobibox.notify("warning", {
-                                                                size: 'mini',
-                                                                msg: "<p> Seleccione un metodo de pago.</p>"
-                                                            });
-
-                                              
                                                         } else {
 
                                                             Lobibox.notify("warning", {
                                                                 size: 'mini',
                                                                 msg: "<p> Seleccione almenos una especialidad.</p>"
                                                             });
-                                                         
+
                                                         }
-                                             
                                                     });
 
                                                     $(document).on('click', '#btnCerrar', function () {
