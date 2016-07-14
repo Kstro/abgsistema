@@ -191,7 +191,7 @@ class AbgFacturacion {
     }
 
     /**
-     * Set fechaPago
+     * Set fechaRegistro
      *
      * @param \DateTime $fechaRegistro
      * @return AbgFacturacion
@@ -203,7 +203,7 @@ class AbgFacturacion {
     }
 
     /**
-     * Get fechaPago
+     * Get fechaRegistro
      *
      * @return \DateTime 
      */

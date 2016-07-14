@@ -27,16 +27,17 @@ class AdministracionController extends Controller {
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $username = $this->container->get('security.context')->getToken()->getUser()->getId();
 
-            $sqlPersona = "select per.id AS id, per.codigo AS codigo, CONCAT(per.nombres, '  ', per.apellido) as nombre, foto.src as src, uper.url as url, fecha_ingreso as fecha,
-        fac.fecha_pago AS fechaPago, fac.servicio AS servicio, fac.plazo,TIMESTAMPDIFF(DAY,CURDATE(),fac.fecha_pago) AS caducidad
-                        from ctl_usuario usu 
-                        inner join abg_persona per on usu.rh_persona_id = per.id
-                        inner join abg_foto foto on foto.abg_persona_id = per.id
-                        inner join abg_url_personalizada uper on uper.abg_persona_id = per.id
-                        inner join abg_facturacion fac on per.id=fac.abg_persona_id and fac.servicio <> 'Espacio publicitario'
-                       where foto.estado = 1 and uper.estado = 1
-                        order by caducidad desc
-                        limit 0, 12";
+            $sqlPersona = "select per.id AS id, per.codigo AS codigo, CONCAT(per.nombres, '  ', per.apellido) as nombre, foto.src as src, uper.url as url, min(DATE_FORMAT(fac.fecha_registro, '%d/%m/%Y')) as fecha,
+                                max(DATE_FORMAT(fac.fecha_pago, '%d/%m/%Y')) AS fechaPago, sum(TIMESTAMPDIFF(DAY, CURDATE(), fac.fecha_pago)) AS caducidad, per.telefono_fijo as fijo, per.telefono_movil as movil
+                            from ctl_usuario usu 
+                                inner join abg_persona per on usu.rh_persona_id = per.id
+                                inner join abg_foto foto on foto.abg_persona_id = per.id
+                                inner join abg_url_personalizada uper on uper.abg_persona_id = per.id
+                                inner join abg_facturacion fac on per.id=fac.abg_persona_id and fac.servicio <> 'Espacio publicitario'
+                            where foto.estado = 1 and uper.estado = 1
+                            group by per.id
+                            order by caducidad asc";
+            
             $stm = $this->container->get('database_connection')->prepare($sqlPersona);
             $stm->execute();
             $result_abogados = $stm->fetchAll();
@@ -94,6 +95,63 @@ class AdministracionController extends Controller {
             $data['msj'] = $e->getMessage();
             return new Response(json_encode($data));
         }
+    }
+    
+    /**
+     * 
+     *
+     * @Route("/abogados/inscritos/data", name="abogados_inscritos_data", options={"expose"=true})
+     */
+    public function dataAbogadosInscritosAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $start = $request->query->get('start');
+        $draw = $request->query->get('draw');
+        $longitud = $request->query->get('length');
+        $busqueda = $request->query->get('search');
+
+        //$abogado = $request->query->get('param1');
+        //$caducidad = $request->query->get('param2');
+        //$fechafin = $request->query->get('param4');
+
+        //$facturacionTotal = $em->getRepository('DGAbgSistemaBundle:AbgFacturacion')->findAll();
+        $abogados['draw'] = $draw++;
+        $abogados['data'] = array();
+
+        $busqueda['value'] = str_replace(' ', '%', $busqueda['value']);
+        $sqlPersona = "select per.id AS id, per.codigo AS codigo, CONCAT(per.nombres, '  ', per.apellido) as nombre, foto.src as src, uper.url as url, min(fac.fecha_registro) as fecha,
+                                max(fac.fecha_pago) AS fechaPago, fac.servicio AS servicio, fac.plazo, sum(TIMESTAMPDIFF(DAY,CURDATE(),fac.fecha_pago)) AS caducidad, per.telefono_fijo as fijo, per.telefono_movil as movil
+                            from ctl_usuario usu 
+                                inner join abg_persona per on usu.rh_persona_id = per.id
+                                inner join abg_foto foto on foto.abg_persona_id = per.id
+                                inner join abg_url_personalizada uper on uper.abg_persona_id = per.id
+                                inner join abg_facturacion fac on per.id=fac.abg_persona_id and fac.servicio <> 'Espacio publicitario'
+                            where foto.estado = 1 and uper.estado = 1
+                            group by per.id
+                            order by caducidad asc";
+            
+        $stm = $this->container->get('database_connection')->prepare($sqlPersona);
+        $stm->execute();
+        $abogados['data'] = $stm->fetchAll();
+
+        $sqlPersona = "select per.id AS id, per.codigo AS codigo, CONCAT(per.nombres, '  ', per.apellido) as nombre, foto.src as src, uper.url as url, min(fac.fecha_registro) as fecha,
+                                max(fac.fecha_pago) AS fechaPago, fac.servicio AS servicio, fac.plazo, sum(TIMESTAMPDIFF(DAY,CURDATE(),fac.fecha_pago)) AS caducidad, per.telefono_fijo as fijo, per.telefono_movil as movil
+                            from ctl_usuario usu 
+                                inner join abg_persona per on usu.rh_persona_id = per.id
+                                inner join abg_foto foto on foto.abg_persona_id = per.id
+                                inner join abg_url_personalizada uper on uper.abg_persona_id = per.id
+                                inner join abg_facturacion fac on per.id=fac.abg_persona_id and fac.servicio <> 'Espacio publicitario'
+                            where foto.estado = 1 and uper.estado = 1
+                            group by per.id
+                            order by caducidad asc";
+            
+        $stm = $this->container->get('database_connection')->prepare($sqlPersona);
+        $stm->execute();
+        $totalAbogados = $stm->fetchAll();
+
+        $facturacion['recordsTotal'] = count($totalAbogados);
+        $facturacion['recordsFiltered'] = count($totalAbogados);
+
+        return new Response(json_encode($facturacion));
     }
     
     /**
