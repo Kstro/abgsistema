@@ -22,18 +22,18 @@
 
                     </div>
                     <p class="sans text-uppercase" style="font-size: 30px; margin-top: 16px; font-weight: 600; margin-bottom: 0px;">
-                        ESTAS A UN PASO MAS DE TU SOLUCION LEGAL
+                        ESTAS A UN PASO más DE TU SOLUCIóN LEGAL
                     </p>
                     <form action="{{ path('envio_pregunta') }}" method="POST" id="formPreg">
                         <label class="sans" style="margin-top: 20px;">Escriba su pregunta</label> <label class="sans" style="margin-top: 20px;color:#F00;">*</label>
-                        <p class="sans" style="font-size: 13px;">Estas a 30 segundos de realizar tu pregunta gratis y encontrar el abogado perfecto para tu situacion legal.</p>
+                        <p class="sans" style="font-size: 13px;">Estas a 30 segundos de realizar tu pregunta gratis y encontrar el abogado perfecto para tu situación legal.</p>
                         <textarea id="txtpregunta" name="pregunta" type="text" maxlength="150"  style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; width: 100%; font-size: 14px;" class="sans" rows="3" placeholder="Escribe tu pregunta aqui.." required>{%if pregunta|default is not empty %}{{pregunta|trim}}{%endif%}</textarea>
-                        <p class="sans" style="font-size: 13px; color: #999999;" id="contador">0 d 150 Charattters</p>
+                        <p class="sans" style="font-size: 13px; color: #999999;" id="contador">0 de 150 caracteres</p>
 
                         <label class="sans" style="margin-top: 15px;">Detalles adicionales</label> <label class="sans" style="margin-top: 20px;color:#F00;">*</label>
                         <p class="sans" style="font-size: 13px;">{#Lorem ipsum dolor sit amet, consectetur adipisicing elit, se.#}</p>
                         <textarea name="detalle"  maxlength="300" id="txtdetalle" type="text" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; width: 100%; font-size: 14px;" class="sans" rows="3" placeholder="Escribe tu pregunta aqui.." required></textarea>
-                        <p class="sans" id="contador_detalle" style="font-size: 13px; color: #999999;">0 d 300 Charattters</p>
+                        <p class="sans" id="contador_detalle" style="font-size: 13px; color: #999999;">0 de 300 caracteres</p>
 
                         <label class="sans" style="margin-top: 15px;">Categoria de tu pregunta</label> <label class="sans" style="margin-top: 20px;color:#F00;">*</label>
                         <p class="sans" style="font-size: 13px;">{#Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -48,7 +48,7 @@
                         </div>
                         <p class="sans" style="margin-top:2px;font-size: 13px; color: #CA2121;" id="validarcat"></p>
 
-                        <label class="sans" style="margin-top: 15px;">Correo Electronico</label> <label class="sans" style="margin-top: 20px;color:#F00;">*</label>
+                        <label class="sans" style="margin-top: 15px;">Correo electrónico</label> <label class="sans" style="margin-top: 20px;color:#F00;">*</label>
                         <p class="sans" style="font-size: 13px;">{#Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
                             tempor incididunt ut labore et dolore magna aliqua.#}</p>
                         <div style="width: 35%;">
@@ -56,8 +56,8 @@
                         </div>
                         <div class="checkbox" style="margin-top: 15px;">
                             <label>
-                                <input id="acuerdo" name="acuerdoTer" type="checkbox" required> Al hacer click estar de acuerdo con los <a href="#">Termino y Condiciones</a>. Tu privacidad sera respesta y tu correo electronico es solamente para dar
-                                un aviso de que la pregunta ya tiene respuesta de parte de nuestros abogados.
+                                <input id="acuerdo" name="acuerdoTer" type="checkbox" required> Al hacer click estarás de acuerdo con los <a href="#">Términos y Condiciones</a>. Tu privacidad será  respetada y tu correo electrónico es solamente para dar
+                                un aviso de que la pregunta ha sido respondida por parte de los abogados registrados en nuestra plataforma.
                             </label>
 
                         </div>
@@ -168,20 +168,20 @@
             $(document).ready(function () {
               
                 $('#categoria').select2();
-                $('#contador').html({{pregunta|length }}+" out of 150 characters");
+                $('#contador').html({{pregunta|length }}+" de 150 caracteres");
                 var max_chars = 150;
                 var max_chars_detalle = 300;
                 $('#max').html(max_chars);
                 $('#txtpregunta').keyup(function () {
                     var chars = $(this).val().length;
                     var diff = chars;
-                    $('#contador').html(diff + " out of 150 characters");
+                    $('#contador').html(diff + " de 150 caracteres");
                 });
 
                 $('#txtdetalle').keyup(function () {
                     var chars = $(this).val().length;
                     var diff = max_chars_detalle - chars;
-                    $('#contador_detalle').html(diff + " out of 300 characters");
+                    $('#contador_detalle').html(diff + " de 300 caracteres");
                 });
                 
                 {#$( "#formPreg" ).submit(function( event ) {

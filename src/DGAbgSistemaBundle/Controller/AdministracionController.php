@@ -232,7 +232,7 @@ class AdministracionController extends Controller {
                                 <td class=\"expander\"></td>
                             </tr>
                         </table>
-                    ");
+                    ","Nueva pregunta ". $idpreg);
                 }
              }
             $em->getConnection()->commit();

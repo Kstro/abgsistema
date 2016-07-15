@@ -250,24 +250,22 @@ class SecuredController extends Controller
 
 
         $this->get('envio_correoRe')->sendEmail($emailPersonaRecomendar, "", "", "",
-                    "
-                        <table style=\"width: 600px; margin: 0 auto;\">
+                    "<table style=\"width: 600px; margin: 0 auto;\">
                           <tr>
                             <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
                             <center>
                               <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
                             </center>
                                 <p>"."Hola " . $nombrePersonaARecomendar. ", te saludamos de abogados.com.sv, queremos notificarte que : <b>".$nombreRecomandador. "</b>  quiere recomendarte a un abogado que se encuentra dentro de nuestra plataforma. </p>  
-           
-                                <p> Puedes ponerte en contacto al siguiente correo: " . $emailAbogado . "</p>
-                                <p> Tambien puedes visitar su perfil en esta direccion: http://marvinvigil.info/directorio07/abgsistema2/".$url."  </p>
+
+                                <p> Puedes visitar su perfil en esta direccion: http://marvinvigil.info/directorio07/abgsistema2/".$url."  </p>
                                 <p>Gracias, por utilizar nuestros servicios</p> 
                                 <p>Saludos.</p>
                             </td>
                             <td class=\"expander\"></td>
                           </tr>
                         </table>
-                    ");
+                    ","Recomendación de abogado");
   
          
        

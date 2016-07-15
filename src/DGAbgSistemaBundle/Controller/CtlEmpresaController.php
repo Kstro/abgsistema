@@ -428,7 +428,7 @@ class CtlEmpresaController extends Controller {
             $ctlEmpresa->setFotoPerfil(null);
             $ctlEmpresa->setFechaFundacion(null);
             $ctlEmpresa->setFax(null);
-            $ctlEmpresa->setDireccion('Direccion empresa');
+            $ctlEmpresa->setDireccion('Dirección empresa');
             $ctlEmpresa->setDescripcion(null);
             $ctlEmpresa->setCorreoelectronico('ejemplo@ejemplo.com');
             $ctlEmpresa->setColor("#000035");
