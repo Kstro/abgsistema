@@ -476,30 +476,36 @@
                                             processData: false,
                                             success: function (response)
                                             {
-                                                console.log('Llego aqui');
+                                                console.log(response.exito);
                                                 
-                                                table.ajax.reload();
-                                                $('#espaciop_abogado').val('').change();
-                                                $('#espaciop_monto').val('');
-                                                $('#espaciop_tipopago').val('').change();
-                                                $('#espaciop_posicion').val('').change();
-                                                $('#espaciop_plazo').val('');
-                                                $('#espaciop_descuento').val('');
-                                                $('#espaciop_descripcion').val('');
-                                                $('#espaciop_tiposervicio').val('').change();
-                                                $('#espaciop_referencia').val('');
+                                                if(response.exito == '1'){
+                                                    table.ajax.reload();
+                                                    $('#espaciop_abogado').val('').change();
+                                                    $('#espaciop_monto').val('');
+                                                    $('#espaciop_tipopago').val('').change();
+                                                    $('#espaciop_posicion').val('').change();
+                                                    $('#espaciop_plazo').val('');
+                                                    $('#espaciop_descuento').val('');
+                                                    $('#espaciop_descripcion').val('');
+                                                    $('#espaciop_tiposervicio').val('').change();
+                                                    $('#espaciop_referencia').val('');
+                                                                                                
+                                                    {#if(tiposervicio == 'Espacio publicitario'){
+                                                        $('#marco-imagen').html('<img src=\"{{ asset('Photos/Perfil/')}}'+response.imagen+'\" style=\"width: 100%; max-width: 100%;margin-bottom: 5px;  border: 1px solid #DCDCDC;\" class=\"img-responsive\" alt=\"Imagen responsive\">');
+
+                                                    }#}
+
+                                                    Lobibox.notify("success", {
+                                                        size: 'mini',
+                                                        msg: 'Datos registrados con exito'
+                                                    });
+
+                                                    return false;                                                
+                                                }  else {
+                                                    console.log('La suscripcion del cliente seleccionado no se ha aprobado');
+                                                    return false;                                                
+                                                }
                                                 
-                                                {#if(tiposervicio == 'Espacio publicitario'){
-                                                    $('#marco-imagen').html('<img src=\"{{ asset('Photos/Perfil/')}}'+response.imagen+'\" style=\"width: 100%; max-width: 100%;margin-bottom: 5px;  border: 1px solid #DCDCDC;\" class=\"img-responsive\" alt=\"Imagen responsive\">');
-
-                                                }#}
-
-                                                Lobibox.notify("success", {
-                                                    size: 'mini',
-                                                    msg: 'Datos registrados con exito'
-                                                });
-
-                                                return false;
                                             },
                                             error: function (xhr, status){
                                                 Lobibox.notify("danger", {

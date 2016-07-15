@@ -3,22 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/AbgFacturacionController.php</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/Layout/layout2.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/Resources/src/js/main_perfil.js</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/CtlEmpresaController.php</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/experienciaLaboral.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgfacturacion/pay.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/verPerfil.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/AbgPersonaController.php</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/perfil.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/perfilPublico.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/Layout/head.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/ctlempresa/formularioContacto.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/ctlempresa/recomendacion.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/mperfil.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/centropreg/preguntas_landing.html.twig</file>
-            <file>file:/home/digitalitygarage/NetBeansProjects/abgsistema/app/Resources/views/abgpersona/datosGenerales.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/AbgFacturacionController.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/DirectorioController.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/administracion/panelPagos.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/perfil_publico/perfilPublico.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/administracion/perfil.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/ctlempresa/index.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/AbgPersonaController.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/AdministracionController.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/administracion/pagos.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/administracion/abogados.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/ctlempresa/perfilPublico.html.twig</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/CtlEmpresaController.php</file>
+            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/Layout/barra_lateral_principal.html.twig</file>
         </group>
     </open-files>
 </project-private>

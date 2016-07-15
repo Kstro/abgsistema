@@ -27,8 +27,8 @@ class AdministracionController extends Controller {
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $username = $this->container->get('security.context')->getToken()->getUser()->getId();
 
-            $sqlPersona = "select per.id AS id, per.codigo AS codigo, CONCAT(per.nombres, '  ', per.apellido) as nombre, foto.src as src, uper.url as url, min(DATE_FORMAT(fac.fecha_registro, '%d/%m/%Y')) as fecha,
-                                max(DATE_FORMAT(fac.fecha_pago, '%d/%m/%Y')) AS fechaPago, sum(TIMESTAMPDIFF(DAY, CURDATE(), fac.fecha_pago)) AS caducidad, per.telefono_fijo as fijo, per.telefono_movil as movil
+            $sqlPersona = "select per.id AS id, per.codigo AS codigo, CONCAT(per.nombres, '  ', per.apellido) as nombre, foto.src as src, uper.url as url, DATE_FORMAT(min(fac.fecha_registro), '%d/%m/%Y') as fecha,
+                                DATE_FORMAT(max(fac.fecha_pago), '%d/%m/%Y') AS fechaPago, sum(TIMESTAMPDIFF(DAY, CURDATE(), fac.fecha_pago)) AS caducidad, per.telefono_fijo as fijo, per.telefono_movil as movil
                             from ctl_usuario usu 
                                 inner join abg_persona per on usu.rh_persona_id = per.id
                                 inner join abg_foto foto on foto.abg_persona_id = per.id
