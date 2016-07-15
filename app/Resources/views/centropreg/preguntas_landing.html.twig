@@ -47,9 +47,9 @@
     <div id="page-content">
         <!-- Como funciona -->
         <div class="container" style="padding-top: 70px; padding-bottom: 70px;">
-            <p class="text-center sans text-uppercase" style="margin-bottom: 5px; font-size: 25px; font-weight: 700;">¿Como funciona?
+            <p class="text-center sans text-uppercase" style="margin-bottom: 5px; font-size: 25px; font-weight: 700;">¿Cómo funciona?
             </p>
-            <p class="text-center" style="font-size: 16px; color: #777777; font-family: 'Montserrat', sans-serif; font-weight: 400;"> ¡Preguntar sobre asuntos legales es muy facil, efectivo y gratis!</p>
+            <p class="text-center" style="font-size: 16px; color: #777777; font-family: 'Montserrat', sans-serif; font-weight: 400;"> ¡Preguntar sobre asuntos legales es muy fácil, efectivo y gratis!</p>
             <div style="border-top: 2px solid #263345; width: 50px; margin-left: auto; margin-right: auto;  margin-bottom: 50px;"></div>
 
             <div class="row">
@@ -57,9 +57,8 @@
                     <p class="text-center">
                         <img src="{{asset('Resources/src/img/perso-01.png')}}" style="width: 50%; max-width: 100%;" class="img-circle">
                     </p>
-                    <p class="text-uppercase text-center" style="font-size: 16px; font-weight: 600; margin-top: 20px; font-family: 'Montserrat', sans-serif; font-weight: 700;">RELIZA TU PREGUNTA</p>
-                    <p class="sans text-center" style="font-size: 13px; color: #888888;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ven.</p>
+                    <p class="text-uppercase text-center" style="font-size: 16px; font-weight: 600; margin-top: 20px; font-family: 'Montserrat', sans-serif; font-weight: 700;">REALIZA TU PREGUNTA</p>
+                    <p class="sans text-center" style="font-size: 13px; color: #888888;">Escribe tu inquietud en el espacio proveído y categoriza tu pregunta en la especialidad de derecho que mejor se adecua a tu caso.</p>
                 </div>
 
                 <div class="col-md-4">
@@ -67,8 +66,9 @@
                         <img src="{{asset('Resources/src/img/perso-02.png')}}" style="width: 50%; max-width: 100%;" class="img-circle">
                     </p>
                     <p class="text-uppercase text-center" style="font-size: 16px; font-weight: 600; margin-top: 20px; font-family: 'Montserrat', sans-serif; font-weight: 700;">RECIBE RESPUESTAS</p>
-                    <p class="sans text-center" style="font-size: 13px; color: #888888;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ven.</p>
+                    <p class="sans text-center" style="font-size: 13px; color: #888888;">La pregunta se enviará a los abogados especializados en ese tipo de derecho. Un máximo de tres abogados podrá responder tu pregunta para brindarte diferentes opiniones.</p>
+                            
+             
                 </div>
 
                 <div class="col-md-4">
@@ -76,20 +76,17 @@
                         <img src="{{asset('Resources/src/img/perso-03.png')}}" style="width: 50%; max-width: 100%;" class="img-circle">
                     </p>
                     <p class="text-uppercase text-center" style="font-size: 16px; font-weight: 600; margin-top: 20px; font-family: 'Montserrat', sans-serif; font-weight: 700;">SELECCIONA TU ABOGADO</p>
-                    <p class="sans text-center" style="font-size: 13px; color: #888888;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ven.</p>
+                    <p class="sans text-center" style="font-size: 13px; color: #888888;">Recibirás las respuestas y tu podrás elegir el abogado que mejor te convenga para solucionar tú caso. ¡Así de fácil!</p>
                 
                     
             </div>
           
-</div><a  href="#pregunta_gratis" style="font-size: 13px; border: 1px solid #d2d6de; background-color: transparent; border-radius: 2px; padding: 6px 12px; ">
-                <span class="sans" style="color: #333;">Pregunte gratis ahora mismo</span>
-            </a>
+</div>
         </div>
         <div class="container-fluid" style="padding-top: 50px; padding-bottom: 50px; background-color: #bfdbef;">
               
             <div class="container">
-                
+              
                 <!-- <div class="col-md-1">
                         <div>
                                 <p class="text-center"><img src="src/img/iconos/abo.png" style="width: 50%;"></p>
@@ -107,6 +104,13 @@
                         </div>
                 </div> -->
                 <div class="col-md-4">
+                         {#<div style="margin-top: -57px; padding-bottom: 20px;">#}
+                         <div class="text-center" style="position: absolute; top: -62px; left: 75px;">
+                    <a  href="#pregunta_gratis" style="text-decoration: none; font-size: 15px; border: 1px solid #d2d6de; background-color: #082242; border-radius: 2px; padding: 6px 12px;">
+                <span class="sans" style="color: #FFF;">Pregunte gratis ahora mismo</span>
+            </a>
+                    </div>
+                 
                     <p class="text-center"><img src="{{asset('Resources/src/img/iconos/pregu.png')}}" style="width: 20%;"></p>
                     <p class="text-center" style="font-size: 30px; font-weight: 700; margin-bottom: 0; font-family: 'Montserrat', sans-serif; font-weight: 700;">{{Npreguntas}}</p>
                     <p class="text-center" style="font-size: 15px; margin-top: 0; font-family: 'Montserrat', sans-serif; font-weight: 700;">Preguntas realizadas</p>
@@ -131,17 +135,17 @@
                 <div class="row">
                     <div class="col-md-5">
                         <p class="text-left sans text-uppercase" style="font-size: 20px; font-weight: 600;">
-                            gratis, respuestas personalizadas de nuestra red de abogados expertos.
+                            respuestas personalizadas gratuitas de nuestra red de abogados expertos.
                         </p>
-                        <p class="sans">Los Abogados de nuestra red estan listos para responder tus preguntas casi instantaneamente.</p>
-                        <p class="sans" style="font-size: 12px;">Aviso: Estas respuestas son solamente de referencia a su caso, debe de realizar una contratacion para poder obtener ayuda legal de un profesional.</p>
+                        <p class="sans">Los abogados de nuestra red están listos para responder tus preguntas casi instantáneamente.</p>
+                        <p class="sans" style="font-size: 12px;">Aviso: Estas respuestas son solamente de referencia a su caso, debe de realizar una contratación para poder obtener ayuda legal de un profesional.</p>
                     </div>
                     <div class="col-md-7">
                         <form action="{{ path('preg_deta') }}" method="POST">
-                            <textarea class="sans" id="txtpregunta" name="txtpregunta" maxlength="150" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; width: 100%;" rows="3" placeholder="Escriba su pregunta aqui..." required></textarea>
+                            <textarea class="sans" id="txtpregunta" name="txtpregunta" maxlength="150" style="border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; width: 100%;" rows="3" placeholder="Escriba su pregunta aquí" required></textarea>
                             <div class="row">
                                 <div class="col-ms-6 col-xs-6">
-                                    <p class="sans" style="margin-top: 10px;" id="contador">0 out of 150 characters</p>
+                                    <p class="sans" style="margin-top: 10px;" id="contador">0 de 150 caracteres</p>
                                 </div>
                                 <div class="col-ms-6 col-xs-6">
                                     <p class="pull-right" style="margin-top: 10px;">
@@ -163,10 +167,9 @@
                 <div class="col-md-9">
                     <div class=" row">
                         <div class="col-ms-12 col-xs-12">
-                            <p class="sans" style="font-size: 20px; margin-bottom: 5px; font-weight: 600;">Busqueda de Preguntas por Area de Especialidad</p>
+                            <p class="sans" style="font-size: 20px; margin-bottom: 5px; font-weight: 600;">Búsqueda de preguntas por área de especialidad</p>
                             <div style="border-top: 3px solid #263345; width: 150px; margin-bottom: 8px;"></div>
-                            <p class="sans">¿Necesitas ayuda para poder encontrar un profesional del derecho? ... realiza una pregunta y un maximo de 3 abogados
-                                te responderan. Recuerda, no publiques informacion privada y contacta el abogado de tu eleccion.</p>
+                            <p class="sans">Busque preguntas recientes por especialidad hechas por distintos usuarios y vea las respuestas que obtuvo. Recuerda no compartir información privada y contacta al abogado de tu elección en los medios que él o ella provee en su perfil profesional.</p>
                         </div>
                     </div>
 
@@ -177,7 +180,7 @@
                             <div style="margin-top: 25px;">
                                 <form action="{{ path('respuestas_publicas') }}" method="GET">
                                     <div class="col-md-6 col-xs-12">
-                                        <input class="search sans" id="searchInput" name="txtgeneral" style="margin: 5px; border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%;" placeholder="Solucion legal o Nombre de abogado." >
+                                        <input class="search sans" id="searchInput" name="txtgeneral" style="margin: 5px; border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%;" placeholder="Solución legal o nombre de abogado" >
                                     </div>
                                     <div class="col-md-4 col-xs-12">
                                         <input class="search sans" id="searchInputDept" name="txtlugar" style="margin: 5px;border: 1px solid #d2d6de; border-radius: 0; padding: 6px 12px; height: 34px; width: 100%;" placeholder="Cuidad, Dept">
@@ -283,7 +286,7 @@
         $('#txtpregunta').keyup(function () {
             var chars = $(this).val().length;
             var diff = chars;
-            $('#contador').html(diff + " out of 150 characters");
+            $('#contador').html(diff + " de 150 caracteres");
         });
 
         $('a[href=#pregunta_gratis]').click(function () {

@@ -1,14 +1,4 @@
-{% block descripcion_y_acciones %}
 
-    {% block descripcion %}
-
-    {% endblock%}
-    {% block acciones %}
-
-
-    {% endblock %}
-
-{% endblock %}
 {% block js_extend %}
     <script src="{{ asset('Resources/js/editarPerfilPublico.js')}}"></script>
     <script type="text/javascript">
@@ -30,9 +20,7 @@
 
 {% block navegacion_Y_body %}
 
-    {% block navegacion %}
-
-    {% endblock %}
+    
 
 
     {% block cuerpo %}
@@ -294,7 +282,7 @@
 
                     <div class="box box-widget">
                         <div class="box-header with-border">
-                            <h3 class="box-title" style="margin-left: 10px;">UN POCO SOBRE MI</h3>
+                            <h3 class="box-title" style="margin-left: 10px;">UN POCO SOBRE MÍ</h3>
                         </div>
                         <div class="box-body" style="margin: 10px; padding-bottom:20px;">
 
@@ -377,7 +365,7 @@
                                                                                                     'Jul'  : 'Julio',
                                                                                                     'Aug'  : 'Agosto',
                                                                                                     'Sep'  : 'Septiembre',
-                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Oct'  : 'Octubre',
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}} - Actualmente
@@ -392,7 +380,7 @@
                                                                                                     'Jul'  : 'Julio',
                                                                                                     'Aug'  : 'Agosto',
                                                                                                     'Sep'  : 'Septiembre',
-                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Oct'  : 'Octubre',
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}} - {{datos.fechaFin|date("M Y", "America/El_Salvador")|replace({
@@ -425,7 +413,7 @@
                 {%if Edu|default is not empty %}
                     <div class="box box-widget">
                         <div class="box-header with-border">
-                            <h3 class="box-title" style="margin-left: 10px;">EDUCACION</h3>
+                            <h3 class="box-title" style="margin-left: 10px;">EDUCACIÓN</h3>
                         </div>
                         <div class="box-body" style="margin: 10px;">
                             {% for datos in Edu %}
@@ -470,7 +458,7 @@
 
                     <div class="box box-widget">
                         <div class="box-header with-border">
-                            <h3 class="box-title" style="margin-left: 10px;">ORGANIZACION</h3>
+                            <h3 class="box-title" style="margin-left: 10px;">ORGANIZACIÓN</h3>
                         </div>
                         <div class="box-body" style="margin: 10px;">
                             {% for datos in Organizacion %}
@@ -488,7 +476,7 @@
                                                                                                     'Jul'  : 'Julio',
                                                                                                     'Aug'  : 'Agosto',
                                                                                                     'Sep'  : 'Septiembre',
-                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Oct'  : 'Octubre',
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}} - {{datos.fechaFin|date("M Y", "America/El_Salvador")|replace({
@@ -501,7 +489,7 @@
                                                                                                     'Jul'  : 'Julio',
                                                                                                     'Aug'  : 'Agosto',
                                                                                                     'Sep'  : 'Septiembre',
-                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Oct'  : 'Octubre',
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}}</span>
@@ -519,7 +507,7 @@
 
                     <div class="box box-widget">
                         <div class="box-header with-border">
-                            <h3 class="box-title" style="margin-left: 10px;">CERTIFICACION</h3>
+                            <h3 class="box-title" style="margin-left: 10px;">CERTIFICACIÓN</h3>
                         </div>
                         <div class="box-body" style="margin: 10px;">
                             {% for datos in Certificacion %}
@@ -537,7 +525,7 @@
                                                                                                     'Jul'  : 'Julio',
                                                                                                     'Aug'  : 'Agosto',
                                                                                                     'Sep'  : 'Septiembre',
-                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Oct'  : 'Octubre',
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}} - {{datos.fechaFin|date("M Y", "America/El_Salvador")|replace({
@@ -550,7 +538,7 @@
                                                                                                     'Jul'  : 'Julio',
                                                                                                     'Aug'  : 'Agosto',
                                                                                                     'Sep'  : 'Septiembre',
-                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Oct'  : 'Octubre',
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}}</span>
@@ -586,7 +574,7 @@
                                                                                                     'Jul'  : 'Julio',
                                                                                                     'Aug'  : 'Agosto',
                                                                                                     'Sep'  : 'Septiembre',
-                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Oct'  : 'Octubre',
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}} - {{datos.fechaFin|date("M Y", "America/El_Salvador")|replace({
@@ -599,7 +587,7 @@
                                                                                                     'Jul'  : 'Julio',
                                                                                                     'Aug'  : 'Agosto',
                                                                                                     'Sep'  : 'Septiembre',
-                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Oct'  : 'Octubre',
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}}</span>

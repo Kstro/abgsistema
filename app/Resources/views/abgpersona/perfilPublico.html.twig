@@ -248,7 +248,7 @@
                                     </div>
                                 {%endif%}
                                 <!-- EDUCACION MAS RECIENTE -->
-                                {%if sitio|default is not empty %}
+                                {#%if sitio|default is not empty %}
                                     <div class="row">
                                         <div class="col-xs-4" style="padding-right: 0;">
                                             <span style="color: #4444444; font-size: 11px; margin-left: 10px;">Sitio Web</span>
@@ -266,7 +266,7 @@
                                             </span>
                                         </div>
                                     </div>
-                                {%endif%}
+                                {%endif%#}
 
                             </div>
                             {% if is_granted('ROLE_ADMIN') %}
@@ -303,7 +303,7 @@
                             <div class=" col-sm-6 col-xs-12">
                                 <div class="row">
                                     <div class="col-sm-6 col-xs-6">
-                                        <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Telefono(s)</strong></p>
+                                        <p style="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong>Teléfono(s)</strong></p>
                                         <p style="font-size: 11px; margin-bottom: 0px;">
                                             +503  
                                             {%if datos.movil|default is not empty %}{{datos.movil}}
@@ -367,7 +367,7 @@
 
                     <div class="box box-widget" style="border: 1px solid #e0e0e0;">
                         <div class="box-header with-border">
-                            <h3 class="box-title" style=" margin-left: 10px;">UN POCO SOBRE MI</h3>
+                            <h3 class="box-title" style=" margin-left: 10px;">UN POCO SOBRE MÍ</h3>
                         </div>
                         <div class="box-body" style="margin-left: 10px; margin-right: 10px; padding-bottom: 20px;">
 
@@ -450,7 +450,7 @@
                                                                                                     'Jul'  : 'Julio',
                                                                                                     'Aug'  : 'Agosto',
                                                                                                     'Sep'  : 'Septiembre',
-                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Oct'  : 'Octubre',
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}} - Actualmente
@@ -465,7 +465,7 @@
                                                                                                     'Jul'  : 'Julio',
                                                                                                     'Aug'  : 'Agosto',
                                                                                                     'Sep'  : 'Septiembre',
-                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Oct'  : 'Octubre',
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}} - {{datos.fechaFin|date("M Y", "America/El_Salvador")|replace({
@@ -478,7 +478,7 @@
                                                                                                     'Jul'  : 'Julio',
                                                                                                     'Aug'  : 'Agosto',
                                                                                                     'Sep'  : 'Septiembre',
-                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Oct'  : 'Octubre',
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}} (&nbsp;{{(datos.dias/365)|round(0, 'floor')}} años {{(((datos.dias/365)-(datos.dias/365)|round(0, 'floor'))*12)|round(0, 'floor')}} meses) 
@@ -498,7 +498,7 @@
                 {%if Edu|default is not empty %}
                     <div class="box box-widget" id="divEducacion" style="border: 1px solid #e0e0e0;">
                         <div class="box-header with-border">
-                            <h3 class="box-title" style=" margin-left: 10px;">EDUCACION</h3>
+                            <h3 class="box-title" style=" margin-left: 10px;">EDUCACIÓN</h3>
                         </div>
                         <div class="box-body" style="margin: 10px;">
                             {% for datos in Edu %}
@@ -541,7 +541,7 @@
 
                     <div class="box box-widget" style="border: 1px solid #e0e0e0;">
                         <div class="box-header with-border">
-                            <h3 class="box-title" style=" margin-left: 10px;">ORGANIZACION</h3>
+                            <h3 class="box-title" style=" margin-left: 10px;">ORGANIZACIÓN</h3>
                         </div>
                         <div class="box-body" style="margin: 10px;">
                             {% for datos in Organizacion %}
@@ -559,7 +559,7 @@
                                                                                                     'Jul'  : 'Julio',
                                                                                                     'Aug'  : 'Agosto',
                                                                                                     'Sep'  : 'Septiembre',
-                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Oct'  : 'Octubre',
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}} - {{datos.fechaFin|date("M Y", "America/El_Salvador")|replace({
@@ -572,7 +572,7 @@
                                                                                                     'Jul'  : 'Julio',
                                                                                                     'Aug'  : 'Agosto',
                                                                                                     'Sep'  : 'Septiembre',
-                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Oct'  : 'Octubre',
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}}</span>
@@ -588,7 +588,7 @@
                 {%if Certificacion|default is not empty %}
                     <div class="box box-widget" style="border: 1px solid #e0e0e0;">
                         <div class="box-header with-border">
-                            <h3 class="box-title" style=" margin-left: 10px;">CERTIFICACION</h3>
+                            <h3 class="box-title" style=" margin-left: 10px;">CERTIFICACIÓN</h3>
                         </div>
                         <div class="box-body" style="margin: 10px;">
                             {% for datos in Certificacion %}
@@ -606,7 +606,7 @@
                                                                                                     'Jul'  : 'Julio',
                                                                                                     'Aug'  : 'Agosto',
                                                                                                     'Sep'  : 'Septiembre',
-                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Oct'  : 'Octubre',
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}} - {{datos.fechaFin|date("M Y", "America/El_Salvador")|replace({
@@ -619,7 +619,7 @@
                                                                                                     'Jul'  : 'Julio',
                                                                                                     'Aug'  : 'Agosto',
                                                                                                     'Sep'  : 'Septiembre',
-                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Oct'  : 'Octubre',
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}}</span>
@@ -653,7 +653,7 @@
                                                                                                     'Jul'  : 'Julio',
                                                                                                     'Aug'  : 'Agosto',
                                                                                                     'Sep'  : 'Septiembre',
-                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Oct'  : 'Octubre',
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}} - {{datos.fechaFin|date("M Y", "America/El_Salvador")|replace({
@@ -666,7 +666,7 @@
                                                                                                     'Jul'  : 'Julio',
                                                                                                     'Aug'  : 'Agosto',
                                                                                                     'Sep'  : 'Septiembre',
-                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Oct'  : 'Octubre',
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}}</span>
