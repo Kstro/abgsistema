@@ -36,7 +36,7 @@ class AbgPanelCentroRespuestaController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $username= $this->container->get('security.context')->getToken()->getUser();
-           
+       
             $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
                     . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.codigo as codigo "
                     . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
@@ -70,8 +70,11 @@ class AbgPanelCentroRespuestaController extends Controller {
             
             $username = $this->container->get('security.context')->getToken()->getUser();
             $personaId = $username->getRhPersona();
-            $abgfoto = $em->getRepository('DGAbgSistemaBundle:AbgFoto')->findOneBy(array('abgPersona' => $personaId));
-            
+              $dql_departamento = "SELECT  af.src "
+                    . " FROM DGAbgSistemaBundle:AbgFoto af WHERE af.tipoFoto=0 AND af.abgPersona=".$idPersona;
+            $foto = $em->createQuery($dql_departamento)->getArrayResult();
+
+            $srcfoto = $foto[0]['src'];
             $abgRespuestaPregunta = $em->getRepository('DGAbgSistemaBundle:AbgRespuestaPregunta');
                 
             $Respuesta = $abgRespuestaPregunta->findBy(array('abgPregunta' => $id, 'ctlUsuario' => $username));
@@ -102,7 +105,8 @@ class AbgPanelCentroRespuestaController extends Controller {
                     $tiempoRes = NULL;
                 }
             }
-            $srcfoto = $abgfoto->getSrc();
+       //     $srcfoto = $abgfoto->getS;
+            
             return $this->render('panelcentropregabog/panelRespuestaPregunta.html.twig', array('pregunta' => $pregunta,
                 'nombreCorto'=>$nombreCorto,
                 'srcfoto' => $srcfoto,

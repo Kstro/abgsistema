@@ -68,7 +68,7 @@ class AbgCentroPreguntasController extends Controller {
         $Npreguntas = $em->createQuery($dqlNpreguntas)->getArrayResult();
 
         $dqlNabg = "select count(pre.id) as totalpersonas
-                from DGAbgSistemaBundle:AbgPersona pre ";
+                from DGAbgSistemaBundle:AbgPersona pre WHERE pre.id>1 ";
         $NAbg = $em->createQuery($dqlNabg)->getArrayResult();
 
         $sql_preguntas_resiente = "SELECT  pre.id, usu.id,CONCAT(per.nombres, '  ', per.apellido) as nombres, uper.url as url, fot.src AS src, "
