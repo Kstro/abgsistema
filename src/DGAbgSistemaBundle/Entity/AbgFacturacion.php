@@ -34,6 +34,13 @@ class AbgFacturacion {
      * @ORM\Column(name="fecha_registro", type="date", nullable=false)
      */
     private $fechaRegistro;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_registro", type="date", nullable=false)
+     */
+    private $fechaAprobado;
 
     /**
      * @var float
@@ -116,6 +123,16 @@ class AbgFacturacion {
      * })
      */
     private $ctlPromociones;
+    
+    /**
+     * @var \AbgCodigoPromocional
+     *
+     * @ORM\ManyToOne(targetEntity="AbgCodigoPromocional")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="codigo_promocional", referencedColumnName="id")
+     * })
+     */
+    private $codigoPromocional;
 
     /**
      * @var integer
@@ -209,6 +226,27 @@ class AbgFacturacion {
      */
     public function getFechaRegistro() {
         return $this->fechaRegistro;
+    }
+    
+    /**
+     * Set fechaAprobado
+     *
+     * @param \DateTime $fechaAprobado
+     * @return AbgFacturacion
+     */
+    public function setFechaAprobado($fechaAprobado) {
+        $this->fechaAprobado = $fechaAprobado;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaAprobado
+     *
+     * @return \DateTime 
+     */
+    public function getFechaAprobado() {
+        return $this->fechaAprobado;
     }
 
     /**
@@ -461,6 +499,27 @@ class AbgFacturacion {
      */
     public function getCtlPromociones() {
         return $this->ctlPromociones;
+    }
+    
+    /**
+     * Set codigoPromocional
+     *
+     * @param \DGAbgSistemaBundle\Entity\AbgCodigoPromocional $codigoPromocional
+     * @return AbgFacturacion
+     */
+    public function setCodigoPromocional(\DGAbgSistemaBundle\Entity\AbgCodigoPromocional $codigoPromocional = null) {
+        $this->codigoPromocional = $codigoPromocional;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoPromocional
+     *
+     * @return \DGAbgSistemaBundle\Entity\AbgCodigoPromocional 
+     */
+    public function getCodigoPromocional() {
+        return $this->codigoPromocional;
     }
 
 }

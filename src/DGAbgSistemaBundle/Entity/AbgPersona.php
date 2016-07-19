@@ -125,6 +125,20 @@ class AbgPersona
      * @ORM\Column(name="codigo", type="string", length=15, nullable=false)
      */
     private $codigo;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="motivo_aprobacion", type="string", nullable=true)
+     */
+    private $motivoAprobacion;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="perfil_aprobado", type="integer", nullable=true)
+     */
+    private $perfilAprobado;
 
     /**
      * @var \CtlCiudad
@@ -574,6 +588,54 @@ class AbgPersona
         return $this->codigo;
     }
 
+    
+    /**
+     * Set motivoAprobacion
+     *
+     * @param string $motivoAprobacion
+     * @return AbgPersona
+     */
+    public function setMotivoAprobacion($motivoAprobacion)
+    {
+        $this->motivoAprobacion = $motivoAprobacion;
+
+        return $this;
+    }
+
+    /**
+     * Get motivoAprobacion
+     *
+     * @return string 
+     */
+    public function getMotivoAprobacion()
+    {
+        return $this->motivoAprobacion;
+    }
+
+    /**
+     * Set perfilAprobado
+     *
+     * @param integer $perfilAprobado
+     * @return AbgPersona
+     */
+    public function setPerfilAprobado($perfilAprobado)
+    {
+        $this->perfilAprobado = $perfilAprobado;
+
+        return $this;
+    }
+
+    /**
+     * Get perfilAprobado
+     *
+     * @return integer 
+     */
+    public function getPerfilAprobado()
+    {
+        return $this->perfilAprobado;
+    }
+    
+    
     /**
      * Set ctlCiudad
      *

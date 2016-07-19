@@ -12,19 +12,29 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/AbgFacturacionController.php</file>
-            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/DirectorioController.php</file>
-            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/administracion/panelPagos.html.twig</file>
-            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/perfil_publico/perfilPublico.html.twig</file>
-            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/administracion/perfil.html.twig</file>
-            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/ctlempresa/index.html.twig</file>
-            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/AbgPersonaController.php</file>
-            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/AdministracionController.php</file>
-            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/administracion/pagos.html.twig</file>
-            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/administracion/abogados.html.twig</file>
-            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/ctlempresa/perfilPublico.html.twig</file>
-            <file>file:/home/mario/NetBeansProjects/abgsistema/src/DGAbgSistemaBundle/Controller/CtlEmpresaController.php</file>
-            <file>file:/home/mario/NetBeansProjects/abgsistema/app/Resources/views/Layout/barra_lateral_principal.html.twig</file>
+            <file>file:/var/www/html/abgsistema/src/DGAbgSistemaBundle/Entity/AbgCodigoPromocional.php</file>
+            <file>file:/var/www/html/abgsistema/app/Resources/views/blog/bloglist.html.twig</file>
+            <file>file:/var/www/html/abgsistema/src/DGAbgSistemaBundle/Controller/AdmPromocionesController.php</file>
+            <file>file:/var/www/html/abgsistema/src/DGAbgSistemaBundle/Controller/AbgFacturacionController.php</file>
+            <file>file:/var/www/html/abgsistema/app/Resources/views/blog/blog.html.twig</file>
+            <file>file:/var/www/html/abgsistema/app/Resources/views/Layout/barra_lateral_principal.html.twig</file>
+            <file>file:/var/www/html/abgsistema/app/Resources/views/administracion/verificarNotarios.html.twig</file>
+            <file>file:/var/www/html/abgsistema/src/DGAbgSistemaBundle/Controller/AdministracionController.php</file>
+            <file>file:/var/www/html/abgsistema/app/Resources/views/administracion/verificacionAbg.html.twig</file>
+            <file>file:/var/www/html/abgsistema/app/config/parameters.yml</file>
+            <file>file:/var/www/html/abgsistema/src/DGAbgSistemaBundle/Entity/AbgEstudio.php</file>
+            <file>file:/var/www/html/abgsistema/app/Resources/views/centropreg/pendienteAprobacion.html.twig</file>
+            <file>file:/var/www/html/abgsistema/app/Resources/views/abgpersona/verificaNotario.html.twig</file>
+            <file>file:/var/www/html/abgsistema/app/Resources/views/admpromociones/promociones.html.twig</file>
+            <file>file:/var/www/html/abgsistema/src/DGAbgSistemaBundle/Entity/AbgPagadito.php</file>
+            <file>file:/var/www/html/abgsistema/app/Resources/views/administracion/panelPagos.html.twig</file>
+            <file>file:/var/www/html/abgsistema/src/DGAbgSistemaBundle/Entity/AbgFacturacion.php</file>
+            <file>file:/var/www/html/abgsistema/app/Resources/views/administracion/pagos.html.twig</file>
+            <file>file:/var/www/html/abgsistema/src/DGAbgSistemaBundle/Controller/CtlEmpresaController.php</file>
+            <file>file:/var/www/html/abgsistema/app/Resources/views/administracion/abogados.html.twig</file>
+            <file>file:/var/www/html/abgsistema/app/Resources/views/abgpersona/verificacion.html.twig</file>
+            <file>file:/var/www/html/abgsistema/src/DGAbgSistemaBundle/Services/EmailService.php</file>
+            <file>file:/var/www/html/abgsistema/app/Resources/views/admpromociones/detallesFacturacion.html.twig</file>
         </group>
     </open-files>
 </project-private>
