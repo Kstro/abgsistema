@@ -38,7 +38,7 @@ class AbgFacturacion {
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_registro", type="date", nullable=false)
+     * @ORM\Column(name="fecha_aprobado", type="date", nullable=false)
      */
     private $fechaAprobado;
 

@@ -178,7 +178,31 @@ class AdministracionController extends Controller {
         //$preguntas = $em->getRepository('DGAbgSistemaBundle:AbgPregunta')->findBy(array('estado' => 2));
         
         return $this->render('centropreg/panelAprobacionPreguntas.html.twig', array(/*'preguntas' => $preguntas,*/ 'nombreCorto' => $nombreCorto, 'abgFoto' => $result_foto, 'abgPersona' => $result_persona));
-    }
+    }   
+    
+    /**
+     * Lista de abogados pendientes de aprobacion 
+     *
+     * @Route("/aprobacion-perfiles/lista", name="lista_aprobacion_perfiles_abogados")
+     * @Method("GET")
+     */
+    public function listaAprobacionPerfilesAction() {
+        $em = $this->getDoctrine()->getManager();
+        
+        $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+
+        $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
+                . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.tituloProfesional AS tprofesional, p.verificado As verificado "
+                . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
+        $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+        $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
+
+        $dqlfoto = "SELECT fot.src as src "
+                . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
+        $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+        
+        return $this->render('administracion/panelAprobacionPerfil.html.twig', array('nombreCorto' => $nombreCorto, 'abgFoto' => $result_foto, 'abgPersona' => $result_persona));
+    }   
     
     /**
      * Aprobación de la pregunta seleccionada
@@ -363,6 +387,64 @@ class AdministracionController extends Controller {
         $preguntas['recordsFiltered']= count($preguntasPendientes);
         
         return new Response(json_encode($preguntas));
+    }
+    
+    /**
+     * 
+     *
+     * @Route("/aprobacion/perfiles-pendientes/data", name="perfiles_pendientes_data", options={"expose"=true})
+     */
+    public function dataPerfilesPendientesAprobacionAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $start = $request->query->get('start');
+        $draw = $request->query->get('draw');
+        $longitud = $request->query->get('length');
+        $busqueda = $request->query->get('search');
+        
+        $pPendientes = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->findBy(array('estado' => 3));
+        $perfiles['draw']=$draw++;  
+        $perfiles['data']= array();
+        
+        $busqueda['value'] = str_replace(' ', '%', $busqueda['value']);
+        $rsm = new ResultSetMapping();
+
+        $sql = "SELECT per.id as idAbg, per.codigo, per.nombres, per.apellido, per.estado, DATE_FORMAT(per.fecha_ingreso,'%d/%m/%Y') as fecha "
+                . "FROM abg_facturacion fac RIGHT OUTER JOIN abg_persona per on fac.abg_persona_id = per.id "
+                . "WHERE per.estado = 3 AND per.codigo <> '' "
+                . "ORDER BY per.fecha_ingreso DESC LIMIT $start, $longitud ";
+        
+        $rsm->addScalarResult('idAbg','idAbg');
+        $rsm->addScalarResult('codigo','codigo');
+        $rsm->addScalarResult('nombres','nombres');
+        $rsm->addScalarResult('apellido','apellido');
+        $rsm->addScalarResult('fecha','fecha');
+        $rsm->addScalarResult('estado','estado');
+
+        $resultadoSql = $em->createNativeQuery($sql, $rsm)
+                                  ->getResult();
+        
+        $perfilesPtes = array();
+        
+        foreach ($resultadoSql as $key => $value) {
+            $start++;
+            
+            $perfilesPtes['corr'] = '<div class="text-center">' . $start . '</div>';
+            $perfilesPtes['idAbg'] = '<div class="text-center">' . $value['codigo']. '</div>';
+            $perfilesPtes['abogado'] = $value['nombres'] . ' ' .  $value['apellido'];
+            $perfilesPtes['fecha'] = '<div class="text-center">' . $value['fecha'] . '</div>';
+            $perfilesPtes['link'] = '<div class="text-center">'
+                                . '<button type="button" class="btn btn-default btn-xs detalle" style="margin-right: 3px" data-toggle="tooltip"  data-container="body" title="Mostrar detalle de abogado" id="' .$value['idAbg'] . '">'
+                                . '<span class="glyphicon glyphicon-eye-open">'
+                                . '</span></button>';
+                              
+            array_push($perfiles['data'], $perfilesPtes);
+        }
+        
+        $perfiles['recordsTotal'] = count($pPendientes);
+        $perfiles['recordsFiltered']= count($pPendientes);
+        
+        return new Response(json_encode($perfiles));
     }
     
     /**

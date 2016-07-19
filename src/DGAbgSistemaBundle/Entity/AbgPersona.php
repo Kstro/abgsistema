@@ -136,7 +136,7 @@ class AbgPersona
     /**
      * @var integer
      *
-     * @ORM\Column(name="perfil_aprobado", type="integer", nullable=true)
+     * @ORM\Column(name="perfil_aprobacion", type="integer", nullable=true)
      */
     private $perfilAprobado;
 

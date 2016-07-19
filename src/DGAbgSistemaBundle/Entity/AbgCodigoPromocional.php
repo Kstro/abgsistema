@@ -141,7 +141,7 @@ class AbgCodigoPromocional
      */
     public function setAbgPersona(\DGAbgSistemaBundle\Entity\AbgPersona $persona = null)
     {
-        $this->abgPersona = $persona;
+        $this->persona = $persona;
 
         return $this;
     }
