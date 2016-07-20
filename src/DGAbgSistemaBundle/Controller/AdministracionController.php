@@ -34,7 +34,7 @@ class AdministracionController extends Controller {
                                 inner join abg_foto foto on foto.abg_persona_id = per.id
                                 inner join abg_url_personalizada uper on uper.abg_persona_id = per.id
                                 inner join abg_facturacion fac on per.id=fac.abg_persona_id and fac.servicio <> 'Espacio publicitario'
-                            where foto.estado = 1 and uper.estado = 1
+                            where uper.estado = 1
                             group by per.id
                             order by caducidad asc";
             
@@ -183,7 +183,7 @@ class AdministracionController extends Controller {
     /**
      * Lista de abogados pendientes de aprobacion 
      *
-     * @Route("/aprobacion-perfiles/lista", name="lista_aprobacion_perfiles_abogados")
+     * @Route("/aprobacion-perfiles/lista", name="lista_aprobacion_perfiles_abogados", options={"expose"=true})
      * @Method("GET")
      */
     public function listaAprobacionPerfilesAction() {
@@ -278,6 +278,75 @@ class AdministracionController extends Controller {
     }
     
     /**
+     * Aprobación de la pregunta seleccionada
+     *
+     * @Route("/admin-activar-abogado", name="admin_activar_abogado", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function activarAbogadoAction() {
+        
+        try {
+            $request = $this->getRequest();
+            $idabg = $request->get('idabg');
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction();
+            $abogado = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->find($idabg);
+            
+            //$especialidad = $abgPregunta->getAbgEspecialidad()->getId();
+            
+//            $sql = "SELECT abg_persona.correoelectronico 
+//                    FROM ctl_usuario JOIN abg_persona
+//                      on  ctl_usuario.rh_persona_id=abg_persona.id AND ctl_usuario.notificacion = 1 AND abg_persona.estado IN(0,1)
+//                    JOIN ctl_rol_usuario
+//                      ON ctl_usuario.id=ctl_rol_usuario.ctl_usuario_id AND ctl_rol_usuario.ctl_rol_id = 2
+//                    JOIN abg_persona_especialidad 
+//                      ON abg_persona_especialidad.abg_persona_id=abg_persona.id 
+//                    AND abg_persona_especialidad.ctl_especialidad_id=" . $especialidad;
+//            
+//            $stmt = $em->getConnection()->prepare($sql);
+//            $stmt->execute();
+//            $coenv = $stmt->fetchAll();
+           
+            $abogado->setEstado(1);
+            $abogado->setPerfilAprobado(1);
+            $abogado->setMotivoAprobacion('Perfil de abogado se ha aprobado');
+            $em->merge($abogado);
+            $em->flush();
+             
+            $email = $abogado->getCorreoelectronico();            
+            $this->get('envio_correo')->sendEmail($email, "", "", "", "
+                <table style=\"width: 540px; margin: 0 auto;\">
+                    <tr>
+                        <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
+                        <center>
+                            <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
+                        </center>                                                
+                            <p>Hola " . $abogado->getNombres() . " " . $abogado->getApellido() . ", su perfil ha sido activado. </p>                                     
+                        </td>
+                        <td class=\"expander\"></td>
+                    </tr>
+                </table>
+            ","Activacion de perfil - ". $abogado->getCodigo());
+            
+            $em->getConnection()->commit();
+            
+            $response = new JsonResponse();
+            $response->setData(array(
+                                  'exito'   => '1',                                  
+                               ));  
+            
+            return $response;            
+            
+        } catch (Exception $e) {
+            $em->getConnection()->rollback();
+            $em->close();
+
+            $data['msj'] = $e->getMessage();
+            return new Response(json_encode($data));
+        }
+    }
+    
+    /**
      * Rechazo de la pregunta seleccionada
      *
      * @Route("/rechazarpregunta", name="rechazar_pregunta", options={"expose"=true})
@@ -326,6 +395,66 @@ class AdministracionController extends Controller {
         } catch (Exception $e) {
             $em = $this->getDoctrine()->getManager();
             
+            $em->getConnection()->rollback();
+            $em->close();
+
+            $data['msj'] = $e->getMessage();
+            return new Response(json_encode($data));
+        }
+    }
+    
+    /**
+     * Aprobación de la pregunta seleccionada
+     *
+     * @Route("/deshabilitar-abogado", name="admin_deshabilitar_abogado", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function deshabilitarAbogadoAction() {
+        
+        try {
+            $request = $this->getRequest();
+            $idabg = $request->get('idabg');
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction();
+            //var_dump($idabg);
+            $abogado = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->find($idabg);
+            $UsuarioAbg = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->findOneBy(array('rhPersona' => $abogado));
+            
+            $abogado->setEstado(3);
+            $abogado->setPerfilAprobado(0);
+            $abogado->setMotivoAprobacion('');
+            $em->merge($abogado);
+            $em->flush();
+            
+            $UsuarioAbg->setEstado(0);
+            $em->merge($UsuarioAbg);
+            $em->flush();
+            
+            $email = $abogado->getCorreoelectronico();            
+            $this->get('envio_correo')->sendEmail($email, "", "", "", "
+                <table style=\"width: 540px; margin: 0 auto;\">
+                    <tr>
+                        <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
+                        <center>
+                            <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
+                        </center>                                                
+                            <p>Hola " . $abogado->getNombres() . " " . $abogado->getApellido() . ", su perfil ha sido deshabilitado. </p>                                     
+                        </td>
+                        <td class=\"expander\"></td>
+                    </tr>
+                </table>
+            ","Desactivacion de perfil - ". $abogado->getCodigo());
+            
+            $em->getConnection()->commit();
+            
+            $response = new JsonResponse();
+            $response->setData(array(
+                                  'exito'   => '1',                                  
+                               ));  
+            
+            return $response;            
+            
+        } catch (Exception $e) {
             $em->getConnection()->rollback();
             $em->close();
 
@@ -411,7 +540,7 @@ class AdministracionController extends Controller {
 
         $sql = "SELECT per.id as idAbg, per.codigo, per.nombres, per.apellido, per.estado, DATE_FORMAT(per.fecha_ingreso,'%d/%m/%Y') as fecha "
                 . "FROM abg_facturacion fac RIGHT OUTER JOIN abg_persona per on fac.abg_persona_id = per.id "
-                . "WHERE per.estado = 3 AND per.codigo <> '' "
+                . "WHERE per.estado = 3 AND per.codigo <> '' AND per.perfil_aprobacion is null "
                 . "ORDER BY per.fecha_ingreso DESC LIMIT $start, $longitud ";
         
         $rsm->addScalarResult('idAbg','idAbg');
@@ -560,7 +689,41 @@ class AdministracionController extends Controller {
     }
     
     
-    
+    /**
+     * Lista de preguntas pendientes de Aprobacion 
+     *
+     * @Route("/datos-generales/abogado", name="detalle_datos_abogado", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function detalleDatosAbogadoAction() {
+        $em = $this->getDoctrine()->getManager();
+        
+        $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+
+        $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
+                . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.tituloProfesional AS tprofesional, p.verificado As verificado "
+                . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
+        $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+        $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
+
+        $dqlfoto = "SELECT fot.src as src "
+                . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
+        $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+        
+        $request = $this->getRequest();
+        $id = $request->query->get('id');
+        
+        $sqlAbogado = "SELECT abo.id, abo.nombres, abo.apellido, abo.codigo, abo.correoelectronico, abo.descripcion, abo.direccion, abo.telefono_fijo as fijo, abo.telefono_movil as movil, abo.genero, DATE_FORMAT(abo.fecha_ingreso, '%d/%m/%Y') as fecha, "
+                        . "foto.src "                        
+                        . "FROM abg_persona abo INNER JOIN abg_foto foto ON foto.abg_persona_id = abo.id "
+                        . "WHERE abo.id = " . $id;
+        
+        $stm = $this->container->get('database_connection')->prepare($sqlAbogado);
+        $stm->execute();
+        $abogado = $stm->fetchAll();
+        
+        return $this->render('administracion/panelPerfilAbg.html.twig', array('abogado' => $abogado, 'nombreCorto' => $nombreCorto, 'abgFoto' => $result_foto, 'abgPersona' => $result_persona));
+    } 
     
     
     //Recuperar los pagos no aprobados
@@ -628,11 +791,6 @@ class AdministracionController extends Controller {
     
     
     
-    
-    
-    
-    
-    
     //Recuperar los pagos aprobados
     /**
      * 
@@ -695,10 +853,6 @@ class AdministracionController extends Controller {
 
         return new Response(json_encode($facturacion));
     }
-    
-    
-    
-    
     
     
     

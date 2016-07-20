@@ -70,12 +70,169 @@
 {% block navegacion_Y_body %}
     {% block navegacion %}{% endblock %}
     {% block cuerpo %}
+        <div class="row" style="margin-left: 5px; margin-bottom:15px; margin-right: 15px;">
+            <div class="col-md-2">
+                <a href="{{ path('lista_aprobacion_perfiles_abogados')}}">
+                    <button id="volverIni" style="padding: 5px; font-size: 13px; text-align: center; border: 1px solid #c3c3c3; color: #fff; background-color: #263345;" class="sans btn-md">
+                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <strong>Atras</strong>
+                    </button>
+                </a>
+            </div>
+            <div class="pull-right">
+                <button id="{{abogado[0].id}}" style="padding: 5px; font-size: 13px; text-align: center; border: 1px solid #c3c3c3; color: #fff;" class="aprobar sans btn btn-success btn-md">
+                    <span class="glyphicon glyphicon-ok"></span> <strong>Activar</strong>
+                </button>
+                <button id="{{abogado[0].id}}" style="padding: 5px; font-size: 13px; text-align: center; border: 1px solid #c3c3c3; color: #000;" class="deshabilitar sans btn btn-default btn-md">
+                    <span class="glyphicon glyphicon-ban-circle"></span> <strong>Deshabilitar</strong>
+                </button>
+                <button id="{{abogado[0].id}}" style="padding: 5px; font-size: 13px; text-align: center; border: 1px solid #c3c3c3; color: #fff;" class="eliminar sans btn btn-danger btn-md">
+                    <span class="glyphicon glyphicon-trash"></span> <strong>Eliminar</strong>
+                </button>               
+            </div>            
+        </div>
         <div class="row" style=" margin-left:15px; margin-right:15px; ">
             <div class="box box-widget">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Información registrada - {{abogado[0].nombres}} {{abogado[0].apellido}}</h3>
+                    <div class="box-tools pull-right">
+
+                    </div>
+                </div>
                 <div class="box-body">
-                    
+                    <div class="col-xs-4 col-md-2">
+                        <img src ="{{asset('')}}{{abogado[0].src}}" style ="width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
+                    </div>
+                    <div class="col-xs-8 col-md-8">
+                        <div class ="row"  style="margin-top: 20px;">
+                            <div class="col-sm-3 " >
+                                <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Id de abogado </strong></p>
+                                <p style ="font-size: 11px; margin-bottom: 0px;">{{abogado[0].codigo}}</p><br>
+                                <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Nombre de abogado </strong></p>
+                                <p style ="font-size: 11px; margin-bottom: 0px;">{{abogado[0].nombres}} {{abogado[0].apellido}}</p>
+                            </div>
+                            <div class="col-sm-3 " >
+                                <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Email </strong></p>
+                                <p style ="font-size: 11px; margin-bottom: 0px;">{{abogado[0].correoelectronico}}</p><br>
+                                <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Género </strong></p>
+                                <p style ="font-size: 11px; margin-bottom: 0px;">{% if abogado[0].genero == 'M' %}Masculino{% elseif abogado[0].genero == 'F' %}Femenino{% else %}No registrado{% endif %}</p>
+                            </div>
+                            <div class="col-sm-3" >
+                                <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Fecha de ingreso </strong></p>
+                                <p style ="font-size: 11px; margin-bottom: 0px;">{{ abogado[0].fecha }}</p><br>
+                                <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Teléfonos </strong></p >
+                                <p style ="font-size: 11px; margin-bottom: 0px;"><strong>Móvil: </strong>{% if abogado[0].movil %} + 503 {{abogado[0].movil}}{% else %}No registrado{% endif %}</br><strong>Fijo: </strong>{% if abogado[0].movil %} + 503 {{abogado[0].fijo}}{% else %}No registrado{% endif %}</p>
+                            </div>   
+                            <div class="col-sm-3" >
+                                <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Dirección </strong></p>
+                                <p style ="font-size: 11px; margin-bottom: 0px;">{% if abogado[0].direccion %}{{ abogado[0].direccion }}{% else %}No registrado{% endif %}</p><br>                                
+                            </div>  
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr>
                 </div>                    
             </div>
         </div>
     {% endblock %}
+{% endblock %}
+{% block javascripts_step %}
+    <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            // Al momento de hacer click en Aprobar una pregunta
+            $(document).on("click", ".aprobar", function(){
+                $('.close').click();
+                var id = $(this).attr('id');
+                
+                swal({
+                    text: "¿Está seguro de activar al abogado?",
+                    type: "info",
+                    showCancelButton: true,
+                    confirmButtonColor: "#1D234D",
+                    confirmButtonText: "Aceptar",
+                    cancelButtonText: "Cancelar",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                }).then(function(isConfirm) {
+                    if (isConfirm) {                
+                        var data = {
+                            idabg : id
+                        };
+
+                        $.ajax({
+                            type: 'POST',
+                            data: data,
+                            url: Routing.generate('admin_activar_abogado'),
+                            success: function (response)
+                            {
+                                swal('','Se ha activado al abogado','success');
+                                
+                                var url = Routing.generate('lista_aprobacion_perfiles_abogados');
+                                window.open(url, "_self");
+                
+                                return false;
+                            },
+                            error: function (xhr, status){
+                                swal('','Lo sentimos, ocurrio un error','error');
+                                return false;
+                            }
+                        });
+                    } else {
+                        
+                    }
+                });
+            });
+            
+            // Al momento de hacer click en Deshabilitar un abogado
+            $(document).on("click", ".deshabilitar", function(){
+                $('.close').click();
+                var id = $(this).attr('id');
+                
+                swal({
+                    //title: "Confirmación de deshabilitar al abogado",
+                    text: "¿Está seguro de deshabilitar al abogado?",
+                    type: "info",
+                    showCancelButton: true,
+                    confirmButtonColor: "#1D234D",
+                    confirmButtonText: "Aceptar",
+                    cancelButtonText: "Cancelar",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                }).then(function(isConfirm) {
+                    if (isConfirm) {
+                        var data = {
+                            idabg : id
+                        };
+
+                        $.ajax({
+                            type: 'POST',
+                            data: data,
+                            url: Routing.generate('admin_deshabilitar_abogado'),
+                            success: function (response)
+                            {
+                                swal('','El abogado ha sido deshabilitado','success');
+                                
+                                var url = Routing.generate('lista_aprobacion_perfiles_abogados');
+                                window.open(url, "_self");
+                                return false;
+                            },
+                            error: function (xhr, status){
+                                swal('','Lo sentimos, ocurrio un error','error');
+
+                                return false;
+                            }
+                        });
+                        
+                        return false;  
+                    } else {
+                        
+                    }
+                });
+            });
+        });
+   </script>
 {% endblock %}

@@ -264,7 +264,8 @@
             $(document).on("click", ".detalle", function(){
                 var id = $(this).attr('id');
                 
-                
+                var url = Routing.generate('detalle_datos_abogado', {'id': id});
+                window.open(url, "_self");
                                           
             });
         });
