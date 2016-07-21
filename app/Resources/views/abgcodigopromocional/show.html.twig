@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>AbgCodigoPromocional</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ abgCodigoPromocional.id }}</td>
+            </tr>
+            <tr>
+                <th>Codigo</th>
+                <td>{{ abgCodigoPromocional.codigo }}</td>
+            </tr>
+            <tr>
+                <th>Fechainicio</th>
+                <td>{% if abgCodigoPromocional.fechaInicio %}{{ abgCodigoPromocional.fechaInicio|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Fechafin</th>
+                <td>{% if abgCodigoPromocional.fechaFin %}{{ abgCodigoPromocional.fechaFin|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Plazo</th>
+                <td>{{ abgCodigoPromocional.plazo }}</td>
+            </tr>
+            <tr>
+                <th>Tipopromocion</th>
+                <td>{{ abgCodigoPromocional.tipoPromocion }}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>{% if abgCodigoPromocional.estado %}Yes{% else %}No{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_codigos-promocionales_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('admin_codigos-promocionales_edit', { 'id': abgCodigoPromocional.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}
