@@ -714,8 +714,10 @@ class AdministracionController extends Controller {
         $id = $request->query->get('id');
         
         $sqlAbogado = "SELECT abo.id, abo.nombres, abo.apellido, abo.codigo, abo.correoelectronico, abo.descripcion, abo.direccion, abo.telefono_fijo as fijo, abo.telefono_movil as movil, abo.genero, DATE_FORMAT(abo.fecha_ingreso, '%d/%m/%Y') as fecha, "
-                        . "foto.src "                        
+                        . "foto.src, ci.nombre_ciudad as ciudad, est.nombre_estado as depto "                        
                         . "FROM abg_persona abo INNER JOIN abg_foto foto ON foto.abg_persona_id = abo.id "
+                        . "INNER JOIN ctl_ciudad ci ON abo.ctl_ciudad_id = ci.id "
+                        . "INNER JOIN ctl_estado est ON ci.ctl_estado_id = est.id "
                         . "WHERE abo.id = " . $id;
         
         $stm = $this->container->get('database_connection')->prepare($sqlAbogado);
@@ -937,8 +939,48 @@ class AdministracionController extends Controller {
     }
     
     
+    /**
+     * Configuracion de nueva contraseña para abogado
+     * 
+     * @Route("/cambiar-passw/", name="admin_cambio_passw", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function CambiarPassw(Request $request) {
+
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+
+        if ($isAjax) {
+
+            $em = $this->getDoctrine()->getManager();
+            $passw = $request->get('passw');
+            $idabg = $request->get('idabg');
+
+            $abogado = $em->getRepository('DGAbgSistemaBundle:AbgPersona')->find($idabg);     
+            
+           //var_dump($abogado);
+            
+            $usuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->findOneBy(array('rhPersona' => $abogado));                                    
+            
+           // var_dump($usuario);
+            
+            $this->setSecurePassword($usuario, $passw);
+            $em->merge($usuario);
+            $em->flush();
+
+            $response = new JsonResponse();
+            $response->setData(array(
+                                  'exito'   => '1',                                  
+                               ));  
+            
+            return $response;         
+        }
+    }
     
-    
-    
+    private function setSecurePassword(&$entity, $contrasenia) {
+        $entity->setSalt(md5(time()));
+        $encoder = new \Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder('sha512', true, 10);
+        $password = $encoder->encodePassword($contrasenia, $entity->getSalt());
+        $entity->setPassword($password);
+    }
     
 }

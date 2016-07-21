@@ -78,7 +78,7 @@
                     </button>
                 </a>
             </div>
-            <div class="pull-right">
+            {#<div class="pull-right">
                 <button id="{{abogado[0].id}}" style="padding: 5px; font-size: 13px; text-align: center; border: 1px solid #c3c3c3; color: #fff;" class="aprobar sans btn btn-success btn-md">
                     <span class="glyphicon glyphicon-ok"></span> <strong>Activar</strong>
                 </button>
@@ -88,48 +88,126 @@
                 <button id="{{abogado[0].id}}" style="padding: 5px; font-size: 13px; text-align: center; border: 1px solid #c3c3c3; color: #fff;" class="eliminar sans btn btn-danger btn-md">
                     <span class="glyphicon glyphicon-trash"></span> <strong>Eliminar</strong>
                 </button>               
-            </div>            
+            </div> #}           
         </div>
         <div class="row" style=" margin-left:15px; margin-right:15px; ">
             <div class="box box-widget">
+                
                 <div class="box-header with-border">
-                    <h3 class="box-title">Información registrada - {{abogado[0].nombres}} {{abogado[0].apellido}}</h3>
+                    <h3 class="box-title">{{abogado[0].codigo}} - {{abogado[0].nombres}} {{abogado[0].apellido}}</h3>
                     <div class="box-tools pull-right">
-
+                        <button id="{{abogado[0].id}}" style="padding: 5px; font-size: 13px; text-align: center; border: 1px solid #c3c3c3; color: #fff;" class="aprobar sans btn btn-success btn-md">
+                            <span class="glyphicon glyphicon-ok"></span> <strong>Activar</strong>
+                        </button>
+                        <button id="{{abogado[0].id}}" style="padding: 5px; font-size: 13px; text-align: center; border: 1px solid #c3c3c3; color: #000;" class="deshabilitar sans btn btn-default btn-md">
+                            <span class="glyphicon glyphicon-ban-circle"></span> <strong>Deshabilitar</strong>
+                        </button>
+                        <button id="{{abogado[0].id}}" style="padding: 5px; font-size: 13px; text-align: center; border: 1px solid #c3c3c3; color: #fff;" class="eliminar sans btn btn-danger btn-md">
+                            <span class="glyphicon glyphicon-trash"></span> <strong>Eliminar</strong>
+                        </button>   
                     </div>
                 </div>
                 <div class="box-body">
-                    <div class="col-xs-4 col-md-2">
-                        <img src ="{{asset('')}}{{abogado[0].src}}" style ="width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
-                    </div>
-                    <div class="col-xs-8 col-md-8">
-                        <div class ="row"  style="margin-top: 20px;">
-                            <div class="col-sm-3 " >
-                                <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Id de abogado </strong></p>
-                                <p style ="font-size: 11px; margin-bottom: 0px;">{{abogado[0].codigo}}</p><br>
-                                <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Nombre de abogado </strong></p>
-                                <p style ="font-size: 11px; margin-bottom: 0px;">{{abogado[0].nombres}} {{abogado[0].apellido}}</p>
+                    <div class="nav-tabs-custom" style="cursor: move;">
+                        {# Aquí se colocan los nombres de cada sección (tabs) #}    
+                        <ul class="nav nav-tabs  ui-sortable-handle">
+                            <li class="active"><a data-toggle="tab" href="#informacion-abogado">Información registrada</a></li>
+                            <li><a data-toggle="tab" href="#cambio-passw">Cambio de contraseña</a></li>
+                        </ul>
+                        {# Aquí se encuentran las secciones de las tabs #}    
+                        <div class="tab-content no-padding">
+                            <div class="chart tab-pane active" id="informacion-abogado" >
+                                <div class="col-xs-4 col-md-2">
+                                    <img src ="{{asset('')}}{{abogado[0].src}}" style ="width: 100%; margin-left: 10px; margin-top: 15px; margin-bottom: 15px; margin-right: 10px;">
+                                </div>
+                                <div class="col-xs-8 col-md-8">
+                                    <div class ="row"  style="margin-top: 20px;">
+                                        <div class="col-sm-3 " >
+                                            <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Id de abogado </strong></p>
+                                            <p style ="font-size: 11px; margin-bottom: 0px;">{{abogado[0].codigo}}</p><br>
+                                            <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Nombre de abogado </strong></p>
+                                            <p style ="font-size: 11px; margin-bottom: 0px;">{{abogado[0].nombres}} {{abogado[0].apellido}}</p>
+                                        </div>
+                                        <div class="col-sm-3 " >
+                                            <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Email </strong></p>
+                                            <p style ="font-size: 11px; margin-bottom: 0px;">{{abogado[0].correoelectronico}}</p><br>
+                                            <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Género </strong></p>
+                                            <p style ="font-size: 11px; margin-bottom: 0px;">{% if abogado[0].genero == 'M' %}Masculino{% elseif abogado[0].genero == 'F' %}Femenino{% else %}No registrado{% endif %}</p>
+                                        </div>
+                                        <div class="col-sm-3" >
+                                            <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Fecha de ingreso </strong></p>
+                                            <p style ="font-size: 11px; margin-bottom: 0px;">{{ abogado[0].fecha }}</p><br>
+                                            <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Teléfonos </strong></p >
+                                            <p style ="font-size: 11px; margin-bottom: 0px;"><strong>Móvil: </strong>{% if abogado[0].movil %} + 503 {{abogado[0].movil}}{% else %}No registrado{% endif %}</br><strong>Fijo: </strong>{% if abogado[0].movil %} + 503 {{abogado[0].fijo}}{% else %}No registrado{% endif %}</p>
+                                        </div>   
+                                        <div class="col-sm-3" >
+                                            <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Ciudad/Departamento </strong></p >
+                                            <p style ="font-size: 11px; margin-bottom: 0px;">{% if abogado[0].ciudad %}{{abogado[0].ciudad}} / {{abogado[0].depto}}{% else %}No registrado{% endif %}</p><br>
+                                            <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Dirección </strong></p>
+                                            <p style ="font-size: 11px; margin-bottom: 0px;">{% if abogado[0].direccion %}{{ abogado[0].direccion }}{% else %}No registrado{% endif %}</p><br>                                
+                                        </div>  
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <hr>
                             </div>
-                            <div class="col-sm-3 " >
-                                <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Email </strong></p>
-                                <p style ="font-size: 11px; margin-bottom: 0px;">{{abogado[0].correoelectronico}}</p><br>
-                                <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Género </strong></p>
-                                <p style ="font-size: 11px; margin-bottom: 0px;">{% if abogado[0].genero == 'M' %}Masculino{% elseif abogado[0].genero == 'F' %}Femenino{% else %}No registrado{% endif %}</p>
+                            <div class="chart tab-pane" id="cambio-passw" style=" padding: 15px;" >
+                                <div class="col-xs-12 col-md-10">
+                                    <div class ="row"  style="margin-top: 20px;">
+                                        <div class="col-sm-offset-1 col-sm-2 " >
+                                            <p style ="color: #4444444; font-size: 14px; margin-bottom: 0px;"><strong> Id: </strong>{{abogado[0].id}}</p>
+                                        </div>
+                                        <div class="col-sm-4 " >
+                                            <p style ="color: #4444444; font-size: 14px; margin-bottom: 0px;"><strong> Nombre: </strong>{{abogado[0].nombres}} {{abogado[0].apellido}}</p>                                                                    
+                                        </div>  
+                                        <div class="clearfix"></div>
+                                        <div class="col-md-offset-1 col-md-6" style="margin-top: 20px;">
+                                            <div style="" id="cambio_contrasenha_">
+                                                <div class="row" style="background-color: bisque; padding-bottom: 10px;" id="formPassword">                                    
+                                                    <div class="form-group" style="margin-top: 5px;">
+                                                        <p>
+                                                            <label class="col-md-12">
+                                                                Cambio de contraseña
+                                                            </label> 
+                                                        </p>
+
+                                                        <p class="col-md-12" style="font-size: 13px;" >
+                                                            Llene los siguietes campos para poder cambiar la contraseña del abogado.
+                                                        </p>
+
+                                                    </div>
+
+                                                    <div class="form-group" style="margin-top: 5px;">
+
+                                                        <div class="col-md-12">
+                                                            {#<label for="contrasenhaAntigua" style="margin-bottom: 0px; color: #989898; font-size: 13px;">Contraseña actual</label>
+                                                            <input type="password" name="contrasenhaAntigua" class="form-control input-sm" id="idcontrasenhaAntigua">#}
+                                                            <label for="contrasenhaAntigua" style="margin-bottom: 0px; color: #989898; font-size: 13px;">Nueva contraseña</label>    
+                                                            <input type="password" name="contrsenhaNueva" class="form-control input-sm verificacion" id="idcontrsenhaNueva">
+
+                                                            <label for="contrasenhaAntigua" style="margin-bottom: 0px; color: #989898; font-size: 13px;">Confirmar contraseña</label>
+                                                            <input type="password" name="contrasenhaNuevaConfirmacion" class="form-control input-sm verificacion" id="idcontrsenhaNuevaConfirmacion">
+                                                        </div>
+                                                    </div>
+                                                    <div style="color:red; height: 25px; font-size: 13px; margin-left: 15px; margin-top: 7px;">
+                                                        <div id="error" style="display: none;">
+                                                            <p>Las contraseñas no coinciden</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group" >
+                                                        <div class="col-md-12">
+                                                            <input type="button" class="btn-md pull-right cambiopassw" name=""  id="{{abogado[0].id}}" value="Reestablecer" style="display: none; padding: 5px; font-size: 13px; text-align: center; border: 1px solid #c3c3c3; color: #fff; margin-top: 10px; background-color: #398A57;">
+                                                            <center><label id="mensaje" style="margin-top: 15px;"></label></center>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-sm-3" >
-                                <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Fecha de ingreso </strong></p>
-                                <p style ="font-size: 11px; margin-bottom: 0px;">{{ abogado[0].fecha }}</p><br>
-                                <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Teléfonos </strong></p >
-                                <p style ="font-size: 11px; margin-bottom: 0px;"><strong>Móvil: </strong>{% if abogado[0].movil %} + 503 {{abogado[0].movil}}{% else %}No registrado{% endif %}</br><strong>Fijo: </strong>{% if abogado[0].movil %} + 503 {{abogado[0].fijo}}{% else %}No registrado{% endif %}</p>
-                            </div>   
-                            <div class="col-sm-3" >
-                                <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Dirección </strong></p>
-                                <p style ="font-size: 11px; margin-bottom: 0px;">{% if abogado[0].direccion %}{{ abogado[0].direccion }}{% else %}No registrado{% endif %}</p><br>                                
-                            </div>  
                         </div>
-                    </div>
-                    <div class="clearfix"></div>
-                    <hr>
+                    </div>                    
                 </div>                    
             </div>
         </div>
@@ -232,6 +310,65 @@
                         
                     }
                 });
+            });
+            
+            // Al momento de hacer click en Aprobar una pregunta
+            $(document).on("click", ".cambiopassw", function(){
+                var id = $(this).attr('id');
+                var passw = $('#idcontrsenhaNueva').val();
+                
+                swal({
+                    text: "¿Está seguro de cambiar la contraseña del abogado?",
+                    type: "info",
+                    showCancelButton: true,
+                    confirmButtonColor: "#1D234D",
+                    confirmButtonText: "Aceptar",
+                    cancelButtonText: "Cancelar",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                }).then(function(isConfirm) {
+                    if (isConfirm) {                
+                        var data = {
+                            idabg : id,
+                            passw : passw
+                        };
+
+                        $.ajax({
+                            type: 'POST',
+                            data: data,
+                            url: Routing.generate('admin_cambio_passw'),
+                            success: function (response)
+                            {
+                                swal('','La contraseña ha sido modificada con exito','success');
+                                
+                                {#var url = Routing.generate('lista_aprobacion_perfiles_abogados');
+                                window.open(url, "_self");#}
+                
+                                return false;
+                            },
+                            error: function (xhr, status){
+                                swal('','Lo sentimos, ocurrio un error','error');
+                                return false;
+                            }
+                        });
+                    } else {
+                        
+                    }
+                });
+            });
+            
+            $(document).on("input", "#idcontrsenhaNuevaConfirmacion", function(){
+                var passw = $('#idcontrsenhaNueva').val();
+                var cpassw = $(this).val();
+                var error = document.getElementById('error');
+                
+                if(passw != cpassw){
+                    error.style.display = 'block';
+                    $('.cambiopassw').hide();
+                } else {
+                    error.style.display = 'none';
+                    $('.cambiopassw').show();
+                }
             });
         });
    </script>
