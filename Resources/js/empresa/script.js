@@ -618,7 +618,7 @@ console.log("bgsdsa");
                 success: function (data)
                 {
                     // $("#contenido").append(data);
-                    div = '<div class="nueva-Experiencia" id="div01"  style="background-color: #f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div>';
+                    div = '<div class="nueva-Experiencia" id="div01"  style="background-color: #f4f4f4; border: 1px solid #e0e0e0;">' + data + '</div><br><br><br><br>';
                     $("#contenido").before(div);
                 },
                 error: function (errors)
@@ -716,12 +716,12 @@ function addEspecialidad()
 
                         Esp = val.id;
                         n = n + 1;
-                        datos = '<div class="form-group">';
+                        datos = '<div class="form-group sans">';
                         datos += '<div class="row">';
-                        datos += '<div class="col-xs-12" style="margin-top: .5em; margin-bottom: .5em;"><ul class="prob">';
-                        datos += ' <li><strong><p class="sans">' + val.nombre.toUpperCase() + '<p class="sans" ></strong></li>';
-                        datos += ' <li><p class="sans" style="text-align:justify;" >' + val.descripcion + '</p></strong></li>';
-                        datos += '</ul></div>';
+                        datos += '<div class="col-xs-12" style="margin-top: .5em; margin-bottom: .5em;">';
+                        datos += ' <strong><p class="sans">' + val.nombre.toUpperCase() + '<p class="sans" ></strong>';
+                        datos += ' <p class="sans" style="text-align:justify;" >' + val.descripcion + '</p></strong>';
+                        datos += '</div>';
                         if ((n > 0) && (n % 3 === 0))
                         {
                             datos += '<div class="clearfix"></div>';
@@ -734,9 +734,9 @@ function addEspecialidad()
                     var boton = '<div><p><script type="text/javascript">';
                     datos += '$("#Idioma").hover(';
                     datos += 'function(){';
-                    datos += '$(this).append($(\'<span><i class ="fa fa-pencil fa-x2 btn btnperfil" ';
-                    datos += 'onclick="editIdioma()"> &nbsp; Editar </i>&nbsp;<i class="fa fa-trash-o btn btnperfil" ';
-                    datos += 'onclick="editIdioma()">&nbsp;Eliminar</i></span>\'));';
+                    datos += '$(this).append($(\'<span><a class="btn btn-primary sans btn-sm btn-flat " style="width:80px;"';
+                    datos += 'onclick="editIdioma()"> Editar </a>';
+                    datos += '</span>\'));';
                     datos += '},function(){';
                     datos += '$(this).find("span:last").remove();';
                     datos += '});';
@@ -755,6 +755,7 @@ function addEspecialidad()
                 }
 
                 $("#div01").remove();
+                $('div.divEspeEmp').children('br').remove();
                 $("#contenido").append(data);
 
             },

@@ -18,9 +18,9 @@
     }(document, 'script', 'facebook-jssdk'));</script>
 
 <!-- PERFIL MOVIL -->
-<div class="hidden-md hidden-lg " style="padding-bottom: 15px; " id="contenido-inicio">
+<div class="hidden-md hidden-lg " style="padding-bottom: 15px;" id="contenido-inicio">
     <!-- Boton de regreso -->
-    <button style="padding: 5px; font-size: 13px; margin-top: 60px; text-align: center; width: 100%; border: 1px solid #c3c3c3; color: #fff; background-color: #263345;" class="sans" onclick="javascript:history.go(-1)">
+    <button style="padding: 5px; font-size: 13px; margin-top: 18px; text-align: center; width: 100%; border: 1px solid #c3c3c3; color: #fff; background-color: #263345;" class="sans" onclick="javascript:history.go(-1)">
         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <strong>Regresar atras</strong>
     </button>
     <!-- Inicio de foto y derechos -->
@@ -36,7 +36,13 @@
             </div>
             <!-- TITULO DE EMPRESA -->
             <div style="margin-top: -5px; margin-bottom: 5px;">
-                <p class="text-center sans" style="font-size: 14px; margin-right: 10px; margin-bottom: 0px; z-index: 555;"><strong>Lic. {{datos.nombre~' '~datos.apellido}}</strong></p>
+                <p class="text-center sans" style="font-size: 14px; margin-right: 10px; margin-bottom: 0px; z-index: 555;"><strong> {%if datos.tprofesional|default is not empty %}{%if(datos.tprofesional=="1")%}{%if datos.genero|default is not empty %}{%if(datos.genero=="F")%}Licda.{%elseif(datos.genero=="M")%}Lic.
+                                                            {%endif%}
+                                                        {%endif%}
+                                                    {%elseif(datos.tprofesional=="2")%}Mgtr.{%elseif(datos.tprofesional=="3")%}{%if datos.genero|default is not empty %}{%if(datos.genero=="F")%}Dra.{%elseif(datos.genero=="M")%}Dr.
+                                                            {%endif%}
+                                                    {%endif%}{%endif%}
+                                                {%endif%} {{datos.nombre~' '~datos.apellido}}</strong></p>
                 <p class="text-center sans" style="font-size: 11px; color: #777777; margin-right: 10px; z-index: 555; margin-bottom: 0px;"> {%if RegistroEspecialida|default is not empty %}
                     {%set esp=""%}
                     {% for datos in RegistroEspecialida %}
@@ -67,10 +73,11 @@
 
         <!-- Sobre mi -->
         <div class="bloque-main" style="padding: 10px !important;">
-            <p style="font-size: 11px; margin-bottom: 0px;" class="sans text-uppercase"><strong>Sobre mi</strong></p>
+            <p style="font-size: 11px; margin-bottom: 0px;" class="sans text-uppercase"><strong>Sobre mí</strong></p>
             <p class="sans" style="font-size: 12px; margin-bottom: 0px; text-align:justify;">
                 {%if datos.descripcion|default is not empty %}
                     {{datos.descripcion|striptags|slice(0,300)~'...'}}
+                      
                 {%endif%}
             </p>
             <a id="bntsobremi"><p class="sans text-center" style="font-size: 11px; margin-top: 5px; margin-bottom: 0px;"><em>Ver mas</em></p></a>
@@ -121,7 +128,7 @@
                 <!-- Educacion -->
                 {%if Edu|default is not empty %}
                     <div class="bloque-main" style="padding: 10px !important;">
-                        <p style="font-size: 11px; margin-bottom: 0px;" class="sans text-uppercase"><strong>educacion</strong></p>
+                        <p style="font-size: 11px; margin-bottom: 0px;" class="sans text-uppercase"><strong>educación</strong></p>
                         {% for datos in Edu %}
                             {% if loop.index < 3%}
                                 <div class="row" style="margin-top: 15px;">
@@ -173,7 +180,7 @@
                                                                                                     'Jul'  : 'Julio',
                                                                                                     'Aug'  : 'Agosto',
                                                                                                     'Sep'  : 'Septiembre',
-                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Oct'  : 'Octubre',
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}} - Actualmente
@@ -188,7 +195,7 @@
                                                                                                     'Jul'  : 'Julio',
                                                                                                     'Aug'  : 'Agosto',
                                                                                                     'Sep'  : 'Septiembre',
-                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Oct'  : 'Octubre',
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}} - {{datos.fechaFin|date("M Y", "America/El_Salvador")|replace({
@@ -201,7 +208,7 @@
                                                                                                     'Jul'  : 'Julio',
                                                                                                     'Aug'  : 'Agosto',
                                                                                                     'Sep'  : 'Septiembre',
-                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Oct'  : 'Octubre',
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}} (&nbsp;{{(datos.dias/365)|round(0, 'floor')}} años {{(((datos.dias/365)-(datos.dias/365)|round(0, 'floor'))*12)|round(0, 'floor')}} meses) 
@@ -240,7 +247,7 @@
                                         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <strong>Regresar atras</strong>
                                     </button>
                                     <div class="bloque-main" style="padding: 10px !important;">
-                                        <p style="font-size: 11px; margin-bottom: 10px;" class="sans text-uppercase"><strong>Sobre mi</strong></p>
+                                        <p style="font-size: 11px; margin-bottom: 10px;" class="sans text-uppercase"><strong>Sobre mí</strong></p>
                                         <p class="sans" style="font-size: 12px; margin-bottom: 0px; text-align:justify;">
                                             {%if datos.descripcion|default is not empty %}
                                                 {{datos.descripcion|raw}}
@@ -310,7 +317,7 @@
                                                                                                     'Jul'  : 'Julio',
                                                                                                     'Aug'  : 'Agosto',
                                                                                                     'Sep'  : 'Septiembre',
-                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Oct'  : 'Octubre',
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}} - Actualmente
@@ -325,7 +332,7 @@
                                                                                                     'Jul'  : 'Julio',
                                                                                                     'Aug'  : 'Agosto',
                                                                                                     'Sep'  : 'Septiembre',
-                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Oct'  : 'Octubre',
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}} - {{datos.fechaFin|date("M Y", "America/El_Salvador")|replace({
@@ -338,7 +345,7 @@
                                                                                                     'Jul'  : 'Julio',
                                                                                                     'Aug'  : 'Agosto',
                                                                                                     'Sep'  : 'Septiembre',
-                                                                                                    'Oct'  : 'Octrube',
+                                                                                                    'Oct'  : 'Octubre',
                                                                                                     'Nov'  : 'Noviembre',
                                                                                                     'Dec'  : 'Diciembre',
                                                                                             })}} (&nbsp;{{(datos.dias/365)|round(0, 'floor')}} años {{(((datos.dias/365)-(datos.dias/365)|round(0, 'floor'))*12)|round(0, 'floor')}} meses) 

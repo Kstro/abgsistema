@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Registro de Abogados | Directorio de Abogados de El Salvador | Primero y unico directorio de abogados de El Salvador | Abogados.com.sv</title>
+        <meta name="robots" content="noindex">
+
+        <!-- Stylesheet de Bootstrap -->
+        <link href="{{asset('Resources/src/css/bootstrap.css')}}" rel="stylesheet"> 
+        <link href="{{asset('Resources/src/css/movilcss.css')}}" rel="stylesheet">
+        <!-- Stylesheet Personales -->
+        <link href="{{asset('Resources/src/css/style.css')}}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+
+        <!-- Favicon (Icono Pequeño) -->
+        <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+        <link rel="icon" href="favicon.png" type="image/x-icon">
+
+        <style type="text/css">
+            table { table-layout: fixed; }
+            td { width: 33%; }
+            .shadow {
+                -moz-box-shadow:    3px 3px 5px 6px #ccc;
+                -webkit-box-shadow: 3px 3px 5px 6px #ccc;
+                box-shadow:         3px 3px 5px 6px #ccc;
+            }
+        </style>
+
+    </head>
+    <body style="background-color: #778899;">
+
+        <div class="container-fluid" style="background-color: #262626; height: 300px;">
+            <div class="container">
+                <div class="col-md-offset-2 col-md-8">
+                    <p class="sans text-center text-uppercase" style="color: #fff; font-size: 2em; font-weight: 600; margin-top: 40px;">¡Selecciona tus especialidades legales!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4" style="padding: 5px; margin-top: -150px;">
+                    <div style="padding: 15px; background-color: #ededed; margin-top: 15px; border-radius: 3px; position: relative; z-index: 2;">
+                        <p class="text-center"><img src="{{asset(src)}}" style="width: 100px; margin-top: -65px;" class="img-thumbnail"></p>
+                        <form id="fRegistro3">
+                            <p class="text-center sans text-uppercase" style="font-size: 20px; font-weight: 600;">Especialidades</p>
+                            <!-- COL MD 6 -->
+                            <div class="row" style="padding-left: 15px; padding-right: 15px;">
+                                <div style="width: 100%; border-radius: 3px; border: 0; height: 320px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #fff;">
+
+                                    {% for datos in especialidades %}
+                                        <div class="col-xs-6" style="padding-left: 0;">
+                                            <div class="row">
+                                                <div class="col-xs-12" >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" class="{{datos.id}} Especialida" name="{{datos.id}}" id="{{datos.id}}" value="{{datos.id}}" onclick="especialidadS({{datos.id}})"/><span class="sans" style="font-size: 13px;" aria-label="...">{{datos.nombre}}</span>
+                                                        </label>
+                                                    </div>   
+                                                </div>  
+                                            </div>
+                                        </div>
+                                                            {%if loop.index is divisibleby(2)%}
+                                            <div class="clearfix no-padding no-margin"></div>
+                                        {%endif%}
+                                    {%endfor%}
+
+                                </div>
+                            </div>
+                            <p class="text-center" style="margin-botton: 0px;">
+                                <button type="button" id="btnFinalizar"  style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; width: 250px;font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #F32;">
+                                    <span style="color: #fff; font-weight: 600; font-size: 13px;" class="sans">Finalizar Registro</span>
+                                </button></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+            <!-- Include all compiled plugins (below), or include individual files as needed -->
+            <script  src="{{asset('Resources/src/js/bootstrap.js')}}"></script>
+            <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+            <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+            <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
+            <script type="text/javascript">
+                                                                var Especialida = [];
+                                                                var DataEspecialida = [];
+                                                                var EspecialidaSelect = [];
+                                                                $(document).ready(function () {
+
+                                                                    $(document).on('click', '#btnFinalizar', function () {
+                                                                        if (parseInt(DataEspecialida.length) > 0)
+                                                                        {
+                                                                            $.ajax({
+                                                                                type: "POST",
+                                                                                async: false,
+                                                                                dataType: 'json',
+                                                                                url: Routing.generate('registro3_usuario'),
+                                                                                data: {esp: DataEspecialida},
+                                                                                success: function (data)
+                                                                                {
+                                                                                    //  console.log(data);
+                                                                                    if (data.msj !== "") {
+                                                                                        Lobibox.notify("success", {
+                                                                                            size: 'mini',
+                                                                                            msg: "<p>" + data.msj + "</p>"
+                                                                                        });
+                                                                                        var url = Routing.generate('perfil');
+                                                                                        window.open(url, "_self");
+
+                                                                                    } else if (data.error !== "") {
+                                                                                        Lobibox.notify("warning", {
+                                                                                            size: 'mini',
+                                                                                            msg: "<p>" + data.error + "</p>"
+                                                                                        });
+                                                                                        $("#enviar").prop("disabled", false);
+                                                                                    }
+
+
+                                                                                },
+                                                                                error: function (errors)
+                                                                                {
+
+                                                                                }
+                                                                            });
+                                                                        } else {
+
+                                                                            Lobibox.notify("warning", {
+                                                                                size: 'mini',
+                                                                                msg: "<p> Seleccione al menos una especialidad.</p>"
+                                                                            });
+
+                                                                        }
+                                                                    });
+
+                                                                });
+                                                                $(function () {
+                                                                    $('[data-toggle="tooltip"]').tooltip()
+                                                                })
+                                                                function especialidadS(idcheckbox)
+                                                                {
+                                                                    if (Especialida.indexOf(idcheckbox) === -1)
+                                                                    {
+                                                                        if (Especialida.length < 3)
+                                                                        {
+                                                                            Especialida = [];
+                                                                            DataEspecialida = [];
+                                                                            $.each($('.Especialida'), function (indice, val) {
+                                                                                if ($(this).is(':checked')) {
+                                                                                    Especialida.push(parseInt($(this).attr('id')));
+                                                                                    EspecialidaSelect.push(parseInt($(this).attr('id')));
+                                                                                    //   EspecialidaSelect.push('txt' + parseInt($(this).attr('id')));
+                                                                                    DataEspecialida.push(EspecialidaSelect);
+                                                                                    EspecialidaSelect = [];
+                                                                                    /*          if (EspecialidaSelect.length % 2 === 0)
+                                                                                     {
+                                                                                     
+                                                                                     }*/
+                                                                                    //     document.getElementById('div' + parseInt($(this).attr('id'))).style.display = 'block';
+                                                                                } else {
+                                                                                    //       document.getElementById('div' + parseInt($(this).attr('id'))).style.display = 'none';
+                                                                                }
+                                                                            });
+                                                                        } else {
+                                                                            Lobibox.notify("warning", {
+                                                                                size: 'mini',
+                                                                                msg: '<p>Se deben seleccionar máximo 3 especialidades.</p>'
+                                                                            });
+                                                                            $("#" + idcheckbox).prop('checked', false);
+                                                                            //  document.getElementById('div' + idcheckbox).style.display = 'none';
+                                                                        }
+                                                                    } else {
+
+                                                                        Especialida = [];
+                                                                        DataEspecialida = [];
+                                                                        $.each($('.Especialida'), function (indice, val) {
+                                                                            if ($(this).is(':checked')) {
+
+                                                                                if (Especialida.indexOf(parseInt($(this).attr('name'))) === -1)
+                                                                                {
+                                                                                    // Especialida.push(parseInt($(this).attr('name')));
+                                                                                    EspecialidaSelect.push(parseInt($(this).attr('id')));
+                                                                                    //  EspecialidaSelect.push('txt' + parseInt($(this).attr('id')));
+                                                                                    DataEspecialida.push(EspecialidaSelect);
+                                                                                    EspecialidaSelect = [];
+                                                                                    /*     if (EspecialidaSelect.length % 2 === 0)
+                                                                                     {
+                                                                                     DataEspecialida.push(EspecialidaSelect);
+                                                                                     EspecialidaSelect = [];
+                                                                                     }*/
+                                                                                    //      document.getElementById('div' + parseInt($(this).attr('id'))).style.display = 'block';
+                                                                                }
+
+                                                                            } else {
+                                                                                //    document.getElementById('div' + parseInt($(this).attr('id'))).style.display = 'none';
+                                                                            }
+                                                                        });
+                                                                    }
+                                                                }
+            </script>
+            <script type="text/javascript" src="src/js/customInput.jquery.js"></script>
+            <!-- Start of LiveChat (www.livechatinc.com) code -->
+            <script type="text/javascript">
+                  window.__lc = window.__lc || {};
+                 window.__lc.license = 7744471;
+                 (function () {
+                 var lc = document.createElement('script');
+                 lc.type = 'text/javascript';
+                 lc.async = true;
+                 lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
+                 var s = document.getElementsByTagName('script')[0];
+                 s.parentNode.insertBefore(lc, s);
+                 })();
+            </script>
+            <!-- End of LiveChat code -->
+            <script type="text/javascript">
+                // Run the script on DOM ready:
+                $(function () {
+                    //       $('input').customInput();
+                });
+            </script>
+
+    </body>
+</html>

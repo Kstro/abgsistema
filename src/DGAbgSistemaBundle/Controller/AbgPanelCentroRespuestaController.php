@@ -222,7 +222,7 @@ class AbgPanelCentroRespuestaController extends Controller {
                         <td class=\"expander\"></td>
                       </tr>
                     </table>
-                ");
+                ","Tu pregunta se ha respondido".$idpreg);
                 }
             }
             $em->getConnection()->commit();

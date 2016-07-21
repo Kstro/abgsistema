@@ -34,10 +34,11 @@ class newUserService {
         
     }
     
-    public function sendEmail($to, $cc, $bcc,$replay, $body){
+    public function sendEmail($to, $cc, $bcc,$replay, $body,$subject){
         $email = \Swift_Message::newInstance();
         $email->setContentType('text/html');                    
         $email->setFrom($this->from);
+        $this->subject=$subject;
         $email->setTo($to);
         if($cc != null ){
         $email->setCc($cc);

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Registro de Abogados | Directorio de Abogados de El Salvador | Primero y unico directorio de abogados de El Salvador | Abogados.com.sv</title>
+        <meta name="robots" content="noindex">
+        <!-- Stylesheet de Bootstrap -->
+        <link href="{{asset('Resources/src/css/bootstrap.css')}}" rel="stylesheet"> 
+        <link href="{{asset('Resources/src/css/movilcss.css')}}" rel="stylesheet">
+        <!-- Stylesheet Personales -->
+        <link href="{{asset('Resources/src/css/style.css')}}" rel="stylesheet">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+
+        <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
+        <!-- Favicon (Icono Pequeño) -->
+        <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+        <link rel="icon" href="favicon.png" type="image/x-icon">
+
+        <style type="text/css">
+            table { table-layout: fixed; }
+            td { width: 33%; }
+            .shadow {
+                -moz-box-shadow:    3px 3px 5px 6px #ccc;
+                -webkit-box-shadow: 3px 3px 5px 6px #ccc;
+                box-shadow:         3px 3px 5px 6px #ccc;
+            }
+        </style>
+
+    </head>
+    <body style="background-color: #778899;">
+
+        <div class="container-fluid" style="background-color: #262626; height: 300px;">
+            <div class="container">
+                <div class="col-md-offset-2 col-md-8">
+                    <p class="sans text-center text-uppercase" style="color: #fff; font-size: 2.5em; font-weight: 600; margin-top: 40px;">¡Unos datos más y listo!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4" style="padding: 5px; margin-top: -150px;">
+                    <div style="padding: 15px; background-color: #ededed; margin-top: 15px; border-radius: 3px; position: relative; z-index: 2;">
+                        <p class="text-center"><img id="defecto" src="{{asset('Photos/defecto/defectoH.png') }}" style="width: 100px; margin-top: -65px;" class="img-thumbnail"></p>
+                        <form id="fRegistro2">
+                            <p class="text-center sans text-uppercase" style="font-size: 20px; font-weight: 600;">información demografica</p>
+                            <!-- COL MD 6 -->
+                            <input type="text" class="sans"  id="txtnombre" name="txtnombre"  value="{{abgPersona[0].nombre}}" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #fff;" placeholder="Nombres*">
+                            <p style="color: #F00; margin-left: 5px; display: none;" id="txtNom" calss="sans"></p>
+
+                            <input type="text" id="txtapellido" name="txtapellido"  value="{{abgPersona[0].apellido}}" class="sans" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 10px; background-color: #fff;" placeholder="Apellidos*">
+                            <p style=" color: #F00; margin-left: 5px; display: none;" id="txtApe" calss="sans"></p>
+
+                            <select class="sans" id="Sdepartamento" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #fff;" name="Sdepartamento" class=" sans" onChange="fmunicipio()">
+                                <option value="">- Seleccione departamento -</option>
+                                {% for datos in depto %}
+                                    <option value="{{datos.id}}" >{{datos.nombre}}</option>
+                                {%endfor%}
+                            </select>
+                            <p style=" color: #F00; margin-left: 5px; display: none;" id="txtDep" calss="sans"></p>
+
+                            <div id="divMuni" style=" margin-top: 5px; margin-bottom:5px;"><input class="sans" name="Smunicipio" id="Smunicipio" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #fff;" placeholder="Municipio*" disabled></div>
+                            <p style=" color: #F00; margin-left: 5px; display: none;" id="txtMun" calss="sans"></p>
+
+                            <select class="sans" id="Stitulo" name="Stitulo" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #fff;" placeholder="Titulo Profesional" id="Stitulo" name="Stitulo" >
+                                <option value="">- Seleccione título profesional -</option>
+                                <option value="3" >Doctorado</option>
+                                <option value="4" >Estudiante</option>
+                                <option value="1" >Licenciatura</option>
+                                <option value="2" >Magíster</option>
+                            </select>
+                            <p style=" color: #F00; margin-left: 5px; display: none;" id="txtTitulo" calss="sans"></p>
+
+                            <div class="row" style="padding-left: 15px; padding-right: 15px;">
+                                <div style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 10px; margin-bottom: 5px; background-color: #fff;">
+                                    <div class="col-xs-6">
+                                        <div class="radio">
+                                            <label class="radios1">
+                                                <input type="radio" name="rGenero"  value="M"  id="gender_female" aria-label="..."> Masculino
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <div class="radio">
+                                            <label class="radios2">
+                                                <input type="radio" name="rGenero"  value="F"  id="gender_male" aria-label="..."> Femenino
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p style=" color: #F00; margin-left: 5px; display: none;" id="txtSex" calss="sans"></p>
+
+                            </div>
+                             
+                            <p class="text-center" style="margin-botton: 0px;">
+                                <button type="button" id="btnEspecialidad" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; width: 250px;font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #F32;">
+                                    <span style="color: #fff; font-weight: 600; font-size: 13px;" class="sans">Seleccionar mis especialidades</span>
+                                </button></p>
+                           
+                        </form>
+                    </div>
+                </div>
+                            <br>
+                             <br>
+            </div>
+
+            <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+            <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+            <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+            <!-- Include all compiled plugins (below), or include individual files as needed -->
+            <script  src="{{asset('Resources/src/js/bootstrap.js')}}"></script>
+            <script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
+            <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
+            <script type="text/javascript">
+                                $(document).ready(function () {
+                                    $('input:radio[name=rGenero]')[0].checked = false;
+                                    $('input:radio[name=rGenero]')[1].checked = false;
+                                    $("#defecto").attr('src', '/Photos/defecto/defectoH.png');
+                                    $('#Sdepartamento').select2();
+                                    $('#Stitulo').select2();
+                                    $('.select2-selection__rendered').css('width', '100%');
+                                    $('.select2-container--default').css('height', '40px');
+                                    $('.select2-selection--single .select2-selection__rendered ').css('line-height', '38px');
+                                    $('.select2-selection--single .select2-selection__rendered ').css('font-size', '16px');
+                                    $('.select2-selection--single .select2-selection__rendered ').addClass('sans');
+                                    $('.select2-container--default').css('border', 'hidden');
+                                    $('.select2-selection--single ').css('height', '40px');
+                                    $('.select2-selection--single ').css('border', 'hidden');
+                                    $('.select2-selection--single ').css(' line-height', '38px');
+
+                                    $(document).on('click', '.radios1', function () {
+                                        $('input:radio[name=rGenero]')[0].checked = true;
+
+                                        $("#defecto").attr('src', '/Photos/defecto/defectoH.png');
+
+                                    });
+                                    $(document).on('click', '.radios2', function () {
+                                        $('input:radio[name=rGenero]')[1].checked = true;
+                                        $("#defecto").attr('src', '/Photos/defecto/defectoM.png');
+                                    });
+
+                                    $(document).on('click', '#btnEspecialidad', function () {
+
+
+
+                                        if ($('#txtnombre').val() == "")  //null && $("#txtapellido").val() !== "" && $("#correoEmpresa").val() !== "" && ($("#contrasenha").val() !== ""))
+                                        {
+                                            $("#txtNom").text("Nombre requerido!");
+                                            $("#txtNom").css('display', 'block');
+                                        } else if ($("#txtapellido").val() == "")
+                                        {
+                                            $("#txtApe").css('display', 'block');
+                                            $("#txtApe").text("Apellido requerido!");
+
+                                            $("#txtNom").text("");
+                                            $("#txtNom").css('display', 'none');
+                                        } else if ($("#Sdepartamento").val() == "")
+                                        {
+                                            $("#txtApe").text("");
+                                            $("#txtNom").text("");
+                                            $("#txtNom").css('display', 'none');
+                                            $("#txtApe").css('display', 'none');
+
+                                            $("#txtDep").css('display', 'block');
+                                            $("#txtDep").text("Departamento requerido!");
+                                            $("#txtContra").text("");
+                                        } else if ($("#Smunicipio").val() == "")
+                                        {
+                                            $("#txtApe").text("");
+                                            $("#txtNom").text("");
+                                            $("#txtDep").text("");
+                                            $("#txtNom").css('display', 'none');
+                                            $("#txtApe").css('display', 'none');
+
+                                            $("#txtDep").css('display', 'none');
+                                            $("#txtMun").css('display', 'block');
+                                            $("#txtMun").text("Municipio requerido!");
+
+                                        } else if ($("#Stitulo").val() == "")
+                                        {
+                                            $("#txtApe").text("");
+                                            $("#txtNom").text("");
+                                            $("#txtDep").text("");
+                                            $("#txtMun").text("");
+                                            $("#txtNom").css('display', 'none');
+                                            $("#txtApe").css('display', 'none');
+
+                                            $("#txtDep").css('display', 'none');
+                                            $("#txtMun").css('display', 'none');
+
+
+                                            $("#txtTitulo").css('display', 'block');
+                                            $("#txtTitulo").text("Título profesional requerido!");
+
+                                        } else if ($('input:radio[name=rGenero]:checked').val() == undefined)
+                                        {
+                                            $("#txtApe").text("");
+                                            $("#txtNom").text("");
+                                            $("#txtDep").text("");
+                                            $("#txtMun").text("");
+                                            $("#txtTitulo").text("");
+                                            $("#txtNom").css('display', 'none');
+                                            $("#txtApe").css('display', 'none');
+
+                                            $("#txtDep").css('display', 'none');
+                                            $("#txtMun").css('display', 'none');
+
+                                            $("#txtTitulo").css('display', 'none');
+
+                                            $("#txtSex").css('display', 'block');
+                                            $("#txtSex").text("Género requerido!");
+                                        } else
+                                        {
+                                            $.ajax({
+                                                type: "POST",
+                                                async: false,
+                                                dataType: 'json',
+                                                url: Routing.generate('registro2_usuario'),
+                                                data: {datos: $("#fRegistro2").serialize(), codigo: $('input#hcodigo').val()},
+                                                success: function (data)
+                                                {
+                                                    if (data.msj !== "") {
+                                                        Lobibox.notify("success", {
+                                                            size: 'mini',
+                                                            msg: "<p>" + data.msj + "</p>"
+                                                        });
+                                                        var url = Routing.generate('registro3_form');
+                                                        window.open(url, "_self");
+
+                                                    } else if (data.error !== "") {
+                                                        Lobibox.notify("warning", {
+                                                            size: 'mini',
+                                                            msg: "<p>" + data.error + "</p>"
+                                                        });
+                                                        $("#enviar").prop("disabled", false);
+                                                    }
+
+
+                                                },
+                                                error: function (errors)
+                                                {
+
+                                                }
+                                            });
+                                        }
+                                    });
+                                });
+                                function fmunicipio()
+                                {
+                                    $.ajax({
+                                        type: "GET",
+                                        url: Routing.generate('ciudad'),
+                                        async: false,
+                                        dataType: 'json',
+                                        data: {estado: $('#Sdepartamento').val()},
+                                        success: function (data)
+                                        {
+
+                                            $("#divMuni").empty();
+
+                                            estado = '<select  style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 10px; margin-bottom: 5px; background-color: #fff;" class="sans  Smunicipio"  name="Smunicipio" id="Smunicipio" data-rule-required="true" data-rule-select="true">';
+                                            estado += '<option value="">- Seleccione municipio-</option>';
+                                            $.each(data.ciudad, function (indice, val) {
+                                                estado += '<option value="' + val.id + '">' + val.nombre + '</option>';
+                                            });
+                                            estado += '</select>';
+
+                                            $("#divMuni").append(estado);
+                                            $('#divMuni').css('margin-top', '10px');
+                                            $('#divMuni').css('margin-button', '10px');
+                                            $('.Smunicipio').select2();
+                                            $('.select2-container--default').css('height', '40px');
+                                            $('.select2-container--default').css('border', 'hidden');
+                                            $('.select2-selection--single .select2-selection__rendered ').css('line-height', '38px');
+                                            $('.select2-selection--single .select2-selection__rendered ').css('font-size', '16px');
+                                            $('.select2-selection--single .select2-selection__rendered ').addClass('sans');
+                                            $('.select2-selection--single ').css('height', '40px');
+                                            $('.select2-selection--single ').css('border', 'hidden');
+
+
+                                        },
+                                        error: function (errors)
+                                        {
+
+                                        }
+                                    });
+                                }
+
+                                $(function () {
+                                    $('[data-toggle="tooltip"]').tooltip()
+                                })
+            </script>
+            <!-- script type="text/javascript" src="src/js/customInput.jquery.js"></script -->
+            <!-- Start of LiveChat (www.livechatinc.com) code -->
+            <script type="text/javascript">
+                window.__lc = window.__lc || {};
+                window.__lc.license = 7744471;
+                (function () {
+                    var lc = document.createElement('script');
+                    lc.type = 'text/javascript';
+                    lc.async = true;
+                    lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
+                    var s = document.getElementsByTagName('script')[0];
+                    s.parentNode.insertBefore(lc, s);
+                })();
+            </script>
+            <!-- End of LiveChat code -->
+            <script type="text/javascript">
+                // Run the script on DOM ready:
+                $(function () {
+                    //      $('input').customInput();
+                });
+            </script>
+
+    </body>
+</html>

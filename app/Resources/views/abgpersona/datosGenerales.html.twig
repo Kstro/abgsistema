@@ -44,20 +44,17 @@
                 });
             });
         </script>  
-
         {% for datos in abgPersona %} 
         </head>
         <body>
             <div class="container ">
-            
-          <div class="row ">
-                <div class="col-md-6">
-                    <img src="{{asset('Resources/src/img/logogris.png')}}" style="width: 250px; margin-left: -20px;">		
+                <div class="row ">
+                    <div class="col-md-6">
+                        <img src="{{asset('Resources/src/img/logogris.png')}}" style="width: 250px; margin-left: -20px;">		
+                    </div>
+                    <div class="col-md-6">
+                    </div>
                 </div>
-                <div class="col-md-6">
-
-                </div>
-            </div>
                 <div class="row" >
                     <!-- LADO IZQUIERDO -->
                     <div class="col-md-9 col-sm-9 col-xs-12"  style="border: 1px solid #c3c3c3; background-color: #fbfbfb; border-radius: 3px; padding: 15px; margin-bottom:35px; margin-top: 20px;">
@@ -69,7 +66,6 @@
                         <form role="form" id="fgeneral" >
                             <input type="hidden" id="hcodigo" name="hcodigo" value=" {{codigo}}">
                             {#  <input type="hidden" id="hmetodo" name="hmetodo">#}
-
                             <div class="form-group sans" >
                                 <label for="nombreEmpleado">Nombre </label>
                                 <div  class="form-group " id="nombre">
@@ -90,7 +86,7 @@
                                         <input type="radio"  name="rGenero"  value="F" class="genero"  id="gender_female" required/> <label for="Femenino">Mujer </label>
                                     </div>
                                     <div class="col-sm-6 col-xs-6 col-md-3" >
-                                        <input type="radio"  name="rGenero"  value="M" class="genero" id="gender_male"/> <label for="Masculino">Hombre</label>
+                                        <input type="radio"  name="rGenero"   value="M" class="genero" id="gender_male"/> <label for="Masculino">Hombre</label>
                                     </div>
                                 </div>
                             </div>
@@ -105,7 +101,6 @@
                                             {% for datos in depto %}
                                                 <option value="{{datos.id}}" >{{datos.nombre}}</option>
                                             {%endfor%}
-
                                         </select> 
                                     </div>
 
@@ -115,7 +110,6 @@
                                             <option value="">- Seleccione -</option>
                                         </select> 
                                     </div>
-
                                     {#<div class="col-sm-6 col-xs-6">
                                      
                                          <div class=" col-md-6" >
@@ -191,9 +185,7 @@
                 </div>
             </div>
 
-
             <script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
-
             <script type="text/javascript">
                                                     var Especialida = [];
                                                     var DataEspecialida = [];
@@ -206,8 +198,6 @@
                                                         $('#Sdepartamento').select2();
                                                         $('#Stitulo').select2();
                                                         $('#Smunicipio').select2();
-
-
 
                                                     });
                                                     function fmunicipio()
@@ -315,44 +305,44 @@
                                                         {
                                                             if ($("#txtnombre").val() !== "" && $("#txtapellido").val() !== "" && ($("#Smunicipio").val() !== "") && ($("#Stitulo").val() !== "") && ($('input:radio[name=rGenero]:checked').val() !== undefined))
                                                             {
-                                                                     $("#fgeneral").submit(
-                                                                           function (event) {
-                                                                //     $("#enviar").button('loading');
-                                                                $("#enviar").prop("disabled", true);
-                                                                $.ajax({
-                                                                    type: "POST",
-                                                                    async: false,
-                                                                    dataType: 'json',
-                                                                    url: Routing.generate('informacion_general'),
-                                                                    data: {datos: $("#fgeneral").serialize(), esp: DataEspecialida, genero: $('input:radio[name=rGenero]:checked').val(), codigo: $('input#hcodigo').val()},
-                                                                    success: function (data)
-                                                                    {
+                                                                $("#fgeneral").submit(
+                                                                        function (event) {
+                                                                            //     $("#enviar").button('loading');
+                                                                            $("#enviar").prop("disabled", true);
+                                                                            $.ajax({
+                                                                                type: "POST",
+                                                                                async: false,
+                                                                                dataType: 'json',
+                                                                                url: Routing.generate('informacion_general'),
+                                                                                data: {datos: $("#fgeneral").serialize(), esp: DataEspecialida, genero: $('input:radio[name=rGenero]:checked').val(), codigo: $('input#hcodigo').val()},
+                                                                                success: function (data)
+                                                                                {
 
-                                                                        if (data.msj !== "") {
-                                                                            Lobibox.notify("success", {
-                                                                                size: 'mini',
-                                                                                msg: "<p>" + data.msj + "</p>"
+                                                                                    if (data.msj !== "") {
+                                                                                        Lobibox.notify("success", {
+                                                                                            size: 'mini',
+                                                                                            msg: "<p>" + data.msj + "</p>"
+                                                                                        });
+                                                                                        var url = Routing.generate('perfil');
+                                                                                        window.open(url, "_self");
+                                                                                        $("#enviar").prop("disabled", false);
+                                                                                    } else if (data.error !== "") {
+                                                                                        Lobibox.notify("warning", {
+                                                                                            size: 'mini',
+                                                                                            msg: "<p>" + data.error + "</p>"
+                                                                                        });
+                                                                                        $("#enviar").prop("disabled", false);
+                                                                                    }
+
+
+                                                                                },
+                                                                                error: function (errors)
+                                                                                {
+
+                                                                                }
                                                                             });
-                                                                            var url = Routing.generate('perfil');
-                                                                            window.open(url, "_self");
-                                                                                $("#enviar").prop("disabled", false);
-                                                                        } else if (data.error !== "") {
-                                                                            Lobibox.notify("warning", {
-                                                                                size: 'mini',
-                                                                                msg: "<p>" + data.error + "</p>"
-                                                                            });
-                                                                                $("#enviar").prop("disabled", false);
-                                                                        }
-                                                                    
-
-                                                                    },
-                                                                    error: function (errors)
-                                                                    {
-
-                                                                    }
-                                                                });
-                                                                   event.preventDefault();
-                                                                   });
+                                                                            event.preventDefault();
+                                                                        });
 
                                                             }
 

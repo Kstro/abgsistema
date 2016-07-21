@@ -163,11 +163,7 @@
                                 <!-- TITULO DE EMPRESA -->
                                 <div style="margin-top: -55px; margin-bottom: 5px;">
                                     <p class="text-right" style="font-size: 20px; margin-right: 10px; margin-bottom: 0px; z-index: 555;"><strong>
-                                            <a  href="{{ path('empresa')}}"  style="font-size: 16px;" >  
-                                                <span style="color: #4444444; margin-left: 10px;">
-                                                    &nbsp;Editar perfil</span>
-                                                </span>
-                                            </a>  
+                                            <a  href="{{ path('empresa')}}"  style="width: 80px; margin-right: 20px;" class=" btn btn-primary btn-flat btn-sm">Editar perfil</a>  
                                             <a  data-type="text" data-placement="right" data-title="Telefono movil" style="color: inherit; text-decoration: none;">
                                                 {% if datos.nombreEmpresa %}
                                                     {{datos.nombreEmpresa}} 
@@ -419,7 +415,7 @@
                     </div>
                 {%endif%}
 
-
+ </div>
             </div>
           
     <div class="col-md-3" >

@@ -12,6 +12,7 @@ use DGAbgSistemaBundle\Entity\CtlCiudad;
 use DGAbgSistemaBundle\Entity\Persona;
 use DGAbgSistemaBundle\Entity\AbgPregunta;
 use DGAbgSistemaBundle\Form\CtlCiudadType;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * CtlCiudad controller.
@@ -47,7 +48,6 @@ class DirectorioController extends Controller {
         
         //var_dump($busqueda);
         return $this->render('directorio/directorio.html.twig', array(
-//            'ciudades' => $ctlCiudads,
                     'prom1' => $prom,
                     'prom2' => $prom2,
                     'prom3' => $prom3,
@@ -388,7 +388,36 @@ class DirectorioController extends Controller {
      */
     public function SoyAbogadoAction() {
         //return $this->render('Layout/abogado_landing.html.twig');
-        return $this->render('ctlempresa/index.html.twig');
+        //$this->redirect('perfil');
+    	//$this->redirect($this->generateUrl('admin_inicio'));
+        $em = $this->getDoctrine()->getManager();
+//        $especialidades = $em->getRepository('DGAbgSistemaBundle:CtlEspecialidad')->findAll();
+        $rsm4 = new ResultSetMapping();
+       
+        $sql4 = "select *
+                from directorio
+                where tipo = 1
+                order by id desc 
+                limit 0, 3";
+
+        //$sql4 = "select * from aboregistrados order by id desc limit 0, 5";
+        $rsm4->addScalarResult('nombres','nombres');
+        $rsm4->addScalarResult('apellido','apellido');
+        $rsm4->addScalarResult('foto','foto');
+        $rsm4->addScalarResult('url','url');
+        $rsm4->addScalarResult('especialidad','especialidad');
+        $rsm4->addScalarResult('titulo','titulo');
+        $rsm4->addScalarResult('cargo','cargo');
+        $rsm4->addScalarResult('genero','genero');
+        $rsm4->addScalarResult('estadoabo','estadoabo');
+        
+        $usuarios = $em->createNativeQuery($sql4, $rsm4)
+                                  ->getResult();
+        //return $this->render('ctlempresa/index.html.twig');
+        return $this->render('ctlempresa/index.html.twig',array(
+            'usuarios' =>$usuarios,
+        ));
+       
     }
 
 //    /**

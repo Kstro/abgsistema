@@ -405,7 +405,7 @@ class CtlEmpresaController extends Controller {
             $abgPersona->setApellido($apellidoAbogado);
             $abgPersona->setCorreoelectronico($correoUsuario);
             $abgPersona->setFechaIngreso(new \DateTime("now"));
-            $abgPersona->setEstado(0);
+            $abgPersona->setEstado(3); // estado 3, el abogado no puede publicar su perfil hasta q el administrador lo aprueba
             $abgPersona->setCodigo($codigo);
             $abgPersona->setVerificado(0);
             $abgPersona->setVerificaNotario(0);
@@ -571,25 +571,44 @@ class CtlEmpresaController extends Controller {
                 $data['md5'] = $var_md5;
             } else {
                 $data['estado'] = true;
-                $this->get('new_usuario')->sendEmail($correoUsuario, "", "", "", "
-                    <table style=\"width: 540px; margin: 0 auto;\">
-                      <tr>
-                        <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
-                        <center>
-                          <img style=\"width:50%;\" src=\"http://www.abogados.com.sv/src/img/banneremail.png\">
-                        </center>
-                        <p>Bienvenido al directorio mas grande de abogados de El Salvador</p>
-                         <p>Hola " . $nombreAbogado . " " . $apellidoAbogado . ", confirma tu correo para que puedas completar tu prefil.</p>
-                            <p>Haz click en el enlace para verificar tu correo</p>
-                            <a href='http://abg.localhost/app_dev.php/confirmar/correo/" . $var_md5 . "'>Clik aqui para verificarte</a> 
-                        </td>
-                        <td class=\"expander\"></td>
-                      </tr>
-                    </table>
-                ");
+                $data['md5'] = $var_md5;
+                /*      $this->get('new_usuario')->sendEmail($correoUsuario, "", "", "", "
+                  <table style=\"width: 540px; margin: 0 auto;\">
+                  <tr>
+                  <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
+                  <center>
+                  <img style=\"width:50%;\" src=\"http://www.abogados.com.sv/src/img/banneremail.png\">
+                  </center>
+                  <p>Bienvenido al directorio mas grande de abogados de El Salvador</p>
+                  <p>Hola " . $nombreAbogado . " " . $apellidoAbogado . ", confirma tu correo para que puedas completar tu prefil.</p>
+                  <p>Haz click en el enlace para verificar tu correo</p>
+                  <a href='http://abg.localhost/app_dev.php/confirmar/correo/" . $var_md5 . "'>Clik aqui para verificarte</a>
+                  </td>
+                  <td class=\"expander\"></td>
+                  </tr>
+                  </table>
+                  ","Verificaión de correo");
+                 */
+                //  correo 
+                /*
+                  $this->get('new_usuario')->sendEmail("info@abogados.com.sv", "", "", "", "
 
-                $session = new Session();
-                $session->invalidate();
+                  <table style=\"width: 540px; margin: 0 auto;\">
+                  <tr>
+                  <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
+                  <center>
+                  <img style=\"width:50%;\" src=\"http://www.abogados.com.sv/src/img/banneremail.png\">
+                  </center>
+                  <p>Nuevo abogado registrado: " . $nombreAbogado . "  " . $apellidoAbogado . "  ".$abgPersona->getCorreoelectronico() .".</p>
+                  </td>
+                  <td class=\"expander\"></td>
+                  </tr>
+                  </table>
+                  ","Nuevo abogado registrado en SV #".$abgPersona->getId());
+                 */
+                //Cerrar sesion
+         /*       $session = new Session();
+                $session->invalidate();*/
             }
             return new Response(json_encode($data));
             /* } else {
@@ -616,8 +635,6 @@ class CtlEmpresaController extends Controller {
         parse_str($request->get('dato'), $datos);
         $em = $this->getDoctrine()->getManager();
 
-
-
         if (count($datos) != 0) {
             $correo = $datos['correoEmpresa'];
         } else {
@@ -632,7 +649,6 @@ class CtlEmpresaController extends Controller {
         try {
             ///   if ($request->get('id')) {
             ///     $contrasenha = $request->get('id');
-
 
             $dqlEmp = "SELECT COUNT(emp.id) AS res FROM DGAbgSistemaBundle:CtlEmpresa emp WHERE"
                     . " emp.correoelectronico = :correo ";
@@ -1132,11 +1148,11 @@ class CtlEmpresaController extends Controller {
 
         $em = $this->getDoctrine()->getManager();
         $dqlNumerocorrelativo = "SELECT COUNT(u.id) as numero FROM DGAbgSistemaBundle:AbgUrlPersonalizada u"
-                . " WHERE u.url like '%EMP%' ";
+                . " WHERE u.url like '%emp%' ";
         $resultCorrelativo = $em->createQuery($dqlNumerocorrelativo)->getArrayResult();
         $numero_base = $resultCorrelativo[0]['numero'];
 
-        $primerLetras = "EMP";
+        $primerLetras = "emp";
         $valor = "";
 
         $numero = $numero_base + 1;
@@ -1165,11 +1181,11 @@ class CtlEmpresaController extends Controller {
 
         $em = $this->getDoctrine()->getManager();
         $dqlNumerocorrelativo = "SELECT COUNT(u.id) as numero FROM DGAbgSistemaBundle:AbgUrlPersonalizada u"
-                . " WHERE u.url like '%AB%' ";
+                . " WHERE u.url like '%ab%' ";
         $resultCorrelativo = $em->createQuery($dqlNumerocorrelativo)->getArrayResult();
         $numero_base = $resultCorrelativo[0]['numero'];
 
-        $primerLetras = "AB";
+        $primerLetras = "ab";
         $valor = "";
 
         $numero = $numero_base + 1;
@@ -1263,6 +1279,7 @@ class CtlEmpresaController extends Controller {
 
         if ($isAjax) {
 
+
             $em = $this->getDoctrine()->getManager();
             $username = $this->container->get('security.context')->getToken()->getUser();
             $abgPersonaId = $username->getRhPersona();
@@ -1279,7 +1296,8 @@ class CtlEmpresaController extends Controller {
             $urlPe->setCtlEmpresa(null);
             $urlPe->setAbgPersonas($abgPersonaId);
             $urlPe->setEstado(1);
-            $urlPe->setUrl($direccionUrl);
+            $urlPe->setUrl(strtolower($direccionUrl));
+
             $em->persist($urlPe);
             $em->flush();
 
@@ -1403,7 +1421,7 @@ class CtlEmpresaController extends Controller {
             $urlPe->setCtlEmpresa($ctlEmpresaId);
             $urlPe->setAbgPersonas(null);
             $urlPe->setEstado(1);
-            $urlPe->setUrl($direccionUrl);
+            $urlPe->setUrl(strtolower($direccionUrl));
             $em->persist($urlPe);
             $em->flush();
 
@@ -1431,6 +1449,7 @@ class CtlEmpresaController extends Controller {
 
 
             $entity = $em->getRepository('DGAbgSistemaBundle:AbgUrlPersonalizada')->findBy(array("abgPersona" => $personaId, "estado" => 1));
+
             $url = $entity[0]->getUrl();
 
             $numero = "http://www.abogados.com.sv/" . $url;
@@ -2147,7 +2166,7 @@ class CtlEmpresaController extends Controller {
 
     /**
      * @Route("confirmar/correo/{id}", name="confirmarcorreo", options={"expose"=true})
-     * @Method("GET")
+     * @Method({"GET","POST"})
      */
     public function ConfirmarAction(Request $request) {
         try {
@@ -2200,14 +2219,24 @@ class CtlEmpresaController extends Controller {
                                 . " FROM DGAbgSistemaBundle:CtlEstado d";
                         $depto = $em->createQuery($dql_departamento)->getArrayResult();
 
-                        return $this->render('abgpersona/datosGenerales.html.twig', array(
+                        /*  return $this->render('abgpersona/datosGenerales.html.twig', array(
+                          'nombreCorto' => $nombreCorto,
+                          'abgPersona' => $result_persona,
+                          'usuario' => $username,
+                          'active' => 'perfil',
+                          'depto' => $depto,
+                          'abgFoto' => $result_foto,
+                          'especialida' => $result_especialida,
+                          'codigo' => $codigo
+                          )); */
+
+                        return $this->render('ctlempresa/registro2.html.twig', array(
                                     'nombreCorto' => $nombreCorto,
                                     'abgPersona' => $result_persona,
                                     'usuario' => $username,
                                     'active' => 'perfil',
                                     'depto' => $depto,
                                     'abgFoto' => $result_foto,
-                                    'especialida' => $result_especialida,
                                     'codigo' => $codigo
                         ));
                     }
@@ -2276,7 +2305,7 @@ class CtlEmpresaController extends Controller {
 
     /**
      * @Route("/informacion_general/data/info", name="informacion_general", options={"expose"=true})
-     * @Method("POST")
+     * @Method({"POST"})
      */
     public function InformacionGeneralAction() {
         try {
@@ -2285,7 +2314,7 @@ class CtlEmpresaController extends Controller {
             $em->getConnection()->beginTransaction();
             $request = $this->getRequest();
 
-         
+
             /*   var_dump($request->get('codigo'));
               exit(); */
             $ctlUsuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByCodigoConfirmar(trim($request->get('codigo')));
@@ -2300,8 +2329,8 @@ class CtlEmpresaController extends Controller {
 
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $username = $this->container->get('security.context')->getToken()->getUser()->getId();
-               $facturacion = $em->getRepository("DGAbgSistemaBundle:AbgFacturacion")->findByAbgPersona($idPersona);
-      
+            $facturacion = $em->getRepository("DGAbgSistemaBundle:AbgFacturacion")->findByAbgPersona($idPersona);
+
 
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($idPersona);
             $Ciudad = $em->getRepository("DGAbgSistemaBundle:CtlCiudad")->find($datos['Smunicipio']);
@@ -2367,27 +2396,25 @@ class CtlEmpresaController extends Controller {
             }
 
 
-if(empty($facturacion))
-{
-            $abgFacturacionTrial = new AbgFacturacion();
-            $date = new \DateTime("now");
-            $tipo_pago = $em->getRepository("DGAbgSistemaBundle:CtlTipoPago")->find(5);
-            $fechaPago = date_add($date, date_interval_create_from_date_string('14 days'));
-            $abgFacturacionTrial->setAbgPersona($Persona);
-            $abgFacturacionTrial->setIdUser(null);
-            $abgFacturacionTrial->setFechaRegistro(new \DateTime("now"));
-            $abgFacturacionTrial->setFechaPago($fechaPago);
-            $abgFacturacionTrial->setAbgTipoPago($tipo_pago);
-            $abgFacturacionTrial->setMonto(00.00);
-            $abgFacturacionTrial->setPlazo(14);
-            $abgFacturacionTrial->setServicio('Bienvenida');
-            $abgFacturacionTrial->setDescripcion('Directorio de abogados de El Salvador te regala 14 dias de bienvenida por la suscripcion dentro del periodo de ..');
-            $abgFacturacionTrial->setComprobante(null);
-            $abgFacturacionTrial->setAprobado(1);
-            $em->persist($abgFacturacionTrial);
-            $em->flush();
-
-}
+            if (empty($facturacion)) {
+                $abgFacturacionTrial = new AbgFacturacion();
+                $date = new \DateTime("now");
+                $tipo_pago = $em->getRepository("DGAbgSistemaBundle:CtlTipoPago")->find(5);
+                $fechaPago = date_add($date, date_interval_create_from_date_string('14 days'));
+                $abgFacturacionTrial->setAbgPersona($Persona);
+                $abgFacturacionTrial->setIdUser(null);
+                $abgFacturacionTrial->setFechaRegistro(new \DateTime("now"));
+                $abgFacturacionTrial->setFechaPago(null);
+                $abgFacturacionTrial->setAbgTipoPago($tipo_pago);
+                $abgFacturacionTrial->setMonto(00.00);
+                $abgFacturacionTrial->setPlazo(14);
+                $abgFacturacionTrial->setServicio('Bienvenida');
+                $abgFacturacionTrial->setDescripcion('Directorio de abogados de El Salvador te regala 14 dias de bienvenida por la suscripcion dentro del periodo de ..');
+                $abgFacturacionTrial->setComprobante(null);
+                $abgFacturacionTrial->setAprobado(1);
+                $em->persist($abgFacturacionTrial);
+                $em->flush();
+            }
 
             $em->getConnection()->commit();
             $em->close();
@@ -2470,6 +2497,174 @@ if(empty($facturacion))
         } catch (\Exception $e) {
 
             $data['estado'] = false; //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
+    }
+
+    /**
+     * @Route("/data/regsitro2_usuario/", name="registro2_usuario", options={"expose"=true})
+     * @Method({"POST","GET"})
+     */
+    public function Registro2UsuarioAction() {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $request = $this->getRequest();
+             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+
+            $username = $this->container->get('security.context')->getToken()->getUser()->getId();
+
+            parse_str($request->get('datos'), $datos);
+
+
+            $em = $this->getDoctrine()->getManager();
+            $request = $this->getRequest();
+   
+
+            $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($idPersona);
+            $Ciudad = $em->getRepository("DGAbgSistemaBundle:CtlCiudad")->find($datos['Smunicipio']);
+            $Usuario = $this->container->get('security.context')->getToken()->getUser();
+
+            $data['codigo'] = $Usuario->getCodigoConfirmar();
+            // Confirma el correo
+
+            $ctlUsuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->find($username);
+            $ctlUsuario->setEstadoCorreo(2);
+            $em->merge($ctlUsuario);
+            $em->flush();
+
+            $Persona->setNombres($datos['txtnombre']);
+            $Persona->setApellido($datos['txtapellido']);
+            $Persona->setTituloProfesional($datos['Stitulo']);
+            $Persona->setCtlCiudad($Ciudad);
+            $Persona->setGenero($datos['rGenero']);
+            //      $Persona->setEstadoMetodoPago(1);
+
+            $abgFoto = $em->getRepository("DGAbgSistemaBundle:AbgFoto")->findBy(array('abgPersona' => $Persona->getId(), 'tipoFoto' => 0));
+
+
+            if ($datos['rGenero'] == 'M') {
+                $abgFoto[0]->setSrc('Photos/defecto/defectoH.png');
+            } else {
+                $abgFoto[0]->setSrc('Photos/defecto/defectoM.png');
+            }
+
+
+            $em->merge($abgFoto[0]);
+            $em->flush();
+
+            $em->merge($Persona);
+            $em->flush();
+            $data['msj'] = 1;
+            $data['id'] = $Usuario->getCodigoConfirmar();
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+
+            $data['error'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
+    }
+
+    /**
+     * @Route("/data/regsitro3_form/data/", name="registro3_form", options={"expose"=true})
+     * @Method({"POST","GET"})
+     */
+    public function Registro3FormAction() {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $request = $this->getRequest();
+
+            $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+            $username = $this->container->get('security.context')->getToken()->getUser()->getId();
+
+
+            $abgFoto = $em->getRepository("DGAbgSistemaBundle:AbgFoto")->findBy(array('abgPersona' => $idPersona, 'tipoFoto' => 0));
+            $dql_especialida = "SELECT  e.id AS id, e.nombreEspecialidad AS nombre"
+                    . " FROM  DGAbgSistemaBundle:CtlEspecialidad e ";
+            $result_especialida = $em->createQuery($dql_especialida)->getArrayResult();
+
+            return $this->render('ctlempresa/registro3.html.twig', array('src' => $abgFoto[0]->getSrc(), 'especialidades' => $result_especialida));
+        } catch (\Exception $e) {
+
+            $data['error'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
+    }
+
+    /**
+     * @Route("/data/regsitro3_usuario/", name="registro3_usuario", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function Registro3UsuarioAction() {
+        try {
+
+            $em = $this->getDoctrine()->getManager();
+            $request = $this->getRequest();
+            $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+            $username = $this->container->get('security.context')->getToken()->getUser()->getId();
+           $Persona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona();
+           
+                $facturacion = $em->getRepository("DGAbgSistemaBundle:AbgFacturacion")->findByAbgPersona($idPersona);
+            $array = $request->get('esp');
+
+
+            $RepositorioEsp = $em->getRepository("DGAbgSistemaBundle:AbgPersonaEspecialida");
+            if (is_null($RepositorioEsp->findByAbgPersona($idPersona))) {
+                
+            } else {
+                $PersonaEsp = $RepositorioEsp->findByAbgPersona($idPersona);
+
+                foreach ($PersonaEsp as $obj) {
+                    $em->remove($obj);
+                    $em->flush();
+                }
+            }
+            if (is_null($array)) {
+                
+            } else {
+                foreach ($array as $obj) {
+                    $PersonaEspecialidad = new AbgPersonaEspecialida();
+                    $idSub = $em->getRepository("DGAbgSistemaBundle:CtlEspecialidad")->find(intval($obj['0']));
+                    $PersonaEspecialidad->setAbgPersona($Persona);
+                    $PersonaEspecialidad->setCtlEspecialidad($idSub);
+                    $em->persist($PersonaEspecialidad);
+                    $em->flush();
+                }
+            }
+
+
+
+            // Confirma el correo
+
+            $ctlUsuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->find($username);
+            $ctlUsuario->setEstadoCorreo(1);
+            $em->merge($ctlUsuario);
+            $em->flush();
+            
+            // Si no existe una factura
+                      if (empty($facturacion)) {
+                $abgFacturacionTrial = new AbgFacturacion();
+                $date = new \DateTime("now");
+                $tipo_pago = $em->getRepository("DGAbgSistemaBundle:CtlTipoPago")->find(5);
+                $fechaPago = date_add($date, date_interval_create_from_date_string('14 days'));
+                $abgFacturacionTrial->setAbgPersona($Persona);
+                $abgFacturacionTrial->setIdUser(null);
+                $abgFacturacionTrial->setFechaRegistro(new \DateTime("now"));
+                $abgFacturacionTrial->setFechaPago($fechaPago);
+                $abgFacturacionTrial->setAbgTipoPago($tipo_pago);
+                $abgFacturacionTrial->setMonto(00.00);
+                $abgFacturacionTrial->setPlazo(14);
+                $abgFacturacionTrial->setServicio('Bienvenida');
+                $abgFacturacionTrial->setDescripcion('Directorio de abogados de El Salvador te regala 14 dias de bienvenida por la suscripcion dentro del periodo de ..');
+                $abgFacturacionTrial->setComprobante(null);
+                $abgFacturacionTrial->setAprobado(1);
+                $em->persist($abgFacturacionTrial);
+                $em->flush();
+            }
+            $data['msj'] = 'Datos actualizados.';
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+
+            $data['error'] = $e->getMessage(); //"Falla al Registrar ";
             return new Response(json_encode($data));
         }
     }

@@ -164,7 +164,7 @@ $(document).on('ready', function () {
                 success: function (data)
                 {
                     // $("#contenido").append(data);
-                    div = '<div class="nueva-Experiencia" id="div01"  style="background-color: #FBFBFB;margin-bottom:10px;border-bottom:1px solid #F1EEEE">' + data + '</div>';
+                    div = '<div class="nueva-Experiencia" id="div01"  style="background-color: #FBFBFB;margin-bottom:10px;border-bottom:1px solid #F1EEEE">' + data + '</div><br>';
                     $("#contenido").before(div);
                 },
                 error: function (errors)
@@ -600,6 +600,7 @@ function addEspecialida()
                 }
 
                 $("#div01").remove();
+                $('div.divEspe').children('br').remove();
                 $("#contenido").append(data);
 
             },

@@ -44,10 +44,10 @@
                     */
                 </style>
 
-   
+
             {% endblock %}
 
-         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+            <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
             <!-- fosjsrouting -->
             <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
             <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
@@ -77,44 +77,82 @@
 
 
         {% endblock %}
+        <!-- Facebook Pixel Code -->
+        <script>
+            !function (f, b, e, v, n, t, s) {
+                if (f.fbq)
+                    return;
+                n = f.fbq = function () {
+                    n.callMethod ?
+                            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+                };
+                if (!f._fbq)
+                    f._fbq = n;
+                n.push = n;
+                n.loaded = !0;
+                n.version = '2.0';
+                n.queue = [];
+                t = b.createElement(e);
+                t.async = !0;
+                t.src = v;
+                s = b.getElementsByTagName(e)[0];
+                s.parentNode.insertBefore(t, s)
+            }(window,
+                    document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
 
-    </head>
-    <body>
-        {% block body %}
-        {% embed ':Layout:head.html.twig' %}{% endembed %}
+            fbq('init', '1807736079458829');
+            fbq('track', "PageView");
+                </script>
+    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1807736079458829&ev=PageView&noscript=1"/></noscript>
+</head>
+<body>
 
-        <!-- Template -->
-        <div class="container">
-            {% block descripcion_y_acciones %}
-                {% block descripcion %}
+    {% block body %}
+    {% embed ':Layout:head.html.twig' %}{% endembed %}
 
-                {% endblock %}
-                {% block acciones %}
+    <!-- Template -->
+    <div class="container">
+        {% block descripcion_y_acciones %}
+            {% block descripcion %}
 
-                {% endblock acciones %}
+            {% endblock %}
+            {% block acciones %}
 
-            {% endblock %}	
-            {% block navegacion_Y_body %}
+            {% endblock acciones %}
 
-                {% block navegacion %}
-                {% endblock %}
+        {% endblock %}	
+        {% block navegacion_Y_body %}
 
-                {% block cuerpo %}
+            {% block navegacion %}
+            {% endblock %}
 
-                {% endblock cuerpo %}
-            {% endblock %}	
-        </div>
+            {% block cuerpo %}
 
-        {% endblock %}
-    </body>
-    {%block js_template %}
+            {% endblock cuerpo %}
+        {% endblock %}	
+    </div>
 
-        {% block js_extend %}
-        
-        {% endblock %}
+{% endblock %}
+<!-- Start of LiveChat (www.livechatinc.com) code -->
+<script type="text/javascript">
+    window.__lc = window.__lc || {};
+    window.__lc.license = 7744471;
+    (function () {
+        var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
+        lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(lc, s);
+    })();
+</script>
+<!-- End of LiveChat code -->
+</body>
+{%block js_template %}
 
+    {% block js_extend %}
 
     {% endblock %}
 
 
-              
+{% endblock %}
+
+

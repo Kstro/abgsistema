@@ -205,21 +205,21 @@
         {# aprobado==1 #}
         {#{plazo}#}
 
-        
 
-        
-                {%if(pagoAprobado==0)%}
+
+
+        {%if(pagoAprobado==0)%}
             <div class="alert alert-warning sans" style="margin-left: 15px; margin-right: 15px; padding:10px;">
                 <strong> Hemos recibido tu metodo de pago, estamos en espera de tu comprobante</strong>
             </div> 
-                {%elseif((plazo>0 and plazo<5) and ( tipopago==5 or tipopago==1 or tipopago==2) )%}
+        {%elseif((plazo>0 and plazo<5) and ( tipopago==5 or tipopago==1 or tipopago==2) )%}
             <div class="alert alert-danger sans" style="margin-left: 15px; margin-right: 15px; padding:10px;">
                 <strong>¡Aviso! </strong>¡Tu suscripción esta por finalizar! Solo {%if(plazo==1)%} queda {{plazo}} dia {%else%} quedan {{plazo}} dias{%endif%}. Renuevala ahora por $9.99 
                 <div class="btn-group">
-              
+
                     <a href="{{ path('planpago', { 'id':codigo})}}" class=" btn  btn-sm btn-default btn-flat" style=" color: #800;  text-decoration: none; margin-left: 101px; width:120px;"><span>Suscribir</span></a>
 
-                    </div>
+                </div>
             </div> 
         {%endif%}
 
@@ -274,6 +274,8 @@
                                                 <a href="#" id="txtTituloU" data-type="text" id="idpuesto" data-pk="1" data-title="Nombre" data-placement="right" class="editable editable-click" title="Título del puesto" data-placeholder='ej.Director ejecutivo en DigitalutyGarage'>
                                                     {%if datos.tituloPuesto|default is not empty %}
                                                         {{datos.tituloPuesto}}
+                                                    {%else%}
+                                                        Titulo Profesional(Ej. Director en Abogados.com.sv)
                                                     {%endif%}
                                                 </a>
                                             </p>
@@ -391,9 +393,9 @@
                                                     <span style="font-size:13px;">
                                                         <a href="#divEducacion" id="estudioActual">
                                                             {%if EstudioAct==1%}
-                                                                 {%set edu=""%}
+                                                                {%set edu=""%}
                                                                 {% for datos in EduAct %}
-                                                                        {%set edu=datos.institucion~", "~edu%}
+                                                                    {%set edu=datos.institucion~", "~edu%}
                                                                 {%endfor%}
                                                                 {{edu|slice(0,-2)}}
                                                             {%else%}
@@ -439,14 +441,17 @@
                                     <div class="bloque-ocultar ">
                                         <p class="text-center">Mostrar perfil <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" 
                                                                                  title="Oculte su perfil mientras lo actualiza. Mida el nivel de progreso en el gráfico de abajo."></i></p>
-                                        <div class="onoffswitch" style="margin-left: auto; margin-right: auto;">
+                                        <div class="onoffswitch" style="margin-left: auto; margin-right: auto;" {%if(datos.estado==2 or datos.estado==3)%}data-toggle="tooltip" data-placement="bottom" 
+                                             title="Actualemente su perfil esta oculto, podrá publicarlo hasta que la administración de Abogados.com.sv lo habilite."{%endif%}>
                                             <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox responsive" id="myonoffswitch" 
-                                                   {%if(datos.estado==1)%}checked{%endif%}{%if(datos.estado==2)%}disabled{%endif%}>
+                                                   {%if(datos.estado==1)%}checked{%endif%}{%if(datos.estado==2)%}disabled{%elseif(datos.estado==3)%}disabled{%endif%}>
                                             <label class="onoffswitch-label" for="myonoffswitch">
                                                 <span class="onoffswitch-inner"></span>
                                                 <span class="onoffswitch-switch"></span>
                                             </label>
+
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -565,7 +570,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="box-body ">
+                            <div class="box-body divEspe">
                                 <div   id="contenido" style=" padding: 10px;">
                                     {%if RegistroEspecialida|default is not empty %}
                                         {%set n = 0%}

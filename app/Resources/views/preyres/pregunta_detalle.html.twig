@@ -1,15 +1,34 @@
-{% extends ':Layout:layout2.html.twig' %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Directorio de Abogados de El Salvador | Primero y unico directorio de abogados de El Salvador | Abogados.com.sv</title>
+        <meta name="robots" content="noindex">
 
-{% block descripcion_y_acciones %}
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <link href="{{asset('Resources/src/css/bootstrap.css')}}" rel="stylesheet">
+        <link href="{{asset('Resources/src/css/style.css')}}" rel="stylesheet">
+        <link href="{{asset('Resources/src/css/menu_movil.css')}}" rel="stylesheet">
+        <link href="{{asset('Resources/src/css/movilcss.css')}}" rel="stylesheet">
 
-{% endblock %}
+        <!-- Favicon (Icono Pequeño) -->
+        <link rel="shortcut icon" href="{{asset('Photos/favicon.png')}}" type="image/x-icon">
+        <link rel="icon" href="{{asset('Photos/favicon.png')}}" type="image/x-icon">
+        
+        <link rel="stylesheet" href="{{asset('Resources/AdminLTE-2.3.0/bootstrap/css/bootstrap.min.css')}}">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+          <link href="{{asset('Resources/src/css/menu_movil.css')}}" rel="stylesheet">
+          </head>
+    <body>
+        {% embed ':Layout:head.html.twig' %}{% endembed %}
+        <div id="page-content" >
 
-
-{% block navegacion_Y_body %}
-
-    {% block navegacion %}
-    {% endblock %}
-    {% block cuerpo %}
         <div class="container" style="padding-bottom: 70px; ">
             <div class="row">
                 <div class="col-md-9">
@@ -137,18 +156,16 @@
         </div>
 
         <div style="height: 10px;"></div>
+         </div>
 
-    {% endblock %}
-{% endblock %}
-
-
-    {% block js_template %}
-{#        <script src="{{ asset('Resources/jquery/jquery.js')}}"></script>#}
+   
+   {#  <script src="{{ asset('Resources/jquery/jquery.js')}}"></script>#}
         <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.min.css') }}">
         <script src="{{ asset('Resources/select2/dist/js/select2.min.js') }}"></script>
         <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
         <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
         <script src='https://www.google.com/recaptcha/api.js'></script>
+        <script src="{{asset('Resources/src/js/menu_movil.js')}}"></script>
     <script type="text/javascript">
      /*   $(document).ready(function () {
      
@@ -359,6 +376,7 @@ function validarCategoria()
                     }
                 }
         </script>
-{% endblock %}
+
+</body></html>
 
 

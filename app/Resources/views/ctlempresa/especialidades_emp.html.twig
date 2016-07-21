@@ -1,6 +1,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $("#cancel").click(function () {
+              $('div.divEspeEmp').children('br').remove();
             $("#contenido").show();
             $("#div01").remove();
         });
@@ -22,14 +23,14 @@
                                         <input type="checkbox" checked class="{{datos.id}} Especialida" name="{{datos.id}}" id="{{datos.id}}" value="{{datos.id}}" 
                                                onclick="fil({{datos.id}})"/>&nbsp;{{datos.nombre| upper }}</p></strong>  
                                 <div id="div{{datos.id}}" style="display:block;">
-                                    <textarea class="form-control  input-sm" rows="3" name="txt{{datos.id}}" id="txt{{datos.id}}" placeholder="DescripciÃ³n de la especialida">{{datos.descripcion}}</textarea>
+                                    <textarea class="form-control  input-sm" rows="3" name="txt{{datos.id}}" id="txt{{datos.id}}" placeholder="Descripción de la especialida">{{datos.descripcion}}</textarea>
                                 </div>
                             {%endif%}
                         {%else%}
                             <strong><p class="sans" >
                                     <input type="checkbox" class="{{datos.id}} Especialida" name="{{datos.id}}" id="{{datos.id}}" value="{{datos.id}}" 
                                            onclick="fil({{datos.id}})"/>&nbsp;{{datos.nombre| upper }}</p></strong>  
-                            <div id="div{{datos.id}}" style="display:none;"><textarea class="form-control  input-sm" rows="3" name="txt{{datos.id}}" id="txt{{datos.id}}" placeholder="DescripciÃ³n de la especialida"></textarea>
+                            <div id="div{{datos.id}}" style="display:none;"><textarea class="form-control  input-sm" rows="3" name="txt{{datos.id}}" id="txt{{datos.id}}" placeholder="Descripción de la especialida"></textarea>
                             </div>
                         {%endif%}
                     </div>
@@ -58,7 +59,7 @@
                             <strong><p class="sans" >
                                     <input type="checkbox" class="{{datos.id}} Especialida" name="{{datos.id}}" id="{{datos.id}}" value="{{datos.id}}" 
                                            onclick="fil({{datos.id}})"/>&nbsp;{{datos.nombre| upper }}</p></strong>  
-                            <div id="div{{datos.id}}" style="display:none;"><textarea class="form-control  input-sm" rows="3" name="txt{{datos.id}}" id="txt{{datos.id}}" placeholder="DescripciÃ³n de la especialida"></textarea>
+                            <div id="div{{datos.id}}" style="display:none;"><textarea class="form-control  input-sm" rows="3" name="txt{{datos.id}}" id="txt{{datos.id}}" placeholder="Descripción de la especialida"></textarea>
                             </div> 
                         </div>   
                         {%if ((n>0)and (n % 3== 0))%}

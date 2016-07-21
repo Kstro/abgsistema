@@ -121,7 +121,7 @@ class SecuredController extends Controller
                             <td class=\"expander\"></td>
                           </tr>
                         </table>
-                    ");
+                    ","Contraseña reestablecida");
         //var_dump($password);
         //var_dump($usuario);
         //die();

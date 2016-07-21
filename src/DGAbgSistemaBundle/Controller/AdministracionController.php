@@ -284,7 +284,7 @@ class AdministracionController extends Controller {
                         <td class=\"expander\"></td>
                     </tr>
                 </table>
-            ");
+            ","Su pregunta ha sido rechasada".$idpreg);
                
             
             $em->remove($abgPregunta);

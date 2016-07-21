@@ -278,20 +278,18 @@
 
 
                                 {#  </div>#}
-
+                             
                             </div>
 
                         {% endif %}
-
+     
                     </form>
                     <!-- TITULO DE EMPRESA -->
+                        
                     <div style="margin-top: -55px; margin-bottom: 5px;">
-                        <p class="text-right" style="font-size: 20px; margin-right: 10px; margin-bottom: 0px; z-index: 555;"><strong>
-                                <a  href="{{ path('empresapublico') }}"  style="font-size: 16px;" >  
-                                    <span style="color: #4444444; margin-left: 10px;">
-                                        &nbsp;Ver perfil</span>
-                                    </span>
-                                </a>  
+                          <p class="text-right" style="font-size: 20px; margin-right: 10px; margin-bottom: 0px; z-index: 555;"><strong>
+                                  <a  href="{{ path('empresapublico') }}"  style="width: 80px; margin-right: 20px;" class=" btn btn-primary btn-flat btn-sm">Ver perfil</a> 
+                   
                                 <span style="color: #4444444; margin-left: 10px;">
                                     <a href="#" id="txtNombreEmpresa" data-type="text"   data-placement="left" data-title="Nombre de la empresa" class="text-capitalize" e-maxlength="45">
                                         {% if datos.nombreEmpresa %}
@@ -544,7 +542,7 @@
             </div>
         </div>
         <!-- ESPECIALIDADES -->
-        <div class="box box-widget">
+        <div class="box box-widget" style=" margin-bottom: 20px;">
             <div class="box-header with-border">
                 <h3 class="box-title" style="margin-left: 10px;">ESPECIALIDADES </h3>
 
@@ -555,8 +553,8 @@
 
                 </div>
             </div>
-            <div class="box-body" style="margin: 10px;padding-bottom: 20px;">
-                <div   id="contenido" >
+            <div class="box-body divEspeEmp" >
+                <div   id="contenido" style="padding: 10px;">
                 
                     {%if RegistroEspecialida|default is not empty %}
                         {%set n = 0%}
@@ -581,7 +579,7 @@
                         <script type="text/javascript">
                             $("#contenido").hover(
                                     function () {
-                                        $(this).append($('<span style="margin-left:13px;"><i class="fa fa-pencil fa-x2 btn btnperfil" onClick="editEspeEmp()"> &nbsp;Editar</i>&nbsp;&nbsp;<i class="fa fa-trash-o btn btnperfil"  onClick="editEspeEmp()">&nbsp;Eliminar</i></span>'));
+                                        $(this).append($('<span style="margin-left:13px;"><a class="btn btn-primary sans btn-sm btn-flat " onClick="editEspeEmp()" style="width:80px;">Editar</a></span>'));
                                     }, function () {http://marvinvigil.info/abgdirectorio/abgsistema/app_dev.php/
                                 $(this).find("span:last").remove();
                             });
@@ -591,6 +589,7 @@
                 </div>
 
             </div></div>
+                   
         <!-- Fin -->
 
 

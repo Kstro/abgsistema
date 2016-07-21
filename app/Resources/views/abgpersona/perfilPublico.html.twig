@@ -124,8 +124,8 @@
             <div class=" col-xs-12">
 
                 <div class="mailbox-controls" style=" margin-left: 7px;">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default btn-sm" onclick="javascript:history.go(-1)"><i class="fa fa-chevron-left text-blue"> Atrás</i></button>
+                    <div >
+                        <button type="button" style=" width: 80px;" class="btn btn-primary btn-sm btn-flat" onclick="javascript:history.go(-1)"><i class="fa fa-chevron-left text-blue" style="color: #FFF !important;"> </i> Atrás</button>
                     </div>
                 </div> 
 
@@ -278,7 +278,7 @@
                                                                                      title=" Deshabilite/Habilite al usuario"></i></p>
                                                 <div class="onoffswitch" style="margin-left: auto; margin-right: auto;">
                                                     <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox responsive" id="myonoffswitch" 
-                                                           {%if(Uestado==1)%}checked{%endif%}>
+                                                           {%if(datos.estado != 3)%}checked{%endif%}>
                                                     <label class="onoffswitch-label" for="myonoffswitch">
                                                         <span class="onoffswitch-inner"></span>
                                                         <span class="onoffswitch-switch"></span>
@@ -707,7 +707,7 @@
 
                 <div class="mailbox-controls" style=" margin-left: 7px; padding-bottom: 20px;">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-default btn-sm" onclick="javascript:history.go(-1)"><i class="fa fa-chevron-left text-blue"> Atrás</i></button>
+                         <button type="button" style=" width: 80px;" class="btn btn-primary btn-sm btn-flat" onclick="javascript:history.go(-1)"><i class="fa fa-chevron-left text-blue" style="color: #FFF !important;"> </i> Atrás</button>
                     </div>
                 </div> 
 
@@ -722,9 +722,9 @@
                                 $('#myonoffswitch').change(function () {
                                     var estado;
                                     if ($('#myonoffswitch').is(":checked")) {
-                                        estado = 1;
+                                        estado = 0;
                                     } else {
-                                        estado = 4;
+                                        estado = 3;
                                     }
 
                                     $.ajax({

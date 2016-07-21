@@ -305,8 +305,8 @@ class AbgPersonaController extends Controller {
 
                 if ($userEstadoCorreo == 0) {
                     return $this->redirect($this->generateUrl('confirmarcorreo', array('id' => $Usuario->getCodigoConfirmar())));
-                } elseif ($Persona->getEstadoMetodoPago() == 0) {
-                    return $this->redirect($this->generateUrl('planpago', array('id' => $Usuario->getCodigoConfirmar())));
+                } elseif ($userEstadoCorreo == 2) {
+                    return $this->redirect($this->generateUrl('registro3_form', array('id' => $Usuario->getCodigoConfirmar())));
                 } else {
 
                     $sqlRol = "SELECT  r.id As id, r.rol As rol"
@@ -1231,7 +1231,7 @@ class AbgPersonaController extends Controller {
                                             </td>
                                             <td class=\"expander\"></td>
                                         </tr>
-                                    </table>","verificación");
+                                    </table>","Verificación");
                     } else {
                         $data['msj'] = "Abogado no verificado";
                     }
@@ -1272,10 +1272,10 @@ class AbgPersonaController extends Controller {
                     $Persona->setEstado($request->get('estado'));
 
                     if ($request->get('estado') == '4') {
-                        $Usuario[0]->setEstado(0);
+                     ///   $Usuario[0]->setEstado(0);
                         $data['msj'] = "Abogado deshabilitado";
                     } else {
-                        $Usuario[0]->setEstado(1);
+                  ///      $Usuario[0]->setEstado(1);
                         $data['msj'] = "Abogado habilitado";
                     }
 
@@ -1294,7 +1294,6 @@ class AbgPersonaController extends Controller {
                         $data['msj'] = "Abogado verificado como notario";
 
                         $email = $Persona->getCorreoelectronico();
-
                         $this->get('envio_correo')->sendEmail($email, "", "", "", "
                                     <table style=\"width: 540px; margin: 0 auto;\">
                                         <tr>
@@ -1308,7 +1307,7 @@ class AbgPersonaController extends Controller {
                                             <td class=\"expander\"></td>
                                         </tr>
                                     </table>
-                                ");
+                                ","Uested ha sido verificado como notario");
                     } else {
                         $data['msj'] = "No fue verificado como notario";
                     }
