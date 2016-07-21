@@ -5,9 +5,7 @@
 {% endblock%}
 {% block navegacion_Y_body %}
 
-    {% block navegacion %}
-
-    {% endblock %}
+    {% block navegacion %}{% endblock %}
     {% block cuerpo %}
         <div id="divContenido" style="min-height:175px;">
             {%if datosP|default is not empty %}
@@ -23,7 +21,7 @@
                                         <p style="color: #777777; margin-top: -3px; margin-bottom: 0px; font-size: 12px;" class="sans">{{datos.tituloProfesional}}</p></div></div>
 
                                 <div class ="row"  style="margin-top: 10px;"><div class="col-sm-4" >
-                                        <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Telefonos </strong></p >
+                                        <p style ="color: #4444444; font-size: 11px; margin-bottom: 0px;"><strong> Teléfonos </strong></p >
                                         <p style ="font-size: 11px; margin-bottom: 0px;"> + 503 {{datos.movil}}</br>+ 503 {{datos.Tfijo}}</p>
                                     </div>
                                     <div class="col-sm-4 " >
@@ -36,9 +34,11 @@
 
                                     </div>#}</div>
                                 <div class="row"><div class = "col-sm-12" style="margin-top: -0px;">
-                                        <span style ="font-size: 11px;"><a href=""> Ver perfill </a></span>
+                                        <span style ="font-size: 11px;"><a href=""> Ver perfil </a></span>
                                         <span style ="color: #777777; margin-left: 5px; margin-right: 5px;"> | </span>
-                                        <span style ="font-size: 11px;"><a href="">Contactar</a></span></div></div></div>
+                                        <span style ="font-size: 11px;"><a href="">Contactar</a></span></div>
+                                </div>
+                            </div>
 
                             <div class="col-xs-4" >
                                 <div class="row">
@@ -85,7 +85,7 @@
             <br>
             <div class="col-sm-12">
                 <div class="form-group">
-                    <button type="button" class="btn btn-primary btn-md btn-flat" id="btnLista"><i class="fa fa-list" > &nbsp;Lista de Abogados</i></button> 
+                    <button type="button" class="btn btn-primary btn-md btn-flat" id="btnLista"><i class="fa fa-list" > &nbsp;Lista de abogados</i></button> 
                 </div>
             </div>
         </div>
@@ -140,48 +140,49 @@
         
         $(document).on('click', '#rechazarSolicitudVerificado', function () {
             var idAbogado=$('#hPersona').val();
-            console.log('Solicitud click');
+            
+            // console.log('Solicitud click');
+            
             swal({
-                    //title: "Confirmación de eliminación de la pregunta",
-                    text: "¿Está seguro que desea rechazar la solicitud?",
-                    type: "info",
-                    showCancelButton: true,
-                    confirmButtonColor: "#1D234D",
-                    confirmButtonText: "Aceptar",
-                    cancelButtonText: "Cancelar",
-                    closeOnConfirm: false,
-                    closeOnCancel: false
-                }).then(function(isConfirm) {
-                    if (isConfirm) {
-                        console.log('if');
-                        var data = {
-                            id : idAbogado
-                        };
+                //title: "Confirmación de eliminación de la pregunta",
+                text: "¿Está seguro que desea rechazar la solicitud?",
+                type: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#1D234D",
+                confirmButtonText: "Aceptar",
+                cancelButtonText: "Cancelar",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }).then(function(isConfirm) {
+                if (isConfirm) {
+                    console.log('if');
+                    var data = {
+                        id : idAbogado
+                    };
 
-                        $.ajax({
-                            type: 'POST',
-                            data: data,
-                            url: Routing.generate('rechazar_solicitud_notario'),
-                            success: function (response)
-                            {
-                                //console.log('Solicitud aprobada');
-                                swal('','Solicitud rechazada!','success');
-                                $('#btnLista').click();
-                                return false;
-                            },
-                            error: function (xhr, status){
-                                swal('','Lo sentimos, ocurrió un error','error');
-                                return false;
-                            }
-                        });
-                        //console.log('fin de if');
-                        //return false;  
-                    } else {
-                        console.log('else');
-                    }
-                });
-                return false;
+                    $.ajax({
+                        type: 'POST',
+                        data: data,
+                        url: Routing.generate('rechazar_solicitud_notario'),
+                        success: function (response)
+                        {
+                            //console.log('Solicitud aprobada');
+                            swal('','Solicitud rechazada!','success');
+                            $('#btnLista').click();
+                            return false;
+                        },
+                        error: function (xhr, status){
+                            swal('','Lo sentimos, ocurrió un error','error');
+                            return false;
+                        }
+                    });
+                    //console.log('fin de if');
+                    //return false;  
+                } else {
+                    console.log('else');
+                }
+            });
+            return false;
         });
-
     </script>
 {% endblock%}

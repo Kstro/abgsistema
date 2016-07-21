@@ -37,7 +37,7 @@
                     <i class="fa fa-user"></i> <span>Mi perfil</span> 
                 </a>
             </li>
-                <li class="treeview">
+            <li class="treeview">
                 <a href="{{ path('verificar_abg') }}">
                     <i class="fa fa-certificate"></i>
                     <span>Verificarme como  abogado</span>
@@ -77,42 +77,8 @@
                 <i class="fa fa-tasks"></i> <span>Centro de Preguntas</span>
               
             </a>
-        </li>
-         {#<li class="treeview">
-            <a href="#">
-                <i class="fa fa-cloud"></i> <span>Otros servicios</span>
-                <i class="fa fa-angle-left pull-right"></i>
-            </a>
-            <ul class="treeview-menu">
-                <li><a href="../examples/invoice.html"><i class="fa fa-circle-o"></i> Invoice</a></li>
-                <li><a href="../examples/profile.html"><i class="fa fa-circle-o"></i> Profile</a></li>
-
-            </ul>
-        </li>#}
-        {#<li class="treeview">
-            <a href="#">
-                <i class="fa fa-question-circle"></i> <span>Ayuda</span>
-                <i class="fa fa-angle-left pull-right"></i>
-            </a>
-            <ul class="treeview-menu">
-                <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
-                <li>
-                    <a href="#"><i class="fa fa-circle-o"></i> Level One <i class="fa fa-angle-left pull-right"></i></a>
-                    <ul class="treeview-menu">
-                        <li><a href="#"><i class="fa fa-circle-o"></i> Level Two</a></li>
-                        <li>
-                            <a href="#"><i class="fa fa-circle-o"></i> Level Two <i class="fa fa-angle-left pull-right"></i></a>
-                            <ul class="treeview-menu">
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
-            </ul>
-        </li>#}
-          {% endif %}  
+        </li>        
+        {% endif %}  
         {% if (is_granted('ROLE_ADMIN'))%}
              <li>
                 <a href="{{ path('perfil')}}">
@@ -122,6 +88,11 @@
             <li>
                 <a href="{{path('abogados')}}">
                     <i class="fa fa-group "></i><span>Abogados</span> 
+                </a>
+            </li>
+            <li>
+                <a href="{{path('lista_aprobacion_perfiles_abogados')}}">
+                    <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>Aprobación perfil abogado
                 </a>
             </li>
             <li>
