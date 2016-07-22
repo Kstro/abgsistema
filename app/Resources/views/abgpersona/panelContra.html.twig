@@ -1,5 +1,4 @@
 {% extends ':Layout:layout3.html.twig' %}
-{% block title %} Directorio abogados.com.sv | Cambiar contraseña  {% endblock title %}
 {% block js_extend %}
      <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
     <!--  Select  2-->
@@ -11,7 +10,19 @@
     
     <!-- x-editable (bootstrap version) -->
    <link href="//fonts.googleapis.com/css?family=Ubuntu:300,400,700" rel="stylesheet">
- 
+        
+    <link href="{{ asset('Resources/src/css/bootstrap-editable.css')}}" rel="stylesheet"/>
+    <script src="{{asset('Resources/src/js/bootstrap-editable.min.js')}}"></script>
+    <link href="{{ asset('Resources/src/css/address.css')}}" rel="stylesheet"/>
+    <script src="{{asset('Resources/src/js/address.js')}}"></script>
+    <script src="{{ asset('Resources/src/js/main_perfil.js')}}"></script>
+    <script src="{{ asset('Resources/js/url/urlpersonalizada.js')}}"></script>
+    <script src="{{ asset('Resources/CodigoQr/jquery.qrcode-0.12.0.js')}}"></script>
+    <script src="{{ asset('Resources/js/codigoQR/codigoqr.js')}}"></script>
+     <script src="{{ asset('Resources/js/badge/badge.js')}}"></script>
+      
+    
+    <script src="{{ asset('Resources/js/contrasenha/contra.js')}}"></script>
 {% endblock %} 
 {% block title %} Directorio abogados.com.ni | Ajustes de cuenta {% endblock title %}
 {% block cuerpo %}
@@ -30,7 +41,7 @@
         </section>
         <!-- Main content -->
         <section >
-           {% embed ':abgpersona:olvideContra.html.twig' %}{% endembed %}
+           {% embed ':abgpersona:cambiocontra.html.twig' %}{% endembed %}
         </section><!-- /.content -->
         </div><!-- /.content-wrapper -->
 
