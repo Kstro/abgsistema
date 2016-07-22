@@ -21,7 +21,7 @@ class AbgCodigoPromocionalType extends AbstractType
             ->add('plazo')
             ->add('tipoPromocion')
             ->add('estado')
-            ->add('persona')
+            //->add('persona')
         ;
     }
     

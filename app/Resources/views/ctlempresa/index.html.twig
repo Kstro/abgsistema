@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Registro de Abogados | Directorio de Abogados de El Salvador | Primero y unico directorio de abogados de El Salvador | Abogados.com.sv</title>
+        <title>Registro de Abogados | Directorio de Abogados de El Salvador | Primero y único directorio de abogados de El Salvador | Abogados.com.sv</title>
         <meta name="robots" content="noindex">
 
         <!-- Stylesheet de Bootstrap -->
@@ -68,14 +68,14 @@
                             <div class="row">
                                 <div class="" style="padding: 0px 45px;">
                                     <ul class="examples" style=" font-weight: 400; color: #fff;">
-                                        <li class="sans" style="font-size: 15px;">Busqueda de abogados por nombre y/o apellido</li>
+                                        <li class="sans" style="font-size: 15px;">Búsqueda de abogados por nombre y/o apellido</li>
                                         <li class="sans" style="font-size: 15px;">Búsqueda de firmas/bufetes por nombre</li>
                                         <li class="sans" style="font-size: 15px;">Crear y actualizar perfil profesional</li>
                                         <li class="sans" style="font-size: 15px;">Creación de página de empresa con toda la información</li>
                                         <li class="sans" style="font-size: 15px;">Verificación de abogados con insignia en perfil para mas credibilidad</li>
                                         <li class="sans" style="font-size: 15px;">Blog comunitario para demostrar conocimientos y habilidades</li>
                                         <li class="sans" style="font-size: 15px;">Centro de preguntas anónimas para generar posibles clientes</li>
-                                        <li class="sans" style="font-size: 15px;">URL de perfil personalizado (Ej. www.abogados.com.sv/minombrepersonal)</li>
+                                        <li class="sans" style="font-size: 15px;">URL de perfil personalizado (Ej. www.abogados.com.ni/minombrepersonal)</li>
                                         <li class="sans" style="font-size: 15px;">Servicios de publicidad interna disponible (limitada)</li>
                                         <li class="sans" style="font-size: 15px;">Directorio posicionado en Google AdWords & AdSense, medio nacionales, periódicos digitales, Facebook</li>
                                         <li class="sans" style="font-size: 15px;"> Programación de Última tecnología para los mejores resultados de SEO</li>
@@ -91,7 +91,7 @@
                     <div class="col-md-4" style="margin-top: -120px;">
                         <form id="frmEmpresaUsuarioPersona" >
                             <div style="padding: 15px; background-color: #ededed; margin-top: 30px; border-radius: 3px; position: relative; z-index: 2;">
-                                <p class="text-center"><img src="{{asset('Resources/src/img/logo2.png')}}" style="width: 300px;"></p>
+                               <a style="text-decoration: none;color:#FFF;" href="{{path('index')}}" ><p class="text-center"><img src="{{asset('Resources/src/img/logo2.png')}}" style="width: 300px;"></p></a>
                                 <input type="text"  id="txtnombre" name="txtnombre" class="sans" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #fff;" placeholder="Nombres">
                                 <p style="color: #F00; margin-left: 10px; display: none;" id="txtNom" calss="sans"></p>
 
@@ -103,18 +103,18 @@
 
                                 <input type="password"  id="contrasenha" name="contrasenha" class="sans" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #fff;" placeholder="Contraseña">
                                 <p style=" color: #F00; margin-left: 10px;display: none;" id="txtContra" calss="sans"></p>
-                            {#    <input type="text" class="sans" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #fff;" placeholder="Código promocional">#}
+                                <input type="text" class="sans" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #fff;" placeholder="Código promocional">
 
                                 <button type="button" id="bntenviar" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #F32;">
-                                    <span style="color: #fff; font-weight: 600;" class="sans">Registrarme</span>
+                                    <span style="color: #fff; font-weight: 600;" class="sans">Iniciar trial de 14 días</span>
                                 </button>
-                                <button type="button" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #3b5998;">
+                             {#   <button type="button" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #3b5998;">
                                     <span style="color: #fff; font-weight: 600;" class="sans">Registrarme con Facebook</span>
                                 </button>
                                 <button type="button" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #1DA1F2;">
                                     <span style="color: #fff; font-weight: 600;" class="sans">Registrarme con Twitter</span>
-                                </button>
-                                <p class="text-right sans" style="margin-top: 10px;">¿Ya tienes un usuario? <a href="{{path('abogado_login')}}">Inicia sesion</a></p>
+                                </button>#}
+                                <p class="text-right sans" style="margin-top: 10px;">¿Ya tienes un usuario? <a href="{{path('abogado_login')}}">Inicia sesión</a></p>
                             </div>
                         </form>
                     </div>
@@ -140,18 +140,18 @@
 
                                 <input type="password"  id="contrasenhaM" name="contrasenha" class="sans" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #fff;" placeholder="Contraseña">
                                 <p style=" color: #F00; margin-left: 10px;display: none;" id="txtContraM" calss="sans"></p>
-                               {# <input type="text" class="sans" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #fff;" placeholder="Código promocional">#}
+                                <input type="text" class="sans" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #fff;" placeholder="Código promocional">
 
                                 <button type="button" id="bntenviarM" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #F32;">
-                                      <span style="color: #fff; font-weight: 600;" class="sans">Registrarme</span>
+                                      <span style="color: #fff; font-weight: 600;" class="sans">Iniciar trial de 14 días</span>
                                   </button>
-                                  <button type="button"style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #3b5998;">
+                               {#   <button type="button"style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #3b5998;">
                                       <span style="color: #fff; font-weight: 600;" class="sans">Registrarme con Facebook</span>
                                   </button>
                                   <button type="button" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #1DA1F2;">
                                       <span style="color: #fff; font-weight: 600;" class="sans">Registrarme con Twitter</span>
-                                  </button>
-                                  <p class="text-center sans" style="margin-top: 10px;">¿Ya tienes un usuario? <a href="{{path('abogado_login')}}">Inicia sesion</a></p>
+                                  </button>#}
+                                  <p class="text-center sans" style="margin-top: 10px;">¿Ya tienes un usuario? <a href="{{path('abogado_login')}}">Inicia sesión</a></p>
                               </div>
                           </form>
                        
@@ -182,11 +182,10 @@
                 </div></div>
         </div>
 
-        
-       <!-- Ultimos Abogados Desktop -->
+               <!-- Ultimos Abogados Desktop -->
         <div class="container-fluid hidden-xs hidden-sm" style="background-color: #fff;">
             <div class="container" style="padding-bottom: 50px;">
-                <div class="row"><p class="sans text-uppercase" style="font-family: 'Montserrat', sans-serif; width: 350px; padding: 10px; margin-top: -22px; background-color: #262626; font-size: 15px; margin-bottom: 3px; color: #FFF;">ultimos abogados registrados</p>
+                <div class="row"><p class="sans text-uppercase" style="font-family: 'Montserrat', sans-serif; width: 350px; padding: 10px; margin-top: -22px; background-color: #262626; font-size: 15px; margin-bottom: 3px; color: #FFF;">ultimos tres abogados registrados</p>
                 </div>
                 <!-- Listado de abogados recientes -->
                 <div class="row" style="margin-top: 20px;">
@@ -197,7 +196,7 @@
                                     <img src="{{asset('')}}{{usuario.foto}}" style="width: 100%;">
                             </div>
                             <div class="col-md-3" style="margin-top: 20px;">
-                                    <p class="text-left" style="font-size: 15px; margin-bottom: 0px; font-family: 'Montserrat', sans-serif; padding-top: 5px;">
+                                    <p class="text-left text-capitalize" style="font-size: 15px; margin-bottom: 0px; font-family: 'Montserrat', sans-serif; padding-top: 5px;">
                                     	{%if usuario.titulo==1 %} 
                                         	{%if usuario.genero=='M' %} 
                                                 	Lic.
@@ -225,7 +224,7 @@
                                     <img src="{{asset('')}}{{usuario.foto}}" style="width: 100%;">
                             </div>
                             <div class="col-md-3" style="margin-top: 20px;">
-                                    <p class="text-left" style="font-size: 15px; margin-bottom: 0px; font-family: 'Montserrat', sans-serif; padding-top: 5px;">
+                                    <p class="text-left text-capitalize" style="font-size: 15px; margin-bottom: 0px; font-family: 'Montserrat', sans-serif; padding-top: 5px;">
                                     	{%if usuario.titulo==1 %} 
                                         	{%if usuario.genero=='M' %} 
                                                 	Lic.
@@ -261,7 +260,7 @@
 
         <!-- Ultimos abogados movil -->
         <div class="container-fluid hidden-md hidden-lg" style="background-color: #f6f6f6; padding-top: 30px; padding-bottom: 30px;">
-            <p class="text-center sans" style="font-weight: 700;">ULTIMOS ABOGADOS REGISTRADOS</p>
+            <p class="text-center sans" style="font-weight: 700;">ULTIMOS TRES ABOGADOS REGISTRADOS</p>
             <!-- primer abogado -->
             {% for usuario in usuarios %}
                     {% if loop.index <=3 %}
@@ -276,7 +275,7 @@
                                     <!-- Contacto+Info -->
                                     <div class="col-xs-9" style="padding-left: 0px;">
                                             
-                                                <p style="margin-top: 5px; font-size: 1em; margin-bottom: 0px; font-size: 12px;" class="sans">
+                                                <p style="margin-top: 5px; font-size: 1em; margin-bottom: 0px; font-size: 12px;" class="sans text-capitalize">
                                                     <strong>
                                                         {%if usuario.titulo==1 %} 
                                                             {%if usuario.genero=='M' %} 
@@ -312,7 +311,7 @@
                                 </div>
                                 <!-- Contacto+Info -->
                                 <div class="col-xs-9" style="padding-left: 0px;">
-                                        <p style="margin-top: 5px; font-size: 1em; margin-bottom: 0px; font-size: 12px;" class="sans">
+                                        <p style="margin-top: 5px; font-size: 1em; margin-bottom: 0px; font-size: 12px;" class="sans text-capitalize">
                                                 <strong>
                                                     {%if usuario.titulo==1 %} 
                                                         {%if usuario.genero=='M' %} 

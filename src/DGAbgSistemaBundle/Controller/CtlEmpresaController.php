@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use DGAbgSistemaBundle\Entity\AbgPersonaEspecialida;
 use DGAbgSistemaBundle\Resources\Tinypng\lib\lib\Tinify;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 include_once 'src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify.php';
 include_once 'src/DGAbgSistemaBundle/Resources/tinypng/lib/lib/Tinify/Exception.php';
@@ -43,9 +44,32 @@ class CtlEmpresaController extends Controller {
      * @Method({"GET", "POST"})
      */
     public function IndexAction() {
-
-        return $this->render('ctlempresa/index.html.twig', array(
-        ));
+        $em = $this->getDoctrine()->getManager();
+        
+        $rsm4 = new ResultSetMapping();
+       
+        $sql4 = "select *
+                from directorio
+                where tipo = 1
+                order by id desc 
+                limit 0, 3";
+	//hay que recuperar los 6 abogados cuando se cambie a la otra pagina
+        //$sql4 = "select * from aboregistrados order by id desc limit 0, 5";
+        $rsm4->addScalarResult('nombres','nombres');
+        $rsm4->addScalarResult('apellido','apellido');
+        $rsm4->addScalarResult('foto','foto');
+        $rsm4->addScalarResult('url','url');
+        $rsm4->addScalarResult('especialidad','especialidad');
+        $rsm4->addScalarResult('titulo','titulo');
+        $rsm4->addScalarResult('cargo','cargo');
+        $rsm4->addScalarResult('genero','genero');
+        $rsm4->addScalarResult('estadoabo','estadoabo');
+        
+        $usuarios = $em->createNativeQuery($sql4, $rsm4)
+                                  ->getResult();
+        
+        
+        return $this->render('ctlempresa/index.html.twig', array('usuarios' => $usuarios));
     }
 
     /**
