@@ -2747,8 +2747,6 @@ class CtlEmpresaController extends Controller {
 
                 $abogado = $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
 
-
-
                 $usuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->findOneBy(array('rhPersona' => $abogado));
 
                 // var_dump($usuario);

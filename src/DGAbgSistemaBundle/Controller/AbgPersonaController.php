@@ -3601,5 +3601,55 @@ class AbgPersonaController extends Controller {
             return new Response(json_encode($data));
         }
     }
+/**
+     * @Route("/cambiarpass/{correo}", name="cambiar_pass", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function cambiarPaAction($correo) {
+        $em = $this->getDoctrine()->getManager();
+        $em->getConnection()->beginTransaction();
+        try {
 
+
+            $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+            $notificacion = $this->container->get('security.context')->getToken()->getUser()->getNotificacion();
+
+            $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
+                    . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.codigo as codigo "
+                    . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
+            $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+            $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
+
+            /*$dql_tipoPago = "SELECT p.id as id, p.tipoPago As nombre "
+                    . " FROM DGAbgSistemaBundle:CtlTipoPago p ORDER BY p.tipoPago ASC";
+            $TipoPago = $em->createQuery($dql_tipoPago)->getArrayResult();
+*/
+
+            $dqlfoto = "SELECT fot.src as src "
+                    . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
+            $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+
+
+            $dqlfoto = "SELECT fot.src as src, fot.estado As estado "
+                    . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=1 ";
+            $fotoP = $em->createQuery($dqlfoto)->getArrayResult();
+
+
+            return $this->render('abgpersona/panelContra.html.twig', array(
+                        'nombreCorto' => $nombreCorto,
+                        'abgPersona' => $result_persona,
+                        'usuario' => $idPersona,
+                        
+                        'abgFoto' => $result_foto,
+                        'notificacion' => $notificacion
+            ));
+        } catch (Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+            $em->getConnection()->rollback();
+            $em->close();
+
+// echo $e->getMessage();   
+        }
+    }
 }
