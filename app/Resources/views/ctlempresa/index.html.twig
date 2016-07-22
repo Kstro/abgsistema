@@ -114,7 +114,7 @@
                                 <button type="button" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #1DA1F2;">
                                     <span style="color: #fff; font-weight: 600;" class="sans">Registrarme con Twitter</span>
                                 </button>
-                                <p class="text-right sans" style="margin-top: 10px;">¿Ya tienes un usuario? <a href="#">Inicia sesion</a></p>
+                                <p class="text-right sans" style="margin-top: 10px;">¿Ya tienes un usuario? <a href="{{path('abogado_login')}}">Inicia sesion</a></p>
                             </div>
                         </form>
                     </div>
@@ -151,7 +151,7 @@
                                   <button type="button" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #1DA1F2;">
                                       <span style="color: #fff; font-weight: 600;" class="sans">Registrarme con Twitter</span>
                                   </button>
-                                  <p class="text-center sans" style="margin-top: 10px;">¿Ya tienes un usuario? <a href="#">Inicia sesion</a></p>
+                                  <p class="text-center sans" style="margin-top: 10px;">¿Ya tienes un usuario? <a href="{{path('abogado_login')}}">Inicia sesion</a></p>
                               </div>
                           </form>
                        
@@ -193,7 +193,7 @@
                 {% for usuario in usuarios %}
                     {% if usuario.estadoabo == 1 %}
                         
-                            <div class="col-md-1" style="padding: 5px; margin-top: 20px;">
+                            <div class="col-md-1" style="padding: 5px; margin-top: 20px; ">
                                     <img src="{{asset('')}}{{usuario.foto}}" style="width: 100%;">
                             </div>
                             <div class="col-md-3" style="margin-top: 20px;">

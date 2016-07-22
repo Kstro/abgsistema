@@ -607,8 +607,8 @@ class CtlEmpresaController extends Controller {
                   ","Nuevo abogado registrado en SV #".$abgPersona->getId());
                  */
                 //Cerrar sesion
-         /*       $session = new Session();
-                $session->invalidate();*/
+                /*       $session = new Session();
+                  $session->invalidate(); */
             }
             return new Response(json_encode($data));
             /* } else {
@@ -1611,25 +1611,17 @@ class CtlEmpresaController extends Controller {
     public function ValidarCorreoForResetAction(Request $request) {
 
         $isAjax = $this->get('Request')->isXMLhttpRequest();
-
         if ($isAjax) {
-
             $em = $this->getDoctrine()->getManager();
 
             $datos = $request->get('email');
-
-
             $dqlPer = "SELECT COUNT(us.id) AS resp FROM DGAbgSistemaBundle:CtlUsuario us WHERE"
                     . " us.username = :username ";
 
             $resultadoPersona = $em->createQuery($dqlPer)
                     ->setParameters(array('username' => $datos))
                     ->getResult();
-
-
-
             $rp = $resultadoPersona[0]['resp'];
-
             if ($rp == 0) {
 
                 $data['valido'] = 0;
@@ -1637,7 +1629,6 @@ class CtlEmpresaController extends Controller {
 
                 $data['valido'] = 1;
             }
-
             return new Response(json_encode($data));
         }
     }
@@ -2509,7 +2500,7 @@ class CtlEmpresaController extends Controller {
         try {
             $em = $this->getDoctrine()->getManager();
             $request = $this->getRequest();
-             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+            $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
 
             $username = $this->container->get('security.context')->getToken()->getUser()->getId();
 
@@ -2518,7 +2509,7 @@ class CtlEmpresaController extends Controller {
 
             $em = $this->getDoctrine()->getManager();
             $request = $this->getRequest();
-   
+
 
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($idPersona);
             $Ciudad = $em->getRepository("DGAbgSistemaBundle:CtlCiudad")->find($datos['Smunicipio']);
@@ -2601,9 +2592,9 @@ class CtlEmpresaController extends Controller {
             $request = $this->getRequest();
             $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
             $username = $this->container->get('security.context')->getToken()->getUser()->getId();
-           $Persona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona();
-           
-                $facturacion = $em->getRepository("DGAbgSistemaBundle:AbgFacturacion")->findByAbgPersona($idPersona);
+            $Persona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona();
+
+            $facturacion = $em->getRepository("DGAbgSistemaBundle:AbgFacturacion")->findByAbgPersona($idPersona);
             $array = $request->get('esp');
 
 
@@ -2639,9 +2630,9 @@ class CtlEmpresaController extends Controller {
             $ctlUsuario->setEstadoCorreo(1);
             $em->merge($ctlUsuario);
             $em->flush();
-            
+
             // Si no existe una factura
-                      if (empty($facturacion)) {
+            if (empty($facturacion)) {
                 $abgFacturacionTrial = new AbgFacturacion();
                 $date = new \DateTime("now");
                 $tipo_pago = $em->getRepository("DGAbgSistemaBundle:CtlTipoPago")->find(5);
@@ -2662,6 +2653,146 @@ class CtlEmpresaController extends Controller {
             }
             $data['msj'] = 'Datos actualizados.';
             return new Response(json_encode($data));
+        } catch (\Exception $e) {
+
+            $data['error'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
+    }
+
+    /**
+     * Cambiar contraseña, viene desde el correo
+     * @Route("/restableceer/contra/{id}", name="reestablecer_contra", options={"expose"=true})
+     * @Method({"GET","POST"})
+     */
+    public function ReestablecerContraAction(Request $request, $id) {
+
+        $em = $this->getDoctrine()->getManager();
+
+
+
+        $ctlUsuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByCodigoConfirmar(trim($request->get('id')));
+
+        $this->authenticateUser($ctlUsuario[0]);
+        $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+        $username = $this->container->get('security.context')->getToken()->getUser();
+        $dql_persona = "SELECT  p.id AS id, p.nombres AS nombre, p.apellido AS apellido, p.correoelectronico AS correo, p.descripcion AS  descripcion,"
+                . " p.direccion AS direccion, p.telefonoFijo AS Tfijo, p.telefonoMovil AS movil, p.estado As estado, p.codigo as codigo "
+                . " FROM DGAbgSistemaBundle:AbgPersona p WHERE p.id=" . $idPersona;
+        $result_persona = $em->createQuery($dql_persona)->getArrayResult();
+        $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
+
+        $dql_tipoPago = "SELECT p.id as id, p.tipoPago As nombre "
+                . " FROM DGAbgSistemaBundle:CtlTipoPago p ORDER BY p.tipoPago ASC";
+        $TipoPago = $em->createQuery($dql_tipoPago)->getArrayResult();
+
+
+        $dqlfoto = "SELECT fot.src as src "
+                . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and (fot.tipoFoto=0 or fot.tipoFoto=1)";
+        $result_foto = $em->createQuery($dqlfoto)->getArrayResult();
+
+
+        $dqlfoto = "SELECT fot.src as src, fot.estado As estado "
+                . " FROM DGAbgSistemaBundle:AbgFoto fot WHERE fot.abgPersona=" . $idPersona . " and fot.estado=1 and fot.tipoFoto=1 ";
+        $fotoP = $em->createQuery($dqlfoto)->getArrayResult();
+
+        return $this->render('abgpersona/panelOlvideContra.html.twig', array(
+                    'nombreCorto' => $nombreCorto,
+                    'abgPersona' => $result_persona,
+                    'usuario' => $idPersona,
+                    'TipoPago' => $TipoPago,
+                    'abgFoto' => $result_foto));
+    }
+
+    /**
+     * @Route("/data/registro_nueva_contrasenia/data/", name="registro_nueva_contrasenia", options={"expose"=true})
+     * @Method({"POST","GET"})
+     */
+    public function NuevaContraseniaAction() {
+        try {
+            $isAjax = $this->get('Request')->isXMLhttpRequest();
+
+
+
+            if ($isAjax) {
+
+                $em = $this->getDoctrine()->getManager();
+                $request = $this->getRequest();
+                $passw = $request->get('passw');
+
+
+                $abogado = $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
+
+
+
+                $usuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->findOneBy(array('rhPersona' => $abogado));
+
+                // var_dump($usuario);
+
+                $this->setSecurePassword($usuario, $passw);
+                $em->merge($usuario);
+                $em->flush();
+
+                $data['exito'] = '1';
+                return new Response(json_encode($data));
+            }
+        } catch (\Exception $e) {
+
+            $data['error'] = $e->getMessage(); //"Falla al Registrar ";
+            return new Response(json_encode($data));
+        }
+    }
+
+    /**
+     * @Route("/validar_correo_contra/", name="validar_correo_contra", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function ValidarCorreContraAction(Request $request) {
+        try {
+            $isAjax = $this->get('Request')->isXMLhttpRequest();
+            if ($isAjax) {
+                $em = $this->getDoctrine()->getManager();
+
+                $datos = $request->get('email');
+
+
+                $dqlPer = "SELECT COUNT(us.id) AS resp FROM DGAbgSistemaBundle:CtlUsuario us WHERE"
+                        . " us.username = :username ";
+
+                $resultadoPersona = $em->createQuery($dqlPer)
+                        ->setParameters(array('username' => $datos))
+                        ->getResult();
+                $rp = $resultadoPersona[0]['resp'];
+                if ($rp == 0) {
+
+                    $data['valido'] = 0;
+                } else {
+                    $ctlUsuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->findByUsername(trim($datos));
+                    $this->authenticateUser($ctlUsuario[0]);
+                    $usuario = $idPersona = $this->container->get('security.context')->getToken()->getUser();
+
+                    $this->get('envio_correo')->sendEmail($usuario->getUsername(), "", "", "", "
+                        <table style=\"width: 540px; margin: 0 auto;\">
+                          <tr>
+                            <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
+                            <center>
+                              <img style=\"width:50%;\" src=\"http://www.abogados.com.sv/Resources/src/img/logo2.png\">
+                            </center>
+                              <p style=\"font-size: 16px;\">Reestablecer contraseña.</p>
+                                <p>Hola " . $usuario->getRhPersona() . ", tu has recibido una solicitud para reestablecer tu contraseña.</p>
+                                 <a href='http://abg.localhost/app_dev.php/restableceer/contra/" . $usuario->getCodigoConfirmar() . "'>Clik aqui para cambiar la contraseña.</a>
+                                <p>Gracias, por usar nuestros servicios. </p>    
+                            </td>
+                            <td class=\"expander\"></td>
+                          </tr>
+                        </table>
+                    ", "Reestablecer contraseña");
+                    $data['valido'] = 1;
+                    $session = new Session();
+                  $session->invalidate(); 
+                }
+                return new Response(json_encode($data));
+            }
         } catch (\Exception $e) {
 
             $data['error'] = $e->getMessage(); //"Falla al Registrar ";

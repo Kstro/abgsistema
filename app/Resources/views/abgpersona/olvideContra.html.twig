@@ -1,0 +1,145 @@
+{% block js_extend %}
+    <link href="{{asset('Resources/src/css/style-contenedores.css')}}" rel="stylesheet">
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
+    <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
+        <link rel="stylesheet" href="{{ asset('Resources/swal/sweetalert2.min.css') }}">
+    <script src="{{ asset('Resources/swal/sweetalert2.min.js') }}"></script>
+
+{% endblock%}
+
+{% block navegacion_Y_body %}
+
+    {% block navegacion %}
+
+    {% endblock %}
+    {% block cuerpo %}
+        <div class="row" style=" margin-left:0px; margin-right:0px;">
+            <section class="col-lg-12 connectedSortable ui-sortable">
+                <div class="box box-widget">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">CAMBIAR CONTRASEÑA</h3>
+                        <div class="box-tools pull-right">
+
+                        </div>
+                    </div>
+                    <div class="box-body">
+
+            
+                            <div class="row" style="padding-bottom: 10px;" id="formPassword">                                    
+                                <div class="form-group" style="margin-top: 5px;">
+                                    <p style="font-size: 17px;" >
+                                        <label class="col-md-12 sans">
+                                            Cambio de contraseña
+                                        </label> 
+                                    </p>
+
+                                    <p class="col-md-12" style="font-size: 16px;" >
+                                        Llene los siguietes campos para poder cambiar la contraseña del abogado.
+                                    </p>
+
+                                </div>
+             </div>
+                          <div class="row"  id="formPassword">          
+                                <div class="form-group" style="margin-top: 5px;">
+
+                                    <div class="col-md-5">
+                          
+                                        <label for="contrasenhaAntigua" style="margin-bottom: 5px; color: #989898; font-size: 15px;">Nueva contraseña</label>    
+                                        <input type="password" name="contrsenhaNueva" class="form-control  verificacion" id="idcontrsenhaNueva" style=" margin-bottom: 10px;">
+
+                                        <label for="contrasenhaAntigua" style="margin-bottom: 5px; color: #989898; font-size: 15px;">Confirmar contraseña</label>
+                                        <input type="password" name="contrasenhaNuevaConfirmacion" class="form-control verificacion" id="idcontrsenhaNuevaConfirmacion">
+                                    </div>
+                                </div>
+                                     </div>
+                           
+                           
+                                <div style="color:red; height: 25px; font-size: 13px; margin-left: 15px;">
+                                    <div id="error" style="display: none;">
+                                        <p>Las contraseñas no coinciden</p>
+                                    </div>
+                                </div>
+                     
+                      
+                           <div class="row" style="" id="formPassword">          
+                                <div class="form-group" >
+                                    <div class="col-md-5">
+                                        <button type="button" class="btn btn-sm btn-primary btn-flat cambiopassw" name=""  id="bntContra" style="display: none; padding: 5px; font-size: 13px; text-align: center; ">Reestablecer</button>
+                                        <center><label id="mensaje" style="margin-top: 15px;"></label></center>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                    </div>
+            </section>
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(document).on("click", "#bntContra", function () {
+
+                    var passw = $('#idcontrsenhaNueva').val();
+
+                    swal({
+                        text: "¿Está seguro de cambiar la contraseña del abogado?",
+                        type: "info",
+                        showCancelButton: true,
+                        confirmButtonColor: "#1D234D",
+                        confirmButtonText: "Aceptar",
+                        cancelButtonText: "Cancelar",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                    }).then(function (isConfirm) {
+                        if (isConfirm) {
+                            var data = {
+                                passw: passw
+                            };
+
+                            $.ajax({
+                                type: 'POST',
+                                data: data,
+                                url: Routing.generate('registro_nueva_contrasenia'),
+                                success: function (response)
+                                {
+                                    if(response.exito!== false)
+                                    swal('', 'La contraseña ha sido modificada con exito', 'success');
+
+            var url = Routing.generate('perfil');
+            window.open(url, "_self");
+
+                                        return false;
+                                    },
+                                    error: function (xhr, status) {
+                                        swal('', 'Lo sentimos, ocurrio un error', 'error');
+                                        return false;
+                                    }
+                                });
+                            } else {
+
+                            }
+                        });
+                    });
+
+// Verifica si las contraseñas coinciden
+
+                    $(document).on("input", "#idcontrsenhaNuevaConfirmacion", function () {
+                        var passw = $('#idcontrsenhaNueva').val();
+                        var cpassw = $(this).val();
+                        var error = document.getElementById('error');
+
+                        if (passw != cpassw) {
+                            error.style.display = 'block';
+                            $('.cambiopassw').hide();
+                        } else {
+                            error.style.display = 'none';
+                            $('.cambiopassw').show();
+                        }
+                    });
+
+                });
+        </script>
+    {% endblock %}
+{% endblock %}

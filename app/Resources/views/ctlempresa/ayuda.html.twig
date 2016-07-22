@@ -1,147 +1,118 @@
 {% extends ':Layout:layout2.html.twig' %}
-
-{% block descripcion_y_acciones %}
-
-
-    
-        {% block descripcion %}
-            
-        {% endblock%}
-        {% block acciones %}
-            
-        {% endblock %}
-
-
-{% endblock %}
 {% block js_extend %}
 
-            
-          
-            <script>
-            $(document).ready(function() {
-                $("#solicitud").hide();
-                
-                
-                
-            });
-                
-            var email;
-             $("#enviar").click(function () {
-                    
-              email= $('#email').val();
-                    $.ajax({
-                        type: 'POST',
-                        async: false,
-                        dataType: 'json',
-                        data: {email:email },
-                        url: Routing.generate('validar_correoR'),
-                        success: function (data)
-                        {
-                            
-                            
-                            if(data.valido==1){
-                                $("#solicitud").show();
-                               email= $('#email').val();               
-                                $("#reset-psw-form").submit();
-                                 Lobibox.notify("succes", {
-                                                                            size: 'mini',
-                                                                            msg: 'Dentro de unos segundos, recibiras un mensaje de modificacion de contraseña...'
-                                                                        });
-  
-                            }else{
-                                  Lobibox.notify("error", {
-                                                                            size: 'mini',
-                                                                            msg: 'Correo electronico no valido.'
-                                                                        });
-                            }
-                              
-                        },
-                        error: function (xhr, status)
-                        {
-                             Lobibox.notify("danger", {
-                                                    size: 'mini',
-                                                    msg: 'Lo sentimos, ocurrio un error dentro del sistema, intentelo mas tarde.'
-                                                });
+    <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
+    <script src="{{ asset('Resources/src/js/jquery-2.0.3.min.js')}}"></script>
+    <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
 
-                        }
-                });
-                   
-                   
-                   
-                   
-            });
-            </script>    
-            
-           
-      
-  {% endblock %} 
+{% endblock %}
 
-        {% block navegacion_Y_body %}
-  
-        {% block navegacion %}
-            
-        {% endblock %}
-        {% block cuerpo %}
-    
-                                                    
-                        <section id="pr-contact" class="pr-main">
-                          <div class="container" style="height: 540px">
-                              <div class="row">
-                                  <div class="acc-title lg">
-                                      <div class="col-md-12 pull-left">
-                                          <h3 class="" style="color:black;"><center>Reestablecer tu contraseña</center></h3>
-                                      </div>
-                                  </div>
-                              </div>    
-                              <div class="clearfix"></div>
-                              <div class="row">
-                                  <form id="reset-psw-form" action="{{ path('admin_forgot_passw') }}" method="POST">
-                                      <div class="col-md-4 col-md-offset-4 pull-center well text-justify" style="margin-top: 50px; background-color: bisque;">
-                                          <div class="row">
-                                              <div class="col-md-12">
-                                                  <p><center>
-                                                      Ingresa tu correo electronico con el que te logeaste para poder enviarte una nueva contraseña
-                                                  </center>
-                                                  </p>
-                                              </div>
-                                          </div>
-                                          <div class="row">
-                                              <div class="col-md-12">
-                                                  {#<input type="text" name="email" class="form-control">#}
-                                                  <div class="input-group input-group-in">
-                                                      <span class="input-group-addon" id="semail"><i class="fa fa-at"></i></span>
-                                                      <input type="email" class="form-control" name="email" id="email" required>
-                                                  </div>
-                                              </div>
+{% block cuerpo %}
+    <link href="{{asset('Resources/src/css/bootstrap.css')}}" rel="stylesheet"> 
+    <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
+    <section id="pr-contact" class="pr-main">
+        <div class="container" style="height: 540px">
+            <div class="row">
+                <div class="acc-title lg">
+                    <div class="col-md-5 col-md-offset-4 pull-center">
+                        <h3 class="sans" style="color:black; font-weight: 600;"><center>Olvidé mi contraseña</center></h3>
+                    </div>
+                </div>
+            </div>    
+            <div class="clearfix"></div>
+            <div class="row" >
+                <form id="reset-psw-form">
+                    <div class="col-md-5 col-md-offset-4 pull-center well text-justify" style="border: 1px solid #c3c3c3; baborder-radius: 3px; background-color: #FFF; padding: 20px; margin-bottom:35px; margin-top: 20px;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <center>
+                                    <p class=" sans" style="color:#888; font-size: 16px;">
+                                        Ingresa tu correo electrónico con el que te logeaste para poder enviarte una nueva contraseña.
 
-                                          </div> 
-                                          <div class="row" style="margin-top: 10px; margin-bottom: 10px">
-                                              <div class="col-md-12">
-                                                  <input type="button" name="enviar" id="enviar" class="form-control btn btn-primary" value="Reset password" style="color: black;"> 
-                                              </div>
-                                          </div> 
+                                    </p>
+                                </center>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="email" class="form-control sans" name="email" id="email" required placeholder="Correo electrónico" style=" width: 100%; height:45px; margin-top: 10px;border-radius: 3px;">
+                            </div>
+
+                        </div> 
+                        <div class="row" style="margin-top: 20px; margin-bottom: 10px">
+                            <div class="col-md-12">
+                                <button type="button" name="enviar" id="enviar" class="btn btn-primary " style=" width: 100%; height:45px; font-size: 16px;"><strong> Enviar<strong></button>
+                                            </div>
+                                            </div> 
                                             <div class="row" style="margin-top: 10px; margin-bottom: 10px">
                                                 <div class="col-md-12" id="solicitud">
-                                                   
                                                     Espere un momento, enviando solicitud de cambio de contraseña.
-                                                
                                                     <img src='{{ asset('Resources/icons/transfer.gif') }}' style="width: 25px; height: 25px; margin-right:70px;" >
                                                 </div> 
-                                            </div> 
-                                      </div>
+                                                <div class="col-md-12" id="divlogin" style=" display:none;">
+                                                    <p class="sans" style="margin-top: 10px; "><a href="{{path('abogado_login')}}">Iniciar sesión</a></p>
+                                                </div> 
 
-                                  </form>    
-                              </div>
-                                                  
-                          </div>
-                                                                   
-                      </section>
-                    
-                                               
-                         
-                   
-  
-     
-{% endblock %}
-{% endblock %}
+                                            </div> 
+                                            </div>
+
+                                            </form>    
+                                            </div>
+                                            </div>
+                                            </section>
+                                            <script  src="{{asset('Resources/bootstrap/js/bootstrap.min.js')}}"></script>
+                                            <script type="text/javascript">
+
+                                                $(document).ready(function () {
+                                                    $("#solicitud").hide();
+
+                                                });
+
+                                                var email;
+                                                $("#enviar").click(function () {
+
+                                                    $("#enviar").prop("disabled", true);
+                                                    $("#solicitud").show();
+                                                    email = $('#email').val();
+                                                    $.ajax({
+                                                        type: 'POST',
+                                                        async: false,
+                                                        dataType: 'json',
+                                                        data: {email: email},
+                                                        url: Routing.generate('validar_correo_contra'),
+                                                        success: function (data)
+                                                        {
+
+                                                            if (data.valido == 1) {
+                                                                Lobibox.notify("success", {
+                                                                    size: 'mini',
+                                                                    msg: 'Se envío un correo electrónico para que puedas reestablecer tu contraseña.'
+                                                                });
+
+                                                                $("#divlogin").css('display', 'block');
+
+                                                            } else {
+                                                                Lobibox.notify("danger", {
+                                                                    size: 'mini',
+                                                                    msg: 'Correo electronico no valido.'
+                                                                });
+                                                            }
+
+                                                        },
+                                                        error: function (xhr, status)
+                                                        {
+                                                            Lobibox.notify("danger", {
+                                                                size: 'mini',
+                                                                msg: 'Lo sentimos, ocurrio un error dentro del sistema, intentelo mas tarde.'
+                                                            });
+
+                                                        }
+                                                    });
+                                                    $("#enviar").prop("disabled", false);
+
+                                                    $("#solicitud").hide();
+                                                });
+                                            </script>  
+                                        {% endblock %}
+
 

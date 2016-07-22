@@ -98,11 +98,12 @@ class SecuredController extends Controller
         
         $em = $this->getDoctrine()->getManager();
         $usuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->findOneBy(array('username' => $email));        
-        
-        $password = $this->generateRandomString(6);
+    //    var_dump($usuario->getUsername());
+     //   exit();
+       // $password = $this->generateRandomString(6);
        
-        $usuario->setPassword($password);
-        $this->setSecurePassword($usuario,$password);
+   //     $usuario->setPassword($password);
+    //    $this->setSecurePassword($usuario,$password);
         
         $this->get('envio_correo')->sendEmail($usuario->getUsername(), "", "", "",
                     "
@@ -110,25 +111,24 @@ class SecuredController extends Controller
                           <tr>
                             <td class=\"panel\" style=\"border-radius:4px;border:1px #dceaf5 solid; color:#000 ; font-size:11pt;font-family:proxima_nova,'Open Sans','Lucida Grande','Segoe UI',Arial,Verdana,'Lucida Sans Unicode',Tahoma,'Sans Serif'; padding: 30px !important; background-color: #FFF;\">
                             <center>
-                              <img style=\"width:50%;\" src=\"http://marvinvigil.info/ab/src/img/logogris.png\">
+                              <img style=\"width:50%;\" src=\"http://www.abogados.com.sv/Resources/src/img/logocoloremail.png\">
                             </center>
+                              <p style=\"font-size: 16px;\">Reestablecer contraseña.</p>
                                 <p>Hola " . $usuario->getRhPersona() . ", tu has recibido una solicitud para reestablecer tu contraseña.</p>
-                                <p> Usuario: " . $usuario->getUsername() . "</p>
-                                <p> Correo: " . $email . "</p>
-                                <p><b> Contraseña: " . $password . "</b></p>
+                                 <a href='http://abg.localhost/app_dev.php/restableceer/contra/" . $usuario->getCodigoConfirmar() . "'>Clik aqui para cambiar la contraseña.</a>
                                 <p>Gracias, por usar nuestros servicios. </p>    
                             </td>
                             <td class=\"expander\"></td>
                           </tr>
                         </table>
-                    ","Contraseña reestablecida");
+                    ","Reestablecer contraseña");
         //var_dump($password);
         //var_dump($usuario);
         //die();
-        $em->persist($usuario);
-        $em->flush();
+       // $em->persist($usuario);
+    //    $em->flush();
          
-        $mensaje="Se le envió la nueva contraseña a su correo electrónico , para introducir la nueva contraseña revise su correo electronico.";
+        $mensaje="Se envió un correo electrónico a ".$usuario->getUsername().", revisa la bandeja de entrada.";
 
          $error = null; // The value does not come from the security component.
         $lastUsername = null; 
