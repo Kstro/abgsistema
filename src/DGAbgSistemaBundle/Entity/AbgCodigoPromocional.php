@@ -29,6 +29,27 @@ class AbgCodigoPromocional
     private $codigo;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_inicio", type="date", nullable=true)
+     */
+    private $fechaInicio;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_fin", type="date", nullable=true)
+     */
+    private $fechaFin;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="plazo", type="integer", nullable=true)
+     */
+    private $plazo;
+    
+    /**
      * @var integer
      *
      * @ORM\Column(name="tipo_promocion", type="integer", nullable=false)
@@ -87,6 +108,73 @@ class AbgCodigoPromocional
         return $this->codigo;
     }
 
+    /**
+     * Set fechaInicio
+     *
+     * @param \DateTime $fechaInicio
+     * @return AbgCodigoPromocional
+     */
+    public function setFechaInicio($fechaInicio)
+    {
+        $this->fechaInicio = $fechaInicio;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaInicio
+     *
+     * @return \DateTime 
+     */
+    public function getFechaInicio()
+    {
+        return $this->fechaInicio;
+    }
+
+    /**
+     * Set fechaFin
+     *
+     * @param \DateTime $fechaFin
+     * @return AbgCodigoPromocional
+     */
+    public function setFechaFin($fechaFin)
+    {
+        $this->fechaFin = $fechaFin;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaFin
+     *
+     * @return \DateTime 
+     */
+    public function getFechaFin()
+    {
+        return $this->fechaFin;
+    }
+    
+    /**
+     * Set plazo
+     *
+     * @param integer $plazo
+     * @return AbgCodigoPromocional
+     */
+    public function setPlazo($plazo) {
+        $this->plazo = $plazo;
+
+        return $this;
+    }
+
+    /**
+     * Get plazo
+     *
+     * @return integer 
+     */
+    public function getPlazo() {
+        return $this->plazo;
+    }
+    
     /**
      * Set tipoPromocion
      *

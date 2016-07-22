@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>AbgCodigoPromocional list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Codigo</th>
+                <th>Fechainicio</th>
+                <th>Fechafin</th>
+                <th>Plazo</th>
+                <th>Tipopromocion</th>
+                <th>Estado</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for abgCodigoPromocional in abgCodigoPromocionals %}
+            <tr>
+                <td><a href="{{ path('admin_codigos-promocionales_show', { 'id': abgCodigoPromocional.id }) }}">{{ abgCodigoPromocional.id }}</a></td>
+                <td>{{ abgCodigoPromocional.codigo }}</td>
+                <td>{% if abgCodigoPromocional.fechaInicio %}{{ abgCodigoPromocional.fechaInicio|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if abgCodigoPromocional.fechaFin %}{{ abgCodigoPromocional.fechaFin|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ abgCodigoPromocional.plazo }}</td>
+                <td>{{ abgCodigoPromocional.tipoPromocion }}</td>
+                <td>{% if abgCodigoPromocional.estado %}Yes{% else %}No{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_codigos-promocionales_show', { 'id': abgCodigoPromocional.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_codigos-promocionales_edit', { 'id': abgCodigoPromocional.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_codigos-promocionales_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}
