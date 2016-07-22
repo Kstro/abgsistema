@@ -16,6 +16,7 @@ use DGAbgSistemaBundle\Entity\AbgUrlPersonalizada;
 use DGAbgSistemaBundle\Entity\CtlUsuario;
 use DGAbgSistemaBundle\Entity\Seminario;
 use DGAbgSistemaBundle\Entity\AbgFoto;
+use DGAbgSistemaBundle\Entity\AbgFacturacion;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -336,10 +337,10 @@ class AbgPersonaController extends Controller {
                     $tiempo = 0;
                     $aprobado = 0;
                     $tipopago = "";
-                    
-                  /*    var_dump($suscripcion);
-                      exit();*/
-                      
+
+                    /*    var_dump($suscripcion);
+                      exit(); */
+
                     foreach ($suscripcion as $row) {
 
                         $tiempo = $tiempo + $row['caducidad'];
@@ -351,23 +352,19 @@ class AbgPersonaController extends Controller {
 
                         //       var_dump($row['caducidad']);
                     }
-                    
-                 //    $pagoAprobado=0;
-                    $pagoAprobado=10000;// ahorita no se envia notificacion para usuario q han solicitado pago
+
+                    //    $pagoAprobado=0;
+                    $pagoAprobado = 10000; // ahorita no se envia notificacion para usuario q han solicitado pago
+
+                    $PagoNoApro = $em->getRepository("DGAbgSistemaBundle:AbgFacturacion")->findBy(array('abgPersona' => $idPersona, 'aprobado' => 0));
+
+                    //$PagoNoApro[0]->getAprobado()
+                    if (empty($PagoNoApro)) {
                         
-                         $PagoNoApro = $em->getRepository("DGAbgSistemaBundle:AbgFacturacion")->findBy(array('abgPersona'=>$idPersona,'aprobado'=>0));
-                   
-                  //$PagoNoApro[0]->getAprobado()
-                         if(empty($PagoNoApro))
-                         {
-                         
-                         }
-                         else
-                         {
-                          $pagoAprobado=$PagoNoApro[0]->getAprobado();
-                         
-                         }
-   
+                    } else {
+                        $pagoAprobado = $PagoNoApro[0]->getAprobado();
+                    }
+
 
                     $nombreCorto = split(" ", $result_persona[0]['nombre'])[0] . " " . split(" ", $result_persona[0]['apellido'])[0];
                     $dql_ciudad = "SELECT c.nombreCiudad As nombre, es.nombreEstado estado"
@@ -507,12 +504,12 @@ class AbgPersonaController extends Controller {
                             . " FROM DGAbgSistemaBundle:AbgFoto fot "
                             . " JOIN  DGAbgSistemaBundle:AbgPersona p WHERE p.id=fot.abgPersona  AND fot.tipoFoto=5 AND p.verificado=0";
                     $NNotificaciones = $em->createQuery($dqlNotificacion)->getArrayResult();
-                    $findme="defecto";
-                            $fotoDefecto = strpos($fotoP[0]['src'], $findme);
-            
-                    
-                         /*   var_dump($fotoDefecto);
-                            exit();*/
+                    $findme = "defecto";
+                    $fotoDefecto = strpos($fotoP[0]['src'], $findme);
+
+
+                    /*   var_dump($fotoDefecto);
+                      exit(); */
                     $cumplimiento = 0;
                     if (count($result_persona) >= 1) {
                         $cumplimiento = 10;
@@ -538,7 +535,7 @@ class AbgPersonaController extends Controller {
                     if (count($Idiomas) >= 1) {
                         $cumplimiento = $cumplimiento + 10;
                     }
-                    if ($fotoDefecto ==false) {
+                    if ($fotoDefecto == false) {
                         $cumplimiento = $cumplimiento + 10;
                     }
 
@@ -573,7 +570,7 @@ class AbgPersonaController extends Controller {
                                 'tipopago' => $tipopago,
                                 'EstudioAct' => $EstudioAct,
                                 'EduAct' => $EduAct,
-                        'pagoAprobado'=>$pagoAprobado
+                                'pagoAprobado' => $pagoAprobado
                     ));
                 }
             } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
@@ -1172,6 +1169,7 @@ class AbgPersonaController extends Controller {
         $idPersona = $this->container->get('security.context')->getToken()->getUser()->getRhPersona()->getId();
         $username = $this->container->get('security.context')->getToken()->getUser()->getId();
 
+
         try {
             $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($idPersona);
             switch ($request->get('n')) {
@@ -1231,7 +1229,7 @@ class AbgPersonaController extends Controller {
                                             </td>
                                             <td class=\"expander\"></td>
                                         </tr>
-                                    </table>","Verificación");
+                                    </table>", "Verificación");
                     } else {
                         $data['msj'] = "Abogado no verificado";
                     }
@@ -1266,21 +1264,46 @@ class AbgPersonaController extends Controller {
                     $data['msj'] = "Dato actualizado";
                     break;
                 case 12:
-                    $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hpersona'));
-                    $Usuario = $em->getRepository("DGAbgSistemaBundle:CtlUsuario")->findByRhPersona($Persona);
 
-                    $Persona->setEstado($request->get('estado'));
+                    if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
 
-                    if ($request->get('estado') == '4') {
-                     ///   $Usuario[0]->setEstado(0);
-                        $data['msj'] = "Abogado deshabilitado";
-                    } else {
-                  ///      $Usuario[0]->setEstado(1);
-                        $data['msj'] = "Abogado habilitado";
+
+                        $Persona = $em->getRepository("DGAbgSistemaBundle:AbgPersona")->find($request->get('hpersona'));
+                        $Usuario = $em->getRepository("DGAbgSistemaBundle:CtlUsuario")->findByRhPersona($Persona);
+                        $facturacion = $em->getRepository("DGAbgSistemaBundle:AbgFacturacion")->findByAbgPersona($request->get('hpersona'));
+
+                        $Persona->setEstado($request->get('estado'));
+
+                        if ($request->get('estado') == '4') {
+                            ///   $Usuario[0]->setEstado(0);
+                            $data['msj'] = "Abogado deshabilitado";
+                        } else {
+                            ///      $Usuario[0]->setEstado(1);
+                            if (empty($facturacion)) {
+                                $abgFacturacionTrial = new AbgFacturacion();
+                                $date = new \DateTime("now");
+                                $tipo_pago = $em->getRepository("DGAbgSistemaBundle:CtlTipoPago")->find(5);
+                                $fechaPago = date_add($date, date_interval_create_from_date_string('14 days'));
+                                $abgFacturacionTrial->setAbgPersona($Persona);
+                                $abgFacturacionTrial->setIdUser(null);
+                                $abgFacturacionTrial->setFechaRegistro(new \DateTime("now"));
+                                $abgFacturacionTrial->setFechaPago($fechaPago);
+                                $abgFacturacionTrial->setAbgTipoPago($tipo_pago);
+                                $abgFacturacionTrial->setMonto(00.00);
+                                $abgFacturacionTrial->setPlazo(14);
+                                $abgFacturacionTrial->setServicio('Bienvenida');
+                                $abgFacturacionTrial->setDescripcion('Directorio de abogados de El Salvador te regala 14 dias de bienvenida por la suscripcion dentro del periodo de ..');
+                                $abgFacturacionTrial->setComprobante(null);
+                                $abgFacturacionTrial->setAprobado(1);
+                                $em->persist($abgFacturacionTrial);
+                                $em->flush();
+                            }
+                            $data['msj'] = "Abogado habilitado";
+                        }
+
+                        $em->merge($Usuario[0]);
+                        $em->flush();
                     }
-
-                    $em->merge($Usuario[0]);
-                    $em->flush();
                     break;
                 case 13:
                     $Persona->setTituloPuesto($request->get('tituloPuesto'));
@@ -1307,7 +1330,7 @@ class AbgPersonaController extends Controller {
                                             <td class=\"expander\"></td>
                                         </tr>
                                     </table>
-                                ","Uested ha sido verificado como notario");
+                                ", "Uested ha sido verificado como notario");
                     } else {
                         $data['msj'] = "No fue verificado como notario";
                     }
