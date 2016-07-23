@@ -98,8 +98,7 @@ class SecuredController extends Controller
         
         $em = $this->getDoctrine()->getManager();
         $usuario = $em->getRepository('DGAbgSistemaBundle:CtlUsuario')->findOneBy(array('username' => $email));        
-    //    var_dump($usuario->getUsername());
-     //   exit();
+
        // $password = $this->generateRandomString(6);
        
    //     $usuario->setPassword($password);
