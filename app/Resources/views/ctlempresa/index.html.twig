@@ -103,8 +103,10 @@
 
                                 <input type="password"  id="contrasenha" name="contrasenha" class="sans" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #fff;" placeholder="Contraseña">
                                 <p style=" color: #F00; margin-left: 10px;display: none;" id="txtContra" calss="sans"></p>
-                                <input type="text" class="sans" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #fff;" placeholder="Código promocional">
-
+                                
+                                <input type="text" id="promoCodeM" name="promoCode"  class="sans" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #fff;" placeholder="Código promocional (Opcional)">
+                                <p style=" color: #F00; margin-left: 10px; display: none;" id="txtCodM" calss="sans"></p>
+                                
                                 <button type="button" id="bntenviar" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #F32;">
                                     <span style="color: #fff; font-weight: 600;" class="sans">Iniciar trial de 14 días</span>
                                 </button>
@@ -140,8 +142,10 @@
 
                                 <input type="password"  id="contrasenhaM" name="contrasenha" class="sans" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #fff;" placeholder="Contraseña">
                                 <p style=" color: #F00; margin-left: 10px;display: none;" id="txtContraM" calss="sans"></p>
-                                <input type="text" class="sans" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #fff;" placeholder="Código promocional">
-
+                                
+                                <input type="text" id="promoCodeM" name="promoCode"  class="sans" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #fff;" placeholder="Código promocional (Opcional)">
+                                <p style=" color: #F00; margin-left: 10px; display: none;" id="txtCodM" calss="sans"></p>
+                                
                                 <button type="button" id="bntenviarM" style="width: 100%; border-radius: 3px; border: 0; height: 40px; padding-left: 10px; font-size: 16px; margin-top: 5px; margin-bottom: 5px; background-color: #F32;">
                                       <span style="color: #fff; font-weight: 600;" class="sans">Iniciar trial de 14 días</span>
                                   </button>
@@ -353,8 +357,7 @@
         <script  src="{{asset('Resources/src/js/bootstrap.js')}}"></script>
         <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
         <script type = "text/javascript" >
-            $(document).on('ready', function () {
-                
+            $(document).on('ready', function () {                                              
                 $(document).on('click', '#bntenviar', function () {
                   //  var regex =/[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;
                      var regex =/^(?:[^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*|"[^\n"]+")@(?:[^<>()[\].,;:\s@"]+\.)+[^<>()[\]\.,;:\s@"]{2,63}$/i;
@@ -402,69 +405,98 @@
                         $("#txtApe").css('display', 'none');
                         $("#txtEma").css('display', 'none');
                         $("#txtContra").css('display', 'none');
+                        
+                        var promoCode = $('#promoCodeM').val();
+                        var data = {
+                                promoCode : promoCode
+                            };
 
-                        if ($('#txtnombre').val() !== "" && $("#txtapellido").val() !== "" && $("#correoEmpresa").val() !== "" && ($("#contrasenha").val() !== ""))
-                        {
-                            // Expresion regular para validar el correo
-                            /*      $("#frmEmpresaUsuarioPersona").submit(
-                             function (event) {*/
-                            $("#bntenviar").button('loading');
-                            $("#bntenviar").prop("disabled", true);
-                            $.ajax({
-                                data: {dato: $("#frmEmpresaUsuarioPersona").serialize()},
-                                url: Routing.generate('validar_correo'),
-                                type: 'POST',
-                                dataType: 'json',
-                                success: function (data) {
-                                    console.log("consola : " + data.data);
-                                    if (data.data == true) {
-                                        //Ajax de insersion de datos               
+
+                        $.ajax({
+                            data: data,
+                            url: Routing.generate('verificar_promo_code'),
+                            type: 'POST',
+                            dataType: 'json',
+                            success: function (response) {
+                                
+                               // console.log(response.msj);
+                               // return false;
+                                if (response.msj == 'Valido') {
+                                    $("#txtCodM").css('display', 'none');
+                                    $("#bntenviar").prop("disabled", false);
+
+                                    if ($('#txtnombre').val() !== "" && $("#txtapellido").val() !== "" && $("#correoEmpresa").val() !== "" && ($("#contrasenha").val() !== ""))
+                                    {                                                                                   
+                                        // Expresion regular para validar el correo
+                                        /*      $("#frmEmpresaUsuarioPersona").submit(
+                                         function (event) {*/
+                                        $("#bntenviar").button('loading');
+                                        $("#bntenviar").prop("disabled", true);
                                         $.ajax({
                                             data: {dato: $("#frmEmpresaUsuarioPersona").serialize()},
-                                            url: Routing.generate('ingresar_usuarioEmpresa'),
+                                            url: Routing.generate('validar_correo'),
                                             type: 'POST',
                                             dataType: 'json',
-                                            success: function (data)
-                                            {
-                                                if (data.estado == true) {
+                                            success: function (data) {
+                                                console.log("consola : " + data.data);
+                                                if (data.data == true) {
+                                                    //Ajax de insersion de datos               
+                                                    $.ajax({
+                                                        data: {dato: $("#frmEmpresaUsuarioPersona").serialize()},
+                                                        url: Routing.generate('ingresar_usuarioEmpresa'),
+                                                        type: 'POST',
+                                                        dataType: 'json',
+                                                        success: function (data)
+                                                        {
+                                                            if (data.estado == true) {
 
-                                                    //         var url = Routing.generate('confirma_cuenta');
-                                                    ///        var url = Routing.generate('perfil');
-                                                    //var url = Routing.generate('abogado_login');
-                                                   var url = Routing.generate('confirmarcorreo', {id: data.md5});
-                                                    window.open(url, "_self");
-                                                    Lobibox.notify("success", {
-                                                        size: 'mini',
-                                                        msg: 'Registro exitoso, espere un momento'
+                                                                //         var url = Routing.generate('confirma_cuenta');
+                                                                ///        var url = Routing.generate('perfil');
+                                                                //var url = Routing.generate('abogado_login');
+                                                               var url = Routing.generate('confirmarcorreo', {id: data.md5});
+                                                                window.open(url, "_self");
+                                                                Lobibox.notify("success", {
+                                                                    size: 'mini',
+                                                                    msg: 'Registro exitoso, espere un momento'
+                                                                });
+                                                            } else {
+
+                                                                Lobibox.notify("error", {
+                                                                    size: 'mini',
+                                                                    msg: 'Error al ingresar los datos',
+                                                                });
+                                                                Lobibox.setPosition('left')
+                                                                $("#bntenviar").prop("disabled", false);
+                                                                $("#bntenviar").button('reset');
+                                                            }
+                                                            return false;
+                                                        }
                                                     });
                                                 } else {
-
                                                     Lobibox.notify("error", {
                                                         size: 'mini',
-                                                        msg: 'Error al ingresar los datos',
+                                                        msg: 'Correo ya existente, intente con otro.'
                                                     });
-                                                    Lobibox.setPosition('left')
+
+                                                    $("#txtEma").text("");
+                                                    $("#txtEma").css('display', 'none');
+                                                    $("#txtContra").css('display', 'none');
                                                     $("#bntenviar").prop("disabled", false);
                                                     $("#bntenviar").button('reset');
                                                 }
-                                                return false;
                                             }
-                                        });
-                                    } else {
-                                        Lobibox.notify("error", {
-                                            size: 'mini',
-                                            msg: 'Correo ya existente, intente con otro.'
-                                        });
-
-                                        $("#txtEma").text("");
-                                        $("#txtEma").css('display', 'none');
-                                        $("#txtContra").css('display', 'none');
-                                        $("#bntenviar").prop("disabled", false);
-                                        $("#bntenviar").button('reset');
-                                    }
+                                        }); 
+                                    }                                    
+                                } else {
+                                    $("#txtCodM").text(response.msj);
+                                    $("#promoCodeM").val("");
+                                    $("#txtCodM").css('display', 'block');
+                                   // $("#bntenviar").prop("disabled", true);
+                                    
+                                    return false;
                                 }
-                            });
-                        }
+                            }
+                        });                                                 
                     } else {
                         $("#txtEma").text("Email no valido!");
                         $("#txtEma").css('display', 'block');

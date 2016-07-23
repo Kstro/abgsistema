@@ -376,9 +376,9 @@ class CtlEmpresaController extends Controller {
                 $nombreAbogado = $datos['txtnombre'];
                 $apellidoAbogado = $datos['txtapellido'];
                 $correoUsuario = $datos['correoEmpresa'];
+                $codigo = $datos['promoCode'];
+                $promoCode = strtoupper($codigo);
             } else {
-
-
                 $isAjax = $this->get('Request')->isXMLhttpRequest();
                 if ($isAjax) {
                     $idFacebook = $request->get("contrasenhaFacebook");
@@ -585,7 +585,17 @@ class CtlEmpresaController extends Controller {
             $abgFoto->setEstado(1);
             $em->persist($abgFoto);
             $em->flush();
-
+                   
+            if($promoCode != NULL){
+                $abgPromoCode = $em->getRepository('DGAbgSistemaBundle:AbgCodigoPromocional')->findOneBy(array("codigo" => $promoCode));
+                
+                $personaPromocion = new \DGAbgSistemaBundle\Entity\AbgPersonaPromocion();
+                $personaPromocion->setAbgPersona($abgPersona);
+                $personaPromocion->setCodigoPromocional($abgPromoCode);
+                $em->persist($personaPromocion);
+                $em->flush();
+            }
+                
             $em->getConnection()->commit();
             $em->close();
             $data['username'] = $ctlUsuario->getUsername();
@@ -733,6 +743,46 @@ class CtlEmpresaController extends Controller {
         }
     }
 
+    /**
+     * Función que verifica la validez del codigo promocional
+     * 
+     * @Route("/verificar/promo-code", name="verificar_promo_code", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function verificarPromoCodeAction() {
+
+        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();
+
+        try {
+            $promo = $request->get('promoCode');
+            $promoCode = strtoupper($promo);
+            
+            $abgPromoCode = $em->getRepository('DGAbgSistemaBundle:AbgCodigoPromocional')->findOneBy(array("codigo" => $promoCode));
+            
+            
+            //var_dump($promo);
+            if($promo != ""){
+                if($abgPromoCode != NULL){
+                    if($abgPromoCode->getEstado() == 1){
+                        $data['msj'] = "Valido";
+                    } else {
+                        $data['msj'] = "Codigo promocional inactivo";
+                    }
+                } else {
+                    $data['msj'] = "Codigo promocional no existe";
+                }
+            } else {
+                $data['msj'] = "Valido";
+            }
+            
+            return new Response(json_encode($data));
+        } catch (\Exception $e) {
+            $data['msj'] = $e->getMessage(); //"Fallo en la verificacion";
+            return new Response(json_encode($data));
+        }
+    }
+    
     /**
      * @Route("ingresar_foto/get", name="ingresar_foto", options={"expose"=true})
      * @Method("POST")
