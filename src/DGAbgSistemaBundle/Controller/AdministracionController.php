@@ -716,8 +716,8 @@ class AdministracionController extends Controller {
         $sqlAbogado = "SELECT abo.id, abo.nombres, abo.apellido, abo.codigo, abo.correoelectronico, abo.descripcion, abo.direccion, abo.telefono_fijo as fijo, abo.telefono_movil as movil, abo.genero, DATE_FORMAT(abo.fecha_ingreso, '%d/%m/%Y') as fecha, "
                         . "foto.src, ci.nombre_ciudad as ciudad, est.nombre_estado as depto "                        
                         . "FROM abg_persona abo INNER JOIN abg_foto foto ON foto.abg_persona_id = abo.id "
-                        . "INNER JOIN ctl_ciudad ci ON abo.ctl_ciudad_id = ci.id "
-                        . "INNER JOIN ctl_estado est ON ci.ctl_estado_id = est.id "
+                        . "LEFT OUTER JOIN ctl_ciudad ci ON abo.ctl_ciudad_id = ci.id "
+                        . "LEFT OUTER JOIN ctl_estado est ON ci.ctl_estado_id = est.id "
                         . "WHERE abo.id = " . $id;
         
         $stm = $this->container->get('database_connection')->prepare($sqlAbogado);

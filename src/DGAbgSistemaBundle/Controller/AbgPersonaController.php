@@ -626,7 +626,7 @@ class AbgPersonaController extends Controller {
                         inner join abg_url_personalizada uper on uper.abg_persona_id = per.id
                         where foto.estado = 1 and uper.estado = 1
                         order by fecha_ingreso desc, per.id desc
-                        limit 0, 12";
+                        limit 0, 16";
 
                 $rsm4->addScalarResult('nombres', 'nombres');
                 $rsm4->addScalarResult('apellidos', 'apellidos');
@@ -646,7 +646,7 @@ class AbgPersonaController extends Controller {
                         left outer join ctl_tipo_empresa te on emp.ctl_tipo_empresa_id = te.id
                         where foto.estado = 1 and emp.nombre_empresa <> 'Nombre de la empresa' and uper.estado = 1
                         order by emp.id desc
-                        limit 0, 8";
+                        limit 0, 4";
 
                 $rsm5->addScalarResult('empresa', 'empresa');
                 $rsm5->addScalarResult('src', 'src');
@@ -654,6 +654,26 @@ class AbgPersonaController extends Controller {
                 $rsm5->addScalarResult('tipoEmpresa', 'tipoEmpresa');
 
                 $empresas = $em->createNativeQuery($sql5, $rsm5)
+                        ->getResult();
+                
+                $rsm6 = new ResultSetMapping();
+                
+                $sql6 = "SELECT CASE WHEN cod.tipo_promocion = 1 THEN 'Por abogado' "
+                                . "WHEN cod.tipo_promocion = 2 THEN 'Por asociacion' "
+                                . "WHEN cod.tipo_promocion = 3 THEN 'Email' "
+                                . "WHEN cod.tipo_promocion = 4 THEN 'Whatsapp' "
+                                . "WHEN cod.tipo_promocion = 5 THEN 'Facebook' "
+                                . "WHEN cod.tipo_promocion = 6 THEN 'Twitter' "
+                                . "WHEN cod.tipo_promocion = 7 THEN 'Otros medios' END AS tipo_codigo, "
+                                . "count(pp.id) total "
+                        . "FROM `abg_persona_promocion` pp INNER JOIN `abg_codigo_promocional` cod ON pp.codigo_promocional = cod.id "
+                        . "group by cod.tipo_promocion "
+                        . "order by cod.tipo_promocion ";
+                
+                $rsm6->addScalarResult('total', 'total');
+                $rsm6->addScalarResult('tipo_codigo', 'tipo_codigo');
+
+                $totalCodigos = $em->createNativeQuery($sql6, $rsm6)
                         ->getResult();
 
                 return $this->render('abgpersona/panelAdministrativoAbg.html.twig', array(
@@ -663,6 +683,7 @@ class AbgPersonaController extends Controller {
                             'totalAbogados' => $totalAbogados,
                             'totalBlogs' => $totalBlogs,
                             'totalPreguntas' => $totalPreguntas,
+                            'totalCodigos' => $totalCodigos,
                             'usuarios' => $usuarios,
                             'empresas' => $empresas,
                 ));
@@ -1330,7 +1351,7 @@ class AbgPersonaController extends Controller {
                                             <td class=\"expander\"></td>
                                         </tr>
                                     </table>
-                                ", "Uested ha sido verificado como notario");
+                                ", "Usted ha sido verificado como notario");
                     } else {
                         $data['msj'] = "No fue verificado como notario";
                     }
